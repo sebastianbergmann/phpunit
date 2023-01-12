@@ -133,23 +133,13 @@ final class Configuration
      * @psalm-var non-empty-list<string>
      */
     private readonly array $testSuffixes;
-    private readonly DirectoryCollection $includePaths;
-    private readonly IniSettingCollection $iniSettings;
-    private readonly ConstantCollection $constants;
-    private readonly VariableCollection $globalVariables;
-    private readonly VariableCollection $envVariables;
-    private readonly VariableCollection $postVariables;
-    private readonly VariableCollection $getVariables;
-    private readonly VariableCollection $cookieVariables;
-    private readonly VariableCollection $serverVariables;
-    private readonly VariableCollection $filesVariables;
-    private readonly VariableCollection $requestVariables;
+    private readonly Php $php;
 
     /**
      * @psalm-param non-empty-list<string> $testSuffixes
      * @psalm-param list<array{className: class-string, parameters: array<string, string>}> $extensionBootstrappers
      */
-    public function __construct(?string $cliArgument, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, FilterDirectoryCollection $coverageIncludeDirectories, FileCollection $coverageIncludeFiles, FilterDirectoryCollection $coverageExcludeDirectories, FileCollection $coverageExcludeFiles, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, string $coverageHtmlColorSuccessLow, string $coverageHtmlColorSuccessMedium, string $coverageHtmlColorSuccessHigh, string $coverageHtmlColorWarning, string $coverageHtmlColorDanger, ?string $coverageHtmlCustomCssFile, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, array $extensionBootstrappers, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noProgress, bool $noResults, bool $noOutput, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $logEventsText, ?string $logEventsVerboseText, bool $teamCityOutput, bool $testDoxOutput, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, int $randomOrderSeed, bool $includeUncoveredFiles, TestSuiteCollection $testSuite, string $includeTestSuite, string $excludeTestSuite, ?string $defaultTestSuite, array $testSuffixes, DirectoryCollection $includePaths, IniSettingCollection $iniSettings, ConstantCollection $constants, VariableCollection $globalVariables, VariableCollection $envVariables, VariableCollection $postVariables, VariableCollection $getVariables, VariableCollection $cookieVariables, VariableCollection $serverVariables, VariableCollection $filesVariables, VariableCollection $requestVariables, ?string $xmlValidationErrors)
+    public function __construct(?string $cliArgument, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, FilterDirectoryCollection $coverageIncludeDirectories, FileCollection $coverageIncludeFiles, FilterDirectoryCollection $coverageExcludeDirectories, FileCollection $coverageExcludeFiles, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, string $coverageHtmlColorSuccessLow, string $coverageHtmlColorSuccessMedium, string $coverageHtmlColorSuccessHigh, string $coverageHtmlColorWarning, string $coverageHtmlColorDanger, ?string $coverageHtmlCustomCssFile, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, array $extensionBootstrappers, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noProgress, bool $noResults, bool $noOutput, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $logEventsText, ?string $logEventsVerboseText, bool $teamCityOutput, bool $testDoxOutput, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, int $randomOrderSeed, bool $includeUncoveredFiles, TestSuiteCollection $testSuite, string $includeTestSuite, string $excludeTestSuite, ?string $defaultTestSuite, array $testSuffixes, Php $php, ?string $xmlValidationErrors)
     {
         $this->cliArgument                                     = $cliArgument;
         $this->configurationFile                               = $configurationFile;
@@ -252,17 +242,7 @@ final class Configuration
         $this->excludeTestSuite                                = $excludeTestSuite;
         $this->defaultTestSuite                                = $defaultTestSuite;
         $this->testSuffixes                                    = $testSuffixes;
-        $this->includePaths                                    = $includePaths;
-        $this->iniSettings                                     = $iniSettings;
-        $this->constants                                       = $constants;
-        $this->globalVariables                                 = $globalVariables;
-        $this->envVariables                                    = $envVariables;
-        $this->postVariables                                   = $postVariables;
-        $this->getVariables                                    = $getVariables;
-        $this->cookieVariables                                 = $cookieVariables;
-        $this->serverVariables                                 = $serverVariables;
-        $this->filesVariables                                  = $filesVariables;
-        $this->requestVariables                                = $requestVariables;
+        $this->php                                             = $php;
         $this->xmlValidationErrors                             = $xmlValidationErrors;
     }
 
@@ -1222,59 +1202,9 @@ final class Configuration
         return $this->testSuffixes;
     }
 
-    public function includePaths(): DirectoryCollection
+    public function php(): Php
     {
-        return $this->includePaths;
-    }
-
-    public function iniSettings(): IniSettingCollection
-    {
-        return $this->iniSettings;
-    }
-
-    public function constants(): ConstantCollection
-    {
-        return $this->constants;
-    }
-
-    public function globalVariables(): VariableCollection
-    {
-        return $this->globalVariables;
-    }
-
-    public function envVariables(): VariableCollection
-    {
-        return $this->envVariables;
-    }
-
-    public function postVariables(): VariableCollection
-    {
-        return $this->postVariables;
-    }
-
-    public function getVariables(): VariableCollection
-    {
-        return $this->getVariables;
-    }
-
-    public function cookieVariables(): VariableCollection
-    {
-        return $this->cookieVariables;
-    }
-
-    public function serverVariables(): VariableCollection
-    {
-        return $this->serverVariables;
-    }
-
-    public function filesVariables(): VariableCollection
-    {
-        return $this->filesVariables;
-    }
-
-    public function requestVariables(): VariableCollection
-    {
-        return $this->requestVariables;
+        return $this->php;
     }
 
     /**

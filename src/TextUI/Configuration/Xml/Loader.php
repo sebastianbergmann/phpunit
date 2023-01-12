@@ -44,6 +44,7 @@ use PHPUnit\TextUI\Configuration\Group;
 use PHPUnit\TextUI\Configuration\GroupCollection;
 use PHPUnit\TextUI\Configuration\IniSetting;
 use PHPUnit\TextUI\Configuration\IniSettingCollection;
+use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\TestDirectory;
 use PHPUnit\TextUI\Configuration\TestDirectoryCollection;
 use PHPUnit\TextUI\Configuration\TestFile;

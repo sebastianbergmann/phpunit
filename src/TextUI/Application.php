@@ -83,19 +83,7 @@ final class Application
                 $this->execute(new WarmCodeCoverageCacheCommand);
             }
 
-            (new PhpHandler)->handle(
-                $configuration->includePaths(),
-                $configuration->iniSettings(),
-                $configuration->constants(),
-                $configuration->globalVariables(),
-                $configuration->envVariables(),
-                $configuration->postVariables(),
-                $configuration->getVariables(),
-                $configuration->cookieVariables(),
-                $configuration->serverVariables(),
-                $configuration->filesVariables(),
-                $configuration->requestVariables(),
-            );
+            (new PhpHandler)->handle($configuration->php());
 
             if ($configuration->hasBootstrap()) {
                 $this->loadBootstrapScript($configuration->bootstrap());

@@ -55,6 +55,7 @@ final class Registry
             [
                 'allowed_classes' => [
                     Configuration::class,
+                    Php::class,
                     ConstantCollection::class,
                     Constant::class,
                     IniSettingCollection::class,

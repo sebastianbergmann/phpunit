@@ -112,18 +112,6 @@ final class PhpHandlerTest extends TestCase
     {
         $configuration = (new Loader)->load(TEST_FILES_PATH . 'configuration.xml')->php();
 
-        (new PhpHandler)->handle(
-            $configuration->includePaths(),
-            $configuration->iniSettings(),
-            $configuration->constants(),
-            $configuration->globalVariables(),
-            $configuration->envVariables(),
-            $configuration->postVariables(),
-            $configuration->getVariables(),
-            $configuration->cookieVariables(),
-            $configuration->serverVariables(),
-            $configuration->filesVariables(),
-            $configuration->requestVariables(),
-        );
+        (new PhpHandler)->handle($configuration);
     }
 }

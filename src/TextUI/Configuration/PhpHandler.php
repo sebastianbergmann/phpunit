@@ -24,19 +24,19 @@ use function putenv;
  */
 final class PhpHandler
 {
-    public function handle(DirectoryCollection $includePaths, IniSettingCollection $iniSettings, ConstantCollection $constants, VariableCollection $globalVariables, VariableCollection $envVariables, VariableCollection $postVariables, VariableCollection $getVariables, VariableCollection $cookieVariables, VariableCollection $serverVariables, VariableCollection $filesVariables, VariableCollection $requestVariables): void
+    public function handle(Php $configuration): void
     {
-        $this->handleIncludePaths($includePaths);
-        $this->handleIniSettings($iniSettings);
-        $this->handleConstants($constants);
-        $this->handleGlobalVariables($globalVariables);
-        $this->handleServerVariables($serverVariables);
-        $this->handleEnvVariables($envVariables);
-        $this->handleVariables('_POST', $postVariables);
-        $this->handleVariables('_GET', $getVariables);
-        $this->handleVariables('_COOKIE', $cookieVariables);
-        $this->handleVariables('_FILES', $filesVariables);
-        $this->handleVariables('_REQUEST', $requestVariables);
+        $this->handleIncludePaths($configuration->includePaths());
+        $this->handleIniSettings($configuration->iniSettings());
+        $this->handleConstants($configuration->constants());
+        $this->handleGlobalVariables($configuration->globalVariables());
+        $this->handleServerVariables($configuration->serverVariables());
+        $this->handleEnvVariables($configuration->envVariables());
+        $this->handleVariables('_POST', $configuration->postVariables());
+        $this->handleVariables('_GET', $configuration->getVariables());
+        $this->handleVariables('_COOKIE', $configuration->cookieVariables());
+        $this->handleVariables('_FILES', $configuration->filesVariables());
+        $this->handleVariables('_REQUEST', $configuration->requestVariables());
     }
 
     private function handleIncludePaths(DirectoryCollection $includePaths): void
