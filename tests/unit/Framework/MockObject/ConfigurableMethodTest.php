@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Type\Type;
 
+#[CoversClass(ConfigurableMethod::class)]
 final class ConfigurableMethodTest extends TestCase
 {
     public function testMethodMayReturnValueThatCanBeAssigned(): void

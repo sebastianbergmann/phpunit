@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Logging\TestDox\NamePrettifier;
 
+#[CoversClass(NamePrettifier::class)]
 #[Group('testdox')]
 #[Small]
 final class NamePrettifierTest extends TestCase

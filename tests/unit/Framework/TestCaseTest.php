@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function sprintf;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -18,6 +19,7 @@ use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
+#[CoversClass(TestCase::class)]
 #[ExcludeGlobalVariableFromBackup('i')]
 #[ExcludeGlobalVariableFromBackup('singleton')]
 class TestCaseTest extends TestCase

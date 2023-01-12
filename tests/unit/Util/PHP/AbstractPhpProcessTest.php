@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(AbstractPhpProcess::class)]
 #[Small]
 final class AbstractPhpProcessTest extends TestCase
 {

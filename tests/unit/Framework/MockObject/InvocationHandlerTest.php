@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\StringableClass;
 use RuntimeException;
 
+#[CoversClass(InvocationHandler::class)]
 class InvocationHandlerTest extends TestCase
 {
     public function testExceptionThrownIn__ToStringIsDeferred(): void
