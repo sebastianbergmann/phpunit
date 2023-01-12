@@ -96,6 +96,14 @@ final class Application
             $xmlConfiguration
         );
 
+        if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
+            CodeCoverageFilterRegistry::init($configuration);
+        }
+
+        if ($cliConfiguration->warmCoverageCache()) {
+            $this->execute(new WarmCodeCoverageCacheCommand);
+        }
+
         (new PhpHandler)->handle(
             $configuration->includePaths(),
             $configuration->iniSettings(),
@@ -109,14 +117,6 @@ final class Application
             $configuration->filesVariables(),
             $configuration->requestVariables(),
         );
-
-        if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
-            CodeCoverageFilterRegistry::init($configuration);
-        }
-
-        if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand);
-        }
 
         if ($configuration->hasBootstrap()) {
             $this->loadBootstrapScript($configuration->bootstrap());
