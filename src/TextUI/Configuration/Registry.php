@@ -43,6 +43,11 @@ final class Registry
         return false;
     }
 
+    /**
+     * This method is used by the "run test(s) in separate process" templates.
+     *
+     * @noinspection PhpUnused
+     */
     public static function loadFrom(string $path): void
     {
         self::$instance = unserialize(
