@@ -134,20 +134,20 @@ final class Application
 
         try {
             $result = $runner->run($testSuite);
-
-            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
-                $configuration->failOnEmptyTestSuite(),
-                $configuration->failOnRisky(),
-                $configuration->failOnWarning(),
-                $configuration->failOnIncomplete(),
-                $configuration->failOnSkipped(),
-                $result
-            );
         } catch (Throwable $t) {
             $this->exitWithCrashMessage($t);
         }
 
         Event\Facade::emitter()->testRunnerFinished();
+
+        $shellExitCode = (new ShellExitCodeCalculator)->calculate(
+            $configuration->failOnEmptyTestSuite(),
+            $configuration->failOnRisky(),
+            $configuration->failOnWarning(),
+            $configuration->failOnIncomplete(),
+            $configuration->failOnSkipped(),
+            $result
+        );
 
         if ($exit) {
             exit($shellExitCode);
