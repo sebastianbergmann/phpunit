@@ -144,29 +144,7 @@ final class Application
                 $result
             );
         } catch (Throwable $t) {
-            $message = $t->getMessage();
-
-            if (empty(trim($message))) {
-                $message = '(no message)';
-            }
-
-            printf(
-                '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s%sLocation: %s:%d%s%s%s%s',
-                PHP_EOL,
-                PHP_EOL,
-                PHP_EOL,
-                PHP_EOL,
-                $message,
-                PHP_EOL,
-                $t->getFile(),
-                $t->getLine(),
-                PHP_EOL,
-                PHP_EOL,
-                $t->getTraceAsString(),
-                PHP_EOL
-            );
-
-            exit(Result::CRASH);
+            $this->exitWithCrashMessage($t);
         }
 
         Event\Facade::emitter()->testRunnerFinished();
@@ -187,6 +165,33 @@ final class Application
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $this->versionStringPrinted = true;
+    }
+
+    private function exitWithCrashMessage(Throwable $t): never
+    {
+        $message = $t->getMessage();
+
+        if (empty(trim($message))) {
+            $message = '(no message)';
+        }
+
+        printf(
+            '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s%sLocation: %s:%d%s%s%s%s',
+            PHP_EOL,
+            PHP_EOL,
+            PHP_EOL,
+            PHP_EOL,
+            $message,
+            PHP_EOL,
+            $t->getFile(),
+            $t->getLine(),
+            PHP_EOL,
+            PHP_EOL,
+            $t->getTraceAsString(),
+            PHP_EOL
+        );
+
+        exit(Result::CRASH);
     }
 
     private function exitWithErrorMessage(string $message): never
