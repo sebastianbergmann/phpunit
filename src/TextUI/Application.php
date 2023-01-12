@@ -41,6 +41,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
+use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\ConfigurationFileFinder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
@@ -103,7 +104,7 @@ final class Application
             $testSuite = $this->buildTestSuite($configuration);
 
             $this->executeCommandsThatRequireCliConfigurationTestSuite($cliConfiguration, $testSuite);
-            $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration);
+            $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration->testSuite());
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
             $this->bootstrapExtensions($configuration);
@@ -344,10 +345,10 @@ final class Application
         }
     }
 
-    private function executeCommandsThatRequireCliAndXmlConfiguration(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
+    private function executeCommandsThatRequireCliAndXmlConfiguration(CliConfiguration $cliConfiguration, TestSuiteCollection $testSuite): void
     {
         if ($cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
+            $this->execute(new ListTestSuitesCommand($testSuite));
         }
     }
 
