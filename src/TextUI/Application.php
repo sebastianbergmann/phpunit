@@ -91,7 +91,7 @@ final class Application
 
             $testSuite = $this->buildTestSuite($configuration);
 
-            $this->executeCommandsThatRequireCliConfigurationTestSuite($cliConfiguration, $testSuite);
+            $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
             $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration->testSuite());
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
@@ -313,7 +313,7 @@ final class Application
         }
     }
 
-    private function executeCommandsThatRequireCliConfigurationTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
+    private function executeCommandsThatRequireCliConfigurationAndTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
         if ($cliConfiguration->listGroups()) {
             $this->execute(new ListGroupsCommand($testSuite));
