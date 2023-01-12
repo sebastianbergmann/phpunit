@@ -130,8 +130,7 @@ final class Application
 
         $this->bootstrapExtensions($configuration);
 
-        $configuration = Registry::get();
-        $runner        = new TestRunner;
+        $runner = new TestRunner;
 
         try {
             $result = $runner->run($testSuite);
