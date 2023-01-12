@@ -14,6 +14,7 @@ use function spl_object_id;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -310,6 +311,60 @@ EOF
         $constraint = new IsEqual(15, 1);
 
         $this->assertSame('is equal to 15 with delta <1.000000>', $constraint->toString());
+    }
+
+    public function testConstraintIsNotEqual(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::equalTo(1)
+        );
+
+        $this->assertTrue($constraint->evaluate(0, '', true));
+        $this->assertFalse($constraint->evaluate(1, '', true));
+        $this->assertEquals('is not equal to 1', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate(1);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that 1 is not equal to 1.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsNotEqual2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::equalTo(1)
+        );
+
+        try {
+            $constraint->evaluate(1, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that 1 is not equal to 1.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
     }
 
     private function removeSpacesInFrontOfNewlines(string $string): string

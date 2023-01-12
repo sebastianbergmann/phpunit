@@ -138,6 +138,60 @@ EOF
         }
     }
 
+    public function testConstraintIsNotType(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::isType('string')
+        );
+
+        $this->assertTrue($constraint->evaluate(0, '', true));
+        $this->assertFalse($constraint->evaluate('', '', true));
+        $this->assertEquals('is not of type "string"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate('');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that '' is not of type "string".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsNotType2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::isType('string')
+        );
+
+        try {
+            $constraint->evaluate('', 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that '' is not of type "string".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
     /**
      * Removes spaces in front of newlines.
      */

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -116,5 +117,30 @@ EOF
                 ThrowableToStringMapper::map($e)
             );
         }
+    }
+
+    public function testConstraintArrayIsNotList(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::isList()
+        );
+
+        try {
+            $constraint->evaluate([0, 1, 2], 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that an array is not list.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
     }
 }

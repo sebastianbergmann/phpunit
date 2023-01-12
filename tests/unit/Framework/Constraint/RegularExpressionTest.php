@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -56,6 +57,60 @@ EOF
                 <<<'EOF'
 custom message
 Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintPCRENotMatch(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::matchesRegularExpression('/foo/')
+        );
+
+        $this->assertTrue($constraint->evaluate('barbazbar', '', true));
+        $this->assertFalse($constraint->evaluate('barfoobar', '', true));
+        $this->assertEquals('does not match PCRE pattern "/foo/"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate('barfoobar');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintPCRENotMatch2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::matchesRegularExpression('/foo/')
+        );
+
+        try {
+            $constraint->evaluate('barfoobar', 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
                 ,

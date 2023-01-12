@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -55,6 +56,63 @@ EOF
                 <<<'EOF'
 custom message
 Failed asserting that file "foo" exists.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintFileNotExists(): void
+    {
+        $file = TEST_FILES_PATH . 'ClassWithNonPublicAttributes.php';
+
+        $constraint = Assert::logicalNot(
+            Assert::fileExists()
+        );
+
+        $this->assertFalse($constraint->evaluate($file, '', true));
+        $this->assertEquals('file does not exist', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate($file);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that file "{$file}" does not exist.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintFileNotExists2(): void
+    {
+        $file = TEST_FILES_PATH . 'ClassWithNonPublicAttributes.php';
+
+        $constraint = Assert::logicalNot(
+            Assert::fileExists()
+        );
+
+        try {
+            $constraint->evaluate($file, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+custom message
+Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -56,6 +57,60 @@ EOF
                 <<<'EOF'
 custom message
 Failed asserting that 0 is null.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsNotNull(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::isNull()
+        );
+
+        $this->assertFalse($constraint->evaluate(null, '', true));
+        $this->assertTrue($constraint->evaluate(0, '', true));
+        $this->assertEquals('is not null', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate(null);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that null is not null.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsNotNull2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::isNull()
+        );
+
+        try {
+            $constraint->evaluate(null, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that null is not null.
 
 EOF
                 ,

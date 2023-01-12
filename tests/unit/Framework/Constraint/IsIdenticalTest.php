@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function preg_replace;
 use function sprintf;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -205,5 +207,100 @@ EOF
         }
 
         $this->fail();
+    }
+
+    public function testConstraintIsNotIdentical(): void
+    {
+        $a = new stdClass;
+        $b = new stdClass;
+
+        $constraint = Assert::logicalNot(
+            Assert::identicalTo($a)
+        );
+
+        $this->assertTrue($constraint->evaluate($b, '', true));
+        $this->assertFalse($constraint->evaluate($a, '', true));
+        $this->assertEquals(
+            sprintf(
+                'is not identical to an object of class "%s"',
+                stdClass::class
+            ),
+            $constraint->toString()
+        );
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate($a);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that two variables don't reference the same object.
+
+EOF
+                ,
+                $this->trimNewlines(ThrowableToStringMapper::map($e))
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsNotIdentical2(): void
+    {
+        $a = new stdClass;
+
+        $constraint = Assert::logicalNot(
+            Assert::identicalTo($a)
+        );
+
+        try {
+            $constraint->evaluate($a, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that two variables don't reference the same object.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsNotIdentical3(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::identicalTo('a')
+        );
+
+        try {
+            $constraint->evaluate('a', 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that two strings are not identical.
+
+EOF
+                ,
+                $this->trimNewlines(ThrowableToStringMapper::map($e))
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    private function trimNewlines(string $string): string
+    {
+        return preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

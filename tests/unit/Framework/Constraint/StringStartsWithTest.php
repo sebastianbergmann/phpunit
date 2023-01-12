@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -100,6 +101,60 @@ EOF
                 <<<'EOF'
 custom message
 Failed asserting that 'error' starts with "prefix".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintStringStartsNotWith(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::stringStartsWith('prefix')
+        );
+
+        $this->assertTrue($constraint->evaluate('foo', '', true));
+        $this->assertFalse($constraint->evaluate('prefixfoo', '', true));
+        $this->assertEquals('starts not with "prefix"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate('prefixfoo');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that 'prefixfoo' starts not with "prefix".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintStringStartsNotWith2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::stringStartsWith('prefix')
+        );
+
+        try {
+            $constraint->evaluate('prefixfoo', 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
                 ,

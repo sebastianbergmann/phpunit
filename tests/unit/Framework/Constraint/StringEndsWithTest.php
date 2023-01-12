@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -93,6 +94,60 @@ EOF
                 <<<'EOF'
 custom message
 Failed asserting that 'error' ends with "suffix".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintStringEndsNotWith(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::stringEndsWith('suffix')
+        );
+
+        $this->assertTrue($constraint->evaluate('foo', '', true));
+        $this->assertFalse($constraint->evaluate('foosuffix', '', true));
+        $this->assertEquals('ends not with "suffix"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate('foosuffix');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that 'foosuffix' ends not with "suffix".
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintStringEndsNotWith2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::stringEndsWith('suffix')
+        );
+
+        try {
+            $constraint->evaluate('foosuffix', 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
                 ,

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -82,5 +83,58 @@ EOF
                 ThrowableToStringMapper::map($e)
             );
         }
+    }
+
+    public function testConstraintArrayNotHasKey(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::arrayHasKey(0)
+        );
+
+        $this->assertFalse($constraint->evaluate([0 => 1], '', true));
+        $this->assertEquals('does not have the key 0', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate([0 => 1]);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that an array does not have the key 0.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintArrayNotHasKey2(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::arrayHasKey(0)
+        );
+
+        try {
+            $constraint->evaluate([0], 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that an array does not have the key 0.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
     }
 }

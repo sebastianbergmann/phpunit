@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use ArrayObject;
 use EmptyIterator;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Ticket;
@@ -142,5 +144,75 @@ EOF
         $constraint = new Count(0);
 
         $this->assertTrue($constraint->evaluate(new EmptyIterator, '', true));
+    }
+
+    public function testConstraintCountWithAnArray(): void
+    {
+        $constraint = new Count(5);
+
+        $this->assertTrue($constraint->evaluate([1, 2, 3, 4, 5], '', true));
+        $this->assertFalse($constraint->evaluate([1, 2, 3, 4], '', true));
+    }
+
+    public function testConstraintCountWithAnIteratorWhichDoesNotImplementCountable(): void
+    {
+        $constraint = new Count(5);
+
+        $this->assertTrue($constraint->evaluate(new TestIterator([1, 2, 3, 4, 5]), '', true));
+        $this->assertFalse($constraint->evaluate(new TestIterator([1, 2, 3, 4]), '', true));
+    }
+
+    public function testConstraintCountWithAnObjectImplementingCountable(): void
+    {
+        $constraint = new Count(5);
+
+        $this->assertTrue($constraint->evaluate(new ArrayObject([1, 2, 3, 4, 5]), '', true));
+        $this->assertFalse($constraint->evaluate(new ArrayObject([1, 2, 3, 4]), '', true));
+    }
+
+    public function testConstraintCountFailing(): void
+    {
+        $constraint = new Count(5);
+
+        try {
+            $constraint->evaluate([1, 2]);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that actual size 2 matches expected size 5.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintNotCountFailing(): void
+    {
+        $constraint = Assert::logicalNot(
+            new Count(2)
+        );
+
+        try {
+            $constraint->evaluate([1, 2]);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that actual size 2 does not match expected size 2.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
     }
 }

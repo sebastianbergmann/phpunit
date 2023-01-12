@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use ArrayObject;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -54,6 +55,30 @@ final class SameSizeTest extends ConstraintTestCase
             $this->assertEquals(
                 <<<'EOF'
 Failed asserting that actual size 2 matches expected size 5.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintNotSameSizeFailing(): void
+    {
+        $constraint = Assert::logicalNot(
+            new SameSize([1, 2])
+        );
+
+        try {
+            $constraint->evaluate([3, 4]);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
                 ,
