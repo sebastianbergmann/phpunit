@@ -302,7 +302,7 @@ final class Application
         }
     }
 
-    private function executeMigrateConfigurationCommand(CliConfiguration $cliConfiguration, bool|string $configurationFile): void
+    private function executeMigrateConfigurationCommand(CliConfiguration $cliConfiguration, string|false $configurationFile): void
     {
         if ($cliConfiguration->migrateConfiguration()) {
             if (!$configurationFile) {

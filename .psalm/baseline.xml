@@ -486,9 +486,6 @@
       <code>listTestsXml</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$configurationFile</code>
-    </PossiblyInvalidArgument>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
