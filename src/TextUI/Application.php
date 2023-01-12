@@ -63,11 +63,11 @@ final class Application
 
             $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration);
 
-            $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
+            $pathToXmlConfigurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
-            $this->executeMigrateConfigurationCommand($cliConfiguration, $configurationFile);
+            $this->executeMigrateConfigurationCommand($cliConfiguration, $pathToXmlConfigurationFile);
 
-            $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
+            $xmlConfiguration = $this->loadXmlConfiguration($pathToXmlConfigurationFile);
 
             $configuration = Registry::init(
                 $cliConfiguration,
