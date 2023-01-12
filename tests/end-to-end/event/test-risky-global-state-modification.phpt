@@ -20,7 +20,7 @@ $_SERVER['argv'][] = __DIR__ . '/_files/RiskyBecauseGlobalStateModificationTest.
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main(false);
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv'], false);
 
 print file_get_contents($traceFile);
 

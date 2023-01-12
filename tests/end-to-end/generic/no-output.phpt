@@ -8,5 +8,5 @@ $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/BankAccountTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Application::main();
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--

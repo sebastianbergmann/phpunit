@@ -11,7 +11,7 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/StatusTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main();
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>

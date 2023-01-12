@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderIssue2859/phpunit.xml';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Application::main();
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

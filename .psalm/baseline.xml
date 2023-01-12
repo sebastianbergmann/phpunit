@@ -489,9 +489,6 @@
     <PossiblyInvalidArgument occurrences="1">
       <code>$configurationFile</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>$_SERVER['argv']</code>
-    </PossiblyUndefinedArrayOffset>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>

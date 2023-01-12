@@ -54,98 +54,83 @@ final class Application
 {
     private bool $versionStringPrinted = false;
 
-    /**
-     * @throws Exception
-     */
-    public static function main(bool $exit = true): int
-    {
-        return (new self)->run($_SERVER['argv'], $exit);
-    }
-
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
-     * @throws ArgumentsException
-     * @throws Event\RuntimeException
-     * @throws Exception
-     */
     public function run(array $argv, bool $exit = true): int
     {
-        Event\Facade::emitter()->testRunnerStarted();
-
-        $cliConfiguration = $this->buildCliConfiguration($argv);
-
-        $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration);
-
-        $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
-
-        $this->executeMigrateConfigurationCommand($cliConfiguration, $configurationFile);
-
-        $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
-
-        $configuration = Registry::init(
-            $cliConfiguration,
-            $xmlConfiguration
-        );
-
-        if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
-            CodeCoverageFilterRegistry::init($configuration);
-        }
-
-        if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand);
-        }
-
-        (new PhpHandler)->handle(
-            $configuration->includePaths(),
-            $configuration->iniSettings(),
-            $configuration->constants(),
-            $configuration->globalVariables(),
-            $configuration->envVariables(),
-            $configuration->postVariables(),
-            $configuration->getVariables(),
-            $configuration->cookieVariables(),
-            $configuration->serverVariables(),
-            $configuration->filesVariables(),
-            $configuration->requestVariables(),
-        );
-
-        if ($configuration->hasBootstrap()) {
-            $this->loadBootstrapScript($configuration->bootstrap());
-        }
-
-        $testSuite = $this->buildTestSuite($configuration);
-
-        $this->executeCommandsThatRequireCliConfigurationTestSuite($cliConfiguration, $testSuite);
-        $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration);
-        $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
-
-        $this->bootstrapExtensions($configuration);
-
-        $runner = new TestRunner;
-
         try {
+            Event\Facade::emitter()->testRunnerStarted();
+
+            $cliConfiguration = $this->buildCliConfiguration($argv);
+
+            $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration);
+
+            $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
+
+            $this->executeMigrateConfigurationCommand($cliConfiguration, $configurationFile);
+
+            $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
+
+            $configuration = Registry::init(
+                $cliConfiguration,
+                $xmlConfiguration
+            );
+
+            if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
+                CodeCoverageFilterRegistry::init($configuration);
+            }
+
+            if ($cliConfiguration->warmCoverageCache()) {
+                $this->execute(new WarmCodeCoverageCacheCommand);
+            }
+
+            (new PhpHandler)->handle(
+                $configuration->includePaths(),
+                $configuration->iniSettings(),
+                $configuration->constants(),
+                $configuration->globalVariables(),
+                $configuration->envVariables(),
+                $configuration->postVariables(),
+                $configuration->getVariables(),
+                $configuration->cookieVariables(),
+                $configuration->serverVariables(),
+                $configuration->filesVariables(),
+                $configuration->requestVariables(),
+            );
+
+            if ($configuration->hasBootstrap()) {
+                $this->loadBootstrapScript($configuration->bootstrap());
+            }
+
+            $testSuite = $this->buildTestSuite($configuration);
+
+            $this->executeCommandsThatRequireCliConfigurationTestSuite($cliConfiguration, $testSuite);
+            $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration);
+            $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
+
+            $this->bootstrapExtensions($configuration);
+
+            $runner = new TestRunner;
+
             $result = $runner->run($testSuite);
+
+            Event\Facade::emitter()->testRunnerFinished();
+
+            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
+                $configuration->failOnEmptyTestSuite(),
+                $configuration->failOnRisky(),
+                $configuration->failOnWarning(),
+                $configuration->failOnIncomplete(),
+                $configuration->failOnSkipped(),
+                $result
+            );
+
+            if ($exit) {
+                exit($shellExitCode);
+            }
+
+            return $shellExitCode;
         } catch (Throwable $t) {
             $this->exitWithCrashMessage($t);
         }
-
-        Event\Facade::emitter()->testRunnerFinished();
-
-        $shellExitCode = (new ShellExitCodeCalculator)->calculate(
-            $configuration->failOnEmptyTestSuite(),
-            $configuration->failOnRisky(),
-            $configuration->failOnWarning(),
-            $configuration->failOnIncomplete(),
-            $configuration->failOnSkipped(),
-            $result
-        );
-
-        if ($exit) {
-            exit($shellExitCode);
-        }
-
-        return $shellExitCode;
     }
 
     private function printVersionString(): void

@@ -13,7 +13,7 @@ $_SERVER['argv'][] = __DIR__ . '/4630/Issue4630Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main(false);
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv'], false);
 
 print file_get_contents($output);
 

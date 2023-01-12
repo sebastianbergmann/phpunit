@@ -9,7 +9,7 @@ $_SERVER['argv'][] = __DIR__ . '/_files/extension-bootstrap/phpunit.xml';
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main();
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit\TestFixture\Event\MyExtension\MyExecutionFinishedSubscriber::notify
 the-message

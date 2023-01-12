@@ -9,7 +9,7 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main();
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 ##teamcity[testCount count='19' flowId='%d']
 
