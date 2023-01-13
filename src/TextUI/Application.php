@@ -76,10 +76,11 @@ final class Application
                 $this->loadBootstrapScript($configuration->bootstrap());
             }
 
+            $this->executeCommandsThatRequireCompleteConfiguration($configuration, $cliConfiguration, $xmlConfiguration);
+
             $testSuite = $this->buildTestSuite($configuration);
 
             $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
-            $this->executeCommandsThatRequireCompleteConfiguration($configuration, $cliConfiguration, $xmlConfiguration);
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
             $this->bootstrapExtensions($configuration);
