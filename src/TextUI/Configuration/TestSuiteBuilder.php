@@ -13,6 +13,7 @@ use function is_dir;
 use function is_file;
 use function realpath;
 use function str_ends_with;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -42,17 +43,23 @@ final class TestSuiteBuilder
                 throw new TestFileNotFoundException($configuration->cliArgument());
             }
 
-            return $this->testSuiteFromPath(
+            $testSuite = $this->testSuiteFromPath(
                 $argument,
                 $configuration->testSuffixes()
             );
         }
 
-        return (new TestSuiteMapper)->map(
-            $configuration->testSuite(),
-            $configuration->includeTestSuite(),
-            $configuration->excludeTestSuite()
-        );
+        if (!isset($testSuite)) {
+            $testSuite = (new TestSuiteMapper)->map(
+                $configuration->testSuite(),
+                $configuration->includeTestSuite(),
+                $configuration->excludeTestSuite()
+            );
+        }
+
+        EventFacade::emitter()->testSuiteLoaded(\PHPUnit\Event\TestSuite\TestSuite::fromTestSuite($testSuite));
+
+        return $testSuite;
     }
 
     /**

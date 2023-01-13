@@ -479,8 +479,7 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="5">
-      <code>Event\TestSuite\TestSuite::fromTestSuite($testSuite)</code>
+    <MissingThrowsDocblock occurrences="4">
       <code>atLeastVersion</code>
       <code>build</code>
       <code>listTestsXml</code>
@@ -535,7 +534,8 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="3">
+      <code>\PHPUnit\Event\TestSuite\TestSuite::fromTestSuite($testSuite)</code>
       <code>cliArgument</code>
       <code>cliArgument</code>
     </MissingThrowsDocblock>

@@ -227,11 +227,7 @@ final class Application
     private function buildTestSuite(Configuration $configuration): TestSuite
     {
         try {
-            $testSuite = (new TestSuiteBuilder)->build($configuration);
-
-            Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($testSuite));
-
-            return $testSuite;
+            return (new TestSuiteBuilder)->build($configuration);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
