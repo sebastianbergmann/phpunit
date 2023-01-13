@@ -87,4 +87,4 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
 
 require PHPUNIT_COMPOSER_INSTALL;
 
-(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+exit((new PHPUnit\TextUI\Application)->run($_SERVER['argv']));

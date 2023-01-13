@@ -24,7 +24,7 @@ $_SERVER['argv'][] = __DIR__ . '/_files/DeprecatedPhpFeatureTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
-(new PHPUnit\TextUI\Application)->run($_SERVER['argv'], false);
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 
 print file_get_contents($traceFile);
 

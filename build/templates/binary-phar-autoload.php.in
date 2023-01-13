@@ -104,7 +104,7 @@ if ($execute) {
 
     unset($execute);
 
-    (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+    exit((new PHPUnit\TextUI\Application)->run($_SERVER['argv']));
 }
 
 __HALT_COMPILER();

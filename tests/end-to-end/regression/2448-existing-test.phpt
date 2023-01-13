@@ -9,7 +9,7 @@ $_SERVER['argv'][] = 'Test.php';
 \chdir(__DIR__ . '/2448');
 
 require_once __DIR__ . '/../../bootstrap.php';
-(new PHPUnit\TextUI\Application)->run($_SERVER['argv'], false);
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

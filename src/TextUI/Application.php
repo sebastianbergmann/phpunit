@@ -53,7 +53,7 @@ final class Application
 {
     private bool $versionStringPrinted = false;
 
-    public function run(array $argv, bool $exit = true): int
+    public function run(array $argv): int
     {
         try {
             Event\Facade::emitter()->testRunnerStarted();
@@ -91,7 +91,7 @@ final class Application
 
             Event\Facade::emitter()->testRunnerFinished();
 
-            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
+            return (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnEmptyTestSuite(),
                 $configuration->failOnRisky(),
                 $configuration->failOnWarning(),
@@ -99,12 +99,6 @@ final class Application
                 $configuration->failOnSkipped(),
                 $result
             );
-
-            if ($exit) {
-                exit($shellExitCode);
-            }
-
-            return $shellExitCode;
         } catch (Throwable $t) {
             $this->exitWithCrashMessage($t);
         }
