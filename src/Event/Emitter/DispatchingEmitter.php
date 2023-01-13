@@ -47,12 +47,25 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function applicationStarted(): void
+    {
+        $this->dispatcher->dispatch(
+            new Application\Started(
+                $this->telemetryInfo(),
+                new Runtime\Runtime
+            )
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerStarted(): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\Started(
-                $this->telemetryInfo(),
-                new Runtime\Runtime
+                $this->telemetryInfo()
             )
         );
     }
@@ -986,6 +999,20 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new TestRunner\Finished($this->telemetryInfo())
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function applicationFinished(int $shellExitCode): void
+    {
+        $this->dispatcher->dispatch(
+            new Application\Finished(
+                $this->telemetryInfo(),
+                $shellExitCode
+            )
         );
     }
 

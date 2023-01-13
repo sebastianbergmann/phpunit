@@ -150,6 +150,9 @@ final class Facade
     private static function registerDefaultTypes(TypeMap $typeMap): void
     {
         $defaultEvents = [
+            Application\Started::class,
+            Application\Finished::class,
+
             Test\MarkedIncomplete::class,
             Test\AfterLastTestMethodCalled::class,
             Test\AfterLastTestMethodFinished::class,

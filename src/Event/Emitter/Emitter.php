@@ -20,6 +20,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
  */
 interface Emitter
 {
+    public function applicationStarted(): void;
+
     public function testRunnerStarted(): void;
 
     public function testRunnerConfigured(Configuration $configuration): void;
@@ -213,4 +215,6 @@ interface Emitter
     public function testRunnerExecutionFinished(): void;
 
     public function testRunnerFinished(): void;
+
+    public function applicationFinished(int $shellExitCode): void;
 }

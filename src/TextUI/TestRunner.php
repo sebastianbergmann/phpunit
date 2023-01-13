@@ -125,6 +125,8 @@ final class TestRunner
      */
     public function run(Configuration $configuration, TestSuite $suite): TestResult
     {
+        Event\Facade::emitter()->testRunnerStarted();
+
         if ($configuration->hasCoverageReport()) {
             CodeCoverageFilterRegistry::init($configuration);
         }
@@ -637,6 +639,8 @@ final class TestRunner
                 }
             }
         }
+
+        Event\Facade::emitter()->testRunnerFinished();
 
         return $result;
     }

@@ -25,9 +25,10 @@ print file_get_contents($traceFile);
 
 unlink($traceFile);
 --EXPECTF--
-Test Runner Started (PHPUnit %s using %s)
+PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (3 tests)
+Test Runner Started
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (3 tests)
@@ -51,3 +52,4 @@ Test Finished (PHPUnit\TestFixture\Issue445Test::testNotMatchingOutput)
 Test Suite Finished (PHPUnit\TestFixture\Issue445Test, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
+PHPUnit Finished (Shell Exit Code: 1)

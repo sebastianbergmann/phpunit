@@ -15,7 +15,6 @@ use function printf;
 use function realpath;
 use function sprintf;
 use function trim;
-use PHPUnit\Event;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
@@ -56,7 +55,7 @@ final class Application
     public function run(array $argv): int
     {
         try {
-            Event\Facade::emitter()->testRunnerStarted();
+            Facade::emitter()->applicationStarted();
 
             $cliConfiguration           = $this->buildCliConfiguration($argv);
             $pathToXmlConfigurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
@@ -89,9 +88,7 @@ final class Application
 
             $result = $runner->run($configuration, $testSuite);
 
-            Event\Facade::emitter()->testRunnerFinished();
-
-            return (new ShellExitCodeCalculator)->calculate(
+            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnEmptyTestSuite(),
                 $configuration->failOnRisky(),
                 $configuration->failOnWarning(),
@@ -99,6 +96,10 @@ final class Application
                 $configuration->failOnSkipped(),
                 $result
             );
+
+            Facade::emitter()->applicationFinished($shellExitCode);
+
+            return $shellExitCode;
         } catch (Throwable $t) {
             $this->exitWithCrashMessage($t);
         }
