@@ -36,7 +36,6 @@ use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
-use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
@@ -71,14 +70,6 @@ final class Application
                 $xmlConfiguration
             );
 
-            if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
-                CodeCoverageFilterRegistry::init($configuration);
-            }
-
-            if ($cliConfiguration->warmCoverageCache()) {
-                $this->execute(new WarmCodeCoverageCacheCommand($configuration));
-            }
-
             (new PhpHandler)->handle($configuration->php());
 
             if ($configuration->hasBootstrap()) {
@@ -88,12 +79,12 @@ final class Application
             $testSuite = $this->buildTestSuite($configuration);
 
             $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
-            $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration);
+            $this->executeCommandsThatRequireCompleteConfiguration($configuration, $cliConfiguration, $xmlConfiguration);
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
             $this->bootstrapExtensions($configuration);
 
-            $runner = new TestRunner;
+            $runner = new TestRunner($configuration);
 
             $result = $runner->run($testSuite);
 
@@ -326,10 +317,14 @@ final class Application
         }
     }
 
-    private function executeCommandsThatRequireCliAndXmlConfiguration(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
+    private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
     {
         if ($cliConfiguration->listSuites()) {
             $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
+        }
+
+        if ($cliConfiguration->warmCoverageCache()) {
+            $this->execute(new WarmCodeCoverageCacheCommand($configuration));
         }
     }
 

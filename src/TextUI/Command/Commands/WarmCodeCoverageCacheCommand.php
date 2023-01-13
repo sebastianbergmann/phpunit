@@ -42,6 +42,8 @@ final class WarmCodeCoverageCacheCommand implements Command
             );
         }
 
+        CodeCoverageFilterRegistry::init($this->configuration);
+
         if (!CodeCoverageFilterRegistry::configured()) {
             return Result::from(
                 'Filter for code coverage has not been configured' . PHP_EOL,

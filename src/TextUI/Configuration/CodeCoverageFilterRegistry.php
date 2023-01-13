@@ -32,6 +32,10 @@ final class CodeCoverageFilterRegistry
 
     public static function init(Configuration $configuration): void
     {
+        if (self::$configured) {
+            return;
+        }
+
         self::$filter = new Filter;
 
         if ($configuration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {

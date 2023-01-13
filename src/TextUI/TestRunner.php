@@ -51,7 +51,6 @@ use PHPUnit\TextUI\Configuration\NoCoverageCacheDirectoryException;
 use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
 use PHPUnit\TextUI\Configuration\NoPharExtensionDirectoryException;
 use PHPUnit\TextUI\Configuration\NoValidationErrorsException;
-use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
 use PHPUnit\TextUI\Output\SummaryPrinter;
@@ -97,9 +96,9 @@ final class TestRunner
     private bool $messagePrinted = false;
     private ?Timer $timer        = null;
 
-    public function __construct()
+    public function __construct(Configuration $configuration)
     {
-        $this->configuration = Registry::get();
+        $this->configuration = $configuration;
     }
 
     /**
@@ -132,6 +131,10 @@ final class TestRunner
      */
     public function run(TestSuite $suite): TestResult
     {
+        if ($this->configuration->hasCoverageReport()) {
+            CodeCoverageFilterRegistry::init($this->configuration);
+        }
+
         if ($this->configuration->hasConfigurationFile()) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $this->configuration->configurationFile();
         }
