@@ -85,9 +85,9 @@ final class Application
 
             $this->bootstrapExtensions($configuration);
 
-            $runner = new TestRunner($configuration);
+            $runner = new TestRunner;
 
-            $result = $runner->run($testSuite);
+            $result = $runner->run($configuration, $testSuite);
 
             Event\Facade::emitter()->testRunnerFinished();
 

@@ -680,9 +680,9 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <PropertyNotSetInConstructor occurrences="1">
+    <MissingConstructor occurrences="1">
       <code>$printer</code>
-    </PropertyNotSetInConstructor>
+    </MissingConstructor>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction occurrences="1">

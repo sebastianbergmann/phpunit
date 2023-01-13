@@ -91,15 +91,9 @@ use SebastianBergmann\Timer\TimeSinceStartOfRequestNotAvailableException;
  */
 final class TestRunner
 {
-    private readonly Configuration $configuration;
     private Printer $printer;
     private bool $messagePrinted = false;
     private ?Timer $timer        = null;
-
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
 
     /**
      * @throws \PHPUnit\Runner\Exception
@@ -129,40 +123,40 @@ final class TestRunner
      * @throws XdebugNotEnabledException
      * @throws XmlConfiguration\Exception
      */
-    public function run(TestSuite $suite): TestResult
+    public function run(Configuration $configuration, TestSuite $suite): TestResult
     {
-        if ($this->configuration->hasCoverageReport()) {
-            CodeCoverageFilterRegistry::init($this->configuration);
+        if ($configuration->hasCoverageReport()) {
+            CodeCoverageFilterRegistry::init($configuration);
         }
 
-        if ($this->configuration->hasConfigurationFile()) {
-            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $this->configuration->configurationFile();
+        if ($configuration->hasConfigurationFile()) {
+            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $configuration->configurationFile();
         }
 
-        if ($this->configuration->loadPharExtensions() &&
-            $this->configuration->hasPharExtensionDirectory()) {
+        if ($configuration->loadPharExtensions() &&
+            $configuration->hasPharExtensionDirectory()) {
             $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
-                $this->configuration->pharExtensionDirectory()
+                $configuration->pharExtensionDirectory()
             );
         }
 
-        if ($this->configuration->hasBootstrap()) {
-            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $this->configuration->bootstrap();
+        if ($configuration->hasBootstrap()) {
+            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $configuration->bootstrap();
         }
 
-        if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
-            mt_srand($this->configuration->randomOrderSeed());
+        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
+            mt_srand($configuration->randomOrderSeed());
         }
 
-        if ($this->configuration->cacheResult()) {
-            $cache = new DefaultResultCache($this->configuration->testResultCacheFile());
+        if ($configuration->cacheResult()) {
+            $cache = new DefaultResultCache($configuration->testResultCacheFile());
 
             new ResultCacheHandler($cache);
         }
 
-        if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
-            $this->configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
-            $this->configuration->resolveDependencies()) {
+        if ($configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
+            $configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
+            $configuration->resolveDependencies()) {
             $cache = $cache ?? new NullResultCache;
 
             $cache->load();
@@ -171,25 +165,25 @@ final class TestRunner
 
             $sorter->reorderTestsInSuite(
                 $suite,
-                $this->configuration->executionOrder(),
-                $this->configuration->resolveDependencies(),
-                $this->configuration->executionOrderDefects()
+                $configuration->executionOrder(),
+                $configuration->resolveDependencies(),
+                $configuration->executionOrderDefects()
             );
 
             Event\Facade::emitter()->testSuiteSorted(
-                $this->configuration->executionOrder(),
-                $this->configuration->executionOrderDefects(),
-                $this->configuration->resolveDependencies()
+                $configuration->executionOrder(),
+                $configuration->executionOrderDefects(),
+                $configuration->resolveDependencies()
             );
 
             unset($sorter);
         }
 
-        if ($this->configuration->hasRepeat()) {
+        if ($configuration->hasRepeat()) {
             $_suite = TestSuite::empty();
 
             /* @noinspection PhpUnusedLocalVariableInspection */
-            foreach (range(1, $this->configuration->repeat()) as $step) {
+            foreach (range(1, $configuration->repeat()) as $step) {
                 $_suite->addTest($suite);
             }
 
@@ -200,100 +194,100 @@ final class TestRunner
 
         $this->printer = new NullPrinter;
 
-        if ($this->useDefaultProgressPrinter() ||
-            $this->useDefaultResultPrinter() ||
-            $this->configuration->outputIsTestDox()) {
-            if ($this->configuration->outputToStandardErrorStream()) {
+        if ($this->useDefaultProgressPrinter($configuration) ||
+            $this->useDefaultResultPrinter($configuration) ||
+            $configuration->outputIsTestDox()) {
+            if ($configuration->outputToStandardErrorStream()) {
                 $this->printer = DefaultPrinter::standardError();
             } else {
                 $this->printer = DefaultPrinter::standardOutput();
             }
 
-            if ($this->useDefaultProgressPrinter()) {
+            if ($this->useDefaultProgressPrinter($configuration)) {
                 $progressPrinter = new DefaultProgressPrinter(
                     $this->printer,
-                    $this->configuration->colors(),
-                    $this->configuration->columns()
+                    $configuration->colors(),
+                    $configuration->columns()
                 );
             }
         }
 
-        if ($this->useDefaultResultPrinter()) {
+        if ($this->useDefaultResultPrinter($configuration)) {
             $resultPrinter = new DefaultResultPrinter(
                 $this->printer,
-                $this->configuration->displayDetailsOnIncompleteTests(),
-                $this->configuration->displayDetailsOnSkippedTests(),
-                $this->configuration->displayDetailsOnTestsThatTriggerDeprecations(),
-                $this->configuration->displayDetailsOnTestsThatTriggerErrors(),
-                $this->configuration->displayDetailsOnTestsThatTriggerNotices(),
-                $this->configuration->displayDetailsOnTestsThatTriggerWarnings(),
-                $this->configuration->reverseDefectList()
+                $configuration->displayDetailsOnIncompleteTests(),
+                $configuration->displayDetailsOnSkippedTests(),
+                $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
+                $configuration->displayDetailsOnTestsThatTriggerErrors(),
+                $configuration->displayDetailsOnTestsThatTriggerNotices(),
+                $configuration->displayDetailsOnTestsThatTriggerWarnings(),
+                $configuration->reverseDefectList()
             );
 
             $summaryPrinter = new SummaryPrinter(
                 $this->printer,
-                $this->configuration->colors(),
+                $configuration->colors(),
             );
         }
 
         Facade::init();
 
-        if ($this->configuration->hasLogEventsText()) {
-            if (is_file($this->configuration->logEventsText())) {
-                unlink($this->configuration->logEventsText());
+        if ($configuration->hasLogEventsText()) {
+            if (is_file($configuration->logEventsText())) {
+                unlink($configuration->logEventsText());
             }
 
             Event\Facade::registerTracer(
                 new EventLogger(
-                    $this->configuration->logEventsText(),
+                    $configuration->logEventsText(),
                     false
                 )
             );
         }
 
-        if ($this->configuration->hasLogEventsVerboseText()) {
-            if (is_file($this->configuration->logEventsVerboseText())) {
-                unlink($this->configuration->logEventsVerboseText());
+        if ($configuration->hasLogEventsVerboseText()) {
+            if (is_file($configuration->logEventsVerboseText())) {
+                unlink($configuration->logEventsVerboseText());
             }
 
             Event\Facade::registerTracer(
                 new EventLogger(
-                    $this->configuration->logEventsVerboseText(),
+                    $configuration->logEventsVerboseText(),
                     true
                 )
             );
         }
 
-        if ($this->configuration->hasLogfileJunit()) {
+        if ($configuration->hasLogfileJunit()) {
             $junitXmlLogger = new JunitXmlLogger(
-                $this->configuration->reportUselessTests()
+                $configuration->reportUselessTests()
             );
         }
 
-        if ($this->configuration->hasLogfileTeamcity()) {
+        if ($configuration->hasLogfileTeamcity()) {
             $teamCityLogger = new TeamCityLogger(
                 DefaultPrinter::from(
-                    $this->configuration->logfileTeamcity()
+                    $configuration->logfileTeamcity()
                 )
             );
         }
 
-        if ($this->configuration->outputIsTeamCity()) {
+        if ($configuration->outputIsTeamCity()) {
             $teamCityOutput = new TeamCityLogger(
                 DefaultPrinter::standardOutput()
             );
         }
 
-        if ($this->configuration->hasLogfileTestdoxHtml() ||
-            $this->configuration->hasLogfileTestdoxText() ||
-            $this->configuration->hasLogfileTestdoxXml() ||
-            $this->configuration->outputIsTestDox()) {
+        if ($configuration->hasLogfileTestdoxHtml() ||
+            $configuration->hasLogfileTestdoxText() ||
+            $configuration->hasLogfileTestdoxXml() ||
+            $configuration->outputIsTestDox()) {
             $testDoxCollector = new TestResultCollector;
 
-            if ($this->configuration->outputIsTestDox()) {
+            if ($configuration->outputIsTestDox()) {
                 $summaryPrinter = new SummaryPrinter(
                     $this->printer,
-                    $this->configuration->colors(),
+                    $configuration->colors(),
                 );
             }
         }
@@ -302,9 +296,9 @@ final class TestRunner
 
         $this->write(Version::getVersionString() . "\n");
 
-        if ($this->configuration->hasLogfileText()) {
+        if ($configuration->hasLogfileText()) {
             $textLogger = new DefaultResultPrinter(
-                DefaultPrinter::from($this->configuration->logfileText()),
+                DefaultPrinter::from($configuration->logfileText()),
                 true,
                 true,
                 true,
@@ -315,37 +309,37 @@ final class TestRunner
             );
         }
 
-        if ($this->configuration->hasCoverageReport()) {
-            if ($this->configuration->pathCoverage()) {
+        if ($configuration->hasCoverageReport()) {
+            if ($configuration->pathCoverage()) {
                 CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
             } else {
                 CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
             }
 
             if (CodeCoverage::isActive()) {
-                if ($this->configuration->hasCoverageCacheDirectory()) {
-                    CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
+                if ($configuration->hasCoverageCacheDirectory()) {
+                    CodeCoverage::instance()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
                 }
 
                 CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
-                if ($this->configuration->strictCoverage()) {
+                if ($configuration->strictCoverage()) {
                     CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
                 }
 
-                if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+                if ($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
                     CodeCoverage::instance()->ignoreDeprecatedCode();
                 } else {
                     CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
                 }
 
-                if ($this->configuration->disableCodeCoverageIgnore()) {
+                if ($configuration->disableCodeCoverageIgnore()) {
                     CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
                 } else {
                     CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
                 }
 
-                if ($this->configuration->includeUncoveredFiles()) {
+                if ($configuration->includeUncoveredFiles()) {
                     CodeCoverage::instance()->includeUncoveredFiles();
                 } else {
                     CodeCoverage::instance()->excludeUncoveredFiles();
@@ -379,10 +373,10 @@ final class TestRunner
             $this->writeMessage('Runtime', $runtime);
         }
 
-        if ($this->configuration->hasConfigurationFile()) {
+        if ($configuration->hasConfigurationFile()) {
             $this->writeMessage(
                 'Configuration',
-                $this->configuration->configurationFile()
+                $configuration->configurationFile()
             );
         }
 
@@ -402,41 +396,41 @@ final class TestRunner
             }
         }
 
-        if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
+        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             $this->writeMessage(
                 'Random Seed',
-                (string) $this->configuration->randomOrderSeed()
+                (string) $configuration->randomOrderSeed()
             );
         }
 
-        if ($this->configuration->tooFewColumnsRequested()) {
+        if ($configuration->tooFewColumnsRequested()) {
             Event\Facade::emitter()->testRunnerTriggeredWarning(
                 'Less than 16 columns requested, number of columns set to 16'
             );
         }
 
-        if ($this->configuration->hasXmlValidationErrors()) {
-            if ((new SchemaDetector)->detect($this->configuration->configurationFile())->detected()) {
+        if ($configuration->hasXmlValidationErrors()) {
+            if ((new SchemaDetector)->detect($configuration->configurationFile())->detected()) {
                 Event\Facade::emitter()->testRunnerTriggeredWarning(
                     'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
                 );
             } else {
                 Event\Facade::emitter()->testRunnerTriggeredWarning(
                     "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
-                    $this->configuration->xmlValidationErrors()
+                    $configuration->xmlValidationErrors()
                 );
             }
         }
 
         $this->write("\n");
 
-        if ($this->configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
+        if ($configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
             Event\Facade::emitter()->testRunnerTriggeredWarning(
                 'The pcntl extension is required for enforcing time limits'
             );
         }
 
-        $this->processSuiteFilters($suite);
+        $this->processSuiteFilters($configuration, $suite);
 
         Event\Facade::emitter()->testRunnerExecutionStarted(
             Event\TestSuite\TestSuite::fromTestSuite($suite)
@@ -463,7 +457,7 @@ final class TestRunner
 
         if (isset($junitXmlLogger)) {
             file_put_contents(
-                $this->configuration->logfileJunit(),
+                $configuration->logfileJunit(),
                 $junitXmlLogger->flush()
             );
         }
@@ -481,8 +475,8 @@ final class TestRunner
         }
 
         if (isset($testDoxCollector, $summaryPrinter) &&
-             $this->configuration->outputIsTestDox()) {
-            (new TestDoxResultPrinter($this->printer, $this->configuration->colors()))->print(
+             $configuration->outputIsTestDox()) {
+            (new TestDoxResultPrinter($this->printer, $configuration->colors()))->print(
                 $testDoxCollector->testMethodsGroupedByClass()
             );
 
@@ -490,8 +484,8 @@ final class TestRunner
         }
 
         if (isset($testDoxCollector) &&
-            $this->configuration->hasLogfileTestdoxHtml()) {
-            $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
+            $configuration->hasLogfileTestdoxHtml()) {
+            $this->printerFor($configuration->logfileTestdoxHtml())->print(
                 (new TestDoxHtmlRenderer)->render(
                     $testDoxCollector->testMethodsGroupedByClass()
                 )
@@ -499,8 +493,8 @@ final class TestRunner
         }
 
         if (isset($testDoxCollector) &&
-            $this->configuration->hasLogfileTestdoxText()) {
-            $this->printerFor($this->configuration->logfileTestdoxText())->print(
+            $configuration->hasLogfileTestdoxText()) {
+            $this->printerFor($configuration->logfileTestdoxText())->print(
                 (new TestDoxTextRenderer)->render(
                     $testDoxCollector->testMethodsGroupedByClass()
                 )
@@ -508,8 +502,8 @@ final class TestRunner
         }
 
         if (isset($testDoxCollector) &&
-            $this->configuration->hasLogfileTestdoxXml()) {
-            $this->printerFor($this->configuration->logfileTestdoxXml())->print(
+            $configuration->hasLogfileTestdoxXml()) {
+            $this->printerFor($configuration->logfileTestdoxXml())->print(
                 (new TestDoxXmlRenderer)->render(
                     $testDoxCollector->testMethodsGroupedByClass()
                 )
@@ -517,12 +511,12 @@ final class TestRunner
         }
 
         if (CodeCoverage::isActive()) {
-            if ($this->configuration->hasCoverageClover()) {
+            if ($configuration->hasCoverageClover()) {
                 $this->codeCoverageGenerationStart('Clover XML');
 
                 try {
                     $writer = new CloverReport;
-                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageClover());
+                    $writer->process(CodeCoverage::instance(), $configuration->coverageClover());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -532,12 +526,12 @@ final class TestRunner
                 }
             }
 
-            if ($this->configuration->hasCoverageCobertura()) {
+            if ($configuration->hasCoverageCobertura()) {
                 $this->codeCoverageGenerationStart('Cobertura XML');
 
                 try {
                     $writer = new CoberturaReport;
-                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageCobertura());
+                    $writer->process(CodeCoverage::instance(), $configuration->coverageCobertura());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -547,12 +541,12 @@ final class TestRunner
                 }
             }
 
-            if ($this->configuration->hasCoverageCrap4j()) {
+            if ($configuration->hasCoverageCrap4j()) {
                 $this->codeCoverageGenerationStart('Crap4J XML');
 
                 try {
-                    $writer = new Crap4jReport($this->configuration->coverageCrap4jThreshold());
-                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageCrap4j());
+                    $writer = new Crap4jReport($configuration->coverageCrap4jThreshold());
+                    $writer->process(CodeCoverage::instance(), $configuration->coverageCrap4j());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -562,14 +556,14 @@ final class TestRunner
                 }
             }
 
-            if ($this->configuration->hasCoverageHtml()) {
+            if ($configuration->hasCoverageHtml()) {
                 $this->codeCoverageGenerationStart('HTML');
 
                 try {
                     $customCssFile = CustomCssFile::default();
 
-                    if ($this->configuration->hasCoverageHtmlCustomCssFile()) {
-                        $customCssFile = CustomCssFile::from($this->configuration->coverageHtmlCustomCssFile());
+                    if ($configuration->hasCoverageHtmlCustomCssFile()) {
+                        $customCssFile = CustomCssFile::from($configuration->coverageHtmlCustomCssFile());
                     }
 
                     $writer = new HtmlReport(
@@ -578,20 +572,20 @@ final class TestRunner
                             Version::id()
                         ),
                         Colors::from(
-                            $this->configuration->coverageHtmlColorSuccessLow(),
-                            $this->configuration->coverageHtmlColorSuccessMedium(),
-                            $this->configuration->coverageHtmlColorSuccessHigh(),
-                            $this->configuration->coverageHtmlColorWarning(),
-                            $this->configuration->coverageHtmlColorDanger(),
+                            $configuration->coverageHtmlColorSuccessLow(),
+                            $configuration->coverageHtmlColorSuccessMedium(),
+                            $configuration->coverageHtmlColorSuccessHigh(),
+                            $configuration->coverageHtmlColorWarning(),
+                            $configuration->coverageHtmlColorDanger(),
                         ),
                         Thresholds::from(
-                            $this->configuration->coverageHtmlLowUpperBound(),
-                            $this->configuration->coverageHtmlHighLowerBound()
+                            $configuration->coverageHtmlLowUpperBound(),
+                            $configuration->coverageHtmlHighLowerBound()
                         ),
                         $customCssFile
                     );
 
-                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageHtml());
+                    $writer->process(CodeCoverage::instance(), $configuration->coverageHtml());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -601,12 +595,12 @@ final class TestRunner
                 }
             }
 
-            if ($this->configuration->hasCoveragePhp()) {
+            if ($configuration->hasCoveragePhp()) {
                 $this->codeCoverageGenerationStart('PHP');
 
                 try {
                     $writer = new PhpReport;
-                    $writer->process(CodeCoverage::instance(), $this->configuration->coveragePhp());
+                    $writer->process(CodeCoverage::instance(), $configuration->coveragePhp());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -616,24 +610,24 @@ final class TestRunner
                 }
             }
 
-            if ($this->configuration->hasCoverageText()) {
+            if ($configuration->hasCoverageText()) {
                 $processor = new TextReport(
                     Thresholds::default(),
-                    $this->configuration->coverageTextShowUncoveredFiles(),
-                    $this->configuration->coverageTextShowOnlySummary()
+                    $configuration->coverageTextShowUncoveredFiles(),
+                    $configuration->coverageTextShowOnlySummary()
                 );
 
-                $this->printerFor($this->configuration->coverageText())->print(
-                    $processor->process(CodeCoverage::instance(), $this->configuration->colors())
+                $this->printerFor($configuration->coverageText())->print(
+                    $processor->process(CodeCoverage::instance(), $configuration->colors())
                 );
             }
 
-            if ($this->configuration->hasCoverageXml()) {
+            if ($configuration->hasCoverageXml()) {
                 $this->codeCoverageGenerationStart('PHPUnit XML');
 
                 try {
                     $writer = new XmlReport(Version::id());
-                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageXml());
+                    $writer->process(CodeCoverage::instance(), $configuration->coverageXml());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -660,51 +654,51 @@ final class TestRunner
      * @throws Event\RuntimeException
      * @throws FilterNotConfiguredException
      */
-    private function processSuiteFilters(TestSuite $suite): void
+    private function processSuiteFilters(Configuration $configuration, TestSuite $suite): void
     {
-        if (!$this->configuration->hasFilter() &&
-            !$this->configuration->hasGroups() &&
-            !$this->configuration->hasExcludeGroups() &&
-            !$this->configuration->hasTestsCovering() &&
-            !$this->configuration->hasTestsUsing()) {
+        if (!$configuration->hasFilter() &&
+            !$configuration->hasGroups() &&
+            !$configuration->hasExcludeGroups() &&
+            !$configuration->hasTestsCovering() &&
+            !$configuration->hasTestsUsing()) {
             return;
         }
 
         $filterFactory = new Factory;
 
-        if ($this->configuration->hasExcludeGroups()) {
+        if ($configuration->hasExcludeGroups()) {
             $filterFactory->addExcludeGroupFilter(
-                $this->configuration->excludeGroups()
+                $configuration->excludeGroups()
             );
         }
 
-        if ($this->configuration->hasGroups()) {
+        if ($configuration->hasGroups()) {
             $filterFactory->addIncludeGroupFilter(
-                $this->configuration->groups()
+                $configuration->groups()
             );
         }
 
-        if ($this->configuration->hasTestsCovering()) {
+        if ($configuration->hasTestsCovering()) {
             $filterFactory->addIncludeGroupFilter(
                 array_map(
                     static fn (string $name): string => '__phpunit_covers_' . $name,
-                    $this->configuration->testsCovering()
+                    $configuration->testsCovering()
                 )
             );
         }
 
-        if ($this->configuration->hasTestsUsing()) {
+        if ($configuration->hasTestsUsing()) {
             $filterFactory->addIncludeGroupFilter(
                 array_map(
                     static fn (string $name): string => '__phpunit_uses_' . $name,
-                    $this->configuration->testsUsing()
+                    $configuration->testsUsing()
                 )
             );
         }
 
-        if ($this->configuration->hasFilter()) {
+        if ($configuration->hasFilter()) {
             $filterFactory->addNameFilter(
-                $this->configuration->filter()
+                $configuration->filter()
             );
         }
 
@@ -793,38 +787,38 @@ final class TestRunner
         return DefaultPrinter::from($target);
     }
 
-    private function useDefaultProgressPrinter(): bool
+    private function useDefaultProgressPrinter(Configuration $configuration): bool
     {
-        if ($this->configuration->noOutput()) {
+        if ($configuration->noOutput()) {
             return false;
         }
 
-        if ($this->configuration->noProgress()) {
+        if ($configuration->noProgress()) {
             return false;
         }
 
-        if ($this->configuration->outputIsTeamCity()) {
+        if ($configuration->outputIsTeamCity()) {
             return false;
         }
 
         return true;
     }
 
-    private function useDefaultResultPrinter(): bool
+    private function useDefaultResultPrinter(Configuration $configuration): bool
     {
-        if ($this->configuration->noOutput()) {
+        if ($configuration->noOutput()) {
             return false;
         }
 
-        if ($this->configuration->noResults()) {
+        if ($configuration->noResults()) {
             return false;
         }
 
-        if ($this->configuration->outputIsTeamCity()) {
+        if ($configuration->outputIsTeamCity()) {
             return false;
         }
 
-        if ($this->configuration->outputIsTestDox()) {
+        if ($configuration->outputIsTestDox()) {
             return false;
         }
 
