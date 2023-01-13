@@ -27,7 +27,8 @@ final class ListTestSuitesCommand implements Command
 
     public function execute(): Result
     {
-        $buffer = 'Available test suite(s):' . PHP_EOL;
+        $buffer = $this->warnAboutConflictingOptions();
+        $buffer .= 'Available test suite(s):' . PHP_EOL;
 
         foreach ($this->suites as $suite) {
             $buffer .= sprintf(

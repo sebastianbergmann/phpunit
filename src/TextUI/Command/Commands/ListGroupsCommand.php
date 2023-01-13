@@ -29,9 +29,10 @@ final class ListGroupsCommand implements Command
 
     public function execute(): Result
     {
-        $buffer = 'Available test group(s):' . PHP_EOL;
-        $groups = $this->suite->getGroups();
+        $buffer = $this->warnAboutConflictingOptions();
+        $buffer .= 'Available test group(s):' . PHP_EOL;
 
+        $groups = $this->suite->getGroups();
         sort($groups);
 
         foreach ($groups as $group) {

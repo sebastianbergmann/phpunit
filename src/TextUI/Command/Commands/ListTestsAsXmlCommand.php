@@ -36,6 +36,7 @@ final class ListTestsAsXmlCommand implements Command
 
     public function execute(): Result
     {
+        $buffer = $this->warnAboutConflictingOptions();
         $writer = new XMLWriter;
 
         $writer->openMemory();
@@ -95,7 +96,7 @@ final class ListTestsAsXmlCommand implements Command
 
         file_put_contents($this->filename, $writer->outputMemory());
 
-        $buffer = sprintf(
+        $buffer .= sprintf(
             'Wrote list of tests that would have been run to %s' . PHP_EOL,
             $this->filename
         );
