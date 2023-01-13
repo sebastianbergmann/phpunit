@@ -11,8 +11,8 @@ namespace PHPUnit\TextUI\Command;
 
 use function printf;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
+use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\NoCoverageCacheDirectoryException;
-use PHPUnit\TextUI\Configuration\Registry;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\Timer;
@@ -22,15 +22,20 @@ use SebastianBergmann\Timer\Timer;
  */
 final class WarmCodeCoverageCacheCommand implements Command
 {
+    private readonly Configuration $configuration;
+
+    public function __construct(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+    }
+
     /**
      * @throws NoActiveTimerException
      * @throws NoCoverageCacheDirectoryException
      */
     public function execute(): Result
     {
-        $configuration = Registry::get();
-
-        if (!$configuration->hasCoverageCacheDirectory()) {
+        if (!$this->configuration->hasCoverageCacheDirectory()) {
             return Result::from(
                 'Cache for static analysis has not been configured' . PHP_EOL,
                 Result::FAILURE
@@ -50,9 +55,9 @@ final class WarmCodeCoverageCacheCommand implements Command
         print 'Warming cache for static analysis ... ';
 
         (new CacheWarmer)->warmCache(
-            $configuration->coverageCacheDirectory(),
-            !$configuration->disableCodeCoverageIgnore(),
-            $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
+            $this->configuration->coverageCacheDirectory(),
+            !$this->configuration->disableCodeCoverageIgnore(),
+            $this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
             CodeCoverageFilterRegistry::get()
         );
 

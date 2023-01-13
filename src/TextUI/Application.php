@@ -76,7 +76,7 @@ final class Application
             }
 
             if ($cliConfiguration->warmCoverageCache()) {
-                $this->execute(new WarmCodeCoverageCacheCommand);
+                $this->execute(new WarmCodeCoverageCacheCommand($configuration));
             }
 
             (new PhpHandler)->handle($configuration->php());
