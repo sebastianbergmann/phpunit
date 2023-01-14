@@ -39,6 +39,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Author;
 use PHPUnit\TestFixture\Book;
 use PHPUnit\TestFixture\ClassWithToString;
+use PHPUnit\TestFixture\DummyException;
 use PHPUnit\TestFixture\ObjectEquals\ValueObject;
 use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
@@ -2031,6 +2032,23 @@ XML;
         }
 
         $this->fail();
+    }
+
+    public function testAssertThrowsSucceeds(): void
+    {
+        $this->assertThrows(DummyException::class, fn () => throw new DummyException());
+    }
+
+    public function testAssertThrowsFailsIfNotExceptionThrown(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->assertThrows(DummyException::class, fn () => null);
+    }
+
+    public function testAssertThrowsFailsIfExceptionOfUnexpectedTypeThrown(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->assertThrows(DummyException::class, fn () => throw new Exception());
     }
 
     protected static function sameValues(): array

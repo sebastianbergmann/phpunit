@@ -2191,6 +2191,20 @@ if (!function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertThrows')) {
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertThrows
+     */
+    function assertThrows(string $expectedException, callable $code, string $message = ''): void
+    {
+        Assert::assertThrows($expectedException, $code, $message);
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\logicalAnd')) {
     /**
      * @throws Exception

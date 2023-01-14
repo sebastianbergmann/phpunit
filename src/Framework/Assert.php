@@ -23,6 +23,7 @@ use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
+use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
@@ -1915,6 +1916,23 @@ abstract class Assert
 
         static::assertThat($expectedJson, new LogicalNot($constraintActual), $message);
         static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
+    }
+
+    /**
+     * Asserts that $code() throws an exception of the class $expectedException.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertThrows(string $expectedException, callable $code, string $message = ''): void
+    {
+        $thrownException = null;
+        try {
+            $code();
+        } catch (\Throwable $e) {
+            $thrownException = $e;
+        }
+
+        static::assertThat($thrownException, new ExceptionConstraint($expectedException), $message);
     }
 
     /**
