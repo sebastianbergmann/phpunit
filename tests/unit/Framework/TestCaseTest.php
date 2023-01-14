@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use const E_USER_DEPRECATED;
-use const E_USER_ERROR;
-use const E_USER_NOTICE;
-use const E_USER_WARNING;
 use const PHP_EOL;
 use function array_map;
 use function get_class;
@@ -20,7 +16,6 @@ use function getcwd;
 use function ini_get;
 use function ini_set;
 use function sprintf;
-use function trigger_error;
 use DependencyInputTest;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -1265,42 +1260,6 @@ class TestCaseTest extends TestCase
         $test->run();
 
         $this->assertTrue($test->hasOutput());
-    }
-
-    public function testDeprecationCanBeExpected(): void
-    {
-        $this->expectDeprecation();
-        $this->expectDeprecationMessage('foo');
-        $this->expectDeprecationMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_DEPRECATED);
-    }
-
-    public function testNoticeCanBeExpected(): void
-    {
-        $this->expectNotice();
-        $this->expectNoticeMessage('foo');
-        $this->expectNoticeMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_NOTICE);
-    }
-
-    public function testWarningCanBeExpected(): void
-    {
-        $this->expectWarning();
-        $this->expectWarningMessage('foo');
-        $this->expectWarningMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_WARNING);
-    }
-
-    public function testErrorCanBeExpected(): void
-    {
-        $this->expectError();
-        $this->expectErrorMessage('foo');
-        $this->expectErrorMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_ERROR);
     }
 
     public function testSetDependencyInput(): void
