@@ -571,7 +571,7 @@ final class TestRunner extends BaseTestRunner
             $warnings[] = 'Directives printerClass and testdox are mutually exclusive';
         }
 
-        foreach ($warnings as $warning) {
+        foreach (array_merge($warnings, $suite->warnings()) as $warning) {
             $this->writeMessage('Warning', $warning);
         }
 
@@ -644,18 +644,6 @@ final class TestRunner extends BaseTestRunner
             if ($extension instanceof BeforeFirstTestHook) {
                 $extension->executeBeforeFirstTest();
             }
-        }
-
-        $testSuiteWarningsPrinted = false;
-
-        foreach ($suite->warnings() as $warning) {
-            $this->writeMessage('Warning', $warning);
-
-            $testSuiteWarningsPrinted = true;
-        }
-
-        if ($testSuiteWarningsPrinted) {
-            $this->write(PHP_EOL);
         }
 
         $suite->run($result);
