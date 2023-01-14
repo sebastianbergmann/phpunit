@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 
 ## [9.6.0] - 2023-02-03
 
+### Changed
+
+* [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
+
 [9.6.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...9.6

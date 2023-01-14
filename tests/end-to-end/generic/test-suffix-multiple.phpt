@@ -19,6 +19,7 @@ Warning:       Test case class not matching filename is deprecated
 Warning:       Test case class not matching filename is deprecated
                in %sConcreteTest.my.php
                Class name was 'ConcreteWithMyCustomExtensionTest', expected 'ConcreteTest'
+Warning:       Abstract test case classes with "Test" suffix are deprecated (PHPUnit\TestFixture\AbstractTest)
 
 .....                                                               5 / 5 (100%)
 

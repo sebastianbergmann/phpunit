@@ -11,6 +11,8 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Warning:       Abstract test case classes with "Test" suffix are deprecated (PHPUnit\TestFixture\AbstractTest)
+
 .                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
