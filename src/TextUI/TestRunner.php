@@ -27,6 +27,7 @@ use function is_string;
 use function mt_srand;
 use function range;
 use function realpath;
+use function sort;
 use function sprintf;
 use function time;
 use PHPUnit\Framework\Exception;
@@ -571,7 +572,10 @@ final class TestRunner extends BaseTestRunner
             $warnings[] = 'Directives printerClass and testdox are mutually exclusive';
         }
 
-        foreach (array_merge($warnings, $suite->warnings()) as $warning) {
+        $warnings = array_merge($warnings, $suite->warnings());
+        sort($warnings);
+
+        foreach ($warnings as $warning) {
             $this->writeMessage('Warning', $warning);
         }
 
