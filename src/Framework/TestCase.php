@@ -1825,9 +1825,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      *
      * @psalm-return class-string<MockObject&RealInstanceType>
+     *
+     * @deprecated
      */
     protected function getMockClass(string $originalClassName, $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = false, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = false): string
     {
+        $this->addWarning('PHPUnit\Framework\TestCase::getMockClass() is deprecated and will be removed in PHPUnit 10.');
+
         $this->recordDoubledType($originalClassName);
 
         $mock = $this->getMockObjectGenerator()->getMock(
