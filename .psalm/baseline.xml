@@ -469,6 +469,9 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
+    <DeprecatedClass occurrences="1">
+      <code>new Rule\ConsecutiveParameters($arguments)</code>
+    </DeprecatedClass>
     <MissingParamType occurrences="2">
       <code>$id</code>
       <code>$id</code>
