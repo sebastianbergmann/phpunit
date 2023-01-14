@@ -13,7 +13,6 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-
 Warning:       Test case class not matching filename is deprecated
                in %sWrongClassNameTest.php
                Class name was 'WrongClassNameBar', expected 'WrongClassNameTest'
