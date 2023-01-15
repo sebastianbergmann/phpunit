@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
+use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
 // php://stdout does not obey output buffering. Any output would break
@@ -95,6 +96,16 @@ function __phpunit_run_isolated_test()
             'passedTests'   => PassedTests::instance()
         ]
     );
+}
+
+$configurationFilePath = '{configurationFilePath}';
+
+if ('' !== $configurationFilePath) {
+    $configuration = (new Loader)->load($configurationFilePath);
+
+    (new PhpHandler)->handle($configuration->php());
+
+    unset($configuration);
 }
 
 function __phpunit_error_handler($errno, $errstr, $errfile, $errline)
