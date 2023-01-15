@@ -209,6 +209,10 @@ abstract class AbstractPhpProcess
                     array_keys(ini_get_all('xdebug'))
                 )
             );
+
+            if (!$this->runtime->isXdebugLoadedByDefault()) {
+                $settings[] = 'zend_extension=' . (getenv('TODO_USE_PHPUNIT_SETTINGS') ?: 'php_xdebug');
+            }
         }
 
         $command .= $this->settingsToParameters($settings);
