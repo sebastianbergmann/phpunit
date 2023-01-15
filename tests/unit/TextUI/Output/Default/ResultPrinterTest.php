@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Output\Default;
 
 use function hrtime;
 use Exception;
-use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -507,7 +506,6 @@ final class ResultPrinterTest extends TestCase
             MemoryUsage::fromBytes(2000),
             Duration::fromSecondsAndNanoseconds(234, 567),
             MemoryUsage::fromBytes(3000),
-            new ClassMethod(__CLASS__, __METHOD__)
         );
     }
 }

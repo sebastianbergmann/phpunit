@@ -10,7 +10,6 @@
 namespace PHPUnit\Event;
 
 use function hrtime;
-use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Telemetry\Duration;
@@ -34,7 +33,6 @@ abstract class AbstractEventTestCase extends TestCase
             Telemetry\MemoryUsage::fromBytes(2000),
             Duration::fromSecondsAndNanoseconds(234, 567),
             Telemetry\MemoryUsage::fromBytes(3000),
-            new ClassMethod(__CLASS__, __METHOD__)
         );
     }
 

@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\Telemetry;
 
 use function sprintf;
-use PHPUnit\Event\Code\ClassMethod;
 
 /**
  * @psalm-immutable
@@ -24,16 +23,14 @@ final class Info
     private readonly MemoryUsage $memorySinceStart;
     private readonly Duration $durationSincePrevious;
     private readonly MemoryUsage $memorySincePrevious;
-    private readonly ClassMethod $emitter;
 
-    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, ClassMethod $emitter)
+    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)
     {
         $this->current               = $current;
         $this->durationSinceStart    = $durationSinceStart;
         $this->memorySinceStart      = $memorySinceStart;
         $this->durationSincePrevious = $durationSincePrevious;
         $this->memorySincePrevious   = $memorySincePrevious;
-        $this->emitter               = $emitter;
     }
 
     public function time(): HRTime
@@ -69,11 +66,6 @@ final class Info
     public function memoryUsageSincePrevious(): MemoryUsage
     {
         return $this->memorySincePrevious;
-    }
-
-    public function emitter(): ClassMethod
-    {
-        return $this->emitter;
     }
 
     public function asString(): string
