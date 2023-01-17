@@ -151,9 +151,7 @@ final class TestRunner
 
             $cache->load();
 
-            $sorter = new TestSuiteSorter($cache);
-
-            $sorter->reorderTestsInSuite(
+            (new TestSuiteSorter($cache))->reorderTestsInSuite(
                 $suite,
                 $configuration->executionOrder(),
                 $configuration->resolveDependencies(),
@@ -165,8 +163,6 @@ final class TestRunner
                 $configuration->executionOrderDefects(),
                 $configuration->resolveDependencies()
             );
-
-            unset($sorter);
         }
 
         if ($configuration->hasRepeat()) {
