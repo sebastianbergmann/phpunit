@@ -416,6 +416,9 @@
       <code>Driver</code>
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
     </InvalidNullableReturnType>
+    <MissingThrowsDocblock occurrences="1">
+      <code>coverageCacheDirectory</code>
+    </MissingThrowsDocblock>
     <NullableReturnStatement occurrences="2">
       <code>self::$driver</code>
       <code>self::$instance</code>

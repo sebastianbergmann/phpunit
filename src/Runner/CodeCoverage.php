@@ -13,12 +13,15 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
+use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
+use SebastianBergmann\Comparator\Comparator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -30,23 +33,58 @@ final class CodeCoverage
     private static bool $collecting                                        = false;
     private static ?TestCase $test                                         = null;
 
-    public static function activate(Filter $filter, bool $pathCoverage): void
+    public static function init(Configuration $configuration): void
     {
-        try {
-            if ($pathCoverage) {
-                self::$driver = (new Selector)->forLineAndPathCoverage($filter);
+        if (!$configuration->hasCoverageReport()) {
+            return;
+        }
+
+        self::activate(CodeCoverageFilterRegistry::get(), $configuration->pathCoverage());
+
+        if (!self::isActive()) {
+            return;
+        }
+
+        if ($configuration->hasCoverageCacheDirectory()) {
+            self::instance()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
+        }
+
+        self::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+
+        if ($configuration->strictCoverage()) {
+            self::instance()->enableCheckForUnintentionallyCoveredCode();
+        }
+
+        if ($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+            self::instance()->ignoreDeprecatedCode();
+        } else {
+            self::instance()->doNotIgnoreDeprecatedCode();
+        }
+
+        if ($configuration->disableCodeCoverageIgnore()) {
+            self::instance()->disableAnnotationsForIgnoringCode();
+        } else {
+            self::instance()->enableAnnotationsForIgnoringCode();
+        }
+
+        if ($configuration->includeUncoveredFiles()) {
+            self::instance()->includeUncoveredFiles();
+        } else {
+            self::instance()->excludeUncoveredFiles();
+        }
+
+        if (CodeCoverageFilterRegistry::get()->isEmpty()) {
+            if (!CodeCoverageFilterRegistry::configured()) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    'No filter is configured, code coverage will not be processed'
+                );
             } else {
-                self::$driver = (new Selector)->forLineCoverage($filter);
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    'Incorrect filter configuration, code coverage will not be processed'
+                );
             }
 
-            self::$instance = new \SebastianBergmann\CodeCoverage\CodeCoverage(
-                self::$driver,
-                $filter
-            );
-        } catch (CodeCoverageException $e) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
-                $e->getMessage()
-            );
+            self::deactivate();
         }
     }
 
@@ -126,5 +164,25 @@ final class CodeCoverage
         self::$driver   = null;
         self::$instance = null;
         self::$test     = null;
+    }
+
+    private static function activate(Filter $filter, bool $pathCoverage): void
+    {
+        try {
+            if ($pathCoverage) {
+                self::$driver = (new Selector)->forLineAndPathCoverage($filter);
+            } else {
+                self::$driver = (new Selector)->forLineCoverage($filter);
+            }
+
+            self::$instance = new \SebastianBergmann\CodeCoverage\CodeCoverage(
+                self::$driver,
+                $filter
+            );
+        } catch (CodeCoverageException $e) {
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                $e->getMessage()
+            );
+        }
     }
 }

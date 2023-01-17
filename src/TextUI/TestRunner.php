@@ -77,7 +77,6 @@ use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
-use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
@@ -295,57 +294,7 @@ final class TestRunner
             );
         }
 
-        if ($configuration->hasCoverageReport()) {
-            if ($configuration->pathCoverage()) {
-                CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
-            } else {
-                CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
-            }
-
-            if (CodeCoverage::isActive()) {
-                if ($configuration->hasCoverageCacheDirectory()) {
-                    CodeCoverage::instance()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
-                }
-
-                CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
-
-                if ($configuration->strictCoverage()) {
-                    CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
-                }
-
-                if ($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
-                    CodeCoverage::instance()->ignoreDeprecatedCode();
-                } else {
-                    CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
-                }
-
-                if ($configuration->disableCodeCoverageIgnore()) {
-                    CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
-                } else {
-                    CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
-                }
-
-                if ($configuration->includeUncoveredFiles()) {
-                    CodeCoverage::instance()->includeUncoveredFiles();
-                } else {
-                    CodeCoverage::instance()->excludeUncoveredFiles();
-                }
-
-                if (CodeCoverageFilterRegistry::get()->isEmpty()) {
-                    if (!CodeCoverageFilterRegistry::configured()) {
-                        Event\Facade::emitter()->testRunnerTriggeredWarning(
-                            'No filter is configured, code coverage will not be processed'
-                        );
-                    } else {
-                        Event\Facade::emitter()->testRunnerTriggeredWarning(
-                            'Incorrect filter configuration, code coverage will not be processed'
-                        );
-                    }
-
-                    CodeCoverage::deactivate();
-                }
-            }
-        }
+        CodeCoverage::init($configuration);
 
         $this->writeRuntimeInformation();
 
