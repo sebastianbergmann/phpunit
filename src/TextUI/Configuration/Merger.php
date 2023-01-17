@@ -27,6 +27,7 @@ use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\Environment\Console;
+use SebastianBergmann\Invoker\Invoker;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -371,6 +372,12 @@ final class Merger
             $enforceTimeLimit = $cliConfiguration->enforceTimeLimit();
         } else {
             $enforceTimeLimit = $xmlConfiguration->phpunit()->enforceTimeLimit();
+        }
+
+        if ($enforceTimeLimit && !(new Invoker)->canInvokeWithTimeout()) {
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                'The pcntl extension is required for enforcing time limits'
+            );
         }
 
         if ($cliConfiguration->hasDefaultTimeLimit()) {

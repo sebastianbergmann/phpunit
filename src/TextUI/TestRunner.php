@@ -78,7 +78,6 @@ use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
-use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
@@ -373,12 +372,6 @@ final class TestRunner
         }
 
         $this->write("\n");
-
-        if ($configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
-                'The pcntl extension is required for enforcing time limits'
-            );
-        }
 
         $this->processSuiteFilters($configuration, $suite);
 
