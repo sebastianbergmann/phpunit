@@ -17,6 +17,7 @@ use function explode;
 use function is_int;
 use function realpath;
 use function time;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
@@ -148,8 +149,7 @@ final class Merger
             $outputToStandardErrorStream = $xmlConfiguration->phpunit()->stderr();
         }
 
-        $maxNumberOfColumns     = (new Console)->getNumberOfColumns();
-        $tooFewColumnsRequested = false;
+        $maxNumberOfColumns = (new Console)->getNumberOfColumns();
 
         if ($cliConfiguration->hasColumns()) {
             $columns = $cliConfiguration->columns();
@@ -162,8 +162,11 @@ final class Merger
         }
 
         if ($columns < 16) {
-            $columns                = 16;
-            $tooFewColumnsRequested = true;
+            $columns = 16;
+
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                'Less than 16 columns requested, number of columns set to 16'
+            );
         }
 
         if ($columns > $maxNumberOfColumns) {
@@ -713,7 +716,6 @@ final class Merger
             $failOnWarning,
             $outputToStandardErrorStream,
             $columns,
-            $tooFewColumnsRequested,
             $loadPharExtensions,
             $pharExtensionDirectory,
             $extensionBootstrappers,

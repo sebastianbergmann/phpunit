@@ -375,12 +375,6 @@ final class TestRunner
             );
         }
 
-        if ($configuration->tooFewColumnsRequested()) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
-                'Less than 16 columns requested, number of columns set to 16'
-            );
-        }
-
         if ($configuration->hasXmlValidationErrors()) {
             if ((new SchemaDetector)->detect($configuration->configurationFile())->detected()) {
                 Event\Facade::emitter()->testRunnerTriggeredWarning(
