@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<phpunit>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../phpunit.xsd">
     <coverage cacheDirectory="/tmp/cache"
               pathCoverage="true"
-              includeUncoveredFiles="true"
-              processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
         <include>
