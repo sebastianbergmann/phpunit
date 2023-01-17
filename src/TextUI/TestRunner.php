@@ -50,7 +50,6 @@ use PHPUnit\TextUI\Configuration\NoConfigurationFileException;
 use PHPUnit\TextUI\Configuration\NoCoverageCacheDirectoryException;
 use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
 use PHPUnit\TextUI\Configuration\NoPharExtensionDirectoryException;
-use PHPUnit\TextUI\Configuration\NoValidationErrorsException;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
 use PHPUnit\TextUI\Output\SummaryPrinter;
@@ -60,7 +59,6 @@ use PHPUnit\Util\DirectoryDoesNotExistException;
 use PHPUnit\Util\InvalidSocketException;
 use PHPUnit\Util\NullPrinter;
 use PHPUnit\Util\Printer;
-use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\XdebugNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\XdebugNotEnabledException;
@@ -115,7 +113,6 @@ final class TestRunner
      * @throws NoCustomCssFileException
      * @throws NoPharExtensionDirectoryException
      * @throws NoPreviousThrowableException
-     * @throws NoValidationErrorsException
      * @throws PcovNotAvailableException
      * @throws TimeSinceStartOfRequestNotAvailableException
      * @throws UnintentionallyCoveredCodeException
@@ -373,19 +370,6 @@ final class TestRunner
                 'Random Seed',
                 (string) $configuration->randomOrderSeed()
             );
-        }
-
-        if ($configuration->hasXmlValidationErrors()) {
-            if ((new SchemaDetector)->detect($configuration->configurationFile())->detected()) {
-                Event\Facade::emitter()->testRunnerTriggeredWarning(
-                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
-                );
-            } else {
-                Event\Facade::emitter()->testRunnerTriggeredWarning(
-                    "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
-                    $configuration->xmlValidationErrors()
-                );
-            }
         }
 
         $this->write("\n");

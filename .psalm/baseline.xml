@@ -532,6 +532,9 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
+    <MissingThrowsDocblock occurrences="1">
+      <code>detect</code>
+    </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset occurrences="1">
       <code>$_SERVER['PHP_SELF']</code>
     </PossiblyUndefinedArrayOffset>

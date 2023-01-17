@@ -23,6 +23,7 @@ use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
+use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\Environment\Console;
@@ -612,10 +613,17 @@ final class Merger
             $randomOrderSeed = time();
         }
 
-        $xmlValidationErrors = null;
-
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
-            $xmlValidationErrors = $xmlConfiguration->validationErrors();
+            if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
+                );
+            } else {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
+                    $xmlConfiguration->validationErrors()
+                );
+            }
         }
 
         $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
@@ -790,7 +798,6 @@ final class Merger
                 $xmlConfiguration->php()->filesVariables(),
                 $xmlConfiguration->php()->requestVariables(),
             ),
-            $xmlValidationErrors,
         );
     }
 }
