@@ -365,19 +365,7 @@ final class TestRunner
         }
 
         if (isset($pharExtensions)) {
-            foreach ($pharExtensions['loadedExtensions'] as $extension) {
-                $this->writeMessage(
-                    'Extension',
-                    $extension
-                );
-            }
-
-            foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
-                $this->writeMessage(
-                    'Extension',
-                    $extension
-                );
-            }
+            $this->writePharExtensionInformation($pharExtensions);
         }
 
         if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
@@ -820,5 +808,25 @@ final class TestRunner
         }
 
         $this->writeMessage('Runtime', $runtime);
+    }
+
+    /**
+     * @psalm-param array{loadedExtensions: list<string>, notLoadedExtensions: list<string>} $pharExtensions
+     */
+    private function writePharExtensionInformation(array $pharExtensions): void
+    {
+        foreach ($pharExtensions['loadedExtensions'] as $extension) {
+            $this->writeMessage(
+                'Extension',
+                $extension
+            );
+        }
+
+        foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
+            $this->writeMessage(
+                'Extension',
+                $extension
+            );
+        }
     }
 }
