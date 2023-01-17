@@ -266,22 +266,21 @@ final class TestRunner
             );
         }
 
+        $bootstrap     = '';
+        $constants     = '';
+        $globals       = '';
+        $includedFiles = '';
+        $iniSettings   = '';
+
+        if (ConfigurationRegistry::get()->hasBootstrap()) {
+            $bootstrap = ConfigurationRegistry::get()->bootstrap();
+        }
+
         if ($preserveGlobalState) {
             $constants     = GlobalState::getConstantsAsString();
             $globals       = GlobalState::getGlobalsAsString();
             $includedFiles = GlobalState::getIncludedFilesAsString();
             $iniSettings   = GlobalState::getIniSettingsAsString();
-        } else {
-            $constants = '';
-
-            if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-                $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
-            } else {
-                $globals = '';
-            }
-
-            $includedFiles = '';
-            $iniSettings   = '';
         }
 
         $coverage = CodeCoverage::isActive() ? 'true' : 'false';
@@ -338,6 +337,7 @@ final class TestRunner
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
 
         $var = [
+            'bootstrap'                      => $bootstrap,
             'composerAutoload'               => $composerAutoload,
             'phar'                           => $phar,
             'filename'                       => $class->getFileName(),

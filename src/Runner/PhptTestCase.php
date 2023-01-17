@@ -53,7 +53,7 @@ use PHPUnit\Framework\PhptAssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
-use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
@@ -147,8 +147,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $this->phpUtil->setUseStderrRedirection(true);
 
-        if (Registry::get()->enforceTimeLimit()) {
-            $this->phpUtil->setTimeout(Registry::get()->timeoutForLargeTests());
+        if (ConfigurationRegistry::get()->enforceTimeLimit()) {
+            $this->phpUtil->setTimeout(ConfigurationRegistry::get()->timeoutForLargeTests());
         }
 
         if ($this->shouldTestBeSkipped($sections, $settings)) {
@@ -604,26 +604,23 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $phar = var_export(__PHPUNIT_PHAR__, true);
         }
 
-        $globals = '';
-
-        if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-            $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export(
-                $GLOBALS['__PHPUNIT_BOOTSTRAP'],
-                true
-            ) . ";\n";
-        }
-
         if ($codeCoverageCacheDirectory === null) {
             $codeCoverageCacheDirectory = 'null';
         } else {
             $codeCoverageCacheDirectory = "'" . $codeCoverageCacheDirectory . "'";
         }
 
+        $bootstrap = '';
+
+        if (ConfigurationRegistry::get()->hasBootstrap()) {
+            $bootstrap = ConfigurationRegistry::get()->bootstrap();
+        }
+
         $template->setVar(
             [
+                'bootstrap'                  => $bootstrap,
                 'composerAutoload'           => $composerAutoload,
                 'phar'                       => $phar,
-                'globals'                    => $globals,
                 'job'                        => $files['job'],
                 'coverageFile'               => $files['coverage'],
                 'driverMethod'               => $pathCoverage ? 'forLineAndPathCoverage' : 'forLineCoverage',

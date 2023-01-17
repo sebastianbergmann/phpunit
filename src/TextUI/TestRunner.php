@@ -138,10 +138,6 @@ final class TestRunner
             );
         }
 
-        if ($configuration->hasBootstrap()) {
-            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $configuration->bootstrap();
-        }
-
         if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             mt_srand($configuration->randomOrderSeed());
         }

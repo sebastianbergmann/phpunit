@@ -18,11 +18,10 @@ if ($composerAutoload) {
     require $phar;
 }
 
-{globals}
 $coverage = null;
 
-if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-    require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
+if ('{bootstrap}' !== '') {
+    require_once '{bootstrap}';
 }
 
 if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
