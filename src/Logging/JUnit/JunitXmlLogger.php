@@ -12,6 +12,7 @@ namespace PHPUnit\Logging\JUnit;
 use function assert;
 use function basename;
 use function class_exists;
+use function file_put_contents;
 use function is_int;
 use function sprintf;
 use function str_replace;
@@ -44,6 +45,7 @@ use ReflectionException;
  */
 final class JunitXmlLogger
 {
+    private readonly string $targetFile;
     private DOMDocument $document;
     private DOMElement $root;
 
@@ -89,15 +91,17 @@ final class JunitXmlLogger
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(bool $reportRiskyTests)
+    public function __construct(string $targetFile, bool $reportRiskyTests)
     {
         $this->registerSubscribers($reportRiskyTests);
         $this->createDocument();
+
+        $this->targetFile = $targetFile;
     }
 
-    public function flush(): string
+    public function flush(): void
     {
-        return $this->document->saveXML();
+        file_put_contents($this->targetFile, $this->document->saveXML());
     }
 
     public function testSuiteStarted(Started $event): void
@@ -282,6 +286,7 @@ final class JunitXmlLogger
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
+            new TestRunnerExecutionFinishedSubscriber($this),
         );
 
         if ($reportRiskyTests) {

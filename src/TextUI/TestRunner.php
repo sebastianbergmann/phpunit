@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_map;
-use function file_put_contents;
 use function htmlspecialchars;
 use function is_file;
 use function mt_srand;
@@ -244,7 +243,8 @@ final class TestRunner
         }
 
         if ($configuration->hasLogfileJunit()) {
-            $junitXmlLogger = new JunitXmlLogger(
+            new JunitXmlLogger(
+                $configuration->logfileJunit(),
                 $configuration->reportUselessTests()
             );
         }
@@ -334,13 +334,6 @@ final class TestRunner
         if (isset($resultPrinter, $summaryPrinter)) {
             $resultPrinter->print($result);
             $summaryPrinter->print($result);
-        }
-
-        if (isset($junitXmlLogger)) {
-            file_put_contents(
-                $configuration->logfileJunit(),
-                $junitXmlLogger->flush()
-            );
         }
 
         if (isset($teamCityLogger)) {
