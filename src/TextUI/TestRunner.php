@@ -131,10 +131,6 @@ final class TestRunner
             CodeCoverageFilterRegistry::init($configuration);
         }
 
-        if ($configuration->hasConfigurationFile()) {
-            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $configuration->configurationFile();
-        }
-
         if ($configuration->loadPharExtensions() &&
             $configuration->hasPharExtensionDirectory()) {
             $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(

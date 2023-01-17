@@ -31,7 +31,7 @@ use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Configuration;
-use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -54,7 +54,7 @@ final class TestRunner
 
     public function __construct()
     {
-        $this->configuration = Registry::get();
+        $this->configuration = ConfigurationRegistry::get();
     }
 
     /**
@@ -331,10 +331,10 @@ final class TestRunner
         $codeCoverageFilter         = "'." . $codeCoverageFilter . ".'";
         $codeCoverageCacheDirectory = "'." . $codeCoverageCacheDirectory . ".'";
 
-        $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
-
         $offset = hrtime();
 
+        $configuration           = ConfigurationRegistry::get();
+        $configurationFilePath   = $configuration->hasConfigurationFile() ? $configuration->configurationFile() : '';
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
 
         $var = [
@@ -478,7 +478,7 @@ final class TestRunner
             throw new ProcessIsolationException;
         }
 
-        if (!Registry::saveTo($path)) {
+        if (!ConfigurationRegistry::saveTo($path)) {
             throw new ProcessIsolationException;
         }
 
