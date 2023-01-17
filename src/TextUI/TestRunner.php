@@ -355,17 +355,7 @@ final class TestRunner
             }
         }
 
-        if (PHP_SAPI === 'phpdbg') {
-            $this->writeMessage('Runtime', 'PHPDBG ' . PHP_VERSION);
-        } else {
-            $runtime = 'PHP ' . PHP_VERSION;
-
-            if (CodeCoverage::isActive()) {
-                $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
-            }
-
-            $this->writeMessage('Runtime', $runtime);
-        }
+        $this->writeRuntimeInformation();
 
         if ($configuration->hasConfigurationFile()) {
             $this->writeMessage(
@@ -819,5 +809,16 @@ final class TestRunner
         }
 
         return true;
+    }
+
+    private function writeRuntimeInformation(): void
+    {
+        $runtime = 'PHP ' . PHP_VERSION;
+
+        if (CodeCoverage::isActive()) {
+            $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
+        }
+
+        $this->writeMessage('Runtime', $runtime);
     }
 }
