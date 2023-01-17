@@ -38,7 +38,7 @@ use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageReportNotConfiguredException;
@@ -224,7 +224,7 @@ final class TestRunner
             );
         }
 
-        Facade::init();
+        TestResultFacade::init();
 
         if ($configuration->hasLogEventsText()) {
             if (is_file($configuration->logEventsText())) {
@@ -434,7 +434,7 @@ final class TestRunner
 
         Event\Facade::emitter()->testRunnerExecutionFinished();
 
-        $result = Facade::result();
+        $result = TestResultFacade::result();
 
         if ($result->numberOfTestsRun() > 0) {
             if (isset($progressPrinter)) {
