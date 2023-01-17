@@ -198,7 +198,7 @@ final class TestRunner
             }
 
             if ($this->useDefaultProgressPrinter($configuration)) {
-                $progressPrinter = new DefaultProgressPrinter(
+                new DefaultProgressPrinter(
                     $this->printer,
                     $configuration->colors(),
                     $configuration->columns()
@@ -437,7 +437,7 @@ final class TestRunner
         $result = TestResultFacade::result();
 
         if ($result->numberOfTestsRun() > 0) {
-            if (isset($progressPrinter)) {
+            if ($this->useDefaultProgressPrinter($configuration)) {
                 $this->printer->print(PHP_EOL . PHP_EOL);
             }
 
