@@ -250,7 +250,7 @@ final class TestRunner
         }
 
         if ($configuration->hasLogfileTeamcity()) {
-            $teamCityLogger = new TeamCityLogger(
+            new TeamCityLogger(
                 DefaultPrinter::from(
                     $configuration->logfileTeamcity()
                 )
@@ -258,7 +258,7 @@ final class TestRunner
         }
 
         if ($configuration->outputIsTeamCity()) {
-            $teamCityOutput = new TeamCityLogger(
+            new TeamCityLogger(
                 DefaultPrinter::standardOutput()
             );
         }
@@ -334,14 +334,6 @@ final class TestRunner
         if (isset($resultPrinter, $summaryPrinter)) {
             $resultPrinter->print($result);
             $summaryPrinter->print($result);
-        }
-
-        if (isset($teamCityLogger)) {
-            $teamCityLogger->flush();
-        }
-
-        if (isset($teamCityOutput)) {
-            $teamCityOutput->flush();
         }
 
         if (isset($textLogger)) {

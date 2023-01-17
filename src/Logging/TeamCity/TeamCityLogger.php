@@ -287,6 +287,7 @@ final class TeamCityLogger
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
+            new TestRunnerExecutionFinishedSubscriber($this),
         );
     }
 
