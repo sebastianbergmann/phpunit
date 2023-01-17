@@ -296,14 +296,7 @@ final class TestRunner
 
         CodeCoverage::init($configuration);
 
-        $this->writeRuntimeInformation();
-
-        if ($configuration->hasConfigurationFile()) {
-            $this->writeMessage(
-                'Configuration',
-                $configuration->configurationFile()
-            );
-        }
+        $this->writeRuntimeInformation($configuration);
 
         if (isset($pharExtensions)) {
             $this->writePharExtensionInformation($pharExtensions);
@@ -715,7 +708,7 @@ final class TestRunner
         return true;
     }
 
-    private function writeRuntimeInformation(): void
+    private function writeRuntimeInformation(Configuration $configuration): void
     {
         $runtime = 'PHP ' . PHP_VERSION;
 
@@ -724,6 +717,13 @@ final class TestRunner
         }
 
         $this->writeMessage('Runtime', $runtime);
+
+        if ($configuration->hasConfigurationFile()) {
+            $this->writeMessage(
+                'Configuration',
+                $configuration->configurationFile()
+            );
+        }
     }
 
     /**
