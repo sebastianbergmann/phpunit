@@ -28,7 +28,7 @@ use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
-use PHPUnit\Logging\TestDox\TestResultCollector;
+use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
 use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
@@ -276,7 +276,7 @@ final class TestRunner
             $configuration->hasLogfileTestdoxText() ||
             $configuration->hasLogfileTestdoxXml() ||
             $configuration->outputIsTestDox()) {
-            $testDoxCollector = new TestResultCollector;
+            $testDoxResultCollector = new TestDoxResultCollector;
 
             if ($configuration->outputIsTestDox()) {
                 $summaryPrinter = new SummaryPrinter(
@@ -468,38 +468,38 @@ final class TestRunner
             $textLogger->flush();
         }
 
-        if (isset($testDoxCollector, $summaryPrinter) &&
+        if (isset($testDoxResultCollector, $summaryPrinter) &&
              $configuration->outputIsTestDox()) {
             (new TestDoxResultPrinter($this->printer, $configuration->colors()))->print(
-                $testDoxCollector->testMethodsGroupedByClass()
+                $testDoxResultCollector->testMethodsGroupedByClass()
             );
 
             $summaryPrinter->print($result);
         }
 
-        if (isset($testDoxCollector) &&
+        if (isset($testDoxResultCollector) &&
             $configuration->hasLogfileTestdoxHtml()) {
             $this->printerFor($configuration->logfileTestdoxHtml())->print(
                 (new TestDoxHtmlRenderer)->render(
-                    $testDoxCollector->testMethodsGroupedByClass()
+                    $testDoxResultCollector->testMethodsGroupedByClass()
                 )
             );
         }
 
-        if (isset($testDoxCollector) &&
+        if (isset($testDoxResultCollector) &&
             $configuration->hasLogfileTestdoxText()) {
             $this->printerFor($configuration->logfileTestdoxText())->print(
                 (new TestDoxTextRenderer)->render(
-                    $testDoxCollector->testMethodsGroupedByClass()
+                    $testDoxResultCollector->testMethodsGroupedByClass()
                 )
             );
         }
 
-        if (isset($testDoxCollector) &&
+        if (isset($testDoxResultCollector) &&
             $configuration->hasLogfileTestdoxXml()) {
             $this->printerFor($configuration->logfileTestdoxXml())->print(
                 (new TestDoxXmlRenderer)->render(
-                    $testDoxCollector->testMethodsGroupedByClass()
+                    $testDoxResultCollector->testMethodsGroupedByClass()
                 )
             );
         }
