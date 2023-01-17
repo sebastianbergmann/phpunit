@@ -297,43 +297,19 @@ final class TestRunner
             $phar = '\'\'';
         }
 
-        $codeCoverageFilter         = null;
-        $cachesStaticAnalysis       = 'false';
-        $codeCoverageCacheDirectory = null;
-        $pathCoverage               = 'false';
-
-        if (CodeCoverage::isActive()) {
-            $codeCoverageFilter = CodeCoverage::instance()->filter();
-
-            if (CodeCoverage::instance()->collectsBranchAndPathCoverage()) {
-                $pathCoverage = 'true';
-            }
-
-            if (CodeCoverage::instance()->cachesStaticAnalysis()) {
-                $cachesStaticAnalysis       = 'true';
-                $codeCoverageCacheDirectory = CodeCoverage::instance()->cacheDirectory();
-            }
-        }
-
-        $data                       = var_export(serialize($test->providedData()), true);
-        $dataName                   = var_export($test->dataName(), true);
-        $dependencyInput            = var_export(serialize($test->dependencyInput()), true);
-        $includePath                = var_export(get_include_path(), true);
-        $codeCoverageFilter         = var_export(serialize($codeCoverageFilter), true);
-        $codeCoverageCacheDirectory = var_export(serialize($codeCoverageCacheDirectory), true);
+        $data            = var_export(serialize($test->providedData()), true);
+        $dataName        = var_export($test->dataName(), true);
+        $dependencyInput = var_export(serialize($test->dependencyInput()), true);
+        $includePath     = var_export(get_include_path(), true);
         // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
         // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-        $data                       = "'." . $data . ".'";
-        $dataName                   = "'.(" . $dataName . ").'";
-        $dependencyInput            = "'." . $dependencyInput . ".'";
-        $includePath                = "'." . $includePath . ".'";
-        $codeCoverageFilter         = "'." . $codeCoverageFilter . ".'";
-        $codeCoverageCacheDirectory = "'." . $codeCoverageCacheDirectory . ".'";
+        $data            = "'." . $data . ".'";
+        $dataName        = "'.(" . $dataName . ").'";
+        $dependencyInput = "'." . $dependencyInput . ".'";
+        $includePath     = "'." . $includePath . ".'";
 
         $offset = hrtime();
 
-        $configuration           = ConfigurationRegistry::get();
-        $configurationFilePath   = $configuration->hasConfigurationFile() ? $configuration->configurationFile() : '';
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
 
         $var = [
@@ -343,9 +319,6 @@ final class TestRunner
             'filename'                       => $class->getFileName(),
             'className'                      => $class->getName(),
             'collectCodeCoverageInformation' => $coverage,
-            'cachesStaticAnalysis'           => $cachesStaticAnalysis,
-            'codeCoverageCacheDirectory'     => $codeCoverageCacheDirectory,
-            'pathCoverage'                   => $pathCoverage,
             'data'                           => $data,
             'dataName'                       => $dataName,
             'dependencyInput'                => $dependencyInput,
@@ -354,8 +327,6 @@ final class TestRunner
             'include_path'                   => $includePath,
             'included_files'                 => $includedFiles,
             'iniSettings'                    => $iniSettings,
-            'codeCoverageFilter'             => $codeCoverageFilter,
-            'configurationFilePath'          => $configurationFilePath,
             'name'                           => $test->name(),
             'offsetSeconds'                  => $offset[0],
             'offsetNanoseconds'              => $offset[1],

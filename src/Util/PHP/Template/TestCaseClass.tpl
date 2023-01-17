@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -42,14 +43,8 @@ function __phpunit_run_isolated_test()
     require_once '{filename}';
 
     if ({collectCodeCoverageInformation}) {
-        CodeCoverage::activate(
-            unserialize('{codeCoverageFilter}'),
-            {pathCoverage}
-        );
-
-        if ({cachesStaticAnalysis}) {
-            CodeCoverage::instance()->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
-        }
+        CodeCoverageFilterRegistry::init(ConfigurationRegistry::get());
+        CodeCoverage::init(ConfigurationRegistry::get());
     }
 
     $test = new {className}('{name}');
@@ -94,16 +89,6 @@ function __phpunit_run_isolated_test()
     );
 }
 
-$configurationFilePath = '{configurationFilePath}';
-
-if ('' !== $configurationFilePath) {
-    $configuration = (new Loader)->load($configurationFilePath);
-
-    (new PhpHandler)->handle($configuration->php());
-
-    unset($configuration);
-}
-
 function __phpunit_error_handler($errno, $errstr, $errfile, $errline)
 {
    return true;
@@ -121,6 +106,7 @@ if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';
 }
 
-Registry::loadFrom('{serializedConfiguration}');
+ConfigurationRegistry::loadFrom('{serializedConfiguration}');
+(new PhpHandler)->handle(ConfigurationRegistry::get()->php());
 
 __phpunit_run_isolated_test();
