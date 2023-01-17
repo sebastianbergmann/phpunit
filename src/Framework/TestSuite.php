@@ -292,7 +292,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function isEmpty(): bool
     {
-        return $this->count() === 0;
+        return empty($this->tests);
     }
 
     /**
