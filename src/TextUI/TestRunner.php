@@ -61,20 +61,9 @@ use PHPUnit\Util\Printer;
 use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\XdebugNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\XdebugNotEnabledException;
-use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
-use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
-use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
-use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
-use SebastianBergmann\CodeCoverage\Report\Html\Colors;
-use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
-use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
-use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
-use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
-use SebastianBergmann\CodeCoverage\Report\Thresholds;
-use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
@@ -376,133 +365,7 @@ final class TestRunner
             );
         }
 
-        if (CodeCoverage::isActive()) {
-            if ($configuration->hasCoverageClover()) {
-                $this->codeCoverageGenerationStart('Clover XML');
-
-                try {
-                    $writer = new CloverReport;
-                    $writer->process(CodeCoverage::instance(), $configuration->coverageClover());
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-
-            if ($configuration->hasCoverageCobertura()) {
-                $this->codeCoverageGenerationStart('Cobertura XML');
-
-                try {
-                    $writer = new CoberturaReport;
-                    $writer->process(CodeCoverage::instance(), $configuration->coverageCobertura());
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-
-            if ($configuration->hasCoverageCrap4j()) {
-                $this->codeCoverageGenerationStart('Crap4J XML');
-
-                try {
-                    $writer = new Crap4jReport($configuration->coverageCrap4jThreshold());
-                    $writer->process(CodeCoverage::instance(), $configuration->coverageCrap4j());
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-
-            if ($configuration->hasCoverageHtml()) {
-                $this->codeCoverageGenerationStart('HTML');
-
-                try {
-                    $customCssFile = CustomCssFile::default();
-
-                    if ($configuration->hasCoverageHtmlCustomCssFile()) {
-                        $customCssFile = CustomCssFile::from($configuration->coverageHtmlCustomCssFile());
-                    }
-
-                    $writer = new HtmlReport(
-                        sprintf(
-                            ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
-                            Version::id()
-                        ),
-                        Colors::from(
-                            $configuration->coverageHtmlColorSuccessLow(),
-                            $configuration->coverageHtmlColorSuccessMedium(),
-                            $configuration->coverageHtmlColorSuccessHigh(),
-                            $configuration->coverageHtmlColorWarning(),
-                            $configuration->coverageHtmlColorDanger(),
-                        ),
-                        Thresholds::from(
-                            $configuration->coverageHtmlLowUpperBound(),
-                            $configuration->coverageHtmlHighLowerBound()
-                        ),
-                        $customCssFile
-                    );
-
-                    $writer->process(CodeCoverage::instance(), $configuration->coverageHtml());
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-
-            if ($configuration->hasCoveragePhp()) {
-                $this->codeCoverageGenerationStart('PHP');
-
-                try {
-                    $writer = new PhpReport;
-                    $writer->process(CodeCoverage::instance(), $configuration->coveragePhp());
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-
-            if ($configuration->hasCoverageText()) {
-                $processor = new TextReport(
-                    Thresholds::default(),
-                    $configuration->coverageTextShowUncoveredFiles(),
-                    $configuration->coverageTextShowOnlySummary()
-                );
-
-                $this->printerFor($configuration->coverageText())->print(
-                    $processor->process(CodeCoverage::instance(), $configuration->colors())
-                );
-            }
-
-            if ($configuration->hasCoverageXml()) {
-                $this->codeCoverageGenerationStart('PHPUnit XML');
-
-                try {
-                    $writer = new XmlReport(Version::id());
-                    $writer->process(CodeCoverage::instance(), $configuration->coverageXml());
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-        }
+        CodeCoverage::generateReports($this->printer, $configuration);
 
         Event\Facade::emitter()->testRunnerFinished();
 
@@ -592,54 +455,6 @@ final class TestRunner
         );
 
         $this->messagePrinted = true;
-    }
-
-    private function codeCoverageGenerationStart(string $format): void
-    {
-        $this->write(
-            sprintf(
-                "\nGenerating code coverage report in %s format ... ",
-                $format
-            )
-        );
-
-        $this->timer()->start();
-    }
-
-    /**
-     * @throws NoActiveTimerException
-     */
-    private function codeCoverageGenerationSucceeded(): void
-    {
-        $this->write(
-            sprintf(
-                "done [%s]\n",
-                $this->timer()->stop()->asString()
-            )
-        );
-    }
-
-    /**
-     * @throws NoActiveTimerException
-     */
-    private function codeCoverageGenerationFailed(CodeCoverageException $e): void
-    {
-        $this->write(
-            sprintf(
-                "failed [%s]\n%s\n",
-                $this->timer()->stop()->asString(),
-                $e->getMessage()
-            )
-        );
-    }
-
-    private function timer(): Timer
-    {
-        if ($this->timer === null) {
-            $this->timer = new Timer;
-        }
-
-        return $this->timer;
     }
 
     /**

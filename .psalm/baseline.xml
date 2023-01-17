@@ -416,8 +416,29 @@
       <code>Driver</code>
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
     </InvalidNullableReturnType>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="22">
       <code>coverageCacheDirectory</code>
+      <code>coverageClover</code>
+      <code>coverageCobertura</code>
+      <code>coverageCrap4j</code>
+      <code>coverageHtml</code>
+      <code>coverageHtmlCustomCssFile</code>
+      <code>coveragePhp</code>
+      <code>coverageText</code>
+      <code>coverageText</code>
+      <code>coverageXml</code>
+      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
+      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
+      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
+      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
+      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
+      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
+      <code>self::codeCoverageGenerationSucceeded($printer)</code>
+      <code>self::codeCoverageGenerationSucceeded($printer)</code>
+      <code>self::codeCoverageGenerationSucceeded($printer)</code>
+      <code>self::codeCoverageGenerationSucceeded($printer)</code>
+      <code>self::codeCoverageGenerationSucceeded($printer)</code>
+      <code>self::codeCoverageGenerationSucceeded($printer)</code>
     </MissingThrowsDocblock>
     <NullableReturnStatement occurrences="2">
       <code>self::$driver</code>
