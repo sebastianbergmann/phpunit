@@ -12,7 +12,6 @@ namespace PHPUnit\Logging\JUnit;
 use function assert;
 use function basename;
 use function class_exists;
-use function file_put_contents;
 use function is_int;
 use function sprintf;
 use function str_replace;
@@ -36,6 +35,7 @@ use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
@@ -45,7 +45,7 @@ use ReflectionException;
  */
 final class JunitXmlLogger
 {
-    private readonly string $targetFile;
+    private readonly Printer $printer;
     private DOMDocument $document;
     private DOMElement $root;
 
@@ -91,17 +91,19 @@ final class JunitXmlLogger
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(string $targetFile, bool $reportRiskyTests)
+    public function __construct(Printer $printer, bool $reportRiskyTests)
     {
+        $this->printer = $printer;
+
         $this->registerSubscribers($reportRiskyTests);
         $this->createDocument();
-
-        $this->targetFile = $targetFile;
     }
 
     public function flush(): void
     {
-        file_put_contents($this->targetFile, $this->document->saveXML());
+        $this->printer->print($this->document->saveXML());
+
+        $this->printer->flush();
     }
 
     public function testSuiteStarted(Started $event): void
