@@ -51,6 +51,12 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * The `beStrictAboutCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `beStrictAboutCoverageMetadata`
 * The public methods of `PHPUnit\Framework\Assert` and `PHPUnit\Framework\TestCase` are now `final`
 * The `--testdox` CLI option no longer replaces the default progress output, but only the default result output
+* The CLI test runner now only stops after a test errored when `--stop-on-error` or `--stop-on-defect` is used
+* The CLI test runner now only stops after a test failed when `--stop-on-failure` or `--stop-on-defect` is used
+* The CLI test runner now only stops after a test triggered a warning when `--stop-on-warning` or `--stop-on-defect` is used
+* The CLI test runner now only stops after a test was marked as risky when `--stop-on-risky` or `--stop-on-defect` is used
+* The CLI test runner now only stops after a test was skipped when `--stop-on-skipped` is used
+* The CLI test runner now only stops after a test was marked as incomplete when `--stop-on-incomplete` is used
 
 ### Removed
 
