@@ -15,7 +15,6 @@ use function array_map;
 use function htmlspecialchars;
 use function is_file;
 use function mt_srand;
-use function range;
 use function sprintf;
 use function unlink;
 use PHPUnit\Event;
@@ -150,19 +149,6 @@ final class TestRunner
                 $configuration->executionOrderDefects(),
                 $configuration->resolveDependencies()
             );
-        }
-
-        if ($configuration->hasRepeat()) {
-            $_suite = TestSuite::empty();
-
-            /* @noinspection PhpUnusedLocalVariableInspection */
-            foreach (range(1, $configuration->repeat()) as $step) {
-                $_suite->addTest($suite);
-            }
-
-            $suite = $_suite;
-
-            unset($_suite);
         }
 
         $this->printer = new NullPrinter;

@@ -90,9 +90,6 @@ final class Help
             ['arg'    => '--fail-on-warning', 'desc' => 'Treat tests with warnings as failures'],
             ['spacer' => ''],
 
-            ['arg'    => '--repeat <times>', 'desc' => 'Runs the test(s) repeatedly'],
-            ['spacer' => ''],
-
             ['arg'    => '--cache-result', 'desc' => 'Write test results to cache file'],
             ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
             ['spacer' => ''],

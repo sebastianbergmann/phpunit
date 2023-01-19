@@ -79,7 +79,6 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
-        'repeat=',
         'dont-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -202,7 +201,6 @@ final class Builder
         $noLogging                         = null;
         $processIsolation                  = null;
         $randomOrderSeed                   = null;
-        $repeat                            = null;
         $reportUselessTests                = null;
         $resolveDependencies               = null;
         $reverseList                       = null;
@@ -495,11 +493,6 @@ final class Builder
 
                 case '--process-isolation':
                     $processIsolation = true;
-
-                    break;
-
-                case '--repeat':
-                    $repeat = (int) $option[1];
 
                     break;
 
@@ -837,7 +830,6 @@ final class Builder
             $noLogging,
             $processIsolation,
             $randomOrderSeed,
-            $repeat,
             $reportUselessTests,
             $resolveDependencies,
             $reverseList,

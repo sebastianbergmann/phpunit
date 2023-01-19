@@ -576,12 +576,6 @@ final class Merger
             $noOutput = true;
         }
 
-        $repeat = 0;
-
-        if ($cliConfiguration->hasRepeat()) {
-            $repeat = $cliConfiguration->repeat();
-        }
-
         $testsCovering = null;
 
         if ($cliConfiguration->hasTestsCovering()) {
@@ -779,7 +773,6 @@ final class Merger
             $logEventsVerboseText,
             $teamCityOutput,
             $testDoxOutput,
-            $repeat,
             $testsCovering,
             $testsUsing,
             $filter,
