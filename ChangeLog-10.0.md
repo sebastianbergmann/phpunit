@@ -39,6 +39,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Using a non-static method as a data provider is now deprecated 
 * Using a non-public method as a data provider is now deprecated
 * Declaring a data provider method to require an argument is now deprecated
+* A test method now continues execution after test(ed) code triggered `E_(USER_)DEPRECATED`, `E_(USER_)NOTICE`, `E_STRICT`, or `E_(USER_)WARNING`
 * PHPUnit no longer invokes a static method named `suite` on a class that is declared in a file that is passed as an argument to the CLI test runner
 * PHPUnit no longer promotes variables that are global in the bootstrap script's scope to global variables in the test runner's scope (use `$GLOBALS['variable'] = 'value'` instead of `$variable = 'value'` in your bootstrap script)
 * `PHPUnit\Framework\TestCase::$backupGlobals` can no longer be used to enable or disable the backup/restore of global and super-global variables for a test case class
