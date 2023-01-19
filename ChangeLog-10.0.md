@@ -47,6 +47,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * The `status` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"success"` instead of `"0"`, for instance)
 * The `size` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"unknown"` instead of `"-1"`, for instance)
 * The JUnit XML logfile now has both `name` and `file` attributes on `<testcase>` elements for PHPT tests
+* The JUnit XML logfile no longer has `<system-out>` elements that contains the output printed to `stdout` by a test
 * The `forceCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `requireCoverageMetadata`
 * The `beStrictAboutCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `beStrictAboutCoverageMetadata`
 * The public methods of `PHPUnit\Framework\Assert` and `PHPUnit\Framework\TestCase` are now `final`
