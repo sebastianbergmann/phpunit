@@ -25,7 +25,6 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
-use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
@@ -91,11 +90,11 @@ final class JunitXmlLogger
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, bool $reportRiskyTests)
+    public function __construct(Printer $printer)
     {
         $this->printer = $printer;
 
-        $this->registerSubscribers($reportRiskyTests);
+        $this->registerSubscribers();
         $this->createDocument();
     }
 
@@ -263,21 +262,10 @@ final class JunitXmlLogger
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @throws NoDataSetFromDataProviderException
-     */
-    public function testConsideredRisky(ConsideredRisky $event): void
-    {
-        $this->handleRisky($event->test(), $event->message());
-
-        $this->testSuiteErrors[$this->testSuiteLevel]++;
-    }
-
-    /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    private function registerSubscribers(bool $reportRiskyTests): void
+    private function registerSubscribers(): void
     {
         Facade::registerSubscribers(
             new TestSuiteStartedSubscriber($this),
@@ -290,10 +278,6 @@ final class JunitXmlLogger
             new TestSkippedSubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
         );
-
-        if ($reportRiskyTests) {
-            Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        }
     }
 
     private function createDocument(): void
@@ -328,26 +312,6 @@ final class JunitXmlLogger
         $fault->setAttribute('type', $throwable->className());
 
         $this->currentTestCase->appendChild($fault);
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     * @throws NoDataSetFromDataProviderException
-     */
-    private function handleRisky(Test $test, string $message): void
-    {
-        assert($this->currentTestCase !== null);
-
-        $buffer = $this->testAsString($test) . $message;
-
-        $risky = $this->document->createElement(
-            'error',
-            Xml::prepareString($buffer)
-        );
-
-        $risky->setAttribute('type', 'PHPUnit\Framework\RiskyTest');
-
-        $this->currentTestCase->appendChild($risky);
     }
 
     /**

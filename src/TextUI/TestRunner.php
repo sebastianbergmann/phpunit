@@ -234,7 +234,6 @@ final class TestRunner
         if ($configuration->hasLogfileJunit()) {
             new JunitXmlLogger(
                 $this->printerFor($configuration->logfileJunit()),
-                $configuration->reportUselessTests()
             );
         }
 
