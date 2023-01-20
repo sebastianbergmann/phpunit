@@ -33,7 +33,6 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\TestResult;
-use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageReportNotConfiguredException;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
@@ -96,8 +95,6 @@ final class TestRunner
     public function run(Configuration $configuration, TestSuite $suite): TestResult
     {
         Event\Facade::emitter()->testRunnerStarted();
-
-        CodeCoverageFilterRegistry::init($configuration);
 
         if ($configuration->loadPharExtensions() &&
             $configuration->hasPharExtensionDirectory()) {
