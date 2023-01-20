@@ -20,8 +20,8 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
-use PHPUnit\Util\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

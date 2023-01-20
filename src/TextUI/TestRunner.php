@@ -45,15 +45,13 @@ use PHPUnit\TextUI\Configuration\NoConfigurationFileException;
 use PHPUnit\TextUI\Configuration\NoCoverageCacheDirectoryException;
 use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
 use PHPUnit\TextUI\Configuration\NoPharExtensionDirectoryException;
-use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
-use PHPUnit\TextUI\Output\SummaryPrinter;
-use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
-use PHPUnit\Util\DefaultPrinter;
+use PHPUnit\TextUI\Output\DefaultPrinter;
+use PHPUnit\TextUI\Output\Facade as OutputFacade;
+use PHPUnit\TextUI\Output\NullPrinter;
+use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\DirectoryDoesNotExistException;
 use PHPUnit\Util\InvalidSocketException;
-use PHPUnit\Util\NullPrinter;
-use PHPUnit\Util\Printer;
 use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\XdebugNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\XdebugNotEnabledException;
@@ -61,7 +59,6 @@ use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
-use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\TimeSinceStartOfRequestNotAvailableException;
 
 /**
@@ -142,43 +139,9 @@ final class TestRunner
             );
         }
 
-        $this->printer = new NullPrinter;
+        OutputFacade::init($configuration);
 
-        if ($this->useDefaultProgressPrinter($configuration) ||
-            $this->useDefaultResultPrinter($configuration) ||
-            $configuration->outputIsTestDox()) {
-            if ($configuration->outputToStandardErrorStream()) {
-                $this->printer = DefaultPrinter::standardError();
-            } else {
-                $this->printer = DefaultPrinter::standardOutput();
-            }
-
-            if ($this->useDefaultProgressPrinter($configuration)) {
-                new DefaultProgressPrinter(
-                    $this->printer,
-                    $configuration->colors(),
-                    $configuration->columns()
-                );
-            }
-        }
-
-        if ($this->useDefaultResultPrinter($configuration)) {
-            $resultPrinter = new DefaultResultPrinter(
-                $this->printer,
-                $configuration->displayDetailsOnIncompleteTests(),
-                $configuration->displayDetailsOnSkippedTests(),
-                $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
-                $configuration->displayDetailsOnTestsThatTriggerErrors(),
-                $configuration->displayDetailsOnTestsThatTriggerNotices(),
-                $configuration->displayDetailsOnTestsThatTriggerWarnings(),
-                $configuration->reverseDefectList()
-            );
-
-            $summaryPrinter = new SummaryPrinter(
-                $this->printer,
-                $configuration->colors(),
-            );
-        }
+        $this->printer = OutputFacade::printer();
 
         TestResultFacade::init();
 
@@ -222,23 +185,10 @@ final class TestRunner
             );
         }
 
-        if ($configuration->outputIsTeamCity()) {
-            new TeamCityLogger(
-                DefaultPrinter::standardOutput()
-            );
-        }
-
         if ($configuration->hasLogfileTestdoxHtml() ||
             $configuration->hasLogfileTestdoxText() ||
             $configuration->outputIsTestDox()) {
             $testDoxResultCollector = new TestDoxResultCollector;
-
-            if ($configuration->outputIsTestDox()) {
-                $summaryPrinter = new SummaryPrinter(
-                    $this->printer,
-                    $configuration->colors(),
-                );
-            }
         }
 
         Event\Facade::seal();
@@ -287,47 +237,29 @@ final class TestRunner
 
         $result = TestResultFacade::result();
 
-        if ($result->numberOfTestsRun() > 0) {
-            if ($this->useDefaultProgressPrinter($configuration)) {
-                $this->printer->print(PHP_EOL . PHP_EOL);
-            }
+        $testDoxResult = null;
 
-            $this->printer->print((new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
+        if (isset($testDoxResultCollector)) {
+            $testDoxResult = $testDoxResultCollector->testMethodsGroupedByClass();
         }
 
-        if (isset($resultPrinter, $summaryPrinter)) {
-            $resultPrinter->print($result);
-            $summaryPrinter->print($result);
-        }
+        OutputFacade::printResult($result, $testDoxResult);
 
         if (isset($textLogger)) {
             $textLogger->flush();
         }
 
-        if (isset($testDoxResultCollector, $summaryPrinter) &&
-             $configuration->outputIsTestDox()) {
-            (new TestDoxResultPrinter($this->printer, $configuration->colors()))->print(
-                $testDoxResultCollector->testMethodsGroupedByClass()
-            );
-
-            $summaryPrinter->print($result);
-        }
-
-        if (isset($testDoxResultCollector) &&
+        if ($testDoxResult !== null &&
             $configuration->hasLogfileTestdoxHtml()) {
             $this->printerFor($configuration->logfileTestdoxHtml())->print(
-                (new TestDoxHtmlRenderer)->render(
-                    $testDoxResultCollector->testMethodsGroupedByClass()
-                )
+                (new TestDoxHtmlRenderer)->render($testDoxResult)
             );
         }
 
-        if (isset($testDoxResultCollector) &&
+        if ($testDoxResult !== null &&
             $configuration->hasLogfileTestdoxText()) {
             $this->printerFor($configuration->logfileTestdoxText())->print(
-                (new TestDoxTextRenderer)->render(
-                    $testDoxResultCollector->testMethodsGroupedByClass()
-                )
+                (new TestDoxTextRenderer)->render($testDoxResult)
             );
         }
 
@@ -379,44 +311,6 @@ final class TestRunner
         }
 
         return DefaultPrinter::from($target);
-    }
-
-    private function useDefaultProgressPrinter(Configuration $configuration): bool
-    {
-        if ($configuration->noOutput()) {
-            return false;
-        }
-
-        if ($configuration->noProgress()) {
-            return false;
-        }
-
-        if ($configuration->outputIsTeamCity()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function useDefaultResultPrinter(Configuration $configuration): bool
-    {
-        if ($configuration->noOutput()) {
-            return false;
-        }
-
-        if ($configuration->noResults()) {
-            return false;
-        }
-
-        if ($configuration->outputIsTeamCity()) {
-            return false;
-        }
-
-        if ($configuration->outputIsTestDox()) {
-            return false;
-        }
-
-        return true;
     }
 
     private function writeRuntimeInformation(Configuration $configuration): void

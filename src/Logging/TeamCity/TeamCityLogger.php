@@ -37,7 +37,7 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\Exception as FrameworkException;
-use PHPUnit\Util\Printer;
+use PHPUnit\TextUI\Output\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

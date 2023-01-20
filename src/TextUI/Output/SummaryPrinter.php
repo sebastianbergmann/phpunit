@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI\Output;
 use function sprintf;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
-use PHPUnit\Util\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

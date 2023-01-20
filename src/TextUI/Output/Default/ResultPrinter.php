@@ -37,7 +37,7 @@ use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\TestRunner\TestResult\TestResult;
-use PHPUnit\Util\Printer;
+use PHPUnit\TextUI\Output\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

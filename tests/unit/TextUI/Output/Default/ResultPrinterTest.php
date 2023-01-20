@@ -46,8 +46,8 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
+use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\Output\SummaryPrinter;
-use PHPUnit\Util\Printer;
 
 #[CoversClass(ResultPrinter::class)]
 #[CoversClass(SummaryPrinter::class)]

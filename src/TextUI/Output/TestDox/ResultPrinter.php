@@ -24,8 +24,8 @@ use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult;
 use PHPUnit\Logging\TestDox\TestResultCollection;
+use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
-use PHPUnit\Util\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

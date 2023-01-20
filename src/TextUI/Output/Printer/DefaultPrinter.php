@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
+namespace PHPUnit\TextUI\Output;
 
 use function assert;
 use function count;
@@ -20,6 +20,9 @@ use function fwrite;
 use function sprintf;
 use function str_replace;
 use function str_starts_with;
+use PHPUnit\Util\DirectoryDoesNotExistException;
+use PHPUnit\Util\Filesystem;
+use PHPUnit\Util\InvalidSocketException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

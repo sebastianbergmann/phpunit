@@ -34,7 +34,7 @@ use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
-use PHPUnit\Util\Printer;
+use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;

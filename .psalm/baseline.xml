@@ -709,6 +709,38 @@
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
+  <file src="src/TextUI/Output/Facade.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>Printer</code>
+    </InvalidNullableReturnType>
+    <MissingThrowsDocblock occurrences="11">
+      <code>DefaultPrinter::standardError()</code>
+      <code>DefaultPrinter::standardError()</code>
+      <code>DefaultPrinter::standardOutput()</code>
+      <code>DefaultPrinter::standardOutput()</code>
+      <code>DefaultPrinter::standardOutput()</code>
+      <code>DefaultPrinter::standardOutput()</code>
+      <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
+      <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
+      <code>resourceUsageSinceStartOfRequest</code>
+    </MissingThrowsDocblock>
+    <NullableReturnStatement occurrences="1">
+      <code>self::$printer</code>
+    </NullableReturnStatement>
+    <PossiblyNullArgument occurrences="1">
+      <code>self::$printer</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="2">
+      <code>print</code>
+      <code>print</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Output/Printer/DefaultPrinter.php">
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$this-&gt;stream</code>
+      <code>$this-&gt;stream</code>
+    </PossiblyInvalidArgument>
+  </file>
   <file src="src/TextUI/TestRunner.php">
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
@@ -730,12 +762,6 @@
     <TypeDoesNotContainNull occurrences="1">
       <code>[]</code>
     </TypeDoesNotContainNull>
-  </file>
-  <file src="src/Util/Printer/DefaultPrinter.php">
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$this-&gt;stream</code>
-      <code>$this-&gt;stream</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/Reflection.php">
     <ArgumentTypeCoercion occurrences="1">
