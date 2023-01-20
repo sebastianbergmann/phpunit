@@ -102,9 +102,7 @@ final class TestRunner
     {
         Event\Facade::emitter()->testRunnerStarted();
 
-        if ($configuration->hasCoverageReport()) {
-            CodeCoverageFilterRegistry::init($configuration);
-        }
+        CodeCoverageFilterRegistry::init($configuration);
 
         if ($configuration->loadPharExtensions() &&
             $configuration->hasPharExtensionDirectory()) {

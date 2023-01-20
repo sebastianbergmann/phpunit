@@ -32,6 +32,10 @@ final class CodeCoverageFilterRegistry
 
     public static function init(Configuration $configuration): void
     {
+        if (!$configuration->hasCoverageReport()) {
+            return;
+        }
+
         if (self::$configured) {
             return;
         }
