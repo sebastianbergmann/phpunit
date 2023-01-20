@@ -43,7 +43,6 @@ final class TestRunner
 {
     /**
      * @throws \PHPUnit\Runner\Exception
-     * @throws \PHPUnit\Util\Exception
      * @throws CodeCoverageReportNotConfiguredException
      * @throws Event\EventFacadeIsSealedException
      * @throws Event\RuntimeException
