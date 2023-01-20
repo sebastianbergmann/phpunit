@@ -92,6 +92,6 @@ final class Registry
         }
         // @codeCoverageIgnoreEnd
 
-        return $this->methodDocBlocks[$classInHierarchy][$method] = DocBlock::ofMethod($reflection, $classInHierarchy);
+        return $this->methodDocBlocks[$classInHierarchy][$method] = DocBlock::ofMethod($reflection);
     }
 }

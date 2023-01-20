@@ -77,10 +77,7 @@ final class DocBlock
         );
     }
 
-    /**
-     * @psalm-param class-string $classNameInHierarchy
-     */
-    public static function ofMethod(ReflectionMethod $method, string $classNameInHierarchy): self
+    public static function ofMethod(ReflectionMethod $method): self
     {
         return new self(
             (string) $method->getDocComment(),
