@@ -509,10 +509,24 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="4">
+    <InternalMethod occurrences="1">
+      <code>nameAndVersion</code>
+    </InternalMethod>
+    <MissingThrowsDocblock occurrences="23">
+      <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
+      <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
       <code>atLeastVersion</code>
       <code>build</code>
+      <code>configurationFile</code>
       <code>listTestsXml</code>
+      <code>logEventsText</code>
+      <code>logEventsText</code>
+      <code>logEventsText</code>
+      <code>logEventsVerboseText</code>
+      <code>logEventsVerboseText</code>
+      <code>logEventsVerboseText</code>
+      <code>logfileJunit</code>
+      <code>logfileTeamcity</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
     <UnresolvableInclude occurrences="1">
@@ -740,17 +754,6 @@
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
     </PossiblyInvalidArgument>
-  </file>
-  <file src="src/TextUI/TestRunner.php">
-    <InternalMethod occurrences="1">
-      <code>nameAndVersion</code>
-    </InternalMethod>
-    <MissingConstructor occurrences="1">
-      <code>$printer</code>
-    </MissingConstructor>
-    <MissingThrowsDocblock occurrences="1">
-      <code>configurationFile</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction occurrences="1">

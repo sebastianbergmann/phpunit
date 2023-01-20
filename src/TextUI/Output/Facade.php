@@ -16,6 +16,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
 use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
+use PHPUnit\Util\DirectoryDoesNotExistException;
+use PHPUnit\Util\InvalidSocketException;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 
 /**
@@ -29,12 +31,7 @@ final class Facade
     private static bool $colors                         = false;
     private static bool $defaultProgressPrinter         = false;
 
-    public static function printer(): Printer
-    {
-        return self::$printer;
-    }
-
-    public static function init(Configuration $configuration): void
+    public static function init(Configuration $configuration): Printer
     {
         self::$printer = self::createPrinter($configuration);
 
@@ -73,6 +70,8 @@ final class Facade
         }
 
         self::$colors = $configuration->colors();
+
+        return self::$printer;
     }
 
     /**
@@ -100,6 +99,23 @@ final class Facade
 
             self::$summaryPrinter->print($result);
         }
+    }
+
+    /**
+     * @throws DirectoryDoesNotExistException
+     * @throws InvalidSocketException
+     */
+    public static function printerFor(string $target): Printer
+    {
+        if ($target === 'php://stdout') {
+            if (!self::$printer instanceof NullPrinter) {
+                return self::$printer;
+            }
+
+            return DefaultPrinter::standardOutput();
+        }
+
+        return DefaultPrinter::from($target);
     }
 
     private static function createPrinter(Configuration $configuration): Printer

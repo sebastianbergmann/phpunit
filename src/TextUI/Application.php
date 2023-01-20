@@ -10,16 +10,28 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+use function is_file;
 use function is_readable;
 use function printf;
 use function realpath;
 use function sprintf;
 use function trim;
-use PHPUnit\Event\Facade;
+use function unlink;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Logging\EventLogger;
+use PHPUnit\Logging\JUnit\JunitXmlLogger;
+use PHPUnit\Logging\TeamCity\TeamCityLogger;
+use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
+use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
+use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
+use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
@@ -39,6 +51,9 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
+use PHPUnit\TextUI\Output\DefaultPrinter;
+use PHPUnit\TextUI\Output\Facade as OutputFacade;
+use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\ConfigurationFileFinder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
@@ -50,12 +65,10 @@ use Throwable;
  */
 final class Application
 {
-    private bool $versionStringPrinted = false;
-
     public function run(array $argv): int
     {
         try {
-            Facade::emitter()->applicationStarted();
+            EventFacade::emitter()->applicationStarted();
 
             $cliConfiguration           = $this->buildCliConfiguration($argv);
             $pathToXmlConfigurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
@@ -82,11 +95,61 @@ final class Application
             $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
+            $pharExtensions = null;
+
+            if ($configuration->loadPharExtensions() &&
+                $configuration->hasPharExtensionDirectory()) {
+                $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
+                    $configuration->pharExtensionDirectory()
+                );
+            }
+
             $this->bootstrapExtensions($configuration);
+
+            CodeCoverage::init($configuration);
+
+            $printer = OutputFacade::init($configuration);
+
+            $this->writeRuntimeInformation($printer, $configuration);
+            $this->writePharExtensionInformation($printer, $pharExtensions);
+            $this->writeRandomSeedInformation($printer, $configuration);
+
+            $printer->print(PHP_EOL);
+
+            $this->registerLogfileWriters($configuration);
+
+            $testDoxResultCollector = $this->testDoxResultCollector($configuration);
+
+            TestResultFacade::init();
 
             $runner = new TestRunner;
 
-            $result = $runner->run($configuration, $testSuite);
+            $runner->run($configuration, $testSuite);
+
+            $testDoxResult = null;
+
+            if (isset($testDoxResultCollector)) {
+                $testDoxResult = $testDoxResultCollector->testMethodsGroupedByClass();
+            }
+
+            if ($testDoxResult !== null &&
+                $configuration->hasLogfileTestdoxHtml()) {
+                OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
+                    (new TestDoxHtmlRenderer)->render($testDoxResult)
+                );
+            }
+
+            if ($testDoxResult !== null &&
+                $configuration->hasLogfileTestdoxText()) {
+                OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
+                    (new TestDoxTextRenderer)->render($testDoxResult)
+                );
+            }
+
+            $result = TestResultFacade::result();
+
+            OutputFacade::printResult($result, $testDoxResult);
+            CodeCoverage::generateReports($printer, $configuration);
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnEmptyTestSuite(),
@@ -97,23 +160,12 @@ final class Application
                 $result
             );
 
-            Facade::emitter()->applicationFinished($shellExitCode);
+            EventFacade::emitter()->applicationFinished($shellExitCode);
 
             return $shellExitCode;
         } catch (Throwable $t) {
             $this->exitWithCrashMessage($t);
         }
-    }
-
-    private function printVersionString(): void
-    {
-        if ($this->versionStringPrinted) {
-            return;
-        }
-
-        print Version::getVersionString() . PHP_EOL . PHP_EOL;
-
-        $this->versionStringPrinted = true;
     }
 
     private function exitWithCrashMessage(Throwable $t): never
@@ -145,16 +197,14 @@ final class Application
 
     private function exitWithErrorMessage(string $message): never
     {
-        $this->printVersionString();
-
-        print $message . PHP_EOL;
+        print Version::getVersionString() . PHP_EOL . PHP_EOL . $message . PHP_EOL;
 
         exit(Result::EXCEPTION);
     }
 
     private function execute(Command\Command $command): never
     {
-        $this->printVersionString();
+        print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $result = $command->execute();
 
@@ -189,7 +239,7 @@ final class Application
             );
         }
 
-        Facade::emitter()->testRunnerBootstrapFinished($filename);
+        EventFacade::emitter()->testRunnerBootstrapFinished($filename);
     }
 
     private function buildCliConfiguration(array $argv): CliConfiguration
@@ -325,5 +375,128 @@ final class Application
         if ($testSuite->isEmpty() && !$configuration->hasCliArgument() && !$configuration->hasDefaultTestSuite()) {
             $this->execute(new ShowHelpCommand(Result::FAILURE));
         }
+    }
+
+    private function writeRuntimeInformation(Printer $printer, Configuration $configuration): void
+    {
+        $printer->print(Version::getVersionString() . PHP_EOL . PHP_EOL);
+
+        $runtime = 'PHP ' . PHP_VERSION;
+
+        if (CodeCoverage::isActive()) {
+            $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
+        }
+
+        $this->writeMessage($printer, 'Runtime', $runtime);
+
+        if ($configuration->hasConfigurationFile()) {
+            $this->writeMessage(
+                $printer,
+                'Configuration',
+                $configuration->configurationFile()
+            );
+        }
+    }
+
+    /**
+     * @psalm-param ?array{loadedExtensions: list<string>, notLoadedExtensions: list<string>} $pharExtensions
+     */
+    private function writePharExtensionInformation(Printer $printer, ?array $pharExtensions): void
+    {
+        if ($pharExtensions === null) {
+            return;
+        }
+
+        foreach ($pharExtensions['loadedExtensions'] as $extension) {
+            $this->writeMessage(
+                $printer,
+                'Extension',
+                $extension
+            );
+        }
+
+        foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
+            $this->writeMessage(
+                $printer,
+                'Extension',
+                $extension
+            );
+        }
+    }
+
+    private function writeMessage(Printer $printer, string $type, string $message): void
+    {
+        $printer->print(
+            sprintf(
+                "%-15s%s\n",
+                $type . ':',
+                $message
+            )
+        );
+    }
+
+    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration): void
+    {
+        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
+            $this->writeMessage(
+                $printer,
+                'Random Seed',
+                (string) $configuration->randomOrderSeed()
+            );
+        }
+    }
+
+    private function registerLogfileWriters(Configuration $configuration): void
+    {
+        if ($configuration->hasLogEventsText()) {
+            if (is_file($configuration->logEventsText())) {
+                unlink($configuration->logEventsText());
+            }
+
+            EventFacade::registerTracer(
+                new EventLogger(
+                    $configuration->logEventsText(),
+                    false
+                )
+            );
+        }
+
+        if ($configuration->hasLogEventsVerboseText()) {
+            if (is_file($configuration->logEventsVerboseText())) {
+                unlink($configuration->logEventsVerboseText());
+            }
+
+            EventFacade::registerTracer(
+                new EventLogger(
+                    $configuration->logEventsVerboseText(),
+                    true
+                )
+            );
+        }
+
+        if ($configuration->hasLogfileJunit()) {
+            new JunitXmlLogger(
+                OutputFacade::printerFor($configuration->logfileJunit()),
+            );
+        }
+
+        if ($configuration->hasLogfileTeamcity()) {
+            new TeamCityLogger(
+                DefaultPrinter::from(
+                    $configuration->logfileTeamcity()
+                )
+            );
+        }
+    }
+
+    private function testDoxResultCollector(Configuration $configuration): ?TestDoxResultCollector
+    {
+        if ($configuration->hasLogfileTestdoxHtml() ||
+            $configuration->hasLogfileTestdoxText() ||
+            $configuration->outputIsTestDox()) {
+            return new TestDoxResultCollector;
+        }
+
+        return null;
     }
 }
