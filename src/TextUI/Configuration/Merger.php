@@ -493,7 +493,6 @@ final class Merger
         $logfileJunit                = null;
         $logfileTestdoxHtml          = null;
         $logfileTestdoxText          = null;
-        $logfileTestdoxXml           = null;
         $loggingFromXmlConfiguration = true;
 
         if ($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging()) {
@@ -526,12 +525,6 @@ final class Merger
             $logfileTestdoxText = $cliConfiguration->testdoxTextFile();
         } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxText()) {
             $logfileTestdoxText = $xmlConfiguration->logging()->testDoxText()->target()->path();
-        }
-
-        if ($cliConfiguration->hasTestdoxXmlFile()) {
-            $logfileTestdoxXml = $cliConfiguration->testdoxXmlFile();
-        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxXml()) {
-            $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
         }
 
         $logEventsText = null;
@@ -768,7 +761,6 @@ final class Merger
             $logfileJunit,
             $logfileTestdoxHtml,
             $logfileTestdoxText,
-            $logfileTestdoxXml,
             $logEventsText,
             $logEventsVerboseText,
             $teamCityOutput,

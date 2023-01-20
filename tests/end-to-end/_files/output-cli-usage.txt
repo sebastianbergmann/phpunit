@@ -91,7 +91,6 @@ Logging:
   --log-teamcity <file>            Log test execution in TeamCity format to file
   --testdox-html <file>            Write documentation in HTML format to file
   --testdox-text <file>            Write documentation in Text format to file
-  --testdox-xml <file>             Write documentation in XML format to file
   --log-events-text <file>         Stream events as plain text to file
   --log-events-verbose-text <file> Stream events as plain text to file (with telemetry information)
   --no-logging                     Ignore logging configuration

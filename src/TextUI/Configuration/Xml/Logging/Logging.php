@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI\XmlConfiguration\Logging;
 use PHPUnit\TextUI\XmlConfiguration\Exception;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
-use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -26,16 +25,14 @@ final class Logging
     private readonly ?TeamCity $teamCity;
     private readonly ?TestDoxHtml $testDoxHtml;
     private readonly ?TestDoxText $testDoxText;
-    private readonly ?TestDoxXml $testDoxXml;
 
-    public function __construct(?Junit $junit, ?Text $text, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?TestDoxXml $testDoxXml)
+    public function __construct(?Junit $junit, ?Text $text, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
     {
         $this->junit       = $junit;
         $this->text        = $text;
         $this->teamCity    = $teamCity;
         $this->testDoxHtml = $testDoxHtml;
         $this->testDoxText = $testDoxText;
-        $this->testDoxXml  = $testDoxXml;
     }
 
     public function hasJunit(): bool
@@ -121,22 +118,5 @@ final class Logging
         }
 
         return $this->testDoxText;
-    }
-
-    public function hasTestDoxXml(): bool
-    {
-        return $this->testDoxXml !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testDoxXml(): TestDoxXml
-    {
-        if ($this->testDoxXml === null) {
-            throw new Exception('Logger "TestDox XML" is not configured');
-        }
-
-        return $this->testDoxXml;
     }
 }

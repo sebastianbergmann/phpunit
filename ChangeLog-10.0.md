@@ -120,6 +120,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `--extensions` option
 * Removed the `--printer` option
 * Removed the `printerClass` and `printerFile` attributes on the `<phpunit>` XML configuration element
+* Removed the `--testdox-xml` option and the `<testdoxXml>` XML configuration element as well as the feature they used to control
 * Removed the `--verbose` option
 * Removed the `verbose` attribute on the `<phpunit>` XML configuration element
 * The CLI test runner can no longer be extended through inheritance, the `PHPUnit\TextUI\Command` class has been removed

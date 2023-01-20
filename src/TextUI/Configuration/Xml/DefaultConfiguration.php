@@ -61,7 +61,6 @@ final class DefaultConfiguration extends Configuration
                 null,
                 null,
                 null,
-                null,
                 null
             ),
             new Php(

@@ -29,7 +29,6 @@ final class MergerTest extends TestCase
         $this->assertTrue($fromFile->logging()->hasTeamCity());
         $this->assertTrue($fromFile->logging()->hasTestDoxHtml());
         $this->assertTrue($fromFile->logging()->hasTestDoxText());
-        $this->assertTrue($fromFile->logging()->hasTestDoxXml());
 
         $this->assertTrue($fromFile->logging()->hasJunit());
         $this->assertNotSame($junitLog, $fromFile->logging()->junit()->target()->path());
@@ -46,7 +45,6 @@ final class MergerTest extends TestCase
         $this->assertFalse($mergedConfig->hasLogfileTeamcity());
         $this->assertFalse($mergedConfig->hasLogfileTestdoxHtml());
         $this->assertFalse($mergedConfig->hasLogfileTestdoxText());
-        $this->assertFalse($mergedConfig->hasLogfileTestdoxXml());
 
         $this->assertTrue($mergedConfig->hasLogfileJunit());
         $this->assertSame($junitLog, $mergedConfig->logfileJunit());

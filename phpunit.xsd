@@ -253,7 +253,6 @@
             <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxText" type="logToFileType" minOccurs="0" />
-            <xs:element name="testdoxXml" type="logToFileType" minOccurs="0" />
             <xs:element name="text" type="logToFileType" minOccurs="0"/>
         </xs:all>
     </xs:group>

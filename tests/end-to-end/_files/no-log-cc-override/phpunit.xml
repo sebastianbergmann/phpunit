@@ -22,7 +22,6 @@
         <teamcity outputFile="php://stdout"/>
         <testdoxHtml outputFile="php://stdout"/>
         <testdoxText outputFile="php://stdout"/>
-        <testdoxXml outputFile="php://stdout"/>
         <text outputFile="php://stdout"/>
     </logging>
 </phpunit>

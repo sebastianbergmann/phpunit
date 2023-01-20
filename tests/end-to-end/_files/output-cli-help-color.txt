@@ -112,7 +112,6 @@
                                    file
   [32m--testdox-html [36m<file>[0m           [0m Write documentation in HTML format to file
   [32m--testdox-text [36m<file>[0m           [0m Write documentation in Text format to file
-  [32m--testdox-xml [36m<file>[0m            [0m Write documentation in XML format to file
   [32m--log-events-text [36m<file>[0m        [0m Stream events as plain text to file
   [32m--log-events-verbose-text [36m<file>[0m[0m Stream events as plain text to file (with
                                    telemetry information)

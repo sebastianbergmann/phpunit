@@ -27,7 +27,6 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
-use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -239,7 +238,6 @@ final class TestRunner
 
         if ($configuration->hasLogfileTestdoxHtml() ||
             $configuration->hasLogfileTestdoxText() ||
-            $configuration->hasLogfileTestdoxXml() ||
             $configuration->outputIsTestDox()) {
             $testDoxResultCollector = new TestDoxResultCollector;
 
@@ -336,15 +334,6 @@ final class TestRunner
             $configuration->hasLogfileTestdoxText()) {
             $this->printerFor($configuration->logfileTestdoxText())->print(
                 (new TestDoxTextRenderer)->render(
-                    $testDoxResultCollector->testMethodsGroupedByClass()
-                )
-            );
-        }
-
-        if (isset($testDoxResultCollector) &&
-            $configuration->hasLogfileTestdoxXml()) {
-            $this->printerFor($configuration->logfileTestdoxXml())->print(
-                (new TestDoxXmlRenderer)->render(
                     $testDoxResultCollector->testMethodsGroupedByClass()
                 )
             );

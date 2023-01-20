@@ -105,7 +105,6 @@ final class Builder
         'testdox',
         'testdox-html=',
         'testdox-text=',
-        'testdox-xml=',
         'test-suffix=',
         'testsuite=',
         'exclude-testsuite=',
@@ -216,7 +215,6 @@ final class Builder
         $teamcityLogfile                   = null;
         $testdoxHtmlFile                   = null;
         $testdoxTextFile                   = null;
-        $testdoxXmlFile                    = null;
         $testSuffixes                      = null;
         $testSuite                         = null;
         $excludeTestSuite                  = null;
@@ -581,11 +579,6 @@ final class Builder
 
                     break;
 
-                case '--testdox-xml':
-                    $testdoxXmlFile = $option[1];
-
-                    break;
-
                 case '--no-configuration':
                     $useDefaultConfiguration = false;
 
@@ -845,7 +838,6 @@ final class Builder
             $teamcityLogfile,
             $testdoxHtmlFile,
             $testdoxTextFile,
-            $testdoxXmlFile,
             $testSuffixes,
             $testSuite,
             $excludeTestSuite,
