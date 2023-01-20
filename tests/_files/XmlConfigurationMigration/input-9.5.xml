@@ -52,4 +52,7 @@
         </listener>
     </listeners>
 
+    <logging>
+        <testdoxXml outputFile="testdox.xml"/>
+    </logging>
 </phpunit>

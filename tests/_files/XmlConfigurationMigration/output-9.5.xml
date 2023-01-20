@@ -12,4 +12,6 @@
         </include>
     </coverage>
 
+    <logging/>
+
 </phpunit>
