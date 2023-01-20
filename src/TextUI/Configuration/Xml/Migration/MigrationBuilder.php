@@ -57,6 +57,7 @@ final class MigrationBuilder
             RemoveConversionToExceptionsAttributes::class,
             RemoveNoInteractionAttribute::class,
             RemoveTestDoxXmlElement::class,
+            RemoveTestDoxGroupsElement::class,
         ],
     ];
 

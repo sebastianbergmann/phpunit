@@ -55,4 +55,13 @@
     <logging>
         <testdoxXml outputFile="testdox.xml"/>
     </logging>
+
+    <testdoxGroups>
+        <include>
+            <group>bar</group>
+        </include>
+        <exclude>
+            <group>foo</group>
+        </exclude>
+    </testdoxGroups>
 </phpunit>
