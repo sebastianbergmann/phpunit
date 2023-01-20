@@ -512,7 +512,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="23">
+    <MissingThrowsDocblock occurrences="25">
       <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
       <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
       <code>atLeastVersion</code>
@@ -527,6 +527,8 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
+      <code>new TestDoxResultCollector</code>
+      <code>new TestDoxResultCollector</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
     <UnresolvableInclude occurrences="1">
