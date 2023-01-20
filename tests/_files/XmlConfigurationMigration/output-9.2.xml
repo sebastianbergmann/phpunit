@@ -32,6 +32,5 @@
         <teamcity outputFile="teamcity.txt"/>
         <testdoxHtml outputFile="testdox.html"/>
         <testdoxText outputFile="testdox.txt"/>
-        <text outputFile="logfile.txt"/>
     </logging>
 </phpunit>

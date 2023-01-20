@@ -121,6 +121,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `--testdox-xml` option and the `<testdoxXml>` XML configuration element as well as the feature they used to control
 * Removed the `--verbose` option
 * Removed the `verbose` attribute on the `<phpunit>` XML configuration element
+* Removed the `<text>` XML configuration element (child of `<logging>`)
 * The CLI test runner can no longer be extended through inheritance, the `PHPUnit\TextUI\Command` class has been removed
 * PHP 7.3, PHP 7.4, and PHP 8.0 are no longer supported
 

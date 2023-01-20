@@ -56,7 +56,7 @@ final class MigrationBuilder
             RenameBeStrictAboutCoversAnnotationAttribute::class,
             RemoveConversionToExceptionsAttributes::class,
             RemoveNoInteractionAttribute::class,
-            RemoveTestDoxXmlElement::class,
+            RemoveLoggingElements::class,
             RemoveTestDoxGroupsElement::class,
         ],
     ];

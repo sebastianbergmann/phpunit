@@ -53,6 +53,7 @@
     </listeners>
 
     <logging>
+        <text outputFile="logfile.txt"/>
         <testdoxXml outputFile="testdox.xml"/>
     </logging>
 

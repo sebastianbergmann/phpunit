@@ -488,7 +488,6 @@ final class Merger
             $colors = true;
         }
 
-        $logfileText                 = null;
         $logfileTeamcity             = null;
         $logfileJunit                = null;
         $logfileTestdoxHtml          = null;
@@ -497,10 +496,6 @@ final class Merger
 
         if ($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging()) {
             $loggingFromXmlConfiguration = false;
-        }
-
-        if ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasText()) {
-            $logfileText = $xmlConfiguration->logging()->text()->target()->path();
         }
 
         if ($cliConfiguration->hasTeamcityLogfile()) {
@@ -756,7 +751,6 @@ final class Merger
             $executionOrder,
             $executionOrderDefects,
             $resolveDependencies,
-            $logfileText,
             $logfileTeamcity,
             $logfileJunit,
             $logfileTestdoxHtml,

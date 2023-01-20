@@ -21,15 +21,13 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
 final class Logging
 {
     private readonly ?Junit $junit;
-    private readonly ?Text $text;
     private readonly ?TeamCity $teamCity;
     private readonly ?TestDoxHtml $testDoxHtml;
     private readonly ?TestDoxText $testDoxText;
 
-    public function __construct(?Junit $junit, ?Text $text, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
+    public function __construct(?Junit $junit, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
     {
         $this->junit       = $junit;
-        $this->text        = $text;
         $this->teamCity    = $teamCity;
         $this->testDoxHtml = $testDoxHtml;
         $this->testDoxText = $testDoxText;
@@ -50,23 +48,6 @@ final class Logging
         }
 
         return $this->junit;
-    }
-
-    public function hasText(): bool
-    {
-        return $this->text !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function text(): Text
-    {
-        if ($this->text === null) {
-            throw new Exception('Logger "Text" is not configured');
-        }
-
-        return $this->text;
     }
 
     public function hasTeamCity(): bool

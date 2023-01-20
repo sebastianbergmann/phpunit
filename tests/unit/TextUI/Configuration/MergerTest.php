@@ -25,7 +25,6 @@ final class MergerTest extends TestCase
         $junitLog = uniqid('junit_log_');
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_logging.xml');
 
-        $this->assertTrue($fromFile->logging()->hasText());
         $this->assertTrue($fromFile->logging()->hasTeamCity());
         $this->assertTrue($fromFile->logging()->hasTestDoxHtml());
         $this->assertTrue($fromFile->logging()->hasTestDoxText());
@@ -41,7 +40,6 @@ final class MergerTest extends TestCase
 
         $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
 
-        $this->assertFalse($mergedConfig->hasLogfileText());
         $this->assertFalse($mergedConfig->hasLogfileTeamcity());
         $this->assertFalse($mergedConfig->hasLogfileTestdoxHtml());
         $this->assertFalse($mergedConfig->hasLogfileTestdoxText());
