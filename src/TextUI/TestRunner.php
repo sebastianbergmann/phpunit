@@ -63,9 +63,7 @@ use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
-use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
-use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Timer\TimeSinceStartOfRequestNotAvailableException;
 
 /**
@@ -75,7 +73,6 @@ final class TestRunner
 {
     private Printer $printer;
     private bool $messagePrinted = false;
-    private ?Timer $timer        = null;
 
     /**
      * @throws \PHPUnit\Runner\Exception
@@ -88,7 +85,6 @@ final class TestRunner
      * @throws FilterNotConfiguredException
      * @throws InvalidArgumentException
      * @throws LoggingNotConfiguredException
-     * @throws NoActiveTimerException
      * @throws NoBootstrapException
      * @throws NoCodeCoverageDriverAvailableException
      * @throws NoCodeCoverageDriverWithPathCoverageSupportAvailableException
