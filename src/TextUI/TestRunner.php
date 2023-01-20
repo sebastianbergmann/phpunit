@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI;
 
 use const PHP_SAPI;
 use const PHP_VERSION;
-use function array_map;
 use function htmlspecialchars;
 use function is_file;
 use function mt_srand;
@@ -29,7 +28,6 @@ use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
-use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
@@ -279,7 +277,7 @@ final class TestRunner
 
         $this->write("\n");
 
-        $this->processSuiteFilters($configuration, $suite);
+        (new TestSuiteFilterProcessor)->process($configuration, $suite);
 
         Event\Facade::emitter()->testRunnerExecutionStarted(
             Event\TestSuite\TestSuite::fromTestSuite($suite)
@@ -349,65 +347,6 @@ final class TestRunner
         }
 
         $this->printer->print($buffer);
-    }
-
-    /**
-     * @throws Event\RuntimeException
-     * @throws FilterNotConfiguredException
-     */
-    private function processSuiteFilters(Configuration $configuration, TestSuite $suite): void
-    {
-        if (!$configuration->hasFilter() &&
-            !$configuration->hasGroups() &&
-            !$configuration->hasExcludeGroups() &&
-            !$configuration->hasTestsCovering() &&
-            !$configuration->hasTestsUsing()) {
-            return;
-        }
-
-        $filterFactory = new Factory;
-
-        if ($configuration->hasExcludeGroups()) {
-            $filterFactory->addExcludeGroupFilter(
-                $configuration->excludeGroups()
-            );
-        }
-
-        if ($configuration->hasGroups()) {
-            $filterFactory->addIncludeGroupFilter(
-                $configuration->groups()
-            );
-        }
-
-        if ($configuration->hasTestsCovering()) {
-            $filterFactory->addIncludeGroupFilter(
-                array_map(
-                    static fn (string $name): string => '__phpunit_covers_' . $name,
-                    $configuration->testsCovering()
-                )
-            );
-        }
-
-        if ($configuration->hasTestsUsing()) {
-            $filterFactory->addIncludeGroupFilter(
-                array_map(
-                    static fn (string $name): string => '__phpunit_uses_' . $name,
-                    $configuration->testsUsing()
-                )
-            );
-        }
-
-        if ($configuration->hasFilter()) {
-            $filterFactory->addNameFilter(
-                $configuration->filter()
-            );
-        }
-
-        $suite->injectFilter($filterFactory);
-
-        Event\Facade::emitter()->testSuiteFiltered(
-            Event\TestSuite\TestSuite::fromTestSuite($suite)
-        );
     }
 
     private function writeMessage(string $type, string $message): void
