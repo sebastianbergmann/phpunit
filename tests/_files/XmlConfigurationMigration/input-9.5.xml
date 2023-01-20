@@ -4,10 +4,19 @@
          cacheResultFile=".phpunit.cache/test-results"
          testSuiteLoaderClass="Foo"
          testSuiteLoaderFile="Foo.php"
+         forceCoversAnnotation="true"
+         beStrictAboutCoversAnnotation="true"
          beStrictAboutResourceUsageDuringSmallTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         convertDeprecationsToExceptions="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
          printerFile="foo"
-         printerClass="bar">
+         printerClass="bar"
+         backupStaticAttributes="true"
+         noInteraction="true"
+         verbose="true">
 
     <coverage cacheDirectory=".phpunit.cache/code-coverage"
               processUncoveredFiles="true">

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 #[CoversClass(Migrator::class)]
-final class MigrationTest extends TestCase
+final class MigratorTest extends TestCase
 {
     #[TestDox('Can migrate PHPUnit 9.2 configuration')]
     public function testCanMigratePhpUnit92Configuration(): void
