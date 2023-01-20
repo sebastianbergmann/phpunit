@@ -17,6 +17,7 @@ use function fclose;
 use function fopen;
 use function fsockopen;
 use function fwrite;
+use function htmlspecialchars;
 use function sprintf;
 use function str_replace;
 use function str_starts_with;
@@ -100,6 +101,10 @@ final class DefaultPrinter implements Printer
     public function print(string $buffer): void
     {
         assert($this->isOpen);
+
+        if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
+            $buffer = htmlspecialchars($buffer);
+        }
 
         fwrite($this->stream, $buffer);
     }

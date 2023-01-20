@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
-use const PHP_SAPI;
 use const PHP_VERSION;
-use function htmlspecialchars;
 use function is_file;
 use function mt_srand;
 use function sprintf;
@@ -193,7 +191,7 @@ final class TestRunner
 
         Event\Facade::seal();
 
-        $this->write(Version::getVersionString() . "\n");
+        $this->printer->print(Version::getVersionString() . "\n");
 
         if ($configuration->hasLogfileText()) {
             $textLogger = new DefaultResultPrinter(
@@ -223,7 +221,7 @@ final class TestRunner
             );
         }
 
-        $this->write("\n");
+        $this->printer->print("\n");
 
         (new TestSuiteFilterProcessor)->process($configuration, $suite);
 
@@ -270,22 +268,13 @@ final class TestRunner
         return $result;
     }
 
-    private function write(string $buffer): void
-    {
-        if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
-            $buffer = htmlspecialchars($buffer);
-        }
-
-        $this->printer->print($buffer);
-    }
-
     private function writeMessage(string $type, string $message): void
     {
         if (!$this->messagePrinted) {
-            $this->write("\n");
+            $this->printer->print("\n");
         }
 
-        $this->write(
+        $this->printer->print(
             sprintf(
                 "%-15s%s\n",
                 $type . ':',
