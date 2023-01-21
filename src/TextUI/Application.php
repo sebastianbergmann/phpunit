@@ -88,7 +88,7 @@ final class Application
                 $this->loadBootstrapScript($configuration->bootstrap());
             }
 
-            $this->executeCommandsThatRequireCompleteConfiguration($configuration, $cliConfiguration, $xmlConfiguration);
+            $this->executeCommandsThatRequireCompleteConfiguration($configuration, $cliConfiguration);
 
             $testSuite = $this->buildTestSuite($configuration);
 
@@ -359,10 +359,10 @@ final class Application
         }
     }
 
-    private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
+    private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration): void
     {
         if ($cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
+            $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
         }
 
         if ($cliConfiguration->warmCoverageCache()) {
