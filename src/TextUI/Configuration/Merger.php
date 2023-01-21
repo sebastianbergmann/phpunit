@@ -541,8 +541,7 @@ final class Merger
         }
 
         $testDoxOutput = false;
-
-        if ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
+        if (($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter() || $xmlConfiguration->phpunit()->testdoxPrinter())) {
             $testDoxOutput = true;
         }
 
