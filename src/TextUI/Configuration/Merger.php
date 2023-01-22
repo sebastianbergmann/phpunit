@@ -540,10 +540,10 @@ final class Merger
             $teamCityOutput = true;
         }
 
-        $testDoxOutput = false;
-
         if ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
             $testDoxOutput = true;
+        } else {
+            $testDoxOutput = $xmlConfiguration->phpunit()->testdoxPrinter();
         }
 
         $noProgress = false;
