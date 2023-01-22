@@ -45,8 +45,6 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * `PHPUnit\Framework\TestCase::$backupGlobals` can no longer be used to enable or disable the backup/restore of global and super-global variables for a test case class
 * `PHPUnit\Framework\TestCase::$backupStaticAttributes` can no longer be used to enable or disable the backup/restore of static properties in user-defined classes for a test case class
 * `@author` is no longer an alias for `@group`
-* The `status` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"success"` instead of `"0"`, for instance)
-* The `size` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"unknown"` instead of `"-1"`, for instance)
 * The JUnit XML logfile now has both `name` and `file` attributes on `<testcase>` elements for PHPT tests
 * The JUnit XML logfile no longer has `<system-out>` elements that contain the output printed to `stdout` by a test
 * The JUnit XML logfile now only reports test outcome (errored, failed, incomplete, skipped, or passed) and no longer test issues (considered risky, for instance)
