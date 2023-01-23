@@ -7,18 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\XmlConfiguration;
+namespace PHPUnit\TextUI\CliArguments;
 
 use function getcwd;
 use function is_dir;
 use function is_file;
 use function realpath;
-use PHPUnit\TextUI\CliArguments\Configuration;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ConfigurationFileFinder
+final class XmlConfigurationFileFinder
 {
     public function find(Configuration $configuration): string|false
     {

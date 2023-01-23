@@ -35,6 +35,7 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
+use PHPUnit\TextUI\CliArguments\XmlConfigurationFileFinder;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
@@ -55,7 +56,6 @@ use PHPUnit\TextUI\Output\DefaultPrinter;
 use PHPUnit\TextUI\Output\Facade as OutputFacade;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
-use PHPUnit\TextUI\XmlConfiguration\ConfigurationFileFinder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use Throwable;
@@ -71,7 +71,7 @@ final class Application
             EventFacade::emitter()->applicationStarted();
 
             $cliConfiguration           = $this->buildCliConfiguration($argv);
-            $pathToXmlConfigurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
+            $pathToXmlConfigurationFile = (new XmlConfigurationFileFinder)->find($cliConfiguration);
 
             $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration, $pathToXmlConfigurationFile);
 
