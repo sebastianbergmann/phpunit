@@ -1267,9 +1267,6 @@
     <DocblockTypeContradiction>
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
-    <InvalidArgument>
-      <code>[$test, 'runBare']</code>
-    </InvalidArgument>
     <InvalidCatch>
       <code>try {
                 $this-&gt;codeCoverage-&gt;stop(
@@ -1342,6 +1339,11 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedClass>
+      <code>$e</code>
+      <code>Invoker</code>
+      <code>TimeoutException</code>
+    </UndefinedClass>
     <UndefinedInterfaceMethod>
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
@@ -1778,6 +1780,7 @@
     <UndefinedClass>
       <code>Assert</code>
       <code>DocBlock</code>
+      <code>Invoker</code>
       <code>Project</code>
       <code>Prophet</code>
       <code>Type</code>
