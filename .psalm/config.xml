@@ -9,6 +9,7 @@
     findUnusedVariablesAndParams="false"
     findUnusedCode="false"
     errorBaseline=".psalm/baseline.xml"
+    findUnusedBaselineEntry="true"
 >
     <projectFiles>
         <directory name="src" />
