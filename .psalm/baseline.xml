@@ -1,88 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@">
+<files psalm-version="5.5.0@b63061a27f2683ec0f3509012bb22daab3b65b61">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
-    <UndefinedInterfaceMethod occurrences="1">
+    <UndefinedInterfaceMethod>
       <code>notify</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/Events/Test/HookMethod/AfterLastTestMethodFinished.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/AfterTestMethodFinished.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/BeforeFirstTestMethodFinished.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/BeforeTestMethodFinished.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/PostConditionFinished.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/PreConditionFinished.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/TestDouble/MockObjectFromWsdlCreated.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$methods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/TestDouble/PartialMockObjectCreated.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$methodNames</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Facade.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$eventClass . 'Subscriber'</code>
     </ArgumentTypeCoercion>
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>flush</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Event/Value/Runtime/PHP.php">
-    <ImpureFunctionCall occurrences="1">
+    <ImpureFunctionCall>
       <code>get_loaded_extensions</code>
     </ImpureFunctionCall>
   </file>
   <file src="src/Event/Value/Telemetry/HRTime.php">
-    <ImpureMethodCall occurrences="1">
+    <ImpureMethodCall>
       <code>fromSecondsAndNanoseconds</code>
     </ImpureMethodCall>
   </file>
   <file src="src/Event/Value/Telemetry/MemoryUsage.php">
-    <ImpureMethodCall occurrences="1">
+    <ImpureMethodCall>
       <code>fromBytes</code>
     </ImpureMethodCall>
   </file>
   <file src="src/Event/Value/Test/TestCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$tests</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Test/TestData/TestDataCollection.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$data</code>
     </ArgumentTypeCoercion>
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$data</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Test/TestMethod.php">
-    <ImpureMethodCall occurrences="4">
+    <ImpureMethodCall>
       <code>dataFromDataProvider</code>
       <code>dataFromDataProvider</code>
       <code>hasDataFromDataProvider</code>
@@ -90,7 +90,7 @@
     </ImpureMethodCall>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuite.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$testSuite-&gt;getName()</code>
       <code>$testSuite-&gt;getName()</code>
@@ -98,12 +98,12 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$className</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/Assert/Functions.php">
-    <TooManyArguments occurrences="14">
+    <TooManyArguments>
       <code>Assert::anything(...func_get_args())</code>
       <code>Assert::directoryExists(...func_get_args())</code>
       <code>Assert::fileExists(...func_get_args())</code>
@@ -121,188 +121,211 @@
     </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
-    <PossiblyInvalidArgument occurrences="1">
+    <PossiblyInvalidArgument>
       <code>$e-&gt;getCode()</code>
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Framework/Constraint/ObjectEquals.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$this-&gt;method</code>
-    </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
-    <PropertyTypeCoercion occurrences="1"/>
+    <PropertyTypeCoercion>
+      <code>array_map(
+            fn ($constraint): Constraint =&gt; $this-&gt;checkConstraint($constraint),
+            $constraints
+        )</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/Constraint/Operator/LogicalXor.php">
-    <InvalidArgument occurrences="1">
+    <InvalidArgument>
       <code>bool</code>
     </InvalidArgument>
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$this-&gt;className</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/DataProviderTestSuite.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <LessSpecificReturnStatement occurrences="1">
+    <LessSpecificReturnStatement>
       <code>$this-&gt;providedTests</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
+    <MoreSpecificReturnType>
       <code>list&lt;ExecutionOrderDependency&gt;</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$configurableMethods</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="6">
+    <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
-      <code>$methodName</code>
       <code>$methods</code>
       <code>$type</code>
     </ArgumentTypeCoercion>
-    <InvalidReturnStatement occurrences="1"/>
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnStatement>
+      <code>$this-&gt;getMock(
+                $originalClassName,
+                $methods,
+                $arguments,
+                $mockClassName,
+                $callOriginalConstructor,
+                $callOriginalClone,
+                $callAutoload,
+                $cloneArguments
+            )</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="1">
+    <PossiblyNullArgument>
       <code>$client-&gt;__getFunctions()</code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
-    <InvalidArgument occurrences="1">
+    <InvalidArgument>
       <code>$types</code>
     </InvalidArgument>
   </file>
   <file src="src/Framework/MockObject/Matcher.php">
-    <InvalidNullableReturnType occurrences="1">
+    <InvalidNullableReturnType>
       <code>MethodName</code>
     </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
+    <NullableReturnStatement>
       <code>$this-&gt;methodNameRule</code>
     </NullableReturnStatement>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion>
       <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
     </ArgumentTypeCoercion>
-    <InvalidReturnStatement occurrences="3">
+    <InvalidReturnStatement>
       <code>$object</code>
       <code>$object</code>
       <code>$object</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="3">
+    <InvalidReturnType>
       <code>MockObject&amp;MockedType</code>
       <code>MockObject&amp;MockedType</code>
       <code>MockObject&amp;MockedType</code>
     </InvalidReturnType>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
-    <InvalidArgument occurrences="1"/>
-    <PossiblyFalseOperand occurrences="1">
+    <InvalidArgument>
+      <code>[
+                'arguments_decl'     =&gt; $this-&gt;argumentsForDeclaration,
+                'arguments_call'     =&gt; $this-&gt;argumentsForCall,
+                'return_declaration' =&gt; !empty($this-&gt;returnType-&gt;asString()) ? (': ' . $this-&gt;returnType-&gt;asString()) : '',
+                'return_type'        =&gt; $this-&gt;returnType-&gt;asString(),
+                'arguments_count'    =&gt; !empty($this-&gt;argumentsForCall) ? substr_count($this-&gt;argumentsForCall, ',') + 1 : 0,
+                'class_name'         =&gt; $this-&gt;className,
+                'method_name'        =&gt; $this-&gt;methodName,
+                'modifier'           =&gt; $this-&gt;modifier,
+                'reference'          =&gt; $this-&gt;reference,
+                'clone_arguments'    =&gt; $this-&gt;cloneArguments ? 'true' : 'false',
+                'deprecation'        =&gt; $deprecation,
+            ]</code>
+    </InvalidArgument>
+    <PossiblyFalseOperand>
       <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
     </PossiblyFalseOperand>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor>
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
-    <PossiblyInvalidOperand occurrences="1">
+    <PossiblyInvalidOperand>
       <code>$this-&gt;callback</code>
     </PossiblyInvalidOperand>
   </file>
   <file src="src/Framework/TestBuilder.php">
-    <LessSpecificReturnStatement occurrences="1">
+    <LessSpecificReturnStatement>
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
+    <MoreSpecificReturnType>
       <code>Test</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="5">
-      <code>$methodName</code>
-      <code>$methodName</code>
+    <ArgumentTypeCoercion>
       <code>$mockClassName</code>
       <code>$originalClassName</code>
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
-    <InvalidReturnStatement occurrences="1">
+    <InvalidReturnStatement>
       <code>$mockObject</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType>
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor>
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
-    <PropertyTypeCoercion occurrences="2">
+    <PropertyTypeCoercion>
       <code>$backupGlobalsExcludeList</code>
       <code>$groups</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <InvalidArgument occurrences="1">
+    <InvalidArgument>
       <code>$var</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock>
       <code>bootstrap</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestSuite.php">
-    <ArgumentTypeCoercion occurrences="4">
-      <code>$methodName</code>
+    <ArgumentTypeCoercion>
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <LessSpecificReturnStatement occurrences="2">
+    <LessSpecificReturnStatement>
       <code>$this-&gt;providedTests</code>
       <code>$this-&gt;requiredTests</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
+    <MoreSpecificReturnType>
       <code>list&lt;ExecutionOrderDependency&gt;</code>
       <code>list&lt;ExecutionOrderDependency&gt;</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
+    <InvalidPropertyAssignmentValue>
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <RedundantCondition occurrences="1">
+    <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock>
       <code>comparisonFailure</code>
       <code>comparisonFailure</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor>
       <code>$flowId</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="4">
+    <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
       <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
@@ -310,59 +333,56 @@
     </RedundantCondition>
   </file>
   <file src="src/Logging/TestDox/NamePrettifier.php">
-    <InvalidCast occurrences="1">
+    <InvalidCast>
       <code>$value</code>
     </InvalidCast>
   </file>
   <file src="src/Logging/TestDox/TestMethod/TestResultCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$testResults</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Logging/TestDox/TestMethod/TestResultCollector.php">
-    <PossiblyNullArgument occurrences="2">
+    <PossiblyNullArgument>
       <code>$this-&gt;status</code>
       <code>$this-&gt;time</code>
     </PossiblyNullArgument>
-    <RedundantCondition occurrences="1">
+    <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
-    <RedundantCondition occurrences="4">
+    <RedundantCondition>
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
-    <UndefinedMethod occurrences="2">
+    <UndefinedMethod>
       <code>className</code>
       <code>className</code>
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$_dataProvider-&gt;methodName()</code>
-    </ArgumentTypeCoercion>
-    <PossiblyInvalidArgument occurrences="1">
+    <PossiblyInvalidArgument>
       <code>$e-&gt;getCode()</code>
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
-    <RedundantCondition occurrences="2">
+    <RedundantCondition>
       <code>assert($metadata instanceof DependsOnClass)</code>
       <code>assert($metadata instanceof DependsOnMethod)</code>
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Groups.php">
-    <LessSpecificReturnStatement occurrences="2">
+    <LessSpecificReturnStatement>
       <code>array_unique($groups)</code>
       <code>array_unique($groups)</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
+    <MoreSpecificReturnType>
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
-    <RedundantCondition occurrences="4">
+    <RedundantCondition>
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
@@ -370,7 +390,7 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Requirements.php">
-    <RedundantCondition occurrences="8">
+    <RedundantCondition>
       <code>assert($metadata instanceof RequiresFunction)</code>
       <code>assert($metadata instanceof RequiresMethod)</code>
       <code>assert($metadata instanceof RequiresOperatingSystem)</code>
@@ -382,21 +402,30 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Metadata.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Metadata/MetadataCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$metadata</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Metadata/Parser/Annotation/DocBlock.php">
-    <MoreSpecificReturnType occurrences="1"/>
+    <MoreSpecificReturnType>
+      <code>array{
+     *   __OFFSET: array&lt;string, int&gt;&amp;array{__FILE: string},
+     *   setting?: array&lt;string, string&gt;,
+     *   extension_versions?: array&lt;string, array{version: string, operator: string}&gt;
+     * }&amp;array&lt;
+     *   string,
+     *   string|array{version: string, operator: string}|array{constraint: string}|array&lt;int|string, string&gt;
+     * &gt;</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="7">
+    <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
@@ -407,16 +436,16 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Metadata/Version/Requirement.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>!empty($matches['operator']) ? $matches['operator'] : '&gt;='</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/CodeCoverage.php">
-    <InvalidNullableReturnType occurrences="2">
+    <InvalidNullableReturnType>
       <code>Driver</code>
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
     </InvalidNullableReturnType>
-    <MissingThrowsDocblock occurrences="22">
+    <MissingThrowsDocblock>
       <code>coverageCacheDirectory</code>
       <code>coverageClover</code>
       <code>coverageCobertura</code>
@@ -440,59 +469,62 @@
       <code>self::codeCoverageGenerationSucceeded($printer)</code>
       <code>self::codeCoverageGenerationSucceeded($printer)</code>
     </MissingThrowsDocblock>
-    <NullableReturnStatement occurrences="2">
+    <NullableReturnStatement>
       <code>self::$driver</code>
       <code>self::$instance</code>
     </NullableReturnStatement>
-    <PossiblyNullReference occurrences="2">
+    <PossiblyNullReference>
       <code>start</code>
       <code>stop</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
-    <MissingTemplateParam occurrences="1">
+    <MissingTemplateParam>
       <code>GroupFilterIterator</code>
     </MissingTemplateParam>
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$this-&gt;groupTests</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
-    <MissingTemplateParam occurrences="1">
+    <MissingTemplateParam>
       <code>NameFilterIterator</code>
     </MissingTemplateParam>
-    <PossiblyNullArgument occurrences="1">
+    <PossiblyNullArgument>
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Runner/PhptTestCase.php">
-    <InternalClass occurrences="2">
+    <InternalClass>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
     </InternalClass>
-    <InternalMethod occurrences="2">
+    <InternalMethod>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock>
       <code>bootstrap</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
+    <PossiblyInvalidArgument>
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
+    <PossiblyUndefinedArrayOffset>
+      <code>$setting[1]</code>
+    </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/Runner/TestResult/Collector.php">
-    <RedundantCondition occurrences="1">
+    <RedundantCondition>
       <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
     </RedundantCondition>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
-    <UnresolvableInclude occurrences="1">
+    <UnresolvableInclude>
       <code>include_once $suiteClassFile</code>
     </UnresolvableInclude>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
-    <ArgumentTypeCoercion occurrences="7">
+    <ArgumentTypeCoercion>
       <code>$tests</code>
       <code>$this-&gt;randomize($suite-&gt;tests())</code>
       <code>$this-&gt;resolveDependencies($tests)</code>
@@ -501,7 +533,7 @@
       <code>$this-&gt;sortBySize($suite-&gt;tests())</code>
       <code>$this-&gt;sortDefectsFirst($suite-&gt;tests())</code>
     </ArgumentTypeCoercion>
-    <RedundantCondition occurrences="4">
+    <RedundantCondition>
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
       <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
       <code>$this-&gt;cache !== null</code>
@@ -509,10 +541,28 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <InternalMethod occurrences="1">
+    <InternalMethod>
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="25">
+    <MissingThrowsDocblock>
+      <code>DefaultPrinter::from(
+                    $configuration-&gt;logfileTeamcity()
+                )</code>
+      <code>DefaultPrinter::from(
+                    $configuration-&gt;logfileTeamcity()
+                )</code>
+      <code>EventFacade::registerTracer(
+                new EventLogger(
+                    $configuration-&gt;logEventsText(),
+                    false
+                )
+            )</code>
+      <code>EventFacade::registerTracer(
+                new EventLogger(
+                    $configuration-&gt;logEventsVerboseText(),
+                    true
+                )
+            )</code>
       <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
       <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
       <code>atLeastVersion</code>
@@ -527,257 +577,283 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
+      <code>new JunitXmlLogger(
+                OutputFacade::printerFor($configuration-&gt;logfileJunit()),
+            )</code>
+      <code>new JunitXmlLogger(
+                OutputFacade::printerFor($configuration-&gt;logfileJunit()),
+            )</code>
+      <code>new TeamCityLogger(
+                DefaultPrinter::from(
+                    $configuration-&gt;logfileTeamcity()
+                )
+            )</code>
+      <code>new TeamCityLogger(
+                DefaultPrinter::from(
+                    $configuration-&gt;logfileTeamcity()
+                )
+            )</code>
       <code>new TestDoxResultCollector</code>
       <code>new TestDoxResultCollector</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
-    <UnresolvableInclude occurrences="1">
+    <UnresolvableInclude>
       <code>include_once $filename</code>
     </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$parameters</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
-    <InvalidNullableReturnType occurrences="3">
+    <InvalidNullableReturnType>
       <code>bool</code>
       <code>string</code>
       <code>string</code>
     </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="3">
+    <NullableReturnStatement>
       <code>$this-&gt;configurationFile</code>
       <code>$this-&gt;excludeTestSuite</code>
       <code>$this-&gt;teamCityPrinter</code>
     </NullableReturnStatement>
   </file>
   <file src="src/TextUI/Configuration/Configuration.php">
-    <LessSpecificReturnStatement occurrences="2">
+    <LessSpecificReturnStatement>
       <code>$this-&gt;testsCovering</code>
       <code>$this-&gt;testsUsing</code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
+    <MoreSpecificReturnType>
       <code>list&lt;string&gt;</code>
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
-    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
+    <PossiblyInvalidPropertyAssignmentValue>
       <code>$columns</code>
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/Configuration/Merger.php">
-    <DeprecatedMethod occurrences="4">
+    <DeprecatedMethod>
       <code>cacheDirectory</code>
       <code>cacheResultFile</code>
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock>
       <code>detect</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedArrayOffset occurrences="1">
+    <PossiblyUndefinedArrayOffset>
       <code>$_SERVER['PHP_SELF']</code>
     </PossiblyUndefinedArrayOffset>
-    <RedundantCondition occurrences="1">
+    <RedundantCondition>
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock>
       <code>\PHPUnit\Event\TestSuite\TestSuite::fromTestSuite($testSuite)</code>
       <code>cliArgument</code>
       <code>cliArgument</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Value/ConstantCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$constants</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/DirectoryCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$directories</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/ExtensionBootstrapCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$extensionBootstraps</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/FileCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$files</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/FilterDirectoryCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$directories</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/GroupCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$groups</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/IniSettingCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$iniSettings</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/TestDirectoryCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$directories</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/TestFileCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$files</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/TestSuiteCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$testSuites</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Value/VariableCollection.php">
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion>
       <code>$variables</code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
-    <DeprecatedMethod occurrences="1">
+    <DeprecatedMethod>
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
   </file>
   <file src="src/TextUI/Configuration/Xml/ConfigurationFileFinder.php">
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock>
       <code>configurationFile</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion>
       <code>$bootstrap-&gt;getAttribute('class')</code>
       <code>$directoryNode-&gt;getAttribute('phpVersionOperator')</code>
       <code>$fileNode-&gt;getAttribute('phpVersionOperator')</code>
     </ArgumentTypeCoercion>
-    <RedundantConditionGivenDocblockType occurrences="2">
+    <RedundantConditionGivenDocblockType>
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageCloverToReport.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageCrap4jToReport.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageHtmlToReport.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoveragePhpToReport.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageTextToReport.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageXmlToReport.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/LogToReportMigration.php">
-    <PossiblyNullReference occurrences="1">
+    <PossiblyNullReference>
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/RemoveEmptyFilter.php">
-    <PossiblyNullReference occurrences="2">
+    <PossiblyNullReference>
       <code>removeChild</code>
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Configuration/Xml/PHPUnit.php">
-    <DeprecatedMethod occurrences="1">
+    <DeprecatedMethod>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
   </file>
   <file src="src/TextUI/Help.php">
-    <PossiblyUndefinedArrayOffset occurrences="2">
+    <PossiblyUndefinedArrayOffset>
       <code>$option['desc']</code>
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/Output/Default/ResultPrinter.php">
-    <RedundantCondition occurrences="2">
+    <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Output/Facade.php">
-    <InvalidNullableReturnType occurrences="1">
+    <InvalidNullableReturnType>
       <code>Printer</code>
     </InvalidNullableReturnType>
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock>
       <code>DefaultPrinter::standardError()</code>
       <code>DefaultPrinter::standardError()</code>
       <code>DefaultPrinter::standardOutput()</code>
       <code>DefaultPrinter::standardOutput()</code>
       <code>DefaultPrinter::standardOutput()</code>
       <code>DefaultPrinter::standardOutput()</code>
+      <code>new DefaultProgressPrinter(
+                self::$printer,
+                $configuration-&gt;colors(),
+                $configuration-&gt;columns()
+            )</code>
+      <code>new DefaultProgressPrinter(
+                self::$printer,
+                $configuration-&gt;colors(),
+                $configuration-&gt;columns()
+            )</code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
       <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>
-    <NullableReturnStatement occurrences="1">
+    <NullableReturnStatement>
       <code>self::$printer</code>
     </NullableReturnStatement>
-    <PossiblyNullArgument occurrences="1">
+    <PossiblyNullArgument>
       <code>self::$printer</code>
     </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="2">
+    <PossiblyNullReference>
       <code>print</code>
       <code>print</code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Output/Printer/DefaultPrinter.php">
-    <PossiblyInvalidArgument occurrences="2">
+    <PossiblyInvalidArgument>
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
-    <DocblockTypeContradiction occurrences="1">
+    <DocblockTypeContradiction>
       <code>is_array($envVar)</code>
     </DocblockTypeContradiction>
-    <RedundantCondition occurrences="1">
+    <RedundantCondition>
       <code>$_SERVER</code>
     </RedundantCondition>
-    <TypeDoesNotContainNull occurrences="1">
+    <TypeDoesNotContainNull>
       <code>[]</code>
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Util/Reflection.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$filter</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
-    <DocblockTypeContradiction occurrences="1">
+    <DocblockTypeContradiction>
       <code>in_array($operator, ['&lt;', 'lt', '&lt;=', 'le', '&gt;', 'gt', '&gt;=', 'ge', '==', '=', 'eq', '!=', '&lt;&gt;', 'ne'], true)</code>
     </DocblockTypeContradiction>
-    <NoValue occurrences="1">
+    <NoValue>
       <code>$operator</code>
     </NoValue>
   </file>
