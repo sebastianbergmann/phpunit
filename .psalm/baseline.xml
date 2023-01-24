@@ -600,6 +600,9 @@
       <code>include_once $filename</code>
     </UnresolvableInclude>
   </file>
+  <file src="src/TextUI/Configuration/Builder.php">
+    <MissingThrowsDocblock occurrences="1"/>
+  </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
     <ArgumentTypeCoercion>
       <code>$parameters</code>
