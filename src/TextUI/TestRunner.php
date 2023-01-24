@@ -14,9 +14,7 @@ use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\ResultCache\DefaultResultCache;
-use PHPUnit\Runner\ResultCache\NullResultCache;
-use PHPUnit\Runner\ResultCache\ResultCacheHandler;
+use PHPUnit\Runner\ResultCache\ResultCache;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\CodeCoverageReportNotConfiguredException;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -66,7 +64,7 @@ final class TestRunner
      * @throws XdebugNotEnabledException
      * @throws XmlConfiguration\Exception
      */
-    public function run(Configuration $configuration, TestSuite $suite): void
+    public function run(Configuration $configuration, ResultCache $resultCache, TestSuite $suite): void
     {
         Event\Facade::emitter()->testRunnerStarted();
 
@@ -74,20 +72,12 @@ final class TestRunner
             mt_srand($configuration->randomOrderSeed());
         }
 
-        if ($configuration->cacheResult()) {
-            $cache = new DefaultResultCache($configuration->testResultCacheFile());
-
-            new ResultCacheHandler($cache);
-        }
-
         if ($configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
             $configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
             $configuration->resolveDependencies()) {
-            $cache = $cache ?? new NullResultCache;
+            $resultCache->load();
 
-            $cache->load();
-
-            (new TestSuiteSorter($cache))->reorderTestsInSuite(
+            (new TestSuiteSorter($resultCache))->reorderTestsInSuite(
                 $suite,
                 $configuration->executionOrder(),
                 $configuration->resolveDependencies(),
@@ -100,8 +90,6 @@ final class TestRunner
                 $configuration->resolveDependencies()
             );
         }
-
-        Event\Facade::seal();
 
         (new TestSuiteFilterProcessor)->process($configuration, $suite);
 

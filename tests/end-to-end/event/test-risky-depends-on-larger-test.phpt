@@ -27,9 +27,9 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (2 tests)
+Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Event Facade Sealed
 Test Runner Execution Started (2 tests)
 Test Suite Started (%s/test-risky-depends-on-larger-test, 2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\LargeTest, 1 test)

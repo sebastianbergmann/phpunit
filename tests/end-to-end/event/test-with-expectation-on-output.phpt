@@ -28,9 +28,9 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (3 tests)
+Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Event Facade Sealed
 Test Runner Execution Started (3 tests)
 Test Suite Started (PHPUnit\TestFixture\Issue445Test, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\Issue445Test::testOutputWithExpectationBefore)

@@ -32,9 +32,9 @@ Empty data set provided by data provider
 
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\EmptyDataProviderTest".)
 Test Suite Loaded (0 tests)
+Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Event Facade Sealed
 Test Runner Execution Started (0 tests)
 Test Runner Execution Finished
 Test Runner Finished

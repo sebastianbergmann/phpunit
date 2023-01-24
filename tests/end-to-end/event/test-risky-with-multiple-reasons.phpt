@@ -29,9 +29,9 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (1 test)
+Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)

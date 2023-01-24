@@ -28,9 +28,9 @@ PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (1 test)
 Extension Loaded from PHAR (phpunit/phpunit-test-extension 1.0.0)
+Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (1 test)
 Test Suite Started (default, 1 test)

@@ -32,9 +32,9 @@ Data set #0 is invalid
 
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\InvalidDataProviderTest".)
 Test Suite Loaded (0 tests)
+Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Event Facade Sealed
 Test Runner Execution Started (0 tests)
 Test Runner Execution Finished
 Test Runner Finished

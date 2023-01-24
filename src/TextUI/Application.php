@@ -29,6 +29,9 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\ResultCache\DefaultResultCache;
+use PHPUnit\Runner\ResultCache\NullResultCache;
+use PHPUnit\Runner\ResultCache\ResultCacheHandler;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
@@ -122,9 +125,19 @@ final class Application
 
             TestResultFacade::init();
 
+            $cache = new NullResultCache;
+
+            if ($configuration->cacheResult()) {
+                $cache = new DefaultResultCache($configuration->testResultCacheFile());
+
+                new ResultCacheHandler($cache);
+            }
+
+            EventFacade::seal();
+
             $runner = new TestRunner;
 
-            $runner->run($configuration, $testSuite);
+            $runner->run($configuration, $cache, $testSuite);
 
             $testDoxResult = null;
 
