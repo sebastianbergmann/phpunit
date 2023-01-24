@@ -250,15 +250,6 @@ final class Application
             $this->exitWithErrorMessage($e->getMessage());
         }
 
-        if ($cliConfiguration->hasUnrecognizedOrderBy()) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'unrecognized --order-by option: %s',
-                    $cliConfiguration->unrecognizedOrderBy()
-                )
-            );
-        }
-
         return $cliConfiguration;
     }
 

@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\CliArguments;
 use function array_map;
 use function explode;
 use function is_numeric;
+use function sprintf;
 use PHPUnit\Runner\TestSuiteSorter;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
@@ -218,7 +219,6 @@ final class Builder
         $testSuffixes                      = null;
         $testSuite                         = null;
         $excludeTestSuite                  = null;
-        $unrecognizedOrderBy               = null;
         $useDefaultConfiguration           = true;
         $version                           = false;
         $logEventsText                     = null;
@@ -483,7 +483,12 @@ final class Builder
                                 break;
 
                             default:
-                                $unrecognizedOrderBy = $order;
+                                throw new Exception(
+                                    sprintf(
+                                        'unrecognized --order-by option: %s',
+                                        $order
+                                    )
+                                );
                         }
                     }
 
@@ -841,7 +846,6 @@ final class Builder
             $testSuffixes,
             $testSuite,
             $excludeTestSuite,
-            $unrecognizedOrderBy,
             $useDefaultConfiguration,
             $displayIncomplete,
             $displaySkipped,
