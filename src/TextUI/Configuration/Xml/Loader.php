@@ -81,7 +81,6 @@ final class Loader
 {
     /**
      * @throws Exception
-     * @throws XmlException
      */
     public function load(string $filename): LoadedFromFileConfiguration
     {
