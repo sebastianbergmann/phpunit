@@ -595,7 +595,6 @@
             )</code>
       <code>new TestDoxResultCollector</code>
       <code>new TestDoxResultCollector</code>
-      <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
     <UnresolvableInclude>
       <code>include_once $filename</code>
@@ -610,13 +609,18 @@
     <InvalidNullableReturnType>
       <code>bool</code>
       <code>string</code>
-      <code>string</code>
     </InvalidNullableReturnType>
     <NullableReturnStatement>
-      <code>$this-&gt;configurationFile</code>
       <code>$this-&gt;excludeTestSuite</code>
       <code>$this-&gt;teamCityPrinter</code>
     </NullableReturnStatement>
+  </file>
+  <file src="src/TextUI/Configuration/Cli/XmlConfigurationFileFinder.php">
+    <MissingThrowsDocblock>
+      <code>configurationFile</code>
+      <code>configurationFile</code>
+      <code>configurationFile</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Configuration.php">
     <LessSpecificReturnStatement>
@@ -714,13 +718,6 @@
     <DeprecatedMethod>
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/ConfigurationFileFinder.php">
-    <MissingThrowsDocblock>
-      <code>configurationFile</code>
-      <code>configurationFile</code>
-      <code>configurationFile</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion>
