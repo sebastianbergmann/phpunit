@@ -434,7 +434,7 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->configuration
+     * @psalm-assert-if-true !null $this->configurationFile
      */
     public function hasConfigurationFile(): bool
     {
