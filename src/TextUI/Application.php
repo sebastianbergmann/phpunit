@@ -31,6 +31,7 @@ use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
+use PHPUnit\Runner\ResultCache\ResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
@@ -125,19 +126,17 @@ final class Application
 
             TestResultFacade::init();
 
-            $cache = new NullResultCache;
-
-            if ($configuration->cacheResult()) {
-                $cache = new DefaultResultCache($configuration->testResultCacheFile());
-
-                new ResultCacheHandler($cache);
-            }
+            $resultCache = $this->initializeTestResultCache($configuration);
 
             EventFacade::seal();
 
             $runner = new TestRunner;
 
-            $runner->run($configuration, $cache, $testSuite);
+            $runner->run(
+                $configuration,
+                $resultCache,
+                $testSuite
+            );
 
             $testDoxResult = null;
 
@@ -502,5 +501,18 @@ final class Application
         }
 
         return null;
+    }
+
+    private function initializeTestResultCache(Configuration $configuration): ResultCache
+    {
+        if ($configuration->cacheResult()) {
+            $cache = new DefaultResultCache($configuration->testResultCacheFile());
+
+            new ResultCacheHandler($cache);
+
+            return $cache;
+        }
+
+        return new NullResultCache;
     }
 }

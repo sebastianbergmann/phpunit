@@ -583,6 +583,8 @@
       <code>new JunitXmlLogger(
                 OutputFacade::printerFor($configuration-&gt;logfileJunit()),
             )</code>
+      <code>new ResultCacheHandler($cache)</code>
+      <code>new ResultCacheHandler($cache)</code>
       <code>new TeamCityLogger(
                 DefaultPrinter::from(
                     $configuration-&gt;logfileTeamcity()
@@ -601,7 +603,12 @@
     </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Configuration/Builder.php">
-    <MissingThrowsDocblock occurrences="1"/>
+    <MissingThrowsDocblock>
+      <code>Registry::init(
+                $cliConfiguration,
+                $xmlConfiguration
+            )</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
     <ArgumentTypeCoercion>
