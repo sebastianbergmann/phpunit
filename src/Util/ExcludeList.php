@@ -137,7 +137,6 @@ final class ExcludeList
      * @psalm-var list<string>
      */
     private static array $directories = [];
-    private static bool $initialized  = false;
 
     /**
      * @psalm-param non-empty-string $directory
@@ -182,10 +181,6 @@ final class ExcludeList
 
     private static function initialize(): void
     {
-        if (self::$initialized) {
-            return;
-        }
-
         foreach (self::EXCLUDED_CLASS_NAMES as $className => $parent) {
             if (!class_exists($className)) {
                 continue;
