@@ -401,5 +401,30 @@
             <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
         </exec>
     </target>
+
+    <target name="package-extension-for-testing"
+            description="Package PHAR of test runner extension that is used for testing">
+        <delete dir="${basedir}/build/tmp"/>
+        <mkdir dir="${basedir}/build/tmp"/>
+
+        <copy tofile="${basedir}/build/tmp/manifest.xml" file="${basedir}/build/test-extension/manifest.xml" />
+        <copy todir="${basedir}/build/tmp/phpunit-test-extension">
+            <fileset dir="${basedir}/build/test-extension/src">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <exec executable="${basedir}/tools/phpab" taskname="phpab">
+            <arg value="--all" />
+            <arg value="--static" />
+            <arg value="--once" />
+            <arg value="--phar" />
+            <arg value="--output" />
+            <arg path="${basedir}/tests/end-to-end/_files/phar-extension/tools/phpunit.d/phpunit-test-extension-1.0.0.phar" />
+            <arg path="${basedir}/build/tmp" />
+        </exec>
+
+        <delete dir="${basedir}/build/tmp"/>
+    </target>
 </project>
 
