@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/phar-extension';
+$_SERVER['argv'][] = __DIR__ . '/../_files/phar-extension/phpunit.xml';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -28,19 +28,20 @@ PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (1 test)
 Extension Loaded from PHAR (phpunit/phpunit-test-extension 1.0.0)
+Extension Bootstrapped (PHPUnit\TestFixture\MyExtension\MyExtensionBootstrap)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (1 test)
 Test Suite Started (default, 1 test)
-Test Suite Started (PHPUnit\TestFixture\TestExtension\ExtensionTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\TestExtension\ExtensionTest::testOne)
-Test Prepared (PHPUnit\TestFixture\TestExtension\ExtensionTest::testOne)
+Test Suite Started (PHPUnit\TestFixture\Event\MyExtension\Test, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
+Test Prepared (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
 Assertion Succeeded (Constraint: is true, Value: true)
-Test Passed (PHPUnit\TestFixture\TestExtension\ExtensionTest::testOne)
-Test Finished (PHPUnit\TestFixture\TestExtension\ExtensionTest::testOne)
-Test Suite Finished (PHPUnit\TestFixture\TestExtension\ExtensionTest, 1 test)
+Test Passed (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
+Test Finished (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
+Test Suite Finished (PHPUnit\TestFixture\Event\MyExtension\Test, 1 test)
 Test Suite Finished (default, 1 test)
 Test Suite Finished (1 test)
 Test Runner Execution Finished

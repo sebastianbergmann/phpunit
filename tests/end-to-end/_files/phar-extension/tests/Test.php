@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\TestExtension;
+namespace PHPUnit\TestFixture\Event\MyExtension;
 
 use PHPUnit\Framework\TestCase;
 
-final class ExtensionTest extends TestCase
+final class Test extends TestCase
 {
     public function testOne(): void
     {
-        $this->assertTrue((new Test)->works());
+        $this->assertTrue(true);
     }
 }
