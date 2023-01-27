@@ -84,9 +84,24 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::incomplete());
     }
 
+    public function testTriggeredNotice(): void
+    {
+        $this->updateTestStatus(TestStatus::notice());
+    }
+
+    public function testTriggeredDeprecation(): void
+    {
+        $this->updateTestStatus(TestStatus::deprecation());
+    }
+
     public function testConsideredRisky(): void
     {
         $this->updateTestStatus(TestStatus::risky());
+    }
+
+    public function testTriggeredWarning(): void
+    {
+        $this->updateTestStatus(TestStatus::warning());
     }
 
     public function testFailed(): void
@@ -122,6 +137,10 @@ final class ProgressPrinter
             $this->printProgressForIncomplete();
         } elseif ($this->status->isRisky()) {
             $this->printProgressForRisky();
+        } elseif ($this->status->isNotice()) {
+            $this->printProgressForNotice();
+        } elseif ($this->status->isDeprecation()) {
+            $this->printProgressForDeprecation();
         } elseif ($this->status->isWarning()) {
             $this->printProgressForWarning();
         } elseif ($this->status->isFailure()) {
@@ -141,15 +160,23 @@ final class ProgressPrinter
     private function registerSubscribers(): void
     {
         Facade::registerSubscribers(
-            new TestRunnerExecutionStartedSubscriber($this),
-            new TestPreparedSubscriber($this),
-            new TestFinishedSubscriber($this),
+            new BeforeTestClassMethodErroredSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
+            new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
+            new TestPreparedSubscriber($this),
+            new TestRunnerExecutionStartedSubscriber($this),
             new TestSkippedSubscriber($this),
-            new BeforeTestClassMethodErroredSubscriber($this),
+            new TestTriggeredDeprecationSubscriber($this),
+            new TestTriggeredNoticeSubscriber($this),
+            new TestTriggeredPhpDeprecationSubscriber($this),
+            new TestTriggeredPhpNoticeSubscriber($this),
+            new TestTriggeredPhpunitDeprecationSubscriber($this),
+            new TestTriggeredPhpunitWarningSubscriber($this),
+            new TestTriggeredPhpWarningSubscriber($this),
+            new TestTriggeredWarningSubscriber($this),
         );
     }
 
@@ -176,6 +203,16 @@ final class ProgressPrinter
     private function printProgressForIncomplete(): void
     {
         $this->printProgressWithColor('fg-yellow, bold', 'I');
+    }
+
+    private function printProgressForNotice(): void
+    {
+        $this->printProgressWithColor('fg-yellow, bold', 'N');
+    }
+
+    private function printProgressForDeprecation(): void
+    {
+        $this->printProgressWithColor('fg-yellow, bold', 'D');
     }
 
     private function printProgressForRisky(): void
