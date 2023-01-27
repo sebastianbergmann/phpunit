@@ -11,4 +11,4 @@ $end     = \strpos($buffer, '\'', $start);
 $version = \substr($buffer, $start, $end - $start);
 $version = new Version($version, __DIR__ . '/../../');
 
-print $version->getVersion();
+print $version->asString();
