@@ -169,7 +169,7 @@ abstract class Assert
     final public static function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
     {
         if ($isNativeType === null) {
-            $isNativeType = Type::isType($type);
+            $isNativeType = self::isNativeType($type);
         }
 
         static::assertThat(
@@ -209,7 +209,7 @@ abstract class Assert
     final public static function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
     {
         if ($isNativeType === null) {
-            $isNativeType = Type::isType($type);
+            $isNativeType = self::isNativeType($type);
         }
 
         static::assertThat(
@@ -2213,5 +2213,13 @@ abstract class Assert
     final public static function resetCount(): void
     {
         self::$count = 0;
+    }
+
+    private static function isNativeType(string $type): bool
+    {
+        return match ($type) {
+            'numeric', 'integer', 'int', 'iterable', 'float', 'string', 'boolean', 'bool', 'null', 'array', 'object', 'resource', 'scalar' => true,
+            default => false,
+        };
     }
 }
