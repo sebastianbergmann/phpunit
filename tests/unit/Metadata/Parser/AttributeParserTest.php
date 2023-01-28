@@ -721,7 +721,7 @@ final class AttributeParserTest extends TestCase
     #[TestDox('Parses #[RequiresOperatingSystem] attribute on method')]
     public function test_parses_RequiresOperatingSystem_attribute_on_method(): void
     {
-        $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemTest::class)->isRequiresOperatingSystem();
+        $metadata = (new AttributeParser)->forMethod(RequiresOperatingSystemTest::class, 'testOne')->isRequiresOperatingSystem();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
