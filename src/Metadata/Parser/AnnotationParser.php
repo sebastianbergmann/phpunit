@@ -384,17 +384,13 @@ final class AnnotationParser implements Parser
         );
     }
 
-    private function stringToBool(string $value): ?bool
+    private function stringToBool(string $value): bool
     {
         if ($value === 'enabled') {
             return true;
         }
 
-        if ($value === 'disabled') {
-            return false;
-        }
-
-        return null;
+        return false;
     }
 
     private function cleanUpCoversOrUsesTarget(string $value): string

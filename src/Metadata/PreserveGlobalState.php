@@ -16,9 +16,9 @@ namespace PHPUnit\Metadata;
  */
 final class PreserveGlobalState extends Metadata
 {
-    private readonly ?bool $enabled;
+    private readonly bool $enabled;
 
-    protected function __construct(int $level, ?bool $enabled)
+    protected function __construct(int $level, bool $enabled)
     {
         parent::__construct($level);
 
@@ -30,7 +30,7 @@ final class PreserveGlobalState extends Metadata
         return true;
     }
 
-    public function enabled(): ?bool
+    public function enabled(): bool
     {
         return $this->enabled;
     }

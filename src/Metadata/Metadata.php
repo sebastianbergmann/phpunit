@@ -33,22 +33,22 @@ abstract class Metadata
         return new AfterClass(self::METHOD_LEVEL);
     }
 
-    public static function backupGlobalsOnClass(?bool $enabled): BackupGlobals
+    public static function backupGlobalsOnClass(bool $enabled): BackupGlobals
     {
         return new BackupGlobals(self::CLASS_LEVEL, $enabled);
     }
 
-    public static function backupGlobalsOnMethod(?bool $enabled): BackupGlobals
+    public static function backupGlobalsOnMethod(bool $enabled): BackupGlobals
     {
         return new BackupGlobals(self::METHOD_LEVEL, $enabled);
     }
 
-    public static function backupStaticPropertiesOnClass(?bool $enabled): BackupStaticProperties
+    public static function backupStaticPropertiesOnClass(bool $enabled): BackupStaticProperties
     {
         return new BackupStaticProperties(self::CLASS_LEVEL, $enabled);
     }
 
-    public static function backupStaticPropertiesOnMethod(?bool $enabled): BackupStaticProperties
+    public static function backupStaticPropertiesOnMethod(bool $enabled): BackupStaticProperties
     {
         return new BackupStaticProperties(self::METHOD_LEVEL, $enabled);
     }
@@ -188,12 +188,12 @@ abstract class Metadata
         return new PreCondition(self::METHOD_LEVEL);
     }
 
-    public static function preserveGlobalStateOnClass(?bool $enabled): PreserveGlobalState
+    public static function preserveGlobalStateOnClass(bool $enabled): PreserveGlobalState
     {
         return new PreserveGlobalState(self::CLASS_LEVEL, $enabled);
     }
 
-    public static function preserveGlobalStateOnMethod(?bool $enabled): PreserveGlobalState
+    public static function preserveGlobalStateOnMethod(bool $enabled): PreserveGlobalState
     {
         return new PreserveGlobalState(self::METHOD_LEVEL, $enabled);
     }

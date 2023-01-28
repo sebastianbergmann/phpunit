@@ -153,16 +153,16 @@ final class TestBuilder
 
             assert($metadata instanceof BackupGlobals);
 
-            if ($metadata->enabled() !== null) {
-                $backupGlobals = $metadata->enabled();
+            if ($metadata->enabled()) {
+                $backupGlobals = true;
             }
         } elseif ($metadataForClass->isBackupGlobals()->isNotEmpty()) {
             $metadata = $metadataForClass->isBackupGlobals()->asArray()[0];
 
             assert($metadata instanceof BackupGlobals);
 
-            if ($metadata->enabled() !== null) {
-                $backupGlobals = $metadata->enabled();
+            if ($metadata->enabled()) {
+                $backupGlobals = true;
             }
         }
 
@@ -180,16 +180,16 @@ final class TestBuilder
 
             assert($metadata instanceof BackupStaticProperties);
 
-            if ($metadata->enabled() !== null) {
-                $backupStaticProperties = $metadata->enabled();
+            if ($metadata->enabled()) {
+                $backupStaticProperties = true;
             }
         } elseif ($metadataForClass->isBackupStaticProperties()->isNotEmpty()) {
             $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
 
             assert($metadata instanceof BackupStaticProperties);
 
-            if ($metadata->enabled() !== null) {
-                $backupStaticProperties = $metadata->enabled();
+            if ($metadata->enabled()) {
+                $backupStaticProperties = true;
             }
         }
 
