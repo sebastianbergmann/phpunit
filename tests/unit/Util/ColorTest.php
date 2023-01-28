@@ -29,6 +29,7 @@ final class ColorTest extends TestCase
             'multiple colors'          => ['bold,dim,fg-blue,bg-yellow', 'string', "\x1b[1;2;34;43mstring\x1b[0m"],
             'invalid color'            => ['fg-invalid', 'some text', 'some text'],
             'valid and invalid colors' => ['fg-invalid,bg-blue', 'some text', "\e[44msome text\e[0m"],
+            'empty string'             => ['fg-blue', '', ''],
         ];
     }
 
