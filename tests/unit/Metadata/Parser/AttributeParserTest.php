@@ -24,6 +24,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\DependsExternal;
+use PHPUnit\Framework\Attributes\DependsExternalUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsExternalUsingShallowClone;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingShallowClone;
+use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Large;
@@ -91,8 +97,17 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 #[CoversClass(DataProvider::class)]
 #[CoversClass(DataProviderExternal::class)]
 #[CoversClass(Depends::class)]
+#[CoversClass(DependsUsingDeepClone::class)]
+#[CoversClass(DependsUsingShallowClone::class)]
+#[CoversClass(DependsOnClass::class)]
+#[CoversClass(DependsOnClassUsingDeepClone::class)]
+#[CoversClass(DependsOnClassUsingShallowClone::class)]
 #[CoversClass(DependsExternal::class)]
+#[CoversClass(DependsExternalUsingDeepClone::class)]
+#[CoversClass(DependsExternalUsingShallowClone::class)]
 #[CoversClass(DoesNotPerformAssertions::class)]
+#[CoversClass(ExcludeGlobalVariableFromBackup::class)]
+#[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(Group::class)]
 #[CoversClass(Large::class)]
 #[CoversClass(Medium::class)]
@@ -105,6 +120,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 #[CoversClass(RequiresPhp::class)]
 #[CoversClass(RequiresPhpExtension::class)]
 #[CoversClass(RequiresPhpunit::class)]
+#[CoversClass(RequiresSetting::class)]
 #[CoversClass(RunClassInSeparateProcess::class)]
 #[CoversClass(RunInSeparateProcess::class)]
 #[CoversClass(RunTestsInSeparateProcesses::class)]
