@@ -9,19 +9,14 @@
  */
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
-use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\TestCase;
 
-#[RequiresPhpExtension('foo', '>= 1.0')]
-final class RequiresPhpExtensionTest extends TestCase
+#[RequiresSetting('setting', 'value')]
+final class RequiresSettingTest extends TestCase
 {
-    #[RequiresPhpExtension('bar', '>= 2.0')]
+    #[RequiresSetting('another-setting', 'another-value')]
     public function testOne(): void
-    {
-    }
-
-    #[RequiresPhpExtension('baz', '^1.0')]
-    public function testTwo(): void
     {
     }
 }

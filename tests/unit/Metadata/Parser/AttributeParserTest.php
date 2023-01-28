@@ -62,14 +62,17 @@ use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
+use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresSettingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
@@ -245,6 +248,17 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
+    #[TestDox('Parses #[RequiresMethod] attribute on class')]
+    public function test_parses_RequiresMethod_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresMethodTest::class)->isRequiresMethod();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresMethod());
+        $this->assertSame('ClassName', $metadata->asArray()[0]->className());
+        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
+    }
+
     #[TestDox('Parses #[RequiresFunction] attribute on class')]
     public function test_parses_RequiresFunction_attribute_on_class(): void
     {
@@ -303,7 +317,8 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
         $this->assertSame('foo', $metadata->asArray()[0]->extension());
-        $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
+        $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
+        $this->assertSame('>= 1.0', $metadata->asArray()[0]->versionRequirement()->asString());
     }
 
     #[TestDox('Parses #[RequiresPhpunit] attribute on class')]
@@ -324,6 +339,23 @@ final class AttributeParserTest extends TestCase
         assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
+    }
+
+    #[TestDox('Parses #[RequiresSetting] attribute on class')]
+    public function test_parses_RequiresSetting_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresSettingTest::class)->isRequiresSetting();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresSetting());
+
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresSetting);
+
+        $this->assertSame('setting', $requirement->setting());
+        $this->assertSame('value', $requirement->value());
     }
 
     #[TestDox('Parses #[RunClassInSeparateProcess] attribute on class')]
@@ -708,6 +740,17 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
+    #[TestDox('Parses #[RequiresMethod] attribute on method')]
+    public function test_parses_RequiresMethod_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(RequiresMethodTest::class, 'testOne')->isRequiresMethod();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresMethod());
+        $this->assertSame('AnotherClassName', $metadata->asArray()[0]->className());
+        $this->assertSame('anotherMethodName', $metadata->asArray()[0]->methodName());
+    }
+
     #[TestDox('Parses #[RequiresFunction] attribute on method')]
     public function test_parses_RequiresFunction_attribute_on_method(): void
     {
@@ -778,7 +821,7 @@ final class AttributeParserTest extends TestCase
 
         assert($versionRequirement instanceof ComparisonRequirement);
 
-        $this->assertSame('>= 1.0', $versionRequirement->asString());
+        $this->assertSame('>= 2.0', $versionRequirement->asString());
 
         $metadata = (new AttributeParser)->forMethod(RequiresPhpExtensionTest::class, 'testTwo');
 
@@ -818,6 +861,23 @@ final class AttributeParserTest extends TestCase
         assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('^10.0', $versionRequirement->asString());
+    }
+
+    #[TestDox('Parses #[RequiresSetting] attribute on method')]
+    public function test_parses_RequiresSetting_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(RequiresSettingTest::class, 'testOne')->isRequiresSetting();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresSetting());
+
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresSetting);
+
+        $this->assertSame('another-setting', $requirement->setting());
+        $this->assertSame('another-value', $requirement->value());
     }
 
     #[TestDox('Parses #[RunInSeparateProcess] attribute on method')]
@@ -876,5 +936,21 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('another-ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    public function test_parses_attributes_for_class_and_method(): void
+    {
+        $metadata = (new AttributeParser)->forClassAndMethod(CoversTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata->isCoversClass());
+        $this->assertCount(1, $metadata->isCoversFunction());
+        $this->assertCount(2, $metadata->isCoversNothing());
+    }
+
+    public function test_ignores_attributes_not_owned_by_PHPUnit(): void
+    {
+        $metadata = (new AttributeParser)->forClassAndMethod(NonPhpunitAttributeTest::class, 'testOne');
+
+        $this->assertTrue($metadata->isEmpty());
     }
 }
