@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Added
 
+* [#4676](https://github.com/sebastianbergmann/phpunit/issues/4676): Event System for extending PHPUnit's test runner
 * [#4502](https://github.com/sebastianbergmann/phpunit/issues/4502): Support PHP 8 attributes for adding metadata to test classes and test methods as well as tested code units
 * [#4641](https://github.com/sebastianbergmann/phpunit/issues/4641): `assertStringEqualsStringIgnoringLineEndings()` and `assertStringContainsStringIgnoringLineEndings()`
 * [#4650](https://github.com/sebastianbergmann/phpunit/issues/4650): Support dist file name `phpunit.dist.xml`
