@@ -34,7 +34,5 @@ Thanks to everyone who has contributed to PHPUnit! You can find a detailed list 
 * [PHPUnit](https://github.com/sebastianbergmann/phpunit/graphs/contributors)
 * [php-code-coverage](https://github.com/sebastianbergmann/php-code-coverage/graphs/contributors)
 
-A very special thanks to everyone who has contributed to the documentation and helps maintain the translations:
-
-* [English](https://github.com/sebastianbergmann/phpunit-documentation-english/graphs/contributors)
+A very special thanks to everyone who has contributed to the [documentation](https://github.com/sebastianbergmann/phpunit-documentation-english/graphs/contributors).
 
