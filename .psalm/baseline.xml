@@ -1568,108 +1568,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Util/ExcludeList.php">
-    <InvalidConstantAssignmentValue>
-      <code>EXCLUDED_CLASS_NAMES = [
-        // composer
-        ClassLoader::class        =&gt; 1,
-
-        // doctrine/instantiator
-        Instantiator::class       =&gt; 1,
-
-        // myclabs/deepcopy
-        DeepCopy::class           =&gt; 1,
-
-        // nikic/php-parser
-        Parser::class             =&gt; 1,
-
-        // phar-io/manifest
-        Manifest::class           =&gt; 1,
-
-        // phar-io/version
-        PharIoVersion::class      =&gt; 1,
-
-        // phpdocumentor/reflection-common
-        Project::class            =&gt; 1,
-
-        // phpdocumentor/reflection-docblock
-        DocBlock::class           =&gt; 1,
-
-        // phpdocumentor/type-resolver
-        Type::class               =&gt; 1,
-
-        // phpspec/prophecy
-        Prophet::class            =&gt; 1,
-
-        // phpunit/phpunit
-        TestCase::class           =&gt; 2,
-
-        // phpunit/php-code-coverage
-        CodeCoverage::class       =&gt; 1,
-
-        // phpunit/php-file-iterator
-        FileIteratorFacade::class =&gt; 1,
-
-        // phpunit/php-invoker
-        Invoker::class            =&gt; 1,
-
-        // phpunit/php-text-template
-        Template::class           =&gt; 1,
-
-        // phpunit/php-timer
-        Timer::class              =&gt; 1,
-
-        // sebastian/cli-parser
-        CliParser::class          =&gt; 1,
-
-        // sebastian/code-unit
-        CodeUnit::class           =&gt; 1,
-
-        // sebastian/code-unit-reverse-lookup
-        Wizard::class             =&gt; 1,
-
-        // sebastian/comparator
-        Comparator::class         =&gt; 1,
-
-        // sebastian/complexity
-        Calculator::class         =&gt; 1,
-
-        // sebastian/diff
-        Diff::class               =&gt; 1,
-
-        // sebastian/environment
-        Runtime::class            =&gt; 1,
-
-        // sebastian/exporter
-        Exporter::class           =&gt; 1,
-
-        // sebastian/global-state
-        Snapshot::class           =&gt; 1,
-
-        // sebastian/lines-of-code
-        Counter::class            =&gt; 1,
-
-        // sebastian/object-enumerator
-        Enumerator::class         =&gt; 1,
-
-        // sebastian/recursion-context
-        Context::class            =&gt; 1,
-
-        // sebastian/resource-operations
-        ResourceOperations::class =&gt; 1,
-
-        // sebastian/type
-        TypeName::class           =&gt; 1,
-
-        // sebastian/version
-        Version::class            =&gt; 1,
-
-        // theseer/tokenizer
-        Tokenizer::class          =&gt; 1,
-
-        // webmozart/assert
-        Assert::class             =&gt; 1,
-    ]</code>
-    </InvalidConstantAssignmentValue>
     <MissingThrowsDocblock>
       <code>throw new Exception(
                 sprintf(
@@ -1678,13 +1576,6 @@
                 )
             );</code>
     </MissingThrowsDocblock>
-    <UndefinedClass>
-      <code>Assert</code>
-      <code>DocBlock</code>
-      <code>Project</code>
-      <code>Prophet</code>
-      <code>Type</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Filter.php">
     <MissingParamType>
