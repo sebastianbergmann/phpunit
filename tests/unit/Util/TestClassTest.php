@@ -108,7 +108,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 21,
                     ],
-                    'PHPUnit'  => ['version' => '1.0', 'operator' => ''],
+                    'PHPUnit' => ['version' => '1.0', 'operator' => ''],
                 ],
             ],
 
@@ -119,7 +119,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 28,
                     ],
-                    'PHP'      => ['version' => '2.0', 'operator' => ''],
+                    'PHP' => ['version' => '2.0', 'operator' => ''],
                 ],
             ],
 
@@ -131,8 +131,8 @@ final class TestClassTest extends TestCase
                         'PHPUnit' => 35,
                         'PHP'     => 36,
                     ],
-                    'PHPUnit'  => ['version' => '2.0', 'operator' => ''],
-                    'PHP'      => ['version' => '1.0', 'operator' => ''],
+                    'PHPUnit' => ['version' => '2.0', 'operator' => ''],
+                    'PHP'     => ['version' => '1.0', 'operator' => ''],
                 ],
             ],
 
@@ -143,7 +143,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 43,
                     ],
-                    'PHP'      => ['version' => '5.4.0RC6', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0RC6', 'operator' => ''],
                 ],
             ],
 
@@ -154,7 +154,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 50,
                     ],
-                    'PHP'      => ['version' => '5.4.0-alpha1', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0-alpha1', 'operator' => ''],
                 ],
             ],
 
@@ -165,7 +165,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 57,
                     ],
-                    'PHP'      => ['version' => '5.4.0beta2', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0beta2', 'operator' => ''],
                 ],
             ],
 
@@ -176,14 +176,14 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 64,
                     ],
-                    'PHP'      => ['version' => '5.4-dev', 'operator' => ''],
+                    'PHP' => ['version' => '5.4-dev', 'operator' => ''],
                 ],
             ],
 
             [
                 'testNine',
                 [
-                    '__OFFSET'  => [
+                    '__OFFSET' => [
                         '__FILE'            => $this->getRequirementsTestClassFile(),
                         'function_testFunc' => 71,
                     ],
@@ -194,7 +194,7 @@ final class TestClassTest extends TestCase
             [
                 'testTen',
                 [
-                    '__OFFSET'   => [
+                    '__OFFSET' => [
                         '__FILE'            => $this->getRequirementsTestClassFile(),
                         'extension_testExt' => 87,
                     ],
@@ -218,7 +218,7 @@ final class TestClassTest extends TestCase
             [
                 'testSpace',
                 [
-                    '__OFFSET'   => [
+                    '__OFFSET' => [
                         '__FILE'        => $this->getRequirementsTestClassFile(),
                         'extension_spl' => 173,
                         'OS'            => 174,
@@ -231,7 +231,7 @@ final class TestClassTest extends TestCase
             [
                 'testAllPossibleRequirements',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'                  => $this->getRequirementsTestClassFile(),
                         'PHP'                     => 102,
                         'PHPUnit'                 => 103,
@@ -243,17 +243,17 @@ final class TestClassTest extends TestCase
                         'extension_testExtThree'  => 109,
                         '__SETTING_not_a_setting' => 110,
                     ],
-                    'PHP'                => ['version' => '99-dev', 'operator' => ''],
-                    'PHPUnit'            => ['version' => '9-dev', 'operator' => ''],
-                    'OS'                 => 'DOESNOTEXIST',
-                    'functions'          => [
+                    'PHP'       => ['version' => '99-dev', 'operator' => ''],
+                    'PHPUnit'   => ['version' => '9-dev', 'operator' => ''],
+                    'OS'        => 'DOESNOTEXIST',
+                    'functions' => [
                         'testFuncOne',
                         'testFunc2',
                     ],
-                    'setting'            => [
+                    'setting' => [
                         'not_a_setting' => 'Off',
                     ],
-                    'extensions'         => [
+                    'extensions' => [
                         'testExtOne',
                         'testExt2',
                         'testExtThree',
@@ -266,7 +266,7 @@ final class TestClassTest extends TestCase
 
             ['testSpecificExtensionVersion',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'            => $this->getRequirementsTestClassFile(),
                         'extension_testExt' => 181,
                     ],
@@ -280,7 +280,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 190,
                     ],
-                    'PHP'      => ['version' => '5.4', 'operator' => '<'],
+                    'PHP' => ['version' => '5.4', 'operator' => '<'],
                 ],
             ],
             ['testPHPVersionOperatorLessThanEquals',
@@ -289,7 +289,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 199,
                     ],
-                    'PHP'      => ['version' => '5.4', 'operator' => '<='],
+                    'PHP' => ['version' => '5.4', 'operator' => '<='],
                 ],
             ],
             ['testPHPVersionOperatorGreaterThan',
@@ -298,7 +298,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 208,
                     ],
-                    'PHP'      => ['version' => '99', 'operator' => '>'],
+                    'PHP' => ['version' => '99', 'operator' => '>'],
                 ],
             ],
             ['testPHPVersionOperatorGreaterThanEquals',
@@ -307,7 +307,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 217,
                     ],
-                    'PHP'      => ['version' => '99', 'operator' => '>='],
+                    'PHP' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testPHPVersionOperatorEquals',
@@ -316,7 +316,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 226,
                     ],
-                    'PHP'      => ['version' => '5.4', 'operator' => '='],
+                    'PHP' => ['version' => '5.4', 'operator' => '='],
                 ],
             ],
             ['testPHPVersionOperatorDoubleEquals',
@@ -325,7 +325,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 235,
                     ],
-                    'PHP'      => ['version' => '5.4', 'operator' => '=='],
+                    'PHP' => ['version' => '5.4', 'operator' => '=='],
                 ],
             ],
             ['testPHPVersionOperatorBangEquals',
@@ -334,7 +334,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 244,
                     ],
-                    'PHP'      => ['version' => '99', 'operator' => '!='],
+                    'PHP' => ['version' => '99', 'operator' => '!='],
                 ],
             ],
             ['testPHPVersionOperatorNotEquals',
@@ -343,7 +343,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 253,
                     ],
-                    'PHP'      => ['version' => '99', 'operator' => '<>'],
+                    'PHP' => ['version' => '99', 'operator' => '<>'],
                 ],
             ],
             ['testPHPVersionOperatorNoSpace',
@@ -352,7 +352,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 262,
                     ],
-                    'PHP'      => ['version' => '99', 'operator' => '>='],
+                    'PHP' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testPHPUnitVersionOperatorLessThan',
@@ -361,7 +361,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 271,
                     ],
-                    'PHPUnit'  => ['version' => '1.0', 'operator' => '<'],
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '<'],
                 ],
             ],
             ['testPHPUnitVersionOperatorLessThanEquals',
@@ -370,7 +370,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 280,
                     ],
-                    'PHPUnit'  => ['version' => '1.0', 'operator' => '<='],
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '<='],
                 ],
             ],
             ['testPHPUnitVersionOperatorGreaterThan',
@@ -379,7 +379,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 289,
                     ],
-                    'PHPUnit'  => ['version' => '99', 'operator' => '>'],
+                    'PHPUnit' => ['version' => '99', 'operator' => '>'],
                 ],
             ],
             ['testPHPUnitVersionOperatorGreaterThanEquals',
@@ -388,7 +388,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 298,
                     ],
-                    'PHPUnit'  => ['version' => '99', 'operator' => '>='],
+                    'PHPUnit' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testPHPUnitVersionOperatorEquals',
@@ -397,7 +397,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 307,
                     ],
-                    'PHPUnit'  => ['version' => '1.0', 'operator' => '='],
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '='],
                 ],
             ],
             ['testPHPUnitVersionOperatorDoubleEquals',
@@ -406,7 +406,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 316,
                     ],
-                    'PHPUnit'  => ['version' => '1.0', 'operator' => '=='],
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '=='],
                 ],
             ],
             ['testPHPUnitVersionOperatorBangEquals',
@@ -415,7 +415,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 325,
                     ],
-                    'PHPUnit'  => ['version' => '99', 'operator' => '!='],
+                    'PHPUnit' => ['version' => '99', 'operator' => '!='],
                 ],
             ],
             ['testPHPUnitVersionOperatorNotEquals',
@@ -424,7 +424,7 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 334,
                     ],
-                    'PHPUnit'  => ['version' => '99', 'operator' => '<>'],
+                    'PHPUnit' => ['version' => '99', 'operator' => '<>'],
                 ],
             ],
             ['testPHPUnitVersionOperatorNoSpace',
@@ -433,12 +433,12 @@ final class TestClassTest extends TestCase
                         '__FILE'  => $this->getRequirementsTestClassFile(),
                         'PHPUnit' => 343,
                     ],
-                    'PHPUnit'  => ['version' => '99', 'operator' => '>='],
+                    'PHPUnit' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testExtensionVersionOperatorLessThanEquals',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 357,
                     ],
@@ -448,7 +448,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorGreaterThan',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 364,
                     ],
@@ -458,7 +458,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorGreaterThanEquals',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 371,
                     ],
@@ -468,7 +468,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorEquals',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 378,
                     ],
@@ -478,7 +478,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorDoubleEquals',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 385,
                     ],
@@ -488,7 +488,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorBangEquals',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 392,
                     ],
@@ -498,7 +498,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorNotEquals',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
                         'extension_testExtOne' => 399,
                     ],
@@ -508,7 +508,7 @@ final class TestClassTest extends TestCase
             ],
             ['testExtensionVersionOperatorNoSpace',
                 [
-                    '__OFFSET'           => [
+                    '__OFFSET' => [
                         '__FILE'               => $this->fileRequirementsTest,
                         'extension_testExtOne' => 406,
                     ],
@@ -559,7 +559,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintTildeMajor',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '~1.0',
                     ],
                     'PHPUnit' => [
@@ -570,7 +570,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintCaretMajor',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '^1.0',
                     ],
                     'PHPUnit' => [
@@ -581,7 +581,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintTildeMinor',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '~3.4.7',
                     ],
                     'PHPUnit' => [
@@ -592,7 +592,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintCaretMinor',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '^7.0.17',
                     ],
                     'PHPUnit' => [
@@ -603,7 +603,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintCaretOr',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '^5.6 || ^7.0',
                     ],
                     'PHPUnit' => [
@@ -614,7 +614,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintTildeOr',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '~5.6.22 || ~7.0.17',
                     ],
                     'PHPUnit' => [
@@ -625,7 +625,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintTildeOrCaret',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '~5.6.22 || ^7.0',
                     ],
                     'PHPUnit' => [
@@ -636,7 +636,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintCaretOrTilde',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '^5.6 || ~7.0.17',
                     ],
                     'PHPUnit' => [
@@ -647,7 +647,7 @@ final class TestClassTest extends TestCase
             [
                 'testVersionConstraintRegexpIgnoresWhitespace',
                 [
-                    'PHP'     => [
+                    'PHP' => [
                         'constraint' => '~5.6.22 || ~7.0.17',
                     ],
                     'PHPUnit' => [
@@ -683,7 +683,7 @@ final class TestClassTest extends TestCase
         $file      = $reflector->getFileName();
 
         $expectedAnnotations = [
-            '__OFFSET'   => [
+            '__OFFSET' => [
                 '__FILE'                  => $file,
                 'PHP'                     => 22,
                 'PHPUnit'                 => 23,
@@ -693,10 +693,10 @@ final class TestClassTest extends TestCase
                 'function_testFuncMethod' => 25,
                 'extension_testExtMethod' => 26,
             ],
-            'PHP'        => ['version' => '5.4', 'operator' => ''],
-            'PHPUnit'    => ['version' => '3.7', 'operator' => ''],
-            'OS'         => 'WINNT',
-            'functions'  => [
+            'PHP'       => ['version' => '5.4', 'operator' => ''],
+            'PHPUnit'   => ['version' => '3.7', 'operator' => ''],
+            'OS'        => 'WINNT',
+            'functions' => [
                 'testFuncClass',
                 'testFuncMethod',
             ],
