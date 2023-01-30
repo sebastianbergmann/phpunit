@@ -1778,12 +1778,7 @@
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
     <UndefinedClass>
-      <code>Assert</code>
-      <code>DocBlock</code>
       <code>Invoker</code>
-      <code>Project</code>
-      <code>Prophet</code>
-      <code>Type</code>
     </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
