@@ -102,7 +102,13 @@ jobs:
       - name: Install dependencies with Composer
         run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
-      - name: Run tests with PHPUnit
+      - name: Run tests with PHPUnit on stable PHP version
+        if: matrix.php-version != '8.3'
+        run: ./phpunit --testsuite unit
+
+      - name: Run tests with PHPUnit on unstable PHP version
+        if: matrix.php-version == '8.3'
+        continue-on-error: true
         run: ./phpunit --testsuite unit
 
   end-to-end-tests:
@@ -151,7 +157,13 @@ jobs:
       - name: Install dependencies with Composer
         run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
-      - name: Run tests with PHPUnit
+      - name: Run tests with PHPUnit on stable PHP version
+        if: matrix.php-version != '8.3'
+        run: ./phpunit --testsuite end-to-end
+
+      - name: Run tests with PHPUnit on unstable PHP version
+        if: matrix.php-version == '8.3'
+        continue-on-error: true
         run: ./phpunit --testsuite end-to-end
 
   code-coverage:
