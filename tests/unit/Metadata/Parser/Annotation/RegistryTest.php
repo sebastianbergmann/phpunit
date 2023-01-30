@@ -31,7 +31,7 @@ final class RegistryTest extends TestCase
 
         $this->assertSame(
             [
-                'covers'             => [
+                'covers' => [
                     '::\PHPUnit\TestFixture\Metadata\Annotation\f()',
                     '\PHPUnit\TestFixture\Metadata\Annotation\Example',
                 ],

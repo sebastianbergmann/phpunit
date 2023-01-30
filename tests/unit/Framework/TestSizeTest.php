@@ -26,23 +26,23 @@ final class TestSizeTest extends TestCase
     public static function comparisonProvider(): array
     {
         return [
-            'small test is not greater than small test'   => [
+            'small test is not greater than small test' => [
                 false,
                 TestSize::small(),
                 TestSize::small(),
             ],
-            'small test is not greater than medium test'  => [
+            'small test is not greater than medium test' => [
                 false,
                 TestSize::small(),
                 TestSize::medium(),
             ],
-            'small test is not greater than large test'   => [
+            'small test is not greater than large test' => [
                 false,
                 TestSize::small(),
                 TestSize::large(),
             ],
 
-            'medium test is greater than small test'      => [
+            'medium test is greater than small test' => [
                 true,
                 TestSize::medium(),
                 TestSize::small(),
@@ -52,23 +52,23 @@ final class TestSizeTest extends TestCase
                 TestSize::medium(),
                 TestSize::medium(),
             ],
-            'medium test is not greater than large test'  => [
+            'medium test is not greater than large test' => [
                 false,
                 TestSize::medium(),
                 TestSize::large(),
             ],
 
-            'large test is greater than small test'       => [
+            'large test is greater than small test' => [
                 true,
                 TestSize::large(),
                 TestSize::small(),
             ],
-            'large test is greater than medium test'      => [
+            'large test is greater than medium test' => [
                 true,
                 TestSize::large(),
                 TestSize::medium(),
             ],
-            'large test is not greater than large test'   => [
+            'large test is not greater than large test' => [
                 false,
                 TestSize::large(),
                 TestSize::large(),

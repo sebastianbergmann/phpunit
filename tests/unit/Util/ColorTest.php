@@ -39,7 +39,7 @@ final class ColorTest extends TestCase
         $sepDim = Color::dim($sep);
 
         return [
-            'null previous path'  => [
+            'null previous path' => [
                 null,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
                 false,
@@ -51,19 +51,19 @@ final class ColorTest extends TestCase
                 false,
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
             ],
-            'from root'           => [
+            'from root' => [
                 $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
                 false,
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
             ],
-            'partial part'        => [
+            'partial part' => [
                 $sep . 'php' . $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
                 false,
                 Color::dim($sep . 'php' . $sep) . 'unit' . $sepDim . 'test.phpt',
             ],
-            'colorize filename'   => [
+            'colorize filename' => [
                 '',
                 $sep . '_d-i.r' . $sep . 't-e_s.t.phpt',
                 true,

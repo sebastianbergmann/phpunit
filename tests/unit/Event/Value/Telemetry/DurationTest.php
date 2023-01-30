@@ -32,13 +32,13 @@ final class DurationTest extends TestCase
                 123,
             ],
 
-            'less than an hour'  => [
+            'less than an hour' => [
                 '00:59:19.000000123',
                 3559,
                 123,
             ],
 
-            'more than an hour'  => [
+            'more than an hour' => [
                 '01:00:01.000000123',
                 3601,
                 123,
