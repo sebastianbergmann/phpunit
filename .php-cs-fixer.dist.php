@@ -38,6 +38,7 @@ $config->setFinder($finder)
         'blank_line_before_statement' => [
             'statements' => [
                 'break',
+                'case',
                 'continue',
                 'declare',
                 'default',
@@ -49,6 +50,7 @@ $config->setFinder($finder)
                 'if',
                 'include',
                 'include_once',
+                'phpdoc',
                 'require',
                 'require_once',
                 'return',
@@ -57,6 +59,7 @@ $config->setFinder($finder)
                 'try',
                 'while',
                 'yield',
+                'yield_from',
             ],
         ],
         'braces' => [
