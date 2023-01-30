@@ -162,7 +162,7 @@ final class TestSuiteSorterTest extends TestCase
     public function orderDurationWithoutCacheProvider(): array
     {
         return [
-            'dependency-ignore'  => [
+            'dependency-ignore' => [
                 self::IGNORE_DEPENDENCIES,
                 [
                     MultiDependencyTest::class . '::testOne',
@@ -215,7 +215,7 @@ final class TestSuiteSorterTest extends TestCase
     public function orderDurationWithCacheProvider(): array
     {
         return [
-            'duration-same-dependency-ignore'       => [
+            'duration-same-dependency-ignore' => [
                 self::IGNORE_DEPENDENCIES,
                 [
                     'testOne'   => 1,
@@ -232,7 +232,7 @@ final class TestSuiteSorterTest extends TestCase
                     MultiDependencyTest::class . '::testFive',
                 ],
             ],
-            'duration-same-dependency-resolve'      => [
+            'duration-same-dependency-resolve' => [
                 self::RESOLVE_DEPENDENCIES,
                 [
                     'testOne'   => 1,
@@ -249,7 +249,7 @@ final class TestSuiteSorterTest extends TestCase
                     MultiDependencyTest::class . '::testFive',
                 ],
             ],
-            'duration-different-dependency-ignore'  => [
+            'duration-different-dependency-ignore' => [
                 self::IGNORE_DEPENDENCIES,
                 [
                     'testOne'   => 5,
@@ -320,7 +320,7 @@ final class TestSuiteSorterTest extends TestCase
     public function commonSorterOptionsProvider(): array
     {
         return [
-            'default'         => [
+            'default' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -346,7 +346,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // Reversing without checks should give a simple reverse order
-            'reverse'         => [
+            'reverse' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -387,7 +387,7 @@ final class TestSuiteSorterTest extends TestCase
     {
         return [
             // The most simple situation should work as normal
-            'default, no defects'                               => [
+            'default, no defects' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -407,7 +407,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // Running with an empty cache should not spook the TestSuiteSorter
-            'default, empty result cache'                       => [
+            'default, empty result cache' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -423,7 +423,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // testFive is independent and can be moved to the front
-            'default, testFive skipped'                         => [
+            'default, testFive skipped' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -443,7 +443,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // Defects in testFive and testTwo, but the faster testFive should be run first
-            'default, testTwo testFive skipped'                 => [
+            'default, testTwo testFive skipped' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -463,7 +463,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // Skipping testThree will move it to the front when ignoring dependencies
-            'default, testThree skipped'                        => [
+            'default, testThree skipped' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -483,7 +483,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // Skipping testThree will move it to the front but behind its dependencies
-            'default resolve, testThree skipped'                => [
+            'default resolve, testThree skipped' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::RESOLVE_DEPENDENCIES,
                 [
@@ -503,7 +503,7 @@ final class TestSuiteSorterTest extends TestCase
             ],
 
             // Skipping testThree will move it to the front and keep the others reversed
-            'reverse, testThree skipped'                        => [
+            'reverse, testThree skipped' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::IGNORE_DEPENDENCIES,
                 [
@@ -548,7 +548,7 @@ final class TestSuiteSorterTest extends TestCase
             // - skipped testThree: will move it to the front as far as possible
             // - testOne and testTwo are required before testThree, but can be reversed locally
             // - testFive is independent will remain reversed up front
-            'reverse resolve, testThree skipped'                => [
+            'reverse resolve, testThree skipped' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::RESOLVE_DEPENDENCIES,
                 [
@@ -568,7 +568,7 @@ final class TestSuiteSorterTest extends TestCase
             // Make sure the dependency resolver is not confused by failing tests.
             // Scenario: Four has a @depends on Three and fails. Result: Three is still run first
             // testFive also fails but can be moved around freely and will be up front.
-            'depends first, then defects'                       => [
+            'depends first, then defects' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::RESOLVE_DEPENDENCIES,
                 [
