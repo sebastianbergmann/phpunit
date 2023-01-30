@@ -72,13 +72,13 @@ final class ResultCacheExtensionTest extends TestCase
     public function longTestNamesDataprovider(): array
     {
         return [
-            'ClassName::testMethod'                                 => [
+            'ClassName::testMethod' => [
                 'testSomething',
                 TestCaseTest::class . '::testSomething', ],
             'ClassName::testMethod and data set number and vardump' => [
                 'testMethod with data set #123 (\'a\', "A", 0, false)',
                 TestCaseTest::class . '::testMethod with data set #123', ],
-            'ClassName::testMethod and data set name and vardump'   => [
+            'ClassName::testMethod and data set name and vardump' => [
                 'testMethod with data set "data name" (\'a\', "A\", 0, false)',
                 TestCaseTest::class . '::testMethod with data set "data name"', ],
         ];
