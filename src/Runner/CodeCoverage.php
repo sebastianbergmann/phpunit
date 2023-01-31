@@ -392,7 +392,7 @@ final class CodeCoverage
 
     private static function report(): Directory
     {
-        return self::instance()->getReport();
+        return self::instance()->buildReport();
     }
 
     /**
@@ -400,6 +400,6 @@ final class CodeCoverage
      */
     private static function tests(): array
     {
-        return self::instance()->getTests();
+        return self::instance()->data()->tests();
     }
 }
