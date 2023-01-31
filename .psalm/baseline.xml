@@ -441,9 +441,6 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/CodeCoverage.php">
-    <InternalMethod>
-      <code>tests</code>
-    </InternalMethod>
     <InvalidNullableReturnType>
       <code>Driver</code>
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
