@@ -22,7 +22,6 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter;
-use SebastianBergmann\CodeCoverage\Node\Directory;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
 use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
@@ -196,7 +195,7 @@ final class CodeCoverage
 
             try {
                 $writer = new CloverReport;
-                $writer->process(self::report(), $configuration->coverageClover());
+                $writer->process(self::instance(), $configuration->coverageClover());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -211,7 +210,7 @@ final class CodeCoverage
 
             try {
                 $writer = new CoberturaReport;
-                $writer->process(self::report(), $configuration->coverageCobertura());
+                $writer->process(self::instance(), $configuration->coverageCobertura());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -226,7 +225,7 @@ final class CodeCoverage
 
             try {
                 $writer = new Crap4jReport($configuration->coverageCrap4jThreshold());
-                $writer->process(self::report(), $configuration->coverageCrap4j());
+                $writer->process(self::instance(), $configuration->coverageCrap4j());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -265,7 +264,7 @@ final class CodeCoverage
                     $customCssFile
                 );
 
-                $writer->process(self::report(), $configuration->pathCoverage(), $configuration->coverageHtml());
+                $writer->process(self::instance(), $configuration->coverageHtml());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -297,7 +296,7 @@ final class CodeCoverage
                 $configuration->coverageTextShowOnlySummary()
             );
 
-            $textReport = $processor->process(self::report(), $configuration->pathCoverage(), $configuration->colors());
+            $textReport = $processor->process(self::instance(), $configuration->colors());
 
             if ($configuration->coverageText() === 'php://stdout') {
                 $printer->print($textReport);
@@ -311,7 +310,7 @@ final class CodeCoverage
 
             try {
                 $writer = new XmlReport(Version::id());
-                $writer->process(self::report(), self::tests(), $configuration->coverageXml());
+                $writer->process(self::instance(), $configuration->coverageXml());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -388,18 +387,5 @@ final class CodeCoverage
         }
 
         return self::$timer;
-    }
-
-    private static function report(): Directory
-    {
-        return self::instance()->getReport();
-    }
-
-    /**
-     * @psalm-return array<string, array{size: string, status: string}>
-     */
-    private static function tests(): array
-    {
-        return self::instance()->getTests();
     }
 }
