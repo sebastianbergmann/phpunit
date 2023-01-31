@@ -388,7 +388,12 @@
     </target>
 
     <target name="update-tools">
-        <exec executable="phive">
+        <exec executable="${basedir}/tools/phive">
+            <arg value="--no-progress"/>
+            <arg value="self-update"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/phive">
             <arg value="--no-progress"/>
             <arg value="update"/>
         </exec>
