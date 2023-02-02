@@ -21,6 +21,13 @@ use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
  */
 final class TestSuiteFilterProcessor
 {
+    private Factory $filterFactory;
+
+    public function __construct(?Factory $factory = new Factory())
+    {
+        $this->filterFactory = $factory;
+    }
+
     /**
      * @throws Event\RuntimeException
      * @throws FilterNotConfiguredException
@@ -35,22 +42,20 @@ final class TestSuiteFilterProcessor
             return;
         }
 
-        $filterFactory = new Factory;
-
         if ($configuration->hasExcludeGroups()) {
-            $filterFactory->addExcludeGroupFilter(
+            $this->filterFactory->addExcludeGroupFilter(
                 $configuration->excludeGroups()
             );
         }
 
         if ($configuration->hasGroups()) {
-            $filterFactory->addIncludeGroupFilter(
+            $this->filterFactory->addIncludeGroupFilter(
                 $configuration->groups()
             );
         }
 
         if ($configuration->hasTestsCovering()) {
-            $filterFactory->addIncludeGroupFilter(
+            $this->filterFactory->addIncludeGroupFilter(
                 array_map(
                     static fn (string $name): string => '__phpunit_covers_' . $name,
                     $configuration->testsCovering()
@@ -59,7 +64,7 @@ final class TestSuiteFilterProcessor
         }
 
         if ($configuration->hasTestsUsing()) {
-            $filterFactory->addIncludeGroupFilter(
+            $this->filterFactory->addIncludeGroupFilter(
                 array_map(
                     static fn (string $name): string => '__phpunit_uses_' . $name,
                     $configuration->testsUsing()
@@ -68,12 +73,12 @@ final class TestSuiteFilterProcessor
         }
 
         if ($configuration->hasFilter()) {
-            $filterFactory->addNameFilter(
+            $this->filterFactory->addNameFilter(
                 $configuration->filter()
             );
         }
 
-        $suite->injectFilter($filterFactory);
+        $suite->injectFilter($this->filterFactory);
 
         Event\Facade::emitter()->testSuiteFiltered(
             Event\TestSuite\TestSuite::fromTestSuite($suite)
