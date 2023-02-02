@@ -23,7 +23,7 @@ final class TestSuiteFilterProcessor
 {
     private Factory $filterFactory;
 
-    public function __construct(Factory $factory = new Factory())
+    public function __construct(Factory $factory = new Factory)
     {
         $this->filterFactory = $factory;
     }

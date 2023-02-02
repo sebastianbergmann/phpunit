@@ -54,7 +54,7 @@ final class TestRunner
                 );
             }
 
-            (new TestSuiteFilterProcessor(new Factory()))->process($configuration, $suite);
+            (new TestSuiteFilterProcessor(new Factory))->process($configuration, $suite);
 
             Event\Facade::emitter()->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuite::fromTestSuite($suite)
