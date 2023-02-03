@@ -19,6 +19,7 @@ use function count;
 use function implode;
 use function is_callable;
 use function is_file;
+use function is_subclass_of;
 use function sprintf;
 use function str_ends_with;
 use function str_starts_with;
@@ -334,10 +335,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        /** @psalm-var class-string $className */
-        $className   = $this->name;
-        $hookMethods = (new HookMethods)->hookMethods($className);
-
         $emitter                       = Event\Facade::emitter();
         $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
 
@@ -345,9 +342,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $methodsCalledBeforeFirstTest = [];
 
-        if (class_exists($this->name, false)) {
+        if ($this->isForTestClass()) {
+            $beforeClassMethods = (new HookMethods)->hookMethods($this->name)['beforeClass'];
+
             try {
-                foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
+                foreach ($beforeClassMethods as $beforeClassMethod) {
                     if ($this->methodDoesNotExistOrIsDeclaredInTestCase($beforeClassMethod)) {
                         continue;
                     }
@@ -409,8 +408,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $methodsCalledAfterLastTest = [];
 
-        if (class_exists($this->name, false)) {
-            foreach ($hookMethods['afterClass'] as $afterClassMethod) {
+        if ($this->isForTestClass()) {
+            $afterClassMethods = (new HookMethods)->hookMethods($this->name)['afterClass'];
+
+            foreach ($afterClassMethods as $afterClassMethod) {
                 if ($this->methodDoesNotExistOrIsDeclaredInTestCase($afterClassMethod)) {
                     continue;
                 }
@@ -554,6 +555,14 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function sortId(): string
     {
         return $this->getName() . '::class';
+    }
+
+    /**
+     * @psalm-assert-if-true class-string $this->name
+     */
+    public function isForTestClass(): bool
+    {
+        return class_exists($this->name, false) && is_subclass_of($this->name, TestCase::class);
     }
 
     /**
