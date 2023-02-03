@@ -177,10 +177,10 @@ final class Merger
 
         assert(is_int($columns));
 
-        $loadPharExtensions = true;
+        $noExtensions = false;
 
         if ($cliConfiguration->hasNoExtensions() && $cliConfiguration->noExtensions()) {
-            $loadPharExtensions = false;
+            $noExtensions = true;
         }
 
         $pharExtensionDirectory = null;
@@ -713,7 +713,7 @@ final class Merger
             $failOnWarning,
             $outputToStandardErrorStream,
             $columns,
-            $loadPharExtensions,
+            $noExtensions,
             $pharExtensionDirectory,
             $extensionBootstrappers,
             $backupGlobals,
