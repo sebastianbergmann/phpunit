@@ -340,62 +340,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
-        $methodsCalledBeforeFirstTest = [];
-
-        if ($this->isForTestClass()) {
-            $beforeClassMethods = (new HookMethods)->hookMethods($this->name)['beforeClass'];
-
-            try {
-                foreach ($beforeClassMethods as $beforeClassMethod) {
-                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($beforeClassMethod)) {
-                        continue;
-                    }
-
-                    if ($missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod)) {
-                        $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
-                    }
-
-                    $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
-                        $this->name,
-                        $beforeClassMethod
-                    );
-
-                    $emitter->testBeforeFirstTestMethodCalled(
-                        $this->name,
-                        $methodCalledBeforeFirstTest
-                    );
-
-                    $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
-
-                    call_user_func([$this->name, $beforeClassMethod]);
-                }
-            } catch (SkippedTestSuiteError) {
-                return;
-            } catch (Throwable $t) {
-                assert(isset($methodCalledBeforeFirstTest));
-
-                $emitter->testBeforeFirstTestMethodErrored(
-                    $this->name,
-                    $methodCalledBeforeFirstTest,
-                    Event\Code\Throwable::from($t)
-                );
-
-                if (!empty($methodsCalledBeforeFirstTest)) {
-                    $emitter->testBeforeFirstTestMethodFinished(
-                        $this->name,
-                        ...$methodsCalledBeforeFirstTest
-                    );
-                }
-
-                return;
-            }
-        }
-
-        if (!empty($methodsCalledBeforeFirstTest)) {
-            $emitter->testBeforeFirstTestMethodFinished(
-                $this->name,
-                ...$methodsCalledBeforeFirstTest
-            );
+        if (!$this->invokeMethodsBeforeFirstTest($emitter)) {
+            return;
         }
 
         foreach ($this as $test) {
@@ -406,42 +352,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $test->run();
         }
 
-        $methodsCalledAfterLastTest = [];
-
-        if ($this->isForTestClass()) {
-            $afterClassMethods = (new HookMethods)->hookMethods($this->name)['afterClass'];
-
-            foreach ($afterClassMethods as $afterClassMethod) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($afterClassMethod)) {
-                    continue;
-                }
-
-                try {
-                    call_user_func([$this->name, $afterClassMethod]);
-
-                    $methodCalledAfterLastTest = new Event\Code\ClassMethod(
-                        $this->name,
-                        $afterClassMethod
-                    );
-
-                    $emitter->testAfterLastTestMethodCalled(
-                        $this->name,
-                        $methodCalledAfterLastTest
-                    );
-
-                    $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
-                } catch (Throwable) {
-                    // @todo
-                }
-            }
-        }
-
-        if (!empty($methodsCalledAfterLastTest)) {
-            $emitter->testAfterLastTestMethodFinished(
-                $this->name,
-                ...$methodsCalledAfterLastTest
-            );
-        }
+        $this->invokeMethodsAfterLastTest($emitter);
 
         $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
     }
@@ -694,5 +605,116 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $message,
             Filter::getFilteredStacktrace($t)
         );
+    }
+
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     */
+    private function invokeMethodsBeforeFirstTest(Event\Emitter $emitter): bool
+    {
+        if (!$this->isForTestClass()) {
+            return true;
+        }
+
+        $methodsCalledBeforeFirstTest = [];
+
+        $beforeClassMethods = (new HookMethods)->hookMethods($this->name)['beforeClass'];
+
+        try {
+            foreach ($beforeClassMethods as $beforeClassMethod) {
+                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($beforeClassMethod)) {
+                    continue;
+                }
+
+                if ($missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod)) {
+                    $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
+                }
+
+                $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
+                    $this->name,
+                    $beforeClassMethod
+                );
+
+                $emitter->testBeforeFirstTestMethodCalled(
+                    $this->name,
+                    $methodCalledBeforeFirstTest
+                );
+
+                $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
+
+                call_user_func([$this->name, $beforeClassMethod]);
+            }
+        } catch (SkippedTestSuiteError) {
+            return false;
+        } catch (Throwable $t) {
+            assert(isset($methodCalledBeforeFirstTest));
+
+            $emitter->testBeforeFirstTestMethodErrored(
+                $this->name,
+                $methodCalledBeforeFirstTest,
+                Event\Code\Throwable::from($t)
+            );
+
+            if (!empty($methodsCalledBeforeFirstTest)) {
+                $emitter->testBeforeFirstTestMethodFinished(
+                    $this->name,
+                    ...$methodsCalledBeforeFirstTest
+                );
+            }
+
+            return false;
+        }
+
+        if (!empty($methodsCalledBeforeFirstTest)) {
+            $emitter->testBeforeFirstTestMethodFinished(
+                $this->name,
+                ...$methodsCalledBeforeFirstTest
+            );
+        }
+
+        return true;
+    }
+
+    private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
+    {
+        if (!$this->isForTestClass()) {
+            return;
+        }
+
+        $methodsCalledAfterLastTest = [];
+
+        $afterClassMethods = (new HookMethods)->hookMethods($this->name)['afterClass'];
+
+        foreach ($afterClassMethods as $afterClassMethod) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($afterClassMethod)) {
+                continue;
+            }
+
+            try {
+                call_user_func([$this->name, $afterClassMethod]);
+
+                $methodCalledAfterLastTest = new Event\Code\ClassMethod(
+                    $this->name,
+                    $afterClassMethod
+                );
+
+                $emitter->testAfterLastTestMethodCalled(
+                    $this->name,
+                    $methodCalledAfterLastTest
+                );
+
+                $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
+            } catch (Throwable) {
+                // @todo
+            }
+        }
+
+        if (!empty($methodsCalledAfterLastTest)) {
+            $emitter->testAfterLastTestMethodFinished(
+                $this->name,
+                ...$methodsCalledAfterLastTest
+            );
+        }
     }
 }

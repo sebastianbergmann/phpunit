@@ -297,8 +297,6 @@
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion>
       <code>$this-&gt;name</code>
-      <code>$this-&gt;name</code>
-      <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement>
       <code>$this-&gt;providedTests</code>
