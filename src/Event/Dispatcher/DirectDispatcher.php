@@ -54,13 +54,13 @@ final class DirectDispatcher implements SubscribableDispatcher
             );
         }
 
-        $eventClassName = $this->typeMap->map($subscriber);
+        foreach ($this->typeMap->map($subscriber) as $eventClassName) {
+            if (!array_key_exists($eventClassName, $this->subscribers)) {
+                $this->subscribers[$eventClassName] = [];
+            }
 
-        if (!array_key_exists($eventClassName, $this->subscribers)) {
-            $this->subscribers[$eventClassName] = [];
+            $this->subscribers[$eventClassName][] = $subscriber;
         }
-
-        $this->subscribers[$eventClassName][] = $subscriber;
     }
 
     /**

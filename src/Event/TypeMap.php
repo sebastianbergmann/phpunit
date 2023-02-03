@@ -15,6 +15,7 @@ use function class_implements;
 use function in_array;
 use function interface_exists;
 use function sprintf;
+use Generator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -114,13 +115,23 @@ final class TypeMap
 
     /**
      * @throws MapError
+     *
+     * @return Generator<class-string>
      */
-    public function map(Subscriber $subscriber): string
+    public function map(Subscriber $subscriber): Generator
     {
+        $found = false;
+
         foreach (class_implements($subscriber) as $interface) {
             if (array_key_exists($interface, $this->mapping)) {
-                return $this->mapping[$interface];
+                $found = true;
+
+                yield $this->mapping[$interface];
             }
+        }
+
+        if ($found) {
+            return;
         }
 
         throw new MapError(
