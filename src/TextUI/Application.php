@@ -101,14 +101,15 @@ final class Application
 
             $pharExtensions = null;
 
-            if ($configuration->loadPharExtensions() &&
-                $configuration->hasPharExtensionDirectory()) {
-                $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
-                    $configuration->pharExtensionDirectory()
-                );
-            }
+            if (!$configuration->noExtensions()) {
+                if ($configuration->hasPharExtensionDirectory()) {
+                    $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
+                        $configuration->pharExtensionDirectory()
+                    );
+                }
 
-            $this->bootstrapExtensions($configuration);
+                $this->bootstrapExtensions($configuration);
+            }
 
             CodeCoverage::init($configuration);
 

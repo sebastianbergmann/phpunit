@@ -17,4 +17,11 @@ require_once __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Error while bootstrapping extension: Class "PHPUnit\TestFixture\MyExtension\MyExtensionBootstrap" does not exist
+Runtime: %s
+Configuration: %s
+
+.                                                                   1 / 1 (100%)
+
+Time: %s, Memory: %s
+
+OK (1 test, 1 assertion)
