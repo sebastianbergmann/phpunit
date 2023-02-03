@@ -5,6 +5,20 @@
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code>ClassHasAttribute</code>
+      <code>ClassHasStaticAttribute</code>
+      <code>ObjectHasAttribute</code>
+      <code>new ClassHasAttribute($attributeName)</code>
+      <code>new ClassHasAttribute($attributeName)</code>
+      <code>new ClassHasAttribute($attributeName)</code>
+      <code>new ClassHasStaticAttribute($attributeName)</code>
+      <code>new ClassHasStaticAttribute($attributeName)</code>
+      <code>new ClassHasStaticAttribute($attributeName)</code>
+      <code>new ObjectHasAttribute($attributeName)</code>
+      <code>new ObjectHasAttribute($attributeName)</code>
+      <code>new ObjectHasAttribute($attributeName)</code>
+    </DeprecatedClass>
     <DeprecatedMethod>
       <code>Xml::import($actualElement)</code>
       <code>Xml::import($expectedElement)</code>
@@ -179,10 +193,17 @@
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedClass>
+      <code>ClassHasAttribute</code>
+      <code>ClassHasStaticAttribute</code>
       <code>InvokedAtIndexMatcher</code>
+      <code>ObjectHasAttribute</code>
       <code>new InvokedAtIndexMatcher($index)</code>
     </DeprecatedClass>
     <DeprecatedMethod>
+      <code>Assert::assertClassHasAttribute(...func_get_args())</code>
+      <code>Assert::assertClassHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::assertClassNotHasAttribute(...func_get_args())</code>
+      <code>Assert::assertClassNotHasStaticAttribute(...func_get_args())</code>
       <code>Assert::assertDirectoryNotExists(...func_get_args())</code>
       <code>Assert::assertDirectoryNotIsReadable(...func_get_args())</code>
       <code>Assert::assertDirectoryNotIsWritable(...func_get_args())</code>
@@ -193,7 +214,12 @@
       <code>Assert::assertNotIsReadable(...func_get_args())</code>
       <code>Assert::assertNotIsWritable(...func_get_args())</code>
       <code>Assert::assertNotRegExp(...func_get_args())</code>
+      <code>Assert::assertObjectHasAttribute(...func_get_args())</code>
+      <code>Assert::assertObjectNotHasAttribute(...func_get_args())</code>
       <code>Assert::assertRegExp(...func_get_args())</code>
+      <code>Assert::classHasAttribute(...func_get_args())</code>
+      <code>Assert::classHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::objectHasAttribute(...func_get_args())</code>
     </DeprecatedMethod>
     <MissingParamType>
       <code>$actual</code>
@@ -387,6 +413,9 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
+    <DeprecatedClass>
+      <code>ClassHasAttribute</code>
+    </DeprecatedClass>
     <MissingThrowsDocblock>
       <code>throw new Exception(
                 $e-&gt;getMessage(),
@@ -401,6 +430,9 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Object/ObjectHasAttribute.php">
+    <DeprecatedClass>
+      <code>ClassHasAttribute</code>
+    </DeprecatedClass>
     <MissingThrowsDocblock>
       <code>hasProperty</code>
     </MissingThrowsDocblock>
