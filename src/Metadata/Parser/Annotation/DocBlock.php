@@ -23,6 +23,7 @@ use function substr;
 use function trim;
 use PharIo\Version\Exception as PharIoVersionException;
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Metadata\AnnotationsAreNotSupportedForInternalClassesException;
 use PHPUnit\Metadata\InvalidVersionRequirementException;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
@@ -67,8 +68,15 @@ final class DocBlock
     private readonly int $startLine;
     private readonly string $fileName;
 
+    /**
+     * @throws AnnotationsAreNotSupportedForInternalClassesException
+     */
     public static function ofClass(ReflectionClass $class): self
     {
+        if ($class->isInternal()) {
+            throw new AnnotationsAreNotSupportedForInternalClassesException($class->getName());
+        }
+
         return new self(
             (string) $class->getDocComment(),
             self::extractAnnotationsFromReflector($class),
@@ -77,8 +85,15 @@ final class DocBlock
         );
     }
 
+    /**
+     * @throws AnnotationsAreNotSupportedForInternalClassesException
+     */
     public static function ofMethod(ReflectionMethod $method): self
     {
+        if ($method->getDeclaringClass()->isInternal()) {
+            throw new AnnotationsAreNotSupportedForInternalClassesException($method->getDeclaringClass()->getName());
+        }
+
         return new self(
             (string) $method->getDocComment(),
             self::extractAnnotationsFromReflector($method),
