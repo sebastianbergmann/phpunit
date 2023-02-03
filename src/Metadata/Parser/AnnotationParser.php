@@ -20,6 +20,7 @@ use function strlen;
 use function substr;
 use function trim;
 use PHPUnit\Metadata\Annotation\Parser\Registry as AnnotationRegistry;
+use PHPUnit\Metadata\AnnotationsAreNotSupportedForInternalClassesException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\ReflectionException;
@@ -36,6 +37,7 @@ final class AnnotationParser implements Parser
     /**
      * @psalm-param class-string $className
      *
+     * @throws AnnotationsAreNotSupportedForInternalClassesException
      * @throws InvalidVersionOperatorException
      * @throws ReflectionException
      */
@@ -158,6 +160,7 @@ final class AnnotationParser implements Parser
     /**
      * @psalm-param class-string $className
      *
+     * @throws AnnotationsAreNotSupportedForInternalClassesException
      * @throws InvalidVersionOperatorException
      * @throws ReflectionException
      */
@@ -374,6 +377,7 @@ final class AnnotationParser implements Parser
     /**
      * @psalm-param class-string $className
      *
+     * @throws AnnotationsAreNotSupportedForInternalClassesException
      * @throws InvalidVersionOperatorException
      * @throws ReflectionException
      */
