@@ -1168,9 +1168,13 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
     public static function assertClassHasAttribute(string $attributeName, string $className, string $message = ''): void
     {
+        self::createWarning('assertClassHasAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         if (!self::isValidClassAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
@@ -1188,9 +1192,13 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
     public static function assertClassNotHasAttribute(string $attributeName, string $className, string $message = ''): void
     {
+        self::createWarning('assertClassNotHasAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         if (!self::isValidClassAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
@@ -1214,9 +1222,13 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
     public static function assertClassHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
     {
+        self::createWarning('assertClassHasStaticAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         if (!self::isValidClassAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
@@ -1238,9 +1250,13 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
     public static function assertClassNotHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
     {
+        self::createWarning('assertClassNotHasStaticAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         if (!self::isValidClassAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
@@ -1266,9 +1282,13 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
     public static function assertObjectHasAttribute(string $attributeName, $object, string $message = ''): void
     {
+        self::createWarning('assertObjectHasAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
@@ -1292,9 +1312,13 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
     public static function assertObjectNotHasAttribute(string $attributeName, $object, string $message = ''): void
     {
+        self::createWarning('assertObjectNotHasAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
@@ -2668,18 +2692,33 @@ abstract class Assert
         );
     }
 
+    /**
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
+     */
     public static function classHasAttribute(string $attributeName): ClassHasAttribute
     {
+        self::createWarning('classHasAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         return new ClassHasAttribute($attributeName);
     }
 
+    /**
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
+     */
     public static function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
     {
+        self::createWarning('classHasStaticAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         return new ClassHasStaticAttribute($attributeName);
     }
 
+    /**
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
+     */
     public static function objectHasAttribute($attributeName): ObjectHasAttribute
     {
+        self::createWarning('objectHasAttribute() is deprecated and will be removed in PHPUnit 10.');
+
         return new ObjectHasAttribute($attributeName);
     }
 
