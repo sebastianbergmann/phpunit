@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Fixed
 
 * [#5165](https://github.com/sebastianbergmann/phpunit/issues/5165): `markTestSkipped()` not handled correctly when called in "before first test" method
+* [#5166](https://github.com/sebastianbergmann/phpunit/issues/5166): Error when generating TestDox output for risky test
 
 ## [10.0.2] - 2023-02-04
 
