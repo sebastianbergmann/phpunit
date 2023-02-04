@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-final class Issue5164Test extends TestCase
+final class Issue5165Test extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
