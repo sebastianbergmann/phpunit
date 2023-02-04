@@ -16,9 +16,9 @@ use function sprintf;
  */
 final class GeneratorNotSupportedException extends InvalidArgumentException
 {
-    public function __construct(string $parameterName)
+    public static function fromParameterName(string $parameterName): self
     {
-        parent::__construct(
+        return new self(
             sprintf(
                 'Passing an argument of type Generator for the %s parameter is not supported',
                 $parameterName
