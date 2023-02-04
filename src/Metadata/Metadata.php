@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata;
 
-use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Metadata\Version\Requirement;
 
 /**
@@ -305,12 +304,12 @@ abstract class Metadata
         return new Test(self::METHOD_LEVEL);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public static function testData(mixed ...$data): TestData
     {
-        return new TestData(self::METHOD_LEVEL, $data);
+        $name = isset($data['name']) ? (string) $data['name'] : null;
+        unset($data['name']);
+
+        return new TestData(self::METHOD_LEVEL, ...$data, name: $name);
     }
 
     public static function testDoxOnClass(string $text): TestDox
@@ -650,6 +649,7 @@ abstract class Metadata
 
     /**
      * @psalm-assert-if-true TestWith $this
+     * @psalm-assert-if-true TestData $this
      */
     public function isTestWith(): bool
     {

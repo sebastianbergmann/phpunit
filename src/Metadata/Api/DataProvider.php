@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata\Api;
 
-use PHPUnit\Metadata\TestData;
 use function array_key_exists;
 use function array_merge;
 use function assert;
@@ -35,6 +34,7 @@ use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\TestData;
 use PHPUnit\Metadata\TestWith;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;

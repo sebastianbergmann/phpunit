@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Framework\Attributes;
 
-use function is_string;
 use Attribute;
-use PHPUnit\Event\InvalidArgumentException;
 
 /**
  * @psalm-immutable
@@ -24,22 +22,10 @@ final class TestData
     private readonly array $data;
     private readonly ?string $name;
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function __construct(mixed ...$data)
     {
-        if (isset($data['name'])) {
-            if (!is_string($data['name'])) {
-                throw new InvalidArgumentException('Name must be of type string.');
-            }
-
-            $this->name = $data['name'];
-            unset($data['name']);
-        } else {
-            $this->name = null;
-        }
-
+        $this->name = isset($data['name']) ? (string) $data['name'] : null;
+        unset($data['name']);
         $this->data = $data;
     }
 

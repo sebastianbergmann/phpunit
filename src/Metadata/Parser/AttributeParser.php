@@ -56,6 +56,7 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestData;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
@@ -64,7 +65,6 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\Metadata\TestData;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use ReflectionClass;
 use ReflectionMethod;
@@ -578,7 +578,11 @@ final class AttributeParser implements Parser
                 case TestData::class:
                     assert($attributeInstance instanceof TestData);
 
-                    $result[] = Metadata::testData($attributeInstance->data(), name: $attributeInstance->name());
+                    if (null === $attributeInstance->name()) {
+                        $result[] = Metadata::testData(...$attributeInstance->data());
+                    } else {
+                        $result[] = Metadata::testData(...$attributeInstance->data(), name: $attributeInstance->name());
+                    }
 
                     break;
 
