@@ -22,15 +22,15 @@ Time: %s, Memory: %s
 
 There were 2 skipped tests:
 
-1) Issue5074Test::testOne
+1) Issue5164Test::testOne
 message
 
-%sIssue5074Test.php:%d
+%sIssue5164Test.php:%d
 
-2) Issue5074Test::testTwo
+2) Issue5164Test::testTwo
 message
 
-%sIssue5074Test.php:%d
+%sIssue5164Test.php:%d
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 2, Assertions: 0, Skipped: 2.
