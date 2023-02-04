@@ -9,8 +9,6 @@ $_SERVER['argv'][] = __DIR__ . '/5164/Issue5164Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/5164
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

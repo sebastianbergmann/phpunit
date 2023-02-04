@@ -628,7 +628,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         call_user_func([$this->name, $beforeClassMethod]);
                     }
                 }
-            } catch (SkippedTestSuiteError $error) {
+            } catch (SkippedTestSuiteError|SkippedTestError $error) {
                 foreach ($this->tests() as $test) {
                     $result->startTest($test);
                     $result->addFailure($test, $error, 0);
