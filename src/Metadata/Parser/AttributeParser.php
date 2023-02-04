@@ -64,6 +64,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\TestData;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use ReflectionClass;
 use ReflectionMethod;
@@ -571,6 +572,13 @@ final class AttributeParser implements Parser
 
                 case Test::class:
                     $result[] = Metadata::test();
+
+                    break;
+
+                case TestData::class:
+                    assert($attributeInstance instanceof TestData);
+
+                    $result[] = Metadata::testData($attributeInstance->data(), name: $attributeInstance->name());
 
                     break;
 

@@ -80,6 +80,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresSettingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
+use PHPUnit\TestFixture\Metadata\Attribute\TestDataTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
@@ -912,6 +913,17 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTest());
+    }
+
+    #[TestDox('Parses #[TestData] attribute with name on method')]
+    public function test_parses_TestData_attribute_with_name_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(TestDataTest::class, 'testOneWithName')->isTestWith();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestWith());
+        $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertSame('Name1', $metadata->asArray()[0]->name());
     }
 
     #[TestDox('Parses #[TestDox] attribute on method')]

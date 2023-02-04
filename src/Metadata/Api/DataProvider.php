@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use PHPUnit\Metadata\TestData;
 use function array_key_exists;
 use function array_merge;
 use function assert;
@@ -193,9 +194,26 @@ final class DataProvider
         $result = [];
 
         foreach ($testWith as $_testWith) {
-            assert($_testWith instanceof TestWith);
+            assert($_testWith instanceof TestWith || $_testWith instanceof TestData);
 
-            $result[] = $_testWith->data();
+            if ($_testWith instanceof TestData) {
+                $key = $_testWith->name();
+            } else {
+                $key = null;
+            }
+
+            if (null === $key) {
+                $result[] = $_testWith->data();
+            } elseif (array_key_exists($key, $result)) {
+                throw new InvalidDataProviderException(
+                    sprintf(
+                        'The key "%s" has already been defined by a previous TestData attribute',
+                        $key
+                    )
+                );
+            } else {
+                $result[$key] = $_testWith->data();
+            }
         }
 
         return $result;

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata;
 
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Metadata\Version\Requirement;
 
 /**
@@ -302,6 +303,14 @@ abstract class Metadata
     public static function test(): Test
     {
         return new Test(self::METHOD_LEVEL);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function testData(mixed ...$data): TestData
+    {
+        return new TestData(self::METHOD_LEVEL, $data);
     }
 
     public static function testDoxOnClass(string $text): TestDox
