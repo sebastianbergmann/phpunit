@@ -37,6 +37,7 @@ use Countable;
 use DOMAttr;
 use DOMDocument;
 use DOMElement;
+use Generator;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -278,6 +279,10 @@ abstract class Assert
      */
     public static function assertCount(int $expectedCount, $haystack, string $message = ''): void
     {
+        if ($haystack instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         if (!$haystack instanceof Countable && !is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
@@ -300,6 +305,10 @@ abstract class Assert
      */
     public static function assertNotCount(int $expectedCount, $haystack, string $message = ''): void
     {
+        if ($haystack instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         if (!$haystack instanceof Countable && !is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
@@ -451,6 +460,10 @@ abstract class Assert
      */
     public static function assertEmpty($actual, string $message = ''): void
     {
+        if ($actual instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $actual parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         static::assertThat($actual, static::isEmpty(), $message);
     }
 
@@ -464,6 +477,10 @@ abstract class Assert
      */
     public static function assertNotEmpty($actual, string $message = ''): void
     {
+        if ($actual instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $actual parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         static::assertThat($actual, static::logicalNot(static::isEmpty()), $message);
     }
 
@@ -1925,6 +1942,14 @@ abstract class Assert
      */
     public static function assertSameSize($expected, $actual, string $message = ''): void
     {
+        if ($expected instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $expected parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
+        if ($actual instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $actual parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         if (!$expected instanceof Countable && !is_iterable($expected)) {
             throw InvalidArgumentException::create(1, 'countable or iterable');
         }
@@ -1953,6 +1978,14 @@ abstract class Assert
      */
     public static function assertNotSameSize($expected, $actual, string $message = ''): void
     {
+        if ($expected instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $expected parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
+        if ($actual instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $actual parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         if (!$expected instanceof Countable && !is_iterable($expected)) {
             throw InvalidArgumentException::create(1, 'countable or iterable');
         }
