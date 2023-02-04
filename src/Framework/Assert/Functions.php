@@ -236,6 +236,7 @@ if (!function_exists('PHPUnit\Framework\assertCount')) {
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -253,6 +254,7 @@ if (!function_exists('PHPUnit\Framework\assertNotCount')) {
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -411,6 +413,7 @@ if (!function_exists('PHPUnit\Framework\assertEmpty')) {
      * Asserts that a variable is empty.
      *
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @psalm-assert empty $actual
      *
@@ -429,6 +432,7 @@ if (!function_exists('PHPUnit\Framework\assertNotEmpty')) {
      * Asserts that a variable is not empty.
      *
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @psalm-assert !empty $actual
      *
@@ -1705,6 +1709,7 @@ if (!function_exists('PHPUnit\Framework\assertSameSize')) {
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1723,6 +1728,7 @@ if (!function_exists('PHPUnit\Framework\assertNotSameSize')) {
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *

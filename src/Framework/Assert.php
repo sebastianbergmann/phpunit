@@ -229,11 +229,12 @@ abstract class Assert
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      */
     final public static function assertCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
         if ($haystack instanceof Generator) {
-            throw new GeneratorNotSupportedException('$haystack');
+            throw GeneratorNotSupportedException::fromParameterName('$haystack');
         }
 
         static::assertThat(
@@ -248,9 +249,14 @@ abstract class Assert
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      */
     final public static function assertNotCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
+        if ($haystack instanceof Generator) {
+            throw GeneratorNotSupportedException::fromParameterName('$haystack');
+        }
+
         $constraint = new LogicalNot(
             new Count($expectedCount)
         );
@@ -384,13 +390,14 @@ abstract class Assert
      * Asserts that a variable is empty.
      *
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @psalm-assert empty $actual
      */
     final public static function assertEmpty(mixed $actual, string $message = ''): void
     {
         if ($actual instanceof Generator) {
-            throw new GeneratorNotSupportedException('$actual');
+            throw GeneratorNotSupportedException::fromParameterName('$actual');
         }
 
         static::assertThat($actual, static::isEmpty(), $message);
@@ -400,13 +407,14 @@ abstract class Assert
      * Asserts that a variable is not empty.
      *
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      *
      * @psalm-assert !empty $actual
      */
     final public static function assertNotEmpty(mixed $actual, string $message = ''): void
     {
         if ($actual instanceof Generator) {
-            throw new GeneratorNotSupportedException('$actual');
+            throw GeneratorNotSupportedException::fromParameterName('$actual');
         }
 
         static::assertThat($actual, static::logicalNot(static::isEmpty()), $message);
@@ -1462,15 +1470,16 @@ abstract class Assert
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      */
     final public static function assertSameSize(Countable|iterable $expected, Countable|iterable $actual, string $message = ''): void
     {
         if ($expected instanceof Generator) {
-            throw new GeneratorNotSupportedException('$expected');
+            throw GeneratorNotSupportedException::fromParameterName('$expected');
         }
 
         if ($actual instanceof Generator) {
-            throw new GeneratorNotSupportedException('$actual');
+            throw GeneratorNotSupportedException::fromParameterName('$actual');
         }
 
         static::assertThat(
@@ -1486,15 +1495,16 @@ abstract class Assert
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws GeneratorNotSupportedException
      */
     final public static function assertNotSameSize(Countable|iterable $expected, Countable|iterable $actual, string $message = ''): void
     {
         if ($expected instanceof Generator) {
-            throw new GeneratorNotSupportedException('$expected');
+            throw GeneratorNotSupportedException::fromParameterName('$expected');
         }
 
         if ($actual instanceof Generator) {
-            throw new GeneratorNotSupportedException('$actual');
+            throw GeneratorNotSupportedException::fromParameterName('$actual');
         }
 
         static::assertThat(
