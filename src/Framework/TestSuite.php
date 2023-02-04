@@ -340,7 +340,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
-        if (!$this->invokeMethodsBeforeFirstTest($emitter)) {
+        if (!$this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents)) {
             return;
         }
 
@@ -611,7 +611,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws Exception
      * @throws NoPreviousThrowableException
      */
-    private function invokeMethodsBeforeFirstTest(Event\Emitter $emitter): bool
+    private function invokeMethodsBeforeFirstTest(Event\Emitter $emitter, Event\TestSuite\TestSuite $testSuiteValueObjectForEvents): bool
     {
         if (!$this->isForTestClass()) {
             return true;
@@ -645,7 +645,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 call_user_func([$this->name, $beforeClassMethod]);
             }
-        } catch (SkippedTestSuiteError) {
+        } catch (SkippedTestSuiteError|SkippedTest $e) {
+            $emitter->testSuiteSkipped(
+                $testSuiteValueObjectForEvents,
+                $e->getMessage()
+            );
+
             return false;
         } catch (Throwable $t) {
             assert(isset($methodCalledBeforeFirstTest));

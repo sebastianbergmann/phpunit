@@ -46,6 +46,8 @@ interface Emitter
 
     public function testRunnerExecutionStarted(TestSuite $testSuite): void;
 
+    public function testSuiteSkipped(TestSuite $testSuite, string $message): void;
+
     public function testSuiteStarted(TestSuite $testSuite): void;
 
     public function testPreparationStarted(Code\Test $test): void;

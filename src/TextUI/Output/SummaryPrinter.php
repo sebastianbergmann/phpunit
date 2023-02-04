@@ -40,6 +40,7 @@ final class SummaryPrinter
         }
 
         if ($result->wasSuccessfulAndNoTestHasIssues() &&
+            !$result->hasTestSuiteSkippedEvents() &&
             !$result->hasTestSkippedEvents()) {
             $this->printWithColor(
                 'fg-black, bg-green',
@@ -109,7 +110,7 @@ final class SummaryPrinter
         $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfDeprecationEvents(), 'Deprecations', $color);
         $this->printCountString($result->numberOfNoticeEvents(), 'Notices', $color);
-        $this->printCountString($result->numberOfTestSkippedEvents(), 'Skipped', $color);
+        $this->printCountString($result->numberOfTestSuiteSkippedEvents() + $result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);
         $this->printWithColor($color, '.');
