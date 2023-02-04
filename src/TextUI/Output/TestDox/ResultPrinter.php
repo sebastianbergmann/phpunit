@@ -112,6 +112,10 @@ final class ResultPrinter
             return;
         }
 
+        if (!$test->hasThrowable()) {
+            return;
+        }
+
         $this->printTestResultBodyStart($test);
         $this->printThrowable($test);
         $this->printTestResultBodyEnd($test);
