@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Added
 
-* `PHPUnit\Event\TestSuite\Skipped` and `PHPUnit\Event\TestSuite\SkippedSubscriber` (required for the fixing #5165)
+* `PHPUnit\Event\TestSuite\Skipped` and `PHPUnit\Event\TestSuite\SkippedSubscriber` (required for the fixing [#5165](https://github.com/sebastianbergmann/phpunit/issues/5165))
 
 ### Fixed
 
