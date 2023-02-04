@@ -80,6 +80,7 @@ final class ResultPrinter
         }
 
         if ($this->displayDetailsOnSkippedTests) {
+            $this->printSkippedTestSuites($result);
             $this->printSkippedTests($result);
         }
 
@@ -239,6 +240,24 @@ final class ResultPrinter
         }
 
         $this->printList(count($elements), $elements, 'incomplete test');
+    }
+
+    private function printSkippedTestSuites(TestResult $result): void
+    {
+        if (!$result->hasTestSuiteSkippedEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testSuiteSkippedEvents() as $event) {
+            $elements[] = [
+                'title' => $event->testSuite()->name(),
+                'body'  => $event->message(),
+            ];
+        }
+
+        $this->printList(count($elements), $elements, 'skipped test suite');
     }
 
     private function printSkippedTests(TestResult $result): void

@@ -14,6 +14,7 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
@@ -196,6 +197,21 @@ final class DispatchingEmitter implements Emitter
             new TestRunner\ExecutionStarted(
                 $this->telemetryInfo(),
                 $testSuite
+            )
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testSuiteSkipped(TestSuite $testSuite, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new TestSuiteSkipped(
+                $this->telemetryInfo(),
+                $testSuite,
+                $message
             )
         );
     }

@@ -28,12 +28,13 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -65,7 +66,12 @@ final class Collector
     private array $testMarkedIncompleteEvents = [];
 
     /**
-     * @psalm-var list<Skipped>
+     * @psalm-var list<TestSuiteSkipped>
+     */
+    private array $testSuiteSkippedEvents = [];
+
+    /**
+     * @psalm-var list<TestSkipped>
      */
     private array $testSkippedEvents = [];
 
@@ -142,6 +148,7 @@ final class Collector
     {
         Facade::registerSubscribers(
             new ExecutionStartedSubscriber($this),
+            new TestSuiteSkippedSubscriber($this),
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparedSubscriber($this),
@@ -176,6 +183,7 @@ final class Collector
             $this->testErroredEvents,
             $this->testFailedEvents,
             $this->testConsideredRiskyEvents,
+            $this->testSuiteSkippedEvents,
             $this->testSkippedEvents,
             $this->testMarkedIncompleteEvents,
             $this->testTriggeredDeprecationEvents,
@@ -234,6 +242,17 @@ final class Collector
     public function executionStarted(ExecutionStarted $event): void
     {
         $this->numberOfTests = $event->testSuite()->count();
+    }
+
+    public function testSuiteSkipped(TestSuiteSkipped $event): void
+    {
+        $testSuite = $event->testSuite();
+
+        if (!$testSuite->isForTestClass()) {
+            return;
+        }
+
+        $this->testSuiteSkippedEvents[] = $event;
     }
 
     public function testSuiteStarted(TestSuiteStarted $event): void
@@ -313,7 +332,7 @@ final class Collector
         $this->testMarkedIncompleteEvents[] = $event;
     }
 
-    public function testSkipped(Skipped $event): void
+    public function testSkipped(TestSkipped $event): void
     {
         $this->testSkippedEvents[] = $event;
 

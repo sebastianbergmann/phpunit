@@ -24,10 +24,11 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -54,7 +55,12 @@ final class TestResult
     private readonly array $testMarkedIncompleteEvents;
 
     /**
-     * @psalm-var list<Skipped>
+     * @psalm-var list<TestSuiteSkipped>
+     */
+    private readonly array $testSuiteSkippedEvents;
+
+    /**
+     * @psalm-var list<TestSkipped>
      */
     private readonly array $testSkippedEvents;
 
@@ -127,7 +133,8 @@ final class TestResult
      * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
      * @psalm-param list<Failed> $testFailedEvents
      * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
-     * @psalm-param list<Skipped> $testSkippedEvents
+     * @psalm-param list<TestSuiteSkipped> $testSuiteSkippedEvents
+     * @psalm-param list<TestSkipped> $testSkippedEvents
      * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
      * @psalm-param array<string,list<DeprecationTriggered>> $testTriggeredDeprecationEvents
      * @psalm-param array<string,list<PhpDeprecationTriggered>> $testTriggeredPhpDeprecationEvents
@@ -142,7 +149,7 @@ final class TestResult
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents)
     {
         $this->numberOfTests                         = $numberOfTests;
         $this->numberOfTestsRun                      = $numberOfTestsRun;
@@ -150,6 +157,7 @@ final class TestResult
         $this->testErroredEvents                     = $testErroredEvents;
         $this->testFailedEvents                      = $testFailedEvents;
         $this->testConsideredRiskyEvents             = $testConsideredRiskyEvents;
+        $this->testSuiteSkippedEvents                = $testSuiteSkippedEvents;
         $this->testSkippedEvents                     = $testSkippedEvents;
         $this->testMarkedIncompleteEvents            = $testMarkedIncompleteEvents;
         $this->testTriggeredDeprecationEvents        = $testTriggeredDeprecationEvents;
@@ -236,7 +244,25 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<Skipped>
+     * @psalm-return list<TestSuiteSkipped>
+     */
+    public function testSuiteSkippedEvents(): array
+    {
+        return $this->testSuiteSkippedEvents;
+    }
+
+    public function numberOfTestSuiteSkippedEvents(): int
+    {
+        return count($this->testSuiteSkippedEvents);
+    }
+
+    public function hasTestSuiteSkippedEvents(): bool
+    {
+        return $this->numberOfTestSuiteSkippedEvents() > 0;
+    }
+
+    /**
+     * @psalm-return list<TestSkipped>
      */
     public function testSkippedEvents(): array
     {
