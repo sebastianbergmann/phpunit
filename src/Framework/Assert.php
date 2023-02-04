@@ -233,7 +233,7 @@ abstract class Assert
     final public static function assertCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
         if ($haystack instanceof Generator) {
-            throw new GeneratorNotSupportedException;
+            throw new GeneratorNotSupportedException('$haystack');
         }
 
         static::assertThat(
@@ -389,6 +389,10 @@ abstract class Assert
      */
     final public static function assertEmpty(mixed $actual, string $message = ''): void
     {
+        if ($actual instanceof Generator) {
+            throw new GeneratorNotSupportedException('$actual');
+        }
+
         static::assertThat($actual, static::isEmpty(), $message);
     }
 
@@ -401,6 +405,10 @@ abstract class Assert
      */
     final public static function assertNotEmpty(mixed $actual, string $message = ''): void
     {
+        if ($actual instanceof Generator) {
+            throw new GeneratorNotSupportedException('$actual');
+        }
+
         static::assertThat($actual, static::logicalNot(static::isEmpty()), $message);
     }
 
@@ -1457,6 +1465,14 @@ abstract class Assert
      */
     final public static function assertSameSize(Countable|iterable $expected, Countable|iterable $actual, string $message = ''): void
     {
+        if ($expected instanceof Generator) {
+            throw new GeneratorNotSupportedException('$expected');
+        }
+
+        if ($actual instanceof Generator) {
+            throw new GeneratorNotSupportedException('$actual');
+        }
+
         static::assertThat(
             $actual,
             new SameSize($expected),
@@ -1473,6 +1489,14 @@ abstract class Assert
      */
     final public static function assertNotSameSize(Countable|iterable $expected, Countable|iterable $actual, string $message = ''): void
     {
+        if ($expected instanceof Generator) {
+            throw new GeneratorNotSupportedException('$expected');
+        }
+
+        if ($actual instanceof Generator) {
+            throw new GeneratorNotSupportedException('$actual');
+        }
+
         static::assertThat(
             $actual,
             new LogicalNot(
