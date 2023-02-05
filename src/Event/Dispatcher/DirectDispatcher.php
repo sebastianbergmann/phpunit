@@ -20,7 +20,7 @@ final class DirectDispatcher implements SubscribableDispatcher
     private readonly TypeMap $typeMap;
 
     /**
-     * @psalm-var array<string, list<Subscriber>>
+     * @psalm-var array<class-string, list<Subscriber>>
      */
     private array $subscribers = [];
 
