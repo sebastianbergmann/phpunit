@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Fixed
 
+* [#5169](https://github.com/sebastianbergmann/phpunit/issues/5169): Parameter type for constructor of `GreaterThan` and `LessThan` constraints does not match parameter type for `Assert::greaterThan()` and `Assert::lessThan()`
 * [#5171](https://github.com/sebastianbergmann/phpunit/issues/5171): `@backupStaticProperties` and `@backupStaticAttributes` trigger an error
 
 ## [10.0.3] - 2023-02-04
