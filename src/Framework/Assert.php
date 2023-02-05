@@ -2107,7 +2107,7 @@ abstract class Assert
         return new FileExists;
     }
 
-    final public static function greaterThan(mixed $value): GreaterThan
+    final public static function greaterThan(float|int $value): GreaterThan
     {
         return new GreaterThan($value);
     }
