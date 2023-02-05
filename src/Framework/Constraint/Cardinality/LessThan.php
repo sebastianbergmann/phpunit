@@ -14,9 +14,9 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class LessThan extends Constraint
 {
-    private readonly float|int $value;
+    private readonly mixed $value;
 
-    public function __construct(float|int $value)
+    public function __construct(mixed $value)
     {
         $this->value = $value;
     }
