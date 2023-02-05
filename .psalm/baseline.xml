@@ -356,10 +356,6 @@
       <code>assert($metadata instanceof Covers)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
-    <UndefinedMethod>
-      <code>className</code>
-      <code>className</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
     <PossiblyInvalidArgument>

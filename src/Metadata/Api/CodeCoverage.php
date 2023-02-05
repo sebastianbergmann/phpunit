@@ -18,10 +18,12 @@ use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
+use PHPUnit\Metadata\CoversDefaultClass;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
+use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
@@ -56,7 +58,11 @@ final class CodeCoverage
                 );
             }
 
-            $classShortcut = $metadataForClass->isCoversDefaultClass()->asArray()[0]->className();
+            $metadata = $metadataForClass->isCoversDefaultClass()->asArray()[0];
+
+            assert($metadata instanceof CoversDefaultClass);
+
+            $classShortcut = $metadata->className();
         }
 
         $codeUnits = CodeUnitCollection::fromList();
@@ -143,7 +149,11 @@ final class CodeCoverage
                 );
             }
 
-            $classShortcut = $metadataForClass->isUsesDefaultClass()->asArray()[0]->className();
+            $metadata = $metadataForClass->isUsesDefaultClass()->asArray()[0];
+
+            assert($metadata instanceof UsesDefaultClass);
+
+            $classShortcut = $metadata->className();
         }
 
         $codeUnits = CodeUnitCollection::fromList();
