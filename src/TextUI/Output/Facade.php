@@ -87,16 +87,16 @@ final class Facade
             self::$printer->print((new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
         }
 
-        if (self::$resultPrinter !== null && self::$summaryPrinter !== null) {
+        if (self::$resultPrinter !== null) {
             self::$resultPrinter->print($result);
-            self::$summaryPrinter->print($result);
+        } elseif ($testDoxResult !== null) {
+            (new TestDoxResultPrinter(self::$printer, self::$colors))->print(
+                $testDoxResult,
+                $result
+            );
         }
 
-        if ($testDoxResult !== null && self::$summaryPrinter !== null) {
-            (new TestDoxResultPrinter(self::$printer, self::$colors))->print(
-                $testDoxResult
-            );
-
+        if (self::$summaryPrinter !== null) {
             self::$summaryPrinter->print($result);
         }
     }
