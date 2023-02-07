@@ -42,9 +42,9 @@ final class WarmCodeCoverageCacheCommand implements Command
             );
         }
 
-        CodeCoverageFilterRegistry::init($this->configuration);
+        CodeCoverageFilterRegistry::instance()->init($this->configuration);
 
-        if (!CodeCoverageFilterRegistry::configured()) {
+        if (!CodeCoverageFilterRegistry::instance()->configured()) {
             return Result::from(
                 'Filter for code coverage has not been configured' . PHP_EOL,
                 Result::FAILURE
@@ -60,7 +60,7 @@ final class WarmCodeCoverageCacheCommand implements Command
             $this->configuration->coverageCacheDirectory(),
             !$this->configuration->disableCodeCoverageIgnore(),
             $this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
-            CodeCoverageFilterRegistry::get()
+            CodeCoverageFilterRegistry::instance()->get()
         );
 
         printf(
