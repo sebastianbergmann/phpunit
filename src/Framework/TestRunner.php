@@ -86,11 +86,11 @@ final class TestRunner
 
         ErrorHandler::instance()->enable();
 
-        $collectCodeCoverage = CodeCoverage::isActive() &&
+        $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
                                $shouldCodeCoverageBeCollected;
 
         if ($collectCodeCoverage) {
-            CodeCoverage::start($test);
+            CodeCoverage::instance()->start($test);
         }
 
         try {
@@ -172,7 +172,7 @@ final class TestRunner
             }
 
             try {
-                CodeCoverage::stop(
+                CodeCoverage::instance()->stop(
                     $append,
                     $linesToBeCovered,
                     $linesToBeUsed
@@ -283,7 +283,7 @@ final class TestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         }
 
-        $coverage = CodeCoverage::isActive() ? 'true' : 'false';
+        $coverage = CodeCoverage::instance()->isActive() ? 'true' : 'false';
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
