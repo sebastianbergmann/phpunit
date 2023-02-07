@@ -85,6 +85,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4599](https://github.com/sebastianbergmann/phpunit/issues/4599): Unify cache configuration
 * [#4603](https://github.com/sebastianbergmann/phpunit/issues/4603): Use "property" instead of "attribute" for configuring the backup of static fields
 * [#4656](https://github.com/sebastianbergmann/phpunit/issues/4656): Prevent doubling of `__destruct()`
+* Expectations configured on test stubs created using `PHPUnit\Framework\TestCase::createStub()` are no longer evaluated, you need to create a mock object using `PHPUnit\Framework\TestCase::createMock()` instead
 * Using a non-static method as a data provider is now deprecated 
 * Using a non-public method as a data provider is now deprecated
 * Declaring a data provider method to require an argument is now deprecated
