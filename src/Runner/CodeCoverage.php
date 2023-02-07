@@ -59,15 +59,15 @@ final class CodeCoverage
         return self::$instance;
     }
 
-    public function init(Configuration $configuration): void
+    public function init(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry): void
     {
-        CodeCoverageFilterRegistry::instance()->init($configuration);
+        $codeCoverageFilterRegistry->init($configuration);
 
         if (!$configuration->hasCoverageReport()) {
             return;
         }
 
-        $this->activate(CodeCoverageFilterRegistry::instance()->get(), $configuration->pathCoverage());
+        $this->activate($codeCoverageFilterRegistry->get(), $configuration->pathCoverage());
 
         if (!$this->isActive()) {
             return;
@@ -101,8 +101,8 @@ final class CodeCoverage
             $this->codeCoverage()->excludeUncoveredFiles();
         }
 
-        if (CodeCoverageFilterRegistry::instance()->get()->isEmpty()) {
-            if (!CodeCoverageFilterRegistry::instance()->configured()) {
+        if ($codeCoverageFilterRegistry->get()->isEmpty()) {
+            if (!$codeCoverageFilterRegistry->configured()) {
                 EventFacade::emitter()->testRunnerTriggeredWarning(
                     'No filter is configured, code coverage will not be processed'
                 );
