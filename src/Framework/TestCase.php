@@ -665,10 +665,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->valueObjectForEvents(),
             );
 
-            PassedTests::instance()->testMethodPassed(
-                $this->valueObjectForEvents(),
-                $this->testResult
-            );
+            if (!$this->usesDataProvider()) {
+                PassedTests::instance()->testMethodPassed(
+                    $this->valueObjectForEvents(),
+                    $this->testResult
+                );
+            }
         }
 
         $this->mockObjects = [];

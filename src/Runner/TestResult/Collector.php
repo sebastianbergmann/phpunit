@@ -11,6 +11,7 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use function assert;
 use function str_contains;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
@@ -30,6 +31,7 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
@@ -37,6 +39,7 @@ use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
+use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 
 /**
@@ -266,19 +269,36 @@ final class Collector
         $this->currentTestSuiteForTestClassFailed = false;
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     public function testSuiteFinished(TestSuiteFinished $event): void
     {
+        if ($this->currentTestSuiteForTestClassFailed) {
+            return;
+        }
+
         $testSuite = $event->testSuite();
 
-        if (!$testSuite->isForTestClass()) {
+        if ($testSuite->isWithName()) {
+            return;
+        }
+
+        if ($testSuite->isForTestMethodWithDataProvider()) {
+            assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
+
+            $test = $testSuite->tests()->asArray()[0];
+
+            assert($test instanceof TestMethod);
+
+            PassedTests::instance()->testMethodPassed($test, null);
+
             return;
         }
 
         assert($testSuite instanceof TestSuiteForTestClass);
 
-        if (!$this->currentTestSuiteForTestClassFailed) {
-            PassedTests::instance()->testClassPassed($testSuite->className());
-        }
+        PassedTests::instance()->testClassPassed($testSuite->className());
     }
 
     public function testPrepared(): void

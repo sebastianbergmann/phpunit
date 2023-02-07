@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.0.6] - 2023-MM-DD
+
+### Fixed
+
+* [#5178](https://github.com/sebastianbergmann/phpunit/issues/5178): Test depending on a test with data provider is always skipped
+
 ## [10.0.5] - 2023-02-07
 
 ### Fixed
@@ -166,6 +172,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * PHP 7.3, PHP 7.4, and PHP 8.0 are no longer supported
 * `phpunit/php-code-coverage` [no longer supports PHPDBG and Xdebug 2](https://github.com/sebastianbergmann/php-code-coverage/blob/10.0.0/ChangeLog.md#1000---2023-02-03)
 
+[10.0.6]: https://github.com/sebastianbergmann/phpunit/compare/10.0.5...10.0
 [10.0.5]: https://github.com/sebastianbergmann/phpunit/compare/10.0.4...10.0.5
 [10.0.4]: https://github.com/sebastianbergmann/phpunit/compare/10.0.3...10.0.4
 [10.0.3]: https://github.com/sebastianbergmann/phpunit/compare/10.0.2...10.0.3
