@@ -509,7 +509,7 @@
   </file>
   <file src="src/Runner/TestResult/Collector.php">
     <RedundantCondition>
-      <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
+      <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
     </RedundantCondition>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">

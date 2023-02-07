@@ -64,7 +64,7 @@ final class PassedTests
             $test->methodName()
         );
 
-        $this->passedTestMethods[$test->id()] = [
+        $this->passedTestMethods[$test->className() . '::' . $test->methodName()] = [
             'returnValue' => $returnValue,
             'size'        => $size,
         ];

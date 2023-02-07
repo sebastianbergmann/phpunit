@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestSuite\Finished;
 use PHPUnit\Event\TestSuite\FinishedSubscriber;
 
@@ -17,6 +18,9 @@ use PHPUnit\Event\TestSuite\FinishedSubscriber;
  */
 final class TestSuiteFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     public function notify(Finished $event): void
     {
         $this->collector()->testSuiteFinished($event);
