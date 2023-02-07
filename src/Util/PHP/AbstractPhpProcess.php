@@ -319,7 +319,7 @@ abstract class AbstractPhpProcess
             $test->addToAssertionCount($childResult['numAssertions']);
 
             if (CodeCoverage::isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-                CodeCoverage::instance()->merge(
+                CodeCoverage::codeCoverage()->merge(
                     $childResult['codeCoverage']
                 );
             }
