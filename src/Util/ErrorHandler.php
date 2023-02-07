@@ -45,7 +45,7 @@ final class ErrorHandler
         $suppressed = !($errorNumber & error_reporting());
 
         if ($suppressed &&
-            in_array($errorNumber, [E_NOTICE, E_STRICT, E_WARNING], true)) {
+            in_array($errorNumber, [E_DEPRECATED, E_NOTICE, E_STRICT, E_WARNING], true)) {
             return false;
         }
 
