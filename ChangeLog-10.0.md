@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Fixed
 
 * [#5172](https://github.com/sebastianbergmann/phpunit/issues/5172): Test Runner does not display test runner warnings when TestDox result printer is used
+* [#5176](https://github.com/sebastianbergmann/phpunit/issues/5176): Silenced `E_DEPRECATED` errors are reported
 
 ## [10.0.4] - 2023-02-05
 
