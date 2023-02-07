@@ -44,8 +44,7 @@ function __phpunit_run_isolated_test()
     require_once '{filename}';
 
     if ({collectCodeCoverageInformation}) {
-        CodeCoverageFilterRegistry::init(ConfigurationRegistry::get());
-        CodeCoverage::init(ConfigurationRegistry::get());
+        CodeCoverage::instance()->init(ConfigurationRegistry::get(), CodeCoverageFilterRegistry::instance());
     }
 
     $test = new {className}('{methodName}');
