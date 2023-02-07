@@ -170,13 +170,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         if (CodeCoverage::isActive()) {
             $codeCoverageCacheDirectory = null;
 
-            if (CodeCoverage::instance()->cachesStaticAnalysis()) {
-                $codeCoverageCacheDirectory = CodeCoverage::instance()->cacheDirectory();
+            if (CodeCoverage::codeCoverage()->cachesStaticAnalysis()) {
+                $codeCoverageCacheDirectory = CodeCoverage::codeCoverage()->cacheDirectory();
             }
 
             $this->renderForCoverage(
                 $code,
-                CodeCoverage::instance()->collectsBranchAndPathCoverage(),
+                CodeCoverage::codeCoverage()->collectsBranchAndPathCoverage(),
                 $codeCoverageCacheDirectory
             );
         }
@@ -185,9 +185,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->output = $jobResult['stdout'] ?? '';
 
         if (CodeCoverage::isActive() && ($coverage = $this->cleanupForCoverage())) {
-            CodeCoverage::instance()->start($this->filename, TestSize::large());
+            CodeCoverage::codeCoverage()->start($this->filename, TestSize::large());
 
-            CodeCoverage::instance()->append(
+            CodeCoverage::codeCoverage()->append(
                 $coverage,
                 $this->filename,
                 true,

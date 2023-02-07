@@ -64,31 +64,31 @@ final class CodeCoverage
         }
 
         if ($configuration->hasCoverageCacheDirectory()) {
-            self::instance()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
+            self::codeCoverage()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
         }
 
-        self::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+        self::codeCoverage()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
         if ($configuration->strictCoverage()) {
-            self::instance()->enableCheckForUnintentionallyCoveredCode();
+            self::codeCoverage()->enableCheckForUnintentionallyCoveredCode();
         }
 
         if ($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
-            self::instance()->ignoreDeprecatedCode();
+            self::codeCoverage()->ignoreDeprecatedCode();
         } else {
-            self::instance()->doNotIgnoreDeprecatedCode();
+            self::codeCoverage()->doNotIgnoreDeprecatedCode();
         }
 
         if ($configuration->disableCodeCoverageIgnore()) {
-            self::instance()->disableAnnotationsForIgnoringCode();
+            self::codeCoverage()->disableAnnotationsForIgnoringCode();
         } else {
-            self::instance()->enableAnnotationsForIgnoringCode();
+            self::codeCoverage()->enableAnnotationsForIgnoringCode();
         }
 
         if ($configuration->includeUncoveredFiles()) {
-            self::instance()->includeUncoveredFiles();
+            self::codeCoverage()->includeUncoveredFiles();
         } else {
-            self::instance()->excludeUncoveredFiles();
+            self::codeCoverage()->excludeUncoveredFiles();
         }
 
         if (CodeCoverageFilterRegistry::instance()->get()->isEmpty()) {
@@ -114,7 +114,7 @@ final class CodeCoverage
         return self::$instance !== null;
     }
 
-    public static function instance(): \SebastianBergmann\CodeCoverage\CodeCoverage
+    public static function codeCoverage(): \SebastianBergmann\CodeCoverage\CodeCoverage
     {
         return self::$instance;
     }
@@ -195,7 +195,7 @@ final class CodeCoverage
 
             try {
                 $writer = new CloverReport;
-                $writer->process(self::instance(), $configuration->coverageClover());
+                $writer->process(self::codeCoverage(), $configuration->coverageClover());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -210,7 +210,7 @@ final class CodeCoverage
 
             try {
                 $writer = new CoberturaReport;
-                $writer->process(self::instance(), $configuration->coverageCobertura());
+                $writer->process(self::codeCoverage(), $configuration->coverageCobertura());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -225,7 +225,7 @@ final class CodeCoverage
 
             try {
                 $writer = new Crap4jReport($configuration->coverageCrap4jThreshold());
-                $writer->process(self::instance(), $configuration->coverageCrap4j());
+                $writer->process(self::codeCoverage(), $configuration->coverageCrap4j());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -264,7 +264,7 @@ final class CodeCoverage
                     $customCssFile
                 );
 
-                $writer->process(self::instance(), $configuration->coverageHtml());
+                $writer->process(self::codeCoverage(), $configuration->coverageHtml());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -279,7 +279,7 @@ final class CodeCoverage
 
             try {
                 $writer = new PhpReport;
-                $writer->process(self::instance(), $configuration->coveragePhp());
+                $writer->process(self::codeCoverage(), $configuration->coveragePhp());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
@@ -296,7 +296,7 @@ final class CodeCoverage
                 $configuration->coverageTextShowOnlySummary()
             );
 
-            $textReport = $processor->process(self::instance(), $configuration->colors());
+            $textReport = $processor->process(self::codeCoverage(), $configuration->colors());
 
             if ($configuration->coverageText() === 'php://stdout') {
                 $printer->print($textReport);
@@ -310,7 +310,7 @@ final class CodeCoverage
 
             try {
                 $writer = new XmlReport(Version::id());
-                $writer->process(self::instance(), $configuration->coverageXml());
+                $writer->process(self::codeCoverage(), $configuration->coverageXml());
 
                 self::codeCoverageGenerationSucceeded($printer);
 
