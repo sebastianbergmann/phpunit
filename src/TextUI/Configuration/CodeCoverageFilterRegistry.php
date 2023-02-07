@@ -20,13 +20,13 @@ use SebastianBergmann\CodeCoverage\Filter;
  */
 final class CodeCoverageFilterRegistry
 {
-    private static self $instance;
-    private ?Filter $filter  = null;
-    private bool $configured = false;
+    private static ?self $instance = null;
+    private ?Filter $filter        = null;
+    private bool $configured       = false;
 
     public static function instance(): self
     {
-        if (!isset(self::$instance)) {
+        if (self::$instance === null) {
             self::$instance = new self;
         }
 

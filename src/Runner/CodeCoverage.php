@@ -43,7 +43,7 @@ use SebastianBergmann\Timer\Timer;
  */
 final class CodeCoverage
 {
-    private static self $instance;
+    private static ?self $instance                                      = null;
     private ?\SebastianBergmann\CodeCoverage\CodeCoverage $codeCoverage = null;
     private ?Driver $driver                                             = null;
     private bool $collecting                                            = false;
@@ -52,7 +52,7 @@ final class CodeCoverage
 
     public static function instance(): self
     {
-        if (!isset(self::$instance)) {
+        if (self::$instance === null) {
             self::$instance = new self;
         }
 

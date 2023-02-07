@@ -440,6 +440,18 @@
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
     </InvalidNullableReturnType>
     <MissingThrowsDocblock>
+      <code>codeCoverageGenerationFailed</code>
+      <code>codeCoverageGenerationFailed</code>
+      <code>codeCoverageGenerationFailed</code>
+      <code>codeCoverageGenerationFailed</code>
+      <code>codeCoverageGenerationFailed</code>
+      <code>codeCoverageGenerationFailed</code>
+      <code>codeCoverageGenerationSucceeded</code>
+      <code>codeCoverageGenerationSucceeded</code>
+      <code>codeCoverageGenerationSucceeded</code>
+      <code>codeCoverageGenerationSucceeded</code>
+      <code>codeCoverageGenerationSucceeded</code>
+      <code>codeCoverageGenerationSucceeded</code>
       <code>coverageCacheDirectory</code>
       <code>coverageClover</code>
       <code>coverageCobertura</code>
@@ -450,22 +462,10 @@
       <code>coverageText</code>
       <code>coverageText</code>
       <code>coverageXml</code>
-      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
-      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
-      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
-      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
-      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
-      <code>self::codeCoverageGenerationFailed($printer, $e)</code>
-      <code>self::codeCoverageGenerationSucceeded($printer)</code>
-      <code>self::codeCoverageGenerationSucceeded($printer)</code>
-      <code>self::codeCoverageGenerationSucceeded($printer)</code>
-      <code>self::codeCoverageGenerationSucceeded($printer)</code>
-      <code>self::codeCoverageGenerationSucceeded($printer)</code>
-      <code>self::codeCoverageGenerationSucceeded($printer)</code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>
-      <code>self::$driver</code>
-      <code>self::$instance</code>
+      <code>$this-&gt;codeCoverage</code>
+      <code>$this-&gt;driver</code>
     </NullableReturnStatement>
     <PossiblyNullReference>
       <code>start</code>
