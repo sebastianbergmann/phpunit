@@ -132,7 +132,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
-        $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
+        $settings = $this->parseIniSection($this->settings(CodeCoverage::instance()->isActive()));
 
         $emitter->testPrepared($this->valueObjectForEvents());
 
@@ -167,16 +167,16 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setArgs($sections['ARGS']);
         }
 
-        if (CodeCoverage::isActive()) {
+        if (CodeCoverage::instance()->isActive()) {
             $codeCoverageCacheDirectory = null;
 
-            if (CodeCoverage::codeCoverage()->cachesStaticAnalysis()) {
-                $codeCoverageCacheDirectory = CodeCoverage::codeCoverage()->cacheDirectory();
+            if (CodeCoverage::instance()->codeCoverage()->cachesStaticAnalysis()) {
+                $codeCoverageCacheDirectory = CodeCoverage::instance()->codeCoverage()->cacheDirectory();
             }
 
             $this->renderForCoverage(
                 $code,
-                CodeCoverage::codeCoverage()->collectsBranchAndPathCoverage(),
+                CodeCoverage::instance()->codeCoverage()->collectsBranchAndPathCoverage(),
                 $codeCoverageCacheDirectory
             );
         }
@@ -184,10 +184,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $jobResult    = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
         $this->output = $jobResult['stdout'] ?? '';
 
-        if (CodeCoverage::isActive() && ($coverage = $this->cleanupForCoverage())) {
-            CodeCoverage::codeCoverage()->start($this->filename, TestSize::large());
+        if (CodeCoverage::instance()->isActive() && ($coverage = $this->cleanupForCoverage())) {
+            CodeCoverage::instance()->codeCoverage()->start($this->filename, TestSize::large());
 
-            CodeCoverage::codeCoverage()->append(
+            CodeCoverage::instance()->codeCoverage()->append(
                 $coverage,
                 $this->filename,
                 true,
@@ -234,7 +234,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
         }
 
-        $this->runClean($sections, CodeCoverage::isActive());
+        $this->runClean($sections, CodeCoverage::instance()->isActive());
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
     }
