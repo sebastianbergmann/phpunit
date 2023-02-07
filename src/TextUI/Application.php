@@ -52,6 +52,7 @@ use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
@@ -111,7 +112,7 @@ final class Application
                 $this->bootstrapExtensions($configuration);
             }
 
-            CodeCoverage::init($configuration);
+            CodeCoverage::instance()->init($configuration, CodeCoverageFilterRegistry::instance());
 
             $printer = OutputFacade::init($configuration);
 
@@ -162,7 +163,7 @@ final class Application
             $result = TestResultFacade::result();
 
             OutputFacade::printResult($result, $testDoxResult);
-            CodeCoverage::generateReports($printer, $configuration);
+            CodeCoverage::instance()->generateReports($printer, $configuration);
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnEmptyTestSuite(),
@@ -370,7 +371,7 @@ final class Application
         }
 
         if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand($configuration));
+            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }
     }
 
@@ -387,8 +388,8 @@ final class Application
 
         $runtime = 'PHP ' . PHP_VERSION;
 
-        if (CodeCoverage::isActive()) {
-            $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
+        if (CodeCoverage::instance()->isActive()) {
+            $runtime .= ' with ' . CodeCoverage::instance()->driver()->nameAndVersion();
         }
 
         $this->writeMessage($printer, 'Runtime', $runtime);

@@ -20,31 +20,41 @@ use SebastianBergmann\CodeCoverage\Filter;
  */
 final class CodeCoverageFilterRegistry
 {
-    private static ?Filter $filter  = null;
-    private static bool $configured = false;
+    private static ?self $instance = null;
+    private ?Filter $filter        = null;
+    private bool $configured       = false;
 
-    public static function get(): Filter
+    public static function instance(): self
     {
-        assert(self::$filter !== null);
+        if (self::$instance === null) {
+            self::$instance = new self;
+        }
 
-        return self::$filter;
+        return self::$instance;
     }
 
-    public static function init(Configuration $configuration): void
+    public function get(): Filter
+    {
+        assert($this->filter !== null);
+
+        return $this->filter;
+    }
+
+    public function init(Configuration $configuration): void
     {
         if (!$configuration->hasCoverageReport()) {
             return;
         }
 
-        if (self::$configured) {
+        if ($this->configured) {
             return;
         }
 
-        self::$filter = new Filter;
+        $this->filter = new Filter;
 
         if ($configuration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
             foreach ($configuration->coverageIncludeDirectories() as $directory) {
-                self::$filter->includeDirectory(
+                $this->filter->includeDirectory(
                     $directory->path(),
                     $directory->suffix(),
                     $directory->prefix()
@@ -52,11 +62,11 @@ final class CodeCoverageFilterRegistry
             }
 
             foreach ($configuration->coverageIncludeFiles() as $file) {
-                self::$filter->includeFile($file->path());
+                $this->filter->includeFile($file->path());
             }
 
             foreach ($configuration->coverageExcludeDirectories() as $directory) {
-                self::$filter->excludeDirectory(
+                $this->filter->excludeDirectory(
                     $directory->path(),
                     $directory->suffix(),
                     $directory->prefix()
@@ -64,15 +74,15 @@ final class CodeCoverageFilterRegistry
             }
 
             foreach ($configuration->coverageExcludeFiles() as $file) {
-                self::$filter->excludeFile($file->path());
+                $this->filter->excludeFile($file->path());
             }
 
-            self::$configured = true;
+            $this->configured = true;
         }
     }
 
-    public static function configured(): bool
+    public function configured(): bool
     {
-        return self::$configured;
+        return $this->configured;
     }
 }
