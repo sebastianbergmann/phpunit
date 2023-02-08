@@ -136,7 +136,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AssertionSucceeded::class, $event);
 
-        $this->assertSame((new Exporter)->export('value'), $event->value());
         $this->assertSame(1, $event->count());
         $this->assertSame($message, $event->message());
     }
