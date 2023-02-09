@@ -9,19 +9,21 @@
  */
 namespace PHPUnit\TestFixture;
 
+use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class TypeErrorTest extends TestCase
 {
-    private \DateTimeImmutable $dateTime;
+    private DateTimeImmutable $dateTime;
 
     protected function setUp(): void
     {
-        $this->dateTime = new \DateTime();
+        $this->dateTime = new DateTime;
     }
 
     public function testMe(): void
     {
-        self::assertTrue(true);
+        $this->assertTrue(true);
     }
 }
