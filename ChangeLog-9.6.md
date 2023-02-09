@@ -19,7 +19,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 ### Fixed
 
 * [#5073](https://github.com/sebastianbergmann/phpunit/issues/5073): `--no-extensions` CLI option only prevents extension PHARs from being loaded
-* [#5160](https://github.com/sebastianbergmann/phpunit/issues/5160): PHPUnit 9.6 misses deprecations for assertions and constraints removed in PHPUnit 10
+* [#5160](https://github.com/sebastianbergmann/phpunit/issues/5160): Deprecate `assertClassHasAttribute()`, `assertClassNotHasAttribute()`, `assertClassHasStaticAttribute()`, `assertClassNotHasStaticAttribute()`, `assertObjectHasAttribute()`, `assertObjectNotHasAttribute()`, `classHasAttribute()`, `classHasStaticAttribute()`, and `objectHasAttribute()`
 
 ## [9.6.0] - 2023-02-03
 
