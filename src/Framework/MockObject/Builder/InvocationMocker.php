@@ -27,6 +27,7 @@ use PHPUnit\Framework\MockObject\MethodNameAlreadyConfiguredException;
 use PHPUnit\Framework\MockObject\MethodNameNotConfiguredException;
 use PHPUnit\Framework\MockObject\MethodParametersAlreadyConfiguredException;
 use PHPUnit\Framework\MockObject\Rule;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls;
 use PHPUnit\Framework\MockObject\Stub\Exception;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
@@ -162,6 +163,37 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         $this->matcher->setAfterMatchBuilderId($id);
 
         return $this;
+    }
+
+    /**
+     * @throws MatcherAlreadyRegisteredException
+     * @throws MethodNameNotConfiguredException
+     */
+    public function orThen(InvocationOrder $rule): self
+    {
+        if (!$this->matcher->hasMethodNameRule()) {
+            throw new MethodNameNotConfiguredException;
+        }
+
+        if (!$this->matcher->isConsecutiveCall()) {
+            $this->matcher->setConsecutiveCall(1);
+        }
+
+        $rule->setMatcher($this->matcher);
+        $this->id($this->matcher->getConsecutiveId());
+
+        return $this->invocationHandler->expects($rule);
+    }
+
+    /**
+     * @throws MatcherAlreadyRegisteredException
+     * @throws MethodNameNotConfiguredException
+     */
+    public function andThen(InvocationOrder $rule): self
+    {
+        $this->matcher->setCheckOrder(true);
+
+        return $this->orThen($rule);
     }
 
     /**

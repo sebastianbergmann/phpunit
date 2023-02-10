@@ -33,10 +33,23 @@ final class Matcher
     private ?MethodName $methodNameRule     = null;
     private ?ParametersRule $parametersRule = null;
     private ?Stub $stub                     = null;
+    private ?int $consecutiveCall           = null;
+    private bool $checkOrder                = false;
 
     public function __construct(InvocationOrder $rule)
     {
         $this->invocationRule = $rule;
+
+        $match = $rule->getMatcher();
+
+        if (null !== $match) {
+            $this->setMethodNameRule($match->methodNameRule());
+            $this->setConsecutiveCall($match->getConsecutiveCall() + 1);
+
+            if ($match->isCheckOrder()) {
+                $this->setAfterMatchBuilderId($match->getConsecutiveId());
+            }
+        }
     }
 
     public function hasMatchers(): bool
@@ -77,6 +90,40 @@ final class Matcher
     public function setAfterMatchBuilderId(string $id): void
     {
         $this->afterMatchBuilderId = $id;
+    }
+
+    public function setConsecutiveCall(int $consecutiveCall): void
+    {
+        $this->consecutiveCall = $consecutiveCall;
+    }
+
+    public function getConsecutiveCall(): int
+    {
+        assert(null !== $this->consecutiveCall);
+
+        return $this->consecutiveCall;
+    }
+
+    public function isConsecutiveCall(): bool
+    {
+        return null !== $this->consecutiveCall;
+    }
+
+    public function getConsecutiveId(): string
+    {
+        assert(null !== $this->methodNameRule);
+
+        return $this->methodNameRule->toString() . ' call #' . $this->getConsecutiveCall();
+    }
+
+    public function setCheckOrder(bool $checkOrder): void
+    {
+        $this->checkOrder = $checkOrder;
+    }
+
+    public function isCheckOrder(): bool
+    {
+        return $this->checkOrder;
     }
 
     /**
@@ -171,6 +218,10 @@ final class Matcher
                 ),
                 $e->getComparisonFailure()
             );
+        }
+
+        if ($this->parametersRule !== null && $this->consecutiveCall !== null && $this->parametersRule->match($invocation) === false) {
+            return false;
         }
 
         return true;

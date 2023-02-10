@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
+use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
@@ -21,6 +22,13 @@ use stdClass;
 #[CoversClass(Matcher::class)]
 class MatcherTest extends TestCase
 {
+    public static function parametersMatchProvider(): Generator
+    {
+        yield 'parameter matches' => [true];
+
+        yield 'parameter does not matches' => [false];
+    }
+
     public function testParameterRuleIsAppliedToInvocation(): void
     {
         $invocationMatcher = $this->createStub(InvocationOrder::class);
@@ -66,11 +74,32 @@ class MatcherTest extends TestCase
         $matcher->setMethodNameRule(new MethodName('bar'));
 
         $parameterRule = $this->createStub(ParametersRule::class);
-        $parameterRule->method('apply')
+        $parameterRule->method('match')
             ->willThrowException(new Exception('This method should not have been called.'));
         $matcher->setParametersRule($parameterRule);
 
         $this->assertTrue($matcher->matches($invocation));
+    }
+
+    /**
+     * @dataProvider parametersMatchProvider
+     */
+    public function testParameterRuleInfluenceMatchesIfChecked(bool $parameterMatches): void
+    {
+        $invocationMatcher = $this->createStub(InvocationOrder::class);
+        $invocationMatcher->method('matches')
+            ->willReturn(true);
+        $invocation = new Invocation('Foo', 'bar', [], 'void', new stdClass);
+        $matcher    = new Matcher($invocationMatcher);
+        $matcher->setMethodNameRule(new MethodName('bar'));
+        $matcher->setConsecutiveCall(0);
+
+        $parameterRule = $this->createStub(ParametersRule::class);
+        $parameterRule->method('match')
+            ->willReturn($parameterMatches);
+        $matcher->setParametersRule($parameterRule);
+
+        $this->assertSame($parameterMatches, $matcher->matches($invocation));
     }
 
     public function testStubIsNotInvokedIfParametersRuleIsViolated(): void

@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject\Rule;
 
 use function count;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\MockObject\Verifiable;
 use PHPUnit\Framework\SelfDescribing;
 
@@ -23,6 +24,7 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
      * @psalm-var list<BaseInvocation>
      */
     private array $invocations = [];
+    private ?Matcher $matcher  = null;
 
     public function numberOfInvocations(): int
     {
@@ -39,6 +41,16 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
         $this->invocations[] = $invocation;
 
         $this->invokedDo($invocation);
+    }
+
+    final public function getMatcher(): ?Matcher
+    {
+        return $this->matcher;
+    }
+
+    final public function setMatcher(Matcher $matcher): void
+    {
+        $this->matcher = $matcher;
     }
 
     abstract public function matches(BaseInvocation $invocation): bool;

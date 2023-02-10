@@ -70,7 +70,7 @@ final class Parameters implements ParametersRule
         $this->parameterVerificationResult = null;
 
         try {
-            $this->parameterVerificationResult = $this->doVerify();
+            $this->parameterVerificationResult = $this->doVerify(false);
         } catch (ExpectationFailedException $e) {
             $this->parameterVerificationResult = $e;
 
@@ -87,15 +87,27 @@ final class Parameters implements ParametersRule
      */
     public function verify(): void
     {
-        $this->doVerify();
+        $this->doVerify(false);
+    }
+
+    /**
+     * Checks if the invocation $invocation matches the current rules.
+     *
+     * @throws ExpectationFailedException
+     */
+    public function match(BaseInvocation $invocation): bool
+    {
+        $this->invocation = $invocation;
+
+        return $this->doVerify(true);
     }
 
     /**
      * @throws ExpectationFailedException
      */
-    private function doVerify(): bool
+    private function doVerify(bool $return): bool
     {
-        if (isset($this->parameterVerificationResult)) {
+        if (!$return && isset($this->parameterVerificationResult)) {
             return $this->guardAgainstDuplicateEvaluationOfParameterConstraints();
         }
 
@@ -121,15 +133,20 @@ final class Parameters implements ParametersRule
         }
 
         foreach ($this->parameters as $i => $parameter) {
-            $parameter->evaluate(
+            $result = $parameter->evaluate(
                 $this->invocation->parameters()[$i],
                 sprintf(
                     'Parameter %s for invocation %s does not match expected ' .
                     'value.',
                     $i,
                     $this->invocation->toString()
-                )
+                ),
+                $return
             );
+
+            if ($return && false === $result) {
+                return false;
+            }
         }
 
         return true;

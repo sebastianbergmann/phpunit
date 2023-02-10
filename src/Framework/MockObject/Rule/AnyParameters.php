@@ -28,4 +28,9 @@ final class AnyParameters implements ParametersRule
     public function verify(): void
     {
     }
+
+    public function match(BaseInvocation $invocation): bool
+    {
+        return true;
+    }
 }

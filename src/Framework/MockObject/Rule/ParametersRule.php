@@ -25,4 +25,9 @@ interface ParametersRule extends SelfDescribing, Verifiable
     public function apply(BaseInvocation $invocation): void;
 
     public function verify(): void;
+
+    /**
+     * Returns boolean case the Parameters matches Invocation.
+     */
+    public function match(BaseInvocation $invocation): bool;
 }

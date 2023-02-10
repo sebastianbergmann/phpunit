@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Foo;
 use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
+use PHPUnit\TestFixture\MockObject\ClassWithVariadicArgumentMethod;
 use stdClass;
 
 #[CoversClass(InvocationMocker::class)]
@@ -242,5 +243,38 @@ final class InvocationMockerTest extends TestCase
 
         $this->assertSame('foo', $mock->foo());
         $this->assertSame($mock, $mock->bar());
+    }
+
+    public function testConsecutiveCallsInOrder(): void
+    {
+        $mock = $this->createMock(ClassWithVariadicArgumentMethod::class);
+        $mock->expects($this->exactly(2))
+            ->method('foo')
+            ->with(1)
+            ->willReturn('first')
+            ->andThen($this->once())
+            ->with(2)
+            ->willReturn('second');
+
+        $this->assertNull($mock->foo(2));
+        $this->assertSame('first', $mock->foo(1));
+        $this->assertSame('second', $mock->foo(2));
+        $this->assertSame('first', $mock->foo(1));
+    }
+
+    public function testConsecutiveCalls(): void
+    {
+        $mock = $this->createMock(ClassWithVariadicArgumentMethod::class);
+        $mock->expects($this->exactly(2))
+            ->method('foo')
+            ->with(1)
+            ->willReturn('first')
+            ->orThen($this->once())
+            ->with(2)
+            ->willReturn('second');
+
+        $this->assertSame('second', $mock->foo(2));
+        $this->assertSame('first', $mock->foo(1));
+        $this->assertSame('first', $mock->foo(1));
     }
 }
