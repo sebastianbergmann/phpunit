@@ -28,9 +28,8 @@
   [32m--list-groups                   [0m List available test groups
   [32m--group [36m<name>[0m                  [0m Only run tests from the specified group(s)
   [32m--exclude-group [36m<name>[0m          [0m Exclude tests from the specified group(s)
-  [32m--covers [36m<name>[0m                 [0m Only run tests annotated with "@covers
-                                   <name>"
-  [32m--uses [36m<name>[0m                   [0m Only run tests annotated with "@uses <name>"
+  [32m--covers [36m<name>[0m                 [0m Only run tests attributed to cover <name>
+  [32m--uses [36m<name>[0m                   [0m Only run tests attributed to use <name>
   [32m--list-tests                    [0m List available tests
   [32m--list-tests-xml [36m<file>[0m         [0m List available tests in XML format
   [32m--filter [36m<pattern>[0m              [0m Filter which tests to run
@@ -44,8 +43,7 @@
   [32m--static-backup                 [0m Backup and restore static properties for
                                    each test
 
-  [32m--strict-coverage               [0m Be strict about code coverage attributes and
-                                   annotations
+  [32m--strict-coverage               [0m Be strict about code coverage metadata
   [32m--strict-global-state           [0m Be strict about changes to global state
   [32m--disallow-test-output          [0m Be strict about output during tests
   [32m--enforce-time-limit            [0m Enforce time limit based on test size
@@ -71,9 +69,9 @@
   [32m--do-not-cache-result           [0m Do not write test results to cache file
 
   [32m--order-by [36m<order>[0m              [0m Run tests in order:
-                                   default|defects|duration|no-depends|random|reverse|size
-  [32m--random-order-seed [36m<N>[0m         [0m Use a specific random seed <N> for random
-                                   order
+                                   default|defects|depends|duration|no-depends|random|reverse|size
+  [32m--random-order-seed [36m<N>[0m         [0m Use the specified random seed when running
+                                   tests in random order
 
 [33mReporting:[0m
 
@@ -100,48 +98,56 @@
                                    tests
   [32m--reverse-list                  [0m Print defects in reverse order
 
-  [32m--teamcity                      [0m Report test execution progress in TeamCity
+  [32m--teamcity                      [0m Replace default progress and result output
+                                   with TeamCity format
+  [32m--testdox                       [0m Replace default result output with TestDox
                                    format
-  [32m--testdox                       [0m Report test results in TestDox format
 
 [33mLogging:[0m
 
-  [32m--log-junit [36m<file>[0m              [0m Log test execution in JUnit XML format to
+  [32m--log-junit [36m<file>[0m              [0m Write test results in JUnit XML format to
                                    file
-  [32m--log-teamcity [36m<file>[0m           [0m Log test execution in TeamCity format to
+  [32m--log-teamcity [36m<file>[0m           [0m Write test results in TeamCity format to
                                    file
-  [32m--testdox-html [36m<file>[0m           [0m Write documentation in HTML format to file
-  [32m--testdox-text [36m<file>[0m           [0m Write documentation in Text format to file
+  [32m--testdox-html [36m<file>[0m           [0m Write test results in TestDox format (HTML)
+                                   to file
+  [32m--testdox-text [36m<file>[0m           [0m Write test results in TestDox format (plain
+                                   text) to file
   [32m--log-events-text [36m<file>[0m        [0m Stream events as plain text to file
-  [32m--log-events-verbose-text [36m<file>[0m[0m Stream events as plain text to file (with
-                                   telemetry information)
-  [32m--no-logging                    [0m Ignore logging configuration
+  [32m--log-events-verbose-text [36m<file>[0m[0m Stream events as plain text (with telemetry
+                                   information) to file
+  [32m--no-logging                    [0m Ignore logging configured in the XML
+                                   configuration file
 
 [33mCode Coverage:[0m
 
-  [32m--coverage-clover [36m<file>[0m        [0m Generate code coverage report in Clover XML
-                                   format
-  [32m--coverage-cobertura [36m<file>[0m     [0m Generate code coverage report in Cobertura
-                                   XML format
-  [32m--coverage-crap4j [36m<file>[0m        [0m Generate code coverage report in Crap4J XML
-                                   format
-  [32m--coverage-html [36m<dir>[0m           [0m Generate code coverage report in HTML format
-  [32m--coverage-php [36m<file>[0m           [0m Export PHP_CodeCoverage object to file
-  [32m--coverage-text=[36m<file>[0m          [0m Generate code coverage report in text format
-                                   [default: standard output]
-  [32m--coverage-xml [36m<dir>[0m            [0m Generate code coverage report in PHPUnit XML
-                                   format
+  [32m--coverage-clover [36m<file>[0m        [0m Write code coverage report in Clover XML
+                                   format to file
+  [32m--coverage-cobertura [36m<file>[0m     [0m Write code coverage report in Cobertura XML
+                                   format to file
+  [32m--coverage-crap4j [36m<file>[0m        [0m Write code coverage report in Crap4J XML
+                                   format to file
+  [32m--coverage-html [36m<dir>[0m           [0m Write code coverage report in HTML format to
+                                   directory
+  [32m--coverage-php [36m<file>[0m           [0m Write serialized code coverage data to file
+  [32m--coverage-text=[36m<file>[0m          [0m Write code coverage report in text format to
+                                   file [default: standard output]
+  [32m--coverage-xml [36m<dir>[0m            [0m Write code coverage report in XML format to
+                                   directory
   [32m--warm-coverage-cache           [0m Warm static analysis cache
-  [32m--coverage-filter [36m<dir>[0m         [0m Include <dir> in code coverage analysis
-  [32m--path-coverage                 [0m Perform path coverage analysis
-  [32m--disable-coverage-ignore       [0m Disable attributes and annotations for
-                                   ignoring code coverage
-  [32m--no-coverage                   [0m Ignore code coverage configuration
+  [32m--coverage-filter [36m<dir>[0m         [0m Include <dir> in code coverage reporting
+  [32m--path-coverage                 [0m Report path coverage in addition to line
+                                   coverage
+  [32m--disable-coverage-ignore       [0m Disable metadata for ignoring code coverage
+  [32m--no-coverage                   [0m Ignore code coverage reporting configured in
+                                   the XML configuration file
 
 [33mMiscellaneous:[0m
 
   [32m-h|--help                       [0m Prints this usage information
   [32m--version                       [0m Prints the version and exits
-  [32m--atleast-version [36m<min>[0m         [0m Checks that version is greater than min and
-                                   exits
+  [32m--atleast-version [36m<min>[0m         [0m Checks that version is greater than <min>
+                                   and exits
   [32m--check-version                 [0m Check whether PHPUnit is the latest version
+                                   and exits
+
