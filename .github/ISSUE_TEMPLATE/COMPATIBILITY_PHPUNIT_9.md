@@ -1,7 +1,7 @@
 ---
-name: 🐞 Bug Report for PHPUnit 9 and PHPUnit 10
-about: Something is broken in PHPUnit 9 and in PHPUnit 10?
-labels: type/bug, version/9, version/10
+name: ⚠️ PHP Compatibility Issue in PHPUnit 9
+about: A change in a new version of PHP requires adaption in PHPUnit 9?
+labels: type/change-in-php-requires-adaptation, version/9
 ---
 
 <!--
@@ -28,11 +28,11 @@ labels: type/bug, version/9, version/10
 
 #### Current behavior
 
-<!-- What is the current (buggy) behavior? -->
+<!-- What is the current behavior? -->
 
 #### How to reproduce
 
-<!-- Provide steps to reproduce the bug. -->
+<!-- Provide steps to reproduce the issue. -->
 
 #### Expected behavior
 
