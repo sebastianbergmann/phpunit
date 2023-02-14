@@ -1,7 +1,7 @@
 ---
-name: 🐞 Bug Report for PHPUnit 9 and PHPUnit 10
-about: Something is broken in PHPUnit 9 and in PHPUnit 10?
-labels: type/bug, version/9, version/10
+name: 🐞 Bug Report for PHPUnit 10
+about: Something is broken in PHPUnit 10, but it works in PHPUnit 9?
+labels: type/bug, version/10
 ---
 
 <!--
