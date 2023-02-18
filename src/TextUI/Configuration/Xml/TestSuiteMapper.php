@@ -39,7 +39,7 @@ final class TestSuiteMapper
         try {
             $filterAsArray         = $filter ? explode(',', $filter) : [];
             $excludedFilterAsArray = $excludedTestSuites ? explode(',', $excludedTestSuites) : [];
-            $result                = TestSuiteObject::empty();
+            $result                = TestSuiteObject::empty($filter);
 
             foreach ($configuration as $testSuiteConfiguration) {
                 if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
