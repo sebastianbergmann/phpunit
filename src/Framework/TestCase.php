@@ -591,13 +591,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         clearstatcache();
 
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
-        $hasMetRequirements                = false;
         $this->numberOfAssertionsPerformed = 0;
         $currentWorkingDirectory           = getcwd();
 
         try {
             $this->checkRequirements();
-            $hasMetRequirements = true;
 
             if ($this->inIsolation) {
                 $this->invokeBeforeClassHookMethods($hookMethods, $emitter);
@@ -620,6 +618,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $this->verifyMockObjects();
             $this->invokePostConditionHookMethods($hookMethods, $emitter);
+            $this->invokeAfterTestHookMethods($hookMethods, $emitter);
+
+            if ($this->inIsolation) {
+                $this->invokeAfterClassHookMethods($hookMethods, $emitter);
+            }
 
             $this->status = TestStatus::success();
         } catch (IncompleteTest $e) {
@@ -674,20 +677,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->mockObjects = [];
-
-        // Tear down the fixture. An exception raised in tearDown() will be
-        // caught and passed on when no exception was raised before.
-        try {
-            if ($hasMetRequirements) {
-                $this->invokeAfterTestHookMethods($hookMethods, $emitter);
-
-                if ($this->inIsolation) {
-                    $this->invokeAfterClassHookMethods($hookMethods, $emitter);
-                }
-            }
-        } catch (Throwable $_e) {
-            $e = $e ?? $_e;
-        }
 
         if (isset($_e)) {
             $this->status = TestStatus::error($_e->getMessage());
