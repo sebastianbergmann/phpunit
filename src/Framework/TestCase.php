@@ -182,6 +182,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $wasPrepared                                = false;
 
     /**
+     * @psalm-var list<class-string>
+     */
+    private array $failureInterfaces = [];
+
+    /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      */
@@ -647,13 +652,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
         } catch (Throwable $_e) {
-            $e            = $_e;
-            $this->status = TestStatus::error($_e->getMessage());
+            $e = $_e;
 
-            $emitter->testErrored(
-                $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($_e)
-            );
+            if ($this->isRegisteredFailure($_e)) {
+                $this->status = TestStatus::failure($_e->getMessage());
+
+                $emitter->testFailed(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($_e),
+                    null
+                );
+            } else {
+                $this->status = TestStatus::error($_e->getMessage());
+
+                $emitter->testErrored(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($_e)
+                );
+            }
         }
 
         if ($this->stopOutputBuffering() && !isset($e)) {
@@ -1002,6 +1018,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    /**
+     * @psalm-param class-string $interface
+     */
+    final protected function registerFailureInterface(string $interface): void
+    {
+        $this->failureInterfaces[] = $interface;
     }
 
     /**
@@ -2110,5 +2134,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 )
             );
         }
+    }
+
+    private function isRegisteredFailure(Throwable $t): bool
+    {
+        foreach ($this->failureInterfaces as $failureInterface) {
+            if ($t instanceof $failureInterface) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
