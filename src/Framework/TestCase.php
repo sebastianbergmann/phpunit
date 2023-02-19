@@ -348,6 +348,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Returns a string representation of the test case.
      *
      * @throws Exception
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function toString(): string
     {
@@ -360,6 +362,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $buffer . $this->dataSetAsStringWithData();
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function count(): int
     {
         return 1;
@@ -422,6 +427,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->doesNotPerformAssertions = true;
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function status(): TestStatus
     {
         return $this->status;
