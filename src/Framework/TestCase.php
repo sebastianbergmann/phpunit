@@ -474,15 +474,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new MockBuilder($this, $className);
     }
 
-    final public function registerComparator(Comparator $comparator): void
-    {
-        ComparatorFactory::getInstance()->register($comparator);
-
-        Event\Facade::emitter()->testRegisteredComparator($comparator::class);
-
-        $this->customComparators[] = $comparator;
-    }
-
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -1018,6 +1009,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    final protected function registerComparator(Comparator $comparator): void
+    {
+        ComparatorFactory::getInstance()->register($comparator);
+
+        Event\Facade::emitter()->testRegisteredComparator($comparator::class);
+
+        $this->customComparators[] = $comparator;
     }
 
     /**
