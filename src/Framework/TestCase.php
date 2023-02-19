@@ -688,17 +688,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $this->invokeAfterClassHookMethods($hookMethods, $emitter);
                 }
             }
-        } catch (Throwable $_e) {
-            $e = $e ?? $_e;
+        } catch (Throwable $exceptionRaisedDuringTearDown) {
+            $e = $e ?? $exceptionRaisedDuringTearDown;
         }
 
-        if (isset($_e)) {
-            $this->status = TestStatus::error($_e->getMessage());
+        if (isset($exceptionRaisedDuringTearDown)) {
+            $this->status = TestStatus::error($exceptionRaisedDuringTearDown->getMessage());
 
             if (!$errorEventEmitted) {
                 $emitter->testErrored(
                     $this->valueObjectForEvents(),
-                    Event\Code\Throwable::from($_e)
+                    Event\Code\Throwable::from($exceptionRaisedDuringTearDown)
                 );
             }
         }
