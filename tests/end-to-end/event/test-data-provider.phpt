@@ -26,20 +26,25 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
+Test Suite Loaded (2 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\DataProviderTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess, 1 test)
+Test Runner Execution Started (2 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\DataProviderTest, 2 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
 Test Prepared (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
 Assertion Succeeded (Constraint: is true)
 Test Passed (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
 Test Finished (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
-Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess, 1 test)
-Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
+Test Prepared (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
+Assertion Succeeded (Constraint: is true)
+Test Passed (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
+Test Finished (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
+Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
