@@ -592,6 +592,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
         $hasMetRequirements                = false;
+        $errorEventEmitted                 = false;
         $this->numberOfAssertionsPerformed = 0;
         $currentWorkingDirectory           = getcwd();
 
@@ -654,6 +655,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($_e)
             );
+
+            $errorEventEmitted = true;
         }
 
         if ($this->stopOutputBuffering() && !isset($e)) {
@@ -691,6 +694,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (isset($_e)) {
             $this->status = TestStatus::error($_e->getMessage());
+
+            if (!$errorEventEmitted) {
+                $emitter->testErrored(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($_e)
+                );
+            }
         }
 
         clearstatcache();
