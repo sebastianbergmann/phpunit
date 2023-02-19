@@ -16,7 +16,7 @@ final class DataProviderTest extends TestCase
 {
     public static function values(): array
     {
-        return [[true]];
+        return [[true], [true]];
     }
 
     #[DataProvider('values')]
