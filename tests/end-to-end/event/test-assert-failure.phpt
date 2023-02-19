@@ -2,6 +2,14 @@
 The right events are emitted in the right order for a test that fails because of assert()
 --SKIPIF--
 <?php declare(strict_types=1);
+if (ini_get('zend.assertions') != 1) {
+    print 'skip: zend.assertions=1 is required' . PHP_EOL;
+}
+
+if (ini_get('assert.exception') != 1) {
+    print 'skip: assert.exception=1 is required' . PHP_EOL;
+}
+
 if (DIRECTORY_SEPARATOR === '\\') {
     print "skip: this test does not work on Windows / GitHub Actions\n";
 }
