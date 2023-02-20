@@ -18,6 +18,7 @@ use const LC_TIME;
 use const PATHINFO_FILENAME;
 use const PHP_EOL;
 use const PHP_URL_PATH;
+use function array_keys;
 use function array_merge;
 use function array_values;
 use function basename;
@@ -182,7 +183,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $wasPrepared                                = false;
 
     /**
-     * @psalm-var list<class-string>
+     * @psalm-var array<class-string, true>
      */
     private array $failureInterfaces = [];
 
@@ -1033,7 +1034,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function registerFailureInterface(string $interface): void
     {
-        $this->failureInterfaces[] = $interface;
+        $this->failureInterfaces[$interface] = true;
     }
 
     /**
@@ -2146,7 +2147,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function isRegisteredFailure(Throwable $t): bool
     {
-        foreach ($this->failureInterfaces as $failureInterface) {
+        foreach (array_keys($this->failureInterfaces) as $failureInterface) {
             if ($t instanceof $failureInterface) {
                 return true;
             }
