@@ -8,9 +8,10 @@ $_SERVER['argv'][] = __DIR__ . '/5192/phpunit.xml';
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/5192
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime: %s
+Configuration: %s
 
 No tests executed!
