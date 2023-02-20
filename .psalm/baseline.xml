@@ -815,7 +815,6 @@
             )]]></code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
-      <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>
       <code>self::$printer</code>
