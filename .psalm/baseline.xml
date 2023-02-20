@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.6.0@e784128902dfe01d489c4123d69918a9f3c1eac5">
+<files psalm-version="5.7.1@8e0fd880141f236847ab49a06f94f788d41a4292">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -47,7 +47,7 @@
   </file>
   <file src="src/Event/Facade.php">
     <ArgumentTypeCoercion>
-      <code>$eventClass . 'Subscriber'</code>
+      <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
     <PossiblyNullReference>
       <code>flush</code>
@@ -92,9 +92,9 @@
   <file src="src/Event/Value/TestSuite/TestSuite.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
-      <code>$testSuite-&gt;getName()</code>
-      <code>$testSuite-&gt;getName()</code>
-      <code>$testSuite-&gt;getName()</code>
+      <code><![CDATA[$testSuite->getName()]]></code>
+      <code><![CDATA[$testSuite->getName()]]></code>
+      <code><![CDATA[$testSuite->getName()]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
@@ -122,7 +122,7 @@
   </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
     <PossiblyInvalidArgument>
-      <code>$e-&gt;getCode()</code>
+      <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Framework/Constraint/ObjectEquals.php">
@@ -132,10 +132,10 @@
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
     <PropertyTypeCoercion>
-      <code>array_map(
-            fn ($constraint): Constraint =&gt; $this-&gt;checkConstraint($constraint),
+      <code><![CDATA[array_map(
+            fn ($constraint): Constraint => $this->checkConstraint($constraint),
             $constraints
-        )</code>
+        )]]></code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/Constraint/Operator/LogicalXor.php">
@@ -145,7 +145,7 @@
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
     <ArgumentTypeCoercion>
-      <code>$this-&gt;className</code>
+      <code><![CDATA[$this->className]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/DataProviderTestSuite.php">
@@ -153,10 +153,10 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement>
-      <code>$this-&gt;providedTests</code>
+      <code><![CDATA[$this->providedTests]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>list&lt;ExecutionOrderDependency&gt;</code>
+      <code><![CDATA[list<ExecutionOrderDependency>]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
@@ -173,7 +173,7 @@
       <code>$type</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
-      <code>$this-&gt;getMock(
+      <code><![CDATA[$this->getMock(
                 $originalClassName,
                 $methods,
                 $arguments,
@@ -182,16 +182,16 @@
                 $callOriginalClone,
                 $callAutoload,
                 $cloneArguments
-            )</code>
+            )]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>MockObject&amp;RealInstanceType</code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
     </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
-      <code>$client-&gt;__getFunctions()</code>
+      <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
@@ -204,15 +204,15 @@
       <code>MethodName</code>
     </InvalidNullableReturnType>
     <NullableReturnStatement>
-      <code>$this-&gt;methodNameRule</code>
+      <code><![CDATA[$this->methodNameRule]]></code>
     </NullableReturnStatement>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion>
-      <code>$this-&gt;type</code>
-      <code>$this-&gt;type</code>
-      <code>$this-&gt;type</code>
-      <code>$this-&gt;type</code>
+      <code><![CDATA[$this->type]]></code>
+      <code><![CDATA[$this->type]]></code>
+      <code><![CDATA[$this->type]]></code>
+      <code><![CDATA[$this->type]]></code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
       <code>$object</code>
@@ -220,29 +220,29 @@
       <code>$object</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>MockObject&amp;MockedType</code>
-      <code>MockObject&amp;MockedType</code>
-      <code>MockObject&amp;MockedType</code>
+      <code><![CDATA[MockObject&MockedType]]></code>
+      <code><![CDATA[MockObject&MockedType]]></code>
+      <code><![CDATA[MockObject&MockedType]]></code>
     </InvalidReturnType>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <InvalidArgument>
-      <code>[
-                'arguments_decl'     =&gt; $this-&gt;argumentsForDeclaration,
-                'arguments_call'     =&gt; $this-&gt;argumentsForCall,
-                'return_declaration' =&gt; !empty($this-&gt;returnType-&gt;asString()) ? (': ' . $this-&gt;returnType-&gt;asString()) : '',
-                'return_type'        =&gt; $this-&gt;returnType-&gt;asString(),
-                'arguments_count'    =&gt; !empty($this-&gt;argumentsForCall) ? substr_count($this-&gt;argumentsForCall, ',') + 1 : 0,
-                'class_name'         =&gt; $this-&gt;className,
-                'method_name'        =&gt; $this-&gt;methodName,
-                'modifier'           =&gt; $this-&gt;modifier,
-                'reference'          =&gt; $this-&gt;reference,
-                'clone_arguments'    =&gt; $this-&gt;cloneArguments ? 'true' : 'false',
-                'deprecation'        =&gt; $deprecation,
-            ]</code>
+      <code><![CDATA[[
+                'arguments_decl'     => $this->argumentsForDeclaration,
+                'arguments_call'     => $this->argumentsForCall,
+                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
+                'return_type'        => $this->returnType->asString(),
+                'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
+                'class_name'         => $this->className,
+                'method_name'        => $this->methodName,
+                'modifier'           => $this->modifier,
+                'reference'          => $this->reference,
+                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
+                'deprecation'        => $deprecation,
+            ]]]></code>
     </InvalidArgument>
     <PossiblyFalseOperand>
-      <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
+      <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
     </PossiblyFalseOperand>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
@@ -252,7 +252,7 @@
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
     <PossiblyInvalidOperand>
-      <code>$this-&gt;callback</code>
+      <code><![CDATA[$this->callback]]></code>
     </PossiblyInvalidOperand>
   </file>
   <file src="src/Framework/TestBuilder.php">
@@ -267,13 +267,13 @@
     <ArgumentTypeCoercion>
       <code>$mockClassName</code>
       <code>$originalClassName</code>
-      <code>$this-&gt;expectedException</code>
+      <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
       <code>$mockObject</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>MockObject&amp;RealInstanceType</code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
     </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getMethod</code>
@@ -296,20 +296,20 @@
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion>
-      <code>$this-&gt;name</code>
+      <code><![CDATA[$this->name]]></code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement>
-      <code>$this-&gt;providedTests</code>
-      <code>$this-&gt;requiredTests</code>
+      <code><![CDATA[$this->providedTests]]></code>
+      <code><![CDATA[$this->requiredTests]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>list&lt;ExecutionOrderDependency&gt;</code>
-      <code>list&lt;ExecutionOrderDependency&gt;</code>
+      <code><![CDATA[list<ExecutionOrderDependency>]]></code>
+      <code><![CDATA[list<ExecutionOrderDependency>]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <InvalidPropertyAssignmentValue>
-      <code>$this-&gt;testSuiteTimes</code>
+      <code><![CDATA[$this->testSuiteTimes]]></code>
     </InvalidPropertyAssignmentValue>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
@@ -342,8 +342,8 @@
   </file>
   <file src="src/Logging/TestDox/TestMethod/TestResultCollector.php">
     <PossiblyNullArgument>
-      <code>$this-&gt;status</code>
-      <code>$this-&gt;time</code>
+      <code><![CDATA[$this->status]]></code>
+      <code><![CDATA[$this->time]]></code>
     </PossiblyNullArgument>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
@@ -359,7 +359,7 @@
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
     <PossiblyInvalidArgument>
-      <code>$e-&gt;getCode()</code>
+      <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
@@ -374,7 +374,7 @@
       <code>array_unique($groups)</code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>list&lt;string&gt;</code>
+      <code><![CDATA[list<string>]]></code>
     </MoreSpecificReturnType>
     <RedundantCondition>
       <code>$metadata instanceof CoversFunction</code>
@@ -408,14 +408,14 @@
   </file>
   <file src="src/Metadata/Parser/Annotation/DocBlock.php">
     <MoreSpecificReturnType>
-      <code>array{
-     *   __OFFSET: array&lt;string, int&gt;&amp;array{__FILE: string},
-     *   setting?: array&lt;string, string&gt;,
-     *   extension_versions?: array&lt;string, array{version: string, operator: string}&gt;
-     * }&amp;array&lt;
+      <code><![CDATA[array{
+     *   __OFFSET: array<string, int>&array{__FILE: string},
+     *   setting?: array<string, string>,
+     *   extension_versions?: array<string, array{version: string, operator: string}>
+     * }&array<
      *   string,
-     *   string|array{version: string, operator: string}|array{constraint: string}|array&lt;int|string, string&gt;
-     * &gt;</code>
+     *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
+     * >]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
@@ -425,13 +425,13 @@
       <code>$className</code>
       <code>$pieces[0]</code>
       <code>$pieces[0]</code>
-      <code>explode('::', $value)</code>
+      <code><![CDATA[explode('::', $value)]]></code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Metadata/Version/Requirement.php">
     <ArgumentTypeCoercion>
-      <code>!empty($matches['operator']) ? $matches['operator'] : '&gt;='</code>
+      <code><![CDATA[!empty($matches['operator']) ? $matches['operator'] : '>=']]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/CodeCoverage.php">
@@ -464,8 +464,8 @@
       <code>coverageXml</code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>
-      <code>$this-&gt;codeCoverage</code>
-      <code>$this-&gt;driver</code>
+      <code><![CDATA[$this->codeCoverage]]></code>
+      <code><![CDATA[$this->driver]]></code>
     </NullableReturnStatement>
     <PossiblyNullReference>
       <code>start</code>
@@ -477,7 +477,7 @@
       <code>GroupFilterIterator</code>
     </MissingTemplateParam>
     <PropertyTypeCoercion>
-      <code>$this-&gt;groupTests</code>
+      <code><![CDATA[$this->groupTests]]></code>
     </PropertyTypeCoercion>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
@@ -485,7 +485,7 @@
       <code>NameFilterIterator</code>
     </MissingTemplateParam>
     <PossiblyNullArgument>
-      <code>$this-&gt;filter</code>
+      <code><![CDATA[$this->filter]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Runner/PhptTestCase.php">
@@ -501,7 +501,7 @@
       <code>bootstrap</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
-      <code>$sections['FILEEOF']</code>
+      <code><![CDATA[$sections['FILEEOF']]]></code>
     </PossiblyInvalidArgument>
     <PossiblyUndefinedArrayOffset>
       <code>$setting[1]</code>
@@ -520,18 +520,18 @@
   <file src="src/Runner/TestSuiteSorter.php">
     <ArgumentTypeCoercion>
       <code>$tests</code>
-      <code>$this-&gt;randomize($suite-&gt;tests())</code>
-      <code>$this-&gt;resolveDependencies($tests)</code>
-      <code>$this-&gt;reverse($suite-&gt;tests())</code>
-      <code>$this-&gt;sortByDuration($suite-&gt;tests())</code>
-      <code>$this-&gt;sortBySize($suite-&gt;tests())</code>
-      <code>$this-&gt;sortDefectsFirst($suite-&gt;tests())</code>
+      <code><![CDATA[$this->randomize($suite->tests())]]></code>
+      <code><![CDATA[$this->resolveDependencies($tests)]]></code>
+      <code><![CDATA[$this->reverse($suite->tests())]]></code>
+      <code><![CDATA[$this->sortByDuration($suite->tests())]]></code>
+      <code><![CDATA[$this->sortBySize($suite->tests())]]></code>
+      <code><![CDATA[$this->sortDefectsFirst($suite->tests())]]></code>
     </ArgumentTypeCoercion>
     <RedundantCondition>
-      <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
-      <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
-      <code>$this-&gt;cache !== null</code>
-      <code>$this-&gt;cache !== null</code>
+      <code><![CDATA[$order === self::ORDER_DURATION && $this->cache !== null]]></code>
+      <code><![CDATA[$orderDefects === self::ORDER_DEFECTS_FIRST && $this->cache !== null]]></code>
+      <code><![CDATA[$this->cache !== null]]></code>
+      <code><![CDATA[$this->cache !== null]]></code>
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
@@ -539,26 +539,26 @@
       <code>nameAndVersion</code>
     </InternalMethod>
     <MissingThrowsDocblock>
-      <code>DefaultPrinter::from(
-                    $configuration-&gt;logfileTeamcity()
-                )</code>
-      <code>DefaultPrinter::from(
-                    $configuration-&gt;logfileTeamcity()
-                )</code>
-      <code>EventFacade::registerTracer(
+      <code><![CDATA[DefaultPrinter::from(
+                    $configuration->logfileTeamcity()
+                )]]></code>
+      <code><![CDATA[DefaultPrinter::from(
+                    $configuration->logfileTeamcity()
+                )]]></code>
+      <code><![CDATA[EventFacade::registerTracer(
                 new EventLogger(
-                    $configuration-&gt;logEventsText(),
+                    $configuration->logEventsText(),
                     false
                 )
-            )</code>
-      <code>EventFacade::registerTracer(
+            )]]></code>
+      <code><![CDATA[EventFacade::registerTracer(
                 new EventLogger(
-                    $configuration-&gt;logEventsVerboseText(),
+                    $configuration->logEventsVerboseText(),
                     true
                 )
-            )</code>
-      <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
-      <code>OutputFacade::printerFor($configuration-&gt;logfileJunit())</code>
+            )]]></code>
+      <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
+      <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
       <code>atLeastVersion</code>
       <code>build</code>
       <code>configurationFile</code>
@@ -571,24 +571,24 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
-      <code>new JunitXmlLogger(
-                OutputFacade::printerFor($configuration-&gt;logfileJunit()),
-            )</code>
-      <code>new JunitXmlLogger(
-                OutputFacade::printerFor($configuration-&gt;logfileJunit()),
-            )</code>
+      <code><![CDATA[new JunitXmlLogger(
+                OutputFacade::printerFor($configuration->logfileJunit()),
+            )]]></code>
+      <code><![CDATA[new JunitXmlLogger(
+                OutputFacade::printerFor($configuration->logfileJunit()),
+            )]]></code>
       <code>new ResultCacheHandler($cache)</code>
       <code>new ResultCacheHandler($cache)</code>
-      <code>new TeamCityLogger(
+      <code><![CDATA[new TeamCityLogger(
                 DefaultPrinter::from(
-                    $configuration-&gt;logfileTeamcity()
+                    $configuration->logfileTeamcity()
                 )
-            )</code>
-      <code>new TeamCityLogger(
+            )]]></code>
+      <code><![CDATA[new TeamCityLogger(
                 DefaultPrinter::from(
-                    $configuration-&gt;logfileTeamcity()
+                    $configuration->logfileTeamcity()
                 )
-            )</code>
+            )]]></code>
       <code>new TestDoxResultCollector</code>
       <code>new TestDoxResultCollector</code>
     </MissingThrowsDocblock>
@@ -615,8 +615,8 @@
       <code>string</code>
     </InvalidNullableReturnType>
     <NullableReturnStatement>
-      <code>$this-&gt;excludeTestSuite</code>
-      <code>$this-&gt;teamCityPrinter</code>
+      <code><![CDATA[$this->excludeTestSuite]]></code>
+      <code><![CDATA[$this->teamCityPrinter]]></code>
     </NullableReturnStatement>
   </file>
   <file src="src/TextUI/Configuration/Cli/XmlConfigurationFileFinder.php">
@@ -628,12 +628,12 @@
   </file>
   <file src="src/TextUI/Configuration/Configuration.php">
     <LessSpecificReturnStatement>
-      <code>$this-&gt;testsCovering</code>
-      <code>$this-&gt;testsUsing</code>
+      <code><![CDATA[$this->testsCovering]]></code>
+      <code><![CDATA[$this->testsUsing]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>list&lt;string&gt;</code>
-      <code>list&lt;string&gt;</code>
+      <code><![CDATA[list<string>]]></code>
+      <code><![CDATA[list<string>]]></code>
     </MoreSpecificReturnType>
     <PossiblyInvalidPropertyAssignmentValue>
       <code>$columns</code>
@@ -650,7 +650,7 @@
       <code>detect</code>
     </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset>
-      <code>$_SERVER['PHP_SELF']</code>
+      <code><![CDATA[$_SERVER['PHP_SELF']]]></code>
     </PossiblyUndefinedArrayOffset>
     <RedundantCondition>
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
@@ -725,9 +725,9 @@
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion>
-      <code>$bootstrap-&gt;getAttribute('class')</code>
-      <code>$directoryNode-&gt;getAttribute('phpVersionOperator')</code>
-      <code>$fileNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code><![CDATA[$bootstrap->getAttribute('class')]]></code>
+      <code><![CDATA[$directoryNode->getAttribute('phpVersionOperator')]]></code>
+      <code><![CDATA[$fileNode->getAttribute('phpVersionOperator')]]></code>
     </ArgumentTypeCoercion>
     <RedundantConditionGivenDocblockType>
       <code>assert($directoryNode instanceof DOMElement)</code>
@@ -782,8 +782,8 @@
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset>
-      <code>$option['desc']</code>
-      <code>$option['desc']</code>
+      <code><![CDATA[$option['desc']]]></code>
+      <code><![CDATA[$option['desc']]]></code>
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/Output/Default/ResultPrinter.php">
@@ -803,16 +803,16 @@
       <code>DefaultPrinter::standardOutput()</code>
       <code>DefaultPrinter::standardOutput()</code>
       <code>DefaultPrinter::standardOutput()</code>
-      <code>new DefaultProgressPrinter(
+      <code><![CDATA[new DefaultProgressPrinter(
                 self::$printer,
-                $configuration-&gt;colors(),
-                $configuration-&gt;columns()
-            )</code>
-      <code>new DefaultProgressPrinter(
+                $configuration->colors(),
+                $configuration->columns()
+            )]]></code>
+      <code><![CDATA[new DefaultProgressPrinter(
                 self::$printer,
-                $configuration-&gt;colors(),
-                $configuration-&gt;columns()
-            )</code>
+                $configuration->colors(),
+                $configuration->columns()
+            )]]></code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
       <code>resourceUsageSinceStartOfRequest</code>
@@ -830,8 +830,8 @@
   </file>
   <file src="src/TextUI/Output/Printer/DefaultPrinter.php">
     <PossiblyInvalidArgument>
-      <code>$this-&gt;stream</code>
-      <code>$this-&gt;stream</code>
+      <code><![CDATA[$this->stream]]></code>
+      <code><![CDATA[$this->stream]]></code>
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
@@ -852,7 +852,7 @@
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <DocblockTypeContradiction>
-      <code>in_array($operator, ['&lt;', 'lt', '&lt;=', 'le', '&gt;', 'gt', '&gt;=', 'ge', '==', '=', 'eq', '!=', '&lt;&gt;', 'ne'], true)</code>
+      <code><![CDATA[in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'], true)]]></code>
     </DocblockTypeContradiction>
     <NoValue>
       <code>$operator</code>
