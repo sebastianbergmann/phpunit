@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.0.11] - 2023-MM-DD
+
+### Fixed
+
+* [#5224](https://github.com/sebastianbergmann/phpunit/issues/5224): PHPUnit looks "at the clock" and trusts `$_SERVER['REQUEST_TIME_FLOAT']`
+
 ## [10.0.10] - 2023-02-20
 
 ### Fixed
@@ -203,6 +209,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * PHP 7.3, PHP 7.4, and PHP 8.0 are no longer supported
 * `phpunit/php-code-coverage` [no longer supports PHPDBG and Xdebug 2](https://github.com/sebastianbergmann/php-code-coverage/blob/10.0.0/ChangeLog.md#1000---2023-02-03)
 
+[10.0.11]: https://github.com/sebastianbergmann/phpunit/compare/10.0.10...10.0
 [10.0.10]: https://github.com/sebastianbergmann/phpunit/compare/10.0.9...10.0.10
 [10.0.9]: https://github.com/sebastianbergmann/phpunit/compare/10.0.8...10.0.9
 [10.0.8]: https://github.com/sebastianbergmann/phpunit/compare/10.0.7...10.0.8

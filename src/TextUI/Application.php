@@ -63,6 +63,7 @@ use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
+use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
@@ -132,6 +133,9 @@ final class Application
 
             EventFacade::seal();
 
+            $timer = new Timer;
+            $timer->start();
+
             $runner = new TestRunner;
 
             $runner->run(
@@ -139,6 +143,8 @@ final class Application
                 $resultCache,
                 $testSuite
             );
+
+            $duration = $timer->stop();
 
             $testDoxResult = null;
 
@@ -162,7 +168,7 @@ final class Application
 
             $result = TestResultFacade::result();
 
-            OutputFacade::printResult($result, $testDoxResult);
+            OutputFacade::printResult($result, $testDoxResult, $duration);
             CodeCoverage::instance()->generateReports($printer, $configuration);
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
