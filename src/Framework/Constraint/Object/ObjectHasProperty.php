@@ -13,10 +13,8 @@ use ReflectionObject;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
  */
-final class ObjectHasAttribute extends ClassHasAttribute
+final class ObjectHasProperty extends ClassHasProperty
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
@@ -26,6 +24,6 @@ final class ObjectHasAttribute extends ClassHasAttribute
      */
     protected function matches($other): bool
     {
-        return (new ReflectionObject($other))->hasProperty($this->attributeName());
+        return (new ReflectionObject($other))->hasProperty($this->propertyName());
     }
 }

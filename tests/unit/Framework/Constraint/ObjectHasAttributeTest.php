@@ -22,7 +22,7 @@ final class ObjectHasAttributeTest extends ConstraintTestCase
 {
     public function testConstraintObjectHasAttribute(): void
     {
-        $constraint = new ObjectHasAttribute('privateAttribute');
+        $constraint = new ObjectHasProperty('privateAttribute');
 
         $this->assertTrue($constraint->evaluate(new ClassWithNonPublicAttributes, '', true));
         $this->assertFalse($constraint->evaluate(new stdClass, '', true));
@@ -52,7 +52,7 @@ EOF
 
     public function testConstraintObjectHasAttribute2(): void
     {
-        $constraint = new ObjectHasAttribute('privateAttribute');
+        $constraint = new ObjectHasProperty('privateAttribute');
 
         try {
             $constraint->evaluate(new stdClass, 'custom message');

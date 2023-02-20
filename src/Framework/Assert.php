@@ -40,8 +40,8 @@ use DOMElement;
 use Generator;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
-use PHPUnit\Framework\Constraint\ClassHasAttribute;
-use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
+use PHPUnit\Framework\Constraint\ClassHasProperty;
+use PHPUnit\Framework\Constraint\ClassHasStaticProperty;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
@@ -72,7 +72,7 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
-use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -1200,7 +1200,7 @@ abstract class Assert
             throw InvalidArgumentException::create(2, 'class name');
         }
 
-        static::assertThat($className, new ClassHasAttribute($attributeName), $message);
+        static::assertThat($className, new ClassHasProperty($attributeName), $message);
     }
 
     /**
@@ -1227,7 +1227,7 @@ abstract class Assert
         static::assertThat(
             $className,
             new LogicalNot(
-                new ClassHasAttribute($attributeName)
+                new ClassHasProperty($attributeName)
             ),
             $message
         );
@@ -1256,7 +1256,7 @@ abstract class Assert
 
         static::assertThat(
             $className,
-            new ClassHasStaticAttribute($attributeName),
+            new ClassHasStaticProperty($attributeName),
             $message
         );
     }
@@ -1285,7 +1285,7 @@ abstract class Assert
         static::assertThat(
             $className,
             new LogicalNot(
-                new ClassHasStaticAttribute($attributeName)
+                new ClassHasStaticProperty($attributeName)
             ),
             $message
         );
@@ -1306,8 +1306,22 @@ abstract class Assert
     {
         self::createWarning('assertObjectHasAttribute() is deprecated and will be removed in PHPUnit 10.');
 
-        if (!self::isValidObjectAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+        self::assertObjectHasProperty($attributeName, $object, $message);
+    }
+
+    /**
+     * Asserts that an object has a specified attribute.
+     *
+     * @param object $object
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    public static function assertObjectHasProperty(string $propertyName, $object, string $message = ''): void
+    {
+        if (!self::isValidObjectPropertyName($propertyName)) {
+            throw InvalidArgumentException::create(1, 'valid property name');
         }
 
         if (!is_object($object)) {
@@ -1316,7 +1330,7 @@ abstract class Assert
 
         static::assertThat(
             $object,
-            new ObjectHasAttribute($attributeName),
+            new ObjectHasProperty($propertyName),
             $message
         );
     }
@@ -1336,8 +1350,22 @@ abstract class Assert
     {
         self::createWarning('assertObjectNotHasAttribute() is deprecated and will be removed in PHPUnit 10.');
 
-        if (!self::isValidObjectAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+        self::assertObjectNotHasProperty($attributeName, $object, $message);
+    }
+
+    /**
+     * Asserts that an object does not have a specified attribute.
+     *
+     * @param object $object
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    public static function assertObjectNotHasProperty(string $propertyName, $object, string $message = ''): void
+    {
+        if (!self::isValidObjectPropertyName($propertyName)) {
+            throw InvalidArgumentException::create(1, 'valid property name');
         }
 
         if (!is_object($object)) {
@@ -1347,7 +1375,7 @@ abstract class Assert
         static::assertThat(
             $object,
             new LogicalNot(
-                new ObjectHasAttribute($attributeName)
+                new ObjectHasProperty($propertyName)
             ),
             $message
         );
@@ -2728,31 +2756,31 @@ abstract class Assert
     /**
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
-    public static function classHasAttribute(string $attributeName): ClassHasAttribute
+    public static function classHasAttribute(string $attributeName): ClassHasProperty
     {
         self::createWarning('classHasAttribute() is deprecated and will be removed in PHPUnit 10.');
 
-        return new ClassHasAttribute($attributeName);
+        return new ClassHasProperty($attributeName);
     }
 
     /**
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
-    public static function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
+    public static function classHasStaticAttribute(string $attributeName): ClassHasStaticProperty
     {
         self::createWarning('classHasStaticAttribute() is deprecated and will be removed in PHPUnit 10.');
 
-        return new ClassHasStaticAttribute($attributeName);
+        return new ClassHasStaticProperty($attributeName);
     }
 
     /**
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
-    public static function objectHasAttribute($attributeName): ObjectHasAttribute
+    public static function objectHasAttribute($attributeName): ObjectHasProperty
     {
         self::createWarning('objectHasAttribute() is deprecated and will be removed in PHPUnit 10.');
 
-        return new ObjectHasAttribute($attributeName);
+        return new ObjectHasProperty($attributeName);
     }
 
     public static function identicalTo($value): IsIdentical
@@ -2904,7 +2932,7 @@ abstract class Assert
         return $hint;
     }
 
-    private static function isValidObjectAttributeName(string $attributeName): bool
+    private static function isValidObjectPropertyName(string $attributeName): bool
     {
         return (bool) preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
     }

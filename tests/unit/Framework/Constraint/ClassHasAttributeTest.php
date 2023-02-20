@@ -22,7 +22,7 @@ final class ClassHasAttributeTest extends ConstraintTestCase
 {
     public function testConstraintClassHasAttribute(): void
     {
-        $constraint = new ClassHasAttribute(
+        $constraint = new ClassHasProperty(
             'privateAttribute'
         );
 
@@ -54,7 +54,7 @@ EOF
 
     public function testConstraintClassHasAttribute2(): void
     {
-        $constraint = new ClassHasAttribute(
+        $constraint = new ClassHasProperty(
             'privateAttribute'
         );
 

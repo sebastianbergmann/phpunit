@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function get_class;
+use function is_object;
 use function sprintf;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
@@ -16,19 +18,27 @@ use ReflectionException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
  */
-final class ClassHasStaticAttribute extends ClassHasAttribute
+class ClassHasProperty extends Constraint
 {
+    /**
+     * @var string
+     */
+    private $propertyName;
+
+    public function __construct(string $attributeName)
+    {
+        $this->propertyName = $attributeName;
+    }
+
     /**
      * Returns a string representation of the constraint.
      */
     public function toString(): string
     {
         return sprintf(
-            'has static attribute "%s"',
-            $this->attributeName()
+            'has property "%s"',
+            $this->propertyName
         );
     }
 
@@ -41,11 +51,7 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
     protected function matches($other): bool
     {
         try {
-            $class = new ReflectionClass($other);
-
-            if ($class->hasProperty($this->attributeName())) {
-                return $class->getProperty($this->attributeName())->isStatic();
-            }
+            return (new ReflectionClass($other))->hasProperty($this->propertyName);
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
             throw new Exception(
@@ -55,7 +61,28 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
             );
         }
         // @codeCoverageIgnoreEnd
+    }
 
-        return false;
+    /**
+     * Returns the description of the failure.
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other evaluated value or object
+     */
+    protected function failureDescription($other): string
+    {
+        return sprintf(
+            '%sclass "%s" %s',
+            is_object($other) ? 'object of ' : '',
+            is_object($other) ? get_class($other) : $other,
+            $this->toString()
+        );
+    }
+
+    protected function propertyName(): string
+    {
+        return $this->propertyName;
     }
 }

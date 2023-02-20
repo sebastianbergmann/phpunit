@@ -17,8 +17,8 @@ use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
-use PHPUnit\Framework\Constraint\ClassHasAttribute;
-use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
+use PHPUnit\Framework\Constraint\ClassHasProperty;
+use PHPUnit\Framework\Constraint\ClassHasStaticProperty;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
@@ -48,7 +48,7 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
-use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
@@ -1416,11 +1416,11 @@ if (!function_exists('PHPUnit\Framework\assertObjectHasAttribute')) {
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertObjectHasAttribute
+     * @see Assert::assertObjectHasProperty
      */
     function assertObjectHasAttribute(string $attributeName, $object, string $message = ''): void
     {
-        Assert::assertObjectHasAttribute(...func_get_args());
+        Assert::assertObjectHasProperty(...func_get_args());
     }
 }
 
@@ -1436,11 +1436,11 @@ if (!function_exists('PHPUnit\Framework\assertObjectNotHasAttribute')) {
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertObjectNotHasAttribute
+     * @see Assert::assertObjectNotHasProperty
      */
     function assertObjectNotHasAttribute(string $attributeName, $object, string $message = ''): void
     {
-        Assert::assertObjectNotHasAttribute(...func_get_args());
+        Assert::assertObjectNotHasProperty(...func_get_args());
     }
 }
 
@@ -2794,21 +2794,21 @@ if (!function_exists('PHPUnit\Framework\greaterThanOrEqual')) {
 }
 
 if (!function_exists('PHPUnit\Framework\classHasAttribute')) {
-    function classHasAttribute(string $attributeName): ClassHasAttribute
+    function classHasAttribute(string $attributeName): ClassHasProperty
     {
         return Assert::classHasAttribute(...func_get_args());
     }
 }
 
 if (!function_exists('PHPUnit\Framework\classHasStaticAttribute')) {
-    function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
+    function classHasStaticAttribute(string $attributeName): ClassHasStaticProperty
     {
         return Assert::classHasStaticAttribute(...func_get_args());
     }
 }
 
 if (!function_exists('PHPUnit\Framework\objectHasAttribute')) {
-    function objectHasAttribute($attributeName): ObjectHasAttribute
+    function objectHasAttribute($attributeName): ObjectHasProperty
     {
         return Assert::objectHasAttribute(...func_get_args());
     }

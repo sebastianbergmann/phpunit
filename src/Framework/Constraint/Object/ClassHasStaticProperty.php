@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function get_class;
-use function is_object;
 use function sprintf;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
@@ -21,26 +19,16 @@ use ReflectionException;
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
  */
-class ClassHasAttribute extends Constraint
+final class ClassHasStaticProperty extends ClassHasProperty
 {
-    /**
-     * @var string
-     */
-    private $attributeName;
-
-    public function __construct(string $attributeName)
-    {
-        $this->attributeName = $attributeName;
-    }
-
     /**
      * Returns a string representation of the constraint.
      */
     public function toString(): string
     {
         return sprintf(
-            'has attribute "%s"',
-            $this->attributeName
+            'has static attribute "%s"',
+            $this->propertyName()
         );
     }
 
@@ -53,7 +41,11 @@ class ClassHasAttribute extends Constraint
     protected function matches($other): bool
     {
         try {
-            return (new ReflectionClass($other))->hasProperty($this->attributeName);
+            $class = new ReflectionClass($other);
+
+            if ($class->hasProperty($this->propertyName())) {
+                return $class->getProperty($this->propertyName())->isStatic();
+            }
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
             throw new Exception(
@@ -63,28 +55,7 @@ class ClassHasAttribute extends Constraint
             );
         }
         // @codeCoverageIgnoreEnd
-    }
 
-    /**
-     * Returns the description of the failure.
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
-     */
-    protected function failureDescription($other): string
-    {
-        return sprintf(
-            '%sclass "%s" %s',
-            is_object($other) ? 'object of ' : '',
-            is_object($other) ? get_class($other) : $other,
-            $this->toString()
-        );
-    }
-
-    protected function attributeName(): string
-    {
-        return $this->attributeName;
+        return false;
     }
 }

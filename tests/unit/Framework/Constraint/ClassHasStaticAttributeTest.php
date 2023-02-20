@@ -22,7 +22,7 @@ final class ClassHasStaticAttributeTest extends ConstraintTestCase
 {
     public function testConstraintClassHasStaticAttribute(): void
     {
-        $constraint = new ClassHasStaticAttribute('privateStaticAttribute');
+        $constraint = new ClassHasStaticProperty('privateStaticAttribute');
 
         $this->assertTrue($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
         $this->assertFalse($constraint->evaluate(stdClass::class, '', true));
@@ -52,7 +52,7 @@ EOF
 
     public function testConstraintClassHasStaticAttribute2(): void
     {
-        $constraint = new ClassHasStaticAttribute('foo');
+        $constraint = new ClassHasStaticProperty('foo');
 
         try {
             $constraint->evaluate(stdClass::class, 'custom message');
