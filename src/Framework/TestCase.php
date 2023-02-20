@@ -1176,10 +1176,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function runTest(): mixed
     {
-        $testArguments = array_merge($this->data, $this->dependencyInput);
+        $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
         try {
-            $testResult = $this->{$this->name}(...array_values($testArguments));
+            $testResult = $this->{$this->name}(...$testArguments);
         } catch (Throwable $exception) {
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
