@@ -13,4 +13,7 @@ https://github.com/sebastianbergmann/phpunit/issues/5192
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+Configuration: %s
+
 No tests executed!
