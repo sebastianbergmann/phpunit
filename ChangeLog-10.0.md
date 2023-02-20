@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Fixed
 
+* [#5218](https://github.com/sebastianbergmann/phpunit/issues/5218): Code Coverage does not work for tests run in separate process(es)
 * [#5219](https://github.com/sebastianbergmann/phpunit/issues/5219): Exceptions thrown in event subscribers affect how tests are run and/or how their outcome is evaluated
 
 ## [10.0.9] - 2023-02-19
