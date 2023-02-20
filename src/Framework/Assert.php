@@ -941,7 +941,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      */
-    final public static function assertObjectHasAttribute(string $attributeName, object $object, string $message = ''): void
+    final public static function assertObjectHasProperty(string $attributeName, object $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -955,7 +955,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      */
-    final public static function assertObjectNotHasAttribute(string $attributeName, object $object, string $message = ''): void
+    final public static function assertObjectNotHasProperty(string $attributeName, object $object, string $message = ''): void
     {
         static::assertThat(
             $object,
