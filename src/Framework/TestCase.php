@@ -185,7 +185,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var array<class-string, true>
      */
-    private array $failureInterfaces = [];
+    private array $failureTypes = [];
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -1030,11 +1030,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @psalm-param class-string $interface
+     * @psalm-param class-string $classOrInterface
      */
-    final protected function registerFailureInterface(string $interface): void
+    final protected function registerFailureType(string $classOrInterface): void
     {
-        $this->failureInterfaces[$interface] = true;
+        $this->failureTypes[$classOrInterface] = true;
     }
 
     /**
@@ -2147,8 +2147,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function isRegisteredFailure(Throwable $t): bool
     {
-        foreach (array_keys($this->failureInterfaces) as $failureInterface) {
-            if ($t instanceof $failureInterface) {
+        foreach (array_keys($this->failureTypes) as $failureType) {
+            if ($t instanceof $failureType) {
                 return true;
             }
         }
