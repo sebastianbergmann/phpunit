@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.6.0@e784128902dfe01d489c4123d69918a9f3c1eac5">
+<files psalm-version="5.7.1@8e0fd880141f236847ab49a06f94f788d41a4292">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
-      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
+      <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
+      <code><![CDATA[$expectedElement->childNodes->item($i)]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedClass>
       <code>Attribute</code>
@@ -74,12 +74,12 @@
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction>
-      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
-      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
-      <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
+      <code><![CDATA[!$actual instanceof Countable && !is_iterable($actual)]]></code>
+      <code><![CDATA[!$actual instanceof Countable && !is_iterable($actual)]]></code>
+      <code><![CDATA[!$expected instanceof Countable && !is_iterable($expected)]]></code>
+      <code><![CDATA[!$expected instanceof Countable && !is_iterable($expected)]]></code>
+      <code><![CDATA[!$haystack instanceof Countable && !is_iterable($haystack)]]></code>
+      <code><![CDATA[!$haystack instanceof Countable && !is_iterable($haystack)]]></code>
       <code>is_int($key) || is_string($key)</code>
       <code>is_int($key) || is_string($key)</code>
       <code>is_object($object)</code>
@@ -241,7 +241,7 @@
       <code>$subset</code>
     </PossiblyInvalidArgument>
     <RedundantCondition>
-      <code>assert($step['object'] instanceof TestCase)</code>
+      <code><![CDATA[assert($step['object'] instanceof TestCase)]]></code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType>
       <code>is_object($classOrObject)</code>
@@ -433,20 +433,20 @@
     <DeprecatedClass>
       <code>Composite</code>
       <code>parent::__construct($constraint)</code>
-      <code>parent::evaluate(
+      <code><![CDATA[parent::evaluate(
             Assert::readAttribute(
                 $other,
-                $this-&gt;attributeName
+                $this->attributeName
             ),
             $description,
             $returnResult
-        )</code>
+        )]]></code>
     </DeprecatedClass>
     <DeprecatedMethod>
-      <code>Assert::readAttribute(
+      <code><![CDATA[Assert::readAttribute(
                 $other,
-                $this-&gt;attributeName
-            )</code>
+                $this->attributeName
+            )]]></code>
     </DeprecatedMethod>
     <MissingParamType>
       <code>$other</code>
@@ -457,20 +457,20 @@
   </file>
   <file src="src/Framework/Constraint/ClassHasAttribute.php">
     <MissingThrowsDocblock>
-      <code>throw new Exception(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/ClassHasStaticAttribute.php">
     <MissingThrowsDocblock>
-      <code>throw new Exception(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Composite.php">
@@ -483,7 +483,7 @@
   </file>
   <file src="src/Framework/Constraint/Constraint.php">
     <DocblockTypeContradiction>
-      <code>$this-&gt;exporter === null</code>
+      <code><![CDATA[$this->exporter === null]]></code>
     </DocblockTypeContradiction>
     <MissingParamType>
       <code>$other</code>
@@ -494,7 +494,7 @@
   </file>
   <file src="src/Framework/Constraint/Count.php">
     <PossiblyNullArgument>
-      <code>$this-&gt;getCountOf($other)</code>
+      <code><![CDATA[$this->getCountOf($other)]]></code>
     </PossiblyNullArgument>
     <RedundantConditionGivenDocblockType>
       <code>$other instanceof Traversable</code>
@@ -515,7 +515,7 @@
       <code>$other</code>
     </MoreSpecificImplementedParamType>
     <RedundantCast>
-      <code>(string) $other-&gt;getMessage()</code>
+      <code><![CDATA[(string) $other->getMessage()]]></code>
     </RedundantCast>
   </file>
   <file src="src/Framework/Constraint/ExceptionMessageRegularExpression.php">
@@ -551,7 +551,7 @@
   </file>
   <file src="src/Framework/Constraint/IsInstanceOf.php">
     <ArgumentTypeCoercion>
-      <code>$this-&gt;className</code>
+      <code><![CDATA[$this->className]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Constraint/IsJson.php">
@@ -606,23 +606,23 @@
   </file>
   <file src="src/Framework/Constraint/SameSize.php">
     <PossiblyNullArgument>
-      <code>$this-&gt;getCountOf($expected)</code>
+      <code><![CDATA[$this->getCountOf($expected)]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/Constraint/StringMatchesFormatDescription.php">
     <InvalidArgument>
-      <code>"--- Expected\n+++ Actual\n"</code>
+      <code><![CDATA["--- Expected\n+++ Actual\n"]]></code>
     </InvalidArgument>
     <MissingParamType>
       <code>$text</code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>new Differ("--- Expected\n+++ Actual\n")</code>
+      <code><![CDATA[new Differ("--- Expected\n+++ Actual\n")]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/StringStartsWith.php">
     <MissingThrowsDocblock>
-      <code>throw InvalidArgumentException::create(1, 'non-empty string');</code>
+      <code><![CDATA[throw InvalidArgumentException::create(1, 'non-empty string');]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/TraversableContains.php">
@@ -676,7 +676,7 @@
       <code>Filter::getFilteredStacktrace($this)</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
-      <code>$t-&gt;getPrevious()</code>
+      <code><![CDATA[$t->getPrevious()]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/IncompleteTestCase.php">
@@ -731,11 +731,11 @@
       <code>$interfaceName</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction>
-      <code>!is_array($methods) &amp;&amp; null !== $methods</code>
-      <code>!is_array($type) &amp;&amp; !is_string($type)</code>
+      <code><![CDATA[!is_array($methods) && null !== $methods]]></code>
+      <code><![CDATA[!is_array($type) && !is_string($type)]]></code>
     </DocblockTypeContradiction>
     <InvalidReturnStatement>
-      <code>$this-&gt;getMock(
+      <code><![CDATA[$this->getMock(
                 $originalClassName,
                 $methods,
                 $arguments,
@@ -744,10 +744,10 @@
                 $callOriginalClone,
                 $callAutoload,
                 $cloneArguments
-            )</code>
+            )]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>MockObject&amp;RealInstanceType</code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
     </InvalidReturnType>
     <InvalidStringClass>
       <code>new $className</code>
@@ -763,30 +763,30 @@
       <code>generateMock</code>
       <code>generateMock</code>
       <code>new Text_Template($filename)</code>
-      <code>throw InvalidArgumentException::create(1, 'array or string');</code>
-      <code>throw InvalidArgumentException::create(2, 'array');</code>
-      <code>throw new RuntimeException(
-                            $e-&gt;getMessage(),
-                            $e-&gt;getCode(),
+      <code><![CDATA[throw InvalidArgumentException::create(1, 'array or string');]]></code>
+      <code><![CDATA[throw InvalidArgumentException::create(2, 'array');]]></code>
+      <code><![CDATA[throw new RuntimeException(
+                            $e->getMessage(),
+                            $e->getCode(),
                             $e
-                        );</code>
-      <code>throw new RuntimeException(
-                        $e-&gt;getMessage(),
-                        $e-&gt;getCode(),
+                        );]]></code>
+      <code><![CDATA[throw new RuntimeException(
+                        $e->getMessage(),
+                        $e->getCode(),
                         $e
-                    );</code>
-      <code>throw new RuntimeException(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+                    );]]></code>
+      <code><![CDATA[throw new RuntimeException(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
-      <code>throw new RuntimeException($exception-&gt;getMessage());</code>
+            );]]></code>
+      <code><![CDATA[throw new RuntimeException($exception->getMessage());]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
-      <code>$client-&gt;__getFunctions()</code>
+      <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
     <RedundantCondition>
-      <code>$isInterface &amp;&amp; $class-&gt;implementsInterface(Throwable::class)</code>
+      <code><![CDATA[$isInterface && $class->implementsInterface(Throwable::class)]]></code>
     </RedundantCondition>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
@@ -796,21 +796,21 @@
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingThrowsDocblock>
-      <code>throw $this-&gt;deferredError;</code>
+      <code><![CDATA[throw $this->deferredError;]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
       <code>$deferredError</code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType>
-      <code>$this-&gt;deferredError</code>
+      <code><![CDATA[$this->deferredError]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Matcher.php">
     <DocblockTypeContradiction>
-      <code>$this-&gt;methodNameRule === null</code>
-      <code>$this-&gt;methodNameRule === null</code>
-      <code>$this-&gt;methodNameRule === null</code>
-      <code>$this-&gt;parametersRule === null</code>
+      <code><![CDATA[$this->methodNameRule === null]]></code>
+      <code><![CDATA[$this->methodNameRule === null]]></code>
+      <code><![CDATA[$this->methodNameRule === null]]></code>
+      <code><![CDATA[$this->parametersRule === null]]></code>
     </DocblockTypeContradiction>
     <MissingReturnType>
       <code>invoked</code>
@@ -821,21 +821,21 @@
       <code>$stub</code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType>
-      <code>$this-&gt;invocationRule !== null</code>
-      <code>$this-&gt;methodNameRule !== null</code>
-      <code>$this-&gt;methodNameRule !== null</code>
-      <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;stub</code>
-      <code>$this-&gt;stub !== null</code>
+      <code><![CDATA[$this->invocationRule !== null]]></code>
+      <code><![CDATA[$this->methodNameRule !== null]]></code>
+      <code><![CDATA[$this->methodNameRule !== null]]></code>
+      <code><![CDATA[$this->parametersRule !== null]]></code>
+      <code><![CDATA[$this->parametersRule !== null]]></code>
+      <code><![CDATA[$this->parametersRule !== null]]></code>
+      <code><![CDATA[$this->stub]]></code>
+      <code><![CDATA[$this->stub !== null]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion>
-      <code>$this-&gt;type</code>
-      <code>$this-&gt;type</code>
-      <code>$this-&gt;type</code>
+      <code><![CDATA[$this->type]]></code>
+      <code><![CDATA[$this->type]]></code>
+      <code><![CDATA[$this->type]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
       <code>setMethods</code>
@@ -846,9 +846,9 @@
       <code>$object</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>MockObject&amp;MockedType</code>
-      <code>MockObject&amp;MockedType</code>
-      <code>MockObject&amp;MockedType</code>
+      <code><![CDATA[MockObject&MockedType]]></code>
+      <code><![CDATA[MockObject&MockedType]]></code>
+      <code><![CDATA[MockObject&MockedType]]></code>
     </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getClassMethods</code>
@@ -861,14 +861,14 @@
     <MissingThrowsDocblock>
       <code>new Text_Template($filename)</code>
       <code>self::getMethodParametersForCall($method)</code>
-      <code>throw new RuntimeException(
+      <code><![CDATA[throw new RuntimeException(
                     sprintf(
                         'Cannot mock %s::%s because "parent" return type declaration is used but %s does not have a parent class',
-                        $method-&gt;getDeclaringClass()-&gt;getName(),
-                        $method-&gt;getName(),
-                        $method-&gt;getDeclaringClass()-&gt;getName()
+                        $method->getDeclaringClass()->getName(),
+                        $method->getName(),
+                        $method->getDeclaringClass()->getName()
                     )
-                );</code>
+                );]]></code>
     </MissingThrowsDocblock>
     <UndefinedMethod>
       <code>getName</code>
@@ -898,7 +898,7 @@
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <DocblockTypeContradiction>
-      <code>$this-&gt;invocation === null</code>
+      <code><![CDATA[$this->invocation === null]]></code>
     </DocblockTypeContradiction>
     <PossiblyNullPropertyAssignmentValue>
       <code>null</code>
@@ -908,10 +908,10 @@
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
     <RedundantCastGivenDocblockType>
-      <code>(bool) $this-&gt;parameterVerificationResult</code>
+      <code><![CDATA[(bool) $this->parameterVerificationResult]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantPropertyInitializationCheck>
-      <code>isset($this-&gt;parameterVerificationResult)</code>
+      <code><![CDATA[isset($this->parameterVerificationResult)]]></code>
     </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
@@ -984,165 +984,165 @@
     <MissingThrowsDocblock>
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
-      <code>new DataProviderTestSuite(
+      <code><![CDATA[new DataProviderTestSuite(
             $className . '::' . $methodName
-        )</code>
-      <code>throw new Exception('No valid test provided.');</code>
+        )]]></code>
+      <code><![CDATA[throw new Exception('No valid test provided.');]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>
       <code>$class_name</code>
-      <code>$this-&gt;expectedException</code>
+      <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
-      <code>TestUtil::getExpectedException(
+      <code><![CDATA[TestUtil::getExpectedException(
                 static::class,
-                $this-&gt;name
-            )</code>
+                $this->name
+            )]]></code>
       <code>setMethods</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction>
-      <code>$this-&gt;backupStaticAttributes === null</code>
-      <code>$this-&gt;mockObjectGenerator === null</code>
-      <code>$this-&gt;name === null</code>
-      <code>$this-&gt;prophet === null</code>
-      <code>$this-&gt;runClassInSeparateProcess === null</code>
-      <code>$this-&gt;runTestInSeparateProcess === null</code>
-      <code>''</code>
-      <code>is_int($this-&gt;dataName)</code>
+      <code><![CDATA[$this->backupStaticAttributes === null]]></code>
+      <code><![CDATA[$this->mockObjectGenerator === null]]></code>
+      <code><![CDATA[$this->name === null]]></code>
+      <code><![CDATA[$this->prophet === null]]></code>
+      <code><![CDATA[$this->runClassInSeparateProcess === null]]></code>
+      <code><![CDATA[$this->runTestInSeparateProcess === null]]></code>
+      <code><![CDATA['']]></code>
+      <code><![CDATA[is_int($this->dataName)]]></code>
     </DocblockTypeContradiction>
     <InvalidArgument>
       <code>$header</code>
     </InvalidArgument>
     <InvalidCatch>
-      <code>try {
-            $this-&gt;checkRequirements();
+      <code><![CDATA[try {
+            $this->checkRequirements();
             $hasMetRequirements = true;
 
-            if ($this-&gt;inIsolation) {
+            if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
-                    $this-&gt;{$method}();
+                    $this->{$method}();
                 }
             }
 
-            $this-&gt;setExpectedExceptionFromAnnotation();
-            $this-&gt;setDoesNotPerformAssertionsFromAnnotation();
+            $this->setExpectedExceptionFromAnnotation();
+            $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
-                $this-&gt;{$method}();
+                $this->{$method}();
             }
 
-            $this-&gt;assertPreConditions();
-            $this-&gt;testResult = $this-&gt;runTest();
-            $this-&gt;verifyMockObjects();
-            $this-&gt;assertPostConditions();
+            $this->assertPreConditions();
+            $this->testResult = $this->runTest();
+            $this->verifyMockObjects();
+            $this->assertPostConditions();
 
-            if (!empty($this-&gt;warnings)) {
+            if (!empty($this->warnings)) {
                 throw new Warning(
                     implode(
                         "\n",
-                        array_unique($this-&gt;warnings)
+                        array_unique($this->warnings)
                     )
                 );
             }
 
-            $this-&gt;status = BaseTestRunner::STATUS_PASSED;
+            $this->status = BaseTestRunner::STATUS_PASSED;
         } catch (IncompleteTest $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_INCOMPLETE;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_INCOMPLETE;
+            $this->statusMessage = $e->getMessage();
         } catch (SkippedTest $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_SKIPPED;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_SKIPPED;
+            $this->statusMessage = $e->getMessage();
         } catch (Warning $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_WARNING;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_WARNING;
+            $this->statusMessage = $e->getMessage();
         } catch (AssertionFailedError $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_FAILURE;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_FAILURE;
+            $this->statusMessage = $e->getMessage();
         } catch (PredictionException $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_FAILURE;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_FAILURE;
+            $this->statusMessage = $e->getMessage();
         } catch (Throwable $_e) {
             $e                   = $_e;
-            $this-&gt;status        = BaseTestRunner::STATUS_ERROR;
-            $this-&gt;statusMessage = $_e-&gt;getMessage();
-        }</code>
-      <code>try {
-            $this-&gt;checkRequirements();
+            $this->status        = BaseTestRunner::STATUS_ERROR;
+            $this->statusMessage = $_e->getMessage();
+        }]]></code>
+      <code><![CDATA[try {
+            $this->checkRequirements();
             $hasMetRequirements = true;
 
-            if ($this-&gt;inIsolation) {
+            if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
-                    $this-&gt;{$method}();
+                    $this->{$method}();
                 }
             }
 
-            $this-&gt;setExpectedExceptionFromAnnotation();
-            $this-&gt;setDoesNotPerformAssertionsFromAnnotation();
+            $this->setExpectedExceptionFromAnnotation();
+            $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
-                $this-&gt;{$method}();
+                $this->{$method}();
             }
 
-            $this-&gt;assertPreConditions();
-            $this-&gt;testResult = $this-&gt;runTest();
-            $this-&gt;verifyMockObjects();
-            $this-&gt;assertPostConditions();
+            $this->assertPreConditions();
+            $this->testResult = $this->runTest();
+            $this->verifyMockObjects();
+            $this->assertPostConditions();
 
-            if (!empty($this-&gt;warnings)) {
+            if (!empty($this->warnings)) {
                 throw new Warning(
                     implode(
                         "\n",
-                        array_unique($this-&gt;warnings)
+                        array_unique($this->warnings)
                     )
                 );
             }
 
-            $this-&gt;status = BaseTestRunner::STATUS_PASSED;
+            $this->status = BaseTestRunner::STATUS_PASSED;
         } catch (IncompleteTest $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_INCOMPLETE;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_INCOMPLETE;
+            $this->statusMessage = $e->getMessage();
         } catch (SkippedTest $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_SKIPPED;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_SKIPPED;
+            $this->statusMessage = $e->getMessage();
         } catch (Warning $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_WARNING;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_WARNING;
+            $this->statusMessage = $e->getMessage();
         } catch (AssertionFailedError $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_FAILURE;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_FAILURE;
+            $this->statusMessage = $e->getMessage();
         } catch (PredictionException $e) {
-            $this-&gt;status        = BaseTestRunner::STATUS_FAILURE;
-            $this-&gt;statusMessage = $e-&gt;getMessage();
+            $this->status        = BaseTestRunner::STATUS_FAILURE;
+            $this->statusMessage = $e->getMessage();
         } catch (Throwable $_e) {
             $e                   = $_e;
-            $this-&gt;status        = BaseTestRunner::STATUS_ERROR;
-            $this-&gt;statusMessage = $_e-&gt;getMessage();
-        }</code>
+            $this->status        = BaseTestRunner::STATUS_ERROR;
+            $this->statusMessage = $_e->getMessage();
+        }]]></code>
     </InvalidCatch>
     <InvalidReturnStatement>
       <code>$mockObject</code>
-      <code>$this-&gt;getMockBuilder($originalClassName)
-                    -&gt;disableOriginalConstructor()
-                    -&gt;disableOriginalClone()
-                    -&gt;disableArgumentCloning()
-                    -&gt;disallowMockingUnknownTypes()
-                    -&gt;getMock()</code>
-      <code>$this-&gt;getMockBuilder($originalClassName)
-                    -&gt;disableOriginalConstructor()
-                    -&gt;disableOriginalClone()
-                    -&gt;disableArgumentCloning()
-                    -&gt;disallowMockingUnknownTypes()
-                    -&gt;setMethods(empty($methods) ? null : $methods)
-                    -&gt;getMock()</code>
+      <code><![CDATA[$this->getMockBuilder($originalClassName)
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->getMock()]]></code>
+      <code><![CDATA[$this->getMockBuilder($originalClassName)
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->setMethods(empty($methods) ? null : $methods)
+                    ->getMock()]]></code>
       <code>get_class($mock)</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>MockObject&amp;RealInstanceType</code>
-      <code>MockObject&amp;RealInstanceType</code>
-      <code>MockObject&amp;RealInstanceType</code>
-      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
+      <code><![CDATA[class-string<MockObject&RealInstanceType>]]></code>
     </InvalidReturnType>
     <MissingParamType>
       <code>$args</code>
@@ -1156,10 +1156,10 @@
       <code>runTest</code>
     </MissingReturnType>
     <MissingThrowsDocblock>
-      <code>TestUtil::getMissingRequirements(
+      <code><![CDATA[TestUtil::getMissingRequirements(
             static::class,
-            $this-&gt;name
-        )</code>
+            $this->name
+        )]]></code>
       <code>endTest</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -1173,18 +1173,18 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
-      <code>new Text_Template(
+      <code><![CDATA[new Text_Template(
                     __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
-                )</code>
-      <code>new Text_Template(
+                )]]></code>
+      <code><![CDATA[new Text_Template(
                     __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
-                )</code>
-      <code>throw new Exception(
-                    $e-&gt;getMessage(),
-                    $e-&gt;getCode(),
+                )]]></code>
+      <code><![CDATA[throw new Exception(
+                    $e->getMessage(),
+                    $e->getCode(),
                     $e
-                );</code>
-      <code>throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');</code>
+                );]]></code>
+      <code><![CDATA[throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue>
       <code>$beStrictAboutChangesToGlobalState</code>
@@ -1208,19 +1208,19 @@
       <code>$snapshot</code>
     </PropertyNotSetInConstructor>
     <RedundantCastGivenDocblockType>
-      <code>(bool) $this-&gt;backupStaticAttributes</code>
+      <code><![CDATA[(bool) $this->backupStaticAttributes]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantCondition>
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType>
-      <code>$this-&gt;outputExpectedRegex !== null</code>
-      <code>$this-&gt;outputExpectedString !== null</code>
-      <code>$this-&gt;prophet !== null</code>
+      <code><![CDATA[$this->outputExpectedRegex !== null]]></code>
+      <code><![CDATA[$this->outputExpectedString !== null]]></code>
+      <code><![CDATA[$this->prophet !== null]]></code>
       <code>is_string($_originalClassName)</code>
-      <code>is_string($this-&gt;dataName)</code>
-      <code>is_string($this-&gt;outputExpectedRegex)</code>
-      <code>is_string($this-&gt;outputExpectedString)</code>
+      <code><![CDATA[is_string($this->dataName)]]></code>
+      <code><![CDATA[is_string($this->outputExpectedRegex)]]></code>
+      <code><![CDATA[is_string($this->outputExpectedString)]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedClass>
       <code>$e</code>
@@ -1233,8 +1233,8 @@
       <code>Prophet</code>
     </UndefinedClass>
     <UndefinedDocblockClass>
-      <code>$this-&gt;prophet</code>
-      <code>$this-&gt;prophet</code>
+      <code><![CDATA[$this->prophet]]></code>
+      <code><![CDATA[$this->prophet]]></code>
       <code>\Prophecy\Exception\Doubler\ClassNotFoundException</code>
       <code>\Prophecy\Exception\Doubler\DoubleException</code>
       <code>\Prophecy\Exception\Doubler\InterfaceNotFoundException</code>
@@ -1252,49 +1252,49 @@
       <code>private $listeners = [];</code>
     </DeprecatedInterface>
     <DeprecatedProperty>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
-      <code>$this-&gt;listeners</code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
+      <code><![CDATA[$this->listeners]]></code>
     </DeprecatedProperty>
     <DocblockTypeContradiction>
-      <code>$this-&gt;topTestSuite === null</code>
+      <code><![CDATA[$this->topTestSuite === null]]></code>
     </DocblockTypeContradiction>
     <InvalidCatch>
-      <code>try {
-                $this-&gt;codeCoverage-&gt;stop(
+      <code><![CDATA[try {
+                $this->codeCoverage->stop(
                     $append,
                     $linesToBeCovered,
                     $linesToBeUsed
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
-                $this-&gt;addFailure(
+                $this->addFailure(
                     $test,
                     new UnintentionallyCoveredCodeError(
                         'This test executed code that is not listed as code to be covered or used:' .
-                        PHP_EOL . $cce-&gt;getMessage()
+                        PHP_EOL . $cce->getMessage()
                     ),
                     $time
                 );
             } catch (OriginalCoveredCodeNotExecutedException $cce) {
-                $this-&gt;addFailure(
+                $this->addFailure(
                     $test,
                     new CoveredCodeNotExecutedException(
                         'This test did not execute all the code that is listed as code to be covered:' .
-                        PHP_EOL . $cce-&gt;getMessage()
+                        PHP_EOL . $cce->getMessage()
                     ),
                     $time
                 );
             } catch (OriginalMissingCoversAnnotationException $cce) {
                 if ($linesToBeCovered !== false) {
-                    $this-&gt;addFailure(
+                    $this->addFailure(
                         $test,
                         new MissingCoversAnnotationException(
                             'This test does not have a @covers annotation but is expected to have one'
@@ -1306,7 +1306,7 @@
                 $error = true;
 
                 $e = $e ?? $cce;
-            }</code>
+            }]]></code>
     </InvalidCatch>
     <MissingConstructor>
       <code>$codeCoverage</code>
@@ -1314,16 +1314,16 @@
     </MissingConstructor>
     <MissingThrowsDocblock>
       <code>stop</code>
-      <code>throw new Exception(
-                        $e-&gt;getMessage(),
-                        $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                        $e->getMessage(),
+                        $e->getCode(),
                         $e
-                    );</code>
-      <code>throw new Exception(
-                    $e-&gt;getMessage(),
-                    $e-&gt;getCode(),
+                    );]]></code>
+      <code><![CDATA[throw new Exception(
+                    $e->getMessage(),
+                    $e->getCode(),
                     $e
-                );</code>
+                );]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
       <code>$linesToBeCovered</code>
@@ -1336,8 +1336,8 @@
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
     <RedundantConditionGivenDocblockType>
-      <code>$this-&gt;codeCoverage !== null</code>
-      <code>$this-&gt;codeCoverage !== null</code>
+      <code><![CDATA[$this->codeCoverage !== null]]></code>
+      <code><![CDATA[$this->codeCoverage !== null]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedClass>
       <code>$e</code>
@@ -1365,19 +1365,19 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction>
-      <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
+      <code><![CDATA[!is_string($theClass) && !$theClass instanceof ReflectionClass]]></code>
       <code>is_string($testClass)</code>
-      <code>null === $this-&gt;backupGlobals</code>
-      <code>null === $this-&gt;backupStaticAttributes</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
+      <code><![CDATA[null === $this->backupGlobals]]></code>
+      <code><![CDATA[null === $this->backupStaticAttributes]]></code>
+      <code><![CDATA[null === $this->beStrictAboutChangesToGlobalState]]></code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock>
       <code>new PhptTestCase($filename)</code>
-      <code>throw new Exception(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
     <PossiblyUndefinedVariable>
       <code>$afterClassMethod</code>
@@ -1391,13 +1391,13 @@
       <code>$iteratorFilter</code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType>
-      <code>$this-&gt;iteratorFilter !== null</code>
+      <code><![CDATA[$this->iteratorFilter !== null]]></code>
       <code>is_bool($backupGlobals)</code>
       <code>is_bool($backupStaticAttributes)</code>
       <code>is_bool($beStrictAboutChangesToGlobalState)</code>
-      <code>null === $this-&gt;backupGlobals &amp;&amp; is_bool($backupGlobals)</code>
-      <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
+      <code><![CDATA[null === $this->backupGlobals && is_bool($backupGlobals)]]></code>
+      <code><![CDATA[null === $this->backupStaticAttributes && is_bool($backupStaticAttributes)]]></code>
+      <code><![CDATA[null === $this->beStrictAboutChangesToGlobalState && is_bool($beStrictAboutChangesToGlobalState)]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/WarningTestCase.php">
@@ -1427,7 +1427,7 @@
       <code>$filterMin</code>
     </PropertyNotSetInConstructor>
     <RedundantPropertyInitializationCheck>
-      <code>$accepted &amp;&amp; isset($this-&gt;filterMax)</code>
+      <code><![CDATA[$accepted && isset($this->filterMax)]]></code>
     </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
@@ -1448,12 +1448,12 @@
     </MissingParamType>
     <MissingThrowsDocblock>
       <code>append</code>
-      <code>new Text_Template(
+      <code><![CDATA[new Text_Template(
             __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
-        )</code>
+        )]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
-      <code>$sections['FILEEOF']</code>
+      <code><![CDATA[$sections['FILEEOF']]]></code>
     </PossiblyInvalidArgument>
     <PossiblyNullReference>
       <code>append</code>
@@ -1476,13 +1476,13 @@
       <code>$test</code>
     </MissingClosureParamType>
     <PossiblyFalseArgument>
-      <code>strpos($test-&gt;getName(), '::')</code>
+      <code><![CDATA[strpos($test->getName(), '::')]]></code>
     </PossiblyFalseArgument>
     <RedundantConditionGivenDocblockType>
-      <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
-      <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
-      <code>$this-&gt;cache !== null</code>
-      <code>$this-&gt;cache !== null</code>
+      <code><![CDATA[$order === self::ORDER_DURATION && $this->cache !== null]]></code>
+      <code><![CDATA[$orderDefects === self::ORDER_DEFECTS_FIRST && $this->cache !== null]]></code>
+      <code><![CDATA[$this->cache !== null]]></code>
+      <code><![CDATA[$this->cache !== null]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedInterfaceMethod>
       <code>getName</code>
@@ -1499,7 +1499,7 @@
       <code>private $warnings = [];</code>
     </InvalidDocblock>
     <LessSpecificReturnStatement>
-      <code>$class-&gt;newInstance($outputStream)</code>
+      <code><![CDATA[$class->newInstance($outputStream)]]></code>
     </LessSpecificReturnStatement>
     <MissingPropertyType>
       <code>$warnings</code>
@@ -1508,22 +1508,22 @@
       <code>doRun</code>
       <code>handleListTests</code>
       <code>handleListTestsXml</code>
-      <code>throw new Exception(
-                    $e-&gt;getMessage(),
-                    $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                    $e->getMessage(),
+                    $e->getCode(),
                     $e
-                );</code>
-      <code>throw new Exception(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+                );]]></code>
+      <code><![CDATA[throw new Exception(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType>
       <code>null|Printer|string</code>
     </MoreSpecificReturnType>
     <PossiblyFalseArgument>
-      <code>strrpos($this-&gt;arguments['test'], '.')</code>
+      <code><![CDATA[strrpos($this->arguments['test'], '.')]]></code>
     </PossiblyFalseArgument>
     <PossiblyNullArgument>
       <code>$suite</code>
@@ -1532,7 +1532,7 @@
       <code>$suite</code>
     </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
-      <code>$_SERVER['argv']</code>
+      <code><![CDATA[$_SERVER['argv']]]></code>
     </PossiblyUndefinedArrayOffset>
     <RedundantCondition>
       <code>$testSuite !== null</code>
@@ -1548,8 +1548,8 @@
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset>
-      <code>$option['desc']</code>
-      <code>$option['desc']</code>
+      <code><![CDATA[$option['desc']]]></code>
+      <code><![CDATA[$option['desc']]]></code>
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/ResultPrinter.php">
@@ -1565,7 +1565,7 @@
   </file>
   <file src="src/TextUI/TestRunner.php">
     <DeprecatedInterface>
-      <code>Printer&amp;TestListener</code>
+      <code><![CDATA[Printer&TestListener]]></code>
     </DeprecatedInterface>
     <DeprecatedMethod>
       <code>addListener</code>
@@ -1579,8 +1579,8 @@
       <code>flushListeners</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction>
-      <code>$this-&gt;loader === null</code>
-      <code>$this-&gt;printer === null</code>
+      <code><![CDATA[$this->loader === null]]></code>
+      <code><![CDATA[$this->printer === null]]></code>
     </DocblockTypeContradiction>
     <InvalidArgument>
       <code>$e</code>
@@ -1590,55 +1590,55 @@
       <code>$e</code>
     </InvalidArgument>
     <InvalidCatch>
-      <code>try {
+      <code><![CDATA[try {
                     $codeCoverage = new CodeCoverage(
                         null,
-                        $this-&gt;codeCoverageFilter
+                        $this->codeCoverageFilter
                     );
 
-                    $codeCoverage-&gt;setUnintentionallyCoveredSubclassesWhitelist(
+                    $codeCoverage->setUnintentionallyCoveredSubclassesWhitelist(
                         [Comparator::class]
                     );
 
-                    $codeCoverage-&gt;setCheckForUnintentionallyCoveredCode(
+                    $codeCoverage->setCheckForUnintentionallyCoveredCode(
                         $arguments['strictCoverage']
                     );
 
-                    $codeCoverage-&gt;setCheckForMissingCoversAnnotation(
+                    $codeCoverage->setCheckForMissingCoversAnnotation(
                         $arguments['strictCoverage']
                     );
 
                     if (isset($arguments['forceCoversAnnotation'])) {
-                        $codeCoverage-&gt;setForceCoversAnnotation(
+                        $codeCoverage->setForceCoversAnnotation(
                             $arguments['forceCoversAnnotation']
                         );
                     }
 
                     if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
-                        $codeCoverage-&gt;setIgnoreDeprecatedCode(
+                        $codeCoverage->setIgnoreDeprecatedCode(
                             $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']
                         );
                     }
 
                     if (isset($arguments['disableCodeCoverageIgnore'])) {
-                        $codeCoverage-&gt;setDisableIgnoredLines(true);
+                        $codeCoverage->setDisableIgnoredLines(true);
                     }
 
                     if (!empty($filterConfiguration['whitelist'])) {
-                        $codeCoverage-&gt;setAddUncoveredFilesFromWhitelist(
+                        $codeCoverage->setAddUncoveredFilesFromWhitelist(
                             $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                         );
 
-                        $codeCoverage-&gt;setProcessUncoveredFilesFromWhitelist(
+                        $codeCoverage->setProcessUncoveredFilesFromWhitelist(
                             $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
                         );
                     }
 
-                    if (!$this-&gt;codeCoverageFilter-&gt;hasWhitelist()) {
-                        if (!$whitelistFromConfigurationFile &amp;&amp; !$whitelistFromOption) {
-                            $this-&gt;writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
+                    if (!$this->codeCoverageFilter->hasWhitelist()) {
+                        if (!$whitelistFromConfigurationFile && !$whitelistFromOption) {
+                            $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
                         } else {
-                            $this-&gt;writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
+                            $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
                         }
 
                         $codeCoverageReports = 0;
@@ -1646,68 +1646,68 @@
                         unset($codeCoverage);
                     }
                 } catch (CodeCoverageException $e) {
-                    $this-&gt;writeMessage('Error', $e-&gt;getMessage());
+                    $this->writeMessage('Error', $e->getMessage());
 
                     $codeCoverageReports = 0;
-                }</code>
-      <code>try {
+                }]]></code>
+      <code><![CDATA[try {
                     $writer = new CloverReport;
-                    $writer-&gt;process($codeCoverage, $arguments['coverageClover']);
+                    $writer->process($codeCoverage, $arguments['coverageClover']);
 
-                    $this-&gt;codeCoverageGenerationSucceeded();
+                    $this->codeCoverageGenerationSucceeded();
 
                     unset($writer);
                 } catch (CodeCoverageException $e) {
-                    $this-&gt;codeCoverageGenerationFailed($e);
-                }</code>
-      <code>try {
+                    $this->codeCoverageGenerationFailed($e);
+                }]]></code>
+      <code><![CDATA[try {
                     $writer = new Crap4jReport($arguments['crap4jThreshold']);
-                    $writer-&gt;process($codeCoverage, $arguments['coverageCrap4J']);
+                    $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
-                    $this-&gt;codeCoverageGenerationSucceeded();
+                    $this->codeCoverageGenerationSucceeded();
 
                     unset($writer);
                 } catch (CodeCoverageException $e) {
-                    $this-&gt;codeCoverageGenerationFailed($e);
-                }</code>
-      <code>try {
+                    $this->codeCoverageGenerationFailed($e);
+                }]]></code>
+      <code><![CDATA[try {
                     $writer = new HtmlReport(
                         $arguments['reportLowUpperBound'],
                         $arguments['reportHighLowerBound'],
                         sprintf(
-                            ' and &lt;a href="https://phpunit.de/"&gt;PHPUnit %s&lt;/a&gt;',
+                            ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
                             Version::id()
                         )
                     );
 
-                    $writer-&gt;process($codeCoverage, $arguments['coverageHtml']);
+                    $writer->process($codeCoverage, $arguments['coverageHtml']);
 
-                    $this-&gt;codeCoverageGenerationSucceeded();
+                    $this->codeCoverageGenerationSucceeded();
 
                     unset($writer);
                 } catch (CodeCoverageException $e) {
-                    $this-&gt;codeCoverageGenerationFailed($e);
-                }</code>
-      <code>try {
+                    $this->codeCoverageGenerationFailed($e);
+                }]]></code>
+      <code><![CDATA[try {
                     $writer = new PhpReport;
-                    $writer-&gt;process($codeCoverage, $arguments['coveragePHP']);
+                    $writer->process($codeCoverage, $arguments['coveragePHP']);
 
-                    $this-&gt;codeCoverageGenerationSucceeded();
+                    $this->codeCoverageGenerationSucceeded();
 
                     unset($writer);
                 } catch (CodeCoverageException $e) {
-                    $this-&gt;codeCoverageGenerationFailed($e);
-                }</code>
-      <code>try {
+                    $this->codeCoverageGenerationFailed($e);
+                }]]></code>
+      <code><![CDATA[try {
                     $writer = new XmlReport(Version::id());
-                    $writer-&gt;process($codeCoverage, $arguments['coverageXml']);
+                    $writer->process($codeCoverage, $arguments['coverageXml']);
 
-                    $this-&gt;codeCoverageGenerationSucceeded();
+                    $this->codeCoverageGenerationSucceeded();
 
                     unset($writer);
                 } catch (CodeCoverageException $e) {
-                    $this-&gt;codeCoverageGenerationFailed($e);
-                }</code>
+                    $this->codeCoverageGenerationFailed($e);
+                }]]></code>
     </InvalidCatch>
     <MissingThrowsDocblock>
       <code>addFilter</code>
@@ -1724,8 +1724,8 @@
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyUndefinedArrayOffset>
-      <code>$_SERVER['PHP_SELF']</code>
-      <code>$arguments['enforceTimeLimit']</code>
+      <code><![CDATA[$_SERVER['PHP_SELF']]]></code>
+      <code><![CDATA[$arguments['enforceTimeLimit']]]></code>
     </PossiblyUndefinedArrayOffset>
     <PossiblyUndefinedVariable>
       <code>$whitelistFromConfigurationFile</code>
@@ -1735,24 +1735,24 @@
       <code>$printer</code>
     </PropertyNotSetInConstructor>
     <RedundantCondition>
-      <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
+      <code><![CDATA[assert($this->printer instanceof CliTestDoxPrinter)]]></code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType>
-      <code>$this-&gt;printer !== null</code>
+      <code><![CDATA[$this->printer !== null]]></code>
     </RedundantConditionGivenDocblockType>
     <UnresolvableInclude>
-      <code>require_once $extension['file']</code>
-      <code>require_once $listener['file']</code>
+      <code><![CDATA[require_once $extension['file']]]></code>
+      <code><![CDATA[require_once $listener['file']]]></code>
     </UnresolvableInclude>
     <UnsafeInstantiation>
-      <code>new $class(
-            (isset($arguments['stderr']) &amp;&amp; $arguments['stderr'] === true) ? 'php://stderr' : null,
+      <code><![CDATA[new $class(
+            (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
             $arguments['verbose'],
             $arguments['colors'],
             $arguments['debug'],
             $arguments['columns'],
             $arguments['reverseList']
-        )</code>
+        )]]></code>
     </UnsafeInstantiation>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
@@ -1760,17 +1760,17 @@
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType>
-      <code>array{
-     *   __OFFSET: array&lt;string, int&gt;&amp;array{__FILE: string},
-     *   setting?: array&lt;string, string&gt;,
-     *   extension_versions?: array&lt;string, array{version: string, operator: string}&gt;
-     * }&amp;array&lt;
+      <code><![CDATA[array{
+     *   __OFFSET: array<string, int>&array{__FILE: string},
+     *   setting?: array<string, string>,
+     *   extension_versions?: array<string, array{version: string, operator: string}>
+     * }&array<
      *   string,
-     *   string|array{version: string, operator: string}|array{constraint: string}|array&lt;int|string, string&gt;
-     * &gt;</code>
+     *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
+     * >]]></code>
     </MoreSpecificReturnType>
     <RedundantCast>
-      <code>(string) $matches['value'][$i]</code>
+      <code><![CDATA[(string) $matches['value'][$i]]]></code>
     </RedundantCast>
   </file>
   <file src="src/Util/Blacklist.php">
@@ -1786,101 +1786,101 @@
       <code>$extension</code>
       <code>$listener</code>
       <code>$testSuiteNode</code>
-      <code>$testSuiteNodes-&gt;item(0)</code>
+      <code><![CDATA[$testSuiteNodes->item(0)]]></code>
     </ArgumentTypeCoercion>
     <PossiblyNullReference>
       <code>getAttribute</code>
       <code>getAttribute</code>
     </PossiblyNullReference>
     <RedundantCast>
-      <code>(string) $argument-&gt;textContent</code>
-      <code>(string) $const-&gt;getAttribute('name')</code>
-      <code>(string) $const-&gt;getAttribute('value')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('group')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $element-&gt;getAttribute('class')</code>
-      <code>(string) $element-&gt;getAttribute('file')</code>
-      <code>(string) $excludeNode-&gt;textContent</code>
-      <code>(string) $file-&gt;textContent</code>
-      <code>(string) $fileNode-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $includePath-&gt;textContent</code>
-      <code>(string) $ini-&gt;getAttribute('name')</code>
-      <code>(string) $ini-&gt;getAttribute('value')</code>
-      <code>(string) $log-&gt;getAttribute('highLowerBound')</code>
-      <code>(string) $log-&gt;getAttribute('lowUpperBound')</code>
-      <code>(string) $log-&gt;getAttribute('showOnlySummary')</code>
-      <code>(string) $log-&gt;getAttribute('showUncoveredFiles')</code>
-      <code>(string) $log-&gt;getAttribute('target')</code>
-      <code>(string) $log-&gt;getAttribute('threshold')</code>
-      <code>(string) $log-&gt;getAttribute('type')</code>
-      <code>(string) $node-&gt;getAttribute('phpVersion')</code>
-      <code>(string) $node-&gt;getAttribute('phpVersionOperator')</code>
-      <code>(string) $root-&gt;getAttribute(
+      <code><![CDATA[(string) $argument->textContent]]></code>
+      <code><![CDATA[(string) $const->getAttribute('name')]]></code>
+      <code><![CDATA[(string) $const->getAttribute('value')]]></code>
+      <code><![CDATA[(string) $directoryNode->getAttribute('group')]]></code>
+      <code><![CDATA[(string) $directoryNode->getAttribute('prefix')]]></code>
+      <code><![CDATA[(string) $directoryNode->getAttribute('prefix')]]></code>
+      <code><![CDATA[(string) $directoryNode->getAttribute('suffix')]]></code>
+      <code><![CDATA[(string) $directoryNode->getAttribute('suffix')]]></code>
+      <code><![CDATA[(string) $directoryNode->textContent]]></code>
+      <code><![CDATA[(string) $directoryNode->textContent]]></code>
+      <code><![CDATA[(string) $element->getAttribute('class')]]></code>
+      <code><![CDATA[(string) $element->getAttribute('file')]]></code>
+      <code><![CDATA[(string) $excludeNode->textContent]]></code>
+      <code><![CDATA[(string) $file->textContent]]></code>
+      <code><![CDATA[(string) $fileNode->textContent]]></code>
+      <code><![CDATA[(string) $group->textContent]]></code>
+      <code><![CDATA[(string) $group->textContent]]></code>
+      <code><![CDATA[(string) $includePath->textContent]]></code>
+      <code><![CDATA[(string) $ini->getAttribute('name')]]></code>
+      <code><![CDATA[(string) $ini->getAttribute('value')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('highLowerBound')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('lowUpperBound')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('showOnlySummary')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('showUncoveredFiles')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('target')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('threshold')]]></code>
+      <code><![CDATA[(string) $log->getAttribute('type')]]></code>
+      <code><![CDATA[(string) $node->getAttribute('phpVersion')]]></code>
+      <code><![CDATA[(string) $node->getAttribute('phpVersionOperator')]]></code>
+      <code><![CDATA[(string) $root->getAttribute(
                     'extensionsDirectory'
-                )</code>
-      <code>(string) $root-&gt;getAttribute(
+                )]]></code>
+      <code><![CDATA[(string) $root->getAttribute(
                 'defaultTestSuite'
-            )</code>
-      <code>(string) $root-&gt;getAttribute(
+            )]]></code>
+      <code><![CDATA[(string) $root->getAttribute(
                 'printerClass'
-            )</code>
-      <code>(string) $root-&gt;getAttribute(
+            )]]></code>
+      <code><![CDATA[(string) $root->getAttribute(
                 'testSuiteLoaderClass'
-            )</code>
-      <code>(string) $root-&gt;getAttribute('backupGlobals')</code>
-      <code>(string) $root-&gt;getAttribute('backupStaticAttributes')</code>
-      <code>(string) $root-&gt;getAttribute('beStrictAboutChangesToGlobalState')</code>
-      <code>(string) $root-&gt;getAttribute('beStrictAboutCoversAnnotation')</code>
-      <code>(string) $root-&gt;getAttribute('beStrictAboutOutputDuringTests')</code>
-      <code>(string) $root-&gt;getAttribute('beStrictAboutResourceUsageDuringSmallTests')</code>
-      <code>(string) $root-&gt;getAttribute('beStrictAboutTestsThatDoNotTestAnything')</code>
-      <code>(string) $root-&gt;getAttribute('beStrictAboutTodoAnnotatedTests')</code>
-      <code>(string) $root-&gt;getAttribute('bootstrap')</code>
-      <code>(string) $root-&gt;getAttribute('cacheResult')</code>
-      <code>(string) $root-&gt;getAttribute('cacheResultFile')</code>
-      <code>(string) $root-&gt;getAttribute('cacheTokens')</code>
-      <code>(string) $root-&gt;getAttribute('columns')</code>
-      <code>(string) $root-&gt;getAttribute('convertDeprecationsToExceptions')</code>
-      <code>(string) $root-&gt;getAttribute('convertErrorsToExceptions')</code>
-      <code>(string) $root-&gt;getAttribute('convertNoticesToExceptions')</code>
-      <code>(string) $root-&gt;getAttribute('convertWarningsToExceptions')</code>
-      <code>(string) $root-&gt;getAttribute('defaultTimeLimit')</code>
-      <code>(string) $root-&gt;getAttribute('disableCodeCoverageIgnore')</code>
-      <code>(string) $root-&gt;getAttribute('enforceTimeLimit')</code>
-      <code>(string) $root-&gt;getAttribute('failOnRisky')</code>
-      <code>(string) $root-&gt;getAttribute('failOnWarning')</code>
-      <code>(string) $root-&gt;getAttribute('forceCoversAnnotation')</code>
-      <code>(string) $root-&gt;getAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage')</code>
-      <code>(string) $root-&gt;getAttribute('noInteraction')</code>
-      <code>(string) $root-&gt;getAttribute('printerFile')</code>
-      <code>(string) $root-&gt;getAttribute('processIsolation')</code>
-      <code>(string) $root-&gt;getAttribute('registerMockObjectsFromTestArgumentsRecursively')</code>
-      <code>(string) $root-&gt;getAttribute('resolveDependencies')</code>
-      <code>(string) $root-&gt;getAttribute('reverseDefectList')</code>
-      <code>(string) $root-&gt;getAttribute('stderr')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnDefect')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnError')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnFailure')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnIncomplete')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnRisky')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnSkipped')</code>
-      <code>(string) $root-&gt;getAttribute('stopOnWarning')</code>
-      <code>(string) $root-&gt;getAttribute('testSuiteLoaderFile')</code>
-      <code>(string) $root-&gt;getAttribute('testdox')</code>
-      <code>(string) $root-&gt;getAttribute('timeoutForLargeTests')</code>
-      <code>(string) $root-&gt;getAttribute('timeoutForMediumTests')</code>
-      <code>(string) $root-&gt;getAttribute('timeoutForSmallTests')</code>
-      <code>(string) $root-&gt;getAttribute('verbose')</code>
-      <code>(string) $testSuiteNode-&gt;getAttribute('name')</code>
-      <code>(string) $var-&gt;getAttribute('name')</code>
-      <code>(string) $var-&gt;getAttribute('value')</code>
+            )]]></code>
+      <code><![CDATA[(string) $root->getAttribute('backupGlobals')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('backupStaticAttributes')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('beStrictAboutChangesToGlobalState')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('beStrictAboutCoversAnnotation')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('beStrictAboutOutputDuringTests')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('beStrictAboutResourceUsageDuringSmallTests')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('beStrictAboutTodoAnnotatedTests')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('bootstrap')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('cacheResult')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('cacheResultFile')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('cacheTokens')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('columns')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('convertDeprecationsToExceptions')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('convertErrorsToExceptions')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('convertNoticesToExceptions')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('convertWarningsToExceptions')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('defaultTimeLimit')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('disableCodeCoverageIgnore')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('enforceTimeLimit')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('failOnRisky')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('failOnWarning')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('forceCoversAnnotation')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('noInteraction')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('printerFile')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('processIsolation')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('registerMockObjectsFromTestArgumentsRecursively')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('resolveDependencies')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('reverseDefectList')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stderr')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnDefect')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnError')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnFailure')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnIncomplete')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnRisky')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnSkipped')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('stopOnWarning')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('testSuiteLoaderFile')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('testdox')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('timeoutForLargeTests')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('timeoutForMediumTests')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('timeoutForSmallTests')]]></code>
+      <code><![CDATA[(string) $root->getAttribute('verbose')]]></code>
+      <code><![CDATA[(string) $testSuiteNode->getAttribute('name')]]></code>
+      <code><![CDATA[(string) $var->getAttribute('name')]]></code>
+      <code><![CDATA[(string) $var->getAttribute('value')]]></code>
     </RedundantCast>
     <RedundantConditionGivenDocblockType>
       <code>assert($directoryNode instanceof DOMElement)</code>
@@ -1896,7 +1896,7 @@
       <code>hasAttribute</code>
     </UndefinedMethod>
     <UnsupportedReferenceUsage>
-      <code>$target = &amp;$GLOBALS['_' . strtoupper($array)]</code>
+      <code><![CDATA[$target = &$GLOBALS['_' . strtoupper($array)]]]></code>
     </UnsupportedReferenceUsage>
   </file>
   <file src="src/Util/ErrorHandler.php">
@@ -1954,18 +1954,18 @@
   </file>
   <file src="src/Util/Log/JUnit.php">
     <ArgumentTypeCoercion>
-      <code>$suite-&gt;getName()</code>
+      <code><![CDATA[$suite->getName()]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface>
       <code>JUnit</code>
     </DeprecatedInterface>
     <DocblockTypeContradiction>
-      <code>$this-&gt;currentTestCase === null</code>
-      <code>$this-&gt;currentTestCase === null</code>
-      <code>$this-&gt;currentTestCase === null</code>
+      <code><![CDATA[$this->currentTestCase === null]]></code>
+      <code><![CDATA[$this->currentTestCase === null]]></code>
+      <code><![CDATA[$this->currentTestCase === null]]></code>
     </DocblockTypeContradiction>
     <InvalidPropertyAssignmentValue>
-      <code>$this-&gt;testSuiteTimes</code>
+      <code><![CDATA[$this->testSuiteTimes]]></code>
     </InvalidPropertyAssignmentValue>
     <MissingParamType>
       <code>$type</code>
@@ -1974,16 +1974,16 @@
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>parent::__construct($out)</code>
-      <code>throw new Exception(
-                    $e-&gt;getMessage(),
-                    $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                    $e->getMessage(),
+                    $e->getCode(),
                     $e
-                );</code>
-      <code>throw new Exception(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+                );]]></code>
+      <code><![CDATA[throw new Exception(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue>
       <code>null</code>
@@ -2015,11 +2015,11 @@
     </MissingParamType>
     <MissingThrowsDocblock>
       <code>Filter::getFilteredStacktrace($t)</code>
-      <code>throw new Exception(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
       <code>$flowId</code>
@@ -2040,8 +2040,8 @@
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion>
-      <code>$this-&gt;getException($failures[0])</code>
-      <code>$this-&gt;getException($warnings[0])</code>
+      <code><![CDATA[$this->getException($failures[0])]]></code>
+      <code><![CDATA[$this->getException($warnings[0])]]></code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement>
       <code>$exception</code>
@@ -2056,10 +2056,10 @@
       <code>Exception</code>
     </MoreSpecificReturnType>
     <PossiblyFalseOperand>
-      <code>strrpos($key, "\0")</code>
+      <code><![CDATA[strrpos($key, "\0")]]></code>
     </PossiblyFalseOperand>
     <PossiblyNullArgument>
-      <code>$childResult-&gt;getCodeCoverage()</code>
+      <code><![CDATA[$childResult->getCodeCoverage()]]></code>
     </PossiblyNullArgument>
     <PossiblyNullReference>
       <code>merge</code>
@@ -2125,11 +2125,11 @@
       <code>forMethod</code>
       <code>requirements</code>
       <code>requirements</code>
-      <code>throw new Exception(
-                    $e-&gt;getMessage(),
-                    $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                    $e->getMessage(),
+                    $e->getCode(),
                     $e
-                );</code>
+                );]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
@@ -2144,15 +2144,15 @@
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArrayOffset>
-      <code>$prefix['default']</code>
-      <code>$prefix['diff']</code>
-      <code>$prefix['last']</code>
-      <code>$prefix['message']</code>
-      <code>$prefix['start']</code>
-      <code>$prefix['trace']</code>
+      <code><![CDATA[$prefix['default']]]></code>
+      <code><![CDATA[$prefix['diff']]]></code>
+      <code><![CDATA[$prefix['last']]]></code>
+      <code><![CDATA[$prefix['message']]]></code>
+      <code><![CDATA[$prefix['start']]]></code>
+      <code><![CDATA[$prefix['trace']]]></code>
     </PossiblyInvalidArrayOffset>
     <PossiblyUndefinedArrayOffset>
-      <code>self::STATUS_STYLES[$result['status']]['message']</code>
+      <code><![CDATA[self::STATUS_STYLES[$result['status']]['message']]]></code>
     </PossiblyUndefinedArrayOffset>
     <PropertyNotSetInConstructor>
       <code>CliTestDoxPrinter</code>
@@ -2169,7 +2169,7 @@
       <code>$name</code>
     </MissingParamType>
     <PossiblyNullArgument>
-      <code>$this-&gt;currentTestClassPrettified</code>
+      <code><![CDATA[$this->currentTestClassPrettified]]></code>
     </PossiblyNullArgument>
     <PropertyNotSetInConstructor>
       <code>HtmlResultPrinter</code>
@@ -2185,11 +2185,11 @@
       <code>$useColor</code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>throw new UtilException(
-                $e-&gt;getMessage(),
-                $e-&gt;getCode(),
+      <code><![CDATA[throw new UtilException(
+                $e->getMessage(),
+                $e->getCode(),
                 $e
-            );</code>
+            );]]></code>
     </MissingThrowsDocblock>
     <RedundantConditionGivenDocblockType>
       <code>is_string($value)</code>
@@ -2246,11 +2246,11 @@
       <code>XmlResultPrinter</code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code>throw new Exception(
-                    $e-&gt;getMessage(),
-                    $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                    $e->getMessage(),
+                    $e->getCode(),
                     $e
-                );</code>
+                );]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
       <code>XmlResultPrinter</code>
@@ -2259,7 +2259,7 @@
   </file>
   <file src="src/Util/TextTestListRenderer.php">
     <ArgumentTypeCoercion>
-      <code>$suite-&gt;getIterator()</code>
+      <code><![CDATA[$suite->getIterator()]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
@@ -2278,28 +2278,28 @@
       <code>new $className</code>
     </InvalidStringClass>
     <LessSpecificReturnStatement>
-      <code>(new DOMDocument)-&gt;importNode($element, true)</code>
+      <code><![CDATA[(new DOMDocument)->importNode($element, true)]]></code>
     </LessSpecificReturnStatement>
     <MissingReturnType>
       <code>xmlToVariable</code>
     </MissingReturnType>
     <MissingThrowsDocblock>
-      <code>throw new Exception(
-                            $e-&gt;getMessage(),
-                            $e-&gt;getCode(),
+      <code><![CDATA[throw new Exception(
+                            $e->getMessage(),
+                            $e->getCode(),
                             $e
-                        );</code>
+                        );]]></code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType>
       <code>DOMElement</code>
     </MoreSpecificReturnType>
     <RedundantCast>
-      <code>(string) $entry-&gt;getAttribute('key')</code>
+      <code><![CDATA[(string) $entry->getAttribute('key')]]></code>
     </RedundantCast>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion>
-      <code>$suite-&gt;getIterator()</code>
+      <code><![CDATA[$suite->getIterator()]]></code>
     </ArgumentTypeCoercion>
   </file>
 </files>
