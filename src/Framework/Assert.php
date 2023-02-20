@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use function class_exists;
 use function count;
 use function file_get_contents;
@@ -932,6 +934,36 @@ abstract class Assert
     final public static function assertNan(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isNan(), $message);
+    }
+
+    /**
+     * Asserts that an object has a specified attribute.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertObjectHasAttribute(string $attributeName, object $object, string $message = ''): void
+    {
+        static::assertThat(
+            $object,
+            new ObjectHasProperty($attributeName),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that an object does not have a specified attribute.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertObjectNotHasAttribute(string $attributeName, object $object, string $message = ''): void
+    {
+        static::assertThat(
+            $object,
+            new LogicalNot(
+                new ObjectHasProperty($attributeName)
+            ),
+            $message
+        );
     }
 
     /**
