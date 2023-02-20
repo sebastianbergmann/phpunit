@@ -83,7 +83,7 @@ function __phpunit_run_isolated_test()
     print serialize(
         [
             'testResult'    => $test->result(),
-            'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
+            'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
             'numAssertions' => $test->numberOfAssertionsPerformed(),
             'output'        => $output,
             'events'        => $dispatcher->flush(),
