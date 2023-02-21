@@ -4,8 +4,27 @@ https://github.com/sebastianbergmann/phpunit/issues/5218
 pcov.directory=tests/end-to-end/regression/5218/src/
 --SKIPIF--
 <?php declare(strict_types=1);
-if (!extension_loaded('pcov')) {
-    print "skip: this test requires pcov\n";
+if (extension_loaded('pcov')) {
+    return;
+}
+
+if (!extension_loaded('xdebug')) {
+    print 'skip: This test requires a code coverage driver';
+}
+
+if (version_compare(phpversion('xdebug'), '3.1', '>=') && in_array('coverage', xdebug_info('mode'), true)) {
+    return;
+}
+
+$mode = getenv('XDEBUG_MODE');
+
+if ($mode === false || $mode === '') {
+    $mode = ini_get('xdebug.mode');
+}
+
+if ($mode === false ||
+    !in_array('coverage', explode(',', $mode), true)) {
+    print 'skip: XDEBUG_MODE=coverage or xdebug.mode=coverage has to be set';
 }
 --FILE--
 <?php declare(strict_types=1);
