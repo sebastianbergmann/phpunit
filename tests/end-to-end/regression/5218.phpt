@@ -2,6 +2,11 @@
 https://github.com/sebastianbergmann/phpunit/issues/5218
 --INI--
 pcov.directory=tests/end-to-end/regression/5218/src/
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pcov')) {
+    print "skip: this test requires pcov\n";
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
