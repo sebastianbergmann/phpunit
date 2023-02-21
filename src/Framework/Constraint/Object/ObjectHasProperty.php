@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use ReflectionObject;
-
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -28,7 +26,7 @@ final class ObjectHasProperty extends Constraint
      */
     public function toString(): string
     {
-        return sprintf(
+        return \sprintf(
             'has property "%s"',
             $this->propertyName
         );
@@ -42,7 +40,11 @@ final class ObjectHasProperty extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return (new ReflectionObject($other))->hasProperty($this->propertyName);
+        try {
+            return (new \ReflectionObject($other))->hasProperty($this->propertyName);
+        } catch (\ReflectionException) {
+            return false;
+        }
     }
 
     /**
@@ -55,10 +57,10 @@ final class ObjectHasProperty extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        return sprintf(
+        return \sprintf(
             '%sclass "%s" %s',
-            is_object($other) ? 'object of ' : '',
-            is_object($other) ? get_class($other) : $other,
+            \is_object($other) ? 'object of ' : '',
+            \is_object($other) ? $other::class : $other,
             $this->toString()
         );
     }

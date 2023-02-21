@@ -7,13 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\Constraint;
 
-use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
-use stdClass;
 
 /**
  * @small
@@ -25,7 +22,7 @@ final class ObjectHasPropertyTest extends ConstraintTestCase
         $constraint = new ObjectHasProperty('privateAttribute');
 
         $this->assertTrue($constraint->evaluate(new ClassWithNonPublicAttributes, '', true));
-        $this->assertFalse($constraint->evaluate(new stdClass, '', true));
+        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
         $this->assertEquals('has property "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
@@ -34,7 +31,7 @@ final class ObjectHasPropertyTest extends ConstraintTestCase
             Failed asserting that object of class "stdClass" has property "privateAttribute".
             EOF
         );
-        $constraint->evaluate(new stdClass);
+        $constraint->evaluate(new \stdClass);
     }
 
     public function testConstraintObjectHasAttribute2(): void
@@ -46,6 +43,6 @@ final class ObjectHasPropertyTest extends ConstraintTestCase
             custom message\nFailed asserting that object of class "stdClass" has property "privateAttribute".
             EOF
         );
-        $constraint->evaluate(new stdClass, 'custom message');
+        $constraint->evaluate(new \stdClass, 'custom message');
     }
 }
