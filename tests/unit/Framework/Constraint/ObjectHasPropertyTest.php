@@ -42,9 +42,8 @@ final class ObjectHasPropertyTest extends ConstraintTestCase
         $constraint = new ObjectHasProperty('privateAttribute');
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(<<<'EOF'
-            custom message
-            Failed asserting that object of class "stdClass" has property "privateAttribute".
+        $this->expectExceptionMessage(<<<EOF
+            custom message\nFailed asserting that object of class "stdClass" has property "privateAttribute".
             EOF
         );
         $constraint->evaluate(new stdClass, 'custom message');

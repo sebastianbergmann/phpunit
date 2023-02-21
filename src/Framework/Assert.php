@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use function class_exists;
 use function count;
@@ -63,7 +62,6 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
-use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 
@@ -937,7 +935,7 @@ abstract class Assert
     }
 
     /**
-     * Asserts that an object has a specified attribute.
+     * Asserts that an object has a specified property.
      *
      * @throws ExpectationFailedException
      */
@@ -951,7 +949,7 @@ abstract class Assert
     }
 
     /**
-     * Asserts that an object does not have a specified attribute.
+     * Asserts that an object does not have a specified property.
      *
      * @throws ExpectationFailedException
      */
