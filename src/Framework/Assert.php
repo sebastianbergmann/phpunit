@@ -51,6 +51,7 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
+use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -61,7 +62,6 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
-use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 
@@ -932,6 +932,36 @@ abstract class Assert
     final public static function assertNan(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isNan(), $message);
+    }
+
+    /**
+     * Asserts that an object has a specified property.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertObjectHasProperty(string $propertyName, object $object, string $message = ''): void
+    {
+        static::assertThat(
+            $object,
+            new ObjectHasProperty($propertyName),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that an object does not have a specified property.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertObjectNotHasProperty(string $propertyName, object $object, string $message = ''): void
+    {
+        static::assertThat(
+            $object,
+            new LogicalNot(
+                new ObjectHasProperty($propertyName)
+            ),
+            $message
+        );
     }
 
     /**
