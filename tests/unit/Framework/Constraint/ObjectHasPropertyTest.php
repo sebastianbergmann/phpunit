@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
+use stdClass;
 
 /**
  * @small
@@ -22,16 +23,23 @@ final class ObjectHasPropertyTest extends ConstraintTestCase
         $constraint = new ObjectHasProperty('privateAttribute');
 
         $this->assertTrue($constraint->evaluate(new ClassWithNonPublicAttributes, '', true));
-        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
+        $this->assertFalse($constraint->evaluate(new stdClass, '', true));
         $this->assertEquals('has property "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(<<<'EOF'
+        $this->expectExceptionMessage(
+            <<<'EOF'
             Failed asserting that object of class "stdClass" has property "privateAttribute".
             EOF
         );
-        $constraint->evaluate(new \stdClass);
+        $constraint->evaluate(new stdClass);
+    }
+
+    public function testAssertObjectHasAttribute(): void
+    {
+        $this->assertObjectNotHasProperty('privateAttribute', new stdClass);
+        $this->assertObjectHasProperty('foo', new ClassWithNonPublicAttributes);
     }
 
     public function testConstraintObjectHasAttribute2(): void
@@ -39,10 +47,24 @@ final class ObjectHasPropertyTest extends ConstraintTestCase
         $constraint = new ObjectHasProperty('privateAttribute');
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(<<<EOF
+        $this->expectExceptionMessage(
+            <<<EOF
             custom message\nFailed asserting that object of class "stdClass" has property "privateAttribute".
             EOF
         );
-        $constraint->evaluate(new \stdClass, 'custom message');
+        $constraint->evaluate(new stdClass, 'custom message');
+    }
+
+    public function testConstraintObjectHasAttributeWithNoObject(): void
+    {
+        $constraint = new ObjectHasProperty('privateAttribute');
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            <<<EOF
+            custom message\nFailed asserting that class "" has property "privateAttribute".
+            EOF
+        );
+        $constraint->evaluate('', 'custom message');
     }
 }

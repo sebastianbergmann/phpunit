@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use function class_exists;
 use function count;
 use function file_get_contents;
@@ -52,6 +51,7 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
+use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -939,11 +939,11 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      */
-    final public static function assertObjectHasProperty(string $attributeName, object $object, string $message = ''): void
+    final public static function assertObjectHasProperty(string $propertyName, object $object, string $message = ''): void
     {
         static::assertThat(
             $object,
-            new ObjectHasProperty($attributeName),
+            new ObjectHasProperty($propertyName),
             $message
         );
     }
@@ -953,12 +953,12 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      */
-    final public static function assertObjectNotHasProperty(string $attributeName, object $object, string $message = ''): void
+    final public static function assertObjectNotHasProperty(string $propertyName, object $object, string $message = ''): void
     {
         static::assertThat(
             $object,
             new LogicalNot(
-                new ObjectHasProperty($attributeName)
+                new ObjectHasProperty($propertyName)
             ),
             $message
         );
