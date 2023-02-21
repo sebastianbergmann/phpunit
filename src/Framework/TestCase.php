@@ -18,6 +18,7 @@ use const LC_TIME;
 use const PATHINFO_FILENAME;
 use const PHP_EOL;
 use const PHP_URL_PATH;
+use function array_keys;
 use function array_merge;
 use function array_values;
 use function basename;
@@ -180,6 +181,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private array $customComparators                         = [];
     private ?Event\Code\TestMethod $testValueObjectForEvents = null;
     private bool $wasPrepared                                = false;
+
+    /**
+     * @psalm-var array<class-string, true>
+     */
+    private array $failureTypes = [];
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -477,15 +483,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new MockBuilder($this, $className);
     }
 
-    final public function registerComparator(Comparator $comparator): void
-    {
-        ComparatorFactory::getInstance()->register($comparator);
-
-        Event\Facade::emitter()->testRegisteredComparator($comparator::class);
-
-        $this->customComparators[] = $comparator;
-    }
-
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -655,13 +652,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
         } catch (Throwable $_e) {
-            $e            = $_e;
-            $this->status = TestStatus::error($_e->getMessage());
+            $e = $_e;
 
-            $emitter->testErrored(
-                $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($_e)
-            );
+            if ($this->isRegisteredFailure($_e)) {
+                $this->status = TestStatus::failure($_e->getMessage());
+
+                $emitter->testFailed(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($_e),
+                    null
+                );
+            } else {
+                $this->status = TestStatus::error($_e->getMessage());
+
+                $emitter->testErrored(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($_e)
+                );
+            }
         }
 
         if ($this->stopOutputBuffering() && !isset($e)) {
@@ -1010,6 +1018,23 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    final protected function registerComparator(Comparator $comparator): void
+    {
+        ComparatorFactory::getInstance()->register($comparator);
+
+        Event\Facade::emitter()->testRegisteredComparator($comparator::class);
+
+        $this->customComparators[] = $comparator;
+    }
+
+    /**
+     * @psalm-param class-string $classOrInterface
+     */
+    final protected function registerFailureType(string $classOrInterface): void
+    {
+        $this->failureTypes[$classOrInterface] = true;
     }
 
     /**
@@ -2118,5 +2143,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 )
             );
         }
+    }
+
+    private function isRegisteredFailure(Throwable $t): bool
+    {
+        foreach (array_keys($this->failureTypes) as $failureType) {
+            if ($t instanceof $failureType) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

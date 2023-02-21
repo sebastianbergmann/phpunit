@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
@@ -48,8 +47,6 @@ function __phpunit_run_isolated_test()
     }
 
     $test = new {className}('{methodName}');
-
-    \assert($test instanceof TestCase);
 
     $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
