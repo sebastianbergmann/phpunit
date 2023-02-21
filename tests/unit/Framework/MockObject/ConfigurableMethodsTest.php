@@ -9,12 +9,14 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnotherClassUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ClassUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ReinitializeConfigurableMethods;
 use SebastianBergmann\Type\SimpleType;
 
+#[CoversClass(Api::class)]
 final class ConfigurableMethodsTest extends TestCase
 {
     public function testTwoClassesUsingConfigurableMethodsDontInterfere(): void

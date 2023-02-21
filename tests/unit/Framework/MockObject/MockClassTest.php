@@ -11,10 +11,12 @@ namespace PHPUnit\Framework\MockObject;
 
 use function class_exists;
 use function file_get_contents;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\MockClassWithConfigurableMethods;
 use SebastianBergmann\Type\Type;
 
+#[CoversClass(MockClass::class)]
 final class MockClassTest extends TestCase
 {
     public function testGenerateClassFromSource(): void
