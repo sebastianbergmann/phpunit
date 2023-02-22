@@ -2095,7 +2095,7 @@ if (!function_exists('PHPUnit\Framework\assertJson')) {
      *
      * @see Assert::assertJson
      */
-    function assertJson(string $actualJson, string $message = ''): void
+    function assertJson(string $actual, string $message = ''): void
     {
         Assert::assertJson(...func_get_args());
     }
