@@ -251,6 +251,13 @@ final class AssertTest extends TestCase
         $this->assertIsList(['string' => 0]);
     }
 
+    public function testAssertIsListFailsForTypesOtherThanArray(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertIsList(null);
+    }
+
     public function testAssertArrayContainsOnlyIntegers(): void
     {
         $this->assertContainsOnly('integer', [1, 2, 3]);

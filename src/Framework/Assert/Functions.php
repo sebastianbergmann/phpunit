@@ -111,7 +111,7 @@ if (!function_exists('PHPUnit\Framework\assertIsList')) {
      *
      * @see Assert::assertIsList
      */
-    function assertIsList(array $array, string $message = ''): void
+    function assertIsList(mixed $array, string $message = ''): void
     {
         Assert::assertIsList(...func_get_args());
     }

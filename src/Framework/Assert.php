@@ -103,7 +103,7 @@ abstract class Assert
     /**
      * @throws ExpectationFailedException
      */
-    final public static function assertIsList(array $array, string $message = ''): void
+    final public static function assertIsList(mixed $array, string $message = ''): void
     {
         static::assertThat(
             $array,
