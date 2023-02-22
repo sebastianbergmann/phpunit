@@ -31,7 +31,7 @@ final class IsListTest extends ConstraintTestCase
         $constraint = new IsList;
 
         $this->assertFalse($constraint->evaluate([1 => 1], '', true));
-        $this->assertEquals('is list', $constraint->toString());
+        $this->assertEquals('is a list', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
@@ -39,7 +39,7 @@ final class IsListTest extends ConstraintTestCase
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<'EOF'
-Failed asserting that an array is list.
+Failed asserting that an array is a list.
 
 EOF
                 ,
@@ -57,7 +57,7 @@ EOF
         $constraint = new IsList;
 
         $this->assertFalse($constraint->evaluate([0 => 0, 1 => 1, 3 => 3], '', true));
-        $this->assertEquals('is list', $constraint->toString());
+        $this->assertEquals('is a list', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
@@ -65,7 +65,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<'EOF'
-Failed asserting that an array is list.
+Failed asserting that an array is a list.
 
 EOF
                 ,
@@ -88,7 +88,7 @@ EOF
             $this->assertEquals(
                 <<<'EOF'
 custom message
-Failed asserting that an array is list.
+Failed asserting that an array is a list.
 
 EOF
                 ,
@@ -110,7 +110,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<'EOF'
-Failed asserting that an array is list.
+Failed asserting that a string is a list.
 
 EOF
                 ,
@@ -131,7 +131,7 @@ EOF
             $this->assertEquals(
                 <<<'EOF'
 custom message
-Failed asserting that an array is not list.
+Failed asserting that an array is not a list.
 
 EOF
                 ,
