@@ -101,11 +101,11 @@ set_error_handler('__phpunit_error_handler');
 
 restore_error_handler();
 
+ConfigurationRegistry::loadFrom('{serializedConfiguration}');
+(new PhpHandler)->handle(ConfigurationRegistry::get()->php());
+
 if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';
 }
-
-ConfigurationRegistry::loadFrom('{serializedConfiguration}');
-(new PhpHandler)->handle(ConfigurationRegistry::get()->php());
 
 __phpunit_run_isolated_test();
