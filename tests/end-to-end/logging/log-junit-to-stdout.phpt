@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%sStatusTest.php" tests="12" assertions="4" errors="2" failures="2" skipped="5" time="%f">
+  <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%sStatusTest.php" tests="12" assertions="4" errors="2" failures="2" skipped="4" time="%f">
     <testcase name="testSuccess" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f"/>
     <testcase name="testFailure" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f">
       <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailure%A
