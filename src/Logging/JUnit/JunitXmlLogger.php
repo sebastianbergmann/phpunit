@@ -11,7 +11,6 @@ namespace PHPUnit\Logging\JUnit;
 
 use function assert;
 use function basename;
-use function class_exists;
 use function is_int;
 use function sprintf;
 use function str_replace;
@@ -36,8 +35,6 @@ use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Xml;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -111,13 +108,8 @@ final class JunitXmlLogger
         $testSuite = $this->document->createElement('testsuite');
         $testSuite->setAttribute('name', $event->testSuite()->name());
 
-        if (class_exists($event->testSuite()->name(), false)) {
-            try {
-                $class = new ReflectionClass($event->testSuite()->name());
-
-                $testSuite->setAttribute('file', $class->getFileName());
-            } catch (ReflectionException) {
-            }
+        if ($event->testSuite()->isForTestClass()) {
+            $testSuite->setAttribute('file', $event->testSuite()->file());
         }
 
         if ($this->testSuiteLevel > 0) {
