@@ -180,16 +180,6 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isCodeCoverageIgnore(): self
-    {
-        return new self(
-            ...array_filter(
-                $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isCodeCoverageIgnore()
-            )
-        );
-    }
-
     public function isCovers(): self
     {
         return new self(

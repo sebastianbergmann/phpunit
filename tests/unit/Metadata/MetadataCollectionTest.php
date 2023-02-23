@@ -24,7 +24,6 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(BackupStaticProperties::class)]
 #[UsesClass(Before::class)]
 #[UsesClass(BeforeClass::class)]
-#[UsesClass(CodeCoverageIgnore::class)]
 #[UsesClass(Covers::class)]
 #[UsesClass(\PHPUnit\Metadata\CoversClass::class)]
 #[UsesClass(CoversDefaultClass::class)]
@@ -174,14 +173,6 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isBefore());
-    }
-
-    public function test_Can_be_filtered_for_CodeCoverageIgnore(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isCodeCoverageIgnore();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isCodeCoverageIgnore());
     }
 
     public function test_Can_be_filtered_for_Covers(): void
@@ -467,7 +458,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::backupStaticPropertiesOnClass(true),
                 Metadata::beforeClass(),
                 Metadata::before(),
-                Metadata::codeCoverageIgnoreOnClass(),
                 Metadata::coversOnClass(''),
                 Metadata::coversClass(''),
                 Metadata::coversDefaultClass(''),

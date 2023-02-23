@@ -63,16 +63,6 @@ abstract class Metadata
         return new BeforeClass(self::METHOD_LEVEL);
     }
 
-    public static function codeCoverageIgnoreOnClass(): CodeCoverageIgnore
-    {
-        return new CodeCoverageIgnore(self::CLASS_LEVEL);
-    }
-
-    public static function codeCoverageIgnoreOnMethod(): CodeCoverageIgnore
-    {
-        return new CodeCoverageIgnore(self::METHOD_LEVEL);
-    }
-
     /**
      * @psalm-param class-string $className
      */
@@ -409,14 +399,6 @@ abstract class Metadata
      * @psalm-assert-if-true Before $this
      */
     public function isBefore(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true CodeCoverageIgnore $this
-     */
-    public function isCodeCoverageIgnore(): bool
     {
         return false;
     }
