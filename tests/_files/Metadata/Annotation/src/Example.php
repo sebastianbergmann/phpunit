@@ -9,14 +9,8 @@
  */
 namespace PHPUnit\TestFixture\Metadata\Annotation;
 
-/**
- * @codeCoverageIgnore
- */
 final class Example
 {
-    /**
-     * @codeCoverageIgnore
-     */
     public function method(): void
     {
     }

@@ -22,7 +22,6 @@ use PHPUnit\TestFixture\Metadata\Annotation\BackupStaticPropertiesTest;
 use PHPUnit\TestFixture\Metadata\Annotation\CoversTest;
 use PHPUnit\TestFixture\Metadata\Annotation\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Annotation\DoesNotPerformAssertionsTest;
-use PHPUnit\TestFixture\Metadata\Annotation\Example;
 use PHPUnit\TestFixture\Metadata\Annotation\GroupTest;
 use PHPUnit\TestFixture\Metadata\Annotation\LargeTest;
 use PHPUnit\TestFixture\Metadata\Annotation\MediumTest;
@@ -63,14 +62,6 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBackupStaticProperties());
         $this->assertTrue($metadata->asArray()[0]->enabled());
-    }
-
-    public function test_Parses_codeCoverageIgnore_annotation_on_class(): void
-    {
-        $metadata = (new AnnotationParser)->forClass(Example::class)->isCodeCoverageIgnore();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
     public function test_Parses_covers_annotation_on_class(): void
@@ -339,14 +330,6 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBeforeClass());
-    }
-
-    public function test_Parses_codeCoverageIgnore_annotation_on_method(): void
-    {
-        $metadata = (new AnnotationParser)->forMethod(Example::class, 'method')->isCodeCoverageIgnore();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
     public function test_Parses_covers_annotation_on_method(): void

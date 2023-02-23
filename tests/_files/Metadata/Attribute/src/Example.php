@@ -9,12 +9,8 @@
  */
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
-use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
-
-#[CodeCoverageIgnore]
 final class Example
 {
-    #[CodeCoverageIgnore]
     public function method(): void
     {
     }

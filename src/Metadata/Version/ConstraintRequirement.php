@@ -16,7 +16,7 @@ use PharIo\Version\VersionConstraint;
 /**
  * @psalm-immutable
  *
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class ConstraintRequirement extends Requirement
 {

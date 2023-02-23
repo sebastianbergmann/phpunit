@@ -16,7 +16,6 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
-use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -90,7 +89,6 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 #[CoversClass(BackupStaticProperties::class)]
 #[CoversClass(Before::class)]
 #[CoversClass(BeforeClass::class)]
-#[CoversClass(CodeCoverageIgnore::class)]
 #[CoversClass(CoversClass::class)]
 #[CoversClass(CoversFunction::class)]
 #[CoversClass(CoversNothing::class)]
@@ -154,15 +152,6 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBackupStaticProperties());
         $this->assertTrue($metadata->asArray()[0]->enabled());
-    }
-
-    #[TestDox('Parses #[CodeCoverageIgnore] attribute on class')]
-    public function test_parses_CodeCoverageIgnore_attribute_on_class(): void
-    {
-        $metadata = (new AttributeParser)->forClass(Example::class)->isCodeCoverageIgnore();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
     #[TestDox('Parses #[CoversClass] attribute on class')]
@@ -496,15 +485,6 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBeforeClass());
-    }
-
-    #[TestDox('Parses #[CodeCoverageIgnore] attribute on method')]
-    public function test_parses_CodeCoverageIgnore_attribute_on_method(): void
-    {
-        $metadata = (new AttributeParser)->forMethod(Example::class, 'method')->isCodeCoverageIgnore();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
     #[TestDox('Parses #[CoversNothing] attribute on method')]
