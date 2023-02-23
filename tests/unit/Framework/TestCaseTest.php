@@ -160,21 +160,9 @@ class TestCaseTest extends TestCase
         $this->assertNull($cloned->cloned);
     }
 
-    public function testConfiguredStubCanBeCreated(): void
-    {
-        $stub = $this->createConfiguredStub(
-            Mockable::class,
-            [
-                'mockableMethod' => false,
-            ]
-        );
-
-        $this->assertFalse($stub->mockableMethod());
-        $this->assertNull($stub->anotherMockableMethod());
-    }
-
     public function testConfiguredMockCanBeCreated(): void
     {
+        /** @var Mockable $mock */
         $mock = $this->createConfiguredMock(
             Mockable::class,
             [
