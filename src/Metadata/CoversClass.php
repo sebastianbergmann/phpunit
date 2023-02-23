@@ -10,9 +10,9 @@
 namespace PHPUnit\Metadata;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
  * @psalm-immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class CoversClass extends Metadata
 {
@@ -46,6 +46,8 @@ final class CoversClass extends Metadata
 
     /**
      * @psalm-return class-string
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function asStringForCodeUnitMapper(): string
     {
