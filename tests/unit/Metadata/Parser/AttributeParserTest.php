@@ -65,6 +65,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnoreCodeCoverageTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
@@ -241,6 +242,37 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertSame('medium', $metadata->asArray()[0]->groupName());
+    }
+
+    #[TestDox('Parses #[IgnoreClassForCodeCoverage] attribute on class')]
+    public function test_parses_IgnoreClassForCodeCoverage_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(IgnoreCodeCoverageTest::class)->isIgnoreClassForCodeCoverage();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreClassForCodeCoverage());
+        $this->assertSame('className', $metadata->asArray()[0]->className());
+    }
+
+    #[TestDox('Parses #[IgnoreMethodForCodeCoverage] attribute on class')]
+    public function test_parses_IgnoreMethodForCodeCoverage_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(IgnoreCodeCoverageTest::class)->isIgnoreMethodForCodeCoverage();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreMethodForCodeCoverage());
+        $this->assertSame('ClassName', $metadata->asArray()[0]->className());
+        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[IgnoreFunctionForCodeCoverage] attribute on class')]
+    public function test_parses_IgnoreFunctionForCodeCoverage_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(IgnoreCodeCoverageTest::class)->isIgnoreFunctionForCodeCoverage();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreFunctionForCodeCoverage());
+        $this->assertSame('functionName', $metadata->asArray()[0]->functionName());
     }
 
     #[TestDox('Parses #[PreserveGlobalState] attribute on class')]

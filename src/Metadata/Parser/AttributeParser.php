@@ -37,6 +37,9 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
+use PHPUnit\Framework\Attributes\IgnoreFunctionForCodeCoverage;
+use PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -156,6 +159,27 @@ final class AttributeParser implements Parser
 
                 case Medium::class:
                     $result[] = Metadata::groupOnClass('medium');
+
+                    break;
+
+                case IgnoreClassForCodeCoverage::class:
+                    assert($attributeInstance instanceof IgnoreClassForCodeCoverage);
+
+                    $result[] = Metadata::ignoreClassForCodeCoverage($attributeInstance->className());
+
+                    break;
+
+                case IgnoreMethodForCodeCoverage::class:
+                    assert($attributeInstance instanceof IgnoreMethodForCodeCoverage);
+
+                    $result[] = Metadata::ignoreMethodForCodeCoverage($attributeInstance->className(), $attributeInstance->methodName());
+
+                    break;
+
+                case IgnoreFunctionForCodeCoverage::class:
+                    assert($attributeInstance instanceof IgnoreFunctionForCodeCoverage);
+
+                    $result[] = Metadata::ignoreFunctionForCodeCoverage($attributeInstance->functionName());
 
                     break;
 

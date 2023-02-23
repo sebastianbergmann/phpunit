@@ -34,6 +34,9 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(DependsOnMethod::class)]
 #[UsesClass(DoesNotPerformAssertions::class)]
 #[UsesClass(Group::class)]
+#[UsesClass(IgnoreClassForCodeCoverage::class)]
+#[UsesClass(IgnoreMethodForCodeCoverage::class)]
+#[UsesClass(IgnoreFunctionForCodeCoverage::class)]
 #[UsesClass(Metadata::class)]
 #[UsesClass(PostCondition::class)]
 #[UsesClass(PreCondition::class)]
@@ -280,6 +283,30 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isGroup());
     }
 
+    public function test_Can_be_filtered_for_IgnoreClassForCodeCoverage(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnoreClassForCodeCoverage();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnoreClassForCodeCoverage());
+    }
+
+    public function test_Can_be_filtered_for_IgnoreMethodForCodeCoverage(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnoreMethodForCodeCoverage();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnoreMethodForCodeCoverage());
+    }
+
+    public function test_Can_be_filtered_for_IgnoreFunctionForCodeCoverage(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnoreFunctionForCodeCoverage();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnoreFunctionForCodeCoverage());
+    }
+
     public function test_Can_be_filtered_for_PostCondition(): void
     {
         $collection = $this->collectionWithOneOfEach()->isPostCondition();
@@ -470,6 +497,9 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::excludeGlobalVariableFromBackupOnClass(''),
                 Metadata::excludeStaticPropertyFromBackupOnClass('', ''),
                 Metadata::groupOnClass(''),
+                Metadata::ignoreClassForCodeCoverage(''),
+                Metadata::ignoreMethodForCodeCoverage('', ''),
+                Metadata::ignoreFunctionForCodeCoverage(''),
                 Metadata::postCondition(),
                 Metadata::preCondition(),
                 Metadata::preserveGlobalStateOnClass(true),

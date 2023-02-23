@@ -310,6 +310,36 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isIgnoreClassForCodeCoverage(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isIgnoreClassForCodeCoverage()
+            )
+        );
+    }
+
+    public function isIgnoreMethodForCodeCoverage(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isIgnoreMethodForCodeCoverage()
+            )
+        );
+    }
+
+    public function isIgnoreFunctionForCodeCoverage(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isIgnoreFunctionForCodeCoverage()
+            )
+        );
+    }
+
     public function isRunClassInSeparateProcess(): self
     {
         return new self(
