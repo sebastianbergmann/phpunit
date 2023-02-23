@@ -22,8 +22,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 print file_get_contents($logfile);
 
 unlink($logfile);
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/pull/5188
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
