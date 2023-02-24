@@ -38,6 +38,8 @@ final class CodeCoverage
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
+     * @psalm-return array<string,list<int>>|false
+     *
      * @throws CodeCoverageException
      */
     public function linesToBeCovered(string $className, string $methodName): array|false
@@ -133,6 +135,8 @@ final class CodeCoverage
     /**
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
+     *
+     * @psalm-return array<string,list<int>>
      *
      * @throws CodeCoverageException
      */
