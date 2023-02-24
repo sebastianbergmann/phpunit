@@ -1268,6 +1268,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
