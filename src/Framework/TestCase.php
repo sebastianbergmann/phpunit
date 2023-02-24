@@ -1178,7 +1178,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      */
-    protected function createConfiguredStub(string $originalClassName, array $configuration): Stub
+    final protected function createConfiguredStub(string $originalClassName, array $configuration): Stub
     {
         $o = $this->createStub($originalClassName);
 
