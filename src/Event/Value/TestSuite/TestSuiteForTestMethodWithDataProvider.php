@@ -27,7 +27,7 @@ final class TestSuiteForTestMethodWithDataProvider extends TestSuite
     private readonly int $line;
 
     /**
-     * @psalm-param class-string $name
+     * @psalm-param class-string $className
      */
     public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line)
     {
