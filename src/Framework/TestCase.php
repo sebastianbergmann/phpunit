@@ -1236,6 +1236,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5239
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {

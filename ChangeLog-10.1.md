@@ -11,5 +11,6 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 ### Changed
 
 * [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236): Deprecate the `CodeCoverageIgnore` attribute
+* [#5239](https://github.com/sebastianbergmann/phpunit/issues/5239): Deprecate `TestCase::createPartialMock()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 
 [10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0...main
