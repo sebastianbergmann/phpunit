@@ -32,7 +32,7 @@ final class TestSuiteForTestMethodWithDataProvider extends TestSuite
 
     /**
      * @psalm-param class-string $className
-     * @psalm-param non-empty-string $className
+     * @psalm-param non-empty-string $methodName
      */
     public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line)
     {
