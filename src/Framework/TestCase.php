@@ -1332,6 +1332,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-return MockObject&RealInstanceType
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5242
      */
     protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
