@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.7.1@8e0fd880141f236847ab49a06f94f788d41a4292">
+<files psalm-version="5.7.5@5390c212bab06ee230c8720c2e9c54b823db00c8">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -92,15 +92,11 @@
   <file src="src/Event/Value/TestSuite/TestSuite.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
-      <code><![CDATA[$testSuite->getName()]]></code>
+      <code>$className</code>
+      <code>$methodName</code>
       <code><![CDATA[$testSuite->getName()]]></code>
       <code><![CDATA[$testSuite->getName()]]></code>
     </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
-    <PropertyTypeCoercion>
-      <code>$className</code>
-    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <TooManyArguments>
@@ -287,6 +283,11 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$test->name()]]></code>
+      <code><![CDATA[$test->name()]]></code>
+      <code><![CDATA[$test->name()]]></code>
+    </ArgumentTypeCoercion>
     <InvalidArgument>
       <code>$var</code>
     </InvalidArgument>
