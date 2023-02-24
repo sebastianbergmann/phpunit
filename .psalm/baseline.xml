@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.7.1@8e0fd880141f236847ab49a06f94f788d41a4292">
+<files psalm-version="5.7.5@5390c212bab06ee230c8720c2e9c54b823db00c8">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -269,6 +269,11 @@
       <code>$originalClassName</code>
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedMethod>
+      <code>getMockBuilder</code>
+      <code>getMockBuilder</code>
+      <code>getMockBuilder</code>
+    </DeprecatedMethod>
     <InvalidReturnStatement>
       <code>$mockObject</code>
     </InvalidReturnStatement>

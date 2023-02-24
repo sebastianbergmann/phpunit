@@ -477,6 +477,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $className
      *
      * @psalm-return MockBuilder<RealInstanceType>
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5252
      */
     final public function getMockBuilder(string $className): MockBuilder
     {
