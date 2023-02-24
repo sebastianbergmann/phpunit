@@ -36,6 +36,7 @@ final class CodeCoverage
 {
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      *
      * @throws CodeCoverageException
      */
@@ -131,6 +132,7 @@ final class CodeCoverage
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      *
      * @throws CodeCoverageException
      */
@@ -213,6 +215,7 @@ final class CodeCoverage
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      */
     public function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
