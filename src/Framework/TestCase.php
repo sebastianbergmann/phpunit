@@ -1415,6 +1415,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param trait-string $traitName
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5244
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
