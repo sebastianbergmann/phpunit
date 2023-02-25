@@ -30,6 +30,7 @@ use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
+use PHPUnit\TestFixture\IgnoringCodeUnitsTest;
 use PHPUnit\TestFixture\NamespaceCoverageClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassPublicTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
@@ -224,5 +225,16 @@ final class CodeCoverageFacadeTest extends TestCase
         $canSkipCoverage  = !$coverageRequired;
 
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
+    }
+
+    public function testCanIgnoreCodeUnits(): void
+    {
+        $this->assertSame(
+            [
+                TEST_FILES_PATH . 'CoveredClass.php'    => array_merge(range(12, 27), range(37, 41)),
+                TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
+            ],
+            (new CodeCoverage)->linesToBeIgnored(IgnoringCodeUnitsTest::class)
+        );
     }
 }

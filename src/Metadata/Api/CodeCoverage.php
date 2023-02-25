@@ -20,6 +20,9 @@ use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversDefaultClass;
 use PHPUnit\Metadata\CoversFunction;
+use PHPUnit\Metadata\IgnoreClassForCodeCoverage;
+use PHPUnit\Metadata\IgnoreFunctionForCodeCoverage;
+use PHPUnit\Metadata\IgnoreMethodForCodeCoverage;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
@@ -211,6 +214,39 @@ final class CodeCoverage
                         $e
                     );
                 }
+            }
+        }
+
+        return $mapper->codeUnitsToSourceLines($codeUnits);
+    }
+
+    /**
+     * @psalm-param class-string $className
+     *
+     * @psalm-return array<string,list<int>>
+     */
+    public function linesToBeIgnored(string $className): array
+    {
+        $codeUnits = CodeUnitCollection::fromList();
+        $mapper    = new Mapper;
+
+        foreach (Registry::parser()->forClass($className) as $metadata) {
+            if ($metadata instanceof IgnoreClassForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($metadata->className())
+                );
+            }
+
+            if ($metadata instanceof IgnoreMethodForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($metadata->className() . '::' . $metadata->methodName())
+                );
+            }
+
+            if ($metadata instanceof IgnoreFunctionForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits('::' . $metadata->functionName())
+                );
             }
         }
 
