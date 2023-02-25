@@ -51,7 +51,7 @@ function sbom(string $outputFilename, array $package, string $version, array $de
     $writer->startDocument();
 
     $writer->startElement('bom');
-    $writer->writeAttribute('xmlns', 'https://cyclonedx.org/schema/bom/1.4');
+    $writer->writeAttribute('xmlns', 'http://cyclonedx.org/schema/bom/1.4');
 
     $writer->startElement('components');
 
