@@ -40,7 +40,7 @@ use PHPUnit\TestFixture\Test3194;
 #[Small]
 final class CodeCoverageFacadeTest extends TestCase
 {
-    public static function getLinesToBeCoveredProvider(): array
+    public static function linesToBeCoveredProvider(): array
     {
         return [
             [
@@ -131,7 +131,7 @@ final class CodeCoverageFacadeTest extends TestCase
     /**
      * @psalm-param class-string $test
      */
-    #[DataProvider('getLinesToBeCoveredProvider')]
+    #[DataProvider('linesToBeCoveredProvider')]
     public function testGetLinesToBeCovered(string $test, array|false $expected): void
     {
         $this->assertEqualsCanonicalizing(
