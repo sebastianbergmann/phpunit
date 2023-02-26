@@ -164,7 +164,7 @@ final class CodeCoverage
         $this->collecting = true;
     }
 
-    public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
+    public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = [], array $linesToBeIgnored = []): void
     {
         if (!$this->collecting) {
             return;
@@ -181,7 +181,7 @@ final class CodeCoverage
         }
 
         /* @noinspection UnusedFunctionResultInspection */
-        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed);
+        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed, $linesToBeIgnored);
 
         $this->test       = null;
         $this->collecting = false;

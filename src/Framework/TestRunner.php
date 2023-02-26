@@ -151,6 +151,7 @@ final class TestRunner
             $append           = !$risky && !$incomplete && !$skipped;
             $linesToBeCovered = [];
             $linesToBeUsed    = [];
+            $linesToBeIgnored = [];
 
             if ($append) {
                 try {
@@ -163,6 +164,8 @@ final class TestRunner
                         $test::class,
                         $test->name()
                     );
+
+                    $linesToBeIgnored = (new CodeCoverageMetadataApi)->linesToBeIgnored($test::class);
                 } catch (InvalidCoversTargetException $cce) {
                     Event\Facade::emitter()->testTriggeredPhpunitWarning(
                         $test->valueObjectForEvents(),
@@ -175,7 +178,8 @@ final class TestRunner
                 CodeCoverage::instance()->stop(
                     $append,
                     $linesToBeCovered,
-                    $linesToBeUsed
+                    $linesToBeUsed,
+                    $linesToBeIgnored
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
                 Event\Facade::emitter()->testConsideredRisky(
