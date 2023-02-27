@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Fixed
 
 * [#5186](https://github.com/sebastianbergmann/phpunit/issues/5186): SBOM does not validate
+* [#5258](https://github.com/sebastianbergmann/phpunit/issues/5258): JUnit logger crashes when test is skipped by missing PHP extension when running in separate process
 
 ## [10.0.12] - 2023-02-25
 
