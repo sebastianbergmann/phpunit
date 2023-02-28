@@ -19,6 +19,7 @@ use PHPUnit\Event\Telemetry;
 final class AssertionSucceeded implements Event
 {
     private readonly Telemetry\Info $telemetryInfo;
+    private readonly string $value;
     private readonly string $constraint;
     private readonly int $count;
     private readonly string $message;
@@ -26,6 +27,7 @@ final class AssertionSucceeded implements Event
     public function __construct(Telemetry\Info $telemetryInfo, string $value, string $constraint, int $count, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->value         = $value;
         $this->constraint    = $constraint;
         $this->count         = $count;
         $this->message       = $message;
@@ -36,12 +38,9 @@ final class AssertionSucceeded implements Event
         return $this->telemetryInfo;
     }
 
-    /**
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5183
-     */
     public function value(): string
     {
-        return '';
+        return $this->value;
     }
 
     public function count(): int
@@ -66,8 +65,9 @@ final class AssertionSucceeded implements Event
         }
 
         return sprintf(
-            'Assertion Succeeded (Constraint: %s%s)',
+            'Assertion Succeeded (Constraint: %s, Value: %s%s)',
             $this->constraint,
+            $this->value,
             $message
         );
     }

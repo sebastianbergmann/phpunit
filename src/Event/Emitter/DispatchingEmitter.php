@@ -403,7 +403,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\AssertionSucceeded(
                 $this->telemetryInfo(),
-                '',
+                (new Exporter)->export($value),
                 $constraint->toString(),
                 $constraint->count(),
                 $message,
