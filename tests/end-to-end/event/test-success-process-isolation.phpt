@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a successful test
+The right events are emitted in the right order for a successful test that is run in an isolated process
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -12,6 +12,7 @@ $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
+$_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = __DIR__ . '/_files/SuccessTest.php';

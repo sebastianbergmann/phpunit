@@ -68,7 +68,7 @@ final class Facade
     }
 
     /** @noinspection PhpUnused */
-    public static function initForIsolation(HRTime $offset): CollectingDispatcher
+    public static function initForIsolation(HRTime $offset, bool $emitAssertionSucceededEvents, bool $emitAssertionFailedEvents): CollectingDispatcher
     {
         $dispatcher = new CollectingDispatcher;
 
@@ -79,6 +79,14 @@ final class Facade
                 new Telemetry\SystemMemoryMeter
             )
         );
+
+        if ($emitAssertionSucceededEvents) {
+            self::$emitter->emitAssertionSucceededEvents();
+        }
+
+        if ($emitAssertionFailedEvents) {
+            self::$emitter->emitAssertionFailedEvents();
+        }
 
         self::$sealed = true;
 
@@ -100,7 +108,8 @@ final class Facade
 
     public static function seal(): void
     {
-        self::$deferringDispatcher->flush();
+        self::deferredDispatcher()->seal();
+        self::deferredDispatcher()->flush();
 
         self::$sealed = true;
 

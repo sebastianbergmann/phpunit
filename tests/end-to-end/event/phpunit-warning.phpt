@@ -36,7 +36,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpu
 Test Prepared (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 Test Triggered PHPUnit Warning (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 message
-Assertion Succeeded (Constraint: is true)
+Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 Test Finished (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 Test Suite Finished (PHPUnit\TestFixture\Event\PhpunitWarningTest, 1 test)

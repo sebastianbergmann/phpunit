@@ -49,9 +49,6 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
-    <PossiblyNullReference>
-      <code>flush</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Event/Value/Runtime/PHP.php">
     <ImpureFunctionCall>

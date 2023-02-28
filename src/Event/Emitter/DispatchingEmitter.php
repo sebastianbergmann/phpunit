@@ -31,6 +31,8 @@ final class DispatchingEmitter implements Emitter
     private readonly Telemetry\System $system;
     private readonly Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
+    private bool $emitAssertionSucceededEvents = false;
+    private bool $emitAssertionFailedEvents    = false;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
@@ -39,6 +41,50 @@ final class DispatchingEmitter implements Emitter
 
         $this->startSnapshot    = $system->snapshot();
         $this->previousSnapshot = $system->snapshot();
+    }
+
+    /**
+     * @todo Remove this method once we found a better way to avoid creating event objects
+     *       that are expensive to create when there are no subscribers registered for them
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
+     */
+    public function emitAssertionSucceededEvents(): void
+    {
+        $this->emitAssertionSucceededEvents = true;
+    }
+
+    /**
+     * @todo Remove this method once we found a better way to avoid creating event objects
+     *       that are expensive to create when there are no subscribers registered for them
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
+     */
+    public function emitsAssertionSucceededEvents(): bool
+    {
+        return $this->emitAssertionSucceededEvents;
+    }
+
+    /**
+     * @todo Remove this method once we found a better way to avoid creating event objects
+     *       that are expensive to create when there are no subscribers registered for them
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
+     */
+    public function emitAssertionFailedEvents(): void
+    {
+        $this->emitAssertionFailedEvents = true;
+    }
+
+    /**
+     * @todo Remove this method once we found a better way to avoid creating event objects
+     *       that are expensive to create when there are no subscribers registered for them
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
+     */
+    public function emitsAssertionFailedEvents(): bool
+    {
+        return $this->emitAssertionFailedEvents;
     }
 
     /**
@@ -400,10 +446,14 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
+        if (!$this->emitAssertionSucceededEvents) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AssertionSucceeded(
                 $this->telemetryInfo(),
-                '',
+                (new Exporter)->export($value),
                 $constraint->toString(),
                 $constraint->count(),
                 $message,
@@ -417,6 +467,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
+        if (!$this->emitAssertionFailedEvents) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AssertionFailed(
                 $this->telemetryInfo(),
