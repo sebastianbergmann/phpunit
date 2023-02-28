@@ -1057,6 +1057,9 @@ final class DispatchingEmitter implements Emitter
         return $info;
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
     private function hasSubscriberFor(string $className): bool
     {
         if (!$this->dispatcher instanceof SubscribableDispatcher) {
