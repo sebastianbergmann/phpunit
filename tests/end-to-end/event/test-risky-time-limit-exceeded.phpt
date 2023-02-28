@@ -35,7 +35,7 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
-Assertion Succeeded (Constraint: is true)
+Assertion Succeeded (Constraint: is true, Value: true)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
 This test was aborted after 1 second
 Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
