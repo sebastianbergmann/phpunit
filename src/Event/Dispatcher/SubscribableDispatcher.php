@@ -20,12 +20,4 @@ interface SubscribableDispatcher extends Dispatcher
     public function registerSubscriber(Subscriber $subscriber): void;
 
     public function registerTracer(Tracer\Tracer $tracer): void;
-
-    /**
-     * @todo Remove this method once we found a better way to avoid creating event objects
-     *       that are expensive to create when there are no subscribers registered for them
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
-     */
-    public function seal(): void;
 }
