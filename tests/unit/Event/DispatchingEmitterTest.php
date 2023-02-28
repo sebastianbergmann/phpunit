@@ -16,6 +16,8 @@ use function get_class_methods;
 use Exception;
 use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\AssertionFailed;
+use PHPUnit\Event\Test\AssertionSucceeded;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
@@ -97,7 +99,39 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(TestRunner\Finished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testAssertionSucceededDispatchesAssertionSucceededEvent(): void
+    public function testAssertionSucceededDoesNotDispatchAssertionSucceededEventWhenItDoesNotHaveSubscriber(): void
+    {
+        $value      = 'value';
+        $constraint = new Framework\Constraint\IsEqual('Ok');
+        $message    = 'message';
+
+        $dispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $dispatcher
+            ->expects($this->once())
+            ->method('hasSubscriberFor')
+            ->with($this->identicalTo(AssertionSucceeded::class))
+            ->willReturn(false);
+
+        $dispatcher
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testAssertionSucceeded(
+            $value,
+            $constraint,
+            $message,
+        );
+    }
+
+    public function testAssertionSucceededDispatchesAssertionSucceededEventWhenItHasSubscriber(): void
     {
         $value      = 'value';
         $constraint = new Framework\Constraint\IsEqual('Ok');
@@ -140,7 +174,39 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($message, $event->message());
     }
 
-    public function testAssertionFailedDispatchesAssertionFailedEvent(): void
+    public function testAssertionFailedDoesNotDispatchAssertionFailedEventWhenItDoesNotHaveSubscriber(): void
+    {
+        $value      = 'value';
+        $constraint = new Framework\Constraint\IsEqual('Ok');
+        $message    = 'message';
+
+        $dispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $dispatcher
+            ->expects($this->once())
+            ->method('hasSubscriberFor')
+            ->with($this->identicalTo(AssertionFailed::class))
+            ->willReturn(false);
+
+        $dispatcher
+            ->expects($this->never())
+            ->method('dispatch');
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testAssertionFailed(
+            $value,
+            $constraint,
+            $message,
+        );
+    }
+
+    public function testAssertionFailedDispatchesAssertionFailedEventWhenItHasSubscriber(): void
     {
         $value      = 'value';
         $constraint = new Framework\Constraint\IsEqual('Ok');
@@ -1606,6 +1672,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame(1, $event->testSuite()->count());
         $this->assertSame('foo', $event->testSuite()->name());
+    }
+
+    private function dispatcherWithoutRegisteredSubscriber(): DirectDispatcher
+    {
+        return new DirectDispatcher(new TypeMap);
     }
 
     private function dispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): DirectDispatcher
