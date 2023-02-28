@@ -67,6 +67,22 @@ final class DirectDispatcher implements SubscribableDispatcher
     }
 
     /**
+     * @psalm-param class-string $className
+     */
+    public function hasSubscriberFor(string $className): bool
+    {
+        if ($this->tracers !== []) {
+            return true;
+        }
+
+        if (isset($this->subscribers[$className])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @throws UnknownEventTypeException
      */
     public function dispatch(Event $event): void
