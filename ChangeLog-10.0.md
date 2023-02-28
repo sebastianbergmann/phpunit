@@ -7,7 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Changed
 
 * The `PHPUnit\Event\Test\AssertionSucceeded` and `PHPUnit\Event\Test\AssertionFailed` events are no longer emitted when they have no subscribers
-* The `PHPUnit\Event\Test\AssertionSucceeded::value()` method is no longer deprecated and return the exported value again
+* The `PHPUnit\Event\Test\AssertionSucceeded::value()` method is no longer deprecated and returns the exported value again
 
 ## [10.0.13] - 2023-02-27
 
