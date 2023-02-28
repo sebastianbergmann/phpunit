@@ -142,7 +142,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($message, $event->message());
     }
 
-    public function testAssertionFailedDispatchesAssertionSucceededEvent(): void
+    public function testAssertionFailedDispatchesAssertionFailedEvent(): void
     {
         $value      = 'value';
         $constraint = new Framework\Constraint\IsEqual('Ok');
