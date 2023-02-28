@@ -272,13 +272,6 @@ final class TestRunner
         $includedFiles = '';
         $iniSettings   = '';
 
-        $emitter = Event\Facade::emitter();
-
-        assert($emitter instanceof Event\DispatchingEmitter);
-
-        $emitAssertionSucceededEvents = $emitter->emitsAssertionSucceededEvents() ? 'true' : 'false';
-        $emitAssertionFailedEvents    = $emitter->emitsAssertionFailedEvents() ? 'true' : 'false';
-
         if (ConfigurationRegistry::get()->hasBootstrap()) {
             $bootstrap = ConfigurationRegistry::get()->bootstrap();
         }
@@ -338,8 +331,6 @@ final class TestRunner
             'offsetSeconds'                  => $offset[0],
             'offsetNanoseconds'              => $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
-            'emitAssertionSucceededEvents'   => $emitAssertionSucceededEvents,
-            'emitAssertionFailedEvents'      => $emitAssertionFailedEvents,
         ];
 
         if (!$runEntireClass) {

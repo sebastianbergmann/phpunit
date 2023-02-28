@@ -19,22 +19,21 @@ final class AssertionSucceededTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
         $constraint    = 'constraint';
-        $value         = 'value';
         $count         = 1;
         $message       = 'message';
 
         $event = new AssertionSucceeded(
             $telemetryInfo,
-            $value,
+            '',
             $constraint,
             $count,
             $message,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($value, $event->value());
+        $this->assertSame('', $event->value());
         $this->assertSame($count, $event->count());
         $this->assertSame($message, $event->message());
-        $this->assertSame('Assertion Succeeded (Constraint: constraint, Value: value, Message: message)', $event->asString());
+        $this->assertSame('Assertion Succeeded (Constraint: constraint, Message: message)', $event->asString());
     }
 }

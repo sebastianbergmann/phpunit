@@ -36,7 +36,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
+Assertion Succeeded (Constraint: is true)
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest, 1 test)

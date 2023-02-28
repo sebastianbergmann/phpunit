@@ -34,17 +34,6 @@ final class DeferringDispatcher implements SubscribableDispatcher
         $this->dispatcher->registerSubscriber($subscriber);
     }
 
-    /**
-     * @todo Remove this method once we found a better way to avoid creating event objects
-     *       that are expensive to create when there are no subscribers registered for them
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
-     */
-    public function seal(): void
-    {
-        $this->dispatcher->seal();
-    }
-
     public function dispatch(Event $event): void
     {
         if ($this->recording) {

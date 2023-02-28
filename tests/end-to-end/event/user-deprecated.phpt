@@ -36,7 +36,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testD
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
+Assertion Succeeded (Constraint: is true)
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 1 test)
