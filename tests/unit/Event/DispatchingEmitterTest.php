@@ -124,6 +124,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
+        $emitter->emitAssertionSucceededEvents();
+
         $emitter->testAssertionSucceeded(
             $value,
             $constraint,
@@ -166,6 +168,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $dispatcher,
             $telemetrySystem
         );
+
+        $emitter->emitAssertionFailedEvents();
 
         $emitter->testAssertionFailed(
             $value,

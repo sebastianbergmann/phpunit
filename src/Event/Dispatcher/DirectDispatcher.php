@@ -10,9 +10,12 @@
 namespace PHPUnit\Event;
 
 use function array_key_exists;
+use function assert;
 use function dirname;
 use function sprintf;
 use function str_starts_with;
+use PHPUnit\Event\Test\AssertionFailedSubscriber;
+use PHPUnit\Event\Test\AssertionSucceededSubscriber;
 use Throwable;
 
 /**
@@ -35,6 +38,34 @@ final class DirectDispatcher implements SubscribableDispatcher
     public function __construct(TypeMap $map)
     {
         $this->typeMap = $map;
+    }
+
+    /**
+     * @todo Remove this method once we found a better way to avoid creating event objects
+     *       that are expensive to create when there are no subscribers registered for them
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5261
+     */
+    public function seal(): void
+    {
+        $emitter = Facade::emitter();
+
+        assert($emitter instanceof DispatchingEmitter);
+
+        if (!empty($this->tracers)) {
+            $emitter->emitAssertionSucceededEvents();
+            $emitter->emitAssertionFailedEvents();
+
+            return;
+        }
+
+        if (isset($this->subscribers[AssertionSucceededSubscriber::class])) {
+            $emitter->emitAssertionSucceededEvents();
+        }
+
+        if (isset($this->subscribers[AssertionFailedSubscriber::class])) {
+            $emitter->emitAssertionFailedEvents();
+        }
     }
 
     public function registerTracer(Tracer\Tracer $tracer): void

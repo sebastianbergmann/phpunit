@@ -43,7 +43,7 @@ Pre Condition Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::asse
 Pre Condition Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPreConditions
 Test Prepared (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
-Assertion Succeeded (Constraint: is true)
+Assertion Succeeded (Constraint: is true, Value: true)
 Post Condition Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions)
 Post Condition Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions
@@ -60,7 +60,7 @@ Pre Condition Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::asse
 Pre Condition Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPreConditions
 Test Prepared (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
-Assertion Succeeded (Constraint: is true)
+Assertion Succeeded (Constraint: is true, Value: true)
 Post Condition Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions)
 Post Condition Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions

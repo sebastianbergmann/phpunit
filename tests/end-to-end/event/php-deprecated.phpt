@@ -42,7 +42,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::te
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 defined(): Passing null to parameter #1 ($constant_name) of type string is deprecated
-Assertion Succeeded (Constraint: is true)
+Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest, 1 test)
