@@ -400,6 +400,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
+        if (!$this->hasSubscriberFor(Test\AssertionSucceeded::class)) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AssertionSucceeded(
                 $this->telemetryInfo(),
@@ -417,6 +421,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
+        if (!$this->hasSubscriberFor(Test\AssertionFailed::class)) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AssertionFailed(
                 $this->telemetryInfo(),
@@ -1047,5 +1055,14 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $current;
 
         return $info;
+    }
+
+    private function hasSubscriberFor(string $className): bool
+    {
+        if (!$this->dispatcher instanceof SubscribableDispatcher) {
+            return true;
+        }
+
+        return $this->dispatcher->hasSubscriberFor($className);
     }
 }
