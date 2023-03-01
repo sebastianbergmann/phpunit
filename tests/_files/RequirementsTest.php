@@ -102,8 +102,10 @@ class RequirementsTest extends TestCase
      * @requires PHP 99-dev
      * @requires PHPUnit 99-dev
      * @requires OS DOESNOTEXIST
+     * @requires OSFAMILY DOESNOTEXIST
      * @requires function testFuncOne
      * @requires function testFunc2
+     * @requires function DoesNotExist::doesNotExist
      * @requires extension testExtOne
      * @requires extension testExt2
      * @requires extension testExtThree 2.0
