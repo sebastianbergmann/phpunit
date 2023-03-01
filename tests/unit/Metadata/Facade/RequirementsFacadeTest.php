@@ -45,8 +45,10 @@ final class RequirementsFacadeTest extends TestCase
                 'PHP extension testExtThree >= 2.0 is required.',
                 'PHPUnit >= 99-dev is required.',
                 'Operating system DOESNOTEXIST is required.',
+                'Operating system DOESNOTEXIST is required.',
                 'Function testFuncOne() is required.',
                 'Function testFunc2() is required.',
+                'Method DoesNotExist::doesNotExist() is required.',
                 'Setting "not_a_setting" is required to be "Off".',
             ]],
             ['testPHPVersionOperatorLessThan', [
