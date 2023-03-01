@@ -2,12 +2,17 @@
 namespace PHPSTORM_META {
 
     override(
-        \PHPUnit\Framework\TestCase::createMock(0),
+        \PHPUnit\Framework\TestCase::createStub(0),
         map([""=>"$0"])
     );
 
     override(
-        \PHPUnit\Framework\TestCase::createStub(0),
+        \PHPUnit\Framework\TestCase::createConfiguredStub(0),
+        map([""=>"$0"])
+    );
+
+    override(
+        \PHPUnit\Framework\TestCase::createMock(0),
         map([""=>"$0"])
     );
 
