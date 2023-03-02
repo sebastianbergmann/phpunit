@@ -262,11 +262,17 @@
       <code>MockBuilder</code>
       <code><![CDATA[MockBuilder<RealInstanceType>]]></code>
       <code>new MockBuilder($this, $className)</code>
+      <code>new MockBuilder($this, $originalClassName)</code>
+      <code>new MockBuilder($this, $originalClassName)</code>
     </DeprecatedClass>
-    <DeprecatedMethod>
-      <code>getMockBuilder</code>
-      <code>getMockBuilder</code>
-    </DeprecatedMethod>
+    <InvalidReturnStatement>
+      <code>$partialMock</code>
+      <code>$testProxy</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
+      <code><![CDATA[MockObject&RealInstanceType]]></code>
+    </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
