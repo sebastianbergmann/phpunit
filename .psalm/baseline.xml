@@ -166,16 +166,7 @@
       <code>$type</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
-      <code><![CDATA[$this->getMock(
-                $originalClassName,
-                $methods,
-                $arguments,
-                $mockClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
-                $callAutoload,
-                $cloneArguments
-            )]]></code>
+      <code>$object</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
       <code><![CDATA[MockObject&RealInstanceType]]></code>
@@ -188,6 +179,9 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->returnType]]></code>
+    </ArgumentTypeCoercion>
     <InvalidArgument>
       <code>$types</code>
     </InvalidArgument>
@@ -202,6 +196,7 @@
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion>
+      <code><![CDATA[$this->type]]></code>
       <code><![CDATA[$this->type]]></code>
       <code><![CDATA[$this->type]]></code>
       <code><![CDATA[$this->type]]></code>
@@ -260,6 +255,7 @@
     <ArgumentTypeCoercion>
       <code>$mockClassName</code>
       <code>$originalClassName</code>
+      <code>$originalClassName</code>
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedClass>
@@ -271,12 +267,6 @@
       <code>getMockBuilder</code>
       <code>getMockBuilder</code>
     </DeprecatedMethod>
-    <InvalidReturnStatement>
-      <code>$mockObject</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[MockObject&RealInstanceType]]></code>
-    </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
