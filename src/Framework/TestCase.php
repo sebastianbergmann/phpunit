@@ -58,8 +58,8 @@ use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
-use PHPUnit\Framework\Constraint\MessageIsOrContains;
-use PHPUnit\Framework\Constraint\MessageMatchesRegularExpression;
+use PHPUnit\Framework\Constraint\ExceptionMessageIsOrContains;
+use PHPUnit\Framework\Constraint\ExceptionMessageMatchesRegularExpression;
 use PHPUnit\Framework\MockObject\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -2050,7 +2050,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($this->expectedExceptionMessage !== null) {
             $this->assertThat(
                 $exception->getMessage(),
-                new MessageIsOrContains(
+                new ExceptionMessageIsOrContains(
                     'exception',
                     $this->expectedExceptionMessage
                 )
@@ -2060,7 +2060,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($this->expectedExceptionMessageRegExp !== null) {
             $this->assertThat(
                 $exception->getMessage(),
-                new MessageMatchesRegularExpression(
+                new ExceptionMessageMatchesRegularExpression(
                     'exception',
                     $this->expectedExceptionMessageRegExp
                 )

@@ -13,9 +13,9 @@ use function sprintf;
 use function str_contains;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MessageIsOrContains extends Constraint
+final class ExceptionMessageIsOrContains extends Constraint
 {
     private readonly string $messageType;
     private readonly string $expectedMessage;
