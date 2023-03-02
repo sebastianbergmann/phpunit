@@ -1267,7 +1267,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
-        $partialMock = $this->getMockBuilder($originalClassName)
+        $partialMock = (new MockBuilder($this, $originalClassName))
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->disableArgumentCloning()
@@ -1299,7 +1299,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
-        $testProxy = $this->getMockBuilder($originalClassName)
+        $testProxy = (new MockBuilder($this, $originalClassName))
             ->setConstructorArgs($constructorArguments)
             ->enableProxyingToOriginalMethods()
             ->getMock();
