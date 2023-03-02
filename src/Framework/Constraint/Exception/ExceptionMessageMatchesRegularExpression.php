@@ -14,9 +14,9 @@ use function sprintf;
 use Exception;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MessageMatchesRegularExpression extends Constraint
+final class ExceptionMessageMatchesRegularExpression extends Constraint
 {
     private readonly string $messageType;
     private readonly string $regularExpression;
