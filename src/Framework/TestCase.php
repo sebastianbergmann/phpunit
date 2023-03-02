@@ -1158,7 +1158,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createStubForIntersectionOfInterfaces(array $interfaces): Stub
     {
-        $stub = $this->getMockObjectGenerator()->getMockForInterfaces($interfaces);
+        $stub = $this->mockObjectGenerator()->getMockForInterfaces($interfaces);
 
         Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
 
@@ -1218,7 +1218,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
     {
-        $mock = $this->getMockObjectGenerator()->getMockForInterfaces($interfaces);
+        $mock = $this->mockObjectGenerator()->getMockForInterfaces($interfaces);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
 
@@ -1330,7 +1330,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
+        $mockObject = $this->mockObjectGenerator()->getMockForAbstractClass(
             $originalClassName,
             $arguments,
             $mockClassName,
@@ -1370,7 +1370,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (!class_exists($originalClassName)) {
             eval(
-                $this->getMockObjectGenerator()->generateClassFromWsdl(
+                $this->mockObjectGenerator()->generateClassFromWsdl(
                     $wsdlFile,
                     $originalClassName,
                     $methods,
@@ -1379,7 +1379,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        $mockObject = $this->getMockObjectGenerator()->getMock(
+        $mockObject = $this->mockObjectGenerator()->getMock(
             $originalClassName,
             $methods,
             ['', $options],
@@ -1417,7 +1417,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
+        $mockObject = $this->mockObjectGenerator()->getMockForTrait(
             $traitName,
             $arguments,
             $mockClassName,
@@ -1446,7 +1446,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
-        return $this->getMockObjectGenerator()->getObjectForTrait(
+        return $this->mockObjectGenerator()->getObjectForTrait(
             $traitName,
             $traitClassName,
             $callAutoload,
@@ -1617,10 +1617,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::skipped($message);
     }
 
-    /**
-     * Get the mock object generator, creating it if it doesn't exist.
-     */
-    private function getMockObjectGenerator(): MockGenerator
+    private function mockObjectGenerator(): MockGenerator
     {
         if ($this->mockObjectGenerator === null) {
             $this->mockObjectGenerator = new MockGenerator;
