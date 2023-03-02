@@ -1240,7 +1240,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
-        $o = $this->createMockObject($originalClassName);
+        $o = $this->createMock($originalClassName);
 
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);
