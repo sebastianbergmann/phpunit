@@ -4,7 +4,7 @@ Methods can be ignored for code coverage using an attribute
 pcov.directory=tests/end-to-end/code-coverage/ignore-method-using-attribute/src/
 --SKIPIF--
 <?php declare(strict_types=1);
-require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php'
+require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
