@@ -78,6 +78,12 @@ final class Generator
     /**
      * Returns a mock object for the specified class.
      *
+     * @psalm-template RealInstanceType of object
+     *
+     * @psalm-param class-string<RealInstanceType> $type
+     *
+     * @psalm-return MockObject&RealInstanceType
+     *
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
