@@ -262,6 +262,11 @@
       <code>$originalClassName</code>
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code>MockBuilder</code>
+      <code><![CDATA[MockBuilder<RealInstanceType>]]></code>
+      <code>new MockBuilder($this, $className)</code>
+    </DeprecatedClass>
     <DeprecatedMethod>
       <code>getMockBuilder</code>
       <code>getMockBuilder</code>

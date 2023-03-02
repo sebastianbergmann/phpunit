@@ -17,6 +17,8 @@ use ReflectionClass;
  * @psalm-template MockedType
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5252
  */
 final class MockBuilder
 {
