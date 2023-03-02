@@ -1117,7 +1117,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createStub(string $originalClassName): Stub
     {
-        $stub = $this->createMockObject($originalClassName, false);
+        $stub = $this->createTestDouble($originalClassName, false);
 
         Event\Facade::emitter()->testCreatedStub($originalClassName);
 
@@ -1153,7 +1153,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMock(string $originalClassName): MockObject
     {
-        $mock = $this->createMockObject($originalClassName);
+        $mock = $this->createTestDouble($originalClassName);
 
         Event\Facade::emitter()->testCreatedMockObject($originalClassName);
 
@@ -1891,7 +1891,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      */
-    private function createMockObject(string $originalClassName, bool $register = true): MockObject
+    private function createTestDouble(string $originalClassName, bool $register = true): MockObject
     {
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
