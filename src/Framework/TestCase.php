@@ -1956,12 +1956,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function createTestDouble(string $originalClassName, bool $register = true): MockObject
     {
-        return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->getMock($register);
+        $testDouble = $this->mockObjectGenerator()->getMock(
+            $originalClassName,
+            callOriginalConstructor: false,
+            callOriginalClone: false,
+            cloneArguments: false,
+            allowMockingUnknownTypes: false
+        );
+
+        if ($register) {
+            $this->registerMockObject($testDouble);
+        }
+
+        return $testDouble;
     }
 
     /**
