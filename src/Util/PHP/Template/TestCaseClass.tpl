@@ -33,7 +33,7 @@ if ($composerAutoload) {
 
 function __phpunit_run_isolated_test()
 {
-    $dispatcher = Facade::initForIsolation(
+    $dispatcher = Facade::instance()->initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
             {offsetSeconds},
             {offsetNanoseconds}

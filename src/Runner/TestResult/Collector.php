@@ -147,9 +147,9 @@ final class Collector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct()
+    public function __construct(Facade $facade)
     {
-        Facade::registerSubscribers(
+        $facade->registerSubscribers(
             new ExecutionStartedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
             new TestSuiteStartedSubscriber($this),
