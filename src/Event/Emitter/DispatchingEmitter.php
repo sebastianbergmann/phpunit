@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use function debug_backtrace;
-use function dirname;
-use function str_starts_with;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
@@ -34,7 +31,6 @@ final class DispatchingEmitter implements Emitter
     private readonly Telemetry\System $system;
     private readonly Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
-    private bool $emitTestTriggeredPhpunitDeprecationEvents = true;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
@@ -43,15 +39,6 @@ final class DispatchingEmitter implements Emitter
 
         $this->startSnapshot    = $system->snapshot();
         $this->previousSnapshot = $system->snapshot();
-    }
-
-    public function doNotEmitTestTriggeredPhpunitDeprecationEvents(): void
-    {
-        if (!str_starts_with(debug_backtrace()[0]['file'], dirname(__FILE__, 4) . '/tests')) {
-            return;
-        }
-
-        $this->emitTestTriggeredPhpunitDeprecationEvents = false;
     }
 
     /**
@@ -697,10 +684,6 @@ final class DispatchingEmitter implements Emitter
      */
     public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void
     {
-        if (!$this->emitTestTriggeredPhpunitDeprecationEvents) {
-            return;
-        }
-
         $this->dispatcher->dispatch(
             new Test\PhpunitDeprecationTriggered(
                 $this->telemetryInfo(),
@@ -865,8 +848,6 @@ final class DispatchingEmitter implements Emitter
      */
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void
     {
-        $this->emitTestTriggeredPhpunitDeprecationEvents = true;
-
         $this->dispatcher->dispatch(
             new Test\Finished(
                 $this->telemetryInfo(),
