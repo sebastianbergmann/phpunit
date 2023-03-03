@@ -54,8 +54,10 @@ final class ProgressPrinter
 
     public function testRunnerExecutionStarted(ExecutionStarted $event): void
     {
+        $this->numberOfTestsRun   = 0;
         $this->numberOfTests      = $event->testSuite()->count();
         $this->numberOfTestsWidth = strlen((string) $this->numberOfTests);
+        $this->column             = 0;
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
