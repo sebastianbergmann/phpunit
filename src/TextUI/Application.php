@@ -17,7 +17,9 @@ use function realpath;
 use function sprintf;
 use function trim;
 use function unlink;
+use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
@@ -131,7 +133,7 @@ final class Application
 
             $resultCache = $this->initializeTestResultCache($configuration);
 
-            EventFacade::seal();
+            EventFacade::instance()->seal();
 
             $timer = new Timer;
             $timer->start();
@@ -468,6 +470,10 @@ final class Application
         }
     }
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     private function registerLogfileWriters(Configuration $configuration): void
     {
         if ($configuration->hasLogEventsText()) {
@@ -475,7 +481,7 @@ final class Application
                 unlink($configuration->logEventsText());
             }
 
-            EventFacade::registerTracer(
+            EventFacade::instance()->registerTracer(
                 new EventLogger(
                     $configuration->logEventsText(),
                     false
@@ -488,7 +494,7 @@ final class Application
                 unlink($configuration->logEventsVerboseText());
             }
 
-            EventFacade::registerTracer(
+            EventFacade::instance()->registerTracer(
                 new EventLogger(
                     $configuration->logEventsVerboseText(),
                     true
@@ -499,6 +505,7 @@ final class Application
         if ($configuration->hasLogfileJunit()) {
             new JunitXmlLogger(
                 OutputFacade::printerFor($configuration->logfileJunit()),
+                EventFacade::instance()
             );
         }
 
@@ -506,28 +513,37 @@ final class Application
             new TeamCityLogger(
                 DefaultPrinter::from(
                     $configuration->logfileTeamcity()
-                )
+                ),
+                EventFacade::instance()
             );
         }
     }
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     private function testDoxResultCollector(Configuration $configuration): ?TestDoxResultCollector
     {
         if ($configuration->hasLogfileTestdoxHtml() ||
             $configuration->hasLogfileTestdoxText() ||
             $configuration->outputIsTestDox()) {
-            return new TestDoxResultCollector;
+            return new TestDoxResultCollector(EventFacade::instance());
         }
 
         return null;
     }
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     private function initializeTestResultCache(Configuration $configuration): ResultCache
     {
         if ($configuration->cacheResult()) {
             $cache = new DefaultResultCache($configuration->testResultCacheFile());
 
-            new ResultCacheHandler($cache);
+            new ResultCacheHandler($cache, EventFacade::instance());
 
             return $cache;
         }

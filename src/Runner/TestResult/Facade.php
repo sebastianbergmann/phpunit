@@ -10,6 +10,7 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use PHPUnit\Event\EventFacadeIsSealedException;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 
 /**
@@ -98,7 +99,7 @@ final class Facade
     private static function collector(): Collector
     {
         if (self::$collector === null) {
-            self::$collector = new Collector;
+            self::$collector = new Collector(EventFacade::instance());
         }
 
         return self::$collector;
