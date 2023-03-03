@@ -54,9 +54,9 @@
         "sort-packages": true
     },
     "suggest": {
-        "phpunit/php-invoker": "^2.0.0",
-        "ext-soap": "*",
-        "ext-xdebug": "*"
+        "phpunit/php-invoker": "To allow enforcing time limits",
+        "ext-soap": "To be able to generate mocks based on WSDL files",
+        "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
     },
     "bin": [
         "phpunit"
