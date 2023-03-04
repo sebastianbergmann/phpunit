@@ -9,27 +9,19 @@
  */
 namespace PHPUnit\TestFixture;
 
-use function assert;
-use function is_array;
+use Generator;
 use IteratorAggregate;
-use ReturnTypeWillChange;
-use Traversable;
 
 class WrapperIteratorAggregate implements IteratorAggregate
 {
-    /**
-     * @var array|Traversable
-     */
-    private $baseCollection;
+    private iterable $baseCollection;
 
-    public function __construct($baseCollection)
+    public function __construct(iterable $baseCollection)
     {
-        assert(is_array($baseCollection) || $baseCollection instanceof Traversable);
         $this->baseCollection = $baseCollection;
     }
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Generator
     {
         foreach ($this->baseCollection as $k => $v) {
             yield $k => $v;

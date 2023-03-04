@@ -14,19 +14,17 @@ use function key;
 use function next;
 use function reset;
 use Iterator;
-use ReturnTypeWillChange;
 
-class TestIterator2 implements Iterator
+final class TestIterator2 implements Iterator
 {
-    protected $data;
+    private array $data;
 
     public function __construct(array $array)
     {
         $this->data = $array;
     }
 
-    #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return current($this->data);
     }
@@ -36,14 +34,12 @@ class TestIterator2 implements Iterator
         next($this->data);
     }
 
-    #[ReturnTypeWillChange]
-    public function key()
+    public function key(): string|int|null
     {
         return key($this->data);
     }
 
-    #[ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return key($this->data) !== null;
     }
