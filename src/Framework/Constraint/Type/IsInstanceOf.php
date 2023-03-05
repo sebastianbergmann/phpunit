@@ -31,7 +31,7 @@ final class IsInstanceOf extends Constraint
     public function toString(): string
     {
         return sprintf(
-            'is instance of %s "%s"',
+            'is an instance of %s %s',
             $this->getType(),
             $this->className
         );
@@ -55,7 +55,7 @@ final class IsInstanceOf extends Constraint
     protected function failureDescription(mixed $other): string
     {
         return sprintf(
-            '%s is an instance of %s "%s"',
+            '%s is an instance of %s %s',
             $this->exporter()->shortenedExport($other),
             $this->getType(),
             $this->className
