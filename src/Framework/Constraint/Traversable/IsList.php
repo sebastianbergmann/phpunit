@@ -60,7 +60,8 @@ final class IsList extends Constraint
 
         return match ($type) {
             'array', 'integer', 'object' => 'an ' . $type . ' ' . $this->toString(),
-            'boolean', 'float', 'null', 'resource', 'string' => 'a ' . $type . ' ' . $this->toString(),
+            'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ' . $this->toString(),
+            'null'  => 'null ' . $this->toString(),
             default => 'a value of ' . $type . ' ' . $this->toString(),
         };
     }

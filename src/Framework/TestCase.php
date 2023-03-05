@@ -2121,7 +2121,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertThat(
                 $exception->getMessage(),
                 new ExceptionMessageIsOrContains(
-                    'exception',
                     $this->expectedExceptionMessage
                 )
             );
@@ -2131,7 +2130,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertThat(
                 $exception->getMessage(),
                 new ExceptionMessageMatchesRegularExpression(
-                    'exception',
                     $this->expectedExceptionMessageRegExp
                 )
             );
@@ -2139,7 +2137,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->expectedExceptionCode !== null) {
             $this->assertThat(
-                $exception,
+                $exception->getCode(),
                 new ExceptionCode(
                     $this->expectedExceptionCode
                 )

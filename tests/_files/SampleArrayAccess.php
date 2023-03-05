@@ -10,11 +10,10 @@
 namespace PHPUnit\TestFixture;
 
 use ArrayAccess;
-use ReturnTypeWillChange;
 
 class SampleArrayAccess implements ArrayAccess
 {
-    private $container;
+    private array $container;
 
     public function __construct()
     {
@@ -30,8 +29,7 @@ class SampleArrayAccess implements ArrayAccess
         }
     }
 
-    #[ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -41,8 +39,7 @@ class SampleArrayAccess implements ArrayAccess
         unset($this->container[$offset]);
     }
 
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }

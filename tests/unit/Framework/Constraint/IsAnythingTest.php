@@ -9,51 +9,27 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Util\ThrowableToStringMapper;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IsAnything::class)]
+#[CoversClass(Constraint::class)]
 #[Small]
-final class IsAnythingTest extends ConstraintTestCase
+final class IsAnythingTest extends TestCase
 {
-    public function testConstraintIsAnything(): void
+    public function testCanBeEvaluated(): void
     {
-        $constraint = Assert::anything();
-
-        $this->assertTrue($constraint->evaluate(null, '', true));
-        $this->assertNull($constraint->evaluate(null));
-        $this->assertEquals('is anything', $constraint->toString());
-        $this->assertCount(0, $constraint);
+        $this->assertTrue((new IsAnything)->evaluate(true, returnResult: true));
     }
 
-    public function testConstraintNotIsAnything(): void
+    public function testCanBeRepresentedAsString(): void
     {
-        $constraint = Assert::logicalNot(
-            Assert::anything()
-        );
+        $this->assertSame('is anything', (new IsAnything)->toString());
+    }
 
-        $this->assertFalse($constraint->evaluate(null, '', true));
-        $this->assertEquals('is not anything', $constraint->toString());
-        $this->assertCount(0, $constraint);
-
-        try {
-            $constraint->evaluate(null);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<'EOF'
-Failed asserting that null is not anything.
-
-EOF
-                ,
-                ThrowableToStringMapper::map($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
+    public function testIsCountable(): void
+    {
+        $this->assertCount(0, (new IsAnything));
     }
 }
