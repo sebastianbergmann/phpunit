@@ -18,18 +18,16 @@ use Exception;
  */
 final class ExceptionMessageMatchesRegularExpression extends Constraint
 {
-    private readonly string $messageType;
     private readonly string $regularExpression;
 
-    public function __construct(string $messageType, string $regularExpression)
+    public function __construct(string $regularExpression)
     {
-        $this->messageType       = $messageType;
         $this->regularExpression = $regularExpression;
     }
 
     public function toString(): string
     {
-        return $this->messageType . ' message matches ';
+        return 'exception message matches ';
     }
 
     /**
@@ -46,8 +44,7 @@ final class ExceptionMessageMatchesRegularExpression extends Constraint
         if ($match === false) {
             throw new \PHPUnit\Framework\Exception(
                 sprintf(
-                    'Invalid expected %s message regular expression given: %s',
-                    $this->messageType,
+                    'Invalid expected exception message regular expression given: %s',
                     $this->regularExpression
                 )
             );
@@ -65,8 +62,7 @@ final class ExceptionMessageMatchesRegularExpression extends Constraint
     protected function failureDescription(mixed $other): string
     {
         return sprintf(
-            "%s message '%s' matches '%s'",
-            $this->messageType,
+            "exception message '%s' matches '%s'",
             $other,
             $this->regularExpression
         );
