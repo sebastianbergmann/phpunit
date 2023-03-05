@@ -25,7 +25,7 @@ final class ExceptionCode extends Constraint
 
     public function toString(): string
     {
-        return 'exception code is ';
+        return 'exception code is ' . $this->expectedCode;
     }
 
     /**
