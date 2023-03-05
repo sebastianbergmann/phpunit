@@ -983,6 +983,7 @@ abstract class Assert
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws UnknownClassOrInterfaceException
      *
      * @psalm-template ExpectedType of object
      *
@@ -2125,6 +2126,9 @@ abstract class Assert
         return new IsIdentical($value);
     }
 
+    /**
+     * @throws UnknownClassOrInterfaceException
+     */
     final public static function isInstanceOf(string $className): IsInstanceOf
     {
         return new IsInstanceOf($className);

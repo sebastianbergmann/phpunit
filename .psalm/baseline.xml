@@ -136,11 +136,6 @@
       <code>bool</code>
     </InvalidArgument>
   </file>
-  <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$this->className]]></code>
-    </ArgumentTypeCoercion>
-  </file>
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>
       <code>$className</code>

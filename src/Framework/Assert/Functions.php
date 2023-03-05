@@ -2424,6 +2424,9 @@ if (!function_exists('PHPUnit\Framework\identicalTo')) {
 }
 
 if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
+    /**
+     * @throws UnknownClassOrInterfaceException
+     */
     function isInstanceOf(string $className): IsInstanceOf
     {
         return Assert::isInstanceOf(...func_get_args());

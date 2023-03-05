@@ -22,6 +22,9 @@ final class IsInstanceOf extends Constraint
     private readonly string $name;
     private readonly string $type;
 
+    /**
+     * @throws UnknownClassOrInterfaceException
+     */
     public function __construct(string $name)
     {
         if (class_exists($name)) {
