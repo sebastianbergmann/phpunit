@@ -55,25 +55,25 @@ final class Exception extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        if ($other !== null) {
-            $message = '';
-
-            if ($other instanceof Throwable) {
-                $message = '. Message was: "' . $other->getMessage() . '" at'
-                    . "\n" . Filter::getFilteredStacktrace($other);
-            }
-
+        if ($other === null) {
             return sprintf(
-                'exception of type "%s" matches expected exception "%s"%s',
-                $other::class,
-                $this->className,
-                $message
+                'exception of type "%s" is thrown',
+                $this->className
             );
         }
 
+        $message = '';
+
+        if ($other instanceof Throwable) {
+            $message = '. Message was: "' . $other->getMessage() . '" at'
+                . "\n" . Filter::getFilteredStacktrace($other);
+        }
+
         return sprintf(
-            'exception of type "%s" is thrown',
-            $this->className
+            'exception of type "%s" matches expected exception "%s"%s',
+            $other::class,
+            $this->className,
+            $message
         );
     }
 }
