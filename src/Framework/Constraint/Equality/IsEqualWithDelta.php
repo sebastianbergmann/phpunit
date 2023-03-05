@@ -92,7 +92,7 @@ final class IsEqualWithDelta extends Constraint
     public function toString(): string
     {
         return sprintf(
-            'is equal to %s with delta <%F>>',
+            'is equal to %s with delta <%F>',
             $this->exporter()->export($this->value),
             $this->delta
         );
