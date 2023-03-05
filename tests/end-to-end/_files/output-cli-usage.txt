@@ -38,6 +38,7 @@ Execution:
   --static-backup                  Backup and restore static properties for each test
 
   --strict-coverage                Be strict about code coverage metadata
+  --ignore-covers-annotation       Be ignore covers annotation
   --strict-global-state            Be strict about changes to global state
   --disallow-test-output           Be strict about output during tests
   --enforce-time-limit             Enforce time limit based on test size

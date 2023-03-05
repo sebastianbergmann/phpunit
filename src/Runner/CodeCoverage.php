@@ -83,6 +83,10 @@ final class CodeCoverage
             $this->codeCoverage()->enableCheckForUnintentionallyCoveredCode();
         }
 
+        if ($configuration->ignoreCoversAnnotation()) {
+            $this->codeCoverage()->ignoreCoversAnnotation();
+        }
+
         if ($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
             $this->codeCoverage()->ignoreDeprecatedCode();
         } else {

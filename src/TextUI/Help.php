@@ -68,6 +68,7 @@ final class Help
             ['spacer' => ''],
 
             ['arg'    => '--strict-coverage', 'desc' => 'Be strict about code coverage metadata'],
+            ['arg'    => '--ignore-covers-annotation', 'desc' => 'Be ignore covers annotation'],
             ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
             ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],

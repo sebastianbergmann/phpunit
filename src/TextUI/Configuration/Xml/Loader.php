@@ -767,6 +767,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutOutputDuringTests', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
             $beStrictAboutCoverageMetadata,
+            $this->getBooleanAttribute($document->documentElement, 'beIgnoreCoversAttribute', false),
             $this->getBooleanAttribute($document->documentElement, 'enforceTimeLimit', false),
             $this->getIntegerAttribute($document->documentElement, 'defaultTimeLimit', 1),
             $this->getIntegerAttribute($document->documentElement, 'timeoutForSmallTests', 1),

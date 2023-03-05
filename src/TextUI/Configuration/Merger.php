@@ -402,6 +402,12 @@ final class Merger
             $strictCoverage = $xmlConfiguration->phpunit()->beStrictAboutCoverageMetadata();
         }
 
+        if ($cliConfiguration->hasIgnoreCoversAnnotation()) {
+            $ignoreCoversAnnotation = $cliConfiguration->ignoreCoversAnnotation();
+        } else {
+            $ignoreCoversAnnotation = $xmlConfiguration->phpunit()->beIgnoreCoversAnnotation();
+        }
+
         if ($cliConfiguration->hasDisallowTestOutput()) {
             $disallowTestOutput = $cliConfiguration->disallowTestOutput();
         } else {
@@ -735,6 +741,7 @@ final class Merger
             $timeoutForLargeTests,
             $reportUselessTests,
             $strictCoverage,
+            $ignoreCoversAnnotation,
             $disallowTestOutput,
             $displayDetailsOnIncompleteTests,
             $displayDetailsOnSkippedTests,

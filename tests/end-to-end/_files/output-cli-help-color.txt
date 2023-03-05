@@ -44,6 +44,7 @@
                                    each test
 
   [32m--strict-coverage               [0m Be strict about code coverage metadata
+  [32m--ignore-covers-annotation      [0m Be ignore covers annotation
   [32m--strict-global-state           [0m Be strict about changes to global state
   [32m--disallow-test-output          [0m Be strict about output during tests
   [32m--enforce-time-limit            [0m Enforce time limit based on test size

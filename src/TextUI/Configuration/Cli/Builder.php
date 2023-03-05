@@ -100,6 +100,7 @@ final class Builder
         'fail-on-skipped',
         'fail-on-warning',
         'strict-coverage',
+        'ignore-covers-annotation',
         'disable-coverage-ignore',
         'strict-global-state',
         'teamcity',
@@ -206,6 +207,7 @@ final class Builder
         $reverseList                       = null;
         $stderr                            = null;
         $strictCoverage                    = null;
+        $ignoreCoversAnnotation            = null;
         $stopOnDefect                      = null;
         $stopOnError                       = null;
         $stopOnFailure                     = null;
@@ -649,6 +651,11 @@ final class Builder
 
                     break;
 
+                case '--ignore-covers-annotation':
+                    $ignoreCoversAnnotation = true;
+
+                    break;
+
                 case '--disable-coverage-ignore':
                     $disableCodeCoverageIgnore = true;
 
@@ -833,6 +840,7 @@ final class Builder
             $reverseList,
             $stderr,
             $strictCoverage,
+            $ignoreCoversAnnotation,
             $stopOnDefect,
             $stopOnError,
             $stopOnFailure,
