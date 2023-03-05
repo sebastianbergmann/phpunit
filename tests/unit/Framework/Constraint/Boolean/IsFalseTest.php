@@ -13,23 +13,24 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(IsAnything::class)]
+#[CoversClass(IsFalse::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
-final class IsAnythingTest extends TestCase
+final class IsFalseTest extends TestCase
 {
     public function testCanBeEvaluated(): void
     {
-        $this->assertTrue((new IsAnything)->evaluate(true, returnResult: true));
+        $this->assertTrue((new IsFalse)->evaluate(false, returnResult: true));
+        $this->assertFalse((new IsFalse)->evaluate(true, returnResult: true));
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is anything', (new IsAnything)->toString());
+        $this->assertSame('is false', (new IsFalse)->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(0, (new IsAnything));
+        $this->assertCount(1, (new IsFalse));
     }
 }

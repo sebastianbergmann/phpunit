@@ -35,6 +35,16 @@ use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithoutEqualsMethod;
 #[Small]
 final class ObjectEqualsTest extends TestCase
 {
+    public function testCanBeRepresentedAsString(): void
+    {
+        $this->assertSame('two objects are equal', (new ObjectEquals(new ValueObject(1)))->toString());
+    }
+
+    public function testIsCountable(): void
+    {
+        $this->assertCount(1, (new ObjectEquals(new ValueObject(1))));
+    }
+
     public function testAcceptsActualObjectWhenMethodSaysTheyAreEqual(): void
     {
         $this->assertTrue((new ObjectEquals(new ValueObject(1)))->evaluate(new ValueObject(1), '', true));

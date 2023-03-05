@@ -13,23 +13,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(IsAnything::class)]
+#[CoversClass(SameSize::class)]
+#[CoversClass(Count::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
-final class IsAnythingTest extends TestCase
+final class SameSizeTest extends TestCase
 {
-    public function testCanBeEvaluated(): void
-    {
-        $this->assertTrue((new IsAnything)->evaluate(true, returnResult: true));
-    }
-
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is anything', (new IsAnything)->toString());
+        $this->assertSame('count matches 0', (new SameSize([]))->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(0, (new IsAnything));
+        $this->assertCount(1, (new SameSize([])));
     }
 }

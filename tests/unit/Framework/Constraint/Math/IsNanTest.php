@@ -9,27 +9,33 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function acos;
+use function log;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(IsAnything::class)]
+#[CoversClass(IsNan::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
-final class IsAnythingTest extends TestCase
+final class IsNanTest extends TestCase
 {
     public function testCanBeEvaluated(): void
     {
-        $this->assertTrue((new IsAnything)->evaluate(true, returnResult: true));
+        $constraint = new IsNan;
+
+        $this->assertTrue($constraint->evaluate(acos(2), returnResult: true));
+        $this->assertFalse($constraint->evaluate(log(0), returnResult: true));
+        $this->assertFalse($constraint->evaluate(1, returnResult: true));
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is anything', (new IsAnything)->toString());
+        $this->assertSame('is nan', (new IsNan)->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(0, (new IsAnything));
+        $this->assertCount(1, (new IsNan));
     }
 }
