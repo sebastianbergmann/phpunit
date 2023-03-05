@@ -140,7 +140,7 @@ final class IsType extends Constraint
     public function toString(): string
     {
         return sprintf(
-            'is of type "%s"',
+            'is of type %s',
             $this->type
         );
     }
