@@ -34,7 +34,7 @@ final class ExceptionCode extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return (string) $other->getCode() === (string) $this->expectedCode;
+        return (string) $other === (string) $this->expectedCode;
     }
 
     /**
@@ -47,7 +47,7 @@ final class ExceptionCode extends Constraint
     {
         return sprintf(
             '%s is equal to expected exception code %s',
-            $this->exporter()->export($other->getCode()),
+            $this->exporter()->export($other),
             $this->exporter()->export($this->expectedCode)
         );
     }

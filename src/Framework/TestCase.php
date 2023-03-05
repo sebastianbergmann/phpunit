@@ -2069,7 +2069,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->expectedExceptionCode !== null) {
             $this->assertThat(
-                $exception,
+                $exception->getCode(),
                 new ExceptionCode(
                     $this->expectedExceptionCode
                 )
