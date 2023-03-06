@@ -32,6 +32,12 @@ use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithVoidReturnTy
 use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithoutEqualsMethod;
 
 #[CoversClass(ObjectEquals::class)]
+#[CoversClass(ActualValueIsNotAnObjectException::class)]
+#[CoversClass(ComparisonMethodDoesNotExistException::class)]
+#[CoversClass(ComparisonMethodDoesNotDeclareBoolReturnTypeException::class)]
+#[CoversClass(ComparisonMethodDoesNotDeclareExactlyOneParameterException::class)]
+#[CoversClass(ComparisonMethodDoesNotDeclareParameterTypeException::class)]
+#[CoversClass(ComparisonMethodDoesNotAcceptParameterTypeException::class)]
 #[Small]
 final class ObjectEqualsTest extends TestCase
 {
