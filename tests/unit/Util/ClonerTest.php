@@ -33,7 +33,8 @@ final class ClonerTest extends TestCase
 
     public function testReturnsOriginalWhenCloningDoesNotWork(): void
     {
-        $object = new class {
+        $object = new class
+        {
             public function __clone(): void
             {
                 throw new RuntimeException;
