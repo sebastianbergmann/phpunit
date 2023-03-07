@@ -92,7 +92,7 @@ final class HookMethods
     /**
      * @psalm-return array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}
      */
-    private static function emptyHookMethodsArray(): array
+    private function emptyHookMethodsArray(): array
     {
         return [
             'beforeClass'   => ['setUpBeforeClass'],
