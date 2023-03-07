@@ -49,6 +49,7 @@ final class CodeCoverage
     private bool $collecting                                            = false;
     private ?TestCase $test                                             = null;
     private ?Timer $timer                                               = null;
+    private array $linesToBeIgnored                                     = [];
 
     public static function instance(): self
     {
@@ -164,7 +165,7 @@ final class CodeCoverage
         $this->collecting = true;
     }
 
-    public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = [], array $linesToBeIgnored = []): void
+    public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
     {
         if (!$this->collecting) {
             return;
@@ -181,7 +182,7 @@ final class CodeCoverage
         }
 
         /* @noinspection UnusedFunctionResultInspection */
-        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed, $linesToBeIgnored);
+        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed, $this->linesToBeIgnored);
 
         $this->test       = null;
         $this->collecting = false;
@@ -329,6 +330,22 @@ final class CodeCoverage
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
         }
+    }
+
+    /**
+     * @psalm-param array<string,list<int>> $linesToBeIgnored
+     */
+    public function ignoreLines(array $linesToBeIgnored): void
+    {
+        $this->linesToBeIgnored = $linesToBeIgnored;
+    }
+
+    /**
+     * @psalm-return array<string,list<int>>
+     */
+    public function linesToBeIgnored(): array
+    {
+        return $this->linesToBeIgnored;
     }
 
     private function activate(Filter $filter, bool $pathCoverage): void

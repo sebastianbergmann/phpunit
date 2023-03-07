@@ -44,6 +44,7 @@ function __phpunit_run_isolated_test()
 
     if ({collectCodeCoverageInformation}) {
         CodeCoverage::instance()->init(ConfigurationRegistry::get(), CodeCoverageFilterRegistry::instance());
+        CodeCoverage::instance()->ignoreLines({linesToBeIgnored});
     }
 
     $test = new {className}('{methodName}');

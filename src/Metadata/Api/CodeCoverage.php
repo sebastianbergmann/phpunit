@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use function array_unique;
+use function array_values;
 use function assert;
 use function count;
 use function interface_exists;
@@ -16,6 +18,7 @@ use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversDefaultClass;
@@ -28,6 +31,7 @@ use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
+use RecursiveIteratorIterator;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
@@ -221,33 +225,17 @@ final class CodeCoverage
     }
 
     /**
-     * @psalm-param class-string $className
-     *
      * @psalm-return array<string,list<int>>
      */
-    public function linesToBeIgnored(string $className): array
+    public function linesToBeIgnored(TestSuite $testSuite): array
     {
         $codeUnits = CodeUnitCollection::fromList();
         $mapper    = new Mapper;
 
-        foreach (Registry::parser()->forClass($className) as $metadata) {
-            if ($metadata instanceof IgnoreClassForCodeCoverage) {
-                $codeUnits = $codeUnits->mergeWith(
-                    $mapper->stringToCodeUnits($metadata->className())
-                );
-            }
-
-            if ($metadata instanceof IgnoreMethodForCodeCoverage) {
-                $codeUnits = $codeUnits->mergeWith(
-                    $mapper->stringToCodeUnits($metadata->className() . '::' . $metadata->methodName())
-                );
-            }
-
-            if ($metadata instanceof IgnoreFunctionForCodeCoverage) {
-                $codeUnits = $codeUnits->mergeWith(
-                    $mapper->stringToCodeUnits('::' . $metadata->functionName())
-                );
-            }
+        foreach ($this->testCaseClassesIn($testSuite) as $testCaseClassName) {
+            $codeUnits = $codeUnits->mergeWith(
+                $this->codeUnitsIgnoredBy($testCaseClassName)
+            );
         }
 
         return $mapper->codeUnitsToSourceLines($codeUnits);
@@ -277,5 +265,50 @@ final class CodeCoverage
         }
 
         return true;
+    }
+
+    /**
+     * @psalm-return list<class-string>
+     */
+    private function testCaseClassesIn(TestSuite $testSuite): array
+    {
+        $classNames = [];
+
+        foreach (new RecursiveIteratorIterator($testSuite) as $test) {
+            $classNames[] = $test::class;
+        }
+
+        return array_values(array_unique($classNames));
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function codeUnitsIgnoredBy(string $className): CodeUnitCollection
+    {
+        $codeUnits = CodeUnitCollection::fromList();
+        $mapper    = new Mapper;
+
+        foreach (Registry::parser()->forClass($className) as $metadata) {
+            if ($metadata instanceof IgnoreClassForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($metadata->className())
+                );
+            }
+
+            if ($metadata instanceof IgnoreMethodForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($metadata->className() . '::' . $metadata->methodName())
+                );
+            }
+
+            if ($metadata instanceof IgnoreFunctionForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits('::' . $metadata->functionName())
+                );
+            }
+        }
+
+        return $codeUnits;
     }
 }

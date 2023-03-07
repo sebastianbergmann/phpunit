@@ -25,6 +25,7 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
+use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
@@ -114,6 +115,12 @@ final class Application
             }
 
             CodeCoverage::instance()->init($configuration, CodeCoverageFilterRegistry::instance());
+
+            if (CodeCoverage::instance()->isActive()) {
+                CodeCoverage::instance()->ignoreLines(
+                    (new CodeCoverageMetadataApi)->linesToBeIgnored($testSuite)
+                );
+            }
 
             $printer = OutputFacade::init($configuration);
 

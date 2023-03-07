@@ -151,7 +151,6 @@ final class TestRunner
             $append           = !$risky && !$incomplete && !$skipped;
             $linesToBeCovered = [];
             $linesToBeUsed    = [];
-            $linesToBeIgnored = [];
 
             if ($append) {
                 try {
@@ -164,8 +163,6 @@ final class TestRunner
                         $test::class,
                         $test->name()
                     );
-
-                    $linesToBeIgnored = (new CodeCoverageMetadataApi)->linesToBeIgnored($test::class);
                 } catch (InvalidCoversTargetException $cce) {
                     Event\Facade::emitter()->testTriggeredPhpunitWarning(
                         $test->valueObjectForEvents(),
@@ -179,7 +176,6 @@ final class TestRunner
                     $append,
                     $linesToBeCovered,
                     $linesToBeUsed,
-                    $linesToBeIgnored
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
                 Event\Facade::emitter()->testConsideredRisky(
@@ -287,7 +283,8 @@ final class TestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         }
 
-        $coverage = CodeCoverage::instance()->isActive() ? 'true' : 'false';
+        $coverage         = CodeCoverage::instance()->isActive() ? 'true' : 'false';
+        $linesToBeIgnored = var_export(CodeCoverage::instance()->linesToBeIgnored(), true);
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -323,6 +320,7 @@ final class TestRunner
             'filename'                       => $class->getFileName(),
             'className'                      => $class->getName(),
             'collectCodeCoverageInformation' => $coverage,
+            'linesToBeIgnored'               => $linesToBeIgnored,
             'data'                           => $data,
             'dataName'                       => $dataName,
             'dependencyInput'                => $dependencyInput,

@@ -19,4 +19,7 @@ use PHPUnit\Framework\TestCase;
 #[IgnoreFunctionForCodeCoverage('globalFunction')]
 final class IgnoringCodeUnitsTest extends TestCase
 {
+    public function testOne(): void
+    {
+    }
 }
