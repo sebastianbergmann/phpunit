@@ -7,16 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use function array_merge;
 use function range;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Metadata\Api\CodeCoverage;
 use PHPUnit\TestFixture\CoverageClassNothingTest;
 use PHPUnit\TestFixture\CoverageClassTest;
 use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
@@ -45,9 +45,9 @@ use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
 use PHPUnit\TestFixture\Test3194;
 
-#[\PHPUnit\Framework\Attributes\CoversClass(CodeCoverage::class)]
+#[CoversClass(CodeCoverage::class)]
 #[Small]
-final class CodeCoverageFacadeTest extends TestCase
+final class CodeCoverageTest extends TestCase
 {
     public static function linesToBeCoveredProvider(): array
     {
