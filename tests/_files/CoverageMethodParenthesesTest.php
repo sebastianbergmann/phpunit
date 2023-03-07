@@ -15,6 +15,8 @@ class CoverageMethodParenthesesTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod()
+     *
+     * @uses \PHPUnit\TestFixture\CoveredClass::publicMethod()
      */
     public function testSomething(): void
     {

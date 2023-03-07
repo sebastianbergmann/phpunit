@@ -10,9 +10,11 @@
 namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\TestCase;
 
 #[CoversFunction('invalid_function')]
+#[UsesFunction('invalid_function')]
 final class InvalidFunctionTargetTest extends TestCase
 {
     public function testOne(): void

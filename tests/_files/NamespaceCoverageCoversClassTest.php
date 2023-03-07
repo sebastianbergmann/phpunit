@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \PHPUnit\TestFixture\CoveredClass
+ *
+ * @usesDefaultClass \PHPUnit\TestFixture\CoveredClass
  */
 class NamespaceCoverageCoversClassTest extends TestCase
 {
@@ -23,6 +25,13 @@ class NamespaceCoverageCoversClassTest extends TestCase
      * @covers \PHPUnit\TestFixture\CoveredParentClass::privateMethod
      * @covers \PHPUnit\TestFixture\CoveredParentClass::protectedMethod
      * @covers \PHPUnit\TestFixture\CoveredParentClass::publicMethod
+     *
+     * @uses ::privateMethod
+     * @uses ::protectedMethod
+     * @uses ::publicMethod
+     * @uses \PHPUnit\TestFixture\CoveredParentClass::privateMethod
+     * @uses \PHPUnit\TestFixture\CoveredParentClass::protectedMethod
+     * @uses \PHPUnit\TestFixture\CoveredParentClass::publicMethod
      */
     public function testSomething(): void
     {

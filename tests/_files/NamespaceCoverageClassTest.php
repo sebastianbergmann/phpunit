@@ -15,6 +15,8 @@ class NamespaceCoverageClassTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\CoveredClass
+     *
+     * @uses \PHPUnit\TestFixture\CoveredClass
      */
     public function testSomething(): void
     {
