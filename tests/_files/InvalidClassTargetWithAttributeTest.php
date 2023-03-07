@@ -10,9 +10,11 @@
 namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass('InvalidClass')]
+#[UsesClass('InvalidClass')]
 final class InvalidClassTargetWithAttributeTest extends TestCase
 {
     public function testOne(): void

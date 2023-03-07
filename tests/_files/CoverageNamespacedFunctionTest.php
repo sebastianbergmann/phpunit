@@ -15,6 +15,8 @@ class CoverageNamespacedFunctionTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\func()
+     *
+     * @uses \PHPUnit\TestFixture\func()
      */
     public function testFunc(): void
     {

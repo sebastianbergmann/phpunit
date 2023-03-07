@@ -13,11 +13,15 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \PHPUnit\TestFixture\CoveredClass
+ *
+ * @usesDefaultClass \PHPUnit\TestFixture\CoveredClass
  */
 class NamespaceCoverageCoversClassPublicTest extends TestCase
 {
     /**
      * @covers ::publicMethod
+     *
+     * @uses ::publicMethod
      */
     public function testSomething(): void
     {

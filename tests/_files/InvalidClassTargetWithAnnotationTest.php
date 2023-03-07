@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers InvalidClass
+ *
+ * @uses InvalidClass
  */
 final class InvalidClassTargetWithAnnotationTest extends TestCase
 {

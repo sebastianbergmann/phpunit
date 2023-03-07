@@ -15,6 +15,8 @@ class CoverageFunctionTest extends TestCase
 {
     /**
      * @covers ::globalFunction
+     *
+     * @uses ::globalFunction
      */
     public function testSomething(): void
     {
