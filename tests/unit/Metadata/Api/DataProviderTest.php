@@ -7,19 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
-#[\PHPUnit\Framework\Attributes\CoversClass(DataProvider::class)]
+#[CoversClass(DataProvider::class)]
 #[Small]
-final class DataProviderFacadeTest extends TestCase
+final class DataProviderTest extends TestCase
 {
     /**
      * Check if all data providers are being merged.

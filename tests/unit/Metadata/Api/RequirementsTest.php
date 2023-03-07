@@ -7,17 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Api\Requirements;
-use PHPUnit\TestFixture\RequirementsTest;
 
-#[\PHPUnit\Framework\Attributes\CoversClass(Requirements::class)]
+#[CoversClass(Requirements::class)]
 #[Small]
-final class RequirementsFacadeTest extends TestCase
+final class RequirementsTest extends TestCase
 {
     public static function missingRequirementsProvider(): array
     {
@@ -130,7 +129,7 @@ final class RequirementsFacadeTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            (new Requirements)->requirementsNotSatisfiedFor(RequirementsTest::class, $test)
+            (new Requirements)->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test)
         );
     }
 }

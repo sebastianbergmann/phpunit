@@ -7,19 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\TestFixture\AssertionExampleTest;
 use PHPUnit\TestFixture\BankAccountTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
-#[\PHPUnit\Framework\Attributes\CoversClass(Groups::class)]
+#[CoversClass(Groups::class)]
 #[Small]
-final class GroupsFacadeTest extends TestCase
+final class GroupsTest extends TestCase
 {
     public static function provider(): array
     {
