@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass('InvalidClass')]
-final class InvalidClassTargetTest extends TestCase
+/**
+ * @covers InvalidClass
+ */
+final class InvalidClassTargetWithAnnotationTest extends TestCase
 {
     public function testOne(): void
     {
