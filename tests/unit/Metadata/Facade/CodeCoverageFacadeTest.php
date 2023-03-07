@@ -13,6 +13,7 @@ use function array_merge;
 use function range;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Api\CodeCoverage;
@@ -32,6 +33,10 @@ use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
 use PHPUnit\TestFixture\IgnoringCodeUnitsTest;
+use PHPUnit\TestFixture\InterfaceTargetTest;
+use PHPUnit\TestFixture\InvalidClassTargetTest;
+use PHPUnit\TestFixture\InvalidFunctionTargetTest;
+use PHPUnit\TestFixture\MoreThanOneCoversDefaultClassAnnotationTest;
 use PHPUnit\TestFixture\NamespaceCoverageClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassPublicTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
@@ -143,6 +148,39 @@ final class CodeCoverageFacadeTest extends TestCase
                 'testSomething'
             )
         );
+    }
+
+    #[\PHPUnit\Framework\Attributes\TestDox('More than one @coversDefaultClass annotation is rejected')]
+    public function testMoreThanOneCoversDefaultClassAnnotationIsRejected(): void
+    {
+        $this->expectException(CodeCoverageException::class);
+        $this->expectExceptionMessage('More than one @coversDefaultClass annotation for class');
+
+        (new CodeCoverage)->linesToBeCovered(MoreThanOneCoversDefaultClassAnnotationTest::class, 'testOne');
+    }
+
+    public function testRejectsInterfaceClassTarget(): void
+    {
+        $this->expectException(CodeCoverageException::class);
+        $this->expectExceptionMessage('Trying to @cover interface "\Throwable".');
+
+        (new CodeCoverage)->linesToBeCovered(InterfaceTargetTest::class, 'testOne');
+    }
+
+    public function testRejectsInvalidClassTarget(): void
+    {
+        $this->expectException(CodeCoverageException::class);
+        $this->expectExceptionMessage('Class "InvalidClass" is not a valid target for code coverage');
+
+        (new CodeCoverage)->linesToBeCovered(InvalidClassTargetTest::class, 'testOne');
+    }
+
+    public function testRejectsInvalidFunctionTarget(): void
+    {
+        $this->expectException(CodeCoverageException::class);
+        $this->expectExceptionMessage('Function "::invalid_function" is not a valid target for code coverage');
+
+        (new CodeCoverage)->linesToBeCovered(InvalidFunctionTargetTest::class, 'testOne');
     }
 
     public function testFunctionParenthesesAreAllowed(): void

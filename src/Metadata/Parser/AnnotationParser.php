@@ -68,7 +68,9 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'coversDefaultClass':
-                    $result[] = Metadata::coversDefaultClass($values[0]);
+                    foreach ($values as $value) {
+                        $result[] = Metadata::coversDefaultClass($value);
+                    }
 
                     break;
 
