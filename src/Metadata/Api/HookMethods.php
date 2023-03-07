@@ -34,7 +34,7 @@ final class HookMethods
      */
     public function hookMethods(string $className): array
     {
-        if (!class_exists($className, false)) {
+        if (!class_exists($className)) {
             return self::emptyHookMethodsArray();
         }
 
