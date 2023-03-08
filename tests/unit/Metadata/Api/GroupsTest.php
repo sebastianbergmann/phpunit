@@ -25,47 +25,47 @@ final class GroupsTest extends TestCase
     {
         return [
             [
-                AssertionExampleTest::class,
-                'testOne',
                 [
                     'default',
                 ],
+                AssertionExampleTest::class,
+                'testOne',
             ],
 
             [
-                BankAccountTest::class,
-                'testBalanceIsInitiallyZero',
                 [
                     'balanceIsInitiallyZero',
                     'specification',
                     '1234',
                     '__phpunit_covers_bankaccount::getbalance',
                 ],
+                BankAccountTest::class,
+                'testBalanceIsInitiallyZero',
             ],
 
             [
+                [
+                    't123456',
+                    '3502',
+                ],
                 NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue',
-                [
-                    't123456',
-                    '3502',
-                ],
             ],
 
             [
-                NumericGroupAnnotationTest::class,
-                'testGroupAnnotationSupportsNumericValue',
                 [
                     't123456',
                     '3502',
                 ],
+                NumericGroupAnnotationTest::class,
+                'testGroupAnnotationSupportsNumericValue',
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    public function testGroupsAreAssigned(string $class, string $method, array $groups): void
+    public function testGroupsAreAssigned(array $groups, string $className, string $methodName): void
     {
-        $this->assertSame($groups, (new Groups)->groups($class, $method));
+        $this->assertSame($groups, (new Groups)->groups($className, $methodName));
     }
 }
