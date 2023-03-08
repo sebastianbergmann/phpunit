@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 
 ## [9.6.5] - 2023-MM-DD
 
+### Changed
+
+* Backported the HTML and CSS improvements made to the `--testdox-html` from PHPUnit 10
+
 ### Fixed
 
 * [#5205](https://github.com/sebastianbergmann/phpunit/issues/5205): Wrong default value for optional parameter of `PHPUnit\Util\Test::parseTestMethodAnnotations()` causes `ReflectionException`

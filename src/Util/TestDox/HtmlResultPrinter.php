@@ -31,24 +31,46 @@ final class HtmlResultPrinter extends ResultPrinter
                 text-rendering: optimizeLegibility;
                 font-variant-ligatures: common-ligatures;
                 font-kerning: normal;
-                margin-left: 2em;
-                background-color: #ffffff;
-                color: #000000;
+                margin-left: 2rem;
+                background-color: #fff;
+                color: #000;
             }
 
             body > ul > li {
                 font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;
-                font-size: 2em;
+                font-size: larger;
             }
 
             h2 {
                 font-family: Tahoma, Helvetica, Arial;
-                font-size: 3em;
+                font-size: larger;
+                margin: 0;
+                padding: 0.5rem 0;
             }
 
             ul {
                 list-style: none;
-                margin-bottom: 1em;
+                margin: 0;
+                padding: 0;
+                margin-bottom: 2rem;
+                padding-left: 1rem;
+                text-indent: -1rem;
+            }
+
+            .success:before {
+                color: #4e9a06;
+                content: '✓';
+                padding-right: 0.5rem;
+            }
+
+            .defect {
+                color: #a40000;
+            }
+
+            .defect:before {
+                color: #a40000;
+                content: '✗';
+                padding-right: 0.5rem;
             }
         </style>
     </head>
@@ -60,7 +82,7 @@ EOT;
      */
     private const CLASS_HEADER = <<<'EOT'
 
-        <h2 id="%s">%s</h2>
+        <h2>%s</h2>
         <ul>
 
 EOT;
@@ -101,7 +123,6 @@ EOT;
         $this->write(
             sprintf(
                 self::CLASS_HEADER,
-                $name,
                 $this->currentTestClassPrettified
             )
         );
@@ -114,9 +135,8 @@ EOT;
     {
         $this->write(
             sprintf(
-                "            <li style=\"color: %s;\">%s %s</li>\n",
-                $success ? '#555753' : '#ef2929',
-                $success ? '✓' : '❌',
+                "            <li class=\"%s\">%s</li>\n",
+                $success ? 'success' : 'defect',
                 $name
             )
         );
