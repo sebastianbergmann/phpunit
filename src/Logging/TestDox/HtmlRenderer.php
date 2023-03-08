@@ -42,6 +42,8 @@ final class HtmlRenderer
 
             h2 {
                 font-size: larger;
+                text-decoration-line: underline;
+                text-decoration-thickness: 2px;
                 margin: 0;
                 padding: 0.5rem 0;
             }
