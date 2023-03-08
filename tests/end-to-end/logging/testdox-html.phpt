@@ -77,7 +77,6 @@ unlink($output);
         <ul>
             <li class="success">Balance is initially zero</li>
             <li class="success">Balance cannot become negative</li>
-            <li class="success">Balance cannot become negative</li>
         </ul>
     </body>
 </html>
