@@ -115,11 +115,11 @@ EOT;
                 $prettifiedClassName
             );
 
-            foreach ($_tests as $test) {
+            foreach ($this->reduce($_tests) as $prettifiedMethodName => $outcome) {
                 $buffer .= sprintf(
                     "            <li class=\"%s\">%s</li>\n",
-                    $test->status()->isSuccess() ? 'success' : 'defect',
-                    $test->test()->testDox()->prettifiedMethodName()
+                    $outcome,
+                    $prettifiedMethodName
                 );
             }
 
@@ -127,5 +127,31 @@ EOT;
         }
 
         return $buffer . self::PAGE_FOOTER;
+    }
+
+    /**
+     * @psalm-return array<string, 'success'|'defect'>
+     */
+    private function reduce(TestResultCollection $tests): array
+    {
+        $result = [];
+
+        foreach ($tests as $test) {
+            $prettifiedMethodName = $test->test()->testDox()->prettifiedMethodName();
+
+            if (!isset($result[$prettifiedMethodName])) {
+                $result[$prettifiedMethodName] = $test->status()->isSuccess() ? 'success' : 'defect';
+
+                continue;
+            }
+
+            if ($test->status()->isSuccess()) {
+                continue;
+            }
+
+            $result[$prettifiedMethodName] = 'defect';
+        }
+
+        return $result;
     }
 }
