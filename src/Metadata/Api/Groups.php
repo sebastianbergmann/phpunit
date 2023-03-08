@@ -56,7 +56,7 @@ final class Groups
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
-                $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
+                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
 
                 continue;
             }
@@ -64,7 +64,7 @@ final class Groups
             if ($metadata->isCovers()) {
                 assert($metadata instanceof Covers);
 
-                $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->target());
+                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->target());
 
                 continue;
             }
@@ -72,7 +72,7 @@ final class Groups
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
-                $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
+                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
 
                 continue;
             }
@@ -80,7 +80,7 @@ final class Groups
             if ($metadata->isUses()) {
                 assert($metadata instanceof Uses);
 
-                $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->target());
+                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->target());
             }
         }
 
@@ -109,7 +109,7 @@ final class Groups
         return TestSize::unknown();
     }
 
-    private static function canonicalizeName(string $name): string
+    private function canonicalizeName(string $name): string
     {
         return strtolower(trim($name, '\\'));
     }
