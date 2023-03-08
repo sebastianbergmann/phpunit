@@ -31,6 +31,7 @@ final class GroupsTest extends TestCase
                     'default',
                 ],
             ],
+
             [
                 BankAccountTest::class,
                 'testBalanceIsInitiallyZero',
@@ -41,6 +42,7 @@ final class GroupsTest extends TestCase
                     '__phpunit_covers_bankaccount::getbalance',
                 ],
             ],
+
             [
                 NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue',
@@ -49,6 +51,7 @@ final class GroupsTest extends TestCase
                     '3502',
                 ],
             ],
+
             [
                 NumericGroupAnnotationTest::class,
                 'testGroupAnnotationSupportsNumericValue',
