@@ -139,6 +139,7 @@
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
+      <code>$methodName</code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement>
       <code><![CDATA[$this->providedTests]]></code>
@@ -265,11 +266,6 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$test->name()]]></code>
-      <code><![CDATA[$test->name()]]></code>
-      <code><![CDATA[$test->name()]]></code>
-    </ArgumentTypeCoercion>
     <InvalidArgument>
       <code>$var</code>
     </InvalidArgument>

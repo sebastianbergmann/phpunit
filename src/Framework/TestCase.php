@@ -138,6 +138,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private array $providedTests = [];
     private array $data          = [];
     private int|string $dataName = '';
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $name;
 
     /**
@@ -284,6 +288,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @psalm-param non-empty-string $name
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $name)
@@ -511,6 +517,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function name(): string
@@ -725,6 +733,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @psalm-param non-empty-string $name
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setName(string $name): void
