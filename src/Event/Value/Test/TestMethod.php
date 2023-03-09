@@ -20,6 +20,7 @@ use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Reflection;
 use SebastianBergmann\Exporter\Exporter;
 
@@ -61,7 +62,7 @@ final class TestMethod extends Test
             $location['file'],
             $location['line'],
             TestDox::fromTestCase($testCase),
-            MetadataCollection::for($testCase::class, $methodName),
+            MetadataRegistry::parser()->for($testCase::class, $methodName),
             self::dataFor($testCase),
         );
     }

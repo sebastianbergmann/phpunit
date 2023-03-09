@@ -39,6 +39,7 @@ final class Requirements
 {
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      *
      * @psalm-return list<string>
      */

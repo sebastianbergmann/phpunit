@@ -11,12 +11,9 @@ namespace PHPUnit\Metadata;
 
 use function array_filter;
 use function array_merge;
-use function class_exists;
 use function count;
-use function method_exists;
 use Countable;
 use IteratorAggregate;
-use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 
 /**
  * @template-implements IteratorAggregate<int, Metadata>
@@ -31,23 +28,6 @@ final class MetadataCollection implements Countable, IteratorAggregate
      * @psalm-var list<Metadata>
      */
     private readonly array $metadata;
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     */
-    public static function for(string $className, string $methodName): self
-    {
-        if (class_exists($className)) {
-            if (method_exists($className, $methodName)) {
-                return MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
-            }
-
-            return MetadataRegistry::parser()->forClass($className);
-        }
-
-        return self::fromArray([]);
-    }
 
     /**
      * @psalm-param list<Metadata> $metadata
