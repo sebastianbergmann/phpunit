@@ -406,6 +406,14 @@
       <code><![CDATA[explode('::', $value)]]></code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
+    <MissingThrowsDocblock>
+      <code>forClass</code>
+      <code>forClass</code>
+      <code>forClass</code>
+      <code>forClassAndMethod</code>
+      <code>forClassAndMethod</code>
+      <code>forClassAndMethod</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Metadata/Version/Requirement.php">
     <ArgumentTypeCoercion>
