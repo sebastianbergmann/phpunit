@@ -34,17 +34,19 @@ final class Dependencies
                 assert($metadata instanceof DependsOnClass);
 
                 $dependencies[] = ExecutionOrderDependency::forClass($metadata);
+
+                continue;
             }
 
-            if ($metadata->isDependsOnMethod()) {
-                assert($metadata instanceof DependsOnMethod);
+            assert($metadata instanceof DependsOnMethod);
 
-                if (empty($metadata->methodName())) {
-                    $dependencies[] = ExecutionOrderDependency::invalid();
-                } else {
-                    $dependencies[] = ExecutionOrderDependency::forMethod($metadata);
-                }
+            if (empty($metadata->methodName())) {
+                $dependencies[] = ExecutionOrderDependency::invalid();
+
+                continue;
             }
+
+            $dependencies[] = ExecutionOrderDependency::forMethod($metadata);
         }
 
         return $dependencies;
