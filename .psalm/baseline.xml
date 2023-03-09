@@ -348,7 +348,6 @@
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition>
       <code>assert($metadata instanceof DependsOnClass)</code>
-      <code>assert($metadata instanceof DependsOnMethod)</code>
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Groups.php">
