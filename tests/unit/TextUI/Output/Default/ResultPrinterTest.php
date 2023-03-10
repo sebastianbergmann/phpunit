@@ -362,6 +362,12 @@ final class ResultPrinterTest extends TestCase
             true,
             true,
             true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
             false
         );
 

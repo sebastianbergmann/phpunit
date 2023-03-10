@@ -49,6 +49,12 @@ final class Facade
         if (self::useDefaultResultPrinter($configuration)) {
             self::$resultPrinter = new DefaultResultPrinter(
                 self::$printer,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
                 $configuration->displayDetailsOnIncompleteTests(),
                 $configuration->displayDetailsOnSkippedTests(),
                 $configuration->displayDetailsOnTestsThatTriggerDeprecations(),

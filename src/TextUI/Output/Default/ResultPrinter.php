@@ -45,6 +45,12 @@ use PHPUnit\TextUI\Output\Printer;
 final class ResultPrinter
 {
     private readonly Printer $printer;
+    private readonly bool $displayPhpunitErrors;
+    private readonly bool $displayPhpunitWarnings;
+    private readonly bool $displayTestsWithErrors;
+    private readonly bool $displayTestsWithFailedAssertions;
+    private readonly bool $displayRiskyTests;
+    private readonly bool $displayDetailsOnTestsThatTriggeredPhpunitDeprecations;
     private readonly bool $displayDetailsOnIncompleteTests;
     private readonly bool $displayDetailsOnSkippedTests;
     private readonly bool $displayDetailsOnTestsThatTriggerDeprecations;
@@ -54,26 +60,49 @@ final class ResultPrinter
     private readonly bool $displayDefectsInReverseOrder;
     private bool $listPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder)
+    public function __construct(Printer $printer, bool $displayPhpunitErrors, bool $displayPhpunitWarnings, bool $displayTestsWithErrors, bool $displayTestsWithFailedAssertions, bool $displayRiskyTests, bool $displayDetailsOnTestsThatTriggeredPhpunitDeprecations, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder)
     {
-        $this->printer                                      = $printer;
-        $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
-        $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
-        $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
-        $this->displayDetailsOnTestsThatTriggerErrors       = $displayDetailsOnTestsThatTriggerErrors;
-        $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
-        $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
-        $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
+        $this->printer                                               = $printer;
+        $this->displayPhpunitErrors                                  = $displayPhpunitErrors;
+        $this->displayPhpunitWarnings                                = $displayPhpunitWarnings;
+        $this->displayTestsWithErrors                                = $displayTestsWithErrors;
+        $this->displayTestsWithFailedAssertions                      = $displayTestsWithFailedAssertions;
+        $this->displayRiskyTests                                     = $displayRiskyTests;
+        $this->displayDetailsOnTestsThatTriggeredPhpunitDeprecations = $displayDetailsOnTestsThatTriggeredPhpunitDeprecations;
+        $this->displayDetailsOnIncompleteTests                       = $displayDetailsOnIncompleteTests;
+        $this->displayDetailsOnSkippedTests                          = $displayDetailsOnSkippedTests;
+        $this->displayDetailsOnTestsThatTriggerDeprecations          = $displayDetailsOnTestsThatTriggerDeprecations;
+        $this->displayDetailsOnTestsThatTriggerErrors                = $displayDetailsOnTestsThatTriggerErrors;
+        $this->displayDetailsOnTestsThatTriggerNotices               = $displayDetailsOnTestsThatTriggerNotices;
+        $this->displayDetailsOnTestsThatTriggerWarnings              = $displayDetailsOnTestsThatTriggerWarnings;
+        $this->displayDefectsInReverseOrder                          = $displayDefectsInReverseOrder;
     }
 
     public function print(TestResult $result): void
     {
-        $this->printPhpunitErrors($result);
-        $this->printPhpunitWarnings($result);
-        $this->printTestsWithErrors($result);
-        $this->printTestsWithFailedAssertions($result);
-        $this->printRiskyTests($result);
-        $this->printDetailsOnTestsThatTriggeredPhpunitDeprecations($result);
+        if ($this->displayPhpunitErrors) {
+            $this->printPhpunitErrors($result);
+        }
+
+        if ($this->displayPhpunitWarnings) {
+            $this->printPhpunitWarnings($result);
+        }
+
+        if ($this->displayTestsWithErrors) {
+            $this->printTestsWithErrors($result);
+        }
+
+        if ($this->displayTestsWithFailedAssertions) {
+            $this->printTestsWithFailedAssertions($result);
+        }
+
+        if ($this->displayRiskyTests) {
+            $this->printRiskyTests($result);
+        }
+
+        if ($this->displayDetailsOnTestsThatTriggeredPhpunitDeprecations) {
+            $this->printDetailsOnTestsThatTriggeredPhpunitDeprecations($result);
+        }
 
         if ($this->displayDetailsOnIncompleteTests) {
             $this->printIncompleteTests($result);
