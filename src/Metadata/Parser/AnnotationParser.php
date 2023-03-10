@@ -10,7 +10,6 @@
 namespace PHPUnit\Metadata\Parser;
 
 use function array_merge;
-use function class_exists;
 use function count;
 use function explode;
 use function method_exists;
@@ -383,23 +382,6 @@ final class AnnotationParser implements Parser
         return $this->forClass($className)->mergeWith(
             $this->forMethod($className, $methodName)
         );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     */
-    public function for(string $className, string $methodName): MetadataCollection
-    {
-        if (!class_exists($className)) {
-            return MetadataCollection::fromArray([]);
-        }
-
-        if (method_exists($className, $methodName)) {
-            return $this->forClassAndMethod($className, $methodName);
-        }
-
-        return $this->forClass($className);
     }
 
     private function stringToBool(string $value): bool

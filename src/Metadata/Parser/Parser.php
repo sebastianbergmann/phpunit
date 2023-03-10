@@ -32,10 +32,4 @@ interface Parser
      * @psalm-param non-empty-string $methodName
      */
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection;
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     */
-    public function for(string $className, string $methodName): MetadataCollection;
 }
