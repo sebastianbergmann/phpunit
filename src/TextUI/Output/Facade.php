@@ -27,11 +27,12 @@ use SebastianBergmann\Timer\ResourceUsageFormatter;
  */
 final class Facade
 {
-    private static ?Printer $printer                    = null;
-    private static ?DefaultResultPrinter $resultPrinter = null;
-    private static ?SummaryPrinter $summaryPrinter      = null;
-    private static bool $colors                         = false;
-    private static bool $defaultProgressPrinter         = false;
+    private static ?Printer $printer                           = null;
+    private static ?DefaultResultPrinter $defaultResultPrinter = null;
+    private static ?TestDoxResultPrinter $testDoxResultPrinter = null;
+    private static ?SummaryPrinter $summaryPrinter             = null;
+    private static bool $colors                                = false;
+    private static bool $defaultProgressPrinter                = false;
 
     public static function init(Configuration $configuration): Printer
     {
@@ -67,13 +68,12 @@ final class Facade
             self::$printer->print((new ResourceUsageFormatter)->resourceUsage($duration) . PHP_EOL . PHP_EOL);
         }
 
-        if (self::$resultPrinter !== null) {
-            self::$resultPrinter->print($result);
-        } elseif ($testDoxResult !== null) {
-            (new TestDoxResultPrinter(self::$printer, self::$colors))->print(
-                $testDoxResult,
-                $result
-            );
+        if (self::$testDoxResultPrinter !== null && $testDoxResult !== null) {
+            self::$testDoxResultPrinter->print($testDoxResult);
+        }
+
+        if (self::$defaultResultPrinter !== null) {
+            self::$defaultResultPrinter->print($result);
         }
 
         if (self::$summaryPrinter !== null) {
@@ -171,8 +171,8 @@ final class Facade
     {
         assert(self::$printer !== null);
 
-        if ($configuration->outputIsTeamCity()) {
-            self::$resultPrinter = new DefaultResultPrinter(
+        if ($configuration->outputIsTeamCity() || $configuration->outputIsTestDox()) {
+            self::$defaultResultPrinter = new DefaultResultPrinter(
                 self::$printer,
                 true,
                 true,
@@ -188,19 +188,24 @@ final class Facade
                 false,
                 false,
             );
+        }
 
-            return;
+        if ($configuration->outputIsTestDox()) {
+            self::$testDoxResultPrinter = new TestDoxResultPrinter(
+                self::$printer,
+                $configuration->colors()
+            );
         }
 
         if ($configuration->noOutput() || $configuration->noResults()) {
             return;
         }
 
-        if ($configuration->outputIsTestDox()) {
+        if (self::$defaultResultPrinter !== null) {
             return;
         }
 
-        self::$resultPrinter = new DefaultResultPrinter(
+        self::$defaultResultPrinter = new DefaultResultPrinter(
             self::$printer,
             true,
             true,
