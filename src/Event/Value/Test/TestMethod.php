@@ -11,18 +11,10 @@ namespace PHPUnit\Event\Code;
 
 use function assert;
 use function is_int;
-use function is_numeric;
 use function sprintf;
-use PHPUnit\Event\TestData\DataFromDataProvider;
-use PHPUnit\Event\TestData\DataFromTestDependency;
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Util\Reflection;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @psalm-immutable
@@ -44,28 +36,6 @@ final class TestMethod extends Test
     private readonly TestDox $testDox;
     private readonly MetadataCollection $metadata;
     private readonly TestDataCollection $testData;
-
-    /**
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
-    public static function fromTestCase(TestCase $testCase): self
-    {
-        $methodName = $testCase->name();
-
-        assert(!empty($methodName));
-
-        $location = Reflection::sourceLocationFor($testCase::class, $methodName);
-
-        return new self(
-            $testCase::class,
-            $methodName,
-            $location['file'],
-            $location['line'],
-            TestDoxBuilder::fromTestCase($testCase),
-            MetadataRegistry::parser()->for($testCase::class, $methodName),
-            self::dataFor($testCase),
-        );
-    }
 
     /**
      * @psalm-param class-string $className
@@ -173,34 +143,5 @@ final class TestMethod extends Test
         }
 
         return $this->methodName . $dataSetName;
-    }
-
-    /**
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
-    private static function dataFor(TestCase $testCase): TestDataCollection
-    {
-        $testData = [];
-
-        if ($testCase->usesDataProvider()) {
-            $dataSetName = $testCase->dataName();
-
-            if (is_numeric($dataSetName)) {
-                $dataSetName = (int) $dataSetName;
-            }
-
-            $testData[] = DataFromDataProvider::from(
-                $dataSetName,
-                (new Exporter)->export($testCase->providedData())
-            );
-        }
-
-        if ($testCase->hasDependencyInput()) {
-            $testData[] = DataFromTestDependency::from(
-                (new Exporter)->export($testCase->dependencyInput())
-            );
-        }
-
-        return TestDataCollection::fromArray($testData);
     }
 }

@@ -24,7 +24,7 @@ use function substr;
 use function trim;
 use function unserialize;
 use ErrorException;
-use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\NoPreviousThrowableException;
@@ -251,7 +251,7 @@ abstract class AbstractPhpProcess
             assert($test instanceof TestCase);
 
             Facade::emitter()->testErrored(
-                TestMethod::fromTestCase($test),
+                TestMethodBuilder::fromTestCase($test),
                 ThrowableBuilder::from($exception)
             );
 
@@ -282,12 +282,12 @@ abstract class AbstractPhpProcess
                 assert($test instanceof TestCase);
 
                 Facade::emitter()->testErrored(
-                    TestMethod::fromTestCase($test),
+                    TestMethodBuilder::fromTestCase($test),
                     ThrowableBuilder::from($exception)
                 );
 
                 Facade::emitter()->testFinished(
-                    TestMethod::fromTestCase($test),
+                    TestMethodBuilder::fromTestCase($test),
                     0
                 );
             }
@@ -300,7 +300,7 @@ abstract class AbstractPhpProcess
             assert($test instanceof TestCase);
 
             Facade::emitter()->testErrored(
-                TestMethod::fromTestCase($test),
+                TestMethodBuilder::fromTestCase($test),
                 ThrowableBuilder::from($exception)
             );
         }
