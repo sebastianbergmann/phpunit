@@ -269,7 +269,7 @@ final class DataProvider
             $methodName,
             $location['file'],
             $location['line'],
-            Event\Code\TestDox::fromClassNameAndMethodName(
+            Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                 $className,
                 $methodName
             ),

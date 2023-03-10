@@ -86,7 +86,7 @@
       <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
   </file>
-  <file src="src/Event/Value/TestSuite/TestSuite.php">
+  <file src="src/Event/Value/TestSuite/TestSuiteBuilder.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$className</code>
@@ -636,7 +636,7 @@
   </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
     <MissingThrowsDocblock>
-      <code>\PHPUnit\Event\TestSuite\TestSuite::fromTestSuite($testSuite)</code>
+      <code>\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite)</code>
       <code>cliArgument</code>
       <code>cliArgument</code>
     </MissingThrowsDocblock>

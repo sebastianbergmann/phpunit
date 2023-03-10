@@ -22,7 +22,7 @@ final class ErroredTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $throwable = Code\Throwable::from(new Exception('error'));
+        $throwable = Code\ThrowableBuilder::from(new Exception('error'));
 
         $event = new Errored(
             $telemetryInfo,

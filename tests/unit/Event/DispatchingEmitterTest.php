@@ -14,8 +14,8 @@ use function array_values;
 use function explode;
 use function get_class_methods;
 use Exception;
-use PHPUnit\Event\Code\TestDox;
-use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Code\TestDoxBuilder;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Test\AssertionFailed;
 use PHPUnit\Event\Test\AssertionSucceeded;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -29,7 +29,7 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\SortedSubscriber as TestSuiteSortedSubscriber;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
-use PHPUnit\Event\TestSuite\TestSuite;
+use PHPUnit\Event\TestSuite\TestSuiteBuilder;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
@@ -380,7 +380,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $throwable = Throwable::from(new Exception('error'));
+        $throwable = ThrowableBuilder::from(new Exception('error'));
 
         $emitter->testErrored(
             $test,
@@ -422,7 +422,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $throwable = Throwable::from(new Exception('failure'));
+        $throwable = ThrowableBuilder::from(new Exception('failure'));
         $failure   = null;
 
         $emitter->testFailed(
@@ -578,7 +578,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $throwable = Throwable::from(new Exception('incomplete'));
+        $throwable = ThrowableBuilder::from(new Exception('incomplete'));
 
         $emitter->testMarkedAsIncomplete(
             $test,
@@ -1532,7 +1532,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testSuiteLoaded(
-            TestSuite::fromTestSuite($this->createMock(Framework\TestSuite::class))
+            TestSuiteBuilder::from($this->createMock(Framework\TestSuite::class))
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1568,7 +1568,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testSuite->method('getName')->willReturn('foo');
 
         $emitter->testSuiteFinished(
-            TestSuite::fromTestSuite($testSuite),
+            TestSuiteBuilder::from($testSuite),
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1662,7 +1662,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testSuite->method('count')->willReturn(1);
         $testSuite->method('getName')->willReturn('foo');
 
-        $emitter->testSuiteStarted(TestSuite::fromTestSuite($testSuite));
+        $emitter->testSuiteStarted(TestSuiteBuilder::from($testSuite));
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1732,7 +1732,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'testBar',
             'FooTest.php',
             1,
-            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

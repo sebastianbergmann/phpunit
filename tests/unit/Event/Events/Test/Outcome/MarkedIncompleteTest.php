@@ -22,7 +22,7 @@ final class MarkedIncompleteTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $throwable = Code\Throwable::from(new Exception('incomplete'));
+        $throwable = Code\ThrowableBuilder::from(new Exception('incomplete'));
 
         $event = new MarkedIncomplete(
             $telemetryInfo,

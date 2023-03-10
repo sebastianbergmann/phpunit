@@ -61,7 +61,7 @@ final class TestMethod extends Test
             $methodName,
             $location['file'],
             $location['line'],
-            TestDox::fromTestCase($testCase),
+            TestDoxBuilder::fromTestCase($testCase),
             MetadataRegistry::parser()->for($testCase::class, $methodName),
             self::dataFor($testCase),
         );

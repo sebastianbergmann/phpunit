@@ -25,7 +25,7 @@ use function trim;
 use function unserialize;
 use ErrorException;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
@@ -252,7 +252,7 @@ abstract class AbstractPhpProcess
 
             Facade::emitter()->testErrored(
                 TestMethod::fromTestCase($test),
-                Throwable::from($exception)
+                ThrowableBuilder::from($exception)
             );
 
             return;
@@ -283,7 +283,7 @@ abstract class AbstractPhpProcess
 
                 Facade::emitter()->testErrored(
                     TestMethod::fromTestCase($test),
-                    Throwable::from($exception)
+                    ThrowableBuilder::from($exception)
                 );
 
                 Facade::emitter()->testFinished(
@@ -301,7 +301,7 @@ abstract class AbstractPhpProcess
 
             Facade::emitter()->testErrored(
                 TestMethod::fromTestCase($test),
-                Throwable::from($exception)
+                ThrowableBuilder::from($exception)
             );
         }
 
