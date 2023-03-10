@@ -790,28 +790,21 @@
       <code>DefaultPrinter::standardOutput()</code>
       <code>DefaultPrinter::standardOutput()</code>
       <code><![CDATA[new DefaultProgressPrinter(
-                self::$printer,
-                $configuration->colors(),
-                $configuration->columns()
-            )]]></code>
+            self::$printer,
+            $configuration->colors(),
+            $configuration->columns()
+        )]]></code>
       <code><![CDATA[new DefaultProgressPrinter(
-                self::$printer,
-                $configuration->colors(),
-                $configuration->columns()
-            )]]></code>
+            self::$printer,
+            $configuration->colors(),
+            $configuration->columns()
+        )]]></code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
       <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>
       <code>self::$printer</code>
     </NullableReturnStatement>
-    <PossiblyNullArgument>
-      <code>self::$printer</code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference>
-      <code>print</code>
-      <code>print</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/TextUI/Output/Printer/DefaultPrinter.php">
     <PossiblyInvalidArgument>

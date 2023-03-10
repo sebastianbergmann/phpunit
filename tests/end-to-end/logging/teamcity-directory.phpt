@@ -11,6 +11,11 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime: %s
+
+
 ##teamcity[testCount count='19' flowId='%d']
 
 ##teamcity[testSuiteStarted name='%stests/end-to-end/_files/basic/unit' flowId='%d']
@@ -112,3 +117,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 ##teamcity[testSuiteFinished name='PHPUnit\SelfTest\Basic\TearDownAfterClassTest' flowId='%d']
 
 ##teamcity[testSuiteFinished name='%stests/end-to-end/_files/basic/unit' flowId='%d']
+Time: %s, Memory: %s
+
+ERRORS!
+Tests: 18, Assertions: 6, Errors: 5, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
