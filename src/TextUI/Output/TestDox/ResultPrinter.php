@@ -397,7 +397,7 @@ final class ResultPrinter
                 $warnings[] = $warning->message();
             }
 
-            $this->printList($warnings, 'test runner warning');
+            $this->printList($warnings, 'PHPUnit warning');
         }
 
         if ($result->hasTestRunnerTriggeredDeprecationEvents()) {
@@ -407,7 +407,7 @@ final class ResultPrinter
                 $deprecations[] = $deprecation->message();
             }
 
-            $this->printList($deprecations, 'test runner deprecation');
+            $this->printList($deprecations, 'PHPUnit deprecation');
         }
     }
 
