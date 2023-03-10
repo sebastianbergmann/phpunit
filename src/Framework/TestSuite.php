@@ -27,7 +27,6 @@ use function trim;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
-use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Metadata\Api\Dependencies;
@@ -336,7 +335,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         $emitter                       = Event\Facade::emitter();
-        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
+        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($this);
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
@@ -496,7 +495,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $methodName,
                     $class->getFileName(),
                     $method->getStartLine(),
-                    TestDox::fromClassNameAndMethodName(
+                    Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                         $className,
                         $methodName
                     ),
@@ -658,7 +657,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $emitter->testBeforeFirstTestMethodErrored(
                 $this->name,
                 $methodCalledBeforeFirstTest,
-                Event\Code\Throwable::from($t)
+                Event\Code\ThrowableBuilder::from($t)
             );
 
             if (!empty($methodsCalledBeforeFirstTest)) {

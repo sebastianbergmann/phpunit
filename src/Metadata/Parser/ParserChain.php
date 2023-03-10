@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Metadata\Parser;
 
-use function class_exists;
-use function method_exists;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
@@ -65,22 +63,5 @@ final class ParserChain implements Parser
         return $this->forClass($className)->mergeWith(
             $this->forMethod($className, $methodName)
         );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     */
-    public function for(string $className, string $methodName): MetadataCollection
-    {
-        if (!class_exists($className)) {
-            return MetadataCollection::fromArray([]);
-        }
-
-        if (method_exists($className, $methodName)) {
-            return $this->forClassAndMethod($className, $methodName);
-        }
-
-        return $this->forClass($className);
     }
 }

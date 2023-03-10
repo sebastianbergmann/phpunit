@@ -23,7 +23,7 @@ final class ThrowableTest extends TestCase
     public function testCanBeCreatedForThrowableWithoutPrevious(): void
     {
         $e = new Exception('message', 123, null);
-        $t = Throwable::from($e);
+        $t = ThrowableBuilder::from($e);
 
         $this->assertSame(Exception::class, $t->className());
         $this->assertSame('message', $t->message());
@@ -40,7 +40,7 @@ final class ThrowableTest extends TestCase
     {
         $first  = new Exception('first message', 123, null);
         $second = new Exception('second message', 456, $first);
-        $t      = Throwable::from($second);
+        $t      = ThrowableBuilder::from($second);
 
         $this->assertSame(Exception::class, $t->className());
         $this->assertSame('second message', $t->message());

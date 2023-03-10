@@ -41,7 +41,7 @@ use function unlink;
 use function unserialize;
 use function var_export;
 use PHPUnit\Event\Code\Phpt;
-use PHPUnit\Event\Code\Throwable as EventThrowable;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Assert;
@@ -124,7 +124,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $sections = $this->parse();
         } catch (Exception $e) {
             $emitter->testPrepared($this->valueObjectForEvents());
-            $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
+            $emitter->testErrored($this->valueObjectForEvents(), ThrowableBuilder::from($e));
             $emitter->testFinished($this->valueObjectForEvents(), 0);
 
             return;
@@ -226,12 +226,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             if ($failure instanceof IncompleteTestError) {
-                $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($failure));
+                $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), ThrowableBuilder::from($failure));
             } else {
-                $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure), null);
+                $emitter->testFailed($this->valueObjectForEvents(), ThrowableBuilder::from($failure), null);
             }
         } catch (Throwable $t) {
-            $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
+            $emitter->testErrored($this->valueObjectForEvents(), ThrowableBuilder::from($t));
         }
 
         $this->runClean($sections, CodeCoverage::instance()->isActive());

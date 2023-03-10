@@ -14,7 +14,6 @@ use function explode;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
-use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(BeforeFirstTestMethodErrored::class)]
@@ -28,7 +27,7 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
             '::',
             __METHOD__
         )));
-        $throwable = Throwable::from(new Exception('message'));
+        $throwable = Code\ThrowableBuilder::from(new Exception('message'));
 
         $event = new BeforeFirstTestMethodErrored(
             $telemetryInfo,

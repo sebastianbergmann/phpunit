@@ -11,9 +11,7 @@ namespace PHPUnit\Metadata\Parser;
 
 use const JSON_THROW_ON_ERROR;
 use function assert;
-use function class_exists;
 use function json_decode;
-use function method_exists;
 use function str_starts_with;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
@@ -632,22 +630,5 @@ final class AttributeParser implements Parser
         return $this->forClass($className)->mergeWith(
             $this->forMethod($className, $methodName)
         );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     */
-    public function for(string $className, string $methodName): MetadataCollection
-    {
-        if (!class_exists($className)) {
-            return MetadataCollection::fromArray([]);
-        }
-
-        if (method_exists($className, $methodName)) {
-            return $this->forClassAndMethod($className, $methodName);
-        }
-
-        return $this->forClass($className);
     }
 }

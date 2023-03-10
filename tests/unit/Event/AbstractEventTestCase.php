@@ -11,7 +11,7 @@ namespace PHPUnit\Event;
 
 use function hrtime;
 use PHPUnit\Event\Code\TestCollection;
-use PHPUnit\Event\Code\TestDox;
+use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -43,7 +43,7 @@ abstract class AbstractEventTestCase extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

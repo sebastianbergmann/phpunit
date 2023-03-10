@@ -11,9 +11,9 @@ namespace PHPUnit\TextUI\Output\Default;
 
 use function hrtime;
 use Exception;
-use PHPUnit\Event\Code\TestDox;
+use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Info;
@@ -97,7 +97,7 @@ final class ResultPrinterTest extends TestCase
                         new MarkedIncomplete(
                             self::telemetryInfo(),
                             self::testMethod(),
-                            Throwable::from(new IncompleteTestError('message'))
+                            ThrowableBuilder::from(new IncompleteTestError('message'))
                         ),
                     ]
                 ),
@@ -462,7 +462,7 @@ final class ResultPrinterTest extends TestCase
         return new Errored(
             self::telemetryInfo(),
             self::testMethod(),
-            Throwable::from(new Exception('message'))
+            ThrowableBuilder::from(new Exception('message'))
         );
     }
 
@@ -471,7 +471,7 @@ final class ResultPrinterTest extends TestCase
         return new Failed(
             self::telemetryInfo(),
             self::testMethod(),
-            Throwable::from(
+            ThrowableBuilder::from(
                 new ExpectationFailedException(
                     'Failed asserting that false is true.'
                 )
@@ -496,7 +496,7 @@ final class ResultPrinterTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

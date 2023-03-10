@@ -22,7 +22,7 @@ final class FailedTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $throwable = Code\Throwable::from(new Exception('failure'));
+        $throwable = Code\ThrowableBuilder::from(new Exception('failure'));
 
         $event = new Failed(
             $telemetryInfo,
