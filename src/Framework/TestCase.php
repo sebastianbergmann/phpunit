@@ -1009,7 +1009,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return $this->testValueObjectForEvents;
         }
 
-        $this->testValueObjectForEvents = Event\Code\TestMethod::fromTestCase($this);
+        $this->testValueObjectForEvents = Event\Code\TestMethodBuilder::fromTestCase($this);
 
         return $this->testValueObjectForEvents;
     }
