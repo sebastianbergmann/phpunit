@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ## [10.0.16] - 2023-MM-DD
 
+### Added
+
+* `PHPUnit\Event\Test\PrintedOutput` and `PHPUnit\Event\Test\PrintedOutputSubscriber` (required for the fixing [#5278](https://github.com/sebastianbergmann/phpunit/issues/5278))
+
 ### Changed
 
 * [#5276](https://github.com/sebastianbergmann/phpunit/issues/5276): Restore display of summary and warnings when `--teamcity` is used

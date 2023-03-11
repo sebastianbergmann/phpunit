@@ -224,6 +224,10 @@ final class TestRunner
             );
         }
 
+        if ($test->hasOutput()) {
+            Event\Facade::emitter()->testPrintedOutput($test->output());
+        }
+
         if ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),

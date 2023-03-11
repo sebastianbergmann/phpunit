@@ -266,6 +266,9 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$test->output()]]></code>
+    </ArgumentTypeCoercion>
     <InvalidArgument>
       <code>$var</code>
     </InvalidArgument>
