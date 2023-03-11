@@ -9,26 +9,20 @@
  */
 namespace PHPUnit\Event\Test;
 
-use function array_map;
-use function get_class_methods;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(AfterLastTestMethodFinished::class)]
+#[Small]
 final class AfterLastTestMethodFinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = self::class;
-        $calledMethods = array_map(
-            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
-                self::class,
-                $methodName
-            ),
-            get_class_methods($this)
-        );
+        $testClassName = 'Test';
+        $calledMethods = $this->calledMethods();
 
         $event = new AfterLastTestMethodFinished(
             $telemetryInfo,
@@ -39,5 +33,35 @@ final class AfterLastTestMethodFinishedTest extends AbstractEventTestCase
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($testClassName, $event->testClassName());
         $this->assertSame($calledMethods, $event->calledMethods());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new AfterLastTestMethodFinished(
+            $this->telemetryInfo(),
+            self::class,
+            ...$this->calledMethods()
+        );
+
+        $this->assertSame(
+            <<<'EOT'
+After Last Test Method Finished:
+- HookClass::hookMethod
+- AnotherHookClass::anotherHookMethod
+EOT
+            ,
+            $event->asString()
+        );
+    }
+
+    /**
+     * @psalm-return list<Code\ClassMethod>
+     */
+    private function calledMethods(): array
+    {
+        return [
+            new Code\ClassMethod('HookClass', 'hookMethod'),
+            new Code\ClassMethod('AnotherHookClass', 'anotherHookMethod'),
+        ];
     }
 }

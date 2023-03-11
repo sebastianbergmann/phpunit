@@ -9,52 +9,42 @@
  */
 namespace PHPUnit\Event\Test;
 
-use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
-#[CoversClass(Errored::class)]
+#[CoversClass(PrintedUnexpectedOutput::class)]
 #[Small]
-final class ErroredTest extends AbstractEventTestCase
+final class PrintedUnexpectedOutputTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $test          = $this->testValueObject();
-        $throwable     = $this->throwable();
+        $output        = 'output';
 
-        $event = new Errored(
+        $event = new PrintedUnexpectedOutput(
             $telemetryInfo,
-            $test,
-            $throwable
+            $output
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($output, $event->output());
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $event = new Errored(
+        $event = new PrintedUnexpectedOutput(
             $this->telemetryInfo(),
-            $this->testValueObject(),
-            $this->throwable()
+            'output'
         );
 
         $this->assertSame(
             <<<'EOT'
-Test Errored (FooTest::testBar)
-error
-EOT,
+Test Printed Unexpected Output
+output
+EOT
+            ,
             $event->asString()
         );
-    }
-
-    private function throwable(): Code\Throwable
-    {
-        return Code\ThrowableBuilder::from(new Exception('error'));
     }
 }

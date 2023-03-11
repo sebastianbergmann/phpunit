@@ -11,8 +11,10 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(Passed::class)]
+#[Small]
 final class PassedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
@@ -27,5 +29,15 @@ final class PassedTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new Passed(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+        );
+
+        $this->assertSame('Test Passed (FooTest::testBar)', $event->asString());
     }
 }

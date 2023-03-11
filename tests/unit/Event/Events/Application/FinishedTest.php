@@ -11,8 +11,10 @@ namespace PHPUnit\Event\Application;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(Finished::class)]
+#[Small]
 final class FinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
@@ -24,5 +26,12 @@ final class FinishedTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($shellExitCode, $event->shellExitCode());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new Finished($this->telemetryInfo(), 0);
+
+        $this->assertSame('PHPUnit Finished (Shell Exit Code: 0)', $event->asString());
     }
 }

@@ -9,52 +9,35 @@
  */
 namespace PHPUnit\Event\Test;
 
-use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
-#[CoversClass(Errored::class)]
+#[CoversClass(MockObjectForAbstractClassCreated::class)]
 #[Small]
-final class ErroredTest extends AbstractEventTestCase
+final class MockObjectForAbstractClassCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $test          = $this->testValueObject();
-        $throwable     = $this->throwable();
+        $className     = 'OriginalType';
 
-        $event = new Errored(
+        $event = new MockObjectForAbstractClassCreated(
             $telemetryInfo,
-            $test,
-            $throwable
+            $className
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($className, $event->className());
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $event = new Errored(
+        $event = new MockObjectForAbstractClassCreated(
             $this->telemetryInfo(),
-            $this->testValueObject(),
-            $this->throwable()
+            'OriginalType'
         );
 
-        $this->assertSame(
-            <<<'EOT'
-Test Errored (FooTest::testBar)
-error
-EOT,
-            $event->asString()
-        );
-    }
-
-    private function throwable(): Code\Throwable
-    {
-        return Code\ThrowableBuilder::from(new Exception('error'));
+        $this->assertSame('Mock Object Created (OriginalType)', $event->asString());
     }
 }

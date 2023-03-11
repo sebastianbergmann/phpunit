@@ -11,8 +11,10 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(AssertionFailed::class)]
+#[Small]
 final class AssertionFailedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

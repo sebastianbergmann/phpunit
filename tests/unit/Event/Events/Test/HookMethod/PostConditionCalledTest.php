@@ -9,23 +9,20 @@
  */
 namespace PHPUnit\Event\Test;
 
-use function array_values;
-use function explode;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(PostConditionCalled::class)]
+#[Small]
 final class PostConditionCalledTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $testClassName = 'Test';
+        $calledMethod  = $this->calledMethod();
 
         $event = new PostConditionCalled(
             $telemetryInfo,
@@ -36,5 +33,21 @@ final class PostConditionCalledTest extends AbstractEventTestCase
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($testClassName, $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new PostConditionCalled(
+            $this->telemetryInfo(),
+            'Test',
+            $this->calledMethod()
+        );
+
+        $this->assertSame('Post Condition Method Called (HookClass::hookMethod)', $event->asString());
+    }
+
+    private function calledMethod(): Code\ClassMethod
+    {
+        return new Code\ClassMethod('HookClass', 'hookMethod');
     }
 }

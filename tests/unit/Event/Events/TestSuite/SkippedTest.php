@@ -11,8 +11,10 @@ namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(Skipped::class)]
+#[Small]
 final class SkippedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
@@ -26,5 +28,16 @@ final class SkippedTest extends AbstractEventTestCase
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($testSuite, $event->testSuite());
         $this->assertSame($message, $event->message());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new Skipped(
+            $this->telemetryInfo(),
+            $this->testSuiteValueObject(),
+            'the-message'
+        );
+
+        $this->assertSame('Test Suite Skipped (foo, the-message)', $event->asString());
     }
 }

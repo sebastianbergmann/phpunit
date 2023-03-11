@@ -12,8 +12,10 @@ namespace PHPUnit\Event\Test;
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(PhpDeprecationTriggered::class)]
+#[Small]
 final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

@@ -11,15 +11,16 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\TestFixture;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(MockObjectForTraitCreated::class)]
+#[Small]
 final class MockObjectForTraitCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $traitName     = TestFixture\MockObject\ExampleTrait::class;
+        $traitName     = 'TraitName';
 
         $event = new MockObjectForTraitCreated(
             $telemetryInfo,
@@ -28,5 +29,15 @@ final class MockObjectForTraitCreatedTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($traitName, $event->traitName());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new MockObjectForTraitCreated(
+            $this->telemetryInfo(),
+            'TraitName'
+        );
+
+        $this->assertSame('Mock Object Created (TraitName)', $event->asString());
     }
 }

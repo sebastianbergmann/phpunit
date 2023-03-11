@@ -9,52 +9,35 @@
  */
 namespace PHPUnit\Event\Test;
 
-use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
-#[CoversClass(Errored::class)]
+#[CoversClass(TestStubForIntersectionOfInterfacesCreated::class)]
 #[Small]
-final class ErroredTest extends AbstractEventTestCase
+final class TestStubForIntersectionOfInterfacesCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $test          = $this->testValueObject();
-        $throwable     = $this->throwable();
+        $interfaces    = ['AnInterface', 'AnotherInterface'];
 
-        $event = new Errored(
+        $event = new TestStubForIntersectionOfInterfacesCreated(
             $telemetryInfo,
-            $test,
-            $throwable
+            $interfaces
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($interfaces, $event->interfaces());
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $event = new Errored(
+        $event = new TestStubForIntersectionOfInterfacesCreated(
             $this->telemetryInfo(),
-            $this->testValueObject(),
-            $this->throwable()
+            ['AnInterface', 'AnotherInterface']
         );
 
-        $this->assertSame(
-            <<<'EOT'
-Test Errored (FooTest::testBar)
-error
-EOT,
-            $event->asString()
-        );
-    }
-
-    private function throwable(): Code\Throwable
-    {
-        return Code\ThrowableBuilder::from(new Exception('error'));
+        $this->assertSame('Test Stub Created (AnInterface&AnotherInterface)', $event->asString());
     }
 }
