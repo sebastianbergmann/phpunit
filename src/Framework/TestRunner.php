@@ -224,11 +224,11 @@ final class TestRunner
             );
         }
 
-        if ($test->hasOutput()) {
-            Event\Facade::emitter()->testPrintedOutput($test->output());
+        if ($test->hasUnexpectedOutput()) {
+            Event\Facade::emitter()->testPrintedUnexpectedOutput($test->output());
         }
 
-        if ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
+        if ($this->configuration->disallowTestOutput() && $test->hasUnexpectedOutput()) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(

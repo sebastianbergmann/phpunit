@@ -848,10 +848,10 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testPrintedOutput(string $output): void
+    public function testPrintedUnexpectedOutput(string $output): void
     {
         $this->dispatcher->dispatch(
-            new Test\PrintedOutput(
+            new Test\PrintedUnexpectedOutput(
                 $this->telemetryInfo(),
                 $output
             )

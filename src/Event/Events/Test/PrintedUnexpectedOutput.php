@@ -18,7 +18,7 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class PrintedOutput implements Event
+final class PrintedUnexpectedOutput implements Event
 {
     private readonly Telemetry\Info $telemetryInfo;
 
@@ -52,7 +52,7 @@ final class PrintedOutput implements Event
     public function asString(): string
     {
         return sprintf(
-            'Test Printed Output%s%s',
+            'Test Printed Unexpected Output%s%s',
             PHP_EOL,
             $this->output
         );

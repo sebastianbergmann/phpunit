@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Added
 
-* `PHPUnit\Event\Test\PrintedOutput` and `PHPUnit\Event\Test\PrintedOutputSubscriber` (required for the fixing [#5278](https://github.com/sebastianbergmann/phpunit/issues/5278))
+* `PHPUnit\Event\Test\PrintedUnexpectedOutput` and `PHPUnit\Event\Test\PrintedUnexpectedOutputSubscriber` (required for the fixing [#5278](https://github.com/sebastianbergmann/phpunit/issues/5278))
 
 ### Changed
 

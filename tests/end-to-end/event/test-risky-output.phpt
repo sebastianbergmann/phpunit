@@ -37,7 +37,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::test
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
-Test Printed Output
+Test Printed Unexpected Output
 *
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 This test printed output: *

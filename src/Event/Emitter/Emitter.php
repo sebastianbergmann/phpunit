@@ -179,7 +179,7 @@ interface Emitter
     /**
      * @psalm-param non-empty-string $output
      */
-    public function testPrintedOutput(string $output): void;
+    public function testPrintedUnexpectedOutput(string $output): void;
 
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 

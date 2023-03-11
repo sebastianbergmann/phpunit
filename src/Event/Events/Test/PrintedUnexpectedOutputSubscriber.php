@@ -14,7 +14,7 @@ use PHPUnit\Event\Subscriber;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface PrintedOutputSubscriber extends Subscriber
+interface PrintedUnexpectedOutputSubscriber extends Subscriber
 {
-    public function notify(PrintedOutput $event): void;
+    public function notify(PrintedUnexpectedOutput $event): void;
 }
