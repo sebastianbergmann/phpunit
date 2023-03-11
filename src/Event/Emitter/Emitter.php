@@ -176,6 +176,11 @@ interface Emitter
 
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void;
 
+    /**
+     * @psalm-param non-empty-string $output
+     */
+    public function testPrintedUnexpectedOutput(string $output): void;
+
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
     /**

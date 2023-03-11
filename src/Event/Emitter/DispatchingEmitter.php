@@ -843,6 +843,22 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $output
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testPrintedUnexpectedOutput(string $output): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PrintedUnexpectedOutput(
+                $this->telemetryInfo(),
+                $output
+            )
+        );
+    }
+
+    /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */

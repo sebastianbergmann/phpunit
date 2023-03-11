@@ -4,9 +4,17 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ## [10.0.16] - 2023-MM-DD
 
+### Added
+
+* `PHPUnit\Event\Test\PrintedUnexpectedOutput` and `PHPUnit\Event\Test\PrintedUnexpectedOutputSubscriber` (required for the fixing [#5278](https://github.com/sebastianbergmann/phpunit/issues/5278))
+
 ### Changed
 
 * [#5276](https://github.com/sebastianbergmann/phpunit/issues/5276): Restore display of summary and warnings when `--teamcity` is used
+
+### Fixed
+
+* [#5278](https://github.com/sebastianbergmann/phpunit/issues/5278): Test Runner swallows output made during test
 
 ## [10.0.15] - 2023-03-09
 
