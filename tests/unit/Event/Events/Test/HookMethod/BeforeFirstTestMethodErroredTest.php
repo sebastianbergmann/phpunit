@@ -9,24 +9,22 @@
  */
 namespace PHPUnit\Event\Test;
 
-use function array_values;
-use function explode;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(BeforeFirstTestMethodErrored::class)]
+#[Small]
 final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = self::class;
+        $testClassName = 'Test';
+        $calledMethod  = $this->calledMethod();
         $throwable     = Code\ThrowableBuilder::from(new Exception('message'));
-        $calledMethod  = new Code\ClassMethod(
-            ...array_values(explode('::', __METHOD__))
-        );
 
         $event = new BeforeFirstTestMethodErrored(
             $telemetryInfo,
@@ -39,7 +37,28 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
         $this->assertSame($testClassName, $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
-        $this->assertSame('Before First Test Method Errored (PHPUnit\Event\Test\BeforeFirstTestMethodErroredTest::testConstructorSetsValues)
-message', $event->asString());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new BeforeFirstTestMethodErrored(
+            $this->telemetryInfo(),
+            'Test',
+            $this->calledMethod(),
+            Code\ThrowableBuilder::from(new Exception('message'))
+        );
+
+        $this->assertSame(
+            <<<'EOT'
+Before First Test Method Errored (HookClass::hookMethod)
+message
+EOT,
+            $event->asString()
+        );
+    }
+
+    private function calledMethod(): Code\ClassMethod
+    {
+        return new Code\ClassMethod('HookClass', 'hookMethod');
     }
 }

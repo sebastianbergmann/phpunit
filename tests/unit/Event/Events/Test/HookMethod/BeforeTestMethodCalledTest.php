@@ -9,22 +9,20 @@
  */
 namespace PHPUnit\Event\Test;
 
-use function array_values;
-use function explode;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(BeforeTestMethodCalled::class)]
+#[Small]
 final class BeforeTestMethodCalledTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(
-            ...array_values(explode('::', __METHOD__))
-        );
+        $testClassName = 'Test';
+        $calledMethod  = $this->calledMethod();
 
         $event = new BeforeTestMethodCalled(
             $telemetryInfo,
@@ -35,5 +33,21 @@ final class BeforeTestMethodCalledTest extends AbstractEventTestCase
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($testClassName, $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new BeforeTestMethodCalled(
+            $this->telemetryInfo(),
+            'Test',
+            $this->calledMethod()
+        );
+
+        $this->assertSame('Before Test Method Called (HookClass::hookMethod)', $event->asString());
+    }
+
+    private function calledMethod(): Code\ClassMethod
+    {
+        return new Code\ClassMethod('HookClass', 'hookMethod');
     }
 }

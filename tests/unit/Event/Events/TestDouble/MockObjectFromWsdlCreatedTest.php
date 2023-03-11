@@ -11,17 +11,18 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use stdClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(MockObjectFromWsdlCreated::class)]
+#[Small]
 final class MockObjectFromWsdlCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo     = $this->telemetryInfo();
-        $wsdlFile          = __FILE__;
-        $originalClassName = self::class;
-        $mockClassName     = stdClass::class;
+        $wsdlFile          = 'test.wsdl';
+        $originalClassName = 'OriginalClassName';
+        $mockClassName     = 'MockClassName';
         $methods           = [
             'foo',
             'bar',
@@ -50,5 +51,20 @@ final class MockObjectFromWsdlCreatedTest extends AbstractEventTestCase
         $this->assertSame($methods, $event->methods());
         $this->assertSame($callOriginalConstructor, $event->callOriginalConstructor());
         $this->assertSame($options, $event->options());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new MockObjectFromWsdlCreated(
+            $this->telemetryInfo(),
+            'test.wsdl',
+            'OriginalClassName',
+            'MockClassName',
+            [],
+            false,
+            []
+        );
+
+        $this->assertSame('Mock Object Created (test.wsdl)', $event->asString());
     }
 }

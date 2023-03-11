@@ -13,16 +13,17 @@ use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(Failed::class)]
+#[Small]
 final class FailedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
-
-        $throwable = Code\ThrowableBuilder::from(new Exception('failure'));
+        $throwable     = $this->throwable();
 
         $event = new Failed(
             $telemetryInfo,
@@ -35,5 +36,28 @@ final class FailedTest extends AbstractEventTestCase
         $this->assertSame($test, $event->test());
         $this->assertSame($throwable, $event->throwable());
         $this->assertFalse($event->hasComparisonFailure());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new Failed(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+            $this->throwable(),
+            null
+        );
+
+        $this->assertSame(
+            <<<'EOT'
+Test Failed (FooTest::testBar)
+failure
+EOT,
+            $event->asString()
+        );
+    }
+
+    private function throwable(): Code\Throwable
+    {
+        return Code\ThrowableBuilder::from(new Exception('failure'));
     }
 }

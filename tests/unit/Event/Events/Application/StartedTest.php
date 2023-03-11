@@ -12,8 +12,10 @@ namespace PHPUnit\Event\Application;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Runtime\Runtime;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(Started::class)]
+#[Small]
 final class StartedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
@@ -28,5 +30,15 @@ final class StartedTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($runtime, $event->runtime());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new Started(
+            $this->telemetryInfo(),
+            new Runtime
+        );
+
+        $this->assertStringMatchesFormat('PHPUnit Started (PHPUnit %s using PHP %s)', $event->asString());
     }
 }

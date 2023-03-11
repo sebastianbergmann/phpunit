@@ -12,8 +12,10 @@ namespace PHPUnit\Event\Test;
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(PhpWarningTriggered::class)]
+#[Small]
 final class PhpWarningTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

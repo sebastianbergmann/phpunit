@@ -11,14 +11,16 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(ComparatorRegistered::class)]
+#[Small]
 final class ComparatorRegisteredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $className     = self::class;
+        $className     = 'ClassName';
 
         $event = new ComparatorRegistered(
             $telemetryInfo,
@@ -27,5 +29,15 @@ final class ComparatorRegisteredTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($className, $event->className());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new ComparatorRegistered(
+            $this->telemetryInfo(),
+            'ClassName'
+        );
+
+        $this->assertSame('Comparator Registered (ClassName)', $event->asString());
     }
 }

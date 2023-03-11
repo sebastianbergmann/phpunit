@@ -11,8 +11,10 @@ namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(ExtensionLoadedFromPhar::class)]
+#[Small]
 final class ExtensionLoadedFromPharTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
@@ -33,5 +35,17 @@ final class ExtensionLoadedFromPharTest extends AbstractEventTestCase
         $this->assertSame($filename, $event->filename());
         $this->assertSame($name, $event->name());
         $this->assertSame($version, $event->version());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new ExtensionLoadedFromPhar(
+            $this->telemetryInfo(),
+            'extension.phar',
+            'example-extension',
+            '1.2.3'
+        );
+
+        $this->assertSame('Extension Loaded from PHAR (example-extension 1.2.3)', $event->asString());
     }
 }

@@ -11,14 +11,16 @@ namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(BootstrapFinished::class)]
+#[Small]
 final class BootstrapFinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $filename      = __FILE__;
+        $filename      = 'bootstrap.php';
 
         $event = new BootstrapFinished(
             $telemetryInfo,
@@ -27,5 +29,15 @@ final class BootstrapFinishedTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($filename, $event->filename());
+    }
+
+    public function testCanBeRepresentedAsString(): void
+    {
+        $event = new BootstrapFinished(
+            $this->telemetryInfo(),
+            'bootstrap.php'
+        );
+
+        $this->assertSame('Bootstrap Finished (bootstrap.php)', $event->asString());
     }
 }
