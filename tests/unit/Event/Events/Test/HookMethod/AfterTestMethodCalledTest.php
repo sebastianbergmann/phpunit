@@ -22,10 +22,9 @@ final class AfterTestMethodCalledTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
         $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $calledMethod  = new Code\ClassMethod(
+            ...array_values(explode('::', __METHOD__))
+        );
 
         $event = new AfterTestMethodCalled(
             $telemetryInfo,

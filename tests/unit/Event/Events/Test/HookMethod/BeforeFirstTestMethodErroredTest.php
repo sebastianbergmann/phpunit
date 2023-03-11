@@ -23,11 +23,10 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
         $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
-        $throwable = Code\ThrowableBuilder::from(new Exception('message'));
+        $throwable     = Code\ThrowableBuilder::from(new Exception('message'));
+        $calledMethod  = new Code\ClassMethod(
+            ...array_values(explode('::', __METHOD__))
+        );
 
         $event = new BeforeFirstTestMethodErrored(
             $telemetryInfo,
