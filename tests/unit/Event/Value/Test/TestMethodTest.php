@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
 #[CoversClass(TestMethod::class)]
+#[CoversClass(Test::class)]
 #[Small]
 final class TestMethodTest extends TestCase
 {
@@ -43,11 +44,15 @@ final class TestMethodTest extends TestCase
 
         $this->assertSame($className, $test->className());
         $this->assertSame($methodName, $test->methodName());
+        $this->assertSame($className . '::' . $methodName, $test->nameWithClass());
+        $this->assertSame('FooTest::testBar', $test->id());
         $this->assertSame($file, $test->file());
         $this->assertSame($line, $test->line());
         $this->assertSame($testDox, $test->testDox());
         $this->assertSame($metadata, $test->metadata());
         $this->assertSame($testData, $test->testData());
+        $this->assertTrue($test->isTestMethod());
+        $this->assertFalse($test->isPhpt());
     }
 
     public function testNameReturnsNameWhenTestDoesNotHaveDataFromDataProvider(): void
@@ -93,6 +98,7 @@ final class TestMethodTest extends TestCase
         );
 
         $this->assertSame($expected, $test->name());
+        $this->assertSame('FooTest::testBar#9000', $test->id());
     }
 
     public function testNameReturnsNameWhenTestHasDataFromDataProviderAndDataSetNameIsString(): void
@@ -123,5 +129,6 @@ final class TestMethodTest extends TestCase
         );
 
         $this->assertSame($expected, $test->name());
+        $this->assertSame('FooTest::testBar#bar-9000', $test->id());
     }
 }
