@@ -9,16 +9,62 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DummyEvent;
 use PHPUnit\TestFixture\DummySubscriber;
-use PHPUnit\TestFixture\SpyingDummySubscriber;
 use RuntimeException;
 
 #[CoversClass(DirectDispatcher::class)]
+#[Small]
 final class DirectDispatcherTest extends TestCase
 {
+    public function testDispatchesEventToKnownSubscribers(): void
+    {
+        $event   = new DummyEvent;
+        $typeMap = $this->typeMap();
+
+        $dispatcher = new DirectDispatcher($typeMap);
+
+        $subscriber = $this->createMock(DummySubscriber::class);
+
+        $subscriber
+            ->expects($this->once())
+            ->method('notify')
+            ->with($this->identicalTo($event))
+            ->willThrowException(new RuntimeException('third-party exception'));
+
+        $dispatcher->registerSubscriber($subscriber);
+
+        $this->assertTrue($dispatcher->hasSubscriberFor(DummyEvent::class));
+
+        $dispatcher->dispatch($event);
+    }
+
+    public function testDispatchesEventToTracers(): void
+    {
+        $event   = new DummyEvent;
+        $typeMap = $this->typeMap();
+
+        $dispatcher = new DirectDispatcher($typeMap);
+
+        $tracer = $this->createMock(Tracer::class);
+
+        $tracer
+            ->expects($this->once())
+            ->method('trace')
+            ->with($this->identicalTo($event))
+            ->willThrowException(new RuntimeException('third-party exception'));
+
+        $dispatcher->registerTracer($tracer);
+
+        $this->assertTrue($dispatcher->hasSubscriberFor(DummyEvent::class));
+
+        $dispatcher->dispatch($event);
+    }
+
     public function testRegisterRejectsUnknownSubscriber(): void
     {
         $subscriber = $this->createStub(Subscriber::class);
@@ -41,22 +87,12 @@ final class DirectDispatcherTest extends TestCase
         $dispatcher->dispatch($event);
     }
 
-    public function testDispatchDispatchesEventToKnownSubscribers(): void
+    private function typeMap(): TypeMap
     {
-        $event = new DummyEvent;
-
         $typeMap = new TypeMap;
 
         $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
 
-        $subscriber = new SpyingDummySubscriber;
-
-        $dispatcher = new DirectDispatcher($typeMap);
-
-        $dispatcher->registerSubscriber($subscriber);
-
-        $dispatcher->dispatch($event);
-
-        $this->assertContains($event, $subscriber->events());
+        return $typeMap;
     }
 }
