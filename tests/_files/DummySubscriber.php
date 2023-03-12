@@ -13,4 +13,5 @@ use PHPUnit\Event\Subscriber;
 
 interface DummySubscriber extends Subscriber
 {
+    public function notify(DummyEvent $event): void;
 }

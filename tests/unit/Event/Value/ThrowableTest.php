@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
 
 #[CoversClass(Throwable::class)]
+#[CoversClass(ThrowableBuilder::class)]
 #[Small]
 final class ThrowableTest extends TestCase
 {
