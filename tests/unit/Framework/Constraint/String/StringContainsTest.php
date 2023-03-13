@@ -62,10 +62,37 @@ final class StringContainsTest extends TestCase
             [
                 true,
                 '',
+                true,
+                false,
+                'SUBSTRING',
+                'prefix substring suffix',
+            ],
+
+            [
+                true,
+                '',
                 false,
                 true,
                 "substring\n",
                 "prefix substring\r\n suffix",
+            ],
+
+            [
+                true,
+                '',
+                false,
+                true,
+                "substring\r suffix",
+                "prefix substring\n suffix",
+            ],
+
+            [
+                true,
+                '',
+                false,
+                true,
+                "substring\r\n suffix",
+                "prefix substring\r suffix",
             ],
 
             [

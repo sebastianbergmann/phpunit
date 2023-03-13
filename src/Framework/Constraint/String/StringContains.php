@@ -27,6 +27,10 @@ final class StringContains extends Constraint
 
     public function __construct(string $string, bool $ignoreCase = false, bool $ignoreLineEndings = false)
     {
+        if ($ignoreLineEndings) {
+            $string = $this->normalizeLineEndings($string);
+        }
+
         $this->string            = $string;
         $this->ignoreCase        = $ignoreCase;
         $this->ignoreLineEndings = $ignoreLineEndings;
@@ -41,10 +45,6 @@ final class StringContains extends Constraint
 
         if ($this->ignoreCase) {
             $string = mb_strtolower($this->string, 'UTF-8');
-        }
-
-        if ($this->ignoreLineEndings) {
-            $string = $this->normalizeLineEndings($string);
         }
 
         return sprintf(
