@@ -17,9 +17,9 @@ namespace PHPUnit\Metadata\Parser;
  */
 final class Registry
 {
-    private static ?CachingParser $instance = null;
+    private static ?Parser $instance = null;
 
-    public static function parser(): CachingParser
+    public static function parser(): Parser
     {
         return self::$instance ?? self::$instance = self::build();
     }
@@ -28,7 +28,7 @@ final class Registry
     {
     }
 
-    private static function build(): CachingParser
+    private static function build(): Parser
     {
         return new CachingParser(
             new ParserChain(
