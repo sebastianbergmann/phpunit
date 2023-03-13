@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Fixed
 
 * [#5278](https://github.com/sebastianbergmann/phpunit/issues/5278): Test Runner swallows output made during test
+* [#5279](https://github.com/sebastianbergmann/phpunit/pull/5279): `StringContains` constraint does not correctly handle option for ignoring line endings
 
 ## [10.0.15] - 2023-03-09
 
