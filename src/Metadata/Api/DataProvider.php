@@ -273,7 +273,7 @@ final class DataProvider
                 $className,
                 $methodName
             ),
-            MetadataRegistry::parser()->for(
+            MetadataRegistry::parser()->forClassAndMethod(
                 $className,
                 $methodName
             ),

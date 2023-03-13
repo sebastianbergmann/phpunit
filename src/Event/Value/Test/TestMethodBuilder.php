@@ -42,7 +42,7 @@ final class TestMethodBuilder
             $location['file'],
             $location['line'],
             TestDoxBuilder::fromTestCase($testCase),
-            MetadataRegistry::parser()->for($testCase::class, $methodName),
+            MetadataRegistry::parser()->forClassAndMethod($testCase::class, $methodName),
             self::dataFor($testCase),
         );
     }
