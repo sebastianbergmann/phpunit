@@ -8,26 +8,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
-    fwrite(
+if (!\version_compare(PHP_VERSION, PHP_VERSION, '=')) {
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             '%s declares an invalid value for PHP_VERSION.' . PHP_EOL .
             'This breaks fundamental functionality such as version_compare().' . PHP_EOL .
             'Please use a different PHP interpreter.' . PHP_EOL,
-
             PHP_BINARY
         )
     );
 
-    die(1);
+    exit(1);
 }
 
-if (version_compare('7.3.0', PHP_VERSION, '>')) {
-    fwrite(
+if (\version_compare('7.3.0', PHP_VERSION, '>')) {
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             'This version of PHPUnit requires PHP >= 7.3.' . PHP_EOL .
             'You are using PHP %s (%s).' . PHP_EOL,
             PHP_VERSION,
@@ -35,37 +33,37 @@ if (version_compare('7.3.0', PHP_VERSION, '>')) {
         )
     );
 
-    die(1);
+    exit(1);
 }
 
 foreach (['dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'] as $extension) {
-    if (extension_loaded($extension)) {
+    if (\extension_loaded($extension)) {
         continue;
     }
 
-    fwrite(
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             'PHPUnit requires the "%s" extension.' . PHP_EOL,
             $extension
         )
     );
 
-    die(1);
+    exit(1);
 }
 
-if (!ini_get('date.timezone')) {
-    ini_set('date.timezone', 'UTC');
+if (!\ini_get('date.timezone')) {
+    \ini_set('date.timezone', 'UTC');
 }
 
 if (isset($GLOBALS['_composer_autoload_path'])) {
-    define('PHPUNIT_COMPOSER_INSTALL', $GLOBALS['_composer_autoload_path']);
+    \define('PHPUNIT_COMPOSER_INSTALL', $GLOBALS['_composer_autoload_path']);
 
     unset($GLOBALS['_composer_autoload_path']);
 } else {
-    foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
-        if (file_exists($file)) {
-            define('PHPUNIT_COMPOSER_INSTALL', $file);
+    foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $file) {
+        if (\file_exists($file)) {
+            \define('PHPUNIT_COMPOSER_INSTALL', $file);
 
             break;
         }
@@ -74,18 +72,18 @@ if (isset($GLOBALS['_composer_autoload_path'])) {
     unset($file);
 }
 
-if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
-    fwrite(
+if (!\defined('PHPUNIT_COMPOSER_INSTALL')) {
+    \fwrite(
         STDERR,
         'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
         '    composer install' . PHP_EOL . PHP_EOL .
         'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
     );
 
-    die(1);
+    exit(1);
 }
 
-$options = getopt('', array('prepend:'));
+$options = \getopt('', ['prepend:']);
 
 if (isset($options['prepend'])) {
     require $options['prepend'];

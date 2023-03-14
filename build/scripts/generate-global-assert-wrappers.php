@@ -1,6 +1,13 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\Constraint;
 
@@ -94,7 +101,7 @@ foreach ($class->getMethods() as $method) {
     $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
 
     $buffer .= "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n";
-    $buffer .= "$docComment\n$signature\n$body\n";
+    $buffer .= "{$docComment}\n{$signature}\n{$body}\n";
     $buffer .= "}\n\n";
 }
 

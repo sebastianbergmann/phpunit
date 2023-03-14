@@ -1,24 +1,23 @@
 #!/usr/bin/env php
 <?php
-if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
-    fwrite(
+if (!\version_compare(PHP_VERSION, PHP_VERSION, '=')) {
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             '%s declares an invalid value for PHP_VERSION.' . PHP_EOL .
             'This breaks fundamental functionality such as version_compare().' . PHP_EOL .
             'Please use a different PHP interpreter.' . PHP_EOL,
-
             PHP_BINARY
         )
     );
 
-    die(1);
+    exit(1);
 }
 
-if (version_compare('7.3.0', PHP_VERSION, '>')) {
-    fwrite(
+if (\version_compare('7.3.0', PHP_VERSION, '>')) {
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             'PHPUnit X.Y.Z by Sebastian Bergmann and contributors.' . PHP_EOL . PHP_EOL .
             'This version of PHPUnit requires PHP >= 7.3.' . PHP_EOL .
             'You are using PHP %s (%s).' . PHP_EOL,
@@ -27,32 +26,32 @@ if (version_compare('7.3.0', PHP_VERSION, '>')) {
         )
     );
 
-    die(1);
+    exit(1);
 }
 
 foreach (['dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'] as $extension) {
-    if (extension_loaded($extension)) {
+    if (\extension_loaded($extension)) {
         continue;
     }
 
-    fwrite(
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             'PHPUnit requires the "%s" extension.' . PHP_EOL,
             $extension
         )
     );
 
-    die(1);
+    exit(1);
 }
 
-if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
+if (__FILE__ === \realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = true;
 } else {
     $execute = false;
 }
 
-$options = getopt('', array('prepend:', 'manifest', 'sbom'));
+$options = \getopt('', ['prepend:', 'manifest', 'sbom']);
 
 if (isset($options['prepend'])) {
     require $options['prepend'];
@@ -66,13 +65,14 @@ if (isset($options['manifest'])) {
 
 unset($options);
 
-define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
-define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
+\define('__PHPUNIT_PHAR__', \str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
+\define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
 Phar::mapPhar('___PHAR___');
 
-spl_autoload_register(
-    function ($class) {
+\spl_autoload_register(
+    function ($class): void
+    {
         static $classes = null;
 
         if ($classes === null) {
@@ -95,13 +95,13 @@ require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
 
 if ($execute) {
     if (isset($printManifest)) {
-        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
+        print \file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
 
         exit;
     }
 
     if (isset($printSbom)) {
-        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/sbom.xml');
+        print \file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/sbom.xml');
 
         exit;
     }

@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
-define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
-define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
+\define('__PHPUNIT_PHAR__', \str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
+\define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
 Phar::mapPhar('___PHAR___');
 
-spl_autoload_register(
-    function ($class) {
+\spl_autoload_register(
+    function ($class): void
+    {
         static $classes = null;
 
         if ($classes === null) {

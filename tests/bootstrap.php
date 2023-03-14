@@ -9,8 +9,8 @@
  */
 const TEST_FILES_PATH = __DIR__ . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
 
-$composer = file_exists(__DIR__ . '/../vendor/autoload.php');
-$phar     = file_exists(__DIR__ . '/autoload.php');
+$composer = \file_exists(__DIR__ . '/../vendor/autoload.php');
+$phar     = \file_exists(__DIR__ . '/autoload.php');
 
 if ($composer && $phar) {
     print 'More than one test fixture autoloader is available, exiting.' . PHP_EOL;
@@ -25,24 +25,24 @@ if (!$composer && !$phar) {
 }
 
 if ($composer) {
-    if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
-        define('PHPUNIT_COMPOSER_INSTALL', dirname(__DIR__) . '/vendor/autoload.php');
+    if (!\defined('PHPUNIT_COMPOSER_INSTALL')) {
+        \define('PHPUNIT_COMPOSER_INSTALL', \dirname(__DIR__) . '/vendor/autoload.php');
     }
 
     require_once __DIR__ . '/../vendor/autoload.php';
 }
 
 if ($phar) {
-    if (!defined('__PHPUNIT_PHAR__')) {
+    if (!\defined('__PHPUNIT_PHAR__')) {
         require_once __DIR__ . '/../build/artifacts/phpunit-snapshot.phar';
     }
 
     require_once __DIR__ . '/autoload.php';
 
-    $jsonFile = dirname(__DIR__) . '/composer.json';
-    $base     = dirname($jsonFile);
+    $jsonFile = \dirname(__DIR__) . '/composer.json';
+    $base     = \dirname($jsonFile);
 
-    foreach (json_decode(file_get_contents($jsonFile), true)['autoload-dev']['files'] as $file) {
+    foreach (\json_decode(\file_get_contents($jsonFile), true)['autoload-dev']['files'] as $file) {
         require_once $base . DIRECTORY_SEPARATOR . $file;
     }
 }

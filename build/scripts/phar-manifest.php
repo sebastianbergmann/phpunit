@@ -1,9 +1,17 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 if ($argc !== 3) {
-    fwrite(
+    \fwrite(
         STDERR,
-        sprintf(
+        \sprintf(
             '%s /path/to/manifest.txt /path/to/sbom.xml' . PHP_EOL,
             $argv[0]
         )
@@ -21,7 +29,7 @@ sbom($argv[2], $package, $version, $dependencies);
 
 function manifest(string $outputFilename, array $package, string $version, array $dependencies): void
 {
-    $buffer = sprintf(
+    $buffer = \sprintf(
         '%s/%s: %s' . "\n",
         $package['group'],
         $package['name'],
@@ -29,7 +37,7 @@ function manifest(string $outputFilename, array $package, string $version, array
     );
 
     foreach ($dependencies as $dependency) {
-        $buffer .= sprintf(
+        $buffer .= \sprintf(
             '%s: %s' . "\n",
             $dependency['name'],
             versionWithReference(
@@ -39,7 +47,7 @@ function manifest(string $outputFilename, array $package, string $version, array
         );
     }
 
-    file_put_contents($outputFilename, $buffer);
+    \file_put_contents($outputFilename, $buffer);
 }
 
 function sbom(string $outputFilename, array $package, string $version, array $dependencies): void
@@ -65,7 +73,7 @@ function sbom(string $outputFilename, array $package, string $version, array $de
     );
 
     foreach ($dependencies as $dependency) {
-        [$group, $name] = explode('/', $dependency['name']);
+        [$group, $name] = \explode('/', $dependency['name']);
 
         writeComponent(
             $writer,
@@ -84,46 +92,46 @@ function sbom(string $outputFilename, array $package, string $version, array $de
     $writer->endElement();
     $writer->endDocument();
 
-    file_put_contents($outputFilename, $writer->outputMemory());
+    \file_put_contents($outputFilename, $writer->outputMemory());
 }
 
 function package(): array
 {
-    $data = json_decode(
-        file_get_contents(
+    $data = \json_decode(
+        \file_get_contents(
             __DIR__ . '/../../composer.json'
         ),
         true
     );
 
-    [$group, $name] = explode('/', $data['name']);
+    [$group, $name] = \explode('/', $data['name']);
 
     return [
-        'group' => $group,
-        'name' => $name,
+        'group'       => $group,
+        'name'        => $name,
         'description' => $data['description'],
-        'license' => [$data['license']],
+        'license'     => [$data['license']],
     ];
 }
 
 function version(): string
 {
-    $tag = @exec('git describe --tags 2>&1');
+    $tag = @\exec('git describe --tags 2>&1');
 
-    if (strpos($tag, '-') === false && strpos($tag, 'No names found') === false) {
+    if (\strpos($tag, '-') === false && \strpos($tag, 'No names found') === false) {
         return $tag;
     }
 
-    $branch = @exec('git rev-parse --abbrev-ref HEAD');
-    $hash   = @exec('git log -1 --format="%H"');
+    $branch = @\exec('git rev-parse --abbrev-ref HEAD');
+    $hash   = @\exec('git log -1 --format="%H"');
 
     return $branch . '@' . $hash;
 }
 
 function dependencies(): array
 {
-    return json_decode(
-        file_get_contents(
+    return \json_decode(
+        \file_get_contents(
             __DIR__ . '/../../composer.lock'
         ),
         true
@@ -132,8 +140,8 @@ function dependencies(): array
 
 function versionWithReference(string $version, string $reference): string
 {
-    if (!preg_match('/^[v= ]*(([0-9]+)(\\.([0-9]+)(\\.([0-9]+)(-([0-9]+))?(-?([a-zA-Z-+][a-zA-Z0-9.\\-:]*)?)?)?)?)$/', $version)) {
-        $version .=  '@' . $reference;
+    if (!\preg_match('/^[v= ]*(([0-9]+)(\\.([0-9]+)(\\.([0-9]+)(-([0-9]+))?(-?([a-zA-Z-+][a-zA-Z0-9.\\-:]*)?)?)?)?)$/', $version)) {
+        $version .= '@' . $reference;
     }
 
     return $version;
@@ -161,7 +169,7 @@ function writeComponent(XMLWriter $writer, string $group, string $name, string $
 
     $writer->writeElement(
         'purl',
-        sprintf(
+        \sprintf(
             'pkg:composer/%s/%s@%s',
             $group,
             $name,
