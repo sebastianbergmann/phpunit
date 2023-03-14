@@ -9,11 +9,25 @@ file that was distributed with this source code.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
+    ->exclude([
+        '.github/',
+        '.phive/',
+        '.psalm/',
+        'build/tmp/',
+        'schema/',
+        'tools/',
+        'tests/phar/',
+        'tests/static-analysis/',
+    ])
     ->files()
-    ->in(__DIR__ . '/src')
-    ->in(__DIR__ . '/tests/_files')
-    ->in(__DIR__ . '/tests/end-to-end')
-    ->in(__DIR__ . '/tests/unit')
+    ->ignoreDotFiles(false)
+    ->in(__DIR__)
+    ->name([
+        '.php-cs-fixer.dist.php',
+        'binary-phar-autoload.php.in',
+        'library-phar-autoload.php.in',
+        'phpunit',
+    ])
     ->notName('InterfaceWithMethodReturningDisjunctiveNormalFormType.php')
     ->notName('ReadonlyClass.php')
     ->notName('*.phpt');
