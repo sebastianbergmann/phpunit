@@ -115,7 +115,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return $testSuite;
         }
 
-        foreach ((new Reflection)->publicMethodsInTestClass($class) as $method) {
+        foreach (Reflection::publicMethodsInTestClass($class) as $method) {
             if ($method->getDeclaringClass()->getName() === Assert::class) {
                 continue;
             }
