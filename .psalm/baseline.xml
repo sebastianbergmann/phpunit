@@ -118,9 +118,14 @@
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
   </file>
-  <file src="src/Framework/Constraint/ObjectEquals.php">
+  <file src="src/Framework/Constraint/Object/ObjectEquals.php">
     <MissingThrowsDocblock>
       <code>getMethod</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Framework/Constraint/Object/ObjectHasProperty.php">
+    <MissingThrowsDocblock>
+      <code>hasProperty</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
