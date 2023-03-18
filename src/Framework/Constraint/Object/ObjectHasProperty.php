@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 use function is_object;
 use function sprintf;
-use ReflectionException;
 use ReflectionObject;
 
 /**
@@ -49,11 +48,7 @@ final class ObjectHasProperty extends Constraint
             return false;
         }
 
-        try {
-            return (new ReflectionObject($other))->hasProperty($this->propertyName);
-        } catch (ReflectionException) {
-            return false;
-        }
+        return (new ReflectionObject($other))->hasProperty($this->propertyName);
     }
 
     /**
