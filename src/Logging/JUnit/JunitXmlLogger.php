@@ -88,11 +88,11 @@ final class JunitXmlLogger
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer)
+    public function __construct(Printer $printer, Facade $facade)
     {
         $this->printer = $printer;
 
-        $this->registerSubscribers();
+        $this->registerSubscribers($facade);
         $this->createDocument();
     }
 
@@ -268,9 +268,9 @@ final class JunitXmlLogger
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    private function registerSubscribers(): void
+    private function registerSubscribers(Facade $facade): void
     {
-        Facade::registerSubscribers(
+        $facade->registerSubscribers(
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparedSubscriber($this),

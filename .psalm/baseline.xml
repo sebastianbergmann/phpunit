@@ -541,18 +541,6 @@
       <code><![CDATA[DefaultPrinter::from(
                     $configuration->logfileTeamcity()
                 )]]></code>
-      <code><![CDATA[EventFacade::registerTracer(
-                new EventLogger(
-                    $configuration->logEventsText(),
-                    false
-                )
-            )]]></code>
-      <code><![CDATA[EventFacade::registerTracer(
-                new EventLogger(
-                    $configuration->logEventsVerboseText(),
-                    true
-                )
-            )]]></code>
       <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
       <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
       <code>atLeastVersion</code>
@@ -567,26 +555,6 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
-      <code><![CDATA[new JunitXmlLogger(
-                OutputFacade::printerFor($configuration->logfileJunit()),
-            )]]></code>
-      <code><![CDATA[new JunitXmlLogger(
-                OutputFacade::printerFor($configuration->logfileJunit()),
-            )]]></code>
-      <code>new ResultCacheHandler($cache)</code>
-      <code>new ResultCacheHandler($cache)</code>
-      <code><![CDATA[new TeamCityLogger(
-                DefaultPrinter::from(
-                    $configuration->logfileTeamcity()
-                )
-            )]]></code>
-      <code><![CDATA[new TeamCityLogger(
-                DefaultPrinter::from(
-                    $configuration->logfileTeamcity()
-                )
-            )]]></code>
-      <code>new TestDoxResultCollector</code>
-      <code>new TestDoxResultCollector</code>
     </MissingThrowsDocblock>
     <UnresolvableInclude>
       <code>include_once $filename</code>
@@ -802,15 +770,15 @@
       <code><![CDATA[new DefaultProgressPrinter(
             self::$printer,
             $configuration->colors(),
-            $configuration->columns()
+            $configuration->columns(),
+            EventFacade::instance()
         )]]></code>
       <code><![CDATA[new DefaultProgressPrinter(
             self::$printer,
             $configuration->colors(),
-            $configuration->columns()
+            $configuration->columns(),
+            EventFacade::instance()
         )]]></code>
-      <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
-      <code>new TeamCityLogger(DefaultPrinter::standardOutput())</code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>
       <code>self::$printer</code>

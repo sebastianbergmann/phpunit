@@ -26,7 +26,7 @@ final class Facade
      */
     public function registerSubscribers(Subscriber ...$subscribers): void
     {
-        EventFacade::registerSubscribers(...$subscribers);
+        EventFacade::instance()->registerSubscribers(...$subscribers);
     }
 
     /**
@@ -35,7 +35,7 @@ final class Facade
      */
     public function registerSubscriber(Subscriber $subscriber): void
     {
-        EventFacade::registerSubscriber($subscriber);
+        EventFacade::instance()->registerSubscriber($subscriber);
     }
 
     /**
@@ -43,6 +43,6 @@ final class Facade
      */
     public function registerTracer(Tracer $tracer): void
     {
-        EventFacade::registerTracer($tracer);
+        EventFacade::instance()->registerTracer($tracer);
     }
 }

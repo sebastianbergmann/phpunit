@@ -10,6 +10,9 @@
 namespace PHPUnit\TextUI\Output;
 
 use function assert;
+use PHPUnit\Event\EventFacadeIsSealedException;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
@@ -34,6 +37,10 @@ final class Facade
     private static bool $colors                                = false;
     private static bool $defaultProgressPrinter                = false;
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     public static function init(Configuration $configuration): Printer
     {
         self::createPrinter($configuration);
@@ -45,7 +52,10 @@ final class Facade
         self::createSummaryPrinter($configuration);
 
         if ($configuration->outputIsTeamCity()) {
-            new TeamCityLogger(DefaultPrinter::standardOutput());
+            new TeamCityLogger(
+                DefaultPrinter::standardOutput(),
+                EventFacade::instance()
+            );
         }
 
         self::$colors = $configuration->colors();
@@ -144,7 +154,8 @@ final class Facade
         new DefaultProgressPrinter(
             self::$printer,
             $configuration->colors(),
-            $configuration->columns()
+            $configuration->columns(),
+            EventFacade::instance()
         );
 
         self::$defaultProgressPrinter = true;

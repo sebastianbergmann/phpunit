@@ -44,13 +44,13 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, bool $colors, int $numberOfColumns)
+    public function __construct(Printer $printer, bool $colors, int $numberOfColumns, Facade $facade)
     {
         $this->printer         = $printer;
         $this->colors          = $colors;
         $this->numberOfColumns = $numberOfColumns;
 
-        $this->registerSubscribers();
+        $this->registerSubscribers($facade);
     }
 
     public function testRunnerExecutionStarted(ExecutionStarted $event): void
@@ -165,9 +165,9 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    private function registerSubscribers(): void
+    private function registerSubscribers(Facade $facade): void
     {
-        Facade::registerSubscribers(
+        $facade->registerSubscribers(
             new BeforeTestClassMethodErroredSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestErroredSubscriber($this),

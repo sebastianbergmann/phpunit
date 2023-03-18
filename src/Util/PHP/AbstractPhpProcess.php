@@ -310,7 +310,7 @@ abstract class AbstractPhpProcess
                 $output = $childResult['output'];
             }
 
-            Facade::forward($childResult['events']);
+            Facade::instance()->forward($childResult['events']);
             PassedTests::instance()->import($childResult['passedTests']);
 
             assert($test instanceof TestCase);

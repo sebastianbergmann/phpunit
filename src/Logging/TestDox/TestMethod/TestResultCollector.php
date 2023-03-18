@@ -58,9 +58,9 @@ final class TestResultCollector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct()
+    public function __construct(Facade $facade)
     {
-        $this->registerSubscribers();
+        $this->registerSubscribers($facade);
     }
 
     /**
@@ -186,9 +186,9 @@ final class TestResultCollector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    private function registerSubscribers(): void
+    private function registerSubscribers(Facade $facade): void
     {
-        Facade::registerSubscribers(
+        $facade->registerSubscribers(
             new TestConsideredRiskySubscriber($this),
             new TestCreatedMockObjectForAbstractClassSubscriber($this),
             new TestCreatedMockObjectForTraitSubscriber($this),
