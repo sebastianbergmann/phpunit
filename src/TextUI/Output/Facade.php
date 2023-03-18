@@ -34,7 +34,6 @@ final class Facade
     private static ?DefaultResultPrinter $defaultResultPrinter = null;
     private static ?TestDoxResultPrinter $testDoxResultPrinter = null;
     private static ?SummaryPrinter $summaryPrinter             = null;
-    private static bool $colors                                = false;
     private static bool $defaultProgressPrinter                = false;
 
     /**
@@ -57,8 +56,6 @@ final class Facade
                 EventFacade::instance()
             );
         }
-
-        self::$colors = $configuration->colors();
 
         return self::$printer;
     }
