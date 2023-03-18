@@ -104,7 +104,10 @@ final class Application
             $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
-            $pharExtensions = null;
+            $pharExtensions                          = null;
+            $extensionRequiresCodeCoverageCollection = false;
+            $extensionReplacesProgressOutput         = false;
+            $extensionReplacesResultOutput           = false;
 
             if (!$configuration->noExtensions()) {
                 if ($configuration->hasPharExtensionDirectory()) {
@@ -113,10 +116,17 @@ final class Application
                     );
                 }
 
-                $this->bootstrapExtensions($configuration);
+                $extensionRequirements                   = $this->bootstrapExtensions($configuration);
+                $extensionRequiresCodeCoverageCollection = $extensionRequirements['requiresCodeCoverageCollection'];
+                $extensionReplacesProgressOutput         = $extensionRequirements['replacesProgressOutput'];
+                $extensionReplacesResultOutput           = $extensionRequirements['replacesResultOutput'];
             }
 
-            CodeCoverage::instance()->init($configuration, CodeCoverageFilterRegistry::instance());
+            CodeCoverage::instance()->init(
+                $configuration,
+                CodeCoverageFilterRegistry::instance(),
+                $extensionRequiresCodeCoverageCollection
+            );
 
             if (CodeCoverage::instance()->isActive()) {
                 CodeCoverage::instance()->ignoreLines(
@@ -124,7 +134,11 @@ final class Application
                 );
             }
 
-            $printer = OutputFacade::init($configuration);
+            $printer = OutputFacade::init(
+                $configuration,
+                $extensionReplacesProgressOutput,
+                $extensionReplacesResultOutput
+            );
 
             $this->writeRuntimeInformation($printer, $configuration);
             $this->writePharExtensionInformation($printer, $pharExtensions);
@@ -315,11 +329,16 @@ final class Application
         }
     }
 
-    private function bootstrapExtensions(Configuration $configuration): void
+    /**
+     * @psalm-return array{requiresCodeCoverageCollection: bool, replacesProgressOutput: bool, replacesResultOutput: bool}
+     */
+    private function bootstrapExtensions(Configuration $configuration): array
     {
+        $facade = new ExtensionFacade;
+
         $extensionBootstrapper = new ExtensionBootstrapper(
             $configuration,
-            new ExtensionFacade
+            $facade
         );
 
         foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
@@ -337,6 +356,12 @@ final class Application
                 );
             }
         }
+
+        return [
+            'requiresCodeCoverageCollection' => $facade->requiresCodeCoverageCollection(),
+            'replacesProgressOutput'         => $facade->replacesProgressOutput(),
+            'replacesResultOutput'           => $facade->replacesResultOutput(),
+        ];
     }
 
     private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration, string|false $configurationFile): void

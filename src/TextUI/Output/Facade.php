@@ -41,15 +41,20 @@ final class Facade
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public static function init(Configuration $configuration): Printer
+    public static function init(Configuration $configuration, bool $extensionReplacesProgressOutput, bool $extensionReplacesResultOutput): Printer
     {
         self::createPrinter($configuration);
 
         assert(self::$printer !== null);
 
-        self::createProgressPrinter($configuration);
-        self::createResultPrinter($configuration);
-        self::createSummaryPrinter($configuration);
+        if (!$extensionReplacesProgressOutput) {
+            self::createProgressPrinter($configuration);
+        }
+
+        if (!$extensionReplacesResultOutput) {
+            self::createResultPrinter($configuration);
+            self::createSummaryPrinter($configuration);
+        }
 
         if ($configuration->outputIsTeamCity()) {
             new TeamCityLogger(

@@ -60,11 +60,11 @@ final class CodeCoverage
         return self::$instance;
     }
 
-    public function init(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry): void
+    public function init(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry, bool $extensionRequiresCodeCoverageCollection): void
     {
         $codeCoverageFilterRegistry->init($configuration);
 
-        if (!$configuration->hasCoverageReport()) {
+        if (!$configuration->hasCoverageReport() && !$extensionRequiresCodeCoverageCollection) {
             return;
         }
 
