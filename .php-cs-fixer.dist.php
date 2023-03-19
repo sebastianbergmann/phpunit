@@ -68,7 +68,7 @@ $config->setFinder($finder)
         'cast_spaces' => true,
         'class_attributes_separation' => [
             'elements' => [
-                'const' => 'one',
+                'const' => 'none',
                 'method' => 'one',
                 'property' => 'only_if_meta'
             ]

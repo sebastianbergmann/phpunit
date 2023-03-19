@@ -18,8 +18,7 @@ use PHPUnit\Metadata\Version\Requirement;
  */
 abstract class Metadata
 {
-    private const CLASS_LEVEL = 0;
-
+    private const CLASS_LEVEL  = 0;
     private const METHOD_LEVEL = 1;
     private readonly int $level;
 
