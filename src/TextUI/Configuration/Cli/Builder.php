@@ -113,7 +113,6 @@ final class Builder
         'log-events-verbose-text=',
         'version',
     ];
-
     private const SHORT_OPTIONS = 'd:c:hv';
 
     /**

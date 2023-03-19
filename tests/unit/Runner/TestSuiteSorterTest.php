@@ -30,8 +30,7 @@ final class TestSuiteSorterTest extends TestCase
      */
     private const IGNORE_DEPENDENCIES = false;
 
-    private const RESOLVE_DEPENDENCIES = true;
-
+    private const RESOLVE_DEPENDENCIES                = true;
     private const MULTIDEPENDENCYTEST_EXECUTION_ORDER = [
         MultiDependencyTest::class . '::testOne',
         MultiDependencyTest::class . '::testTwo',
