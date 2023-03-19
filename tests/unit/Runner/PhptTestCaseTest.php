@@ -31,7 +31,6 @@ EXPECT test
 --EXPECT--
 Hello PHPUnit!
 EOF;
-
     private const EXPECTF_CONTENT = <<<'EOF'
 --TEST--
 EXPECTF test
@@ -40,7 +39,6 @@ EXPECTF test
 --EXPECTF--
 Hello %s!
 EOF;
-
     private const EXPECTREGEX_CONTENT = <<<'EOF'
 --TEST--
 EXPECTREGEX test
@@ -49,7 +47,6 @@ EXPECTREGEX test
 --EXPECTREGEX--
 Hello [HPU]{4}[nit]{3}!
 EOF;
-
     private const FILE_SECTION = <<<'EOF'
 <?php echo "Hello PHPUnit!"; ?>
 
