@@ -66,7 +66,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         " \e[36m◑\e[0m running tests",
         " \e[36m◒\e[0m running tests",
     ];
-
     private const STATUS_STYLES = [
         BaseTestRunner::STATUS_PASSED => [
             'symbol' => '✔',

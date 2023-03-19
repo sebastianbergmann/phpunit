@@ -72,7 +72,6 @@ trait MockedCloneMethodWithVoidReturnType
     }
 }
 EOT;
-
     private const MOCKED_CLONE_METHOD_WITHOUT_RETURN_TYPE_TRAIT = <<<'EOT'
 namespace PHPUnit\Framework\MockObject;
 
@@ -84,7 +83,6 @@ trait MockedCloneMethodWithoutReturnType
     }
 }
 EOT;
-
     private const UNMOCKED_CLONE_METHOD_WITH_VOID_RETURN_TYPE_TRAIT = <<<'EOT'
 namespace PHPUnit\Framework\MockObject;
 
@@ -98,7 +96,6 @@ trait UnmockedCloneMethodWithVoidReturnType
     }
 }
 EOT;
-
     private const UNMOCKED_CLONE_METHOD_WITHOUT_RETURN_TYPE_TRAIT = <<<'EOT'
 namespace PHPUnit\Framework\MockObject;
 

@@ -121,7 +121,6 @@ final class Builder
         'whitelist=',
         'dump-xdebug-filter=',
     ];
-
     private const SHORT_OPTIONS = 'd:c:hv';
 
     public function fromParameters(array $parameters, array $additionalLongOptions): Configuration

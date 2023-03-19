@@ -47,23 +47,15 @@ use Throwable;
  */
 class DefaultResultPrinter extends Printer implements ResultPrinter
 {
-    public const EVENT_TEST_START = 0;
-
-    public const EVENT_TEST_END = 1;
-
+    public const EVENT_TEST_START      = 0;
+    public const EVENT_TEST_END        = 1;
     public const EVENT_TESTSUITE_START = 2;
-
-    public const EVENT_TESTSUITE_END = 3;
-
-    public const COLOR_NEVER = 'never';
-
-    public const COLOR_AUTO = 'auto';
-
-    public const COLOR_ALWAYS = 'always';
-
-    public const COLOR_DEFAULT = self::COLOR_NEVER;
-
-    private const AVAILABLE_COLORS = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
+    public const EVENT_TESTSUITE_END   = 3;
+    public const COLOR_NEVER           = 'never';
+    public const COLOR_AUTO            = 'auto';
+    public const COLOR_ALWAYS          = 'always';
+    public const COLOR_DEFAULT         = self::COLOR_NEVER;
+    private const AVAILABLE_COLORS     = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
     /**
      * @var int

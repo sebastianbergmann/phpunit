@@ -14,11 +14,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class SeparateClassRunMethodInNewProcessTest extends TestCase
 {
-    public const PROCESS_ID_FILE_PATH = __DIR__ . '/parent_process_id.txt';
-
+    public const PROCESS_ID_FILE_PATH      = __DIR__ . '/parent_process_id.txt';
     public const INITIAL_PARENT_PROCESS_ID = 0;
-
-    public const INITIAL_PROCESS_ID = 1;
+    public const INITIAL_PROCESS_ID        = 1;
 
     public static $parentProcessId = self::INITIAL_PARENT_PROCESS_ID;
 
