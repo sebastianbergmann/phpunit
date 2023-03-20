@@ -179,7 +179,7 @@ final class Facade
     {
         assert(self::$printer !== null);
 
-        if ($configuration->outputIsTeamCity() || $configuration->outputIsTestDox()) {
+        if ($configuration->outputIsTestDox()) {
             self::$defaultResultPrinter = new DefaultResultPrinter(
                 self::$printer,
                 true,
