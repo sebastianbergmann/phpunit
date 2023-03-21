@@ -15,6 +15,7 @@ use function explode;
 use function method_exists;
 use function preg_replace;
 use function str_contains;
+use function str_replace;
 use function str_starts_with;
 use function strlen;
 use function substr;
@@ -217,6 +218,14 @@ final class AnnotationParser implements Parser
 
                 case 'dataProvider':
                     foreach ($values as $value) {
+                        $value = trim(
+                            str_replace(
+                                ['(', ')'],
+                                '',
+                                $value
+                            )
+                        );
+
                         if (str_contains($value, '::')) {
                             $result[] = Metadata::dataProvider(...explode('::', $value));
 

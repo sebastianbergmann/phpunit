@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Fixed
 
 * [#5287](https://github.com/sebastianbergmann/phpunit/issues/5287): Tests from test class with same non-fully qualified class name as another test class are sometimes not discovered
+* [#5288](https://github.com/sebastianbergmann/phpunit/issues/5288): `@dataProvider` annotation rejects previously valid method name style
 
 ## [10.0.17] - 2023-03-20
 
