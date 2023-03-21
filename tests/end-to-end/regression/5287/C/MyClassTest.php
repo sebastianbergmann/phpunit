@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 final class MyClassTest extends TestCase
 {
+    public const VALUE = true;
+
     public function test(): void
     {
         $this->assertTrue(true);

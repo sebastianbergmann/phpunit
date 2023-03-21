@@ -16,9 +16,7 @@ final class AnotherClassTest extends TestCase
 {
     public static function provide(): array
     {
-        new MyClassTest('test');
-
-        return [[true]];
+        return [[MyClassTest::VALUE]];
     }
 
     /** @dataProvider provide */
