@@ -495,7 +495,7 @@
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <UnresolvableInclude>
-      <code>include_once $suiteClassFile</code>
+      <code>require_once $suiteClassFile</code>
     </UnresolvableInclude>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">

@@ -1,7 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/5287
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/5287
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
