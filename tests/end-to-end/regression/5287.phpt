@@ -46,8 +46,9 @@ Test Suite Finished (PHPUnit\TestFixture\Issue5278\A\AnotherClassTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue5278\B\MyClassTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Issue5278\B\MyClassTest::test)
 Test Prepared (PHPUnit\TestFixture\Issue5278\B\MyClassTest::test)
-Assertion Succeeded (Constraint: is true, Value: true)
-Test Passed (PHPUnit\TestFixture\Issue5278\B\MyClassTest::test)
+Assertion Failed (Constraint: is true, Value: false)
+Test Failed (PHPUnit\TestFixture\Issue5278\B\MyClassTest::test)
+Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Issue5278\B\MyClassTest::test)
 Test Suite Finished (PHPUnit\TestFixture\Issue5278\B\MyClassTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue5278\C\MyClassTest, 1 test)
@@ -60,4 +61,4 @@ Test Suite Finished (PHPUnit\TestFixture\Issue5278\C\MyClassTest, 1 test)
 Test Suite Finished (%s/5287, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)
