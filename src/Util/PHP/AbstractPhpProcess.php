@@ -15,15 +15,12 @@ use function array_keys;
 use function array_merge;
 use function assert;
 use function escapeshellarg;
+use function file_get_contents;
 use function ini_get_all;
-use function restore_error_handler;
-use function set_error_handler;
-use function str_replace;
-use function str_starts_with;
-use function substr;
+use function is_array;
 use function trim;
+use function unlink;
 use function unserialize;
-use ErrorException;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
@@ -159,14 +156,14 @@ abstract class AbstractPhpProcess
      * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      */
-    public function runTestJob(string $job, Test $test): void
+    public function runTestJob(string $job, Test $test, string $fileWithSerializedChildResult): void
     {
-        $_result = $this->runJob($job);
+        $result = $this->runJob($job);
 
         $this->processChildResult(
             $test,
-            $_result['stdout'],
-            $_result['stderr']
+            $result['stderr'],
+            $fileWithSerializedChildResult
         );
     }
 
@@ -238,17 +235,16 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      */
-    private function processChildResult(Test $test, string $stdout, string $stderr): void
+    private function processChildResult(Test $test, string $stderr, string $fileWithSerializedChildResult): void
     {
+        assert($test instanceof TestCase);
+
         if (!empty($stderr)) {
             $exception = new Exception(trim($stderr));
-
-            assert($test instanceof TestCase);
 
             Facade::emitter()->testErrored(
                 TestMethodBuilder::fromTestCase($test),
@@ -258,75 +254,59 @@ abstract class AbstractPhpProcess
             return;
         }
 
-        set_error_handler(
-            /**
-             * @throws ErrorException
-             */
-            static function (int $errno, string $errstr, string $errfile, int $errline): never
-            {
-                throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-            }
-        );
+        $serializedChildResult = @file_get_contents($fileWithSerializedChildResult);
 
-        try {
-            if (str_starts_with($stdout, "#!/usr/bin/env php\n")) {
-                $stdout = substr($stdout, 19);
-            }
+        if (!$serializedChildResult) {
+            $this->testErrored($test);
 
-            $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
-            restore_error_handler();
+            return;
+        }
 
-            if ($childResult === false) {
-                $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
+        @unlink($fileWithSerializedChildResult);
 
-                assert($test instanceof TestCase);
+        $childResult = @unserialize($serializedChildResult);
 
-                Facade::emitter()->testErrored(
-                    TestMethodBuilder::fromTestCase($test),
-                    ThrowableBuilder::from($exception)
-                );
+        if (!is_array($childResult)) {
+            $this->testErrored($test);
 
-                Facade::emitter()->testFinished(
-                    TestMethodBuilder::fromTestCase($test),
-                    0
-                );
-            }
-        } catch (ErrorException $e) {
-            restore_error_handler();
-            $childResult = false;
+            return;
+        }
 
-            $exception = new Exception(trim($stdout), 0, $e);
+        Facade::instance()->forward($childResult['events']);
+        PassedTests::instance()->import($childResult['passedTests']);
 
-            assert($test instanceof TestCase);
+        $test->setResult($childResult['testResult']);
+        $test->addToAssertionCount($childResult['numAssertions']);
 
-            Facade::emitter()->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception)
+        if (CodeCoverage::instance()->isActive() &&
+            $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+            CodeCoverage::instance()->codeCoverage()->merge(
+                $childResult['codeCoverage']
             );
         }
 
-        if ($childResult !== false) {
-            if (!empty($childResult['output'])) {
-                $output = $childResult['output'];
-            }
-
-            Facade::instance()->forward($childResult['events']);
-            PassedTests::instance()->import($childResult['passedTests']);
-
-            assert($test instanceof TestCase);
-
-            $test->setResult($childResult['testResult']);
-            $test->addToAssertionCount($childResult['numAssertions']);
-
-            if (CodeCoverage::instance()->isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-                CodeCoverage::instance()->codeCoverage()->merge(
-                    $childResult['codeCoverage']
-                );
-            }
+        if (!empty($childResult['output'])) {
+            print $childResult['output'];
         }
+    }
 
-        if (!empty($output)) {
-            print $output;
-        }
+    /**
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
+     */
+    private function testErrored(TestCase $test): void
+    {
+        $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
+
+        Facade::emitter()->testErrored(
+            TestMethodBuilder::fromTestCase($test),
+            ThrowableBuilder::from($exception)
+        );
+
+        Facade::emitter()->testFinished(
+            TestMethodBuilder::fromTestCase($test),
+            0
+        );
     }
 }

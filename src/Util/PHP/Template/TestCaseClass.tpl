@@ -21,8 +21,6 @@ set_include_path('{include_path}');
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
 
-ob_start();
-
 if ($composerAutoload) {
     require_once $composerAutoload;
 
@@ -52,17 +50,11 @@ function __phpunit_run_isolated_test()
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(true);
 
-    ob_end_clean();
-
     $test->run();
 
-    $output = '';
-
-    if (!$test->hasExpectationOnOutput()) {
-        $output = $test->output();
-    }
-
     ini_set('xdebug.scream', '0');
+
+    $output = $test->hasUnexpectedOutput() ? $test->output() : '';
 
     // Not every STDOUT target stream is rewindable
     @rewind(STDOUT);
@@ -77,15 +69,18 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    print serialize(
-        [
-            'testResult'    => $test->result(),
-            'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
-            'numAssertions' => $test->numberOfAssertionsPerformed(),
-            'output'        => $output,
-            'events'        => $dispatcher->flush(),
-            'passedTests'   => PassedTests::instance()
-        ]
+    file_put_contents(
+        '{fileWithSerializedChildResult}',
+        serialize(
+            [
+                'testResult'    => $test->result(),
+                'output'        => $output,
+                'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
+                'numAssertions' => $test->numberOfAssertionsPerformed(),
+                'events'        => $dispatcher->flush(),
+                'passedTests'   => PassedTests::instance()
+            ]
+        )
     );
 }
 

@@ -300,12 +300,13 @@ final class TestRunner
         $includePath     = var_export(get_include_path(), true);
         // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
         // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-        $data                    = "'." . $data . ".'";
-        $dataName                = "'.(" . $dataName . ").'";
-        $dependencyInput         = "'." . $dependencyInput . ".'";
-        $includePath             = "'." . $includePath . ".'";
-        $offset                  = hrtime();
-        $serializedConfiguration = $this->saveConfigurationForChildProcess();
+        $data                          = "'." . $data . ".'";
+        $dataName                      = "'.(" . $dataName . ").'";
+        $dependencyInput               = "'." . $dependencyInput . ".'";
+        $includePath                   = "'." . $includePath . ".'";
+        $offset                        = hrtime();
+        $serializedConfiguration       = $this->saveConfigurationForChildProcess();
+        $fileWithSerializedChildResult = tempnam(sys_get_temp_dir(), 'phpunit_');
 
         $var = [
             'bootstrap'                      => $bootstrap,
@@ -327,6 +328,7 @@ final class TestRunner
             'offsetSeconds'                  => $offset[0],
             'offsetNanoseconds'              => $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
+            'fileWithSerializedChildResult'  => $fileWithSerializedChildResult,
         ];
 
         if (!$runEntireClass) {
@@ -336,7 +338,7 @@ final class TestRunner
         $template->setVar($var);
 
         $php = AbstractPhpProcess::factory();
-        $php->runTestJob($template->render(), $test);
+        $php->runTestJob($template->render(), $test, $fileWithSerializedChildResult);
 
         @unlink($serializedConfiguration);
     }
