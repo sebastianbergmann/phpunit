@@ -446,7 +446,7 @@ final class TestRunner
      */
     private function saveConfigurationForChildProcess(): string
     {
-        $path = tempnam(sys_get_temp_dir(), 'PHPUnit');
+        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
 
         if (!$path) {
             throw new ProcessIsolationException;
