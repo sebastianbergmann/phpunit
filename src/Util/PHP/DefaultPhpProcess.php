@@ -38,6 +38,8 @@ class DefaultPhpProcess extends AbstractPhpProcess
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
+     * @psalm-return array{stdout: string, stderr: string}
+     *
      * @throws Exception
      * @throws PhpProcessException
      */
@@ -67,6 +69,8 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
     /**
      * Handles creating the child process and returning the STDOUT and STDERR.
+     *
+     * @psalm-return array{stdout: string, stderr: string}
      *
      * @throws Exception
      * @throws PhpProcessException
