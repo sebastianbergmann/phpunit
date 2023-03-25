@@ -188,7 +188,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
                             ),
                         ],
@@ -205,8 +205,15 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
+                            ),
+                            new PhpDeprecationTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'another message',
+                                'Foo.php',
+                                2
                             ),
                         ],
                     ]
@@ -237,7 +244,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
                             ),
                         ],
@@ -254,7 +261,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
                             ),
                         ],
@@ -271,7 +278,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
                             ),
                         ],
@@ -288,7 +295,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
                             ),
                         ],
@@ -305,7 +312,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
-                                'file',
+                                'Foo.php',
                                 1
                             ),
                         ],

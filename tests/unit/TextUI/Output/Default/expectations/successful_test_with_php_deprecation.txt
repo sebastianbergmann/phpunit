@@ -1,9 +1,13 @@
 There was 1 PHP deprecation:
 
 1) FooTest::testBar
-message
+* message
+  Foo.php:1
 
-%s:%i
+* another message
+  Foo.php:2
+
+FooTest.php:1
 
 OK, but some tests have issues!
 Tests: 1, Assertions: 1, Deprecations: 1.
