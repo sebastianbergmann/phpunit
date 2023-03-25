@@ -467,6 +467,7 @@ final class ResultPrinter
         if (!$test->isTestMethod()) {
             return '';
         }
+
         assert($test instanceof TestMethod);
 
         return sprintf(
