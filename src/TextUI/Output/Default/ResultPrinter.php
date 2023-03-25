@@ -462,23 +462,6 @@ final class ResultPrinter
         return $test->name();
     }
 
-    private function testLocation(Test $test): string
-    {
-        if (!$test->isTestMethod()) {
-            return '';
-        }
-
-        assert($test instanceof TestMethod);
-
-        return sprintf(
-            '%s%s:%d%s',
-            PHP_EOL,
-            $test->file(),
-            $test->line(),
-            PHP_EOL
-        );
-    }
-
     /**
      * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered>> $events
      *
@@ -529,5 +512,22 @@ final class ResultPrinter
         }
 
         return $elements;
+    }
+
+    private function testLocation(Test $test): string
+    {
+        if (!$test->isTestMethod()) {
+            return '';
+        }
+
+        assert($test instanceof TestMethod);
+
+        return sprintf(
+            '%s%s:%d%s',
+            PHP_EOL,
+            $test->file(),
+            $test->line(),
+            PHP_EOL
+        );
     }
 }
