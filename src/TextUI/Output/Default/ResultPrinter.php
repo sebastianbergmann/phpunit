@@ -462,7 +462,7 @@ final class ResultPrinter
         return $test->name();
     }
 
-    private function location(Test $test): string
+    private function testLocation(Test $test): string
     {
         if (!$test->isTestMethod()) {
             return '';
@@ -490,7 +490,7 @@ final class ResultPrinter
 
         foreach ($events as $reasons) {
             $test         = $reasons[0]->test();
-            $testLocation = $this->location($test);
+            $testLocation = $this->testLocation($test);
             $title        = $this->name($test);
 
             if (count($reasons) === 1) {
