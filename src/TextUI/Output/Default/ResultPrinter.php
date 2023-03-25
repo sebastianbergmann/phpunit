@@ -475,30 +475,19 @@ final class ResultPrinter
             $test         = $reasons[0]->test();
             $testLocation = $this->testLocation($test);
             $title        = $this->name($test);
+            $body         = '';
+            $first        = true;
+            $single       = count($reasons) === 1;
 
-            if (count($reasons) === 1) {
-                $body = trim($reasons[0]->message()) . PHP_EOL;
-            } else {
-                $body  = '';
-                $first = true;
-
-                foreach ($reasons as $reason) {
-                    if ($first) {
-                        $first = false;
-                    } else {
-                        $body .= PHP_EOL;
-                    }
-
-                    $lines = explode(PHP_EOL, trim($reason->message()));
-
-                    $body .= '* ' . $lines[0] . PHP_EOL;
-
-                    if (count($lines) > 1) {
-                        foreach (range(1, count($lines) - 1) as $line) {
-                            $body .= '  ' . $lines[$line] . PHP_EOL;
-                        }
-                    }
+            foreach ($reasons as $reason) {
+                if ($first) {
+                    $first = false;
+                } else {
+                    $body .= PHP_EOL;
                 }
+
+                $body .= $this->reasonMessage($reason, $single);
+                $body .= $this->reasonLocation($reason, $single);
             }
 
             if (!empty($testLocation)) {
@@ -528,6 +517,47 @@ final class ResultPrinter
             $test->file(),
             $test->line(),
             PHP_EOL
+        );
+    }
+
+    private function reasonMessage(ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|PhpWarningTriggered|WarningTriggered|PhpunitWarningTriggered|PhpunitDeprecationTriggered|PhpunitErrorTriggered|NoticeTriggered|PhpNoticeTriggered $reason, bool $single): string
+    {
+        $message = trim($reason->message());
+
+        if ($single) {
+            return $message . PHP_EOL;
+        }
+
+        $lines  = explode(PHP_EOL, $message);
+        $buffer = '* ' . $lines[0] . PHP_EOL;
+
+        if (count($lines) > 1) {
+            foreach (range(1, count($lines) - 1) as $line) {
+                $buffer .= '  ' . $lines[$line] . PHP_EOL;
+            }
+        }
+
+        return $buffer;
+    }
+
+    private function reasonLocation(ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered $reason, bool $single): string
+    {
+        if (!$reason instanceof DeprecationTriggered &&
+            !$reason instanceof PhpDeprecationTriggered &&
+            !$reason instanceof ErrorTriggered &&
+            !$reason instanceof NoticeTriggered &&
+            !$reason instanceof PhpNoticeTriggered &&
+            !$reason instanceof WarningTriggered &&
+            !$reason instanceof PhpWarningTriggered) {
+            return '';
+        }
+
+        return sprintf(
+            '%s%s:%d%s',
+            $single ? '' : '  ',
+            $reason->file(),
+            $reason->line(),
+            PHP_EOL,
         );
     }
 }

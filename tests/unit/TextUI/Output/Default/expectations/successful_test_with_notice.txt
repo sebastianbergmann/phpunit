@@ -2,8 +2,9 @@ There was 1 notice:
 
 1) FooTest::testBar
 message
+Foo.php:1
 
-%s:%i
+FooTest.php:1
 
 OK, but some tests have issues!
 Tests: 1, Assertions: 1, Notices: 1.

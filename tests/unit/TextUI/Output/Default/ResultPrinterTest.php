@@ -208,6 +208,13 @@ final class ResultPrinterTest extends TestCase
                                 'Foo.php',
                                 1
                             ),
+                            new PhpDeprecationTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'another message',
+                                'Foo.php',
+                                2
+                            ),
                         ],
                     ]
                 ),
