@@ -489,9 +489,9 @@ final class ResultPrinter
         $elements = [];
 
         foreach ($events as $reasons) {
-            $test     = $reasons[0]->test();
-            $title    = $this->name($test);
-            $location = $this->location($test);
+            $test         = $reasons[0]->test();
+            $testLocation = $this->location($test);
+            $title        = $this->name($test);
 
             if (count($reasons) === 1) {
                 $body = trim($reasons[0]->message()) . PHP_EOL;
@@ -518,8 +518,8 @@ final class ResultPrinter
                 }
             }
 
-            if (!empty($location)) {
-                $body .= $location;
+            if (!empty($testLocation)) {
+                $body .= $testLocation;
             }
 
             $elements[] = [
