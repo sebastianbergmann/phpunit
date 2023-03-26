@@ -1,5 +1,5 @@
 --TEST--
-Stopping test execution after first skipped test works
+Test Runner exits with shell exit code indicating failure when all tests are successful but at least one test was skipped
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = '--stop-on-skipped';
+$_SERVER['argv'][] = '--fail-on-skipped';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/SkippedTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
@@ -38,7 +38,12 @@ Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 Test Skipped (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 message
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
+Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testTwo)
+Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testTwo)
+Assertion Succeeded (Constraint: is true, Value: true)
+Test Passed (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testTwo)
+Test Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)

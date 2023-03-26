@@ -1,5 +1,5 @@
 --TEST--
-Stopping test execution after first risky test works
+Stopping test execution after first error works
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,8 +14,8 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = '--stop-on-defect';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/RiskyTest.php';
+$_SERVER['argv'][] = '--stop-on-error';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/ErrorTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 
@@ -32,14 +32,13 @@ Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest, 2 tests)
-Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
-Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
-Test Passed (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
-Test Considered Risky (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
-This test did not perform any assertions
-Test Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
-Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest, 2 tests)
+Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
+Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
+Test Errored (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
+message
+Test Finished (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
+Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)

@@ -15,7 +15,7 @@ $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = '--stop-on-risky';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on/RiskyTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/RiskyTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 

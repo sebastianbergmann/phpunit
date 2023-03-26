@@ -1,5 +1,5 @@
 --TEST--
-Stopping test execution after first risky test works
+Test Runner exits with shell exit code indicating failure when all tests are successful but at least one test was considered risky
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = '--stop-on-defect';
+$_SERVER['argv'][] = '--fail-on-risky';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/RiskyTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
@@ -39,7 +39,12 @@ Test Passed (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
+Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
+Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
+Assertion Succeeded (Constraint: is true, Value: true)
+Test Passed (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
+Test Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)

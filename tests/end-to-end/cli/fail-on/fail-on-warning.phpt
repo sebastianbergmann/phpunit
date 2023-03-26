@@ -1,5 +1,5 @@
 --TEST--
-Stopping test execution after first warning works
+Test Runner exits with shell exit code indicating failure when all tests are successful but at least one warning was triggered
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = '--stop-on-defect';
+$_SERVER['argv'][] = '--fail-on-warning';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/WarningTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
@@ -40,7 +40,12 @@ message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
+Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
+Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
+Assertion Succeeded (Constraint: is true, Value: true)
+Test Passed (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
+Test Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)
