@@ -44,18 +44,18 @@ Execution:
   --default-time-limit <sec>       Timeout in seconds for tests that have no declared size
   --dont-report-useless-tests      Do not report tests that do not test anything
 
-  --stop-on-defect                 Stop execution upon first not-passed test
-  --stop-on-error                  Stop execution upon first error
-  --stop-on-failure                Stop execution upon first error or failure
-  --stop-on-warning                Stop execution upon first warning
-  --stop-on-risky                  Stop execution upon first risky test
-  --stop-on-skipped                Stop execution upon first skipped test
-  --stop-on-incomplete             Stop execution upon first incomplete test
+  --stop-on-defect                 Stop after first error, failure, warning or, risky test
+  --stop-on-error                  Stop after first error
+  --stop-on-failure                Stop after first failure
+  --stop-on-warning                Stop after first warning
+  --stop-on-risky                  Stop after first risky test
+  --stop-on-skipped                Stop after first skipped test
+  --stop-on-incomplete             Stop after first incomplete test
 
-  --fail-on-incomplete             Treat incomplete tests as failures
-  --fail-on-risky                  Treat risky tests as failures
-  --fail-on-skipped                Treat skipped tests as failures
-  --fail-on-warning                Treat tests with warnings as failures
+  --fail-on-warning                Signal failure using shell exit code when a warning was triggered
+  --fail-on-risky                  Signal failure using shell exit code when a test was considered risky
+  --fail-on-skipped                Signal failure using shell exit code when a test was skipped
+  --fail-on-incomplete             Signal failure using shell exit code when a test was marked incomplete
 
   --cache-result                   Write test results to cache file
   --do-not-cache-result            Do not write test results to cache file

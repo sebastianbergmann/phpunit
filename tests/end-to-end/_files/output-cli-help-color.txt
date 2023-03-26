@@ -52,18 +52,23 @@
   [32m--dont-report-useless-tests     [0m Do not report tests that do not test
                                    anything
 
-  [32m--stop-on-defect                [0m Stop execution upon first not-passed test
-  [32m--stop-on-error                 [0m Stop execution upon first error
-  [32m--stop-on-failure               [0m Stop execution upon first error or failure
-  [32m--stop-on-warning               [0m Stop execution upon first warning
-  [32m--stop-on-risky                 [0m Stop execution upon first risky test
-  [32m--stop-on-skipped               [0m Stop execution upon first skipped test
-  [32m--stop-on-incomplete            [0m Stop execution upon first incomplete test
+  [32m--stop-on-defect                [0m Stop after first error, failure, warning or,
+                                   risky test
+  [32m--stop-on-error                 [0m Stop after first error
+  [32m--stop-on-failure               [0m Stop after first failure
+  [32m--stop-on-warning               [0m Stop after first warning
+  [32m--stop-on-risky                 [0m Stop after first risky test
+  [32m--stop-on-skipped               [0m Stop after first skipped test
+  [32m--stop-on-incomplete            [0m Stop after first incomplete test
 
-  [32m--fail-on-incomplete            [0m Treat incomplete tests as failures
-  [32m--fail-on-risky                 [0m Treat risky tests as failures
-  [32m--fail-on-skipped               [0m Treat skipped tests as failures
-  [32m--fail-on-warning               [0m Treat tests with warnings as failures
+  [32m--fail-on-warning               [0m Signal failure using shell exit code when a
+                                   warning was triggered
+  [32m--fail-on-risky                 [0m Signal failure using shell exit code when a
+                                   test was considered risky
+  [32m--fail-on-skipped               [0m Signal failure using shell exit code when a
+                                   test was skipped
+  [32m--fail-on-incomplete            [0m Signal failure using shell exit code when a
+                                   test was marked incomplete
 
   [32m--cache-result                  [0m Write test results to cache file
   [32m--do-not-cache-result           [0m Do not write test results to cache file
