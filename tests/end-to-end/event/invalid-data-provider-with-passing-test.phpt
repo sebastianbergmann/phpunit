@@ -44,4 +44,4 @@ Test Finished (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTe
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 2)
