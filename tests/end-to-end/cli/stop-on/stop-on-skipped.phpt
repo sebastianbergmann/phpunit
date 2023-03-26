@@ -38,6 +38,7 @@ Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 Test Skipped (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 message
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
+Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

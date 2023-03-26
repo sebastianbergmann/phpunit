@@ -38,6 +38,7 @@ Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
 Test Errored (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
 message
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
+Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

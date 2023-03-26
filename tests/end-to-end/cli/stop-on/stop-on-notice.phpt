@@ -40,6 +40,7 @@ message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
+Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

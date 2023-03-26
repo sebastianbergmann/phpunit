@@ -349,6 +349,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         foreach ($this as $test) {
             if (TestResultFacade::shouldStop()) {
+                $emitter->testRunnerExecutionAborted();
+
                 break;
             }
 

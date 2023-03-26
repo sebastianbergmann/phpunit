@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * [#5231](https://github.com/sebastianbergmann/phpunit/pull/5231): `assertObjectHasProperty()` and `assertObjectNotHasProperty()`
 * [#5237](https://github.com/sebastianbergmann/phpunit/issues/5237): Implement `IgnoreClassForCodeCoverage`, `IgnoreMethodForCodeCoverage`, and `IgnoreFunctionForCodeCoverage` attributes
 * `TestCase::createConfiguredStub()` was added as an analogon to `TestCase::createConfiguredMock()`
+* The `PHPUnit\Event\TestRunner\ExecutionAborted` event is now emitted when the execution of tests is stopped due to `stopOn*` attributes on the `<phpunit>` XML configuration element or due to `--stop-on-*` CLI options
 
 ### Changed
 

@@ -39,6 +39,7 @@ Assertion Failed (Constraint: is true, Value: false)
 Test Failed (PHPUnit\TestFixture\TestRunnerStopping\FailureTest::testOne)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\FailureTest::testOne)
+Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\FailureTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

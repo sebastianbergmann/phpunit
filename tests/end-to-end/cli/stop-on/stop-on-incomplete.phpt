@@ -38,6 +38,7 @@ Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 Test Marked Incomplete (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 message
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
+Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

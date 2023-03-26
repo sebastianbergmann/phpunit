@@ -1021,6 +1021,17 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testRunnerExecutionAborted(): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\ExecutionAborted($this->telemetryInfo())
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerExecutionFinished(): void
     {
         $this->dispatcher->dispatch(

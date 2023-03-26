@@ -39,6 +39,7 @@ Test Passed (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
+Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

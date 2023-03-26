@@ -214,6 +214,7 @@ final class Facade
             TestRunner\BootstrapFinished::class,
             TestRunner\Configured::class,
             TestRunner\EventFacadeSealed::class,
+            TestRunner\ExecutionAborted::class,
             TestRunner\ExecutionFinished::class,
             TestRunner\ExecutionStarted::class,
             TestRunner\ExtensionLoadedFromPhar::class,
