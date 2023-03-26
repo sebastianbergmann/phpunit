@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Fixed
 
 * [#5270](https://github.com/sebastianbergmann/phpunit/issues/5270): `GlobalState::getIniSettingsAsString()` generates code that triggers warnings
+* [#5291](https://github.com/sebastianbergmann/phpunit/pull/5291): Test Runner exits with wrong shell exit code after a PHPUnit error occurred
 
 ## [10.0.18] - 2023-03-22
 

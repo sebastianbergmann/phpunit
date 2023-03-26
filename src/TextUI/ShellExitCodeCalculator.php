@@ -50,7 +50,7 @@ final class ShellExitCodeCalculator
             }
         }
 
-        if ($result->hasTestErroredEvents()) {
+        if ($result->hasTestErroredEvents() || $result->hasTestTriggeredPhpunitErrorEvents()) {
             $returnCode = self::EXCEPTION_EXIT;
         }
 

@@ -38,4 +38,4 @@ Test Suite Sorted
 Test Runner Execution Started (0 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 2)
