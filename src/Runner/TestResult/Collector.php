@@ -229,19 +229,6 @@ final class Collector
         return !empty($this->testMarkedIncompleteEvents);
     }
 
-    public function hasTestRunnerTriggeredWarningEvents(): bool
-    {
-        return !empty($this->testRunnerTriggeredWarningEvents);
-    }
-
-    /**
-     * @psalm-return list<TestRunnerWarningTriggered>
-     */
-    public function testRunnerTriggeredWarningEvents(): array
-    {
-        return $this->testRunnerTriggeredWarningEvents;
-    }
-
     public function executionStarted(ExecutionStarted $event): void
     {
         $this->numberOfTests = $event->testSuite()->count();
@@ -468,6 +455,20 @@ final class Collector
     public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void
     {
         $this->testRunnerTriggeredWarningEvents[] = $event;
+    }
+
+    public function hasDeprecationEvents(): bool
+    {
+        return !empty($this->testTriggeredDeprecationEvents) ||
+               !empty($this->testTriggeredPhpDeprecationEvents) ||
+               !empty($this->testTriggeredPhpunitDeprecationEvents) ||
+               !empty($this->testRunnerTriggeredDeprecationEvents);
+    }
+
+    public function hasNoticeEvents(): bool
+    {
+        return !empty($this->testTriggeredNoticeEvents) ||
+               !empty($this->testTriggeredPhpNoticeEvents);
     }
 
     public function hasWarningEvents(): bool

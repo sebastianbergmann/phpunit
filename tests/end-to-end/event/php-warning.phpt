@@ -14,6 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
+$_SERVER['argv'][] = '--fail-on-warning';
 $_SERVER['argv'][] = __DIR__ . '/_files/PhpWarningTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
@@ -42,4 +43,4 @@ Test Finished (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Suite Finished (PHPUnit\TestFixture\Event\PhpWarningTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)

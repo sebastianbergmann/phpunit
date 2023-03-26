@@ -12,6 +12,7 @@ namespace PHPUnit\TestRunner\TestResult;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -42,54 +43,44 @@ final class Facade
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public static function hasTestErroredEvents(): bool
+    public static function shouldStop(): bool
     {
-        return self::collector()->hasTestErroredEvents();
-    }
+        $configuration = ConfigurationRegistry::get();
+        $collector     = self::collector();
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    public static function hasTestFailedEvents(): bool
-    {
-        return self::collector()->hasTestFailedEvents();
-    }
+        if (($configuration->stopOnDefect() || $configuration->stopOnError()) && $collector->hasTestErroredEvents()) {
+            return true;
+        }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    public static function hasWarningEvents(): bool
-    {
-        return self::collector()->hasWarningEvents();
-    }
+        if (($configuration->stopOnDefect() || $configuration->stopOnFailure()) && $collector->hasTestFailedEvents()) {
+            return true;
+        }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    public static function hasTestConsideredRiskyEvents(): bool
-    {
-        return self::collector()->hasTestConsideredRiskyEvents();
-    }
+        if (($configuration->stopOnDefect() || $configuration->stopOnWarning()) && $collector->hasWarningEvents()) {
+            return true;
+        }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    public static function hasTestSkippedEvents(): bool
-    {
-        return self::collector()->hasTestSkippedEvents();
-    }
+        if (($configuration->stopOnDefect() || $configuration->stopOnRisky()) && $collector->hasTestConsideredRiskyEvents()) {
+            return true;
+        }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    public static function hasTestMarkedIncompleteEvents(): bool
-    {
-        return self::collector()->hasTestMarkedIncompleteEvents();
+        if ($configuration->stopOnDeprecation() && $collector->hasDeprecationEvents()) {
+            return true;
+        }
+
+        if ($configuration->stopOnNotice() && $collector->hasNoticeEvents()) {
+            return true;
+        }
+
+        if ($configuration->stopOnIncomplete() && $collector->hasTestMarkedIncompleteEvents()) {
+            return true;
+        }
+
+        if ($configuration->stopOnSkipped() && $collector->hasTestSkippedEvents()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

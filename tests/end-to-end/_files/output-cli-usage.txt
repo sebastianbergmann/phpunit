@@ -49,11 +49,15 @@ Execution:
   --stop-on-failure                Stop after first failure
   --stop-on-warning                Stop after first warning
   --stop-on-risky                  Stop after first risky test
+  --stop-on-deprecation            Stop after first test that triggered a deprecation
+  --stop-on-notice                 Stop after first test that triggered a notice
   --stop-on-skipped                Stop after first skipped test
   --stop-on-incomplete             Stop after first incomplete test
 
   --fail-on-warning                Signal failure using shell exit code when a warning was triggered
   --fail-on-risky                  Signal failure using shell exit code when a test was considered risky
+  --fail-on-deprecation            Signal failure using shell exit code when a deprecation was triggered
+  --fail-on-notice                 Signal failure using shell exit code when a notice was triggered
   --fail-on-skipped                Signal failure using shell exit code when a test was skipped
   --fail-on-incomplete             Signal failure using shell exit code when a test was marked incomplete
 

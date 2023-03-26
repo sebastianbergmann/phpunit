@@ -115,6 +115,12 @@ final class Merger
             $disableCodeCoverageIgnore = $xmlConfiguration->codeCoverage()->disableCodeCoverageIgnore();
         }
 
+        if ($cliConfiguration->hasFailOnDeprecation()) {
+            $failOnDeprecation = $cliConfiguration->failOnDeprecation();
+        } else {
+            $failOnDeprecation = $xmlConfiguration->phpunit()->failOnDeprecation();
+        }
+
         if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
             $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
         } else {
@@ -125,6 +131,12 @@ final class Merger
             $failOnIncomplete = $cliConfiguration->failOnIncomplete();
         } else {
             $failOnIncomplete = $xmlConfiguration->phpunit()->failOnIncomplete();
+        }
+
+        if ($cliConfiguration->hasFailOnNotice()) {
+            $failOnNotice = $cliConfiguration->failOnNotice();
+        } else {
+            $failOnNotice = $xmlConfiguration->phpunit()->failOnNotice();
         }
 
         if ($cliConfiguration->hasFailOnRisky()) {
@@ -143,6 +155,60 @@ final class Merger
             $failOnWarning = $cliConfiguration->failOnWarning();
         } else {
             $failOnWarning = $xmlConfiguration->phpunit()->failOnWarning();
+        }
+
+        if ($cliConfiguration->hasStopOnDefect()) {
+            $stopOnDefect = $cliConfiguration->stopOnDefect();
+        } else {
+            $stopOnDefect = $xmlConfiguration->phpunit()->stopOnDefect();
+        }
+
+        if ($cliConfiguration->hasStopOnDeprecation()) {
+            $stopOnDeprecation = $cliConfiguration->stopOnDeprecation();
+        } else {
+            $stopOnDeprecation = $xmlConfiguration->phpunit()->stopOnDeprecation();
+        }
+
+        if ($cliConfiguration->hasStopOnError()) {
+            $stopOnError = $cliConfiguration->stopOnError();
+        } else {
+            $stopOnError = $xmlConfiguration->phpunit()->stopOnError();
+        }
+
+        if ($cliConfiguration->hasStopOnFailure()) {
+            $stopOnFailure = $cliConfiguration->stopOnFailure();
+        } else {
+            $stopOnFailure = $xmlConfiguration->phpunit()->stopOnFailure();
+        }
+
+        if ($cliConfiguration->hasStopOnIncomplete()) {
+            $stopOnIncomplete = $cliConfiguration->stopOnIncomplete();
+        } else {
+            $stopOnIncomplete = $xmlConfiguration->phpunit()->stopOnIncomplete();
+        }
+
+        if ($cliConfiguration->hasStopOnNotice()) {
+            $stopOnNotice = $cliConfiguration->stopOnNotice();
+        } else {
+            $stopOnNotice = $xmlConfiguration->phpunit()->stopOnNotice();
+        }
+
+        if ($cliConfiguration->hasStopOnRisky()) {
+            $stopOnRisky = $cliConfiguration->stopOnRisky();
+        } else {
+            $stopOnRisky = $xmlConfiguration->phpunit()->stopOnRisky();
+        }
+
+        if ($cliConfiguration->hasStopOnSkipped()) {
+            $stopOnSkipped = $cliConfiguration->stopOnSkipped();
+        } else {
+            $stopOnSkipped = $xmlConfiguration->phpunit()->stopOnSkipped();
+        }
+
+        if ($cliConfiguration->hasStopOnWarning()) {
+            $stopOnWarning = $cliConfiguration->stopOnWarning();
+        } else {
+            $stopOnWarning = $xmlConfiguration->phpunit()->stopOnWarning();
         }
 
         if ($cliConfiguration->hasStderr() && $cliConfiguration->stderr()) {
@@ -324,48 +390,6 @@ final class Merger
             $processIsolation = $cliConfiguration->processIsolation();
         } else {
             $processIsolation = $xmlConfiguration->phpunit()->processIsolation();
-        }
-
-        if ($cliConfiguration->hasStopOnDefect()) {
-            $stopOnDefect = $cliConfiguration->stopOnDefect();
-        } else {
-            $stopOnDefect = $xmlConfiguration->phpunit()->stopOnDefect();
-        }
-
-        if ($cliConfiguration->hasStopOnError()) {
-            $stopOnError = $cliConfiguration->stopOnError();
-        } else {
-            $stopOnError = $xmlConfiguration->phpunit()->stopOnError();
-        }
-
-        if ($cliConfiguration->hasStopOnFailure()) {
-            $stopOnFailure = $cliConfiguration->stopOnFailure();
-        } else {
-            $stopOnFailure = $xmlConfiguration->phpunit()->stopOnFailure();
-        }
-
-        if ($cliConfiguration->hasStopOnWarning()) {
-            $stopOnWarning = $cliConfiguration->stopOnWarning();
-        } else {
-            $stopOnWarning = $xmlConfiguration->phpunit()->stopOnWarning();
-        }
-
-        if ($cliConfiguration->hasStopOnIncomplete()) {
-            $stopOnIncomplete = $cliConfiguration->stopOnIncomplete();
-        } else {
-            $stopOnIncomplete = $xmlConfiguration->phpunit()->stopOnIncomplete();
-        }
-
-        if ($cliConfiguration->hasStopOnRisky()) {
-            $stopOnRisky = $cliConfiguration->stopOnRisky();
-        } else {
-            $stopOnRisky = $xmlConfiguration->phpunit()->stopOnRisky();
-        }
-
-        if ($cliConfiguration->hasStopOnSkipped()) {
-            $stopOnSkipped = $cliConfiguration->stopOnSkipped();
-        } else {
-            $stopOnSkipped = $xmlConfiguration->phpunit()->stopOnSkipped();
         }
 
         if ($cliConfiguration->hasEnforceTimeLimit()) {
@@ -706,11 +730,22 @@ final class Merger
             $pathCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
+            $failOnDeprecation,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
+            $failOnNotice,
             $failOnRisky,
             $failOnSkipped,
             $failOnWarning,
+            $stopOnDefect,
+            $stopOnDeprecation,
+            $stopOnError,
+            $stopOnFailure,
+            $stopOnIncomplete,
+            $stopOnNotice,
+            $stopOnRisky,
+            $stopOnSkipped,
+            $stopOnWarning,
             $outputToStandardErrorStream,
             $columns,
             $noExtensions,
@@ -721,13 +756,6 @@ final class Merger
             $beStrictAboutChangesToGlobalState,
             $colors,
             $processIsolation,
-            $stopOnDefect,
-            $stopOnError,
-            $stopOnFailure,
-            $stopOnWarning,
-            $stopOnIncomplete,
-            $stopOnRisky,
-            $stopOnSkipped,
             $enforceTimeLimit,
             $defaultTimeLimit,
             $timeoutForSmallTests,

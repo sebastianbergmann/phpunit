@@ -172,18 +172,22 @@
         <xs:attribute name="columns" type="columnsType" default="80"/>
         <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnDefect" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnWarning" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnNotice" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnRisky" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnSkipped" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnWarning" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnDefect" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnNotice" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnWarning" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutChangesToGlobalState" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="true"/>

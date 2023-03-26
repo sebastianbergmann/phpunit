@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 ### Added
 
 * [#5168](https://github.com/sebastianbergmann/phpunit/issues/5168): Allow test runner extensions to disable default progress and result printing
+* [#5196](https://github.com/sebastianbergmann/phpunit/issues/5196): Optionally (fail|stop) on (notice|deprecation) events
 * [#5201](https://github.com/sebastianbergmann/phpunit/issues/5201): Add `TestCase::registerFailureType()` to register interface that marks exceptions to be treated as failures, not errors
 * [#5231](https://github.com/sebastianbergmann/phpunit/pull/5231): `assertObjectHasProperty()` and `assertObjectNotHasProperty()`
 * [#5237](https://github.com/sebastianbergmann/phpunit/issues/5237): Implement `IgnoreClassForCodeCoverage`, `IgnoreMethodForCodeCoverage`, and `IgnoreFunctionForCodeCoverage` attributes

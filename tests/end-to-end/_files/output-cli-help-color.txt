@@ -58,6 +58,10 @@
   [32m--stop-on-failure               [0m Stop after first failure
   [32m--stop-on-warning               [0m Stop after first warning
   [32m--stop-on-risky                 [0m Stop after first risky test
+  [32m--stop-on-deprecation           [0m Stop after first test that triggered a
+                                   deprecation
+  [32m--stop-on-notice                [0m Stop after first test that triggered a
+                                   notice
   [32m--stop-on-skipped               [0m Stop after first skipped test
   [32m--stop-on-incomplete            [0m Stop after first incomplete test
 
@@ -65,6 +69,10 @@
                                    warning was triggered
   [32m--fail-on-risky                 [0m Signal failure using shell exit code when a
                                    test was considered risky
+  [32m--fail-on-deprecation           [0m Signal failure using shell exit code when a
+                                   deprecation was triggered
+  [32m--fail-on-notice                [0m Signal failure using shell exit code when a
+                                   notice was triggered
   [32m--fail-on-skipped               [0m Signal failure using shell exit code when a
                                    test was skipped
   [32m--fail-on-incomplete            [0m Signal failure using shell exit code when a
