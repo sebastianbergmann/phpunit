@@ -83,10 +83,10 @@ final class Help
             ['arg'    => '--stop-on-incomplete', 'desc' => 'Stop after first incomplete test'],
             ['spacer' => ''],
 
-            ['arg'    => '--fail-on-incomplete', 'desc' => 'Treat incomplete tests as failures'],
-            ['arg'    => '--fail-on-risky', 'desc' => 'Treat risky tests as failures'],
-            ['arg'    => '--fail-on-skipped', 'desc' => 'Treat skipped tests as failures'],
-            ['arg'    => '--fail-on-warning', 'desc' => 'Treat tests with warnings as failures'],
+            ['arg'    => '--fail-on-warning', 'desc' => 'Signal failure using shell exit code when a warning was triggered'],
+            ['arg'    => '--fail-on-risky', 'desc' => 'Signal failure using shell exit code when a test was considered risky'],
+            ['arg'    => '--fail-on-skipped', 'desc' => 'Signal failure using shell exit code when a test was skipped'],
+            ['arg'    => '--fail-on-incomplete', 'desc' => 'Signal failure using shell exit code when a test was marked incomplete'],
             ['spacer' => ''],
 
             ['arg'    => '--cache-result', 'desc' => 'Write test results to cache file'],

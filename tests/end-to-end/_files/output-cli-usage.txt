@@ -52,10 +52,10 @@ Execution:
   --stop-on-skipped                Stop after first skipped test
   --stop-on-incomplete             Stop after first incomplete test
 
-  --fail-on-incomplete             Treat incomplete tests as failures
-  --fail-on-risky                  Treat risky tests as failures
-  --fail-on-skipped                Treat skipped tests as failures
-  --fail-on-warning                Treat tests with warnings as failures
+  --fail-on-warning                Signal failure using shell exit code when a warning was triggered
+  --fail-on-risky                  Signal failure using shell exit code when a test was considered risky
+  --fail-on-skipped                Signal failure using shell exit code when a test was skipped
+  --fail-on-incomplete             Signal failure using shell exit code when a test was marked incomplete
 
   --cache-result                   Write test results to cache file
   --do-not-cache-result            Do not write test results to cache file
