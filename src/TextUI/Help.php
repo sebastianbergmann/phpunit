@@ -76,7 +76,7 @@ final class Help
 
             ['arg'    => '--stop-on-defect', 'desc' => 'Stop execution upon first not-passed test'],
             ['arg'    => '--stop-on-error', 'desc' => 'Stop execution upon first error'],
-            ['arg'    => '--stop-on-failure', 'desc' => 'Stop execution upon first error or failure'],
+            ['arg'    => '--stop-on-failure', 'desc' => 'Stop execution upon first failure'],
             ['arg'    => '--stop-on-warning', 'desc' => 'Stop execution upon first warning'],
             ['arg'    => '--stop-on-risky', 'desc' => 'Stop execution upon first risky test'],
             ['arg'    => '--stop-on-skipped', 'desc' => 'Stop execution upon first skipped test'],

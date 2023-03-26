@@ -54,7 +54,7 @@
 
   [32m--stop-on-defect                [0m Stop execution upon first not-passed test
   [32m--stop-on-error                 [0m Stop execution upon first error
-  [32m--stop-on-failure               [0m Stop execution upon first error or failure
+  [32m--stop-on-failure               [0m Stop execution upon first failure
   [32m--stop-on-warning               [0m Stop execution upon first warning
   [32m--stop-on-risky                 [0m Stop execution upon first risky test
   [32m--stop-on-skipped               [0m Stop execution upon first skipped test
