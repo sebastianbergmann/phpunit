@@ -1,5 +1,5 @@
 --TEST--
-phpunit --stop-on-error ./tests/_files/StopOnErrorTestSuite.php
+phpunit --stop-on-incomplete ./tests/_files/StopOnErrorTestSuite.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
