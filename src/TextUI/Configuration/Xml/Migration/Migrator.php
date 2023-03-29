@@ -40,7 +40,6 @@ final class Migrator
 
         $configurationDocument = (new XmlLoader)->loadFile(
             $filename,
-            false,
             true,
             true
         );

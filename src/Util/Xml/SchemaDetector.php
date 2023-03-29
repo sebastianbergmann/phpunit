@@ -21,7 +21,6 @@ final class SchemaDetector
     {
         $document = (new Loader)->loadFile(
             $filename,
-            false,
             true,
             true
         );

@@ -85,7 +85,7 @@ final class Loader
     public function load(string $filename): LoadedFromFileConfiguration
     {
         try {
-            $document = (new XmlLoader)->loadFile($filename, false, true, true);
+            $document = (new XmlLoader)->loadFile($filename, true, true);
         } catch (XmlException $e) {
             throw new Exception(
                 $e->getMessage(),
