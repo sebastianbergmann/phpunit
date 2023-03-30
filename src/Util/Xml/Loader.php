@@ -27,7 +27,7 @@ final class Loader
     /**
      * @throws XmlException
      */
-    public function loadFile(string $filename, bool $xinclude = false): DOMDocument
+    public function loadFile(string $filename): DOMDocument
     {
         $reporting = error_reporting(0);
         $contents  = file_get_contents($filename);
@@ -43,22 +43,16 @@ final class Loader
             );
         }
 
-        return $this->load($contents, $filename, $xinclude);
+        return $this->load($contents, $filename);
     }
 
     /**
      * @throws XmlException
      */
-    public function load(string $actual, string $filename = '', bool $xinclude = false): DOMDocument
+    public function load(string $actual, string $filename = ''): DOMDocument
     {
         if ($actual === '') {
             throw new XmlException('Could not load XML from empty string');
-        }
-
-        // Required for XInclude on Windows.
-        if ($xinclude) {
-            $cwd = getcwd();
-            @chdir(dirname($filename));
         }
 
         $document                     = new DOMDocument;
@@ -68,14 +62,20 @@ final class Loader
         $message   = '';
         $reporting = error_reporting(0);
 
+        // Required for XInclude
         if ($filename !== '') {
-            // Required for XInclude
+            // Required for XInclude on Windows
+            if (DIRECTORY_SEPARATOR === '\\') {
+                $cwd = getcwd();
+                @chdir(dirname($filename));
+            }
+
             $document->documentURI = $filename;
         }
 
         $loaded = $document->loadXML($actual);
 
-        if ($xinclude) {
+        if ($filename !== '') {
             $document->xinclude();
         }
 

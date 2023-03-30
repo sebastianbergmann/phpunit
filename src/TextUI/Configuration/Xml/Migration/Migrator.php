@@ -38,10 +38,7 @@ final class Migrator
             );
         }
 
-        $configurationDocument = (new XmlLoader)->loadFile(
-            $filename,
-            true,
-        );
+        $configurationDocument = (new XmlLoader)->loadFile($filename);
 
         foreach ((new MigrationBuilder)->build($origin->version()) as $migration) {
             $migration->migrate($configurationDocument);

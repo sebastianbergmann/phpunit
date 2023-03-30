@@ -19,10 +19,7 @@ final class SchemaDetector
      */
     public function detect(string $filename): SchemaDetectionResult
     {
-        $document = (new Loader)->loadFile(
-            $filename,
-            true,
-        );
+        $document = (new Loader)->loadFile($filename);
 
         foreach (['9.5', '9.2', '8.5'] as $candidate) {
             $schema = (new SchemaFinder)->find($candidate);
