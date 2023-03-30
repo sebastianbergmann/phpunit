@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Xml;
+namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function file_get_contents;
 use function libxml_clear_errors;

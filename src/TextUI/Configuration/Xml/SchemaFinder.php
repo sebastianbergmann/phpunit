@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Xml;
+namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function defined;
 use function is_file;
@@ -20,7 +20,7 @@ use PHPUnit\Runner\Version;
 final class SchemaFinder
 {
     /**
-     * @throws XmlException
+     * @throws CannotFindSchemaException
      */
     public function find(string $version): string
     {
@@ -31,7 +31,7 @@ final class SchemaFinder
         }
 
         if (!is_file($filename)) {
-            throw new XmlException(
+            throw new CannotFindSchemaException(
                 sprintf(
                     'Schema for PHPUnit %s is not available',
                     $version
@@ -48,6 +48,6 @@ final class SchemaFinder
             return __PHPUNIT_PHAR_ROOT__ . '/';
         }
 
-        return __DIR__ . '/../../../';
+        return __DIR__ . '/../../../../';
     }
 }

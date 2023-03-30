@@ -14,7 +14,6 @@ use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
-use PHPUnit\Util\Xml\ValidationResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

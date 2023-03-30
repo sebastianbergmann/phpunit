@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Xml\ValidationResult;
+use PHPUnit\TextUI\XmlConfiguration\ValidationResult;
 
 #[CoversClass(Xml::class)]
 #[CoversClass(ValidationResult::class)]

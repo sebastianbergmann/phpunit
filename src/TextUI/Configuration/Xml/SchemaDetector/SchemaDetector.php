@@ -7,7 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Xml;
+namespace PHPUnit\TextUI\XmlConfiguration;
+
+use PHPUnit\Util\Xml\Loader;
+use PHPUnit\Util\Xml\XmlException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

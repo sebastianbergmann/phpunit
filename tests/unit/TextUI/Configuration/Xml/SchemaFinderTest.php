@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Xml;
+namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -25,7 +25,7 @@ final class SchemaFinderTest extends TestCase
 
     public function testDoesNotFindNonExistentSchemaForComposerInstallation(): void
     {
-        $this->expectException(XmlException::class);
+        $this->expectException(CannotFindSchemaException::class);
 
         (new SchemaFinder)->find('0.0');
     }

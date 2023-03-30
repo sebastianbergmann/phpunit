@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
 use DOMElement;
-use PHPUnit\Util\Xml\SnapshotNodeList;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
