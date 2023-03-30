@@ -22,7 +22,6 @@ final class SchemaDetector
         $document = (new Loader)->loadFile(
             $filename,
             true,
-            true
         );
 
         foreach (['9.5', '9.2', '8.5'] as $candidate) {

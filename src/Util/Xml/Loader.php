@@ -27,7 +27,7 @@ final class Loader
     /**
      * @throws XmlException
      */
-    public function loadFile(string $filename, bool $xinclude = false, bool $strict = false): DOMDocument
+    public function loadFile(string $filename, bool $xinclude = false): DOMDocument
     {
         $reporting = error_reporting(0);
         $contents  = file_get_contents($filename);
@@ -43,13 +43,13 @@ final class Loader
             );
         }
 
-        return $this->load($contents, $filename, $xinclude, $strict);
+        return $this->load($contents, $filename, $xinclude);
     }
 
     /**
      * @throws XmlException
      */
-    public function load(string $actual, string $filename = '', bool $xinclude = false, bool $strict = false): DOMDocument
+    public function load(string $actual, string $filename = '', bool $xinclude = false): DOMDocument
     {
         if ($actual === '') {
             throw new XmlException('Could not load XML from empty string');
@@ -90,7 +90,7 @@ final class Loader
             @chdir($cwd);
         }
 
-        if ($loaded === false || ($strict && $message !== '')) {
+        if ($loaded === false || $message !== '') {
             if ($filename !== '') {
                 throw new XmlException(
                     sprintf(

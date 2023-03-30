@@ -41,7 +41,6 @@ final class Migrator
         $configurationDocument = (new XmlLoader)->loadFile(
             $filename,
             true,
-            true
         );
 
         foreach ((new MigrationBuilder)->build($origin->version()) as $migration) {
