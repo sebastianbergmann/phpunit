@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
+<files psalm-version="5.9.0@8b9ad1eb9e8b7d3101f949291da2b9f7767cd163">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -182,10 +182,8 @@
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->returnType]]></code>
-    </ArgumentTypeCoercion>
-    <InvalidArgument>
       <code>$types</code>
-    </InvalidArgument>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/MockObject/Matcher.php">
     <InvalidNullableReturnType>
@@ -347,6 +345,9 @@
       <code><![CDATA[$this->status]]></code>
       <code><![CDATA[$this->time]]></code>
     </PossiblyNullArgument>
+    <PropertyTypeCoercion>
+      <code><![CDATA[$this->testDoubles]]></code>
+    </PropertyTypeCoercion>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
@@ -408,7 +409,31 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Metadata/Parser/Annotation/DocBlock.php">
-    <MoreSpecificReturnType>
+    <InvalidPropertyAssignmentValue>
+      <code><![CDATA[array_merge(
+            $requires,
+            ['__OFFSET' => $recordedOffsets],
+            array_filter(
+                [
+                    'setting'            => $recordedSettings,
+                    'extension_versions' => $extensionVersions,
+                ]
+            )
+        )]]></code>
+    </InvalidPropertyAssignmentValue>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->parsedRequirements = array_merge(
+            $requires,
+            ['__OFFSET' => $recordedOffsets],
+            array_filter(
+                [
+                    'setting'            => $recordedSettings,
+                    'extension_versions' => $extensionVersions,
+                ]
+            )
+        )]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
       <code><![CDATA[array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
      *   setting?: array<string, string>,
@@ -417,7 +442,7 @@
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >]]></code>
-    </MoreSpecificReturnType>
+    </InvalidReturnType>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion>
@@ -794,6 +819,13 @@
       <code><![CDATA[$this->stream]]></code>
       <code><![CDATA[$this->stream]]></code>
     </PossiblyInvalidArgument>
+  </file>
+  <file src="src/Util/ExcludeList.php">
+    <InvalidPropertyAssignmentValue>
+      <code>self::$directories</code>
+      <code>self::$directories</code>
+      <code>self::$directories</code>
+    </InvalidPropertyAssignmentValue>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction>
