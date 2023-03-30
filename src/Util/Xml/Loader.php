@@ -49,7 +49,7 @@ final class Loader
     /**
      * @throws XmlException
      */
-    public function load(string $actual, string $filename = ''): DOMDocument
+    public function load(string $actual, ?string $filename = null): DOMDocument
     {
         if ($actual === '') {
             throw new XmlException('Could not load XML from empty string');
@@ -63,7 +63,7 @@ final class Loader
         $reporting = error_reporting(0);
 
         // Required for XInclude
-        if ($filename !== '') {
+        if ($filename !== null) {
             // Required for XInclude on Windows
             if (DIRECTORY_SEPARATOR === '\\') {
                 $cwd = getcwd();
@@ -75,7 +75,7 @@ final class Loader
 
         $loaded = $document->loadXML($actual);
 
-        if ($filename !== '') {
+        if ($filename !== null) {
             $document->xinclude();
         }
 
@@ -91,7 +91,7 @@ final class Loader
         }
 
         if ($loaded === false || $message !== '') {
-            if ($filename !== '') {
+            if ($filename !== null) {
                 throw new XmlException(
                     sprintf(
                         'Could not load "%s".%s',
