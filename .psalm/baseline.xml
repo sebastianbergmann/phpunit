@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
+<files psalm-version="5.9.0@8b9ad1eb9e8b7d3101f949291da2b9f7767cd163">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -1756,10 +1756,27 @@
     </UnsafeInstantiation>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
-    <MissingThrowsDocblock>
-      <code>throw new SkippedTestError;</code>
-    </MissingThrowsDocblock>
-    <MoreSpecificReturnType>
+    <InvalidPropertyAssignmentValue>
+      <code><![CDATA[array_merge(
+            $requires,
+            ['__OFFSET' => $recordedOffsets],
+            array_filter([
+                'setting'            => $recordedSettings,
+                'extension_versions' => $extensionVersions,
+            ])
+        )]]></code>
+    </InvalidPropertyAssignmentValue>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->parsedRequirements = array_merge(
+            $requires,
+            ['__OFFSET' => $recordedOffsets],
+            array_filter([
+                'setting'            => $recordedSettings,
+                'extension_versions' => $extensionVersions,
+            ])
+        )]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
       <code><![CDATA[array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
      *   setting?: array<string, string>,
@@ -1768,7 +1785,10 @@
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >]]></code>
-    </MoreSpecificReturnType>
+    </InvalidReturnType>
+    <MissingThrowsDocblock>
+      <code>throw new SkippedTestError;</code>
+    </MissingThrowsDocblock>
     <RedundantCast>
       <code><![CDATA[(string) $matches['value'][$i]]]></code>
     </RedundantCast>
