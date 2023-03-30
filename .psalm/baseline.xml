@@ -590,9 +590,9 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
-    <InvalidArgument>
+    <ArgumentTypeCoercion>
       <code>$types</code>
-    </InvalidArgument>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock>
       <code>throw $t;</code>
     </MissingThrowsDocblock>
