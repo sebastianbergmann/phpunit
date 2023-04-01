@@ -39,11 +39,11 @@ final class GeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-    </coverage>
+    </source>
 </phpunit>
 ',
             $generator->generateDefaultConfiguration(
