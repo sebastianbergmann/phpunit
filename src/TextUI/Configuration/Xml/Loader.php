@@ -108,6 +108,7 @@ final class Loader
             $filename,
             (new Validator)->validate($document, $xsdFilename),
             $this->extensions($xpath),
+            $this->source($filename, $xpath),
             $this->codeCoverage($filename, $xpath),
             $this->groups($xpath),
             $this->logging($filename, $xpath),
@@ -243,6 +244,16 @@ final class Loader
         }
 
         return $file;
+    }
+
+    private function source(string $filename, DOMXPath $xpath): Source
+    {
+        return new Source(
+            $this->readFilterDirectories($filename, $xpath, 'source/include/directory'),
+            $this->readFilterFiles($filename, $xpath, 'source/include/file'),
+            $this->readFilterDirectories($filename, $xpath, 'source/exclude/directory'),
+            $this->readFilterFiles($filename, $xpath, 'source/exclude/file'),
+        );
     }
 
     private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage

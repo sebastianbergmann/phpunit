@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../phpunit.xsd">
-    <coverage cacheDirectory="/tmp/cache"
-              pathCoverage="true"
-              ignoreDeprecatedCodeUnits="true"
-              disableCodeCoverageIgnore="true">
+    <source>
         <include>
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>
@@ -17,7 +14,12 @@
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>
         </exclude>
+    </source>
 
+    <coverage cacheDirectory="/tmp/cache"
+              pathCoverage="true"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
         <report>
             <clover outputFile="clover.xml"/>
             <cobertura outputFile="cobertura.xml"/>

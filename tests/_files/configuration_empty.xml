@@ -17,15 +17,18 @@
     </exclude>
   </groups>
 
+  <source>
+   <include>
+    <directory></directory>
+    <file></file>
+   </include>
+   <exclude>
+    <directory></directory>
+    <file></file>
+   </exclude>
+  </source>
+
   <coverage>
-    <include>
-      <directory></directory>
-      <file></file>
-    </include>
-    <exclude>
-      <directory></directory>
-      <file></file>
-    </exclude>
   </coverage>
 
   <logging>

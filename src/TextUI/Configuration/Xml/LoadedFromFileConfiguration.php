@@ -25,13 +25,14 @@ final class LoadedFromFileConfiguration extends Configuration
     private readonly string $filename;
     private readonly ValidationResult $validationResult;
 
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
 
         parent::__construct(
             $extensions,
+            $source,
             $codeCoverage,
             $groups,
             $logging,

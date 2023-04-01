@@ -33,7 +33,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage ignoreDeprecatedCodeUnits="true">
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
@@ -41,6 +41,9 @@
         <exclude>
             <file>src/Framework/Assert/Functions.php</file>
         </exclude>
+    </source>
+
+    <coverage ignoreDeprecatedCodeUnits="true">
     </coverage>
 
     <php>

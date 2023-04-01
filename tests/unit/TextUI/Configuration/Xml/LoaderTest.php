@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\Configuration\File;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
@@ -137,6 +136,31 @@ final class LoaderTest extends TestCase
         @unlink($tmpFilename);
     }
 
+    public function testSourceConfigurationIsReadCorrectly(): void
+    {
+        $source = $this->configuration('configuration_codecoverage.xml')->source();
+
+        $directory = iterator_to_array($source->directories(), false)[0];
+
+        $this->assertSame('/path/to/files', $directory->path());
+        $this->assertSame('', $directory->prefix());
+        $this->assertSame('.php', $directory->suffix());
+
+        $file = iterator_to_array($source->files(), false)[0];
+        $this->assertSame('/path/to/file', $file->path());
+
+        $file = iterator_to_array($source->files(), false)[1];
+        $this->assertSame('/path/to/file', $file->path());
+
+        $directory = iterator_to_array($source->excludeDirectories(), false)[0];
+        $this->assertSame('/path/to/files', $directory->path());
+        $this->assertSame('', $directory->prefix());
+        $this->assertSame('.php', $directory->suffix());
+
+        $file = iterator_to_array($source->excludeFiles(), false)[0];
+        $this->assertSame('/path/to/file', $file->path());
+    }
+
     public function testCodeCoverageConfigurationIsReadCorrectly(): void
     {
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
@@ -148,29 +172,10 @@ final class LoaderTest extends TestCase
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 
-        /** @var \PHPUnit\TextUI\Configuration\Directory $directory */
-        $directory = iterator_to_array($codeCoverage->directories(), false)[0];
-        $this->assertSame('/path/to/files', $directory->path());
-        $this->assertSame('', $directory->prefix());
-        $this->assertSame('.php', $directory->suffix());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[0];
-        $this->assertSame('/path/to/file', $file->path());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[1];
-        $this->assertSame('/path/to/file', $file->path());
-
-        /** @var \PHPUnit\TextUI\Configuration\Directory $directory */
-        $directory = iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
-        $this->assertSame('/path/to/files', $directory->path());
-        $this->assertSame('', $directory->prefix());
-        $this->assertSame('.php', $directory->suffix());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->excludeFiles(), false)[0];
-        $this->assertSame('/path/to/file', $file->path());
+        $this->assertFalse($codeCoverage->directories()->notEmpty());
+        $this->assertFalse($codeCoverage->files()->notEmpty());
+        $this->assertFalse($codeCoverage->excludeDirectories()->notEmpty());
+        $this->assertFalse($codeCoverage->excludeFiles()->notEmpty());
 
         $this->assertTrue($codeCoverage->hasClover());
         $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());

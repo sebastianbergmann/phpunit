@@ -11,7 +11,7 @@
             <xs:documentation>Root Element</xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:complexType name="coverageType">
+    <xs:complexType name="sourceType">
         <xs:all>
             <xs:element name="include" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
@@ -23,6 +23,10 @@
                     <xs:group ref="pathGroup"/>
                 </xs:complexType>
             </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="coverageType">
+        <xs:all>
             <xs:element name="report" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                     <xs:group ref="coverageReportGroup"/>
@@ -217,6 +221,7 @@
         <xs:all>
             <xs:element ref="testSuiteFacet" minOccurs="0"/>
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
+            <xs:element name="source" type="sourceType" minOccurs="0"/>
             <xs:element name="coverage" type="coverageType" minOccurs="0"/>
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>

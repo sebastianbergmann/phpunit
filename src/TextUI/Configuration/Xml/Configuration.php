@@ -23,6 +23,7 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 abstract class Configuration
 {
     private readonly ExtensionBootstrapCollection $extensions;
+    private readonly Source $source;
     private readonly CodeCoverage $codeCoverage;
     private readonly Groups $groups;
     private readonly Logging $logging;
@@ -30,9 +31,10 @@ abstract class Configuration
     private readonly PHPUnit $phpunit;
     private readonly TestSuiteCollection $testSuite;
 
-    public function __construct(ExtensionBootstrapCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->extensions   = $extensions;
+        $this->source       = $source;
         $this->codeCoverage = $codeCoverage;
         $this->groups       = $groups;
         $this->logging      = $logging;
@@ -44,6 +46,11 @@ abstract class Configuration
     public function extensions(): ExtensionBootstrapCollection
     {
         return $this->extensions;
+    }
+
+    public function source(): Source
+    {
+        return $this->source;
     }
 
     public function codeCoverage(): CodeCoverage

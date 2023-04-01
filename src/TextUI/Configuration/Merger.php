@@ -685,16 +685,30 @@ final class Merger
             $testSuffixes = $cliConfiguration->testSuffixes();
         }
 
-        $coverageIncludeDirectories = [];
+        $sourceIncludeDirectories = [];
 
         if ($cliConfiguration->hasCoverageFilter()) {
             foreach ($cliConfiguration->coverageFilter() as $directory) {
-                $coverageIncludeDirectories[] = new FilterDirectory($directory, '', '.php');
+                $sourceIncludeDirectories[] = new FilterDirectory($directory, '', '.php');
             }
         }
 
-        foreach ($xmlConfiguration->codeCoverage()->directories() as $directory) {
-            $coverageIncludeDirectories[] = $directory;
+        if ($xmlConfiguration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+            foreach ($xmlConfiguration->codeCoverage()->directories() as $directory) {
+                $sourceIncludeDirectories[] = $directory;
+            }
+
+            $sourceIncludeFiles       = $xmlConfiguration->codeCoverage()->files();
+            $sourceExcludeDirectories = $xmlConfiguration->codeCoverage()->excludeDirectories();
+            $sourceExcludeFiles       = $xmlConfiguration->codeCoverage()->excludeFiles();
+        } else {
+            foreach ($xmlConfiguration->source()->directories() as $directory) {
+                $sourceIncludeDirectories[] = $directory;
+            }
+
+            $sourceIncludeFiles       = $xmlConfiguration->source()->files();
+            $sourceExcludeDirectories = $xmlConfiguration->source()->excludeDirectories();
+            $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
         }
 
         return new Configuration(
@@ -704,10 +718,10 @@ final class Merger
             $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
-            FilterDirectoryCollection::fromArray($coverageIncludeDirectories),
-            $xmlConfiguration->codeCoverage()->files(),
-            $xmlConfiguration->codeCoverage()->excludeDirectories(),
-            $xmlConfiguration->codeCoverage()->excludeFiles(),
+            FilterDirectoryCollection::fromArray($sourceIncludeDirectories),
+            $sourceIncludeFiles,
+            $sourceExcludeDirectories,
+            $sourceExcludeFiles,
             $testResultCacheFile,
             $coverageClover,
             $coverageCobertura,
