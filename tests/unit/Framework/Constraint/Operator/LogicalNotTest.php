@@ -80,6 +80,7 @@ final class LogicalNotTest extends TestCase
             ['it ends with', 'it ends with'],
             ['you reference me', 'you don\'t reference me'],
             ['it\'s not not false', 'it\'s not false'],
+            ['has property "existsInDb"', 'does not have property "existsInDb"'],
         ];
     }
 
