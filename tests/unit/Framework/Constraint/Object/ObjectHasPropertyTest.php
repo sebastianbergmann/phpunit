@@ -36,6 +36,16 @@ final class ObjectHasPropertyTest extends TestCase
         $constraint->evaluate(new stdClass);
     }
 
+    public function testHandlesNonObjectsGracefully(): void
+    {
+        $constraint = new ObjectHasProperty('theProperty');
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('Failed asserting that "non-object" (string) has property "theProperty".');
+
+        $constraint->evaluate('non-object');
+    }
+
     public function testCanBeRepresentedAsString(): void
     {
         $constraint = new ObjectHasProperty('theProperty');

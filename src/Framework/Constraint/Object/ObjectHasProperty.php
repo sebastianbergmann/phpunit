@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function gettype;
 use function is_object;
 use function sprintf;
 use ReflectionObject;
@@ -61,10 +62,18 @@ final class ObjectHasProperty extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
+        if (is_object($other)) {
+            return sprintf(
+                'object of class "%s" %s',
+                $other::class,
+                $this->toString()
+            );
+        }
+
         return sprintf(
-            '%sclass "%s" %s',
-            is_object($other) ? 'object of ' : '',
-            is_object($other) ? $other::class : $other,
+            '"%s" (%s) %s',
+            $other,
+            gettype($other),
             $this->toString()
         );
     }
