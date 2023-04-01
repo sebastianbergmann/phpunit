@@ -24,5 +24,10 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * [#5243](https://github.com/sebastianbergmann/phpunit/issues/5243): Deprecate `TestCase::getMockForTrait()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5244](https://github.com/sebastianbergmann/phpunit/issues/5244): Deprecate `TestCase::getObjectForTrait()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5252](https://github.com/sebastianbergmann/phpunit/issues/5252): Deprecate `TestCase::getMockBuilder()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
+* `PHPUnit\TextUI\Configuration\Configuration::hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()` (use `hasNonEmptyListOfSourceFiles()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeDirectories()` (use `sourceIncludeDirectories()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeFiles()` (use `sourceIncludeFiles()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `sourceExcludeDirectories()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `sourceExcludeFiles()` instead)
 
 [10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0...main
