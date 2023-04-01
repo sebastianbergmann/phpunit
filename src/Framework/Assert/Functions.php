@@ -1136,7 +1136,7 @@ if (!function_exists('PHPUnit\Framework\assertObjectHasProperty')) {
      *
      * @see Assert::assertObjectHasProperty()
      */
-    function assertObjectHasProperty(string $attributeName, object $objet, string $message = ''): void
+    function assertObjectHasProperty(string $attributeName, object $object, string $message = ''): void
     {
         Assert::assertObjectHasProperty(...func_get_args());
     }
@@ -1152,7 +1152,7 @@ if (!function_exists('PHPUnit\Framework\assertObjectNotHasProperty')) {
      *
      * @see Assert::assertObjectNotHasProperty()
      */
-    function assertObjectNotHasProperty(string $attributeName, object $objet, string $message = ''): void
+    function assertObjectNotHasProperty(string $attributeName, object $object, string $message = ''): void
     {
         Assert::assertObjectNotHasProperty(...func_get_args());
     }
