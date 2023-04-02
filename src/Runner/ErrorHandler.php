@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
+namespace PHPUnit\Runner;
 
 use const E_DEPRECATED;
 use const E_NOTICE;
@@ -38,7 +38,7 @@ final class ErrorHandler
     }
 
     /**
-     * @throws Exception
+     * @throws NoTestCaseObjectOnCallStackException
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
