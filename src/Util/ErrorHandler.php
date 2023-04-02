@@ -32,18 +32,6 @@ final class ErrorHandler
     private static ?self $instance = null;
     private bool $enabled          = false;
 
-    /**
-     * @psalm-var array<int, array<string, true>>
-     */
-    private array $includeDirectories = [
-        E_DEPRECATED      => [],
-        E_NOTICE          => [],
-        E_WARNING         => [],
-        E_USER_DEPRECATED => [],
-        E_USER_NOTICE     => [],
-        E_USER_WARNING    => [],
-    ];
-
     public static function instance(): self
     {
         return self::$instance ?? self::$instance = new self;
@@ -64,10 +52,6 @@ final class ErrorHandler
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
-                if (!$this->shouldEventBeEmitted(E_NOTICE, $errorFile)) {
-                    return true;
-                }
-
                 Event\Facade::emitter()->testTriggeredPhpNotice(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -78,10 +62,6 @@ final class ErrorHandler
                 return true;
 
             case E_USER_NOTICE:
-                if (!$this->shouldEventBeEmitted(E_USER_NOTICE, $errorFile)) {
-                    break;
-                }
-
                 Event\Facade::emitter()->testTriggeredNotice(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -92,10 +72,6 @@ final class ErrorHandler
                 break;
 
             case E_WARNING:
-                if (!$this->shouldEventBeEmitted(E_WARNING, $errorFile)) {
-                    break;
-                }
-
                 Event\Facade::emitter()->testTriggeredPhpWarning(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -106,10 +82,6 @@ final class ErrorHandler
                 break;
 
             case E_USER_WARNING:
-                if (!$this->shouldEventBeEmitted(E_USER_WARNING, $errorFile)) {
-                    break;
-                }
-
                 Event\Facade::emitter()->testTriggeredWarning(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -120,10 +92,6 @@ final class ErrorHandler
                 break;
 
             case E_DEPRECATED:
-                if (!$this->shouldEventBeEmitted(E_DEPRECATED, $errorFile)) {
-                    break;
-                }
-
                 Event\Facade::emitter()->testTriggeredPhpDeprecation(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -134,10 +102,6 @@ final class ErrorHandler
                 break;
 
             case E_USER_DEPRECATED:
-                if (!$this->shouldEventBeEmitted(E_USER_DEPRECATED, $errorFile)) {
-                    break;
-                }
-
                 Event\Facade::emitter()->testTriggeredDeprecation(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -198,24 +162,6 @@ final class ErrorHandler
         restore_error_handler();
 
         $this->enabled = false;
-    }
-
-    public function includeDirectory(int $errorNumber, string $directory): void
-    {
-        $this->includeDirectories[$errorNumber][$directory] = true;
-    }
-
-    private function shouldEventBeEmitted(int $errorNumber, string $errorFile): bool
-    {
-        if (empty($this->includeDirectories[$errorNumber])) {
-            return true;
-        }
-
-        if (isset($this->includeDirectories[$errorNumber][$errorFile])) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
