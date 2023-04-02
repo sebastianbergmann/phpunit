@@ -52,8 +52,8 @@ final class CodeCoverageFilterRegistry
 
         $this->filter = new Filter;
 
-        if ($configuration->hasNonEmptyListOfSourceFiles()) {
-            foreach ($configuration->sourceIncludeDirectories() as $directory) {
+        if ($configuration->source()->notEmpty()) {
+            foreach ($configuration->source()->includeDirectories() as $directory) {
                 $this->filter->includeDirectory(
                     $directory->path(),
                     $directory->suffix(),
@@ -61,11 +61,11 @@ final class CodeCoverageFilterRegistry
                 );
             }
 
-            foreach ($configuration->sourceIncludeFiles() as $file) {
+            foreach ($configuration->source()->includeFiles() as $file) {
                 $this->filter->includeFile($file->path());
             }
 
-            foreach ($configuration->sourceExcludeDirectories() as $directory) {
+            foreach ($configuration->source()->excludeDirectories() as $directory) {
                 $this->filter->excludeDirectory(
                     $directory->path(),
                     $directory->suffix(),
@@ -73,7 +73,7 @@ final class CodeCoverageFilterRegistry
                 );
             }
 
-            foreach ($configuration->sourceExcludeFiles() as $file) {
+            foreach ($configuration->source()->excludeFiles() as $file) {
                 $this->filter->excludeFile($file->path());
             }
 

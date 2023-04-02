@@ -75,6 +75,7 @@ final class Registry
                     TestSuiteCollection::class,
                     TestSuite::class,
                     VersionComparisonOperator::class,
+                    Source::class,
                 ],
             ]
         );
