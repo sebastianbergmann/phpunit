@@ -6,12 +6,14 @@
          cacheDirectory=".phpunit.cache"
          requireCoverageMetadata="true">
 
-    <coverage>
+    <coverage/>
+
+    <logging/>
+
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-    </coverage>
-
-    <logging/>
+    </source>
 
 </phpunit>

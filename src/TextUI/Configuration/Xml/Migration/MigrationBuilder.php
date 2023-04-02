@@ -59,6 +59,10 @@ final class MigrationBuilder
             RemoveLoggingElements::class,
             RemoveTestDoxGroupsElement::class,
         ],
+
+        '10.0' => [
+            MoveCoverageDirectoriesToSource::class,
+        ],
     ];
 
     /**

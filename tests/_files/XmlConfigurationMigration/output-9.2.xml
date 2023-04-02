@@ -6,17 +6,6 @@
     <coverage includeUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-
-        <exclude>
-            <directory suffix=".php">src/generated</directory>
-            <file>src/autoload.php</file>
-            <directory suffix=".php">src/other</directory>
-            <file>src/some.php</file>
-        </exclude>
-
         <report>
             <clover outputFile="clover.xml"/>
             <crap4j outputFile="crap4j.xml" threshold="50"/>
@@ -33,4 +22,17 @@
         <testdoxHtml outputFile="testdox.html"/>
         <testdoxText outputFile="testdox.txt"/>
     </logging>
+
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+
+        <exclude>
+            <directory suffix=".php">src/generated</directory>
+            <file>src/autoload.php</file>
+            <directory suffix=".php">src/other</directory>
+            <file>src/some.php</file>
+        </exclude>
+    </source>
 </phpunit>
