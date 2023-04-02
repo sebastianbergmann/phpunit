@@ -35,6 +35,7 @@ final class DataProviderTestSuite extends TestSuite
             if (!$test instanceof TestCase) {
                 continue;
             }
+
             $test->setDependencies($dependencies);
         }
     }
