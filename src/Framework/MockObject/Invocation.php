@@ -150,7 +150,6 @@ final class Invocation implements SelfDescribing
             if (in_array('static', $types, true)) {
                 try {
                     return (new ReflectionClass($this->object::class))->newInstanceWithoutConstructor();
-                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new ReflectionException(
                         $e->getMessage(),
@@ -158,7 +157,6 @@ final class Invocation implements SelfDescribing
                         $e
                     );
                 }
-                // @codeCoverageIgnoreEnd
             }
 
             if (in_array('object', $types, true)) {

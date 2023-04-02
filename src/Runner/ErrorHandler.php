@@ -122,9 +122,7 @@ final class ErrorHandler
                 break;
 
             default:
-                // @codeCoverageIgnoreStart
                 return false;
-                // @codeCoverageIgnoreEnd
         }
 
         return true;
@@ -133,19 +131,15 @@ final class ErrorHandler
     public function enable(): void
     {
         if ($this->enabled) {
-            // @codeCoverageIgnoreStart
             return;
-            // @codeCoverageIgnoreEnd
         }
 
         $oldErrorHandler = set_error_handler($this);
 
         if ($oldErrorHandler !== null) {
-            // @codeCoverageIgnoreStart
             restore_error_handler();
 
             return;
-            // @codeCoverageIgnoreEnd
         }
 
         $this->enabled = true;
@@ -154,9 +148,7 @@ final class ErrorHandler
     public function disable(): void
     {
         if (!$this->enabled) {
-            // @codeCoverageIgnoreStart
             return;
-            // @codeCoverageIgnoreEnd
         }
 
         restore_error_handler();
@@ -175,8 +167,6 @@ final class ErrorHandler
             }
         }
 
-        // @codeCoverageIgnoreStart
         throw new NoTestCaseObjectOnCallStackException;
-        // @codeCoverageIgnoreEnd
     }
 }

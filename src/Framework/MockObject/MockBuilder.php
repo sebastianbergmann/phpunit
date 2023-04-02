@@ -163,7 +163,6 @@ final class MockBuilder
 
         try {
             $reflector = new ReflectionClass($this->type);
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -171,7 +170,6 @@ final class MockBuilder
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
 
         foreach ($methods as $method) {
             if (!$reflector->hasMethod($method)) {
@@ -205,7 +203,6 @@ final class MockBuilder
 
         try {
             $reflector = new ReflectionClass($this->type);
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -213,7 +210,6 @@ final class MockBuilder
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
 
         foreach ($methods as $method) {
             if ($reflector->hasMethod($method)) {

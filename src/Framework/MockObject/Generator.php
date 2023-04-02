@@ -229,7 +229,6 @@ final class Generator
             interface_exists($originalClassName, $callAutoload)) {
             try {
                 $reflector = new ReflectionClass($originalClassName);
-                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new ReflectionException(
                     $e->getMessage(),
@@ -237,7 +236,6 @@ final class Generator
                     $e
                 );
             }
-            // @codeCoverageIgnoreEnd
 
             $methods = $mockedMethods;
 
@@ -503,7 +501,6 @@ final class Generator
     {
         try {
             $class = new ReflectionClass($className);
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -511,7 +508,6 @@ final class Generator
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
 
         $methods = [];
 
@@ -533,7 +529,6 @@ final class Generator
     {
         try {
             $class = new ReflectionClass($className);
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -541,7 +536,6 @@ final class Generator
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
 
         $methods = [];
 
@@ -563,7 +557,6 @@ final class Generator
     {
         try {
             $class = new ReflectionClass($interfaceName);
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -571,7 +564,6 @@ final class Generator
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
 
         $methods = [];
 
@@ -592,7 +584,6 @@ final class Generator
     private function userDefinedInterfaceMethods(string $interfaceName): array
     {
         try {
-            // @codeCoverageIgnoreStart
             $interface = new ReflectionClass($interfaceName);
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
@@ -601,7 +592,6 @@ final class Generator
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
 
         $methods = [];
 
@@ -681,7 +671,6 @@ final class Generator
         } else {
             try {
                 $class = new ReflectionClass($_mockClassName['fullClassName']);
-                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new ReflectionException(
                     $e->getMessage(),
@@ -689,7 +678,6 @@ final class Generator
                     $e
                 );
             }
-            // @codeCoverageIgnoreEnd
 
             if ($class->isEnum()) {
                 throw new ClassIsEnumerationException($_mockClassName['fullClassName']);
@@ -711,7 +699,6 @@ final class Generator
 
                 try {
                     $class = new ReflectionClass($actualClassName);
-                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new ReflectionException(
                         $e->getMessage(),
@@ -719,7 +706,6 @@ final class Generator
                         $e
                     );
                 }
-                // @codeCoverageIgnoreEnd
 
                 foreach ($this->userDefinedInterfaceMethods($_mockClassName['fullClassName']) as $method) {
                     $methodName = $method->getName();
@@ -983,7 +969,6 @@ final class Generator
         if ($mockClassName !== '' && class_exists($mockClassName, false)) {
             try {
                 $reflector = new ReflectionClass($mockClassName);
-                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new ReflectionException(
                     $e->getMessage(),
@@ -991,7 +976,6 @@ final class Generator
                     $e
                 );
             }
-            // @codeCoverageIgnoreEnd
 
             if (!$reflector->implementsInterface(MockObject::class)) {
                 throw new ClassAlreadyExistsException($mockClassName);
@@ -1013,7 +997,6 @@ final class Generator
 
             try {
                 return (new ReflectionClass($className))->newInstanceArgs($arguments);
-                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new ReflectionException(
                     $e->getMessage(),
@@ -1021,12 +1004,10 @@ final class Generator
                     $e
                 );
             }
-            // @codeCoverageIgnoreEnd
         }
 
         try {
             return (new ReflectionClass($className))->newInstanceWithoutConstructor();
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -1034,7 +1015,6 @@ final class Generator
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -1054,7 +1034,6 @@ final class Generator
 
                 try {
                     $proxyTarget = $class->newInstanceArgs($arguments);
-                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new ReflectionException(
                         $e->getMessage(),
@@ -1062,7 +1041,6 @@ final class Generator
                         $e
                     );
                 }
-                // @codeCoverageIgnoreEnd
             }
         }
 

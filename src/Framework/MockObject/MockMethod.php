@@ -295,7 +295,6 @@ final class MockMethod
                     -2
                 )
             )[1];
-            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -303,6 +302,5 @@ final class MockMethod
                 $e
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 }
