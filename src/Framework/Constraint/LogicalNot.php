@@ -29,7 +29,7 @@ final class LogicalNot extends Constraint
     {
         $positives = [
             'contains ',
-            ' exists',
+            'exists',
             'has ',
             'is ',
             'are ',
@@ -42,7 +42,7 @@ final class LogicalNot extends Constraint
 
         $negatives = [
             'does not contain ',
-            ' does not exist',
+            'does not exist',
             'does not have ',
             'is not ',
             'are not ',
