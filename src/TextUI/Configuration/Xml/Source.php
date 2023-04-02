@@ -24,13 +24,19 @@ final class Source
     private readonly FileCollection $files;
     private readonly FilterDirectoryCollection $excludeDirectories;
     private readonly FileCollection $excludeFiles;
+    private readonly bool $filterDeprecations;
+    private readonly bool $filterNotices;
+    private readonly bool $filterWarnings;
 
-    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles)
+    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $filterDeprecations, bool $filterNotices, bool $filterWarnings)
     {
         $this->directories        = $directories;
         $this->files              = $files;
         $this->excludeDirectories = $excludeDirectories;
         $this->excludeFiles       = $excludeFiles;
+        $this->filterDeprecations = $filterDeprecations;
+        $this->filterNotices      = $filterNotices;
+        $this->filterWarnings     = $filterWarnings;
     }
 
     public function hasNonEmptyListOfFiles(): bool
@@ -56,5 +62,20 @@ final class Source
     public function excludeFiles(): FileCollection
     {
         return $this->excludeFiles;
+    }
+
+    public function filterDeprecations(): bool
+    {
+        return $this->filterDeprecations;
+    }
+
+    public function filterNotices(): bool
+    {
+        return $this->filterNotices;
+    }
+
+    public function filterWarnings(): bool
+    {
+        return $this->filterWarnings;
     }
 }

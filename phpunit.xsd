@@ -24,6 +24,9 @@
                 </xs:complexType>
             </xs:element>
         </xs:all>
+        <xs:attribute name="filterDeprecations" type="xs:boolean" default="true"/>
+        <xs:attribute name="filterNotices" type="xs:boolean" default="true"/>
+        <xs:attribute name="filterWarnings" type="xs:boolean" default="true"/>
     </xs:complexType>
     <xs:complexType name="coverageType">
         <xs:all>
