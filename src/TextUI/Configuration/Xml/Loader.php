@@ -248,16 +248,16 @@ final class Loader
 
     private function source(string $filename, DOMXPath $xpath): Source
     {
-        $filterDeprecations = true;
-        $filterNotices      = true;
-        $filterWarnings     = true;
+        $filterDeprecations = false;
+        $filterNotices      = false;
+        $filterWarnings     = false;
 
         $element = $this->element($xpath, 'source');
 
         if ($element) {
-            $filterDeprecations = $this->getBooleanAttribute($element, 'filterDeprecations', true);
-            $filterNotices      = $this->getBooleanAttribute($element, 'filterNotices', true);
-            $filterWarnings     = $this->getBooleanAttribute($element, 'filterWarnings', true);
+            $filterDeprecations = $this->getBooleanAttribute($element, 'filterDeprecations', false);
+            $filterNotices      = $this->getBooleanAttribute($element, 'filterNotices', false);
+            $filterWarnings     = $this->getBooleanAttribute($element, 'filterWarnings', false);
         }
 
         return new Source(

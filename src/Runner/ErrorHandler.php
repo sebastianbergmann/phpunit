@@ -23,6 +23,8 @@ use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\TextUI\Configuration\Source;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -31,10 +33,35 @@ final class ErrorHandler
 {
     private static ?self $instance = null;
     private bool $enabled          = false;
+    private readonly Source $source;
+    private readonly bool $filterDeprecations;
+    private readonly bool $filterNotices;
+    private readonly bool $filterWarnings;
 
     public static function instance(): self
     {
-        return self::$instance ?? self::$instance = new self;
+        if (self::$instance !== null) {
+            return self::$instance;
+        }
+
+        $configuration = ConfigurationRegistry::get();
+
+        self::$instance = new self(
+            $configuration->source(),
+            $configuration->filterDeprecations(),
+            $configuration->filterNotices(),
+            $configuration->filterWarnings(),
+        );
+
+        return self::$instance;
+    }
+
+    private function __construct(Source $source, bool $filterDeprecations, bool $filterNotices, bool $filterWarnings)
+    {
+        $this->source             = $source;
+        $this->filterDeprecations = $filterDeprecations;
+        $this->filterNotices      = $filterNotices;
+        $this->filterWarnings     = $filterWarnings;
     }
 
     /**
@@ -52,62 +79,74 @@ final class ErrorHandler
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
-                Event\Facade::emitter()->testTriggeredPhpNotice(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                if (!$this->filterNotices || $this->source->includes($errorFile)) {
+                    Event\Facade::emitter()->testTriggeredPhpNotice(
+                        $this->testValueObjectForEvents(),
+                        $errorString,
+                        $errorFile,
+                        $errorLine
+                    );
+                }
 
                 return true;
 
             case E_USER_NOTICE:
-                Event\Facade::emitter()->testTriggeredNotice(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                if (!$this->filterNotices || $this->source->includes($errorFile)) {
+                    Event\Facade::emitter()->testTriggeredNotice(
+                        $this->testValueObjectForEvents(),
+                        $errorString,
+                        $errorFile,
+                        $errorLine
+                    );
+                }
 
                 break;
 
             case E_WARNING:
-                Event\Facade::emitter()->testTriggeredPhpWarning(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                if (!$this->filterWarnings || $this->source->includes($errorFile)) {
+                    Event\Facade::emitter()->testTriggeredPhpWarning(
+                        $this->testValueObjectForEvents(),
+                        $errorString,
+                        $errorFile,
+                        $errorLine
+                    );
+                }
 
                 break;
 
             case E_USER_WARNING:
-                Event\Facade::emitter()->testTriggeredWarning(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                if (!$this->filterWarnings || $this->source->includes($errorFile)) {
+                    Event\Facade::emitter()->testTriggeredWarning(
+                        $this->testValueObjectForEvents(),
+                        $errorString,
+                        $errorFile,
+                        $errorLine
+                    );
+                }
 
                 break;
 
             case E_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredPhpDeprecation(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                if (!$this->filterDeprecations || $this->source->includes($errorFile)) {
+                    Event\Facade::emitter()->testTriggeredPhpDeprecation(
+                        $this->testValueObjectForEvents(),
+                        $errorString,
+                        $errorFile,
+                        $errorLine
+                    );
+                }
 
                 break;
 
             case E_USER_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredDeprecation(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                if (!$this->filterDeprecations || $this->source->includes($errorFile)) {
+                    Event\Facade::emitter()->testTriggeredDeprecation(
+                        $this->testValueObjectForEvents(),
+                        $errorString,
+                        $errorFile,
+                        $errorLine
+                    );
+                }
 
                 break;
 

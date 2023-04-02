@@ -37,7 +37,7 @@ final class Generator
         </testsuite>
     </testsuites>
 
-    <source>
+    <source filterDeprecations="true" filterNotices="true" filterWarnings="true">
         <include>
             <directory suffix=".php">{src_directory}</directory>
         </include>

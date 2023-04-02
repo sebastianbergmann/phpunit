@@ -39,9 +39,9 @@ final class DefaultConfiguration extends Configuration
                 FileCollection::fromArray([]),
                 CodeCoverageFilterDirectoryCollection::fromArray([]),
                 FileCollection::fromArray([]),
-                true,
-                true,
-                true,
+                false,
+                false,
+                false,
             ),
             new CodeCoverage(
                 null,
