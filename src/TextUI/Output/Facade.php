@@ -155,9 +155,9 @@ final class Facade
 
         new DefaultProgressPrinter(
             self::$printer,
+            EventFacade::instance(),
             $configuration->colors(),
-            $configuration->columns(),
-            EventFacade::instance()
+            $configuration->columns()
         );
 
         self::$defaultProgressPrinter = true;
