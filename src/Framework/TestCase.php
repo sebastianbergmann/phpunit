@@ -673,11 +673,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             } else {
                 $e = $_e;
 
-                $this->status = TestStatus::error($_e->getMessage());
+                $this->status = TestStatus::error($e->getMessage());
 
                 $emitter->testErrored(
                     $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($_e)
+                    Event\Code\ThrowableBuilder::from($e)
                 );
             }
         }
