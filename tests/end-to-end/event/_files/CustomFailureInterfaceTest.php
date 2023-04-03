@@ -17,6 +17,8 @@ final class CustomFailureInterfaceTest extends TestCase
     {
         $this->registerFailureType(CustomFailureInterface::class);
 
+        $this->assertTrue(true);
+
         throw new CustomFailureException('this should be treated as a failure');
     }
 
