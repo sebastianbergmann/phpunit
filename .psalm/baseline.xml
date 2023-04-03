@@ -799,15 +799,23 @@
       <code>DefaultPrinter::standardOutput()</code>
       <code><![CDATA[new DefaultProgressPrinter(
             self::$printer,
+            EventFacade::instance(),
             $configuration->colors(),
             $configuration->columns(),
-            EventFacade::instance()
+            $configuration->source(),
+            $configuration->filterDeprecations(),
+            $configuration->filterNotices(),
+            $configuration->filterWarnings(),
         )]]></code>
       <code><![CDATA[new DefaultProgressPrinter(
             self::$printer,
+            EventFacade::instance(),
             $configuration->colors(),
             $configuration->columns(),
-            EventFacade::instance()
+            $configuration->source(),
+            $configuration->filterDeprecations(),
+            $configuration->filterNotices(),
+            $configuration->filterWarnings(),
         )]]></code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>

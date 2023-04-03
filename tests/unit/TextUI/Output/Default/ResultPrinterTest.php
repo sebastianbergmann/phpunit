@@ -375,7 +375,7 @@ final class ResultPrinterTest extends TestCase
             true,
             true,
             true,
-            false
+            false,
         );
 
         $resultPrinter->print($result);

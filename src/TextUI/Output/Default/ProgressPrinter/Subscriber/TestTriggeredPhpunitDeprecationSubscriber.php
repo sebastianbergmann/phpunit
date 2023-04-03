@@ -19,6 +19,6 @@ final class TestTriggeredPhpunitDeprecationSubscriber extends Subscriber impleme
 {
     public function notify(PhpunitDeprecationTriggered $event): void
     {
-        $this->printer()->testTriggeredDeprecation();
+        $this->printer()->testTriggeredDeprecation($event);
     }
 }

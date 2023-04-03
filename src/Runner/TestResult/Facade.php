@@ -90,7 +90,15 @@ final class Facade
     private static function collector(): Collector
     {
         if (self::$collector === null) {
-            self::$collector = new Collector(EventFacade::instance());
+            $configuration = ConfigurationRegistry::get();
+
+            self::$collector = new Collector(
+                EventFacade::instance(),
+                $configuration->source(),
+                $configuration->filterDeprecations(),
+                $configuration->filterNotices(),
+                $configuration->filterWarnings(),
+            );
         }
 
         return self::$collector;

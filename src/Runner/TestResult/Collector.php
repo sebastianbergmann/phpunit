@@ -41,12 +41,17 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\TextUI\Configuration\Source;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Collector
 {
+    private readonly Source $source;
+    private readonly bool $filterDeprecations;
+    private readonly bool $filterNotices;
+    private readonly bool $filterWarnings;
     private int $numberOfTests                       = 0;
     private int $numberOfTestsRun                    = 0;
     private int $numberOfAssertions                  = 0;
@@ -147,7 +152,7 @@ final class Collector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Facade $facade)
+    public function __construct(Facade $facade, Source $source, bool $filterDeprecations, bool $filterNotices, bool $filterWarnings)
     {
         $facade->registerSubscribers(
             new ExecutionStartedSubscriber($this),
@@ -175,6 +180,11 @@ final class Collector
             new TestRunnerTriggeredDeprecationSubscriber($this),
             new TestRunnerTriggeredWarningSubscriber($this),
         );
+
+        $this->source             = $source;
+        $this->filterDeprecations = $filterDeprecations;
+        $this->filterNotices      = $filterNotices;
+        $this->filterWarnings     = $filterWarnings;
     }
 
     public function result(): TestResult
@@ -359,6 +369,10 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
+        if ($this->filterDeprecations && !$this->source->includes($event->file())) {
+            return;
+        }
+
         if (!isset($this->testTriggeredDeprecationEvents[$event->test()->id()])) {
             $this->testTriggeredDeprecationEvents[$event->test()->id()] = [];
         }
@@ -368,6 +382,10 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
+        if ($this->filterDeprecations && !$this->source->includes($event->file())) {
+            return;
+        }
+
         if (!isset($this->testTriggeredPhpDeprecationEvents[$event->test()->id()])) {
             $this->testTriggeredPhpDeprecationEvents[$event->test()->id()] = [];
         }
@@ -395,6 +413,10 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
+        if ($this->filterNotices && !$this->source->includes($event->file())) {
+            return;
+        }
+
         if (!isset($this->testTriggeredNoticeEvents[$event->test()->id()])) {
             $this->testTriggeredNoticeEvents[$event->test()->id()] = [];
         }
@@ -404,6 +426,10 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
+        if ($this->filterNotices && !$this->source->includes($event->file())) {
+            return;
+        }
+
         if (!isset($this->testTriggeredPhpNoticeEvents[$event->test()->id()])) {
             $this->testTriggeredPhpNoticeEvents[$event->test()->id()] = [];
         }
@@ -413,6 +439,10 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
+        if ($this->filterWarnings && !$this->source->includes($event->file())) {
+            return;
+        }
+
         if (!isset($this->testTriggeredWarningEvents[$event->test()->id()])) {
             $this->testTriggeredWarningEvents[$event->test()->id()] = [];
         }
@@ -422,6 +452,10 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
+        if ($this->filterWarnings && !$this->source->includes($event->file())) {
+            return;
+        }
+
         if (!isset($this->testTriggeredPhpWarningEvents[$event->test()->id()])) {
             $this->testTriggeredPhpWarningEvents[$event->test()->id()] = [];
         }

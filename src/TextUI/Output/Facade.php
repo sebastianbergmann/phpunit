@@ -157,7 +157,11 @@ final class Facade
             self::$printer,
             EventFacade::instance(),
             $configuration->colors(),
-            $configuration->columns()
+            $configuration->columns(),
+            $configuration->source(),
+            $configuration->filterDeprecations(),
+            $configuration->filterNotices(),
+            $configuration->filterWarnings(),
         );
 
         self::$defaultProgressPrinter = true;
@@ -232,7 +236,7 @@ final class Facade
             $configuration->displayDetailsOnTestsThatTriggerErrors(),
             $configuration->displayDetailsOnTestsThatTriggerNotices(),
             $configuration->displayDetailsOnTestsThatTriggerWarnings(),
-            $configuration->reverseDefectList()
+            $configuration->reverseDefectList(),
         );
     }
 

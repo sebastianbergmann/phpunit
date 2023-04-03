@@ -19,6 +19,6 @@ final class TestTriggeredWarningSubscriber extends Subscriber implements Warning
 {
     public function notify(WarningTriggered $event): void
     {
-        $this->printer()->testTriggeredWarning();
+        $this->printer()->testTriggeredWarning($event);
     }
 }

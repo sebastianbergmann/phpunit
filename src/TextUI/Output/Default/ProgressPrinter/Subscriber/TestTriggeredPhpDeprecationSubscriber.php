@@ -19,6 +19,6 @@ final class TestTriggeredPhpDeprecationSubscriber extends Subscriber implements 
 {
     public function notify(PhpDeprecationTriggered $event): void
     {
-        $this->printer()->testTriggeredDeprecation();
+        $this->printer()->testTriggeredDeprecation($event);
     }
 }
