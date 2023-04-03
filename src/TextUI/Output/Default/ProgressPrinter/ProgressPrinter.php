@@ -44,7 +44,7 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, bool $colors, int $numberOfColumns, Facade $facade)
+    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns)
     {
         $this->printer         = $printer;
         $this->colors          = $colors;
