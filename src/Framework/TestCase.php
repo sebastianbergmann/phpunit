@@ -662,8 +662,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
         } catch (Throwable $_e) {
-            $e = $_e;
-
             if ($this->isRegisteredFailure($_e)) {
                 $this->status = TestStatus::failure($_e->getMessage());
 
@@ -673,6 +671,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     null
                 );
             } else {
+                $e = $_e;
+
                 $this->status = TestStatus::error($_e->getMessage());
 
                 $emitter->testErrored(
