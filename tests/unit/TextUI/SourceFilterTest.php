@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -20,47 +21,71 @@ final class SourceFilterTest extends TestCase
 {
     public static function provider(): array
     {
+        $fixtureDirectory = realpath(__DIR__ . '/../../_files/source-filter');
+
         return [
             'file included using file' => [
                 true,
-                '/path/to/source.php',
+                $fixtureDirectory . '/a/PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
-                            new File('/path/to/source.php'),
+                            new File($fixtureDirectory . '/a/PrefixSuffix.php'),
                         ]
                     ),
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray([]),
                 ),
             ],
-            'file included using file, but also excluded using file' => [
+            'file included using file, but excluded using directory' => [
                 false,
-                '/path/to/source.php',
+                $fixtureDirectory . '/a/PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
-                            new File('/path/to/source.php'),
+                            new File($fixtureDirectory . '/a/PrefixSuffix.php'),
+                        ]
+                    ),
+                    FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(
+                                $fixtureDirectory . '/a',
+                                '',
+                                '.php'
+                            ),
+                        ]
+                    ),
+                    FileCollection::fromArray([]),
+                ),
+            ],
+            'file included using file, but excluded using file' => [
+                false,
+                $fixtureDirectory . '/a/PrefixSuffix.php',
+                new Source(
+                    FilterDirectoryCollection::fromArray([]),
+                    FileCollection::fromArray(
+                        [
+                            new File($fixtureDirectory . '/a/PrefixSuffix.php'),
                         ]
                     ),
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
-                            new File('/path/to/source.php'),
+                            new File($fixtureDirectory . '/a/PrefixSuffix.php'),
                         ]
                     ),
                 ),
             ],
             'file included using directory' => [
                 true,
-                '/path/to/source.php',
+                $fixtureDirectory . '/a/PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
-                                '/path',
+                                $fixtureDirectory,
                                 '',
                                 '.php'
                             ),
@@ -71,40 +96,14 @@ final class SourceFilterTest extends TestCase
                     FileCollection::fromArray([]),
                 ),
             ],
-            'file included using directory, but excluded using directory' => [
-                false,
-                '/path/to/source.php',
-                new Source(
-                    FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                '/path',
-                                '',
-                                '.php'
-                            ),
-                        ]
-                    ),
-                    FileCollection::fromArray([]),
-                    FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                '/path/to',
-                                '',
-                                '.php'
-                            ),
-                        ]
-                    ),
-                    FileCollection::fromArray([]),
-                ),
-            ],
             'file included using directory, but excluded using file' => [
                 false,
-                '/path/to/source.php',
+                $fixtureDirectory . '/a/PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
-                                '/path',
+                                $fixtureDirectory,
                                 '',
                                 '.php'
                             ),
@@ -114,9 +113,35 @@ final class SourceFilterTest extends TestCase
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
-                            new File('/path/to/source.php'),
+                            new File($fixtureDirectory . '/a/PrefixSuffix.php'),
                         ]
                     ),
+                ),
+            ],
+            'file included using directory, but excluded using directory' => [
+                false,
+                $fixtureDirectory . '/a/PrefixSuffix.php',
+                new Source(
+                    FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(
+                                $fixtureDirectory,
+                                '',
+                                '.php'
+                            ),
+                        ]
+                    ),
+                    FileCollection::fromArray([]),
+                    FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(
+                                $fixtureDirectory . '/a',
+                                '',
+                                '.php'
+                            ),
+                        ]
+                    ),
+                    FileCollection::fromArray([]),
                 ),
             ],
         ];

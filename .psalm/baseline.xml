@@ -650,6 +650,14 @@
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
     </RedundantCondition>
   </file>
+  <file src="src/TextUI/Configuration/SourceFilter.php">
+    <InvalidArgument>
+      <code>$files</code>
+      <code>$source</code>
+      <code>$source</code>
+      <code>$source</code>
+    </InvalidArgument>
+  </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
     <MissingThrowsDocblock>
       <code>\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite)</code>

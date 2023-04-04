@@ -9,62 +9,91 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function basename;
-use function str_ends_with;
-use function str_starts_with;
+use function realpath;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use SplObjectStorage;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @psalm-immutable
  */
 final class SourceFilter
 {
+    /**
+     * @psalm-var SplObjectStorage<Source, array<non-empty-string, true>>
+     */
+    private static ?SplObjectStorage $files = null;
+
     public function includes(Source $source, string $path): bool
     {
-        if ($this->fileCollectionHas($source->excludeFiles(), $path)) {
-            return false;
-        }
+        $this->process($source);
 
-        if ($this->fileCollectionHas($source->includeFiles(), $path)) {
-            return true;
-        }
-
-        return $this->directoryMatches($source->includeDirectories(), $path) &&
-               !$this->directoryMatches($source->excludeDirectories(), $path);
+        return isset(self::$files[$source][$path]);
     }
 
-    private function directoryMatches(FilterDirectoryCollection $directories, string $path): bool
+    private function process(Source $source): void
     {
-        $filename = basename($path);
-
-        foreach ($directories as $directory) {
-            if (!str_starts_with($path, $directory->path())) {
-                continue;
-            }
-
-            if (!empty($directory->prefix()) && !str_starts_with($filename, $directory->prefix())) {
-                continue;
-            }
-
-            if (!empty($directory->suffix()) && !str_ends_with($filename, $directory->suffix())) {
-                continue;
-            }
-
-            return true;
+        if (self::$files === null) {
+            self::$files = new SplObjectStorage;
         }
 
-        return false;
-    }
+        if (isset(self::$files[$source])) {
+            return;
+        }
 
-    private function fileCollectionHas(FileCollection $files, string $path): bool
-    {
-        foreach ($files as $file) {
-            if ($file->path() === $path) {
-                return true;
+        $files = [];
+
+        foreach ($source->includeDirectories() as $directory) {
+            foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
+                $file = realpath($file);
+
+                if (!$file) {
+                    continue;
+                }
+
+                $files[$file] = true;
             }
         }
 
-        return false;
+        foreach ($source->includeFiles() as $file) {
+            $file = realpath($file->path());
+
+            if (!$file) {
+                continue;
+            }
+
+            $files[$file] = true;
+        }
+
+        foreach ($source->excludeDirectories() as $directory) {
+            foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
+                $file = realpath($file);
+
+                if (!$file) {
+                    continue;
+                }
+
+                if (!isset($files[$file])) {
+                    continue;
+                }
+
+                unset($files[$file]);
+            }
+        }
+
+        foreach ($source->excludeFiles() as $file) {
+            $file = realpath($file->path());
+
+            if (!$file) {
+                continue;
+            }
+
+            if (!isset($files[$file])) {
+                continue;
+            }
+
+            unset($files[$file]);
+        }
+
+        self::$files[$source] = $files;
     }
 }
