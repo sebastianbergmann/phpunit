@@ -650,9 +650,10 @@
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
     </RedundantCondition>
   </file>
-  <file src="src/TextUI/Configuration/SourceFilter.php">
+  <file src="src/TextUI/Configuration/SourceMapper.php">
     <InvalidArgument>
       <code>$files</code>
+      <code>$source</code>
       <code>$source</code>
       <code>$source</code>
       <code>$source</code>

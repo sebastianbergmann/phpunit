@@ -19,7 +19,7 @@ use SplObjectStorage;
 final class SourceMapper
 {
     /**
-     * @psalm-var SplObjectStorage<Source, list<non-empty-string, true>>
+     * @psalm-var SplObjectStorage<Source, array<non-empty-string, true>>
      */
     private static ?SplObjectStorage $files = null;
 
