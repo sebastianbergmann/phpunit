@@ -30,6 +30,7 @@ use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\SourceFilter;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
 
@@ -106,7 +107,7 @@ final class ProgressPrinter
 
     public function testTriggeredNotice(PhpNoticeTriggered|NoticeTriggered $event): void
     {
-        if ($this->filterNotices && !$this->source->includes($event->file())) {
+        if ($this->filterNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -117,7 +118,7 @@ final class ProgressPrinter
     {
         if (!$event instanceof PhpunitDeprecationTriggered &&
             $this->filterDeprecations &&
-            !$this->source->includes($event->file())) {
+            !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -133,7 +134,7 @@ final class ProgressPrinter
     {
         if (!$event instanceof PhpunitWarningTriggered &&
             $this->filterWarnings &&
-            !$this->source->includes($event->file())) {
+            !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 

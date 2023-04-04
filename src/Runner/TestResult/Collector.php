@@ -42,6 +42,7 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\SourceFilter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -369,7 +370,7 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($this->filterDeprecations && !$this->source->includes($event->file())) {
+        if ($this->filterDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -382,7 +383,7 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($this->filterDeprecations && !$this->source->includes($event->file())) {
+        if ($this->filterDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -413,7 +414,7 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
-        if ($this->filterNotices && !$this->source->includes($event->file())) {
+        if ($this->filterNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -426,7 +427,7 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
-        if ($this->filterNotices && !$this->source->includes($event->file())) {
+        if ($this->filterNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -439,7 +440,7 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
-        if ($this->filterWarnings && !$this->source->includes($event->file())) {
+        if ($this->filterWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -452,7 +453,7 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
-        if ($this->filterWarnings && !$this->source->includes($event->file())) {
+        if ($this->filterWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 

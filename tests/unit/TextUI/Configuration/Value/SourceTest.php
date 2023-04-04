@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -25,110 +24,6 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class SourceTest extends TestCase
 {
-    public static function provider(): array
-    {
-        return [
-            'file included using file' => [
-                true,
-                '/path/to/source.php',
-                new Source(
-                    FilterDirectoryCollection::fromArray([]),
-                    FileCollection::fromArray(
-                        [
-                            new File('/path/to/source.php'),
-                        ]
-                    ),
-                    FilterDirectoryCollection::fromArray([]),
-                    FileCollection::fromArray([]),
-                ),
-            ],
-            'file included using file, but also excluded using file' => [
-                false,
-                '/path/to/source.php',
-                new Source(
-                    FilterDirectoryCollection::fromArray([]),
-                    FileCollection::fromArray(
-                        [
-                            new File('/path/to/source.php'),
-                        ]
-                    ),
-                    FilterDirectoryCollection::fromArray([]),
-                    FileCollection::fromArray(
-                        [
-                            new File('/path/to/source.php'),
-                        ]
-                    ),
-                ),
-            ],
-            'file included using directory' => [
-                true,
-                '/path/to/source.php',
-                new Source(
-                    FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                '/path',
-                                '',
-                                '.php'
-                            ),
-                        ]
-                    ),
-                    FileCollection::fromArray([]),
-                    FilterDirectoryCollection::fromArray([]),
-                    FileCollection::fromArray([]),
-                ),
-            ],
-            'file included using directory, but excluded using directory' => [
-                false,
-                '/path/to/source.php',
-                new Source(
-                    FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                '/path',
-                                '',
-                                '.php'
-                            ),
-                        ]
-                    ),
-                    FileCollection::fromArray([]),
-                    FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                '/path/to',
-                                '',
-                                '.php'
-                            ),
-                        ]
-                    ),
-                    FileCollection::fromArray([]),
-                ),
-            ],
-            'file included using directory, but excluded using file' => [
-                false,
-                '/path/to/source.php',
-                new Source(
-                    FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                '/path',
-                                '',
-                                '.php'
-                            ),
-                        ]
-                    ),
-                    FileCollection::fromArray([]),
-                    FilterDirectoryCollection::fromArray([]),
-                    FileCollection::fromArray(
-                        [
-                            new File('/path/to/source.php'),
-                        ]
-                    ),
-                ),
-            ],
-        ];
-    }
-
     public function testHasIncludeDirectories(): void
     {
         $includeDirectories = FilterDirectoryCollection::fromArray([]);
@@ -183,11 +78,5 @@ final class SourceTest extends TestCase
         );
 
         $this->assertSame($excludeFiles, $source->excludeFiles());
-    }
-
-    #[DataProvider('provider')]
-    public function testDeterminesWhetherFileIsIncluded(bool $expected, string $file, Source $source): void
-    {
-        $this->assertSame($expected, $source->includes($file));
     }
 }
