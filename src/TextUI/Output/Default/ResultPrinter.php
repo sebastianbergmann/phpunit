@@ -470,6 +470,7 @@ final class ResultPrinter
     private function mapTestsWithIssuesEventsToElements(array $events): array
     {
         $elements = [];
+        $issues   = 0;
 
         foreach ($events as $reasons) {
             $test         = $reasons[0]->test();
@@ -488,6 +489,8 @@ final class ResultPrinter
 
                 $body .= $this->reasonMessage($reason, $single);
                 $body .= $this->reasonLocation($reason, $single);
+
+                $issues++;
             }
 
             if (!empty($testLocation)) {
@@ -502,7 +505,7 @@ final class ResultPrinter
 
         return [
             'numberOfTestsWithIssues' => count($events),
-            'numberOfIssues'          => count($elements),
+            'numberOfIssues'          => $issues,
             'elements'                => $elements,
         ];
     }
