@@ -761,7 +761,7 @@ EOF
             $mock->__phpunit_verify();
 
             // CHECKOUT THIS MORE CAREFULLY
-//            $this->fail('Expected exception');
+            // $this->fail('Expected exception');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 sprintf(
