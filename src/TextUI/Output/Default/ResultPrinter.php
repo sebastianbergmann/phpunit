@@ -146,7 +146,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredPhpunitErrorEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitErrorEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitErrorEvents())['elements'],
             'PHPUnit error'
         );
     }
@@ -169,7 +169,7 @@ final class ResultPrinter
 
         $elements = array_merge(
             $elements,
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitWarningEvents())
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitWarningEvents())['elements']
         );
 
         $this->printList(
@@ -187,7 +187,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredPhpunitDeprecationEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitDeprecationEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitDeprecationEvents())['elements'],
             'PHPUnit deprecation'
         );
     }
@@ -248,7 +248,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestConsideredRiskyEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testConsideredRiskyEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testConsideredRiskyEvents())['elements'],
             'risky test'
         );
     }
@@ -315,7 +315,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredPhpDeprecationEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpDeprecationEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpDeprecationEvents())['elements'],
             'PHP deprecation'
         );
     }
@@ -328,7 +328,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredDeprecationEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredDeprecationEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredDeprecationEvents())['elements'],
             'deprecation'
         );
     }
@@ -341,7 +341,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredErrorEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredErrorEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredErrorEvents())['elements'],
             'error'
         );
     }
@@ -354,7 +354,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredPhpNoticeEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpNoticeEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpNoticeEvents())['elements'],
             'PHP notice'
         );
     }
@@ -367,7 +367,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredNoticeEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredNoticeEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredNoticeEvents())['elements'],
             'notice'
         );
     }
@@ -380,7 +380,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredPhpWarningEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpWarningEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpWarningEvents())['elements'],
             'PHP warning'
         );
     }
@@ -393,7 +393,7 @@ final class ResultPrinter
 
         $this->printList(
             $result->numberOfTestsWithTestTriggeredWarningEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredWarningEvents()),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredWarningEvents())['elements'],
             'warning'
         );
     }
@@ -465,7 +465,7 @@ final class ResultPrinter
     /**
      * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered>> $events
      *
-     * @psalm-return list<array{title: string, body: string}>
+     * @psalm-return array{numberOfTestsWithIssues: int, numberOfIssues: int, elements: list<array{title: string, body: string}>}
      */
     private function mapTestsWithIssuesEventsToElements(array $events): array
     {
@@ -500,7 +500,11 @@ final class ResultPrinter
             ];
         }
 
-        return $elements;
+        return [
+            'numberOfTestsWithIssues' => count($events),
+            'numberOfIssues'          => count($elements),
+            'elements'                => $elements,
+        ];
     }
 
     private function testLocation(Test $test): string
