@@ -102,7 +102,7 @@ skipped message
 
 --
 
-There were 5 deprecations:
+5 tests triggered 5 deprecations:
 
 1) PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithDeprecation
 deprecation message
@@ -136,7 +136,7 @@ deprecation message
 
 --
 
-There were 5 notices:
+5 tests triggered 5 notices:
 
 1) PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithNotice
 notice message
@@ -170,7 +170,7 @@ notice message
 
 --
 
-There were 5 warnings:
+5 tests triggered 5 warnings:
 
 1) PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithWarning
 warning message

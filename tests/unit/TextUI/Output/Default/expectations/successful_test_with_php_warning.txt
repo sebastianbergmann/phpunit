@@ -1,4 +1,4 @@
-There was 1 PHP warning:
+1 test triggered 1 PHP warning:
 
 1) FooTest::testBar
 message

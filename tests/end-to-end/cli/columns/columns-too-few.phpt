@@ -19,7 +19,7 @@ Runtime: %s
 
 Time: %s, Memory: %s
 
-There was 1 PHPUnit warning:
+There was 1 PHPUnit test runner warning:
 
 1) Less than 16 columns requested, number of columns set to 16
 

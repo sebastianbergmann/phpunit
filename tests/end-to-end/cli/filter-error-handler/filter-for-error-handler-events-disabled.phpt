@@ -22,7 +22,7 @@ W                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 deprecation:
+1 test triggered 2 deprecations:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 * deprecation
@@ -35,7 +35,7 @@ There was 1 deprecation:
 
 --
 
-There was 1 notice:
+1 test triggered 2 notices:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 * notice
@@ -48,7 +48,7 @@ There was 1 notice:
 
 --
 
-There was 1 warning:
+1 test triggered 2 warnings:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 * warning

@@ -13,7 +13,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-There was 1 PHPUnit warning:
+There was 1 PHPUnit test runner warning:
 
 1) No tests found in class "PHPUnit\TestFixture\EmptyTestCaseTest".
 

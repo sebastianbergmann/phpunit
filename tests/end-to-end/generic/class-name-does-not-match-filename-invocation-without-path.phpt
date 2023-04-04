@@ -16,7 +16,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
-There was 1 PHPUnit warning:
+There was 1 PHPUnit test runner warning:
 
 1) Class WrongClassNameTest cannot be found in %sWrongClassNameTest.php
 

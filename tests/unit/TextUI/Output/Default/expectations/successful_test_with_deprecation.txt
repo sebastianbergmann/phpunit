@@ -1,4 +1,4 @@
-There was 1 deprecation:
+1 test triggered 1 deprecation:
 
 1) FooTest::testBar
 message

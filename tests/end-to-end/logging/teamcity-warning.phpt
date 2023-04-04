@@ -32,7 +32,7 @@ Configuration: %s
 ##teamcity[testSuiteFinished name='default' flowId='%d']
 Time: %s, Memory: %s
 
-There was 1 PHPUnit warning:
+There was 1 PHPUnit test runner warning:
 
 1) Test results may not be as expected because the XML configuration file did not pass validation:
 
