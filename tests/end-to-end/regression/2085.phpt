@@ -39,5 +39,5 @@ This test was aborted after 1 second
 
 %s:%d
 
-OK, but some tests have issues!
+OK, but there are issues!
 Tests: 1, Assertions: 1, Risky: 1.

@@ -59,5 +59,5 @@ Time: %s, Memory: %s
 
 %s/tests/SourceClassTest.php:16
 
-OK, but some tests have issues!
+OK, but there are issues!
 Tests: 1, Assertions: 1, Warnings: 1, Deprecations: 1, Notices: 1.

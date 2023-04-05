@@ -24,5 +24,5 @@ This test is not expected to perform assertions but performed 2 assertions
 
 %s:%d
 
-OK, but some tests have issues!
+OK, but there are issues!
 Tests: 1, Assertions: 2, Risky: 1.

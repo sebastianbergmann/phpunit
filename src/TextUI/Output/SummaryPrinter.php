@@ -67,7 +67,7 @@ final class SummaryPrinter
             } else {
                 $this->printWithColor(
                     $color,
-                    'OK, but some tests have issues!'
+                    'OK, but there are issues!'
                 );
             }
         } else {
