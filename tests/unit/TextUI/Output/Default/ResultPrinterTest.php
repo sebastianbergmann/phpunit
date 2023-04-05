@@ -232,7 +232,13 @@ final class ResultPrinterTest extends TestCase
                                 'message'
                             ),
                         ],
-                    ]
+                    ],
+                    testRunnerTriggeredDeprecationEvents: [
+                        new TestRunnerDeprecationTriggered(
+                            self::telemetryInfo(),
+                            'message'
+                        ),
+                    ],
                 ),
             ],
 

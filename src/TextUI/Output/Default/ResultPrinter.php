@@ -87,6 +87,10 @@ final class ResultPrinter
             $this->printTestRunnerWarnings($result);
         }
 
+        if ($this->displayPhpunitDeprecations) {
+            $this->printTestRunnerDeprecations($result);
+        }
+
         if ($this->displayTestsWithErrors) {
             $this->printTestsWithErrors($result);
         }
@@ -186,6 +190,25 @@ final class ResultPrinter
         }
 
         $this->printListHeaderWithNumber(count($elements), 'PHPUnit test runner warning');
+        $this->printList($elements);
+    }
+
+    private function printTestRunnerDeprecations(TestResult $result): void
+    {
+        if (!$result->hasTestRunnerTriggeredDeprecationEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testRunnerTriggeredDeprecationEvents() as $event) {
+            $elements[] = [
+                'title' => $event->message(),
+                'body'  => '',
+            ];
+        }
+
+        $this->printListHeaderWithNumber(count($elements), 'PHPUnit test runner deprecation');
         $this->printList($elements);
     }
 
