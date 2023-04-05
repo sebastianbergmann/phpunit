@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Event;
 
+use function version_compare;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
+use PHPUnit\Event\Telemetry\Php83GarbageCollectorStatusProvider;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -87,7 +90,8 @@ final class Facade
             $dispatcher,
             new Telemetry\System(
                 new Telemetry\SystemStopWatchWithOffset($offset),
-                new Telemetry\SystemMemoryMeter
+                new Telemetry\SystemMemoryMeter,
+                $this->garbageCollectorStatusProvider()
             )
         );
 
@@ -130,7 +134,8 @@ final class Facade
     {
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
-            new Telemetry\SystemMemoryMeter
+            new Telemetry\SystemMemoryMeter,
+            $this->garbageCollectorStatusProvider()
         );
     }
 
@@ -238,5 +243,14 @@ final class Facade
                 $eventClass
             );
         }
+    }
+
+    private function garbageCollectorStatusProvider(): Telemetry\GarbageCollectorStatusProvider
+    {
+        if (version_compare('8.3.0', PHP_VERSION, '>')) {
+            return new Php81GarbageCollectorStatusProvider;
+        }
+
+        return new Php83GarbageCollectorStatusProvider;
     }
 }

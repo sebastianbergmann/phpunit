@@ -15,6 +15,7 @@ use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\Duration;
+use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\MemoryUsage;
@@ -522,7 +523,8 @@ final class ResultPrinterTest extends TestCase
             new Snapshot(
                 HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
                 MemoryUsage::fromBytes(1000),
-                MemoryUsage::fromBytes(2000)
+                MemoryUsage::fromBytes(2000),
+                new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0)
             ),
             Duration::fromSecondsAndNanoseconds(123, 456),
             MemoryUsage::fromBytes(2000),

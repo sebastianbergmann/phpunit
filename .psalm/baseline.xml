@@ -65,6 +65,14 @@
       <code>fromBytes</code>
     </ImpureMethodCall>
   </file>
+  <file src="src/Event/Value/Telemetry/Php83GarbageCollectorStatusProvider.php">
+    <InvalidArrayOffset>
+      <code><![CDATA[$status['buffer_size']]]></code>
+      <code><![CDATA[$status['full']]]></code>
+      <code><![CDATA[$status['protected']]]></code>
+      <code><![CDATA[$status['running']]]></code>
+    </InvalidArrayOffset>
+  </file>
   <file src="src/Event/Value/Test/TestCollection.php">
     <PropertyTypeCoercion>
       <code>$tests</code>

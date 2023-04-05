@@ -62,10 +62,28 @@ final class SystemTest extends TestCase
             }
         };
 
-        $snapshot = (new System($clock, $memoryMeter))->snapshot();
+        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0);
+
+        $garbageCollectorProvider = new class($garbageCollectorStatus) implements GarbageCollectorStatusProvider
+        {
+            private readonly GarbageCollectorStatus $status;
+
+            public function __construct(GarbageCollectorStatus $status)
+            {
+                $this->status = $status;
+            }
+
+            public function status(): GarbageCollectorStatus
+            {
+                return $this->status;
+            }
+        };
+
+        $snapshot = (new System($clock, $memoryMeter, $garbageCollectorProvider))->snapshot();
 
         $this->assertSame($time, $snapshot->time());
         $this->assertSame($memoryUsage, $snapshot->memoryUsage());
         $this->assertSame($peakMemoryUsage, $snapshot->peakMemoryUsage());
+        $this->assertSame($garbageCollectorStatus, $snapshot->garbageCollectorStatus());
     }
 }

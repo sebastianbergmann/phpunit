@@ -27,7 +27,8 @@ abstract class AbstractEventTestCase extends TestCase
             new Telemetry\Snapshot(
                 HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
                 Telemetry\MemoryUsage::fromBytes(1000),
-                Telemetry\MemoryUsage::fromBytes(2000)
+                Telemetry\MemoryUsage::fromBytes(2000),
+                new Telemetry\GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0)
             ),
             Duration::fromSecondsAndNanoseconds(123, 456),
             Telemetry\MemoryUsage::fromBytes(2000),

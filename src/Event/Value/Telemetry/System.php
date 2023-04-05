@@ -10,17 +10,19 @@
 namespace PHPUnit\Event\Telemetry;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class System
 {
     private readonly StopWatch $stopWatch;
     private readonly MemoryMeter $memoryMeter;
+    private readonly GarbageCollectorStatusProvider $garbageCollectorStatusProvider;
 
-    public function __construct(StopWatch $stopWatch, MemoryMeter $memoryMeter)
+    public function __construct(StopWatch $stopWatch, MemoryMeter $memoryMeter, GarbageCollectorStatusProvider $garbageCollectorStatusProvider)
     {
-        $this->stopWatch   = $stopWatch;
-        $this->memoryMeter = $memoryMeter;
+        $this->stopWatch                      = $stopWatch;
+        $this->memoryMeter                    = $memoryMeter;
+        $this->garbageCollectorStatusProvider = $garbageCollectorStatusProvider;
     }
 
     public function snapshot(): Snapshot
@@ -28,7 +30,8 @@ final class System
         return new Snapshot(
             $this->stopWatch->current(),
             $this->memoryMeter->memoryUsage(),
-            $this->memoryMeter->peakMemoryUsage()
+            $this->memoryMeter->peakMemoryUsage(),
+            $this->garbageCollectorStatusProvider->status()
         );
     }
 }

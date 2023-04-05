@@ -13,9 +13,12 @@ use function array_map;
 use function array_values;
 use function explode;
 use function get_class_methods;
+use function version_compare;
 use Exception;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
+use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
+use PHPUnit\Event\Telemetry\Php83GarbageCollectorStatusProvider;
 use PHPUnit\Event\Test\AssertionFailed;
 use PHPUnit\Event\Test\AssertionSucceeded;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -1719,9 +1722,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     private function telemetrySystem(): Telemetry\System
     {
+        if (version_compare('8.3.0', PHP_VERSION, '>')) {
+            $garbageCollectorStatusProvider = new Php81GarbageCollectorStatusProvider;
+        } else {
+            $garbageCollectorStatusProvider = new Php83GarbageCollectorStatusProvider;
+        }
+
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
-            new Telemetry\SystemMemoryMeter
+            new Telemetry\SystemMemoryMeter,
+            $garbageCollectorStatusProvider
         );
     }
 
