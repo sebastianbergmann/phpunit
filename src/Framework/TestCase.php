@@ -671,7 +671,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     null
                 );
             } else {
-                $e = $_e;
+                $e = $this->transformException($_e);
 
                 $this->status = TestStatus::error($e->getMessage());
 
@@ -1463,6 +1463,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $callOriginalConstructor,
             $arguments
         );
+    }
+
+    protected function transformException(Throwable $t): Throwable
+    {
+        return $t;
     }
 
     /**

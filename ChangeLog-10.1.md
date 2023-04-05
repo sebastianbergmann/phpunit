@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * [#5237](https://github.com/sebastianbergmann/phpunit/issues/5237): Implement `IgnoreClassForCodeCoverage`, `IgnoreMethodForCodeCoverage`, and `IgnoreFunctionForCodeCoverage` attributes
 * [#5293](https://github.com/sebastianbergmann/phpunit/issues/5293): Allow to limit the reporting of deprecations, notices, and warnings to specified directories
 * [#5294](https://github.com/sebastianbergmann/phpunit/issues/5294): Introduce `<source>` XML configuration element to configure "your code"
+* [#5300](https://github.com/sebastianbergmann/phpunit/issues/5300): `TestCase::transformException()` hook method
 * `TestCase::createConfiguredStub()` was added as an analogon to `TestCase::createConfiguredMock()`
 * The `PHPUnit\Event\TestRunner\ExecutionAborted` event is now emitted when the execution of tests is stopped due to `stopOn*` attributes on the `<phpunit>` XML configuration element or due to `--stop-on-*` CLI options
 
