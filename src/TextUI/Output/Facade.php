@@ -193,7 +193,7 @@ final class Facade
                 self::$printer,
                 true,
                 true,
-                false,
+                true,
                 false,
                 false,
                 false,

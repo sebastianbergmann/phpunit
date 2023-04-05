@@ -16,6 +16,10 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `TestCase::createConfiguredStub()` was added as an analogon to `TestCase::createConfiguredMock()`
 * The `PHPUnit\Event\TestRunner\ExecutionAborted` event is now emitted when the execution of tests is stopped due to `stopOn*` attributes on the `<phpunit>` XML configuration element or due to `--stop-on-*` CLI options
 
+### Changed
+
+* [#5198](https://github.com/sebastianbergmann/phpunit/issues/5198): Display PHPUnit deprecations when TestDox output is used
+
 ### Deprecated
 
 * [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236): Deprecate the `CodeCoverageIgnore` attribute
