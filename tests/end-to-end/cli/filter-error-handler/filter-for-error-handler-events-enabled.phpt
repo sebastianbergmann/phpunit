@@ -22,13 +22,13 @@ W                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-1 test triggered 1 deprecation:
+1 test triggered 1 warning:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-deprecation
-%s/src/SourceClass.php:%d
+warning
+%s/src/SourceClass.php:23
 
-%s/tests/SourceClassTest.php:%d
+%s/tests/SourceClassTest.php:16
 
 --
 
@@ -36,19 +36,19 @@ deprecation
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 notice
-%s/src/SourceClass.php:%d
+%s/src/SourceClass.php:22
 
-%s/tests/SourceClassTest.php:%d
+%s/tests/SourceClassTest.php:16
 
 --
 
-1 test triggered 1 warning:
+1 test triggered 1 deprecation:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-warning
-%s/src/SourceClass.php:%d
+deprecation
+%s/src/SourceClass.php:21
 
-%s/tests/SourceClassTest.php:%d
+%s/tests/SourceClassTest.php:16
 
 OK, but some tests have issues!
 Tests: 1, Assertions: 1, Warnings: 1, Deprecations: 1, Notices: 1.

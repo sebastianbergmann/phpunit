@@ -85,7 +85,6 @@ final class ResultPrinter
 
         if ($this->displayPhpunitWarnings) {
             $this->printTestRunnerWarnings($result);
-            $this->printDetailsOnTestsThatTriggeredPhpunitWarnings($result);
         }
 
         if ($this->displayTestsWithErrors) {
@@ -96,12 +95,16 @@ final class ResultPrinter
             $this->printTestsWithFailedAssertions($result);
         }
 
-        if ($this->displayRiskyTests) {
-            $this->printRiskyTests($result);
+        if ($this->displayPhpunitWarnings) {
+            $this->printDetailsOnTestsThatTriggeredPhpunitWarnings($result);
         }
 
         if ($this->displayDetailsOnTestsThatTriggeredPhpunitDeprecations) {
             $this->printDetailsOnTestsThatTriggeredPhpunitDeprecations($result);
+        }
+
+        if ($this->displayRiskyTests) {
+            $this->printRiskyTests($result);
         }
 
         if ($this->displayDetailsOnIncompleteTests) {
@@ -113,13 +116,13 @@ final class ResultPrinter
             $this->printSkippedTests($result);
         }
 
-        if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
-            $this->printDetailsOnTestsThatTriggerPhpDeprecations($result);
-            $this->printDetailsOnTestsThatTriggerDeprecations($result);
-        }
-
         if ($this->displayDetailsOnTestsThatTriggerErrors) {
             $this->printDetailsOnTestsThatTriggerErrors($result);
+        }
+
+        if ($this->displayDetailsOnTestsThatTriggerWarnings) {
+            $this->printDetailsOnTestsThatTriggerPhpWarnings($result);
+            $this->printDetailsOnTestsThatTriggerWarnings($result);
         }
 
         if ($this->displayDetailsOnTestsThatTriggerNotices) {
@@ -127,9 +130,9 @@ final class ResultPrinter
             $this->printDetailsOnTestsThatTriggerNotices($result);
         }
 
-        if ($this->displayDetailsOnTestsThatTriggerWarnings) {
-            $this->printDetailsOnTestsThatTriggerPhpWarnings($result);
-            $this->printDetailsOnTestsThatTriggerWarnings($result);
+        if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
+            $this->printDetailsOnTestsThatTriggerPhpDeprecations($result);
+            $this->printDetailsOnTestsThatTriggerDeprecations($result);
         }
     }
 

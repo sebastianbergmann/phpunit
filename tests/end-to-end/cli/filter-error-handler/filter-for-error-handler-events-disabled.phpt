@@ -22,14 +22,14 @@ W                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-1 test triggered 2 deprecations:
+1 test triggered 2 warnings:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-* deprecation
-  %s/src/SourceClass.php:21
+* warning
+  %s/src/SourceClass.php:23
 
-* deprecation
-  %s/vendor/VendorClass.php:8
+* warning
+  %s/vendor/VendorClass.php:10
 
 %s/tests/SourceClassTest.php:16
 
@@ -48,14 +48,14 @@ Time: %s, Memory: %s
 
 --
 
-1 test triggered 2 warnings:
+1 test triggered 2 deprecations:
 
 1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-* warning
-  %s/src/SourceClass.php:23
+* deprecation
+  %s/src/SourceClass.php:21
 
-* warning
-  %s/vendor/VendorClass.php:10
+* deprecation
+  %s/vendor/VendorClass.php:8
 
 %s/tests/SourceClassTest.php:16
 
