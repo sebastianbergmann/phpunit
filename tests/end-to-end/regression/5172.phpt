@@ -22,9 +22,9 @@ Time: %s, Memory: %s
 Issue5172 (PHPUnit\TestFixture\Issue5172)
  ✔ One
 
-There was 1 PHPUnit test runner warning:
+There was 1 PHPUnit test runner deprecation:
 
 1) Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!
 
-WARNINGS!
-Tests: 1, Assertions: 1, Warnings: 1.
+OK, but some tests have issues!
+Tests: 1, Assertions: 1, Deprecations: 1.

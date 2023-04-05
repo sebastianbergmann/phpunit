@@ -628,7 +628,7 @@ final class Merger
 
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
+                EventFacade::emitter()->testRunnerTriggeredDeprecation(
                     'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
                 );
             } else {
