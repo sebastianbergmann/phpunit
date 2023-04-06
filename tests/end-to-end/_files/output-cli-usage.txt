@@ -44,7 +44,7 @@ Execution:
   --default-time-limit <sec>       Timeout in seconds for tests that have no declared size
   --dont-report-useless-tests      Do not report tests that do not test anything
 
-  --stop-on-defect                 Stop after first error, failure, warning or, risky test
+  --stop-on-defect                 Stop after first error, failure, warning, or risky test
   --stop-on-error                  Stop after first error
   --stop-on-failure                Stop after first failure
   --stop-on-warning                Stop after first warning

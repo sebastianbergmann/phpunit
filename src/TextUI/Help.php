@@ -74,7 +74,7 @@ final class Help
             ['arg'    => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
             ['spacer' => ''],
 
-            ['arg'    => '--stop-on-defect', 'desc' => 'Stop after first error, failure, warning or, risky test'],
+            ['arg'    => '--stop-on-defect', 'desc' => 'Stop after first error, failure, warning, or risky test'],
             ['arg'    => '--stop-on-error', 'desc' => 'Stop after first error'],
             ['arg'    => '--stop-on-failure', 'desc' => 'Stop after first failure'],
             ['arg'    => '--stop-on-warning', 'desc' => 'Stop after first warning'],

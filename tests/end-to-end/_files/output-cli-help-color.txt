@@ -52,7 +52,7 @@
   [32m--dont-report-useless-tests     [0m Do not report tests that do not test
                                    anything
 
-  [32m--stop-on-defect                [0m Stop after first error, failure, warning or,
+  [32m--stop-on-defect                [0m Stop after first error, failure, warning, or
                                    risky test
   [32m--stop-on-error                 [0m Stop after first error
   [32m--stop-on-failure               [0m Stop after first failure
