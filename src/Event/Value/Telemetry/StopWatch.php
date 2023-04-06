@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Telemetry;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface StopWatch
 {
