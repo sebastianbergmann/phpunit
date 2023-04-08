@@ -23,6 +23,8 @@ use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\Registry;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -31,10 +33,16 @@ final class ErrorHandler
 {
     private static ?self $instance = null;
     private bool $enabled          = false;
+    private array $ignoreSuppressedErrorLevels;
 
     public static function instance(): self
     {
-        return self::$instance ?? self::$instance = new self;
+        return self::$instance ?? self::$instance = new self(Registry::get());
+    }
+
+    public function __construct(Configuration $configuration)
+    {
+        $this->ignoreSuppressedErrorLevels = $this->buildSuppressibleErrorLevels($configuration);
     }
 
     /**
@@ -45,7 +53,7 @@ final class ErrorHandler
         $suppressed = !($errorNumber & error_reporting());
 
         if ($suppressed &&
-            in_array($errorNumber, [E_DEPRECATED, E_NOTICE, E_STRICT, E_WARNING], true)) {
+            in_array($errorNumber, $this->ignoreSuppressedErrorLevels, true)) {
             return false;
         }
 
@@ -168,5 +176,37 @@ final class ErrorHandler
         }
 
         throw new NoTestCaseObjectOnCallStackException;
+    }
+
+    private function buildSuppressibleErrorLevels(Configuration $configuration): array
+    {
+        $levels = [];
+
+        if ($configuration->errorHandlerIgnoreSuppressedPhpNotices()) {
+            $levels[] = E_NOTICE;
+            $levels[] = E_STRICT;
+        }
+
+        if ($configuration->errorHandlerIgnoreSuppressedPhpWarnings()) {
+            $levels[] = E_WARNING;
+        }
+
+        if ($configuration->errorHandlerIgnoreSuppressedPhpDeprecations()) {
+            $levels[] = E_DEPRECATED;
+        }
+        // user land error levels
+        if ($configuration->errorHandlerIgnoreSuppressedUserNotices()) {
+            $levels[] = E_USER_NOTICE;
+        }
+
+        if ($configuration->errorHandlerIgnoreSuppressedUserWarnings()) {
+            $levels[] = E_USER_WARNING;
+        }
+
+        if ($configuration->errorHandlerIgnoreSuppressedUserDeprecations()) {
+            $levels[] = E_USER_DEPRECATED;
+        }
+
+        return $levels;
     }
 }

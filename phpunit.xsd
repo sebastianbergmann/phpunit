@@ -219,6 +219,12 @@
         <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="errorHandlerIgnoreSuppressedPhpDeprecations" type="xs:boolean" default="true"/>
+        <xs:attribute name="errorHandlerIgnoreSuppressedPhpNotices" type="xs:boolean" default="true"/>
+        <xs:attribute name="errorHandlerIgnoreSuppressedPhpWarnings" type="xs:boolean" default="true"/>
+        <xs:attribute name="errorHandlerIgnoreSuppressedUserDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="errorHandlerIgnoreSuppressedUserNotices" type="xs:boolean" default="false"/>
+        <xs:attribute name="errorHandlerIgnoreSuppressedUserWarnings" type="xs:boolean" default="false"/>
     </xs:attributeGroup>
     <xs:group name="configGroup">
         <xs:all>

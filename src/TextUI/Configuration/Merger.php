@@ -711,6 +711,13 @@ final class Merger
             $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
         }
 
+        $errorHandlerIgnoreSuppressedPhpDeprecations  = $xmlConfiguration->phpUnit()->errorHandlerIgnoreSuppressedPhpDeprecations();
+        $errorHandlerIgnoreSuppressedPhpNotices       = $xmlConfiguration->phpUnit()->errorHandlerIgnoreSuppressedPhpNotices();
+        $errorHandlerIgnoreSuppressedPhpWarnings      = $xmlConfiguration->phpUnit()->errorHandlerIgnoreSuppressedPhpWarnings();
+        $errorHandlerIgnoreSuppressedUserDeprecations = $xmlConfiguration->phpUnit()->errorHandlerIgnoreSuppressedUserDeprecations();
+        $errorHandlerIgnoreSuppressedUserNotices      = $xmlConfiguration->phpUnit()->errorHandlerIgnoreSuppressedUserNotices();
+        $errorHandlerIgnoreSuppressedUserWarnings     = $xmlConfiguration->phpUnit()->errorHandlerIgnoreSuppressedUserWarnings();
+
         return new Configuration(
             $cliArgument,
             $configurationFile,
@@ -789,6 +796,12 @@ final class Merger
             $displayDetailsOnTestsThatTriggerErrors,
             $displayDetailsOnTestsThatTriggerNotices,
             $displayDetailsOnTestsThatTriggerWarnings,
+            $errorHandlerIgnoreSuppressedPhpDeprecations,
+            $errorHandlerIgnoreSuppressedPhpNotices,
+            $errorHandlerIgnoreSuppressedPhpWarnings,
+            $errorHandlerIgnoreSuppressedUserDeprecations,
+            $errorHandlerIgnoreSuppressedUserNotices,
+            $errorHandlerIgnoreSuppressedUserWarnings,
             $reverseDefectList,
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
