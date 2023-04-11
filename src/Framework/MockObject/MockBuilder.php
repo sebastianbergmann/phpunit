@@ -96,7 +96,7 @@ final class MockBuilder
      * @throws ReflectionException
      * @throws RuntimeException
      *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5305
      */
     public function getMockForAbstractClass(): MockObject
     {
@@ -125,7 +125,7 @@ final class MockBuilder
      * @throws ReflectionException
      * @throws RuntimeException
      *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5306
      */
     public function getMockForTrait(): MockObject
     {
@@ -349,7 +349,7 @@ final class MockBuilder
      *
      * @return $this
      *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5307
      */
     public function enableProxyingToOriginalMethods(): self
     {
@@ -363,7 +363,7 @@ final class MockBuilder
      *
      * @return $this
      *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5307
      */
     public function disableProxyingToOriginalMethods(): self
     {
@@ -378,7 +378,7 @@ final class MockBuilder
      *
      * @return $this
      *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5307
      */
     public function setProxyTarget(object $object): self
     {
