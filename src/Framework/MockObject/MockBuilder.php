@@ -328,6 +328,8 @@ final class MockBuilder
      * Disables the cloning of arguments passed to mocked methods.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5315
      */
     public function disableArgumentCloning(): self
     {
@@ -340,6 +342,8 @@ final class MockBuilder
      * Enables the cloning of arguments passed to mocked methods.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5315
      */
     public function enableArgumentCloning(): self
     {
