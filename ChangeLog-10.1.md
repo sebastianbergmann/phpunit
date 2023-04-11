@@ -25,13 +25,11 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 ### Deprecated
 
 * [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236): Deprecate the `CodeCoverageIgnore` attribute
-* [#5239](https://github.com/sebastianbergmann/phpunit/issues/5239): Deprecate `TestCase::createPartialMock()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240): Deprecate `TestCase::createTestProxy()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5241](https://github.com/sebastianbergmann/phpunit/issues/5241): Deprecate `TestCase::getMockForAbstractClass()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5242](https://github.com/sebastianbergmann/phpunit/issues/5242): Deprecate `TestCase::getMockFromWsdl()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5243](https://github.com/sebastianbergmann/phpunit/issues/5243): Deprecate `TestCase::getMockForTrait()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * [#5244](https://github.com/sebastianbergmann/phpunit/issues/5244): Deprecate `TestCase::getObjectForTrait()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
-* [#5252](https://github.com/sebastianbergmann/phpunit/issues/5252): Deprecate `TestCase::getMockBuilder()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * Using `<coverage><include>...</include><exclude>...</exclude></coverage>` in the XML configuration file to configure code that should be included in code coverage reporting is now deprecated and support for this will be removed in PHPUnit 11 (use `<source><include>...</include><exclude>...</exclude></source>` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()` (use `hasNonEmptyListOfSourceFiles()` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeDirectories()` (use `sourceIncludeDirectories()` instead)

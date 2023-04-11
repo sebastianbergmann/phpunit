@@ -483,8 +483,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $className
      *
      * @psalm-return MockBuilder<RealInstanceType>
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5252
      */
     final public function getMockBuilder(string $className): MockBuilder
     {
@@ -1272,8 +1270,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5239
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {

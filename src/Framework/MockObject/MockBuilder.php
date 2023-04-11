@@ -17,8 +17,6 @@ use ReflectionClass;
  * @psalm-template MockedType
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5252
  */
 final class MockBuilder
 {
@@ -97,6 +95,8 @@ final class MockBuilder
      * @throws \PHPUnit\Framework\Exception
      * @throws ReflectionException
      * @throws RuntimeException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
      */
     public function getMockForAbstractClass(): MockObject
     {
@@ -124,6 +124,8 @@ final class MockBuilder
      * @throws \PHPUnit\Framework\Exception
      * @throws ReflectionException
      * @throws RuntimeException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
      */
     public function getMockForTrait(): MockObject
     {
@@ -346,6 +348,8 @@ final class MockBuilder
      * Enables the invocation of the original methods.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
     public function enableProxyingToOriginalMethods(): self
     {
@@ -358,6 +362,8 @@ final class MockBuilder
      * Disables the invocation of the original methods.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
     public function disableProxyingToOriginalMethods(): self
     {
@@ -371,6 +377,8 @@ final class MockBuilder
      * Sets the proxy target.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
     public function setProxyTarget(object $object): self
     {
