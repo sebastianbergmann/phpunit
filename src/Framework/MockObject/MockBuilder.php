@@ -300,6 +300,8 @@ final class MockBuilder
      * Disables the use of class autoloading while creating the mock object.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5309
      */
     public function disableAutoload(): self
     {
@@ -312,6 +314,8 @@ final class MockBuilder
      * Enables the use of class autoloading while creating the mock object.
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5309
      */
     public function enableAutoload(): self
     {
