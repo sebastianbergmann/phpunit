@@ -393,6 +393,8 @@ final class MockBuilder
 
     /**
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5308
      */
     public function allowMockingUnknownTypes(): self
     {
@@ -403,6 +405,8 @@ final class MockBuilder
 
     /**
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5308
      */
     public function disallowMockingUnknownTypes(): self
     {

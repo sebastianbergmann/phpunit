@@ -266,6 +266,7 @@
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
+      <code>disallowMockingUnknownTypes</code>
       <code>enableProxyingToOriginalMethods</code>
     </DeprecatedMethod>
     <InvalidReturnStatement>
