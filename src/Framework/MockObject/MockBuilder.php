@@ -194,6 +194,8 @@ final class MockBuilder
      * @throws RuntimeException
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5320
      */
     public function addMethods(array $methods): self
     {
