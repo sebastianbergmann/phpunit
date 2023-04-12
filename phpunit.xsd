@@ -15,18 +15,34 @@
         <xs:all>
             <xs:element name="include" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
-                    <xs:group ref="pathGroup"/>
+                    <xs:group ref="sourcePathGroup"/>
                 </xs:complexType>
             </xs:element>
             <xs:element name="exclude" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
-                    <xs:group ref="pathGroup"/>
+                    <xs:group ref="sourcePathGroup"/>
                 </xs:complexType>
             </xs:element>
         </xs:all>
         <xs:attribute name="filterDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="filterNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="filterWarnings" type="xs:boolean" default="false"/>
+    </xs:complexType>
+    <xs:group name="sourcePathGroup">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="directory" type="sourceDirectoryType"/>
+                <xs:element name="file" type="xs:anyURI"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="sourceDirectoryType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="prefix" default=""/>
+                <xs:attribute type="xs:string" name="suffix" default=".php"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="coverageType">
         <xs:all>
@@ -88,23 +104,6 @@
             </xs:simpleType>
         </xs:union>
     </xs:simpleType>
-    <xs:group name="pathGroup">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="directory" type="directoryFilterType"/>
-                <xs:element name="file" type="fileFilterType"/>
-            </xs:choice>
-        </xs:sequence>
-    </xs:group>
-    <xs:complexType name="directoryFilterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="prefix" default=""/>
-                <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
-                <xs:attributeGroup ref="phpVersionGroup"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
     <xs:simpleType name="executionOrderType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="default"/>
@@ -127,17 +126,6 @@
             <xs:enumeration value="size"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="fileFilterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:anyURI">
-                <xs:attributeGroup ref="phpVersionGroup"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:attributeGroup name="phpVersionGroup">
-        <xs:attribute name="phpVersion" type="xs:string" default="5.3.0"/>
-        <xs:attribute name="phpVersionOperator" type="xs:string" default="&gt;="/>
-    </xs:attributeGroup>
     <xs:complexType name="phpType">
         <xs:sequence>
             <xs:choice maxOccurs="unbounded">
@@ -242,12 +230,40 @@
     <xs:complexType name="testSuiteType">
         <xs:sequence>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:group ref="pathGroup"/>
+                <xs:group ref="testSuitePathGroup"/>
                 <xs:element name="exclude" type="xs:string"/>
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
+    <xs:group name="testSuitePathGroup">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="directory" type="testSuiteDirectoryType"/>
+                <xs:element name="file" type="testSuiteFileType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="testSuiteDirectoryType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="prefix" default=""/>
+                <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
+                <xs:attributeGroup ref="phpVersionGroup"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="testSuiteFileType">
+        <xs:simpleContent>
+            <xs:extension base="xs:anyURI">
+                <xs:attributeGroup ref="phpVersionGroup"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:attributeGroup name="phpVersionGroup">
+        <xs:attribute name="phpVersion" type="xs:string" default="5.3.0"/>
+        <xs:attribute name="phpVersionOperator" type="xs:string" default="&gt;="/>
+    </xs:attributeGroup>
     <xs:group name="coverageReportGroup">
         <xs:all>
             <xs:element name="clover" type="logToFileType" minOccurs="0"/>
