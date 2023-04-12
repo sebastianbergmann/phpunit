@@ -39,7 +39,7 @@ final class GeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <source filterDeprecations="true" filterNotices="true" filterWarnings="true">
+    <source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>

@@ -24,9 +24,9 @@
                 </xs:complexType>
             </xs:element>
         </xs:all>
-        <xs:attribute name="filterDeprecations" type="xs:boolean" default="false"/>
-        <xs:attribute name="filterNotices" type="xs:boolean" default="false"/>
-        <xs:attribute name="filterWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="restrictDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="restrictNotices" type="xs:boolean" default="false"/>
+        <xs:attribute name="restrictWarnings" type="xs:boolean" default="false"/>
     </xs:complexType>
     <xs:group name="sourcePathGroup">
         <xs:sequence>

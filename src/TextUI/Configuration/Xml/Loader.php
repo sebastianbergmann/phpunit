@@ -248,16 +248,16 @@ final class Loader
 
     private function source(string $filename, DOMXPath $xpath): Source
     {
-        $filterDeprecations = false;
-        $filterNotices      = false;
-        $filterWarnings     = false;
+        $restrictDeprecations = false;
+        $restrictNotices      = false;
+        $restrictWarnings     = false;
 
         $element = $this->element($xpath, 'source');
 
         if ($element) {
-            $filterDeprecations = $this->getBooleanAttribute($element, 'filterDeprecations', false);
-            $filterNotices      = $this->getBooleanAttribute($element, 'filterNotices', false);
-            $filterWarnings     = $this->getBooleanAttribute($element, 'filterWarnings', false);
+            $restrictDeprecations = $this->getBooleanAttribute($element, 'restrictDeprecations', false);
+            $restrictNotices      = $this->getBooleanAttribute($element, 'restrictNotices', false);
+            $restrictWarnings     = $this->getBooleanAttribute($element, 'restrictWarnings', false);
         }
 
         return new Source(
@@ -265,9 +265,9 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'source/include/file'),
             $this->readFilterDirectories($filename, $xpath, 'source/exclude/directory'),
             $this->readFilterFiles($filename, $xpath, 'source/exclude/file'),
-            $filterDeprecations,
-            $filterNotices,
-            $filterWarnings,
+            $restrictDeprecations,
+            $restrictNotices,
+            $restrictWarnings,
         );
     }
 

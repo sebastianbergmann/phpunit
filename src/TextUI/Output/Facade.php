@@ -159,9 +159,9 @@ final class Facade
             $configuration->colors(),
             $configuration->columns(),
             $configuration->source(),
-            $configuration->filterDeprecations(),
-            $configuration->filterNotices(),
-            $configuration->filterWarnings(),
+            $configuration->restrictDeprecations(),
+            $configuration->restrictNotices(),
+            $configuration->restrictWarnings(),
         );
 
         self::$defaultProgressPrinter = true;

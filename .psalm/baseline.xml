@@ -818,9 +818,9 @@
             $configuration->colors(),
             $configuration->columns(),
             $configuration->source(),
-            $configuration->filterDeprecations(),
-            $configuration->filterNotices(),
-            $configuration->filterWarnings(),
+            $configuration->restrictDeprecations(),
+            $configuration->restrictNotices(),
+            $configuration->restrictWarnings(),
         )]]></code>
       <code><![CDATA[new DefaultProgressPrinter(
             self::$printer,
@@ -828,9 +828,9 @@
             $configuration->colors(),
             $configuration->columns(),
             $configuration->source(),
-            $configuration->filterDeprecations(),
-            $configuration->filterNotices(),
-            $configuration->filterWarnings(),
+            $configuration->restrictDeprecations(),
+            $configuration->restrictNotices(),
+            $configuration->restrictWarnings(),
         )]]></code>
     </MissingThrowsDocblock>
     <NullableReturnStatement>

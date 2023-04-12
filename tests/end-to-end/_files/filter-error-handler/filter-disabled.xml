@@ -8,7 +8,7 @@
         </testsuite>
     </testsuites>
 
-    <source filterDeprecations="false" filterNotices="false" filterWarnings="false">
+    <source restrictDeprecations="false" restrictNotices="false" restrictWarnings="false">
         <include>
             <directory suffix=".php">src</directory>
         </include>

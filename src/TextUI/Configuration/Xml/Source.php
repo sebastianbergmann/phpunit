@@ -24,19 +24,19 @@ final class Source
     private readonly FileCollection $files;
     private readonly FilterDirectoryCollection $excludeDirectories;
     private readonly FileCollection $excludeFiles;
-    private readonly bool $filterDeprecations;
-    private readonly bool $filterNotices;
-    private readonly bool $filterWarnings;
+    private readonly bool $restrictDeprecations;
+    private readonly bool $restrictNotices;
+    private readonly bool $restrictWarnings;
 
-    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $filterDeprecations, bool $filterNotices, bool $filterWarnings)
+    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings)
     {
-        $this->directories        = $directories;
-        $this->files              = $files;
-        $this->excludeDirectories = $excludeDirectories;
-        $this->excludeFiles       = $excludeFiles;
-        $this->filterDeprecations = $filterDeprecations;
-        $this->filterNotices      = $filterNotices;
-        $this->filterWarnings     = $filterWarnings;
+        $this->directories          = $directories;
+        $this->files                = $files;
+        $this->excludeDirectories   = $excludeDirectories;
+        $this->excludeFiles         = $excludeFiles;
+        $this->restrictDeprecations = $restrictDeprecations;
+        $this->restrictNotices      = $restrictNotices;
+        $this->restrictWarnings     = $restrictWarnings;
     }
 
     public function hasNonEmptyListOfFiles(): bool
@@ -64,18 +64,18 @@ final class Source
         return $this->excludeFiles;
     }
 
-    public function filterDeprecations(): bool
+    public function restrictDeprecations(): bool
     {
-        return $this->filterDeprecations;
+        return $this->restrictDeprecations;
     }
 
-    public function filterNotices(): bool
+    public function restrictNotices(): bool
     {
-        return $this->filterNotices;
+        return $this->restrictNotices;
     }
 
-    public function filterWarnings(): bool
+    public function restrictWarnings(): bool
     {
-        return $this->filterWarnings;
+        return $this->restrictWarnings;
     }
 }

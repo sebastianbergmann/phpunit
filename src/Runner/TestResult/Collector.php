@@ -50,9 +50,9 @@ use PHPUnit\TextUI\Configuration\SourceFilter;
 final class Collector
 {
     private readonly Source $source;
-    private readonly bool $filterDeprecations;
-    private readonly bool $filterNotices;
-    private readonly bool $filterWarnings;
+    private readonly bool $restrictDeprecations;
+    private readonly bool $restrictNotices;
+    private readonly bool $restrictWarnings;
     private int $numberOfTests                       = 0;
     private int $numberOfTestsRun                    = 0;
     private int $numberOfAssertions                  = 0;
@@ -153,7 +153,7 @@ final class Collector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Facade $facade, Source $source, bool $filterDeprecations, bool $filterNotices, bool $filterWarnings)
+    public function __construct(Facade $facade, Source $source, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings)
     {
         $facade->registerSubscribers(
             new ExecutionStartedSubscriber($this),
@@ -182,10 +182,10 @@ final class Collector
             new TestRunnerTriggeredWarningSubscriber($this),
         );
 
-        $this->source             = $source;
-        $this->filterDeprecations = $filterDeprecations;
-        $this->filterNotices      = $filterNotices;
-        $this->filterWarnings     = $filterWarnings;
+        $this->source               = $source;
+        $this->restrictDeprecations = $restrictDeprecations;
+        $this->restrictNotices      = $restrictNotices;
+        $this->restrictWarnings     = $restrictWarnings;
     }
 
     public function result(): TestResult
@@ -370,7 +370,7 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($this->filterDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -383,7 +383,7 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($this->filterDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -414,7 +414,7 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
-        if ($this->filterNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -427,7 +427,7 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
-        if ($this->filterNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -440,7 +440,7 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
-        if ($this->filterWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -453,7 +453,7 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
-        if ($this->filterWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 

@@ -43,9 +43,9 @@ final class ProgressPrinter
     private readonly bool $colors;
     private readonly int $numberOfColumns;
     private readonly Source $source;
-    private readonly bool $filterDeprecations;
-    private readonly bool $filterNotices;
-    private readonly bool $filterWarnings;
+    private readonly bool $restrictDeprecations;
+    private readonly bool $restrictNotices;
+    private readonly bool $restrictWarnings;
     private int $column             = 0;
     private int $numberOfTests      = 0;
     private int $numberOfTestsWidth = 0;
@@ -58,15 +58,15 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source, bool $filterDeprecations, bool $filterNotices, bool $filterWarnings)
+    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings)
     {
-        $this->printer            = $printer;
-        $this->colors             = $colors;
-        $this->numberOfColumns    = $numberOfColumns;
-        $this->source             = $source;
-        $this->filterDeprecations = $filterDeprecations;
-        $this->filterNotices      = $filterNotices;
-        $this->filterWarnings     = $filterWarnings;
+        $this->printer              = $printer;
+        $this->colors               = $colors;
+        $this->numberOfColumns      = $numberOfColumns;
+        $this->source               = $source;
+        $this->restrictDeprecations = $restrictDeprecations;
+        $this->restrictNotices      = $restrictNotices;
+        $this->restrictWarnings     = $restrictWarnings;
 
         $this->registerSubscribers($facade);
     }
@@ -107,7 +107,7 @@ final class ProgressPrinter
 
     public function testTriggeredNotice(PhpNoticeTriggered|NoticeTriggered $event): void
     {
-        if ($this->filterNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -117,7 +117,7 @@ final class ProgressPrinter
     public function testTriggeredDeprecation(PhpDeprecationTriggered|PhpunitDeprecationTriggered|DeprecationTriggered $event): void
     {
         if (!$event instanceof PhpunitDeprecationTriggered &&
-            $this->filterDeprecations &&
+            $this->restrictDeprecations &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
@@ -133,7 +133,7 @@ final class ProgressPrinter
     public function testTriggeredWarning(PhpWarningTriggered|PhpunitWarningTriggered|WarningTriggered $event): void
     {
         if (!$event instanceof PhpunitWarningTriggered &&
-            $this->filterWarnings &&
+            $this->restrictWarnings &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
