@@ -600,6 +600,13 @@
       <code>configurationFile</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/TextUI/Configuration/CodeCoverageFilterRegistry.php">
+    <DeprecatedMethod>
+      <code>excludeDirectory</code>
+      <code>excludeFile</code>
+      <code>includeDirectory</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/TextUI/Configuration/Configuration.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[$this->testsCovering]]></code>
