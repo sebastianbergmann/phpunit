@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 10.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.1.1] - 2023-MM-DD
+
+### Fixed
+
+* Tests that have `#[DoesNotPerformAssertions]` (or `@doesNotPerformAssertions`) do not contribute to code coverage
+* `#[DoesNotPerformAssertions]` (and `@doesNotPerformAssertions`) is only interpreted on the method level, not on the class level
+
 ## [10.1.0] - 2023-04-14
 
 ### Added
@@ -44,4 +51,5 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `sourceExcludeDirectories()` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `sourceExcludeFiles()` instead)
 
+[10.1.1]: https://github.com/sebastianbergmann/phpunit/compare/10.1.0...10.1
 [10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0.19...10.1.0
