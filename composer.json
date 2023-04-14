@@ -83,7 +83,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "10.1-dev"
+            "dev-main": "10.2-dev"
         }
     }
 }
