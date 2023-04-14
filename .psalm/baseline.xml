@@ -1035,6 +1035,7 @@
       <code>addToAssertionCount</code>
       <code>doesNotPerformAssertions</code>
       <code>doesNotPerformAssertions</code>
+      <code>doesNotPerformAssertions</code>
       <code>getActualOutput</code>
       <code>getName</code>
       <code>getName</code>
