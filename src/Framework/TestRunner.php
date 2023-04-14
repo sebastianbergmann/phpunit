@@ -132,6 +132,7 @@ final class TestRunner
         $test->addToAssertionCount(Assert::getCount());
 
         if ($this->configuration->reportUselessTests() &&
+            !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
             $risky = true;
         }
