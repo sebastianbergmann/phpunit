@@ -697,7 +697,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\PhpDeprecationTriggered(
@@ -705,7 +705,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }
@@ -714,7 +715,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\DeprecationTriggered(
@@ -722,7 +723,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }
@@ -731,7 +733,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredError(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\ErrorTriggered(
@@ -739,7 +741,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }
@@ -748,7 +751,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\NoticeTriggered(
@@ -756,7 +759,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }
@@ -765,7 +769,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\PhpNoticeTriggered(
@@ -773,7 +777,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }
@@ -782,7 +787,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\WarningTriggered(
@@ -790,7 +795,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }
@@ -799,7 +805,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void
     {
         $this->dispatcher->dispatch(
             new Test\PhpWarningTriggered(
@@ -807,7 +813,8 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $message,
                 $file,
-                $line
+                $line,
+                $suppressed,
             )
         );
     }

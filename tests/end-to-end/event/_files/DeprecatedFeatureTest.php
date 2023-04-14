@@ -18,6 +18,7 @@ final class DeprecatedFeatureTest extends TestCase
     public function testDeprecatedFeature(): void
     {
         trigger_error('message', E_USER_DEPRECATED);
+        @trigger_error('message', E_USER_DEPRECATED);
 
         $this->assertTrue(true);
     }

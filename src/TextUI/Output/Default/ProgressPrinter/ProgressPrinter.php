@@ -21,8 +21,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
-use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
-use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -46,6 +44,12 @@ final class ProgressPrinter
     private readonly bool $restrictDeprecations;
     private readonly bool $restrictNotices;
     private readonly bool $restrictWarnings;
+    private readonly bool $ignoreSuppressionOfDeprecations;
+    private readonly bool $ignoreSuppressionOfPhpDeprecations;
+    private readonly bool $ignoreSuppressionOfNotices;
+    private readonly bool $ignoreSuppressionOfPhpNotices;
+    private readonly bool $ignoreSuppressionOfWarnings;
+    private readonly bool $ignoreSuppressionOfPhpWarnings;
     private int $column             = 0;
     private int $numberOfTests      = 0;
     private int $numberOfTestsWidth = 0;
@@ -60,13 +64,19 @@ final class ProgressPrinter
      */
     public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings)
     {
-        $this->printer              = $printer;
-        $this->colors               = $colors;
-        $this->numberOfColumns      = $numberOfColumns;
-        $this->source               = $source;
-        $this->restrictDeprecations = $restrictDeprecations;
-        $this->restrictNotices      = $restrictNotices;
-        $this->restrictWarnings     = $restrictWarnings;
+        $this->printer                            = $printer;
+        $this->colors                             = $colors;
+        $this->numberOfColumns                    = $numberOfColumns;
+        $this->source                             = $source;
+        $this->restrictDeprecations               = $restrictDeprecations;
+        $this->restrictNotices                    = $restrictNotices;
+        $this->restrictWarnings                   = $restrictWarnings;
+        $this->ignoreSuppressionOfDeprecations    = true;
+        $this->ignoreSuppressionOfPhpDeprecations = true;
+        $this->ignoreSuppressionOfNotices         = true;
+        $this->ignoreSuppressionOfPhpNotices      = true;
+        $this->ignoreSuppressionOfWarnings        = true;
+        $this->ignoreSuppressionOfPhpWarnings     = true;
 
         $this->registerSubscribers($facade);
     }
@@ -105,23 +115,64 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::incomplete());
     }
 
-    public function testTriggeredNotice(PhpNoticeTriggered|NoticeTriggered $event): void
+    public function testTriggeredNotice(NoticeTriggered $event): void
     {
-        if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrictNotices &&
+            !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
+        if ($this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
             return;
         }
 
         $this->updateTestStatus(TestStatus::notice());
     }
 
-    public function testTriggeredDeprecation(PhpDeprecationTriggered|PhpunitDeprecationTriggered|DeprecationTriggered $event): void
+    public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
-        if (!$event instanceof PhpunitDeprecationTriggered &&
-            $this->restrictDeprecations &&
+        if ($this->restrictNotices &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
+        if ($this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
+            return;
+        }
+
+        $this->updateTestStatus(TestStatus::notice());
+    }
+
+    public function testTriggeredDeprecation(DeprecationTriggered $event): void
+    {
+        if ($this->restrictDeprecations &&
+            !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
+        if ($this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
+            return;
+        }
+
+        $this->updateTestStatus(TestStatus::deprecation());
+    }
+
+    public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
+    {
+        if ($this->restrictDeprecations &&
+            !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
+        if ($this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
+            return;
+        }
+
+        $this->updateTestStatus(TestStatus::deprecation());
+    }
+
+    public function testTriggeredPhpunitDeprecation(): void
+    {
         $this->updateTestStatus(TestStatus::deprecation());
     }
 
@@ -130,14 +181,36 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::risky());
     }
 
-    public function testTriggeredWarning(PhpWarningTriggered|PhpunitWarningTriggered|WarningTriggered $event): void
+    public function testTriggeredWarning(WarningTriggered $event): void
     {
-        if (!$event instanceof PhpunitWarningTriggered &&
-            $this->restrictWarnings &&
+        if ($this->restrictWarnings &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
+        if ($this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
+            return;
+        }
+
+        $this->updateTestStatus(TestStatus::warning());
+    }
+
+    public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
+    {
+        if ($this->restrictWarnings &&
+            !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
+        if ($this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
+            return;
+        }
+
+        $this->updateTestStatus(TestStatus::warning());
+    }
+
+    public function testTriggeredPhpunitWarning(): void
+    {
         $this->updateTestStatus(TestStatus::warning());
     }
 

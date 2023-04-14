@@ -17,6 +17,7 @@ final class DeprecatedPhpFeatureTest extends TestCase
     public function testDeprecatedPhpFeature(): void
     {
         defined(null);
+        @defined(null);
 
         $this->assertTrue(true);
     }

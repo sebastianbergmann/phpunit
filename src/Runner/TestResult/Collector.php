@@ -53,6 +53,13 @@ final class Collector
     private readonly bool $restrictDeprecations;
     private readonly bool $restrictNotices;
     private readonly bool $restrictWarnings;
+    private readonly bool $ignoreSuppressionOfDeprecations;
+    private readonly bool $ignoreSuppressionOfPhpDeprecations;
+    private readonly bool $ignoreSuppressionOfErrors;
+    private readonly bool $ignoreSuppressionOfNotices;
+    private readonly bool $ignoreSuppressionOfPhpNotices;
+    private readonly bool $ignoreSuppressionOfWarnings;
+    private readonly bool $ignoreSuppressionOfPhpWarnings;
     private int $numberOfTests                       = 0;
     private int $numberOfTestsRun                    = 0;
     private int $numberOfAssertions                  = 0;
@@ -182,10 +189,17 @@ final class Collector
             new TestRunnerTriggeredWarningSubscriber($this),
         );
 
-        $this->source               = $source;
-        $this->restrictDeprecations = $restrictDeprecations;
-        $this->restrictNotices      = $restrictNotices;
-        $this->restrictWarnings     = $restrictWarnings;
+        $this->source                             = $source;
+        $this->restrictDeprecations               = $restrictDeprecations;
+        $this->restrictNotices                    = $restrictNotices;
+        $this->restrictWarnings                   = $restrictWarnings;
+        $this->ignoreSuppressionOfDeprecations    = true;
+        $this->ignoreSuppressionOfPhpDeprecations = true;
+        $this->ignoreSuppressionOfErrors          = true;
+        $this->ignoreSuppressionOfNotices         = true;
+        $this->ignoreSuppressionOfPhpNotices      = true;
+        $this->ignoreSuppressionOfWarnings        = true;
+        $this->ignoreSuppressionOfPhpWarnings     = true;
     }
 
     public function result(): TestResult
@@ -370,6 +384,10 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
+            return;
+        }
+
         if ($this->restrictDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
@@ -383,6 +401,10 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
+            return;
+        }
+
         if ($this->restrictDeprecations && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
@@ -405,6 +427,10 @@ final class Collector
 
     public function testTriggeredError(ErrorTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfErrors && $event->wasSuppressed()) {
+            return;
+        }
+
         if (!isset($this->testTriggeredErrorEvents[$event->test()->id()])) {
             $this->testTriggeredErrorEvents[$event->test()->id()] = [];
         }
@@ -414,6 +440,10 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
+            return;
+        }
+
         if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
@@ -427,6 +457,10 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
+            return;
+        }
+
         if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
@@ -440,6 +474,10 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
+            return;
+        }
+
         if ($this->restrictWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
@@ -453,6 +491,10 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
+        if ($this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
+            return;
+        }
+
         if ($this->restrictWarnings && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }

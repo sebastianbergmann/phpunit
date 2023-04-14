@@ -15,7 +15,8 @@ final class PhpWarningTest extends TestCase
 {
     public function testPhpWarning(): void
     {
-        $a = $b;
+        $a  = $b;
+        @$a = $b;
 
         $this->assertTrue(true);
     }
