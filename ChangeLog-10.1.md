@@ -21,6 +21,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 ### Changed
 
 * [#5198](https://github.com/sebastianbergmann/phpunit/issues/5198): Display PHPUnit deprecations when TestDox output is used
+* [#5326](https://github.com/sebastianbergmann/phpunit/pull/5326): Ignore suppressed `E_USER_*` errors again
 
 ### Deprecated
 
@@ -43,4 +44,4 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `sourceExcludeDirectories()` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `sourceExcludeFiles()` instead)
 
-[10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0...main
+[10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0.19...10.1.0
