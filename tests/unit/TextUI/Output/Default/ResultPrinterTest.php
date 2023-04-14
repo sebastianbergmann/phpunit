@@ -191,7 +191,8 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                         ],
                     ]
@@ -208,14 +209,16 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                             new PhpDeprecationTriggered(
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'another message',
                                 'Foo.php',
-                                2
+                                2,
+                                false,
                             ),
                         ],
                     ]
@@ -253,7 +256,8 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                         ],
                     ]
@@ -270,7 +274,8 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                         ],
                     ]
@@ -287,7 +292,8 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                         ],
                     ]
@@ -304,7 +310,8 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                         ],
                     ]
@@ -321,7 +328,8 @@ final class ResultPrinterTest extends TestCase
                                 self::testMethod(),
                                 'message',
                                 'Foo.php',
-                                1
+                                1,
+                                false,
                             ),
                         ],
                     ]

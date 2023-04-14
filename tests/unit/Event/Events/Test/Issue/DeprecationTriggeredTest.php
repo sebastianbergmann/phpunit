@@ -25,13 +25,15 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         $message       = 'message';
         $file          = 'file';
         $line          = 1;
+        $suppressed    = false;
 
         $event = new DeprecationTriggered(
             $telemetryInfo,
             $test,
             $message,
             $file,
-            $line
+            $line,
+            $suppressed,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -39,6 +41,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         $this->assertSame($message, $event->message());
         $this->assertSame($file, $event->file());
         $this->assertSame($line, $event->line());
+        $this->assertSame($suppressed, $event->wasSuppressed());
         $this->assertSame('Test Triggered Deprecation (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
     }
 }

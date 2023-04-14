@@ -19,7 +19,8 @@ final class PhpNoticeTest extends TestCase
         {
         };
 
-        $a = &$f();
+        $a  = &$f();
+        @$a = &$f();
 
         $this->assertTrue(true);
     }

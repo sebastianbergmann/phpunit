@@ -19,6 +19,6 @@ final class TestTriggeredPhpWarningSubscriber extends Subscriber implements PhpW
 {
     public function notify(PhpWarningTriggered $event): void
     {
-        $this->printer()->testTriggeredWarning($event);
+        $this->printer()->testTriggeredPhpWarning($event);
     }
 }

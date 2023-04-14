@@ -43,10 +43,6 @@ final class ErrorHandler
     {
         $suppressed = !($errorNumber & error_reporting());
 
-        if ($suppressed) {
-            return false;
-        }
-
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
@@ -54,17 +50,19 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
-                return true;
+                break;
 
             case E_USER_NOTICE:
                 Event\Facade::emitter()->testTriggeredNotice(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
@@ -74,7 +72,8 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
@@ -84,7 +83,8 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
@@ -94,7 +94,8 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
@@ -104,7 +105,8 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
@@ -114,7 +116,8 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;

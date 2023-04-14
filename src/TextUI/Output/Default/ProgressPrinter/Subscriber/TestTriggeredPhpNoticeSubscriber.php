@@ -19,6 +19,6 @@ final class TestTriggeredPhpNoticeSubscriber extends Subscriber implements PhpNo
 {
     public function notify(PhpNoticeTriggered $event): void
     {
-        $this->printer()->testTriggeredNotice($event);
+        $this->printer()->testTriggeredPhpNotice($event);
     }
 }

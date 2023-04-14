@@ -158,19 +158,19 @@ interface Emitter
 
     public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void;
 
-    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
-    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
-    public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredError(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
-    public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
-    public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
-    public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
-    public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
     public function testTriggeredPhpunitError(Code\Test $test, string $message): void;
 
