@@ -27,16 +27,30 @@ final class Source
     private readonly bool $restrictDeprecations;
     private readonly bool $restrictNotices;
     private readonly bool $restrictWarnings;
+    private readonly bool $ignoreSuppressionOfDeprecations;
+    private readonly bool $ignoreSuppressionOfPhpDeprecations;
+    private readonly bool $ignoreSuppressionOfErrors;
+    private readonly bool $ignoreSuppressionOfNotices;
+    private readonly bool $ignoreSuppressionOfPhpNotices;
+    private readonly bool $ignoreSuppressionOfWarnings;
+    private readonly bool $ignoreSuppressionOfPhpWarnings;
 
-    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings)
+    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
     {
-        $this->directories          = $directories;
-        $this->files                = $files;
-        $this->excludeDirectories   = $excludeDirectories;
-        $this->excludeFiles         = $excludeFiles;
-        $this->restrictDeprecations = $restrictDeprecations;
-        $this->restrictNotices      = $restrictNotices;
-        $this->restrictWarnings     = $restrictWarnings;
+        $this->directories                        = $directories;
+        $this->files                              = $files;
+        $this->excludeDirectories                 = $excludeDirectories;
+        $this->excludeFiles                       = $excludeFiles;
+        $this->restrictDeprecations               = $restrictDeprecations;
+        $this->restrictNotices                    = $restrictNotices;
+        $this->restrictWarnings                   = $restrictWarnings;
+        $this->ignoreSuppressionOfDeprecations    = $ignoreSuppressionOfDeprecations;
+        $this->ignoreSuppressionOfPhpDeprecations = $ignoreSuppressionOfPhpDeprecations;
+        $this->ignoreSuppressionOfErrors          = $ignoreSuppressionOfErrors;
+        $this->ignoreSuppressionOfNotices         = $ignoreSuppressionOfNotices;
+        $this->ignoreSuppressionOfPhpNotices      = $ignoreSuppressionOfPhpNotices;
+        $this->ignoreSuppressionOfWarnings        = $ignoreSuppressionOfWarnings;
+        $this->ignoreSuppressionOfPhpWarnings     = $ignoreSuppressionOfPhpWarnings;
     }
 
     public function hasNonEmptyListOfFiles(): bool
@@ -77,5 +91,40 @@ final class Source
     public function restrictWarnings(): bool
     {
         return $this->restrictWarnings;
+    }
+
+    public function ignoreSuppressionOfDeprecations(): bool
+    {
+        return $this->ignoreSuppressionOfDeprecations;
+    }
+
+    public function ignoreSuppressionOfPhpDeprecations(): bool
+    {
+        return $this->ignoreSuppressionOfPhpDeprecations;
+    }
+
+    public function ignoreSuppressionOfErrors(): bool
+    {
+        return $this->ignoreSuppressionOfErrors;
+    }
+
+    public function ignoreSuppressionOfNotices(): bool
+    {
+        return $this->ignoreSuppressionOfNotices;
+    }
+
+    public function ignoreSuppressionOfPhpNotices(): bool
+    {
+        return $this->ignoreSuppressionOfPhpNotices;
+    }
+
+    public function ignoreSuppressionOfWarnings(): bool
+    {
+        return $this->ignoreSuppressionOfWarnings;
+    }
+
+    public function ignoreSuppressionOfPhpWarnings(): bool
+    {
+        return $this->ignoreSuppressionOfPhpWarnings;
     }
 }

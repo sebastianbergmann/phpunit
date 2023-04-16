@@ -248,16 +248,30 @@ final class Loader
 
     private function source(string $filename, DOMXPath $xpath): Source
     {
-        $restrictDeprecations = false;
-        $restrictNotices      = false;
-        $restrictWarnings     = false;
+        $restrictDeprecations               = false;
+        $restrictNotices                    = false;
+        $restrictWarnings                   = false;
+        $ignoreSuppressionOfDeprecations    = false;
+        $ignoreSuppressionOfPhpDeprecations = false;
+        $ignoreSuppressionOfErrors          = false;
+        $ignoreSuppressionOfNotices         = false;
+        $ignoreSuppressionOfPhpNotices      = false;
+        $ignoreSuppressionOfWarnings        = false;
+        $ignoreSuppressionOfPhpWarnings     = false;
 
         $element = $this->element($xpath, 'source');
 
         if ($element) {
-            $restrictDeprecations = $this->getBooleanAttribute($element, 'restrictDeprecations', false);
-            $restrictNotices      = $this->getBooleanAttribute($element, 'restrictNotices', false);
-            $restrictWarnings     = $this->getBooleanAttribute($element, 'restrictWarnings', false);
+            $restrictDeprecations               = $this->getBooleanAttribute($element, 'restrictDeprecations', false);
+            $restrictNotices                    = $this->getBooleanAttribute($element, 'restrictNotices', false);
+            $restrictWarnings                   = $this->getBooleanAttribute($element, 'restrictWarnings', false);
+            $ignoreSuppressionOfDeprecations    = $this->getBooleanAttribute($element, 'ignoreSuppressionOfDeprecations', false);
+            $ignoreSuppressionOfPhpDeprecations = $this->getBooleanAttribute($element, 'ignoreSuppressionOfPhpDeprecations', false);
+            $ignoreSuppressionOfErrors          = $this->getBooleanAttribute($element, 'ignoreSuppressionOfErrors', false);
+            $ignoreSuppressionOfNotices         = $this->getBooleanAttribute($element, 'ignoreSuppressionOfNotices', false);
+            $ignoreSuppressionOfPhpNotices      = $this->getBooleanAttribute($element, 'ignoreSuppressionOfPhpNotices', false);
+            $ignoreSuppressionOfWarnings        = $this->getBooleanAttribute($element, 'ignoreSuppressionOfWarnings', false);
+            $ignoreSuppressionOfPhpWarnings     = $this->getBooleanAttribute($element, 'ignoreSuppressionOfPhpWarnings', false);
         }
 
         return new Source(
@@ -268,6 +282,13 @@ final class Loader
             $restrictDeprecations,
             $restrictNotices,
             $restrictWarnings,
+            $ignoreSuppressionOfDeprecations,
+            $ignoreSuppressionOfPhpDeprecations,
+            $ignoreSuppressionOfErrors,
+            $ignoreSuppressionOfNotices,
+            $ignoreSuppressionOfPhpNotices,
+            $ignoreSuppressionOfWarnings,
+            $ignoreSuppressionOfPhpWarnings,
         );
     }
 

@@ -162,6 +162,13 @@ final class Facade
             $configuration->restrictDeprecations(),
             $configuration->restrictNotices(),
             $configuration->restrictWarnings(),
+            $configuration->ignoreSuppressionOfDeprecations(),
+            $configuration->ignoreSuppressionOfPhpDeprecations(),
+            $configuration->ignoreSuppressionOfErrors(),
+            $configuration->ignoreSuppressionOfNotices(),
+            $configuration->ignoreSuppressionOfPhpNotices(),
+            $configuration->ignoreSuppressionOfWarnings(),
+            $configuration->ignoreSuppressionOfPhpWarnings(),
         );
 
         self::$defaultProgressPrinter = true;
