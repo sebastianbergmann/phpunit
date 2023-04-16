@@ -140,16 +140,16 @@ final class LoaderTest extends TestCase
     {
         $source = $this->configuration('configuration_codecoverage.xml')->source();
 
-        $directory = iterator_to_array($source->directories(), false)[0];
+        $directory = iterator_to_array($source->includeDirectories(), false)[0];
 
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
 
-        $file = iterator_to_array($source->files(), false)[0];
+        $file = iterator_to_array($source->includeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
-        $file = iterator_to_array($source->files(), false)[1];
+        $file = iterator_to_array($source->includeFiles(), false)[1];
         $this->assertSame('/path/to/file', $file->path());
 
         $directory = iterator_to_array($source->excludeDirectories(), false)[0];

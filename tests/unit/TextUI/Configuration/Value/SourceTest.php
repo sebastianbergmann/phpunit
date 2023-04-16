@@ -33,6 +33,16 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($includeDirectories, $source->includeDirectories());
@@ -47,6 +57,16 @@ final class SourceTest extends TestCase
             $includeFiles,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($includeFiles, $source->includeFiles());
@@ -61,6 +81,16 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             $excludeDirectories,
             FileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($excludeDirectories, $source->excludeDirectories());
@@ -75,6 +105,16 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             $excludeFiles,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($excludeFiles, $source->excludeFiles());

@@ -702,11 +702,11 @@ final class Merger
             $sourceExcludeDirectories = $xmlConfiguration->codeCoverage()->excludeDirectories();
             $sourceExcludeFiles       = $xmlConfiguration->codeCoverage()->excludeFiles();
         } else {
-            foreach ($xmlConfiguration->source()->directories() as $directory) {
+            foreach ($xmlConfiguration->source()->includeDirectories() as $directory) {
                 $sourceIncludeDirectories[] = $directory;
             }
 
-            $sourceIncludeFiles       = $xmlConfiguration->source()->files();
+            $sourceIncludeFiles       = $xmlConfiguration->source()->includeFiles();
             $sourceExcludeDirectories = $xmlConfiguration->source()->excludeDirectories();
             $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
         }
@@ -723,17 +723,17 @@ final class Merger
                 $sourceIncludeFiles,
                 $sourceExcludeDirectories,
                 $sourceExcludeFiles,
+                $xmlConfiguration->source()->restrictDeprecations(),
+                $xmlConfiguration->source()->restrictNotices(),
+                $xmlConfiguration->source()->restrictWarnings(),
+                $xmlConfiguration->source()->ignoreSuppressionOfDeprecations(),
+                $xmlConfiguration->source()->ignoreSuppressionOfPhpDeprecations(),
+                $xmlConfiguration->source()->ignoreSuppressionOfErrors(),
+                $xmlConfiguration->source()->ignoreSuppressionOfNotices(),
+                $xmlConfiguration->source()->ignoreSuppressionOfPhpNotices(),
+                $xmlConfiguration->source()->ignoreSuppressionOfWarnings(),
+                $xmlConfiguration->source()->ignoreSuppressionOfPhpWarnings(),
             ),
-            $xmlConfiguration->source()->restrictDeprecations(),
-            $xmlConfiguration->source()->restrictNotices(),
-            $xmlConfiguration->source()->restrictWarnings(),
-            $xmlConfiguration->source()->ignoreSuppressionOfDeprecations(),
-            $xmlConfiguration->source()->ignoreSuppressionOfPhpDeprecations(),
-            $xmlConfiguration->source()->ignoreSuppressionOfErrors(),
-            $xmlConfiguration->source()->ignoreSuppressionOfNotices(),
-            $xmlConfiguration->source()->ignoreSuppressionOfPhpNotices(),
-            $xmlConfiguration->source()->ignoreSuppressionOfWarnings(),
-            $xmlConfiguration->source()->ignoreSuppressionOfPhpWarnings(),
             $testResultCacheFile,
             $coverageClover,
             $coverageCobertura,

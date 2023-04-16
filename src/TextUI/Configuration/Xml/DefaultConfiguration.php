@@ -18,6 +18,7 @@ use PHPUnit\TextUI\Configuration\FilterDirectoryCollection as CodeCoverageFilter
 use PHPUnit\TextUI\Configuration\GroupCollection;
 use PHPUnit\TextUI\Configuration\IniSettingCollection;
 use PHPUnit\TextUI\Configuration\Php;
+use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\Configuration\VariableCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
