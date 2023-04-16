@@ -384,7 +384,7 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
             return;
         }
 
@@ -401,7 +401,7 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
             return;
         }
 
@@ -427,7 +427,7 @@ final class Collector
 
     public function testTriggeredError(ErrorTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfErrors && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfErrors && $event->wasSuppressed()) {
             return;
         }
 
@@ -440,7 +440,7 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
             return;
         }
 
@@ -457,7 +457,7 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
             return;
         }
 
@@ -474,7 +474,7 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
             return;
         }
 
@@ -491,7 +491,7 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
-        if ($this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
             return;
         }
 
