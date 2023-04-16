@@ -45,11 +45,11 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315): Deprecate `MockBuilder::enableArgumentCloning()` and `MockBuilder::disableArgumentCloning()` (these methods only have a `@deprecated` annotation for now; using these methods will trigger a deprecation warning in PHPUnit 11; these methods will be removed in PHPUnit 12)
 * [#5320](https://github.com/sebastianbergmann/phpunit/issues/5320): Deprecate `MockBuilder::addMethods()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
 * Using `<coverage><include>...</include><exclude>...</exclude></coverage>` in the XML configuration file to configure code that should be included in code coverage reporting is now deprecated and support for this will be removed in PHPUnit 11 (use `<source><include>...</include><exclude>...</exclude></source>` instead)
-* `PHPUnit\TextUI\Configuration\Configuration::hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()` (use `hasNonEmptyListOfSourceFiles()` instead)
-* `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeDirectories()` (use `sourceIncludeDirectories()` instead)
-* `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeFiles()` (use `sourceIncludeFiles()` instead)
-* `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `sourceExcludeDirectories()` instead)
-* `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `sourceExcludeFiles()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()` (use `source()->notEmpty()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeDirectories()` (use `source()->includeDirectories()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeFiles()` (use `source()->includeFiles()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `source()->excludeDirectories()` instead)
+* `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `source()->excludeFiles()` instead)
 
 [10.1.1]: https://github.com/sebastianbergmann/phpunit/compare/10.1.0...10.1
 [10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0.19...10.1.0
