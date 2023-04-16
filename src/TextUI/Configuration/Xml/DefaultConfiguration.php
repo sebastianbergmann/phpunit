@@ -42,6 +42,13 @@ final class DefaultConfiguration extends Configuration
                 false,
                 false,
                 false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
             ),
             new CodeCoverage(
                 null,

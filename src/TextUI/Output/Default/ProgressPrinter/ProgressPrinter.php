@@ -46,6 +46,7 @@ final class ProgressPrinter
     private readonly bool $restrictWarnings;
     private readonly bool $ignoreSuppressionOfDeprecations;
     private readonly bool $ignoreSuppressionOfPhpDeprecations;
+    private readonly bool $ignoreSuppressionOfErrors;
     private readonly bool $ignoreSuppressionOfNotices;
     private readonly bool $ignoreSuppressionOfPhpNotices;
     private readonly bool $ignoreSuppressionOfWarnings;
@@ -62,7 +63,7 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings)
+    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
     {
         $this->printer                            = $printer;
         $this->colors                             = $colors;
@@ -71,12 +72,13 @@ final class ProgressPrinter
         $this->restrictDeprecations               = $restrictDeprecations;
         $this->restrictNotices                    = $restrictNotices;
         $this->restrictWarnings                   = $restrictWarnings;
-        $this->ignoreSuppressionOfDeprecations    = true;
-        $this->ignoreSuppressionOfPhpDeprecations = true;
-        $this->ignoreSuppressionOfNotices         = true;
-        $this->ignoreSuppressionOfPhpNotices      = true;
-        $this->ignoreSuppressionOfWarnings        = true;
-        $this->ignoreSuppressionOfPhpWarnings     = true;
+        $this->ignoreSuppressionOfDeprecations    = $ignoreSuppressionOfDeprecations;
+        $this->ignoreSuppressionOfPhpDeprecations = $ignoreSuppressionOfPhpDeprecations;
+        $this->ignoreSuppressionOfErrors          = $ignoreSuppressionOfErrors;
+        $this->ignoreSuppressionOfNotices         = $ignoreSuppressionOfNotices;
+        $this->ignoreSuppressionOfPhpNotices      = $ignoreSuppressionOfPhpNotices;
+        $this->ignoreSuppressionOfWarnings        = $ignoreSuppressionOfWarnings;
+        $this->ignoreSuppressionOfPhpWarnings     = $ignoreSuppressionOfPhpWarnings;
 
         $this->registerSubscribers($facade);
     }

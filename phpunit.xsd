@@ -27,6 +27,13 @@
         <xs:attribute name="restrictDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="restrictNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="restrictWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfPhpDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfErrors" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfNotices" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfPhpNotices" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="ignoreSuppressionOfPhpWarnings" type="xs:boolean" default="false"/>
     </xs:complexType>
     <xs:group name="sourcePathGroup">
         <xs:sequence>
