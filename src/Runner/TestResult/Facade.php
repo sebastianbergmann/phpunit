@@ -95,16 +95,6 @@ final class Facade
             self::$collector = new Collector(
                 EventFacade::instance(),
                 $configuration->source(),
-                $configuration->restrictDeprecations(),
-                $configuration->restrictNotices(),
-                $configuration->restrictWarnings(),
-                $configuration->ignoreSuppressionOfDeprecations(),
-                $configuration->ignoreSuppressionOfPhpDeprecations(),
-                $configuration->ignoreSuppressionOfErrors(),
-                $configuration->ignoreSuppressionOfNotices(),
-                $configuration->ignoreSuppressionOfPhpNotices(),
-                $configuration->ignoreSuppressionOfWarnings(),
-                $configuration->ignoreSuppressionOfPhpWarnings(),
             );
         }
 

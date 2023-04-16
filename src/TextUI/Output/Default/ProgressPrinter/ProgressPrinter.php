@@ -41,16 +41,6 @@ final class ProgressPrinter
     private readonly bool $colors;
     private readonly int $numberOfColumns;
     private readonly Source $source;
-    private readonly bool $restrictDeprecations;
-    private readonly bool $restrictNotices;
-    private readonly bool $restrictWarnings;
-    private readonly bool $ignoreSuppressionOfDeprecations;
-    private readonly bool $ignoreSuppressionOfPhpDeprecations;
-    private readonly bool $ignoreSuppressionOfErrors;
-    private readonly bool $ignoreSuppressionOfNotices;
-    private readonly bool $ignoreSuppressionOfPhpNotices;
-    private readonly bool $ignoreSuppressionOfWarnings;
-    private readonly bool $ignoreSuppressionOfPhpWarnings;
     private int $column             = 0;
     private int $numberOfTests      = 0;
     private int $numberOfTestsWidth = 0;
@@ -63,22 +53,12 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
+    public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source)
     {
-        $this->printer                            = $printer;
-        $this->colors                             = $colors;
-        $this->numberOfColumns                    = $numberOfColumns;
-        $this->source                             = $source;
-        $this->restrictDeprecations               = $restrictDeprecations;
-        $this->restrictNotices                    = $restrictNotices;
-        $this->restrictWarnings                   = $restrictWarnings;
-        $this->ignoreSuppressionOfDeprecations    = $ignoreSuppressionOfDeprecations;
-        $this->ignoreSuppressionOfPhpDeprecations = $ignoreSuppressionOfPhpDeprecations;
-        $this->ignoreSuppressionOfErrors          = $ignoreSuppressionOfErrors;
-        $this->ignoreSuppressionOfNotices         = $ignoreSuppressionOfNotices;
-        $this->ignoreSuppressionOfPhpNotices      = $ignoreSuppressionOfPhpNotices;
-        $this->ignoreSuppressionOfWarnings        = $ignoreSuppressionOfWarnings;
-        $this->ignoreSuppressionOfPhpWarnings     = $ignoreSuppressionOfPhpWarnings;
+        $this->printer         = $printer;
+        $this->colors          = $colors;
+        $this->numberOfColumns = $numberOfColumns;
+        $this->source          = $source;
 
         $this->registerSubscribers($facade);
     }
@@ -119,12 +99,12 @@ final class ProgressPrinter
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
-        if ($this->restrictNotices &&
+        if ($this->source->restrictNotices() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
-        if (!$this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
+        if (!$this->source->ignoreSuppressionOfNotices() && $event->wasSuppressed()) {
             return;
         }
 
@@ -133,12 +113,12 @@ final class ProgressPrinter
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
-        if ($this->restrictNotices &&
+        if ($this->source->restrictNotices() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
-        if (!$this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
+        if (!$this->source->ignoreSuppressionOfPhpNotices() && $event->wasSuppressed()) {
             return;
         }
 
@@ -147,12 +127,12 @@ final class ProgressPrinter
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($this->restrictDeprecations &&
+        if ($this->source->restrictDeprecations() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
-        if (!$this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
+        if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
             return;
         }
 
@@ -161,12 +141,12 @@ final class ProgressPrinter
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($this->restrictDeprecations &&
+        if ($this->source->restrictDeprecations() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
-        if (!$this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
+        if (!$this->source->ignoreSuppressionOfPhpDeprecations() && $event->wasSuppressed()) {
             return;
         }
 
@@ -185,12 +165,12 @@ final class ProgressPrinter
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
-        if ($this->restrictWarnings &&
+        if ($this->source->restrictWarnings() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
-        if (!$this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
+        if (!$this->source->ignoreSuppressionOfWarnings() && $event->wasSuppressed()) {
             return;
         }
 
@@ -199,12 +179,12 @@ final class ProgressPrinter
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
-        if ($this->restrictWarnings &&
+        if ($this->source->restrictWarnings() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
-        if (!$this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
+        if (!$this->source->ignoreSuppressionOfPhpWarnings() && $event->wasSuppressed()) {
             return;
         }
 
