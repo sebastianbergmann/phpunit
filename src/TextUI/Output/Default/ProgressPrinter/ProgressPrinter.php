@@ -122,7 +122,7 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfNotices && $event->wasSuppressed()) {
             return;
         }
 
@@ -136,7 +136,7 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfPhpNotices && $event->wasSuppressed()) {
             return;
         }
 
@@ -150,7 +150,7 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfDeprecations && $event->wasSuppressed()) {
             return;
         }
 
@@ -164,7 +164,7 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfPhpDeprecations && $event->wasSuppressed()) {
             return;
         }
 
@@ -188,7 +188,7 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfWarnings && $event->wasSuppressed()) {
             return;
         }
 
@@ -202,7 +202,7 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
+        if (!$this->ignoreSuppressionOfPhpWarnings && $event->wasSuppressed()) {
             return;
         }
 
