@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 
 ## [10.2.0] - 2023-06-02
 
+### Added
+
+* [#5328](https://github.com/sebastianbergmann/phpunit/issues/5328): Optionally ignore suppression of deprecations, notices, and warnings
+
 ### Deprecated
 
 * `PHPUnit\TextUI\Configuration\Configuration::restrictDeprecations()` (use `source()->restrictDeprecations()` instead)
