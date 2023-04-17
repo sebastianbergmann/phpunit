@@ -39,7 +39,7 @@ final class Generator
 
     <source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
-            <directory suffix=".php">{src_directory}</directory>
+            <directory>{src_directory}</directory>
         </include>
     </source>
 </phpunit>
