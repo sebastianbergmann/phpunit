@@ -49,7 +49,11 @@ final class CodeCoverage
     private bool $collecting                                            = false;
     private ?TestCase $test                                             = null;
     private ?Timer $timer                                               = null;
-    private array $linesToBeIgnored                                     = [];
+
+    /**
+     * @psalm-var array<string,list<int>>
+     */
+    private array $linesToBeIgnored = [];
 
     public static function instance(): self
     {
