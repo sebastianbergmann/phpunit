@@ -18,6 +18,7 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
@@ -194,6 +195,15 @@ final class ProgressPrinter
     public function testTriggeredPhpunitWarning(): void
     {
         $this->updateTestStatus(TestStatus::warning());
+    }
+
+    public function testTriggeredError(ErrorTriggered $event): void
+    {
+        if (!$this->source->ignoreSuppressionOfErrors() && $event->wasSuppressed()) {
+            return;
+        }
+
+        $this->updateTestStatus(TestStatus::error());
     }
 
     public function testFailed(): void
