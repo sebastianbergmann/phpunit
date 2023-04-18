@@ -138,8 +138,13 @@ final class GlobalState
     public static function processIncludedFilesAsString(array $files): string
     {
         $excludeList = new ExcludeList;
-        $prefix      = false;
-        $result      = '';
+
+        if (defined('PHPUNIT_TESTSUITE')) {
+            $excludeList->disable();
+        }
+
+        $prefix = false;
+        $result = '';
 
         if (defined('__PHPUNIT_PHAR__')) {
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
