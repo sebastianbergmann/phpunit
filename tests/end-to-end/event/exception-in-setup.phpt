@@ -33,6 +33,9 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ExceptionInSetUpTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
+Before Test Method Called (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::setUp)
+Before Test Method Finished:
+- PHPUnit\TestFixture\Event\ExceptionInSetUpTest::setUp
 Test Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInSetUpTest, 1 test)
 Test Runner Execution Finished
