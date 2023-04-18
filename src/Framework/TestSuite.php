@@ -16,6 +16,7 @@ use function assert;
 use function call_user_func;
 use function class_exists;
 use function count;
+use function defined;
 use function implode;
 use function is_callable;
 use function is_file;
@@ -569,7 +570,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return sprintf(
                 "%s\n%s",
                 $message,
-                Filter::getFilteredStacktrace($t)
+                Filter::getFilteredStacktrace($t, !defined('PHPUNIT_TESTSUITE'))
             );
         }
 
@@ -577,7 +578,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             "%s: %s\n%s",
             $t::class,
             $message,
-            Filter::getFilteredStacktrace($t)
+            Filter::getFilteredStacktrace($t, !defined('PHPUNIT_TESTSUITE'))
         );
     }
 

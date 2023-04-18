@@ -28,7 +28,7 @@ final class Filter
     /**
      * @throws Exception
      */
-    public static function getFilteredStacktrace(Throwable $t): string
+    public static function getFilteredStacktrace(Throwable $t, bool $excludePhpunitSources = true): string
     {
         $filteredStacktrace = '';
 
@@ -60,7 +60,7 @@ final class Filter
         $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
         $excludeList = new ExcludeList;
 
-        if (defined('PHPUNIT_TESTSUITE')) {
+        if (!$excludePhpunitSources) {
             $excludeList->disable();
         }
 

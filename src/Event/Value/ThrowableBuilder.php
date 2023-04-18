@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use function defined;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Util\Filter;
@@ -35,7 +36,7 @@ final class ThrowableBuilder
             $t::class,
             $t->getMessage(),
             ThrowableToStringMapper::map($t),
-            Filter::getFilteredStacktrace($t),
+            Filter::getFilteredStacktrace($t, !defined('PHPUNIT_TESTSUITE')),
             $previous
         );
     }
