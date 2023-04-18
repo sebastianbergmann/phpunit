@@ -284,7 +284,7 @@ final class TestRunner
         if ($preserveGlobalState) {
             $constants     = GlobalState::getConstantsAsString();
             $globals       = GlobalState::getGlobalsAsString();
-            $includedFiles = GlobalState::getIncludedFilesAsString();
+            $includedFiles = GlobalState::getIncludedFilesAsString(!defined('PHPUNIT_TESTSUITE'));
             $iniSettings   = GlobalState::getIniSettingsAsString();
         }
 
