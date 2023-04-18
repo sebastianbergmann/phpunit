@@ -125,9 +125,9 @@ final class GlobalState
     /**
      * @throws Exception
      */
-    public static function getIncludedFilesAsString(): string
+    public static function getIncludedFilesAsString(bool $excludePhpunitSources = true): string
     {
-        return self::processIncludedFilesAsString(get_included_files());
+        return self::processIncludedFilesAsString(get_included_files(), $excludePhpunitSources);
     }
 
     /**
@@ -135,11 +135,16 @@ final class GlobalState
      *
      * @throws Exception
      */
-    public static function processIncludedFilesAsString(array $files): string
+    public static function processIncludedFilesAsString(array $files, bool $excludePhpunitSources = true): string
     {
         $excludeList = new ExcludeList;
-        $prefix      = false;
-        $result      = '';
+
+        if (!$excludePhpunitSources) {
+            $excludeList->disable();
+        }
+
+        $prefix = false;
+        $result = '';
 
         if (defined('__PHPUNIT_PHAR__')) {
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
