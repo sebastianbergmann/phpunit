@@ -21,7 +21,7 @@ final class ExcludeListTest extends TestCase
 {
     public function testIsInitialized(): void
     {
-        $excludeList = new ExcludeList;
+        $excludeList = new ExcludeList(true);
 
         $this->assertContains(
             realpath(__DIR__ . '/../../../src'),
@@ -31,7 +31,7 @@ final class ExcludeListTest extends TestCase
 
     public function testExclusionOfFileCanBeQueried(): void
     {
-        $excludeList = new ExcludeList;
+        $excludeList = new ExcludeList(true);
 
         $this->assertTrue($excludeList->isExcluded(realpath(__DIR__ . '/../../../src/Framework/TestCase.php')));
         $this->assertFalse($excludeList->isExcluded(__FILE__));
@@ -39,9 +39,7 @@ final class ExcludeListTest extends TestCase
 
     public function testCanBeDisabled(): void
     {
-        $excludeList = new ExcludeList;
-
-        $excludeList->disable();
+        $excludeList = new ExcludeList(false);
 
         $this->assertFalse($excludeList->isExcluded(realpath(__DIR__ . '/../../../src/Framework/TestCase.php')));
     }
@@ -52,7 +50,7 @@ final class ExcludeListTest extends TestCase
 
         ExcludeList::addDirectory($directory);
 
-        $excludeList = new ExcludeList;
+        $excludeList = new ExcludeList(true);
 
         $this->assertContains($directory, $excludeList->getExcludedDirectories());
     }

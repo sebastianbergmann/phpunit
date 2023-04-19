@@ -138,6 +138,7 @@ final class ExcludeList
      */
     private static array $directories = [];
     private static bool $initialized  = false;
+    private readonly bool $enabled;
 
     /**
      * @psalm-param non-empty-string $directory
@@ -153,6 +154,15 @@ final class ExcludeList
         self::$directories[] = realpath($directory);
     }
 
+    public function __construct(?bool $enabled = null)
+    {
+        if ($enabled === null) {
+            $enabled = !defined('PHPUNIT_TESTSUITE');
+        }
+
+        $this->enabled = $enabled;
+    }
+
     /**
      * @psalm-return list<string>
      */
@@ -165,7 +175,7 @@ final class ExcludeList
 
     public function isExcluded(string $file): bool
     {
-        if (defined('PHPUNIT_TESTSUITE')) {
+        if (!$this->enabled) {
             return false;
         }
 
