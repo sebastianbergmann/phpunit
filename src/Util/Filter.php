@@ -60,10 +60,6 @@ final class Filter
         $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
         $excludeList = new ExcludeList;
 
-        if (defined('PHPUNIT_TESTSUITE')) {
-            $excludeList->disable();
-        }
-
         foreach ($eTrace as $frame) {
             if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
                 $filteredStacktrace .= sprintf(
