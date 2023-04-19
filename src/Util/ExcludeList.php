@@ -11,6 +11,7 @@ namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
 use function class_exists;
+use function defined;
 use function dirname;
 use function is_dir;
 use function realpath;
@@ -137,7 +138,7 @@ final class ExcludeList
      */
     private static array $directories = [];
     private static bool $initialized  = false;
-    private bool $disabled            = false;
+    private readonly bool $enabled;
 
     /**
      * @psalm-param non-empty-string $directory
@@ -153,6 +154,15 @@ final class ExcludeList
         self::$directories[] = realpath($directory);
     }
 
+    public function __construct(?bool $enabled = null)
+    {
+        if ($enabled === null) {
+            $enabled = !defined('PHPUNIT_TESTSUITE');
+        }
+
+        $this->enabled = $enabled;
+    }
+
     /**
      * @psalm-return list<string>
      */
@@ -165,7 +175,7 @@ final class ExcludeList
 
     public function isExcluded(string $file): bool
     {
-        if ($this->disabled) {
+        if (!$this->enabled) {
             return false;
         }
 
@@ -178,14 +188,6 @@ final class ExcludeList
         }
 
         return false;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function disable(): void
-    {
-        $this->disabled = true;
     }
 
     private static function initialize(): void
