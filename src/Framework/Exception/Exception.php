@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function array_keys;
-use function defined;
 use function get_object_vars;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\ThrowableToStringMapper;
@@ -62,7 +61,7 @@ class Exception extends RuntimeException implements \PHPUnit\Exception, Stringab
     {
         $string = ThrowableToStringMapper::map($this);
 
-        if ($trace = Filter::getFilteredStacktrace($this, !defined('PHPUNIT_TESTSUITE'))) {
+        if ($trace = Filter::getFilteredStacktrace($this)) {
             $string .= "\n" . $trace;
         }
 
