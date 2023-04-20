@@ -4,9 +4,10 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 
 ## [10.1.2] - 2023-MM-DD
 
-### Fixed
+### Added
 
-* `PHPUnit\Event\Telemetry\Info::garbageCollectorStatus()` is missing
+* `PHPUnit\Runner\Extension\Facade::replaceOutput()` and `PHPUnit\Runner\Extension\Facade::replacesOutput()`
+* `PHPUnit\Event\Telemetry\Info::garbageCollectorStatus()`
 
 ## [10.1.1] - 2023-04-17
 
