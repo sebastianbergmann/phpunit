@@ -58,5 +58,6 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `source()->excludeDirectories()` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `source()->excludeFiles()` instead)
 
+[10.1.2]: https://github.com/sebastianbergmann/phpunit/compare/10.1.1...10.1
 [10.1.1]: https://github.com/sebastianbergmann/phpunit/compare/10.1.0...10.1.1
 [10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0.19...10.1.0
