@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.1.2] - 2023-MM-DD
+
+### Fixed
+
+* `PHPUnit\Event\Telemetry\Info::garbageCollectorStatus()` is missing
+
 ## [10.1.1] - 2023-04-17
 
 ### Fixed
