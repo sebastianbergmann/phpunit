@@ -49,6 +49,9 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
+    <InvalidArrayOffset>
+      <code><![CDATA[gc_status()['running']]]></code>
+    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Runtime/PHP.php">
     <ImpureFunctionCall>
