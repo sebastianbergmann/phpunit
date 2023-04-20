@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +40,6 @@ final class GarbageCollectorStatusTest extends TestCase
 
     public function testMayHaveExtendedInformation(): void
     {
-        $this->assertFalse($this->withoutDetails()->hasExtendedInformation());
         $this->assertTrue($this->withDetails()->hasExtendedInformation());
     }
 
@@ -61,6 +61,39 @@ final class GarbageCollectorStatusTest extends TestCase
     public function testMayHaveBufferSize(): void
     {
         $this->assertSame(5, $this->withDetails()->bufferSize());
+    }
+
+    public function testMayNotHaveExtendedInformation(): void
+    {
+        $this->assertFalse($this->withoutDetails()->hasExtendedInformation());
+    }
+
+    public function testMayNotHaveRunning(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->isRunning();
+    }
+
+    public function testMayNotHaveProtected(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->isProtected();
+    }
+
+    public function testMayNotHaveFull(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->isFull();
+    }
+
+    public function testMayNotHaveBufferSize(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->bufferSize();
     }
 
     private function withoutDetails(): GarbageCollectorStatus
