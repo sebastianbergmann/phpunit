@@ -10,6 +10,7 @@
 namespace PHPUnit\Logging\TestDox;
 
 use function assert;
+use function ksort;
 use function usort;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -82,6 +83,8 @@ final class TestResultCollector
 
             $result[$prettifiedClassName] = TestResultCollection::fromArray($tests);
         }
+
+        ksort($result);
 
         return $result;
     }
