@@ -138,12 +138,11 @@ final class Application
 
             $printer = OutputFacade::init(
                 $configuration,
-                $extensionReplacesOutput,
                 $extensionReplacesProgressOutput,
                 $extensionReplacesResultOutput
             );
 
-            if (!$extensionReplacesResultOutput) {
+            if (!$extensionReplacesOutput) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
