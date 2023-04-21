@@ -117,11 +117,11 @@ final class Application
                     );
                 }
 
-                $extensionRequirements                   = $this->bootstrapExtensions($configuration);
-                $extensionRequiresCodeCoverageCollection = $extensionRequirements['requiresCodeCoverageCollection'];
-                $extensionReplacesOutput                 = $extensionRequirements['replacesOutput'];
-                $extensionReplacesProgressOutput         = $extensionRequirements['replacesProgressOutput'];
-                $extensionReplacesResultOutput           = $extensionRequirements['replacesResultOutput'];
+                $bootstrappedExtensions                  = $this->bootstrapExtensions($configuration);
+                $extensionRequiresCodeCoverageCollection = $bootstrappedExtensions['requiresCodeCoverageCollection'];
+                $extensionReplacesOutput                 = $bootstrappedExtensions['replacesOutput'];
+                $extensionReplacesProgressOutput         = $bootstrappedExtensions['replacesProgressOutput'];
+                $extensionReplacesResultOutput           = $bootstrappedExtensions['replacesResultOutput'];
             }
 
             CodeCoverage::instance()->init(
