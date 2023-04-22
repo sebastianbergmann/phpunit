@@ -42,7 +42,7 @@ Runtime: %s
 
 ##teamcity[testStarted name='testFailure' locationHint='php_qn://%stests/end-to-end/_files/basic/unit/StatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testFailure' flowId='%d']
 
-##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details='%stests/end-to-end/_files/basic/unit/StatusTest.php:%d|n' duration='1' flowId='%d']
+##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details='%stests/end-to-end/_files/basic/unit/StatusTest.php:%d|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testFailure' duration='%d' flowId='%d']
 
