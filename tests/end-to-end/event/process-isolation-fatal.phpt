@@ -37,6 +37,8 @@ Test Preparation Started (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Call to undefined function PHPUnit\TestFixture\Event\doesNotExist()
+Test Considered Risky (PHPUnit\TestFixture\Event\FatalTest::testOne)
+This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\FatalTest, 1 test)
 Test Runner Execution Finished

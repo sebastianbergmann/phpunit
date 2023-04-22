@@ -26,7 +26,11 @@ Runtime: %s
 
 ##teamcity[testFailed name='testOneWithSetUpException' message='RuntimeException: throw exception in setUp' details='%stests/end-to-end/_files/basic/unit/SetUpTest.php:%d|n' duration='%d' flowId='%d']
 
+##teamcity[testFailed name='testOneWithSetUpException' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
+
 ##teamcity[testFailed name='testTwoWithSetUpException' message='RuntimeException: throw exception in setUp' details='%stests/end-to-end/_files/basic/unit/SetUpTest.php:%d|n' duration='%d' flowId='%d']
+
+##teamcity[testFailed name='testTwoWithSetUpException' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testSuiteFinished name='PHPUnit\SelfTest\Basic\SetUpTest' flowId='%d']
 
@@ -38,13 +42,15 @@ Runtime: %s
 
 ##teamcity[testStarted name='testFailure' locationHint='php_qn://%stests/end-to-end/_files/basic/unit/StatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testFailure' flowId='%d']
 
-##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details='%stests/end-to-end/_files/basic/unit/StatusTest.php:%d|n' duration='%d' flowId='%d']
+##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details='%stests/end-to-end/_files/basic/unit/StatusTest.php:%d|n' duration='1' flowId='%d']
 
 ##teamcity[testFinished name='testFailure' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testError' locationHint='php_qn://%stests/end-to-end/_files/basic/unit/StatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testError' flowId='%d']
 
 ##teamcity[testFailed name='testError' message='RuntimeException' details='%stests/end-to-end/_files/basic/unit/StatusTest.php:%d|n' duration='%d' flowId='%d']
+
+##teamcity[testFailed name='testError' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testError' duration='%d' flowId='%d']
 
@@ -79,6 +85,8 @@ Runtime: %s
 ##teamcity[testStarted name='testErrorWithMessage' locationHint='php_qn://%stests/end-to-end/_files/basic/unit/StatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage' flowId='%d']
 
 ##teamcity[testFailed name='testErrorWithMessage' message='RuntimeException: error with custom message' details='%stests/end-to-end/_files/basic/unit/StatusTest.php:%d|n' duration='%d' flowId='%d']
+
+##teamcity[testFailed name='testErrorWithMessage' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testErrorWithMessage' duration='%d' flowId='%d']
 
@@ -163,17 +171,37 @@ Failed asserting that false is true.
 
 --
 
-There were 2 risky tests:
+There were 6 risky tests:
 
-1) PHPUnit\SelfTest\Basic\StatusTest::testRisky
+1) PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException
+This test did not perform any assertions
+
+%s/SetUpTest.php:%d
+
+2) PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException
+This test did not perform any assertions
+
+%s/SetUpTest.php:%d
+
+3) PHPUnit\SelfTest\Basic\StatusTest::testError
 This test did not perform any assertions
 
 %s/StatusTest.php:%d
 
-2) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
+4) PHPUnit\SelfTest\Basic\StatusTest::testRisky
+This test did not perform any assertions
+
+%s/StatusTest.php:%d
+
+5) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
+This test did not perform any assertions
+
+%s/StatusTest.php:%d
+
+6) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
 This test did not perform any assertions
 
 %s/StatusTest.php:%d
 
 ERRORS!
-Tests: 18, Assertions: 6, Errors: 5, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
+Tests: 18, Assertions: 6, Errors: 5, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 6.

@@ -42,6 +42,8 @@ Test Preparation Started (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::
 Test Prepared (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testTwo)
 Test Errored (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testTwo)
 this should be treated as an error
+Test Considered Risky (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testTwo)
+This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest, 2 tests)
 Test Runner Execution Finished

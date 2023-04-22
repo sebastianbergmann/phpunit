@@ -37,6 +37,8 @@ Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::test
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
 Test Errored (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
 message
+Test Considered Risky (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
+This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest::testOne)
 Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\ErrorTest, 2 tests)
