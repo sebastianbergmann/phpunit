@@ -9,6 +9,10 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `PHPUnit\Runner\Extension\Facade::replaceOutput()` and `PHPUnit\Runner\Extension\Facade::replacesOutput()`
 * `PHPUnit\Event\Telemetry\Info::garbageCollectorStatus()`
 
+### Fixed
+
+* [#5340](https://github.com/sebastianbergmann/phpunit/issues/5340): Not all test-related events are emitted when a test fails or errors
+
 ## [10.1.1] - 2023-04-17
 
 ### Fixed

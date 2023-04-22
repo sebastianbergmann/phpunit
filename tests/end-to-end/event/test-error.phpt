@@ -36,6 +36,8 @@ Test Preparation Started (PHPUnit\TestFixture\Event\ErrorTest::testError)
 Test Prepared (PHPUnit\TestFixture\Event\ErrorTest::testError)
 Test Errored (PHPUnit\TestFixture\Event\ErrorTest::testError)
 message
+Test Considered Risky (PHPUnit\TestFixture\Event\ErrorTest::testError)
+This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\Event\ErrorTest::testError)
 Test Suite Finished (PHPUnit\TestFixture\Event\ErrorTest, 1 test)
 Test Runner Execution Finished

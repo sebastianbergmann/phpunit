@@ -34,6 +34,8 @@ Runtime: %s
 
 ##teamcity[testFailed name='testError' message='RuntimeException' details='%sStatusTest.php:%d|n' duration='%d' flowId='%d']
 
+##teamcity[testFailed name='testError' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
+
 ##teamcity[testFinished name='testError' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testIncomplete' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testIncomplete' flowId='%d']
@@ -67,6 +69,8 @@ Runtime: %s
 ##teamcity[testStarted name='testErrorWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage' flowId='%d']
 
 ##teamcity[testFailed name='testErrorWithMessage' message='RuntimeException: error with custom message' details='%sStatusTest.php:%d|n' duration='%d' flowId='%d']
+
+##teamcity[testFailed name='testErrorWithMessage' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testErrorWithMessage' duration='%d' flowId='%d']
 
@@ -122,17 +126,27 @@ Failed asserting that false is true.
 
 --
 
-There were 2 risky tests:
+There were 4 risky tests:
 
-1) PHPUnit\SelfTest\Basic\StatusTest::testRisky
+1) PHPUnit\SelfTest\Basic\StatusTest::testError
 This test did not perform any assertions
 
 %s/StatusTest.php:%d
 
-2) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
+2) PHPUnit\SelfTest\Basic\StatusTest::testRisky
+This test did not perform any assertions
+
+%s/StatusTest.php:%d
+
+3) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
+This test did not perform any assertions
+
+%s/StatusTest.php:%d
+
+4) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
 This test did not perform any assertions
 
 %s/StatusTest.php:%d
 
 ERRORS!
-Tests: 13, Assertions: 4, Errors: 2, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
+Tests: 13, Assertions: 4, Errors: 2, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 4.
