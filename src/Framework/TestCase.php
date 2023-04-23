@@ -1655,8 +1655,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($bufferingLevel !== $this->outputBufferingLevel) {
             if ($bufferingLevel > $this->outputBufferingLevel) {
                 $message = 'Test code or tested code did not close its own output buffers';
-            }
-            else {
+            } else {
                 $message = 'Test code or tested code closed output buffers other than its own';
             }
 

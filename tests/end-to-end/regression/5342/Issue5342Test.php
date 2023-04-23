@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-use function ob_start;
+use function ob_end_clean;
 use PHPUnit\Framework\TestCase;
 
 class Issue5342Test extends TestCase
