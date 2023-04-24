@@ -15,4 +15,4 @@ final class MyException extends Exception
 {
 }
 
-throw new MyException('Big boom. Big bada boom.');
+throw new MyException('Big boom. Big bada boom.', 0, new Exception('Previous boom.'));
