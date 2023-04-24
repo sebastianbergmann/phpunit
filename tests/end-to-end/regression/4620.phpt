@@ -19,3 +19,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Error in bootstrap script: PHPUnit\TestFixture\MyException:
 Big boom. Big bada boom.
 %a
+
+Previous error: Exception:
+Previous boom.
+%a
