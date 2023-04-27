@@ -562,12 +562,6 @@
       <code><![CDATA[$this->sortBySize($suite->tests())]]></code>
       <code><![CDATA[$this->sortDefectsFirst($suite->tests())]]></code>
     </ArgumentTypeCoercion>
-    <RedundantCondition>
-      <code><![CDATA[$order === self::ORDER_DURATION && $this->cache !== null]]></code>
-      <code><![CDATA[$orderDefects === self::ORDER_DEFECTS_FIRST && $this->cache !== null]]></code>
-      <code><![CDATA[$this->cache !== null]]></code>
-      <code><![CDATA[$this->cache !== null]]></code>
-    </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
     <InternalMethod>
