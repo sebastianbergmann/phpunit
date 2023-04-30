@@ -156,13 +156,13 @@ final class TestSuiteSorter
             $suite->setTests($this->reverse($suite->tests()));
         } elseif ($order === self::ORDER_RANDOMIZED) {
             $suite->setTests($this->randomize($suite->tests()));
-        } elseif ($order === self::ORDER_DURATION && $this->cache !== null) {
+        } elseif ($order === self::ORDER_DURATION) {
             $suite->setTests($this->sortByDuration($suite->tests()));
         } elseif ($order === self::ORDER_SIZE) {
             $suite->setTests($this->sortBySize($suite->tests()));
         }
 
-        if ($orderDefects === self::ORDER_DEFECTS_FIRST && $this->cache !== null) {
+        if ($orderDefects === self::ORDER_DEFECTS_FIRST) {
             $suite->setTests($this->sortDefectsFirst($suite->tests()));
         }
 
