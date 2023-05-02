@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.1.3] - 2023-MM-DD
+
+### Changed
+
+* [#5343](https://github.com/sebastianbergmann/phpunit/pull/5343): Provide distinct messages when a test is considered risky due to output buffering level mismatch
+
 ## [10.1.2] - 2023-04-22
 
 ### Added
@@ -62,6 +68,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `source()->excludeDirectories()` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `source()->excludeFiles()` instead)
 
+[10.1.3]: https://github.com/sebastianbergmann/phpunit/compare/10.1.2...10.1
 [10.1.2]: https://github.com/sebastianbergmann/phpunit/compare/10.1.1...10.1.2
 [10.1.1]: https://github.com/sebastianbergmann/phpunit/compare/10.1.0...10.1.1
 [10.1.0]: https://github.com/sebastianbergmann/phpunit/compare/10.0.19...10.1.0
