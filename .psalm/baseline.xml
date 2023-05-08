@@ -834,13 +834,6 @@
       <code><![CDATA[$this->stream]]></code>
     </PossiblyInvalidArgument>
   </file>
-  <file src="src/Util/ExcludeList.php">
-    <InvalidPropertyAssignmentValue>
-      <code>self::$directories</code>
-      <code>self::$directories</code>
-      <code>self::$directories</code>
-    </InvalidPropertyAssignmentValue>
-  </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction>
       <code>is_array($envVar)</code>

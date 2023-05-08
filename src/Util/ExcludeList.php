@@ -147,11 +147,11 @@ final class ExcludeList
      */
     public static function addDirectory(string $directory): void
     {
-        if (!is_dir($directory)) {
+        if (!is_dir($directory) || ($realPath = realpath($directory)) === false) {
             throw new InvalidDirectoryException($directory);
         }
 
-        self::$directories[] = realpath($directory);
+        self::$directories[] = $realPath;
     }
 
     public function __construct(?bool $enabled = null)
@@ -202,6 +202,9 @@ final class ExcludeList
             }
 
             $directory = (new ReflectionClass($className))->getFileName();
+            if ($directory === false) {
+                continue;
+            }
 
             for ($i = 0; $i < $parent; $i++) {
                 $directory = dirname($directory);
