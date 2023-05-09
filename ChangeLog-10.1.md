@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 
 * [#5343](https://github.com/sebastianbergmann/phpunit/pull/5343): Provide distinct messages when a test is considered risky due to output buffering level mismatch
 
+### Fixed
+
+* [#5345](https://github.com/sebastianbergmann/phpunit/issues/5345): No stack trace shown for previous exceptions during bootstrap
+
 ## [10.1.2] - 2023-04-22
 
 ### Added
