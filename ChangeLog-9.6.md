@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.6] - 2023-MM-DD
+
+### Fixed
+
+* [#5345](https://github.com/sebastianbergmann/phpunit/issues/5345): No stack trace shown for previous exceptions during bootstrap
+
 ## [9.6.7] - 2023-04-14
 
 ### Fixed
@@ -58,6 +64,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.8]: https://github.com/sebastianbergmann/phpunit/compare/9.6.7...9.6
 [9.6.7]: https://github.com/sebastianbergmann/phpunit/compare/9.6.6...9.6.7
 [9.6.6]: https://github.com/sebastianbergmann/phpunit/compare/9.6.5...9.6.6
 [9.6.5]: https://github.com/sebastianbergmann/phpunit/compare/9.6.4...9.6.5
