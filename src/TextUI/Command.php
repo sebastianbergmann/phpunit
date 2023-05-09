@@ -590,9 +590,7 @@ class Command
                 );
             }
 
-            $this->exitWithErrorMessage(
-                $message
-            );
+            $this->exitWithErrorMessage($message);
         }
     }
 
