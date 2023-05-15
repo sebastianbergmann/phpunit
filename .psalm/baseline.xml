@@ -702,6 +702,8 @@
                 )]]></code>
       <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
       <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
+      <code><![CDATA[OutputFacade::printerFor($configuration->logfileXml())]]></code>
+      <code><![CDATA[OutputFacade::printerFor($configuration->logfileXml())]]></code>
       <code><![CDATA[atLeastVersion]]></code>
       <code><![CDATA[build]]></code>
       <code><![CDATA[configurationFile]]></code>
@@ -714,6 +716,7 @@
       <code><![CDATA[logEventsVerboseText]]></code>
       <code><![CDATA[logfileJunit]]></code>
       <code><![CDATA[logfileTeamcity]]></code>
+      <code><![CDATA[logfileXml]]></code>
     </MissingThrowsDocblock>
     <UnresolvableInclude>
       <code><![CDATA[include_once $filename]]></code>

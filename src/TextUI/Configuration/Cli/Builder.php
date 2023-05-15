@@ -80,6 +80,7 @@ final class Builder
         'list-tests-xml=',
         'log-junit=',
         'log-teamcity=',
+        'log-xml=',
         'migrate-configuration',
         'no-configuration',
         'no-coverage',
@@ -220,6 +221,7 @@ final class Builder
         $includePath                       = null;
         $iniSettings                       = [];
         $junitLogfile                      = null;
+        $xmlLogfile                        = null;
         $listGroups                        = false;
         $listSuites                        = false;
         $listTestFiles                     = false;
@@ -541,6 +543,11 @@ final class Builder
 
                 case '--log-teamcity':
                     $teamcityLogfile = $option[1];
+
+                    break;
+
+                case '--log-xml':
+                    $xmlLogfile = $option[1];
 
                     break;
 
@@ -982,6 +989,7 @@ final class Builder
             $help,
             $includePath,
             $iniSettings,
+            $xmlLogfile,
             $junitLogfile,
             $listGroups,
             $listSuites,

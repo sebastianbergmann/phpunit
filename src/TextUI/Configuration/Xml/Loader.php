@@ -67,6 +67,7 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
+use PHPUnit\TextUI\XmlConfiguration\Logging\Xml;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
@@ -179,11 +180,26 @@ final readonly class Loader
             );
         }
 
+        $xml     = null;
+        $element = $this->element($xpath, 'logging/xml');
+
+        if ($element) {
+            $xml = new Xml(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
+            );
+        }
+
         return new Logging(
             $junit,
             $teamCity,
             $testDoxHtml,
             $testDoxText,
+            $xml,
         );
     }
 

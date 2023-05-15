@@ -128,6 +128,8 @@
 
 [33mLogging:[0m
 
+  [32m--log-xml [36m<file>[0m                [0m Write test results in PHPUnit XML format to
+                                   file
   [32m--log-junit [36m<file>[0m              [0m Write test results in JUnit XML format to
                                    file
   [32m--log-teamcity [36m<file>[0m           [0m Write test results in TeamCity format to
