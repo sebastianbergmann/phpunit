@@ -1,0 +1,11 @@
+--TEST--
+The right exception is raised when TestMethodBuilder::fromCallStack() cannot find a TestCase object
+--FILE--
+<?php declare(strict_types=1);
+require __DIR__ . '/../../bootstrap.php';
+
+\PHPUnit\Event\Code\TestMethodBuilder::fromCallStack();
+--EXPECTF--
+Fatal error: Uncaught PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException: Cannot find TestCase object on call stack in %sTestMethodBuilder.php:%d
+Stack trace:
+%a
