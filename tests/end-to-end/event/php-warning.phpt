@@ -45,4 +45,4 @@ Test Finished (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Suite Finished (PHPUnit\TestFixture\Event\PhpWarningTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 106)

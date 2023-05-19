@@ -46,4 +46,4 @@ Test Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 105)

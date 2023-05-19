@@ -45,4 +45,4 @@ Test Finished (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Suite Finished (PHPUnit\TestFixture\Event\PhpNoticeTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 103)

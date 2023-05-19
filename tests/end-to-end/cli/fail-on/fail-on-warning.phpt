@@ -48,4 +48,4 @@ Test Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 106)
