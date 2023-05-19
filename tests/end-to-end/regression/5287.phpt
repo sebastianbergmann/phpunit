@@ -26,6 +26,9 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Data Provider Method Called (PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::provide for test method PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::test)
+Data Provider Method Finished for PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::test:
+- PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::provide
 Test Suite Loaded (3 tests)
 Event Facade Sealed
 Test Runner Started

@@ -95,10 +95,21 @@ final class DataProvider
      */
     private function dataProvidedByMethods(string $className, string $methodName, MetadataCollection $dataProvider): array
     {
-        $result = [];
+        $testMethod    = new Event\Code\ClassMethod($className, $methodName);
+        $methodsCalled = [];
+        $result        = [];
 
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
+
+            $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
+
+            Event\Facade::emitter()->dataProviderMethodCalled(
+                $testMethod,
+                $dataProviderMethod,
+            );
+
+            $methodsCalled[] = $dataProviderMethod;
 
             try {
                 $class  = new ReflectionClass($_dataProvider->className());
@@ -184,6 +195,11 @@ final class DataProvider
                 $result = array_merge($result, $data);
             }
         }
+
+        Event\Facade::emitter()->dataProviderMethodFinished(
+            $testMethod,
+            ...$methodsCalled,
+        );
 
         return $result;
     }

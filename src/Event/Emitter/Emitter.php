@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\TestSuite;
@@ -35,6 +36,10 @@ interface Emitter
      * @psalm-param array<string, string> $parameters
      */
     public function testRunnerBootstrappedExtension(string $className, array $parameters): void;
+
+    public function dataProviderMethodCalled(ClassMethod $testMethod, ClassMethod $dataProviderMethod): void;
+
+    public function dataProviderMethodFinished(ClassMethod $testMethod, ClassMethod ...$calledMethods): void;
 
     public function testSuiteLoaded(TestSuite $testSuite): void;
 

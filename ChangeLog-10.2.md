@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 ### Added
 
 * [#5328](https://github.com/sebastianbergmann/phpunit/issues/5328): Optionally ignore suppression of deprecations, notices, and warnings
+* `PHPUnit\Event\Test\DataProviderMethodCalled` and `PHPUnit\Event\Test\DataProviderMethodFinished` events
 
 ### Deprecated
 

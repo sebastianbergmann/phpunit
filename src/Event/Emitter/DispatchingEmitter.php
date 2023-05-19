@@ -9,8 +9,11 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\DataProviderMethodCalled;
+use PHPUnit\Event\Test\DataProviderMethodFinished;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
@@ -126,6 +129,36 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $className,
                 $parameters
+            )
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderMethodCalled(ClassMethod $testMethod, ClassMethod $dataProviderMethod): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderMethodCalled(
+                $this->telemetryInfo(),
+                $testMethod,
+                $dataProviderMethod,
+            )
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderMethodFinished(ClassMethod $testMethod, ClassMethod ...$calledMethods): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderMethodFinished(
+                $this->telemetryInfo(),
+                $testMethod,
+                ...$calledMethods,
             )
         );
     }

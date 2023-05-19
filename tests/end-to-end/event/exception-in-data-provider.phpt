@@ -26,6 +26,7 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Data Provider Method Called (PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::provider for test method PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne)
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne is invalid
 message

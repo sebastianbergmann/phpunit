@@ -35,6 +35,11 @@
       <code>$calledMethods</code>
     </PropertyTypeCoercion>
   </file>
+  <file src="src/Event/Events/Test/Lifecycle/DataProviderMethodFinished.php">
+    <PropertyTypeCoercion>
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/Event/Events/Test/TestDouble/MockObjectFromWsdlCreated.php">
     <PropertyTypeCoercion>
       <code>$methods</code>
@@ -362,6 +367,9 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$_dataProvider->methodName()]]></code>
+    </ArgumentTypeCoercion>
     <PossiblyInvalidArgument>
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
