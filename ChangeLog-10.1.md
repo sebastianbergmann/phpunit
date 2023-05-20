@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.1.4] - 2023-MM-DD
+
+### Fixed
+
+* [#5366](https://github.com/sebastianbergmann/phpunit/issues/5366): `PHPUnit\Event\TestSuite\Loaded` event has incomplete `PHPUnit\Event\TestSuite\TestSuite` value object´
+
 ## [10.1.3] - 2023-05-11
 
 ### Changed
@@ -72,6 +78,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()` (use `source()->excludeDirectories()` instead)
 * `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()` (use `source()->excludeFiles()` instead)
 
+[10.1.4]: https://github.com/sebastianbergmann/phpunit/compare/10.1.3...10.1
 [10.1.3]: https://github.com/sebastianbergmann/phpunit/compare/10.1.2...10.1.3
 [10.1.2]: https://github.com/sebastianbergmann/phpunit/compare/10.1.1...10.1.2
 [10.1.1]: https://github.com/sebastianbergmann/phpunit/compare/10.1.0...10.1.1
