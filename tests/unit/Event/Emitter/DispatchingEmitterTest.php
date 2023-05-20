@@ -15,6 +15,7 @@ use function explode;
 use function get_class_methods;
 use function version_compare;
 use Exception;
+use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
@@ -32,7 +33,7 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\SortedSubscriber as TestSuiteSortedSubscriber;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
-use PHPUnit\Event\TestSuite\TestSuiteBuilder;
+use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
@@ -1534,9 +1535,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSuiteLoaded(
-            TestSuiteBuilder::from($this->createMock(Framework\TestSuite::class))
-        );
+        $emitter->testSuiteLoaded($this->testSuiteValueObject());
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(TestSuiteLoaded::class, $subscriber->lastRecordedEvent());
@@ -1565,14 +1564,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $testSuite = $this->createStub(Framework\TestSuite::class);
-
-        $testSuite->method('count')->willReturn(1);
-        $testSuite->method('getName')->willReturn('foo');
-
-        $emitter->testSuiteFinished(
-            TestSuiteBuilder::from($testSuite),
-        );
+        $emitter->testSuiteFinished($this->testSuiteValueObject());
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1580,8 +1572,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(TestSuiteFinished::class, $event);
 
-        $this->assertSame(1, $event->testSuite()->count());
-        $this->assertSame('foo', $event->testSuite()->name());
+        $this->assertSame('Test Suite', $event->testSuite()->name());
+        $this->assertSame(0, $event->testSuite()->count());
     }
 
     public function testTestSuiteSortedDispatchesTestSuiteSortedEvent(): void
@@ -1660,12 +1652,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $testSuite = $this->createStub(Framework\TestSuite::class);
-
-        $testSuite->method('count')->willReturn(1);
-        $testSuite->method('getName')->willReturn('foo');
-
-        $emitter->testSuiteStarted(TestSuiteBuilder::from($testSuite));
+        $emitter->testSuiteStarted($this->testSuiteValueObject());
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1673,13 +1660,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(TestSuiteStarted::class, $event);
 
-        $this->assertSame(1, $event->testSuite()->count());
-        $this->assertSame('foo', $event->testSuite()->name());
+        $this->assertSame('Test Suite', $event->testSuite()->name());
+        $this->assertSame(0, $event->testSuite()->count());
     }
 
-    private function dispatcherWithoutRegisteredSubscriber(): DirectDispatcher
+    private function testSuiteValueObject(): TestSuiteWithName
     {
-        return new DirectDispatcher(new TypeMap);
+        return new TestSuiteWithName(
+            'Test Suite',
+            0,
+            TestCollection::fromArray([])
+        );
     }
 
     private function dispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): DirectDispatcher
