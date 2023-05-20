@@ -12,6 +12,7 @@ namespace PHPUnit\Runner;
 use function array_diff;
 use function array_values;
 use function basename;
+use function class_exists;
 use function get_declared_classes;
 use function realpath;
 use function str_ends_with;
@@ -76,7 +77,11 @@ final class TestSuiteLoader
             throw $e;
         }
 
-        throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
+        if (!class_exists($suiteClassName)) {
+            throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
+        }
+
+        throw new ClassDoesNotExtendTestCaseException($suiteClassName, $suiteClassFile);
     }
 
     private function classNameFromFileName(string $suiteClassFile): string
