@@ -1673,11 +1673,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
     }
 
-    private function dispatcherWithoutRegisteredSubscriber(): DirectDispatcher
-    {
-        return new DirectDispatcher(new TypeMap);
-    }
-
     private function dispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): DirectDispatcher
     {
         $typeMap = new TypeMap;
