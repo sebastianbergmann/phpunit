@@ -174,10 +174,6 @@ final class Facade
             return false;
         }
 
-        if ($configuration->outputIsTeamCity()) {
-            return false;
-        }
-
         return true;
     }
 
