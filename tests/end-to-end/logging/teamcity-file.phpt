@@ -5,6 +5,7 @@ phpunit --teamcity ../../basic/unit/StatusTest.php
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--teamcity';
+$_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/StatusTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';

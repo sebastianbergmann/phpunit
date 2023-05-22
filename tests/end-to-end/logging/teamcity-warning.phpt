@@ -6,6 +6,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/teamcity-warning/phpunit.xml';
 $_SERVER['argv'][] = '--teamcity';
+$_SERVER['argv'][] = '--no-progress';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
