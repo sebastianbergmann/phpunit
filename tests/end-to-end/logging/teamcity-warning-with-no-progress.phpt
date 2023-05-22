@@ -1,11 +1,12 @@
 --TEST--
-phpunit --teamcity ../../basic/unit/StatusTest.php
+phpunit --teamcity --no-progress ../../basic/unit/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/teamcity-warning/phpunit.xml';
 $_SERVER['argv'][] = '--teamcity';
+$_SERVER['argv'][] = '--no-progress';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -24,14 +25,12 @@ Configuration: %s
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\Test' locationHint='php_qn://%s/teamcity-warning/tests/Test.php::\PHPUnit\TestFixture\Test' flowId='%d']
 
 ##teamcity[testStarted name='testOne' locationHint='php_qn://%s/teamcity-warning/tests/Test.php::\PHPUnit\TestFixture\Test::testOne' flowId='%d']
-.                                                                   1 / 1 (100%)
+
 ##teamcity[testFinished name='testOne' duration='%s' flowId='%d']
 
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Test' flowId='%d']
 
 ##teamcity[testSuiteFinished name='default' flowId='%d']
-
-
 Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
