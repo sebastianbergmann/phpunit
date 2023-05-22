@@ -1,5 +1,5 @@
 --TEST--
-phpunit --teamcity ../../basic/unit/
+phpunit --teamcity --no-progress ../../basic/unit/
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
