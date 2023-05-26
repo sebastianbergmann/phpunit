@@ -112,7 +112,7 @@ $config->setFinder($finder)
         'implode_call' => true,
         'include' => true,
         'increment_style' => [
-            'style' => PhpCsFixer\Fixer\Operator\IncrementStyleFixer::STYLE_POST,
+            'style' => 'post',
         ],
         'indentation_type' => true,
         'is_null' => true,
@@ -225,9 +225,9 @@ $config->setFinder($finder)
         ],
         'ordered_imports' => [
             'imports_order' => [
-                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CONST,
-                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_FUNCTION,
-                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CLASS,
+                'const',
+                'function',
+                'class',
             ]
         ],
         'ordered_interfaces' => [
