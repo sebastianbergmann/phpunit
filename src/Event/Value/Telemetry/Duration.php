@@ -65,8 +65,8 @@ final class Duration
     public function asString(): string
     {
         $seconds = $this->seconds();
-        $minutes = 00;
-        $hours   = 00;
+        $minutes = 0;
+        $hours   = 0;
 
         if ($seconds > 60 * 60) {
             $hours = floor($seconds / 60 / 60);

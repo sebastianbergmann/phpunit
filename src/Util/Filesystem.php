@@ -19,6 +19,6 @@ final class Filesystem
 {
     public static function createDirectory(string $directory): bool
     {
-        return !(!is_dir($directory) && !@mkdir($directory, 0777, true) && !is_dir($directory));
+        return !(!is_dir($directory) && !@mkdir($directory, 0o777, true) && !is_dir($directory));
     }
 }
