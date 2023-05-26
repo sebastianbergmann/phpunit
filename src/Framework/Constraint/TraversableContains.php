@@ -78,7 +78,7 @@ final class TraversableContains extends Constraint
                     return true;
                 }
 
-                /* @noinspection TypeUnsafeComparisonInspection */
+                /** @noinspection TypeUnsafeComparisonInspection */
                 if (!$this->checkForObjectIdentity && $element == $this->value) {
                     return true;
                 }
@@ -89,7 +89,7 @@ final class TraversableContains extends Constraint
                     return true;
                 }
 
-                /* @noinspection TypeUnsafeComparisonInspection */
+                /** @noinspection TypeUnsafeComparisonInspection */
                 if (!$this->checkForNonObjectIdentity && $element == $this->value) {
                     return true;
                 }

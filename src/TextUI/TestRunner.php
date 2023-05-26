@@ -206,7 +206,7 @@ final class TestRunner extends BaseTestRunner
         if (is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
             $_suite = new TestSuite;
 
-            /* @noinspection PhpUnusedLocalVariableInspection */
+            /** @noinspection PhpUnusedLocalVariableInspection */
             foreach (range(1, $arguments['repeat']) as $step) {
                 $_suite->addTest($suite);
             }

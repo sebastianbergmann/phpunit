@@ -56,7 +56,7 @@ final class Getopt
 
         $args = array_map('trim', $args);
 
-        /* @noinspection ComparisonOperandsOrderInspection */
+        /** @noinspection ComparisonOperandsOrderInspection */
         while (false !== $arg = current($args)) {
             $i = key($args);
             next($args);
@@ -122,7 +122,7 @@ final class Getopt
                 }
 
                 if (!(strlen($spec) > 2 && $spec[2] === ':')) {
-                    /* @noinspection ComparisonOperandsOrderInspection */
+                    /** @noinspection ComparisonOperandsOrderInspection */
                     if (false === $opt_arg = current($args)) {
                         throw new Exception(
                             "option requires an argument -- {$opt}"
@@ -169,9 +169,9 @@ final class Getopt
             }
 
             if (substr($long_opt, -1) === '=') {
-                /* @noinspection StrlenInEmptyStringCheckContextInspection */
+                /** @noinspection StrlenInEmptyStringCheckContextInspection */
                 if (substr($long_opt, -2) !== '==' && !strlen((string) $opt_arg)) {
-                    /* @noinspection ComparisonOperandsOrderInspection */
+                    /** @noinspection ComparisonOperandsOrderInspection */
                     if (false === $opt_arg = current($args)) {
                         throw new Exception(
                             "option --{$opt} requires an argument"

@@ -58,7 +58,7 @@ final class TraversableContainsEqual extends Constraint
         }
 
         foreach ($other as $element) {
-            /* @noinspection TypeUnsafeComparisonInspection */
+            /** @noinspection TypeUnsafeComparisonInspection */
             if ($this->value == $element) {
                 return true;
             }
