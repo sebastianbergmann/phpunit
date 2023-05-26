@@ -7,7 +7,8 @@ labels: type/bug, version/9
 <!--
 - Please do not report an issue for a version of PHPUnit that is no longer supported. A list of currently supported versions of PHPUnit is available at https://phpunit.de/supported-versions.html.
 - Please do not report an issue if you are using a version of PHP that is not supported by the version of PHPUnit you are using. A list that shows which version of PHP is supported by which version of PHPUnit is available at https://phpunit.de/supported-versions.html.
-- Please do not report an issue if you are not using PHPUnit directly, but rather a wrapper around it such as Symfony's PHPUnit Bridge
+- Please do not report an issue if you are not using PHPUnit directly, but rather a third-party wrapper around it.
+- Please do not report an issue if you are using a third-party extension such as alternative output printers.
 - Please fill in this template according to your issue.
 - Please keep the table shown below at the top of your issue.
 - Please include the output of "composer info | sort" if you installed PHPUnit using Composer.
