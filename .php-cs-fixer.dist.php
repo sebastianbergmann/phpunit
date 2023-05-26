@@ -193,6 +193,7 @@ $config->setFinder($finder)
         'non_printable_character' => true,
         'normalize_index_brace' => true,
         'object_operator_without_whitespace' => true,
+        'octal_notation' => true,
         'operator_linebreak' => [
             'only_booleans' => true,
             'position' => 'end',
