@@ -248,6 +248,7 @@ $config->setFinder($finder)
         'phpdoc_no_package' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_order' => true,
+        'phpdoc_param_order' => true,
         'phpdoc_order_by_value' => [
             'annotations' => [
                 'covers',
