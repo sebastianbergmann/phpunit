@@ -289,6 +289,7 @@ $config->setFinder($finder)
         'single_class_element_per_statement' => true,
         'single_import_per_statement' => true,
         'single_line_after_imports' => true,
+        'single_line_comment_spacing' => true,
         'single_quote' => true,
         'single_space_around_construct' => true,
         'single_trait_insert_per_statement' => true,
