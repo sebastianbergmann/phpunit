@@ -128,6 +128,7 @@ $config->setFinder($finder)
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',
         ],
+        'method_chaining_indentation' => true,
         'modernize_types_casting' => true,
         'multiline_comment_opening_closing' => true,
         'multiline_whitespace_before_semicolons' => true,
