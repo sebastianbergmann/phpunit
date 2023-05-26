@@ -563,7 +563,7 @@ final class DocBlock
 
     private function cleanUpMultiLineAnnotation(string $docComment): string
     {
-        //removing initial '   * ' for docComment
+        // removing initial '   * ' for docComment
         $docComment = str_replace("\r\n", "\n", $docComment);
         $docComment = preg_replace('/\n\s*\*\s?/', "\n", $docComment);
         $docComment = (string) substr($docComment, 0, -1);

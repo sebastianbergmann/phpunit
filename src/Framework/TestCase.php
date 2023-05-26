@@ -1947,7 +1947,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      *
      * @return object
      */
-    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
+    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/* : object */
     {
         $this->recordDoubledType($traitName);
 

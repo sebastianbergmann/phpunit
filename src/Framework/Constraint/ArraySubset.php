@@ -61,8 +61,8 @@ final class ArraySubset extends Constraint
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
-        //type cast $other & $this->subset as an array to allow
-        //support in standard array functions.
+        // type cast $other & $this->subset as an array to allow
+        // support in standard array functions.
         $other        = $this->toArray($other);
         $this->subset = $this->toArray($this->subset);
 
