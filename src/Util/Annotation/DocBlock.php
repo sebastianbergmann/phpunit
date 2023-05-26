@@ -565,7 +565,7 @@ final class DocBlock
     {
         //removing initial '   * ' for docComment
         $docComment = str_replace("\r\n", "\n", $docComment);
-        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
+        $docComment = preg_replace('/\n\s*\*\s?/', "\n", $docComment);
         $docComment = (string) substr($docComment, 0, -1);
 
         return rtrim($docComment, "\n");
