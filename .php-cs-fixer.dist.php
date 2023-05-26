@@ -167,6 +167,7 @@ $config->setFinder($finder)
         'no_php4_constructor' => true,
         'no_short_bool_cast' => true,
         'no_singleline_whitespace_before_semicolons' => true,
+        'no_space_around_double_colon' => true,
         'no_spaces_after_function_name' => true,
         'no_spaces_around_offset' => true,
         'no_spaces_inside_parenthesis' => true,
