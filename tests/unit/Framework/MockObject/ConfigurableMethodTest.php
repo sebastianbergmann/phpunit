@@ -19,7 +19,7 @@ final class ConfigurableMethodTest extends TestCase
         $type = $this->createMock(Type::class);
 
         $type->method('isAssignable')
-             ->willReturn(true);
+            ->willReturn(true);
 
         $method = new ConfigurableMethod('foo', $type);
 
@@ -31,7 +31,7 @@ final class ConfigurableMethodTest extends TestCase
         $type = $this->createMock(Type::class);
 
         $type->method('isAssignable')
-             ->willReturn(false);
+            ->willReturn(false);
 
         $method = new ConfigurableMethod('foo', $type);
 

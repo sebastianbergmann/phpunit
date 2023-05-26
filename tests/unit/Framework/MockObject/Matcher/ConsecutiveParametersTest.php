@@ -22,15 +22,15 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegration(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
-                     ->getMock();
+            ->setMethods(['foo'])
+            ->getMock();
 
         $mock->expects($this->any())
-             ->method('foo')
-             ->withConsecutive(
-                 ['bar'],
-                 [21, 42]
-             );
+            ->method('foo')
+            ->withConsecutive(
+                ['bar'],
+                [21, 42]
+            );
 
         $this->assertNull($mock->foo('bar'));
         $this->assertNull($mock->foo(21, 42));
@@ -39,14 +39,14 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegrationWithLessAssertionsThanMethodCalls(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
-                     ->getMock();
+            ->setMethods(['foo'])
+            ->getMock();
 
         $mock->expects($this->any())
-             ->method('foo')
-             ->withConsecutive(
-                 ['bar']
-             );
+            ->method('foo')
+            ->withConsecutive(
+                ['bar']
+            );
 
         $this->assertNull($mock->foo('bar'));
         $this->assertNull($mock->foo(21, 42));
@@ -55,15 +55,15 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegrationExpectingException(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
-                     ->getMock();
+            ->setMethods(['foo'])
+            ->getMock();
 
         $mock->expects($this->any())
-             ->method('foo')
-             ->withConsecutive(
-                 ['bar'],
-                 [21, 42]
-             );
+            ->method('foo')
+            ->withConsecutive(
+                ['bar'],
+                [21, 42]
+            );
 
         $mock->foo('bar');
 
