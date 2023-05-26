@@ -115,6 +115,7 @@ $config->setFinder($finder)
             'style' => 'post',
         ],
         'indentation_type' => true,
+        'integer_literal_case' => true,
         'is_null' => true,
         'lambda_not_used_import' => true,
         'line_ending' => true,
