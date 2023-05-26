@@ -260,8 +260,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -269,15 +269,15 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         // A non-contextual operator
         $operand->expects($this->never())
-                ->method('arity');
+            ->method('arity');
         $operand->expects($this->never())
-                ->method('precedence');
+            ->method('precedence');
         $operand->expects($this->never())
-                ->method('toStringInContext');
+            ->method('toStringInContext');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn('is the only');
+            ->method('toString')
+            ->with()
+            ->willReturn('is the only');
 
         $this->assertSame('is the only', $operator->toString());
     }
@@ -298,20 +298,20 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         $constraints = [
             $this->getMockBuilder(Constraint::class)
-                 ->onlyMethods($constraintMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($constraintMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Constraint::class)
-                 ->onlyMethods($constraintMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($constraintMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->onlyMethods($operatorMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($operatorMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->onlyMethods($operatorMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($operatorMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->onlyMethods($operatorMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($operatorMethods)
+                ->getMockForAbstractClass(),
         ];
 
         $className = $this->className();
@@ -320,69 +320,69 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         // A non-contextual non-operator constraint
         $constraints[0]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 0)
-                       ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 0)
+            ->willReturn('');
         $constraints[0]->expects($this->once())
-                       ->method('toString')
-                       ->with()
-                       ->willReturn('is first');
+            ->method('toString')
+            ->with()
+            ->willReturn('is first');
 
         // A contextual non-operator constraint
         $constraints[1]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 1)
-                       ->willReturn('is second');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 1)
+            ->willReturn('is second');
         $constraints[1]->expects($this->never())
-                       ->method('toString');
+            ->method('toString');
 
         // An non-contextual operator constraint with arity = 2 and high precedence (no braces needed)
         $constraints[2]->expects($this->once())
-                       ->method('arity')
-                       ->with()
-                       ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $constraints[2]->expects($this->once())
-                       ->method('precedence')
-                       ->with()
-                       ->willReturn(-1);
+            ->method('precedence')
+            ->with()
+            ->willReturn(-1);
         $constraints[2]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 2)
-                       ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 2)
+            ->willReturn('');
         $constraints[2]->expects($this->once())
-                       ->method('toString')
-                       ->with()
-                       ->willReturn('is third');
+            ->method('toString')
+            ->with()
+            ->willReturn('is third');
 
         // A contextual operator constraint with arity = 1 (no braces needed)
         $constraints[3]->expects($this->once())
-                       ->method('arity')
-                       ->with()
-                       ->willReturn(1);
+            ->method('arity')
+            ->with()
+            ->willReturn(1);
         $constraints[3]->expects($this->never())
-                       ->method('precedence');
+            ->method('precedence');
         $constraints[3]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 3)
-                       ->willReturn('is fourth');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 3)
+            ->willReturn('is fourth');
         $constraints[3]->expects($this->never())
-                       ->method('toString');
+            ->method('toString');
 
         // An operator constraint with arity = 2 and low precedence (braces needed)
         $constraints[4]->expects($this->once())
-                       ->method('arity')
-                       ->with()
-                       ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $constraints[4]->expects($this->once())
-                       ->method('precedence')
-                       ->with()
-                       ->willReturn(10000);
+            ->method('precedence')
+            ->with()
+            ->willReturn(10000);
         $constraints[4]->expects($this->never())
-                       ->method('toStringInContext');
+            ->method('toStringInContext');
         $constraints[4]->expects($this->once())
-                       ->method('toString')
-                       ->with()
-                       ->willReturn('is fifth or later');
+            ->method('toString')
+            ->with()
+            ->willReturn('is fifth or later');
 
         $expected = self::operatorJoinStrings([
             'is first',
@@ -405,8 +405,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -414,15 +414,15 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         // A non-contextual operator with toString()
         $operand->expects($this->never())
-                ->method('arity');
+            ->method('arity');
         $operand->expects($this->never())
-                ->method('precedence');
+            ->method('precedence');
         $operand->expects($this->never())
-                ->method('toStringInContext');
+            ->method('toStringInContext');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn('is the only');
+            ->method('toString')
+            ->with()
+            ->willReturn('is the only');
 
         $method = new ReflectionMethod($className, 'failureDescription');
         $method->setAccessible(true);
@@ -446,20 +446,20 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         $constraints = [
             $this->getMockBuilder(Constraint::class)
-                 ->onlyMethods($constraintMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($constraintMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Constraint::class)
-                 ->onlyMethods($constraintMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($constraintMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->onlyMethods($operatorMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($operatorMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->onlyMethods($operatorMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($operatorMethods)
+                ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->onlyMethods($operatorMethods)
-                 ->getMockForAbstractClass(),
+                ->onlyMethods($operatorMethods)
+                ->getMockForAbstractClass(),
         ];
 
         $className = $this->className();
@@ -468,69 +468,69 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         // A non-contextual non-operator constraint
         $constraints[0]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 0)
-                       ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 0)
+            ->willReturn('');
         $constraints[0]->expects($this->once())
-                       ->method('toString')
-                       ->with()
-                       ->willReturn('is first');
+            ->method('toString')
+            ->with()
+            ->willReturn('is first');
 
         // A contextual non-operator constraint
         $constraints[1]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 1)
-                       ->willReturn('is second');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 1)
+            ->willReturn('is second');
         $constraints[1]->expects($this->never())
-                       ->method('toString');
+            ->method('toString');
 
         // An non-contextual operator constraint with arity = 2 and high precedence (no braces needed)
         $constraints[2]->expects($this->once())
-                       ->method('arity')
-                       ->with()
-                       ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $constraints[2]->expects($this->once())
-                       ->method('precedence')
-                       ->with()
-                       ->willReturn(-1);
+            ->method('precedence')
+            ->with()
+            ->willReturn(-1);
         $constraints[2]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 2)
-                       ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 2)
+            ->willReturn('');
         $constraints[2]->expects($this->once())
-                       ->method('toString')
-                       ->with()
-                       ->willReturn('is third');
+            ->method('toString')
+            ->with()
+            ->willReturn('is third');
 
         // A contextual operator constraint with arity = 1 (no braces needed)
         $constraints[3]->expects($this->once())
-                       ->method('arity')
-                       ->with()
-                       ->willReturn(1);
+            ->method('arity')
+            ->with()
+            ->willReturn(1);
         $constraints[3]->expects($this->never())
-                       ->method('precedence');
+            ->method('precedence');
         $constraints[3]->expects($this->once())
-                       ->method('toStringInContext')
-                       ->with($this->identicalTo($constraint), 3)
-                       ->willReturn('is fourth');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 3)
+            ->willReturn('is fourth');
         $constraints[3]->expects($this->never())
-                       ->method('toString');
+            ->method('toString');
 
         // An operator constraint with arity = 2 and low precedence (braces needed)
         $constraints[4]->expects($this->once())
-                       ->method('arity')
-                       ->with()
-                       ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $constraints[4]->expects($this->once())
-                       ->method('precedence')
-                       ->with()
-                       ->willReturn(10000);
+            ->method('precedence')
+            ->with()
+            ->willReturn(10000);
         $constraints[4]->expects($this->never())
-                       ->method('toStringInContext');
+            ->method('toStringInContext');
         $constraints[4]->expects($this->once())
-                       ->method('toString')
-                       ->with()
-                       ->willReturn('is fifth or later');
+            ->method('toString')
+            ->with()
+            ->willReturn('is fifth or later');
 
         $method = new ReflectionMethod($className, 'failureDescription');
         $method->setAccessible(true);

@@ -125,8 +125,8 @@ class MatcherTest extends TestCase
 
         $stub = $this->createMock(Stub\Stub::class);
         $stub->expects($this->atMost(1))
-             ->method('invoke')
-             ->with($invocation);
+            ->method('invoke')
+            ->with($invocation);
 
         $parameterRule = $this->createStub(ParametersRule::class);
 

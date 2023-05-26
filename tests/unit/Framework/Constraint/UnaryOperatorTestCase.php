@@ -91,17 +91,17 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $className = $this->className();
 
         $nice = $this->getMockBuilder(Constraint::class)
-                     ->onlyMethods(['toStringInContext'])
-                     ->getMockForAbstractClass();
+            ->onlyMethods(['toStringInContext'])
+            ->getMockForAbstractClass();
 
         $constraint = new $className($nice);
 
         $string = 'is ' . $this->getOperatorName() . ' nice';
 
         $nice->expects($this->once())
-             ->method('toStringInContext')
-             ->with($this->identicalTo($constraint), 0)
-             ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($constraint), 0)
+            ->willReturn($string);
 
         $this->assertSame($string, $constraint->toString());
     }
@@ -186,8 +186,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -196,13 +196,13 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'John Smith';
 
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn('');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn($string);
+            ->method('toString')
+            ->with()
+            ->willReturn($string);
 
         $this->assertSame($string, $operator->toString());
     }
@@ -215,8 +215,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -225,11 +225,11 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'John ' . $this->getOperatorName() . ' Smith';
 
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn($string);
         $operand->expects($this->never())
-                ->method('toString');
+            ->method('toString');
 
         $this->assertSame($string, $operator->toString());
     }
@@ -244,8 +244,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -254,17 +254,17 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'John ' . $this->getOperatorName() . ' Smith';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(1);
+            ->method('arity')
+            ->with()
+            ->willReturn(1);
         $operand->expects($this->never())
-                ->method('precedence');
+            ->method('precedence');
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn($string);
         $operand->expects($this->never())
-                ->method('toString');
+            ->method('toString');
 
         $this->assertSame($string, $operator->toString());
     }
@@ -279,8 +279,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -289,21 +289,21 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'tree of apples';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $operand->expects($this->once())
-                ->method('precedence')
-                ->with()
-                ->willReturn(-1);
+            ->method('precedence')
+            ->with()
+            ->willReturn(-1);
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn('');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn($string);
+            ->method('toString')
+            ->with()
+            ->willReturn($string);
 
         $this->assertSame($string, $operator->toString());
     }
@@ -318,8 +318,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -328,19 +328,19 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'tree of apples';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $operand->expects($this->once())
-                ->method('precedence')
-                ->with()
-                ->willReturn(-1);
+            ->method('precedence')
+            ->with()
+            ->willReturn(-1);
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn($string);
         $operand->expects($this->never())
-                ->method('toString');
+            ->method('toString');
 
         $this->assertSame($string, $operator->toString());
     }
@@ -355,8 +355,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -365,19 +365,19 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'apple or banana';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $operand->expects($this->once())
-                ->method('precedence')
-                ->with()
-                ->willReturn(10000);
+            ->method('precedence')
+            ->with()
+            ->willReturn(10000);
         $operand->expects($this->never())
-                ->method('toStringInContext');
+            ->method('toStringInContext');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn($string);
+            ->method('toString')
+            ->with()
+            ->willReturn($string);
 
         $expected = $this->getOperatorName() . '( ' . $string . ' )';
         $this->assertSame($expected, $operator->toString());
@@ -408,8 +408,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -418,13 +418,13 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'John Smith';
 
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn('');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn($string);
+            ->method('toString')
+            ->with()
+            ->willReturn($string);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
@@ -442,8 +442,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -452,11 +452,11 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'John ' . $this->getOperatorName() . ' Smith';
 
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn($string);
         $operand->expects($this->never())
-                ->method('toString');
+            ->method('toString');
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
@@ -476,8 +476,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -486,17 +486,17 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'John ' . $this->getOperatorName() . ' Smith';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(1);
+            ->method('arity')
+            ->with()
+            ->willReturn(1);
         $operand->expects($this->never())
-                ->method('precedence');
+            ->method('precedence');
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn($string);
         $operand->expects($this->never())
-                ->method('toString');
+            ->method('toString');
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
@@ -516,8 +516,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -526,21 +526,21 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'tree of apples';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $operand->expects($this->once())
-                ->method('precedence')
-                ->with()
-                ->willReturn(-1);
+            ->method('precedence')
+            ->with()
+            ->willReturn(-1);
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn('');
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn('');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn($string);
+            ->method('toString')
+            ->with()
+            ->willReturn($string);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
@@ -560,8 +560,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -570,19 +570,19 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'tree of apples';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $operand->expects($this->once())
-                ->method('precedence')
-                ->with()
-                ->willReturn(-1);
+            ->method('precedence')
+            ->with()
+            ->willReturn(-1);
         $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn($string);
+            ->method('toStringInContext')
+            ->with($this->identicalTo($operator), 0)
+            ->willReturn($string);
         $operand->expects($this->never())
-                ->method('toString');
+            ->method('toString');
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
@@ -602,8 +602,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->onlyMethods($methods)
-                        ->getMockForAbstractClass();
+            ->onlyMethods($methods)
+            ->getMockForAbstractClass();
 
         $className = $this->className();
 
@@ -612,19 +612,19 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $string = 'apple or banana';
 
         $operand->expects($this->once())
-                ->method('arity')
-                ->with()
-                ->willReturn(2);
+            ->method('arity')
+            ->with()
+            ->willReturn(2);
         $operand->expects($this->once())
-                ->method('precedence')
-                ->with()
-                ->willReturn(10000);
+            ->method('precedence')
+            ->with()
+            ->willReturn(10000);
         $operand->expects($this->never())
-                ->method('toStringInContext');
+            ->method('toStringInContext');
         $operand->expects($this->once())
-                ->method('toString')
-                ->with()
-                ->willReturn($string);
+            ->method('toString')
+            ->with()
+            ->willReturn($string);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);

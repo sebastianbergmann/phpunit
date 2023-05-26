@@ -125,6 +125,7 @@ $config->setFinder($finder)
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',
         ],
+        'method_chaining_indentation' => true,
         'modernize_types_casting' => true,
         'multiline_comment_opening_closing' => true,
         'multiline_whitespace_before_semicolons' => true,
@@ -163,6 +164,7 @@ $config->setFinder($finder)
         'no_php4_constructor' => true,
         'no_short_bool_cast' => true,
         'no_singleline_whitespace_before_semicolons' => true,
+        'no_space_around_double_colon' => true,
         'no_spaces_after_function_name' => true,
         'no_spaces_around_offset' => true,
         'no_spaces_inside_parenthesis' => true,
@@ -230,6 +232,7 @@ $config->setFinder($finder)
             'order' => 'alpha',
         ],
         'ordered_traits' => true,
+        'ordered_types' => true,
         'php_unit_set_up_tear_down_visibility' => true,
         'php_unit_test_case_static_method_calls' => [
             'call_type' => 'this',
@@ -245,6 +248,7 @@ $config->setFinder($finder)
         'phpdoc_no_package' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_order' => true,
+        'phpdoc_param_order' => true,
         'phpdoc_order_by_value' => [
             'annotations' => [
                 'covers',
@@ -291,6 +295,7 @@ $config->setFinder($finder)
         'statement_indentation' => true,
         'static_lambda' => true,
         'strict_param' => true,
+        'string_length_to_empty'=> true,
         'string_line_ending' => true,
         'switch_case_semicolon_to_colon' => true,
         'switch_case_space' => true,

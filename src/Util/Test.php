@@ -591,7 +591,7 @@ final class Test
                 $method->getDeclaringClass()->getName(),
                 $method->getName()
             )
-            ->symbolAnnotations()
+                ->symbolAnnotations()
         );
     }
 

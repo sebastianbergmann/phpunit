@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 interface InterfaceWithMethodsThatDeclareBooleanReturnTypes
 {
-    public function returnsIntOrFalse(): int|false;
+    public function returnsIntOrFalse(): false|int;
 
     public function returnsBool(): bool;
 }
