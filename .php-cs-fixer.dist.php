@@ -161,8 +161,8 @@ $config->setFinder($finder)
         'no_leading_import_slash' => true,
         'no_leading_namespace_whitespace' => true,
         'no_mixed_echo_print' => ['use' => 'print'],
-        'no_multiple_statements_per_line' => true,
         'no_multiline_whitespace_around_double_arrow' => true,
+        'no_multiple_statements_per_line' => true,
         'no_null_property_initialization' => true,
         'no_php4_constructor' => true,
         'no_short_bool_cast' => true,
@@ -251,7 +251,6 @@ $config->setFinder($finder)
         'phpdoc_no_package' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_order' => true,
-        'phpdoc_param_order' => true,
         'phpdoc_order_by_value' => [
             'annotations' => [
                 'covers',
@@ -260,6 +259,7 @@ $config->setFinder($finder)
                 'uses',
             ],
         ],
+        'phpdoc_param_order' => true,
         'phpdoc_return_self_reference' => true,
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
