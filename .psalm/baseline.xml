@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.9.0@8b9ad1eb9e8b7d3101f949291da2b9f7767cd163">
+<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -1124,18 +1124,18 @@
     <InvalidReturnStatement>
       <code>$mockObject</code>
       <code><![CDATA[$this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->getMock()]]></code>
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->getMock()]]></code>
       <code><![CDATA[$this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->setMethods(empty($methods) ? null : $methods)
-                    ->getMock()]]></code>
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(empty($methods) ? null : $methods)
+            ->getMock()]]></code>
       <code>get_class($mock)</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
