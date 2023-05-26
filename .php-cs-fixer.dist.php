@@ -186,6 +186,7 @@ $config->setFinder($finder)
         'no_unset_on_property' => true,
         'no_unused_imports' => true,
         'no_useless_else' => true,
+        'no_useless_nullsafe_operator' => true,
         'no_useless_return' => true,
         'no_useless_sprintf' => true,
         'no_whitespace_before_comma_in_array' => true,
