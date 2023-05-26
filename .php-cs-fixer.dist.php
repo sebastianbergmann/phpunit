@@ -294,6 +294,7 @@ $config->setFinder($finder)
         'statement_indentation' => true,
         'static_lambda' => true,
         'strict_param' => true,
+        'string_length_to_empty'=> true,
         'string_line_ending' => true,
         'switch_case_semicolon_to_colon' => true,
         'switch_case_space' => true,
