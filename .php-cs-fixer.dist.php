@@ -10,16 +10,20 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->files()
-    ->in(__DIR__ . '/src')
-    ->in(__DIR__ . '/tests/_files')
-    ->in(__DIR__ . '/tests/end-to-end')
-    ->in(__DIR__ . '/tests/unit')
-    ->notName('*.phpt')
-    ->notName('ClassWithAllPossibleReturnTypes.php')
-    ->notName('ClassWithUnionReturnTypes.php')
-    ->notName('ClassWithStaticReturnTypes.php')
-    ->notName('ValueObjectWithEqualsMethodWithUnionReturnType.php')
-    ->notName('ValueObjectWithEqualsMethodThatHasUnionParameterType.php');
+    ->in([
+        __DIR__ . '/src',
+        __DIR__ . '/tests/_files',
+        __DIR__ . '/tests/end-to-end',
+        __DIR__ . '/tests/unit',
+    ])
+    ->notName([
+        '*.phpt',
+        'ClassWithAllPossibleReturnTypes.php',
+        'ClassWithStaticReturnTypes.php',
+        'ClassWithUnionReturnTypes.php',
+        'ValueObjectWithEqualsMethodThatHasUnionParameterType.php',
+        'ValueObjectWithEqualsMethodWithUnionReturnType.php',
+    ]);
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
