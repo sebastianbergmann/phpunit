@@ -54,7 +54,7 @@ final class HookMethods
                 if ($metadata->isBeforeClass()->isNotEmpty()) {
                     array_unshift(
                         self::$hookMethods[$className]['beforeClass'],
-                        $methodName
+                        $methodName,
                     );
                 }
 
@@ -66,14 +66,14 @@ final class HookMethods
             if ($metadata->isBefore()->isNotEmpty()) {
                 array_unshift(
                     self::$hookMethods[$className]['before'],
-                    $methodName
+                    $methodName,
                 );
             }
 
             if ($metadata->isPreCondition()->isNotEmpty()) {
                 array_unshift(
                     self::$hookMethods[$className]['preCondition'],
-                    $methodName
+                    $methodName,
                 );
             }
 

@@ -77,7 +77,7 @@ final class BeforeFirstTestMethodErrored implements Event
             'Before First Test Method Errored (%s::%s)%s',
             $this->calledMethod->className(),
             $this->calledMethod->methodName(),
-            $message
+            $message,
         );
     }
 }

@@ -43,7 +43,7 @@ final class EventLogger implements Tracer
         file_put_contents(
             $this->path,
             $telemetryInfo . implode($indentation, $lines) . PHP_EOL,
-            FILE_APPEND | LOCK_EX
+            FILE_APPEND | LOCK_EX,
         );
     }
 

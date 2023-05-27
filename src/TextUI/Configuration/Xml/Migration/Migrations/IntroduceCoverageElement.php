@@ -22,7 +22,7 @@ final class IntroduceCoverageElement implements Migration
 
         $document->documentElement->insertBefore(
             $coverage,
-            $document->documentElement->firstChild
+            $document->documentElement->firstChild,
         );
     }
 }

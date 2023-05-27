@@ -58,7 +58,7 @@ final class Facade
         if ($configuration->outputIsTeamCity()) {
             new TeamCityLogger(
                 DefaultPrinter::standardOutput(),
-                EventFacade::instance()
+                EventFacade::instance(),
             );
         }
 
@@ -207,7 +207,7 @@ final class Facade
         if ($configuration->outputIsTestDox()) {
             self::$testDoxResultPrinter = new TestDoxResultPrinter(
                 self::$printer,
-                $configuration->colors()
+                $configuration->colors(),
             );
         }
 

@@ -36,7 +36,7 @@ final class ReturnStub implements Stub
 
         return sprintf(
             'return user-specified value %s',
-            $exporter->export($this->value)
+            $exporter->export($this->value),
         );
     }
 }

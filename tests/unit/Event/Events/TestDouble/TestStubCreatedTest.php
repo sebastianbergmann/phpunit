@@ -24,7 +24,7 @@ final class TestStubCreatedTest extends AbstractEventTestCase
 
         $event = new TestStubCreated(
             $telemetryInfo,
-            $className
+            $className,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class TestStubCreatedTest extends AbstractEventTestCase
     {
         $event = new TestStubCreated(
             $this->telemetryInfo(),
-            'OriginalType'
+            'OriginalType',
         );
 
         $this->assertSame('Test Stub Created (OriginalType)', $event->asString());

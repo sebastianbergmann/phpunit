@@ -21,8 +21,8 @@ final class UnknownClassOrInterfaceException extends InvalidArgumentException
         parent::__construct(
             sprintf(
                 'Class or interface "%s" does not exist',
-                $name
-            )
+                $name,
+            ),
         );
     }
 }

@@ -106,7 +106,7 @@ final class GarbageCollectorStatusTest extends TestCase
             null,
             null,
             null,
-            null
+            null,
         );
     }
 
@@ -120,7 +120,7 @@ final class GarbageCollectorStatusTest extends TestCase
             true,
             true,
             true,
-            5
+            5,
         );
     }
 }

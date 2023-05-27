@@ -32,7 +32,7 @@ final class Exception extends Constraint
     {
         return sprintf(
             'exception of type "%s"',
-            $this->className
+            $this->className,
         );
     }
 
@@ -58,7 +58,7 @@ final class Exception extends Constraint
         if ($other === null) {
             return sprintf(
                 'exception of type "%s" is thrown',
-                $this->className
+                $this->className,
             );
         }
 
@@ -73,7 +73,7 @@ final class Exception extends Constraint
             'exception of type "%s" matches expected exception "%s"%s',
             $other::class,
             $this->className,
-            $message
+            $message,
         );
     }
 }

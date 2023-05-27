@@ -370,8 +370,8 @@ final class ProgressPrinter
                     $this->numberOfTestsWidth . 'd (%3s%%)',
                     $this->numberOfTestsRun,
                     $this->numberOfTests,
-                    floor(($this->numberOfTestsRun / $this->numberOfTests) * 100)
-                )
+                    floor(($this->numberOfTestsRun / $this->numberOfTests) * 100),
+                ),
             );
 
             if ($this->column === $this->maxColumn) {

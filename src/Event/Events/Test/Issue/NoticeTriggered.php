@@ -81,7 +81,7 @@ final class NoticeTriggered implements Event
             'Test Triggered %sNotice (%s)%s',
             $this->wasSuppressed() ? 'Suppressed ' : '',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

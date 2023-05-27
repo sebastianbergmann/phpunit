@@ -81,7 +81,7 @@ final class WarningTriggered implements Event
             'Test Triggered %sWarning (%s)%s',
             $this->wasSuppressed() ? 'Suppressed ' : '',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

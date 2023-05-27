@@ -67,17 +67,17 @@ final class DefaultConfiguration extends Configuration
                 null,
                 null,
                 null,
-                null
+                null,
             ),
             new Groups(
                 GroupCollection::fromArray([]),
-                GroupCollection::fromArray([])
+                GroupCollection::fromArray([]),
             ),
             new Logging(
                 null,
                 null,
                 null,
-                null
+                null,
             ),
             new Php(
                 DirectoryCollection::fromArray([]),
@@ -90,7 +90,7 @@ final class DefaultConfiguration extends Configuration
                 VariableCollection::fromArray([]),
                 VariableCollection::fromArray([]),
                 VariableCollection::fromArray([]),
-                VariableCollection::fromArray([])
+                VariableCollection::fromArray([]),
             ),
             new PHPUnit(
                 null,
@@ -142,9 +142,9 @@ final class DefaultConfiguration extends Configuration
                 false,
                 false,
                 false,
-                false
+                false,
             ),
-            TestSuiteCollection::fromArray([])
+            TestSuiteCollection::fromArray([]),
         );
     }
 

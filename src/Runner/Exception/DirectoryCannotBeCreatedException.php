@@ -22,8 +22,8 @@ final class DirectoryCannotBeCreatedException extends RuntimeException implement
         parent::__construct(
             sprintf(
                 'Cannot create directory "%s"',
-                $directory
-            )
+                $directory,
+            ),
         );
     }
 }

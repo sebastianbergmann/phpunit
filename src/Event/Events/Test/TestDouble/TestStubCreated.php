@@ -53,7 +53,7 @@ final class TestStubCreated implements Event
     {
         return sprintf(
             'Test Stub Created (%s)',
-            $this->className
+            $this->className,
         );
     }
 }

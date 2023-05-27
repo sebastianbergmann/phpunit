@@ -30,7 +30,7 @@ final class PlainTextRenderer
                 $buffer .= sprintf(
                     ' [%s] %s' . "\n",
                     $outcome,
-                    $prettifiedMethodName
+                    $prettifiedMethodName,
                 );
             }
 

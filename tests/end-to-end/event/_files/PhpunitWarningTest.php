@@ -18,7 +18,7 @@ final class PhpunitWarningTest extends TestCase
     {
         EventFacade::emitter()->testTriggeredPhpunitWarning(
             $this->valueObjectForEvents(),
-            'message'
+            'message',
         );
 
         $this->assertTrue(true);

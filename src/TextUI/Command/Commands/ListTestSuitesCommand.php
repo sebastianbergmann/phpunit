@@ -33,7 +33,7 @@ final class ListTestSuitesCommand implements Command
         foreach ($this->suites as $suite) {
             $buffer .= sprintf(
                 ' - %s' . PHP_EOL,
-                $suite->name()
+                $suite->name(),
             );
         }
 

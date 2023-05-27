@@ -253,7 +253,7 @@ final class Help
                     $arg = preg_replace_callback(
                         '/(<[^>]+>)/',
                         static fn ($matches) => Color::colorize('fg-cyan', $matches[0]),
-                        $arg
+                        $arg,
                     );
 
                     $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->columnsAvailableForDescription, PHP_EOL));

@@ -27,7 +27,7 @@ final class PostConditionCalledTest extends AbstractEventTestCase
         $event = new PostConditionCalled(
             $telemetryInfo,
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class PostConditionCalledTest extends AbstractEventTestCase
         $event = new PostConditionCalled(
             $this->telemetryInfo(),
             'Test',
-            $this->calledMethod()
+            $this->calledMethod(),
         );
 
         $this->assertSame('Post Condition Method Called (HookClass::hookMethod)', $event->asString());

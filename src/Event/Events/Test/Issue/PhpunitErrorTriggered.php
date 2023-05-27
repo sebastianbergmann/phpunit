@@ -59,7 +59,7 @@ final class PhpunitErrorTriggered implements Event
         return sprintf(
             'Test Triggered PHPUnit Error (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

@@ -42,7 +42,7 @@ final class HookMethodsTest extends TestCase
                     'tearDownAfterClass',
                 ],
             ],
-            (new HookMethods)->hookMethods('does not exist')
+            (new HookMethods)->hookMethods('does not exist'),
         );
     }
 
@@ -69,7 +69,7 @@ final class HookMethodsTest extends TestCase
                     'tearDownAfterClass',
                 ],
             ],
-            (new HookMethods)->hookMethods(TestWithoutHookMethodsTest::class)
+            (new HookMethods)->hookMethods(TestWithoutHookMethodsTest::class),
         );
     }
 
@@ -108,7 +108,7 @@ final class HookMethodsTest extends TestCase
                     'afterLastTestWithAnnotation',
                 ],
             ],
-            (new HookMethods)->hookMethods(TestWithHookMethodsTest::class)
+            (new HookMethods)->hookMethods(TestWithHookMethodsTest::class),
         );
     }
 }

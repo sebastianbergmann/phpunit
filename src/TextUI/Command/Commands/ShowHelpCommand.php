@@ -27,7 +27,7 @@ final class ShowHelpCommand implements Command
     {
         return Result::from(
             (new Help)->generate(),
-            $this->shellExitCode
+            $this->shellExitCode,
         );
     }
 }

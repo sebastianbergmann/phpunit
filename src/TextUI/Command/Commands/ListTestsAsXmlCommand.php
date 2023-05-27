@@ -69,8 +69,8 @@ final class ListTestsAsXmlCommand implements Command
                         str_replace(
                             ' with data set ',
                             '',
-                            $test->dataSetAsString()
-                        )
+                            $test->dataSetAsString(),
+                        ),
                     );
                 }
 
@@ -98,7 +98,7 @@ final class ListTestsAsXmlCommand implements Command
 
         $buffer .= sprintf(
             'Wrote list of tests that would have been run to %s' . PHP_EOL,
-            $this->filename
+            $this->filename,
         );
 
         return Result::from($buffer);

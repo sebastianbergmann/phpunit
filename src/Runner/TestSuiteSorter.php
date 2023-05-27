@@ -207,7 +207,7 @@ final class TestSuiteSorter
     {
         usort(
             $tests,
-            fn ($left, $right) => $this->cmpDefectPriorityAndTime($left, $right)
+            fn ($left, $right) => $this->cmpDefectPriorityAndTime($left, $right),
         );
 
         return $tests;
@@ -217,7 +217,7 @@ final class TestSuiteSorter
     {
         usort(
             $tests,
-            fn ($left, $right) => $this->cmpDuration($left, $right)
+            fn ($left, $right) => $this->cmpDuration($left, $right),
         );
 
         return $tests;
@@ -227,7 +227,7 @@ final class TestSuiteSorter
     {
         usort(
             $tests,
-            fn ($left, $right) => $this->cmpSize($left, $right)
+            fn ($left, $right) => $this->cmpSize($left, $right),
         );
 
         return $tests;

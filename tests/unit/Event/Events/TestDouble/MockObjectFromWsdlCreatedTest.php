@@ -41,7 +41,7 @@ final class MockObjectFromWsdlCreatedTest extends AbstractEventTestCase
             $mockClassName,
             $methods,
             $callOriginalConstructor,
-            $options
+            $options,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -62,7 +62,7 @@ final class MockObjectFromWsdlCreatedTest extends AbstractEventTestCase
             'MockClassName',
             [],
             false,
-            []
+            [],
         );
 
         $this->assertSame('Mock Object Created (test.wsdl)', $event->asString());

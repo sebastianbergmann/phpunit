@@ -73,7 +73,7 @@ final class PreConditionFinished implements Event
             $buffer .= sprintf(
                 PHP_EOL . '- %s::%s',
                 $calledMethod->className(),
-                $calledMethod->methodName()
+                $calledMethod->methodName(),
             );
         }
 

@@ -34,7 +34,7 @@ final class RequirementTest extends TestCase
                 true,
                 '1.0.0',
                 new ConstraintRequirement(
-                    (new VersionConstraintParser)->parse('1.0.0')
+                    (new VersionConstraintParser)->parse('1.0.0'),
                 ),
             ],
         ];

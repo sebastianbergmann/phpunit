@@ -133,12 +133,12 @@ final class TestMethod extends Test
         if (is_int($dataSetName)) {
             $dataSetName = sprintf(
                 ' with data set #%d',
-                $dataSetName
+                $dataSetName,
             );
         } else {
             $dataSetName = sprintf(
                 ' with data set "%s"',
-                $dataSetName
+                $dataSetName,
             );
         }
 

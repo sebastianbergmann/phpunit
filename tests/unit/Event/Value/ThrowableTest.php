@@ -67,7 +67,7 @@ Exception: first message
 %A
 EOD
             ,
-            $t->asString()
+            $t->asString(),
         );
     }
 }

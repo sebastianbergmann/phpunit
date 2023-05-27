@@ -54,7 +54,7 @@ final class MockObjectForIntersectionOfInterfacesCreated implements Event
     {
         return sprintf(
             'Mock Object Created (%s)',
-            implode('&', $this->interfaces)
+            implode('&', $this->interfaces),
         );
     }
 }

@@ -29,7 +29,7 @@ final class SnapshotTest extends TestCase
             $time,
             $memoryUsage,
             $peakMemoryUsage,
-            $garbageCollectorStatus
+            $garbageCollectorStatus,
         );
 
         $this->assertSame($time, $snapshot->time());

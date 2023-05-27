@@ -25,7 +25,7 @@ final class StartedTest extends AbstractEventTestCase
 
         $event = new Started(
             $telemetryInfo,
-            $runtime
+            $runtime,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -36,7 +36,7 @@ final class StartedTest extends AbstractEventTestCase
     {
         $event = new Started(
             $this->telemetryInfo(),
-            new Runtime
+            new Runtime,
         );
 
         $this->assertStringMatchesFormat('PHPUnit Started (PHPUnit %s using PHP %s)', $event->asString());

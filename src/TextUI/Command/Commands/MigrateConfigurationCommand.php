@@ -36,7 +36,7 @@ final class MigrateConfigurationCommand implements Command
         try {
             file_put_contents(
                 $this->filename,
-                (new Migrator)->migrate($this->filename)
+                (new Migrator)->migrate($this->filename),
             );
 
             $buffer .= 'Migrated configuration: ' . $this->filename . PHP_EOL;

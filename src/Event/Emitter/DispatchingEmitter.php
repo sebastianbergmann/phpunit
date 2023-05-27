@@ -53,8 +53,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Application\Started(
                 $this->telemetryInfo(),
-                new Runtime\Runtime
-            )
+                new Runtime\Runtime,
+            ),
         );
     }
 
@@ -66,8 +66,8 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new TestRunner\Started(
-                $this->telemetryInfo()
-            )
+                $this->telemetryInfo(),
+            ),
         );
     }
 
@@ -80,8 +80,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestRunner\Configured(
                 $this->telemetryInfo(),
-                $configuration
-            )
+                $configuration,
+            ),
         );
     }
 
@@ -94,8 +94,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestRunner\BootstrapFinished(
                 $this->telemetryInfo(),
-                $filename
-            )
+                $filename,
+            ),
         );
     }
 
@@ -110,8 +110,8 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $filename,
                 $name,
-                $version
-            )
+                $version,
+            ),
         );
     }
 
@@ -128,8 +128,8 @@ final class DispatchingEmitter implements Emitter
             new TestRunner\ExtensionBootstrapped(
                 $this->telemetryInfo(),
                 $className,
-                $parameters
-            )
+                $parameters,
+            ),
         );
     }
 
@@ -144,7 +144,7 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $testMethod,
                 $dataProviderMethod,
-            )
+            ),
         );
     }
 
@@ -159,7 +159,7 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $testMethod,
                 ...$calledMethods,
-            )
+            ),
         );
     }
 
@@ -172,8 +172,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestSuiteLoaded(
                 $this->telemetryInfo(),
-                $testSuite
-            )
+                $testSuite,
+            ),
         );
     }
 
@@ -186,8 +186,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestSuiteFiltered(
                 $this->telemetryInfo(),
-                $testSuite
-            )
+                $testSuite,
+            ),
         );
     }
 
@@ -202,8 +202,8 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $executionOrder,
                 $executionOrderDefects,
-                $resolveDependencies
-            )
+                $resolveDependencies,
+            ),
         );
     }
 
@@ -215,8 +215,8 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new TestRunner\EventFacadeSealed(
-                $this->telemetryInfo()
-            )
+                $this->telemetryInfo(),
+            ),
         );
     }
 
@@ -229,8 +229,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestRunner\ExecutionStarted(
                 $this->telemetryInfo(),
-                $testSuite
-            )
+                $testSuite,
+            ),
         );
     }
 
@@ -244,8 +244,8 @@ final class DispatchingEmitter implements Emitter
             new TestSuiteSkipped(
                 $this->telemetryInfo(),
                 $testSuite,
-                $message
-            )
+                $message,
+            ),
         );
     }
 
@@ -258,8 +258,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestSuiteStarted(
                 $this->telemetryInfo(),
-                $testSuite
-            )
+                $testSuite,
+            ),
         );
     }
 
@@ -272,8 +272,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\PreparationStarted(
                 $this->telemetryInfo(),
-                $test
-            )
+                $test,
+            ),
         );
     }
 
@@ -289,8 +289,8 @@ final class DispatchingEmitter implements Emitter
             new Test\BeforeFirstTestMethodCalled(
                 $this->telemetryInfo(),
                 $testClassName,
-                $calledMethod
-            )
+                $calledMethod,
+            ),
         );
     }
 
@@ -307,8 +307,8 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $testClassName,
                 $calledMethod,
-                $throwable
-            )
+                $throwable,
+            ),
         );
     }
 
@@ -324,8 +324,8 @@ final class DispatchingEmitter implements Emitter
             new Test\BeforeFirstTestMethodFinished(
                 $this->telemetryInfo(),
                 $testClassName,
-                ...$calledMethods
-            )
+                ...$calledMethods,
+            ),
         );
     }
 
@@ -341,8 +341,8 @@ final class DispatchingEmitter implements Emitter
             new Test\BeforeTestMethodCalled(
                 $this->telemetryInfo(),
                 $testClassName,
-                $calledMethod
-            )
+                $calledMethod,
+            ),
         );
     }
 
@@ -358,8 +358,8 @@ final class DispatchingEmitter implements Emitter
             new Test\BeforeTestMethodFinished(
                 $this->telemetryInfo(),
                 $testClassName,
-                ...$calledMethods
-            )
+                ...$calledMethods,
+            ),
         );
     }
 
@@ -375,8 +375,8 @@ final class DispatchingEmitter implements Emitter
             new Test\PreConditionCalled(
                 $this->telemetryInfo(),
                 $testClassName,
-                $calledMethod
-            )
+                $calledMethod,
+            ),
         );
     }
 
@@ -392,8 +392,8 @@ final class DispatchingEmitter implements Emitter
             new Test\PreConditionFinished(
                 $this->telemetryInfo(),
                 $testClassName,
-                ...$calledMethods
-            )
+                ...$calledMethods,
+            ),
         );
     }
 
@@ -406,8 +406,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\Prepared(
                 $this->telemetryInfo(),
-                $test
-            )
+                $test,
+            ),
         );
     }
 
@@ -422,8 +422,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\ComparatorRegistered(
                 $this->telemetryInfo(),
-                $className
-            )
+                $className,
+            ),
         );
     }
 
@@ -444,7 +444,7 @@ final class DispatchingEmitter implements Emitter
                 $constraint->toString(),
                 $constraint->count(),
                 $message,
-            )
+            ),
         );
     }
 
@@ -465,7 +465,7 @@ final class DispatchingEmitter implements Emitter
                 $constraint->toString(),
                 $constraint->count(),
                 $message,
-            )
+            ),
         );
     }
 
@@ -480,8 +480,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\MockObjectCreated(
                 $this->telemetryInfo(),
-                $className
-            )
+                $className,
+            ),
         );
     }
 
@@ -496,8 +496,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\MockObjectForIntersectionOfInterfacesCreated(
                 $this->telemetryInfo(),
-                $interfaces
-            )
+                $interfaces,
+            ),
         );
     }
 
@@ -512,8 +512,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\MockObjectForTraitCreated(
                 $this->telemetryInfo(),
-                $traitName
-            )
+                $traitName,
+            ),
         );
     }
 
@@ -528,8 +528,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\MockObjectForAbstractClassCreated(
                 $this->telemetryInfo(),
-                $className
-            )
+                $className,
+            ),
         );
     }
 
@@ -550,8 +550,8 @@ final class DispatchingEmitter implements Emitter
                 $mockClassName,
                 $methods,
                 $callOriginalConstructor,
-                $options
-            )
+                $options,
+            ),
         );
     }
 
@@ -567,8 +567,8 @@ final class DispatchingEmitter implements Emitter
             new Test\PartialMockObjectCreated(
                 $this->telemetryInfo(),
                 $className,
-                ...$methodNames
-            )
+                ...$methodNames,
+            ),
         );
     }
 
@@ -584,8 +584,8 @@ final class DispatchingEmitter implements Emitter
             new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
-                (new Exporter)->export($constructorArguments)
-            )
+                (new Exporter)->export($constructorArguments),
+            ),
         );
     }
 
@@ -600,8 +600,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\TestStubCreated(
                 $this->telemetryInfo(),
-                $className
-            )
+                $className,
+            ),
         );
     }
 
@@ -616,8 +616,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\TestStubForIntersectionOfInterfacesCreated(
                 $this->telemetryInfo(),
-                $interfaces
-            )
+                $interfaces,
+            ),
         );
     }
 
@@ -631,8 +631,8 @@ final class DispatchingEmitter implements Emitter
             new Test\Errored(
                 $this->telemetryInfo(),
                 $test,
-                $throwable
-            )
+                $throwable,
+            ),
         );
     }
 
@@ -647,8 +647,8 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $test,
                 $throwable,
-                $comparisonFailure
-            )
+                $comparisonFailure,
+            ),
         );
     }
 
@@ -662,7 +662,7 @@ final class DispatchingEmitter implements Emitter
             new Test\Passed(
                 $this->telemetryInfo(),
                 $test,
-            )
+            ),
         );
     }
 
@@ -676,8 +676,8 @@ final class DispatchingEmitter implements Emitter
             new Test\ConsideredRisky(
                 $this->telemetryInfo(),
                 $test,
-                $message
-            )
+                $message,
+            ),
         );
     }
 
@@ -691,8 +691,8 @@ final class DispatchingEmitter implements Emitter
             new Test\MarkedIncomplete(
                 $this->telemetryInfo(),
                 $test,
-                $throwable
-            )
+                $throwable,
+            ),
         );
     }
 
@@ -706,8 +706,8 @@ final class DispatchingEmitter implements Emitter
             new Test\Skipped(
                 $this->telemetryInfo(),
                 $test,
-                $message
-            )
+                $message,
+            ),
         );
     }
 
@@ -721,8 +721,8 @@ final class DispatchingEmitter implements Emitter
             new Test\PhpunitDeprecationTriggered(
                 $this->telemetryInfo(),
                 $test,
-                $message
-            )
+                $message,
+            ),
         );
     }
 
@@ -740,7 +740,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -758,7 +758,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -776,7 +776,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -794,7 +794,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -812,7 +812,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -830,7 +830,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -848,7 +848,7 @@ final class DispatchingEmitter implements Emitter
                 $file,
                 $line,
                 $suppressed,
-            )
+            ),
         );
     }
 
@@ -863,7 +863,7 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $test,
                 $message,
-            )
+            ),
         );
     }
 
@@ -878,7 +878,7 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $test,
                 $message,
-            )
+            ),
         );
     }
 
@@ -893,8 +893,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\PrintedUnexpectedOutput(
                 $this->telemetryInfo(),
-                $output
-            )
+                $output,
+            ),
         );
     }
 
@@ -908,8 +908,8 @@ final class DispatchingEmitter implements Emitter
             new Test\Finished(
                 $this->telemetryInfo(),
                 $test,
-                $numberOfAssertionsPerformed
-            )
+                $numberOfAssertionsPerformed,
+            ),
         );
     }
 
@@ -925,8 +925,8 @@ final class DispatchingEmitter implements Emitter
             new Test\PostConditionCalled(
                 $this->telemetryInfo(),
                 $testClassName,
-                $calledMethod
-            )
+                $calledMethod,
+            ),
         );
     }
 
@@ -942,8 +942,8 @@ final class DispatchingEmitter implements Emitter
             new Test\PostConditionFinished(
                 $this->telemetryInfo(),
                 $testClassName,
-                ...$calledMethods
-            )
+                ...$calledMethods,
+            ),
         );
     }
 
@@ -959,8 +959,8 @@ final class DispatchingEmitter implements Emitter
             new Test\AfterTestMethodCalled(
                 $this->telemetryInfo(),
                 $testClassName,
-                $calledMethod
-            )
+                $calledMethod,
+            ),
         );
     }
 
@@ -976,8 +976,8 @@ final class DispatchingEmitter implements Emitter
             new Test\AfterTestMethodFinished(
                 $this->telemetryInfo(),
                 $testClassName,
-                ...$calledMethods
-            )
+                ...$calledMethods,
+            ),
         );
     }
 
@@ -993,8 +993,8 @@ final class DispatchingEmitter implements Emitter
             new Test\AfterLastTestMethodCalled(
                 $this->telemetryInfo(),
                 $testClassName,
-                $calledMethod
-            )
+                $calledMethod,
+            ),
         );
     }
 
@@ -1010,8 +1010,8 @@ final class DispatchingEmitter implements Emitter
             new Test\AfterLastTestMethodFinished(
                 $this->telemetryInfo(),
                 $testClassName,
-                ...$calledMethods
-            )
+                ...$calledMethods,
+            ),
         );
     }
 
@@ -1025,7 +1025,7 @@ final class DispatchingEmitter implements Emitter
             new TestSuiteFinished(
                 $this->telemetryInfo(),
                 $testSuite,
-            )
+            ),
         );
     }
 
@@ -1038,8 +1038,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestRunner\DeprecationTriggered(
                 $this->telemetryInfo(),
-                $message
-            )
+                $message,
+            ),
         );
     }
 
@@ -1052,8 +1052,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestRunner\WarningTriggered(
                 $this->telemetryInfo(),
-                $message
-            )
+                $message,
+            ),
         );
     }
 
@@ -1064,7 +1064,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerExecutionAborted(): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\ExecutionAborted($this->telemetryInfo())
+            new TestRunner\ExecutionAborted($this->telemetryInfo()),
         );
     }
 
@@ -1075,7 +1075,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerExecutionFinished(): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\ExecutionFinished($this->telemetryInfo())
+            new TestRunner\ExecutionFinished($this->telemetryInfo()),
         );
     }
 
@@ -1086,7 +1086,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerFinished(): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\Finished($this->telemetryInfo())
+            new TestRunner\Finished($this->telemetryInfo()),
         );
     }
 
@@ -1099,8 +1099,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Application\Finished(
                 $this->telemetryInfo(),
-                $shellExitCode
-            )
+                $shellExitCode,
+            ),
         );
     }
 

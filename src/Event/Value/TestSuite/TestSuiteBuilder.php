@@ -77,7 +77,7 @@ final class TestSuiteBuilder
                 throw new RuntimeException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
         }
@@ -97,7 +97,7 @@ final class TestSuiteBuilder
                 throw new RuntimeException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
         }

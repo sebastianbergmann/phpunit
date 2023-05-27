@@ -128,13 +128,13 @@ final class Builder
             $options = (new CliParser)->parse(
                 $parameters,
                 self::SHORT_OPTIONS,
-                self::LONG_OPTIONS
+                self::LONG_OPTIONS,
             );
         } catch (CliParserException $e) {
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -493,8 +493,8 @@ final class Builder
                                 throw new Exception(
                                     sprintf(
                                         'unrecognized --order-by option: %s',
-                                        $order
-                                    )
+                                        $order,
+                                    ),
                                 );
                         }
                     }
@@ -889,7 +889,7 @@ final class Builder
             $logEventsText,
             $logEventsVerboseText,
             $printerTeamCity,
-            $printerTestDox
+            $printerTestDox,
         );
     }
 }

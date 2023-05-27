@@ -35,7 +35,7 @@ final class FinishedTest extends AbstractEventTestCase
     {
         $event = new Finished(
             $this->telemetryInfo(),
-            $this->testSuiteValueObject()
+            $this->testSuiteValueObject(),
         );
 
         $this->assertSame('Test Suite Finished (foo, 9001 tests)', $event->asString());

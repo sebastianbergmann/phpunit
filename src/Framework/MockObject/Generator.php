@@ -119,7 +119,7 @@ final class Generator
             $callOriginalClone,
             $callAutoload,
             $cloneArguments,
-            $callOriginalMethods
+            $callOriginalMethods,
         );
 
         $object = $this->getObject(
@@ -129,7 +129,7 @@ final class Generator
             $arguments,
             $callOriginalMethods,
             $proxyTarget,
-            $returnValueGeneration
+            $returnValueGeneration,
         );
 
         assert($object instanceof MockObject);
@@ -180,7 +180,7 @@ final class Generator
             $intersectionName = sprintf(
                 'Intersection_%s_%s',
                 implode('_', $unqualifiedNames),
-                substr(md5((string) mt_rand()), 0, 8)
+                substr(md5((string) mt_rand()), 0, 8),
             );
         } while (interface_exists($intersectionName, false));
 
@@ -190,7 +190,7 @@ final class Generator
             [
                 'intersection' => $intersectionName,
                 'interfaces'   => implode(', ', $interfaces),
-            ]
+            ],
         );
 
         eval($template->render());
@@ -233,7 +233,7 @@ final class Generator
                 throw new ReflectionException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
 
@@ -257,7 +257,7 @@ final class Generator
                 $callOriginalConstructor,
                 $callOriginalClone,
                 $callAutoload,
-                $cloneArguments
+                $cloneArguments,
             );
         }
 
@@ -294,7 +294,7 @@ final class Generator
         $className = $this->generateClassName(
             $traitName,
             '',
-            'Trait_'
+            'Trait_',
         );
 
         $classTemplate = $this->loadTemplate('trait_class.tpl');
@@ -304,7 +304,7 @@ final class Generator
                 'prologue'   => 'abstract ',
                 'class_name' => $className['className'],
                 'trait_name' => $traitName,
-            ]
+            ],
         );
 
         $mockTrait = new MockTrait($classTemplate->render(), $className['className']);
@@ -331,7 +331,7 @@ final class Generator
         $className = $this->generateClassName(
             $traitName,
             $traitClassName,
-            'Trait_'
+            'Trait_',
         );
 
         $classTemplate = $this->loadTemplate('trait_class.tpl');
@@ -341,17 +341,17 @@ final class Generator
                 'prologue'   => '',
                 'class_name' => $className['className'],
                 'trait_name' => $traitName,
-            ]
+            ],
         );
 
         return $this->getObject(
             new MockTrait(
                 $classTemplate->render(),
-                $className['className']
+                $className['className'],
             ),
             '',
             $callOriginalConstructor,
-            $arguments
+            $arguments,
         );
     }
 
@@ -372,7 +372,7 @@ final class Generator
                 $callOriginalClone,
                 $callAutoload,
                 $cloneArguments,
-                $callOriginalMethods
+                $callOriginalMethods,
             );
         }
 
@@ -381,7 +381,7 @@ final class Generator
             serialize($methods) .
             serialize($callOriginalClone) .
             serialize($cloneArguments) .
-            serialize($callOriginalMethods)
+            serialize($callOriginalMethods),
         );
 
         if (!isset(self::$cache[$key])) {
@@ -392,7 +392,7 @@ final class Generator
                 $callOriginalClone,
                 $callAutoload,
                 $cloneArguments,
-                $callOriginalMethods
+                $callOriginalMethods,
             );
         }
 
@@ -419,7 +419,7 @@ final class Generator
             throw new RuntimeException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -438,7 +438,7 @@ final class Generator
             if (empty($methods) || in_array($name, $methods, true)) {
                 $arguments = explode(
                     ',',
-                    str_replace(')', '', substr($method, $nameEnd + 1))
+                    str_replace(')', '', substr($method, $nameEnd + 1)),
                 );
 
                 foreach (range(0, count($arguments) - 1) as $i) {
@@ -455,7 +455,7 @@ final class Generator
                     [
                         'method_name' => $name,
                         'arguments'   => implode(', ', $arguments),
-                    ]
+                    ],
                 );
 
                 $methodsBuffer .= $methodTemplate->render();
@@ -486,7 +486,7 @@ final class Generator
                 'wsdl'       => $wsdlFile,
                 'options'    => $optionsBuffer,
                 'methods'    => $methodsBuffer,
-            ]
+            ],
         );
 
         return $classTemplate->render();
@@ -505,7 +505,7 @@ final class Generator
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -533,7 +533,7 @@ final class Generator
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -561,7 +561,7 @@ final class Generator
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -589,7 +589,7 @@ final class Generator
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -647,7 +647,7 @@ final class Generator
         $_mockClassName = $this->generateClassName(
             $type,
             $mockClassName,
-            'Mock_'
+            'Mock_',
         );
 
         if (class_exists($_mockClassName['fullClassName'], $callAutoload)) {
@@ -675,7 +675,7 @@ final class Generator
                 throw new ReflectionException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
 
@@ -703,7 +703,7 @@ final class Generator
                     throw new ReflectionException(
                         $e->getMessage(),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
 
@@ -719,14 +719,14 @@ final class Generator
                     }
 
                     $mockMethods->addMethods(
-                        MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
+                        MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments),
                     );
                 }
 
                 $_mockClassName = $this->generateClassName(
                     $actualClassName,
                     $_mockClassName['className'],
-                    'Mock_'
+                    'Mock_',
                 );
             }
 
@@ -737,7 +737,7 @@ final class Generator
                 $additionalInterfaces[] = Iterator::class;
 
                 $mockMethods->addMethods(
-                    ...$this->mockClassMethods(Iterator::class, $callOriginalMethods, $cloneArguments)
+                    ...$this->mockClassMethods(Iterator::class, $callOriginalMethods, $cloneArguments),
                 );
             }
 
@@ -758,13 +758,13 @@ final class Generator
 
         if ($isClass && $explicitMethods === []) {
             $mockMethods->addMethods(
-                ...$this->mockClassMethods($_mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments)
+                ...$this->mockClassMethods($_mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments),
             );
         }
 
         if ($isInterface && ($explicitMethods === [] || $explicitMethods === null)) {
             $mockMethods->addMethods(
-                ...$this->mockInterfaceMethods($_mockClassName['fullClassName'], $cloneArguments)
+                ...$this->mockInterfaceMethods($_mockClassName['fullClassName'], $cloneArguments),
             );
         }
 
@@ -775,7 +775,7 @@ final class Generator
 
                     if ($this->canMethodBeDoubled($method)) {
                         $mockMethods->addMethods(
-                            MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
+                            MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments),
                         );
                     }
                 } else {
@@ -783,8 +783,8 @@ final class Generator
                         MockMethod::fromName(
                             $_mockClassName['fullClassName'],
                             $methodName,
-                            $cloneArguments
-                        )
+                            $cloneArguments,
+                        ),
                     );
                 }
             }
@@ -821,19 +821,19 @@ final class Generator
                 'class_declaration' => $this->generateMockClassDeclaration(
                     $_mockClassName,
                     $isInterface,
-                    $additionalInterfaces
+                    $additionalInterfaces,
                 ),
                 'clone'           => $cloneTrait,
                 'mock_class_name' => $_mockClassName['className'],
                 'mocked_methods'  => $mockedMethods,
                 'method'          => $method,
-            ]
+            ],
         );
 
         return new MockClass(
             $classTemplate->render(),
             $_mockClassName['className'],
-            $configurable
+            $configurable,
         );
     }
 
@@ -880,7 +880,7 @@ final class Generator
             $buffer .= sprintf(
                 '%s implements %s',
                 $mockClassName['className'],
-                $interfaces
+                $interfaces,
             );
 
             if (!in_array($mockClassName['originalClassName'], $additionalInterfaces, true)) {
@@ -898,7 +898,7 @@ final class Generator
                 $mockClassName['className'],
                 !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
                 $mockClassName['originalClassName'],
-                $interfaces
+                $interfaces,
             );
         }
 
@@ -973,7 +973,7 @@ final class Generator
                 throw new ReflectionException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
 
@@ -1001,7 +1001,7 @@ final class Generator
                 throw new ReflectionException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
         }
@@ -1012,7 +1012,7 @@ final class Generator
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
     }
@@ -1038,7 +1038,7 @@ final class Generator
                     throw new ReflectionException(
                         $e->getMessage(),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
             }

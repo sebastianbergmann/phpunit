@@ -49,7 +49,7 @@ final class StringContains extends Constraint
 
         return sprintf(
             'contains "%s"',
-            $string
+            $string,
         );
     }
 
@@ -97,7 +97,7 @@ final class StringContains extends Constraint
             [
                 "\r\n" => "\n",
                 "\r"   => "\n",
-            ]
+            ],
         );
     }
 }

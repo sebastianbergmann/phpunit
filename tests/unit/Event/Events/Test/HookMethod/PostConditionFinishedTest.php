@@ -27,7 +27,7 @@ final class PostConditionFinishedTest extends AbstractEventTestCase
         $event = new PostConditionFinished(
             $telemetryInfo,
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class PostConditionFinishedTest extends AbstractEventTestCase
         $event = new PostConditionFinished(
             $this->telemetryInfo(),
             'Test',
-            ...$this->calledMethods()
+            ...$this->calledMethods(),
         );
 
         $this->assertSame(
@@ -49,7 +49,7 @@ Post Condition Method Finished:
 - HookClass::hookMethod
 - AnotherHookClass::anotherHookMethod
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 

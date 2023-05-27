@@ -67,7 +67,7 @@ final class PartialMockObjectCreated implements Event
     {
         return sprintf(
             'Partial Mock Object Created (%s)',
-            $this->className
+            $this->className,
         );
     }
 }

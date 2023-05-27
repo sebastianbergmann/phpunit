@@ -38,7 +38,7 @@ final class Runtime
             $this->phpunit()->versionId(),
             $php->version(),
             $php->sapi(),
-            $this->operatingSystem()->operatingSystem()
+            $this->operatingSystem()->operatingSystem(),
         );
     }
 

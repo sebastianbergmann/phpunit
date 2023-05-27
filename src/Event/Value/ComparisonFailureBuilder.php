@@ -45,7 +45,7 @@ final class ComparisonFailureBuilder
         return new ComparisonFailure(
             $expectedAsString,
             $actualAsString,
-            $t->getComparisonFailure()->getDiff()
+            $t->getComparisonFailure()->getDiff(),
         );
     }
 

@@ -21,8 +21,8 @@ final class UnknownTypeException extends InvalidArgumentException
         parent::__construct(
             sprintf(
                 'Type "%s" is not known',
-                $name
-            )
+                $name,
+            ),
         );
     }
 }

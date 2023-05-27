@@ -87,7 +87,7 @@ final class DurationTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            (Duration::fromSecondsAndNanoseconds($seconds, $nanoseconds))->asString()
+            (Duration::fromSecondsAndNanoseconds($seconds, $nanoseconds))->asString(),
         );
     }
 
@@ -100,12 +100,12 @@ final class DurationTest extends TestCase
     {
         $one = Duration::fromSecondsAndNanoseconds(
             123,
-            456
+            456,
         );
 
         $two = Duration::fromSecondsAndNanoseconds(
             456,
-            123
+            123,
         );
 
         $this->assertFalse($one->equals($two));

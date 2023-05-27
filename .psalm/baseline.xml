@@ -148,7 +148,7 @@
     <PropertyTypeCoercion>
       <code><![CDATA[array_map(
             fn ($constraint): Constraint => $this->checkConstraint($constraint),
-            $constraints
+            $constraints,
         )]]></code>
     </PropertyTypeCoercion>
   </file>
@@ -426,8 +426,8 @@
                 [
                     'setting'            => $recordedSettings,
                     'extension_versions' => $extensionVersions,
-                ]
-            )
+                ],
+            ),
         )]]></code>
     </InvalidPropertyAssignmentValue>
     <InvalidReturnStatement>
@@ -438,8 +438,8 @@
                 [
                     'setting'            => $recordedSettings,
                     'extension_versions' => $extensionVersions,
-                ]
-            )
+                ],
+            ),
         )]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
@@ -569,10 +569,10 @@
     </InternalMethod>
     <MissingThrowsDocblock>
       <code><![CDATA[DefaultPrinter::from(
-                    $configuration->logfileTeamcity()
+                    $configuration->logfileTeamcity(),
                 )]]></code>
       <code><![CDATA[DefaultPrinter::from(
-                    $configuration->logfileTeamcity()
+                    $configuration->logfileTeamcity(),
                 )]]></code>
       <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
       <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
@@ -597,7 +597,7 @@
     <MissingThrowsDocblock>
       <code>Registry::init(
                 $cliConfiguration,
-                $xmlConfiguration
+                $xmlConfiguration,
             )</code>
     </MissingThrowsDocblock>
   </file>

@@ -53,7 +53,7 @@ final class LogicalNot extends UnaryOperator
 
         $positives = array_map(
             static fn (string $s) => '/\\b' . preg_quote($s, '/') . '/',
-            $positives
+            $positives,
         );
 
         if (count($matches) > 0) {
@@ -64,15 +64,15 @@ final class LogicalNot extends UnaryOperator
                 preg_replace(
                     $positives,
                     $negatives,
-                    $nonInput
+                    $nonInput,
                 ),
-                $string
+                $string,
             );
         } else {
             $negatedString = preg_replace(
                 $positives,
                 $negatives,
-                $string
+                $string,
             );
         }
 

@@ -89,7 +89,7 @@ final class Loader
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -101,7 +101,7 @@ final class Loader
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -115,7 +115,7 @@ final class Loader
             $this->logging($filename, $xpath),
             $this->php($filename, $xpath),
             $this->phpunit($filename, $document),
-            $this->testSuite($filename, $xpath)
+            $this->testSuite($filename, $xpath),
         );
     }
 
@@ -129,9 +129,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -143,9 +143,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -157,9 +157,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -171,9 +171,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -181,7 +181,7 @@ final class Loader
             $junit,
             $teamCity,
             $testDoxHtml,
-            $testDoxText
+            $testDoxText,
         );
     }
 
@@ -202,7 +202,7 @@ final class Loader
 
             $extensionBootstrappers[] = new ExtensionBootstrap(
                 $bootstrap->getAttribute('class'),
-                $parameters
+                $parameters,
             );
         }
 
@@ -308,32 +308,32 @@ final class Loader
 
             if ($cacheDirectory !== null) {
                 $cacheDirectory = new Directory(
-                    $this->toAbsolutePath($filename, $cacheDirectory)
+                    $this->toAbsolutePath($filename, $cacheDirectory),
                 );
             }
 
             $pathCoverage = $this->getBooleanAttribute(
                 $element,
                 'pathCoverage',
-                false
+                false,
             );
 
             $includeUncoveredFiles = $this->getBooleanAttribute(
                 $element,
                 'includeUncoveredFiles',
-                true
+                true,
             );
 
             $ignoreDeprecatedCodeUnits = $this->getBooleanAttribute(
                 $element,
                 'ignoreDeprecatedCodeUnits',
-                false
+                false,
             );
 
             $disableCodeCoverageIgnore = $this->getBooleanAttribute(
                 $element,
                 'disableCodeCoverageIgnore',
-                false
+                false,
             );
         }
 
@@ -345,9 +345,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -359,9 +359,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -373,10 +373,10 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
                 ),
-                $this->getIntegerAttribute($element, 'threshold', 30)
+                $this->getIntegerAttribute($element, 'threshold', 30),
             );
         }
 
@@ -391,8 +391,8 @@ final class Loader
                 new Directory(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputDirectory')
-                    )
+                        (string) $this->getStringAttribute($element, 'outputDirectory'),
+                    ),
                 ),
                 $this->getIntegerAttribute($element, 'lowUpperBound', $defaultThresholds->lowUpperBound()),
                 $this->getIntegerAttribute($element, 'highLowerBound', $defaultThresholds->highLowerBound()),
@@ -401,7 +401,7 @@ final class Loader
                 $this->getStringAttributeWithDefault($element, 'colorSuccessHigh', $defaultColors->successHigh()),
                 $this->getStringAttributeWithDefault($element, 'colorWarning', $defaultColors->warning()),
                 $this->getStringAttributeWithDefault($element, 'colorDanger', $defaultColors->danger()),
-                $this->getStringAttribute($element, 'customCssFile')
+                $this->getStringAttribute($element, 'customCssFile'),
             );
         }
 
@@ -413,9 +413,9 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
             );
         }
 
@@ -427,11 +427,11 @@ final class Loader
                 new File(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputFile')
-                    )
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
                 ),
                 $this->getBooleanAttribute($element, 'showUncoveredFiles', false),
-                $this->getBooleanAttribute($element, 'showOnlySummary', false)
+                $this->getBooleanAttribute($element, 'showOnlySummary', false),
             );
         }
 
@@ -443,9 +443,9 @@ final class Loader
                 new Directory(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->getStringAttribute($element, 'outputDirectory')
-                    )
-                )
+                        (string) $this->getStringAttribute($element, 'outputDirectory'),
+                    ),
+                ),
             );
         }
 
@@ -465,7 +465,7 @@ final class Loader
             $html,
             $php,
             $text,
-            $xml
+            $xml,
         );
     }
 
@@ -535,7 +535,7 @@ final class Loader
 
         return new Groups(
             GroupCollection::fromArray($include),
-            GroupCollection::fromArray($exclude)
+            GroupCollection::fromArray($exclude),
         );
     }
 
@@ -547,7 +547,7 @@ final class Loader
 
         return (bool) $this->getBoolean(
             $element->getAttribute($attribute),
-            false
+            false,
         );
     }
 
@@ -559,7 +559,7 @@ final class Loader
 
         return $this->getInteger(
             $element->getAttribute($attribute),
-            $default
+            $default,
         );
     }
 
@@ -609,7 +609,7 @@ final class Loader
 
             $iniSettings[] = new IniSetting(
                 $ini->getAttribute('name'),
-                $ini->getAttribute('value')
+                $ini->getAttribute('value'),
             );
         }
 
@@ -622,7 +622,7 @@ final class Loader
 
             $constants[] = new Constant(
                 $const->getAttribute('name'),
-                $this->getBoolean($value, $value)
+                $this->getBoolean($value, $value),
             );
         }
 
@@ -829,7 +829,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'backupGlobals', false),
             $backupStaticProperties,
             $this->getBooleanAttribute($document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
-            $this->getBooleanAttribute($document->documentElement, 'testdox', false)
+            $this->getBooleanAttribute($document->documentElement, 'testdox', false),
         );
     }
 
@@ -920,7 +920,7 @@ final class Loader
                     $prefix,
                     $suffix,
                     $phpVersion,
-                    $phpVersionOperator
+                    $phpVersionOperator,
                 );
             }
 
@@ -950,7 +950,7 @@ final class Loader
                 $files[] = new TestFile(
                     $this->toAbsolutePath($filename, $file),
                     $phpVersion,
-                    $phpVersionOperator
+                    $phpVersionOperator,
                 );
             }
 
@@ -958,7 +958,7 @@ final class Loader
                 $element->getAttribute('name'),
                 TestDirectoryCollection::fromArray($directories),
                 TestFileCollection::fromArray($files),
-                FileCollection::fromArray($exclude)
+                FileCollection::fromArray($exclude),
             );
         }
 

@@ -238,7 +238,7 @@ final class LoaderTest extends TestCase
                 'foo' => 'bar',
                 'bar' => 'foo',
             ],
-            $extension->parameters()
+            $extension->parameters(),
         );
     }
 
@@ -347,7 +347,7 @@ final class LoaderTest extends TestCase
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
         $this->assertTrue(
-            $this->configuration('configuration_testdox.xml')->phpunit()->testdoxPrinter()
+            $this->configuration('configuration_testdox.xml')->phpunit()->testdoxPrinter(),
         );
     }
 

@@ -81,7 +81,7 @@ final class PhpNoticeTriggered implements Event
             'Test Triggered %sPHP Notice (%s)%s',
             $this->wasSuppressed() ? 'Suppressed ' : '',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

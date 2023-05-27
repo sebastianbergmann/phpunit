@@ -81,7 +81,7 @@ final class DeprecationTriggered implements Event
             'Test Triggered %sDeprecation (%s)%s',
             $this->wasSuppressed() ? 'Suppressed ' : '',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

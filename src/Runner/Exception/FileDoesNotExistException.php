@@ -22,8 +22,8 @@ final class FileDoesNotExistException extends RuntimeException implements Except
         parent::__construct(
             sprintf(
                 'File "%s" does not exist',
-                $file
-            )
+                $file,
+            ),
         );
     }
 }

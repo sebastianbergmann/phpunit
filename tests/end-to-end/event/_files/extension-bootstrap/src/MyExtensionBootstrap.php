@@ -26,8 +26,8 @@ final class MyExtensionBootstrap implements Extension
 
         $facade->registerSubscriber(
             new MyExecutionFinishedSubscriber(
-                $message
-            )
+                $message,
+            ),
         );
     }
 }

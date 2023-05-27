@@ -184,9 +184,9 @@ final class NamePrettifier
                 $variables = array_map(
                     static fn (string $variable): string => sprintf(
                         '/%s(?=\b)/',
-                        preg_quote($variable, '/')
+                        preg_quote($variable, '/'),
                     ),
-                    array_keys($providedData)
+                    array_keys($providedData),
                 );
 
                 $result = trim(preg_replace($variables, $providedData, $annotation));

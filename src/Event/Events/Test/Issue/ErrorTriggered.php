@@ -81,7 +81,7 @@ final class ErrorTriggered implements Event
             'Test Triggered %sError (%s)%s',
             $this->wasSuppressed() ? 'Suppressed ' : '',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

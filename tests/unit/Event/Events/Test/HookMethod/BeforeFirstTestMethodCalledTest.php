@@ -27,7 +27,7 @@ final class BeforeFirstTestMethodCalledTest extends AbstractEventTestCase
         $event = new BeforeFirstTestMethodCalled(
             $telemetryInfo,
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class BeforeFirstTestMethodCalledTest extends AbstractEventTestCase
         $event = new BeforeFirstTestMethodCalled(
             $this->telemetryInfo(),
             'Test',
-            $this->calledMethod()
+            $this->calledMethod(),
         );
 
         $this->assertSame('Before First Test Method Called (HookClass::hookMethod)', $event->asString());

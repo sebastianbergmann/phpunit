@@ -62,7 +62,7 @@ final class PostConditionCalled implements Event
         return sprintf(
             'Post Condition Method Called (%s::%s)',
             $this->calledMethod->className(),
-            $this->calledMethod->methodName()
+            $this->calledMethod->methodName(),
         );
     }
 }

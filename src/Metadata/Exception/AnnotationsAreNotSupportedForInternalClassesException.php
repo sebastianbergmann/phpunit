@@ -25,8 +25,8 @@ final class AnnotationsAreNotSupportedForInternalClassesException extends Runtim
         parent::__construct(
             sprintf(
                 'Annotations can only be parsed for user-defined classes, trying to parse annotations for class "%s"',
-                $className
-            )
+                $className,
+            ),
         );
     }
 }

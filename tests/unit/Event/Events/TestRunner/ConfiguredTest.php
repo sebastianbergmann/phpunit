@@ -28,7 +28,7 @@ final class ConfiguredTest extends AbstractEventTestCase
 
         $event = new Configured(
             $telemetryInfo,
-            $configuration
+            $configuration,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -39,7 +39,7 @@ final class ConfiguredTest extends AbstractEventTestCase
     {
         $event = new Configured(
             $this->telemetryInfo(),
-            $this->configuration()
+            $this->configuration(),
         );
 
         $this->assertSame('Test Runner Configured', $event->asString());
@@ -49,7 +49,7 @@ final class ConfiguredTest extends AbstractEventTestCase
     {
         return (new Merger)->merge(
             (new Builder)->fromParameters([]),
-            DefaultConfiguration::create()
+            DefaultConfiguration::create(),
         );
     }
 }

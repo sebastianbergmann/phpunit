@@ -541,7 +541,7 @@ final class TestSuiteSorterTest extends TestCase
             $suite,
             TestSuiteSorter::ORDER_DURATION,
             $resolveDependencies,
-            TestSuiteSorter::ORDER_DEFAULT
+            TestSuiteSorter::ORDER_DEFAULT,
         );
 
         $this->assertSame($expected, $sorter->getExecutionOrder());
@@ -566,7 +566,7 @@ final class TestSuiteSorterTest extends TestCase
             $suite,
             TestSuiteSorter::ORDER_DURATION,
             $resolveDependencies,
-            TestSuiteSorter::ORDER_DEFAULT
+            TestSuiteSorter::ORDER_DEFAULT,
         );
 
         $this->assertSame($expected, $sorter->getExecutionOrder());

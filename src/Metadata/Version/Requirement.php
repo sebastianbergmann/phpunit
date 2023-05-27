@@ -34,16 +34,16 @@ abstract class Requirement
         try {
             return new ConstraintRequirement(
                 (new VersionConstraintParser)->parse(
-                    $versionRequirement
-                )
+                    $versionRequirement,
+                ),
             );
         } catch (UnsupportedVersionConstraintException) {
             if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches)) {
                 return new ComparisonRequirement(
                     $matches['version'],
                     new VersionComparisonOperator(
-                        !empty($matches['operator']) ? $matches['operator'] : '>='
-                    )
+                        !empty($matches['operator']) ? $matches['operator'] : '>=',
+                    ),
                 );
             }
         }

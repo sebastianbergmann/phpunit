@@ -22,8 +22,8 @@ final class CannotUseOnlyMethodsException extends \PHPUnit\Framework\Exception i
             sprintf(
                 'Trying to configure method "%s" with onlyMethods(), but it does not exist in class "%s". Use addMethods() for methods that do not exist in the class',
                 $methodName,
-                $type
-            )
+                $type,
+            ),
         );
     }
 }

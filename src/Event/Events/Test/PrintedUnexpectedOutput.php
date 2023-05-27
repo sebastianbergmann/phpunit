@@ -54,7 +54,7 @@ final class PrintedUnexpectedOutput implements Event
         return sprintf(
             'Test Printed Unexpected Output%s%s',
             PHP_EOL,
-            $this->output
+            $this->output,
         );
     }
 }

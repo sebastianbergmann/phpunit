@@ -22,8 +22,8 @@ final class ComparisonMethodDoesNotDeclareParameterTypeException extends Excepti
             sprintf(
                 'Parameter of comparison method %s::%s() does not have a declared type.',
                 $className,
-                $methodName
-            )
+                $methodName,
+            ),
         );
     }
 }

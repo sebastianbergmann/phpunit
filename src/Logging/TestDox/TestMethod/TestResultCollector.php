@@ -78,7 +78,7 @@ final class TestResultCollector
                 static function (TestDoxTestMethod $a, TestDoxTestMethod $b): int
                 {
                     return $a->test()->line() <=> $b->test()->line();
-                }
+                },
             );
 
             $result[$prettifiedClassName] = TestResultCollection::fromArray($tests);
@@ -185,7 +185,7 @@ final class TestResultCollector
             $event->telemetryInfo()->time()->duration($this->time),
             $this->status,
             $this->throwable,
-            $this->testDoubles
+            $this->testDoubles,
         );
 
         $this->time        = null;

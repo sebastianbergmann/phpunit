@@ -21,8 +21,8 @@ final class ClassIsEnumerationException extends \PHPUnit\Framework\Exception imp
         parent::__construct(
             sprintf(
                 'Class "%s" is an enumeration and cannot be doubled',
-                $className
-            )
+                $className,
+            ),
         );
     }
 }

@@ -33,7 +33,7 @@ final class ObjectHasProperty extends Constraint
     {
         return sprintf(
             'has property "%s"',
-            $this->propertyName
+            $this->propertyName,
         );
     }
 
@@ -66,7 +66,7 @@ final class ObjectHasProperty extends Constraint
             return sprintf(
                 'object of class "%s" %s',
                 $other::class,
-                $this->toString()
+                $this->toString(),
             );
         }
 
@@ -74,7 +74,7 @@ final class ObjectHasProperty extends Constraint
             '"%s" (%s) %s',
             $other,
             gettype($other),
-            $this->toString()
+            $this->toString(),
         );
     }
 }

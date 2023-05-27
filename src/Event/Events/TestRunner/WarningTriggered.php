@@ -43,7 +43,7 @@ final class WarningTriggered implements Event
     {
         return sprintf(
             'Test Runner Triggered Warning (%s)',
-            $this->message
+            $this->message,
         );
     }
 }

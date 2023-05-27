@@ -114,8 +114,8 @@ final class TestSuiteLoader
         $loadedClasses = array_values(
             array_diff(
                 get_declared_classes(),
-                self::$declaredClasses
-            )
+                self::$declaredClasses,
+            ),
         );
 
         foreach ($loadedClasses as $loadedClass) {

@@ -111,14 +111,14 @@ EOT;
         foreach ($tests as $prettifiedClassName => $_tests) {
             $buffer .= sprintf(
                 self::CLASS_HEADER,
-                $prettifiedClassName
+                $prettifiedClassName,
             );
 
             foreach ($this->reduce($_tests) as $prettifiedMethodName => $outcome) {
                 $buffer .= sprintf(
                     "            <li class=\"%s\">%s</li>\n",
                     $outcome,
-                    $prettifiedMethodName
+                    $prettifiedMethodName,
                 );
             }
 

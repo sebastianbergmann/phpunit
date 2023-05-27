@@ -49,7 +49,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
             if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'phpunit_')) ||
                 file_put_contents($this->tempFile, $job) === false) {
                 throw new PhpProcessException(
-                    'Unable to write temporary file'
+                    'Unable to write temporary file',
                 );
             }
 
@@ -104,12 +104,12 @@ class DefaultPhpProcess extends AbstractPhpProcess
             $pipeSpec,
             $pipes,
             null,
-            $env
+            $env,
         );
 
         if (!is_resource($process)) {
             throw new PhpProcessException(
-                'Unable to spawn worker process'
+                'Unable to spawn worker process',
             );
         }
 
@@ -141,8 +141,8 @@ class DefaultPhpProcess extends AbstractPhpProcess
                     throw new PhpProcessException(
                         sprintf(
                             'Job execution aborted after %d seconds',
-                            $this->timeout
-                        )
+                            $this->timeout,
+                        ),
                     );
                 }
 

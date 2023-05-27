@@ -49,7 +49,7 @@ Data Provider Method Finished for ClassTest::testOne:
 - ClassTest::dataProvider
 EOT
             ,
-            $event->asString()
+            $event->asString(),
         );
     }
 }

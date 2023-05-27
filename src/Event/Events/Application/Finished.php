@@ -43,7 +43,7 @@ final class Finished implements Event
     {
         return sprintf(
             'PHPUnit Finished (Shell Exit Code: %d)',
-            $this->shellExitCode
+            $this->shellExitCode,
         );
     }
 }

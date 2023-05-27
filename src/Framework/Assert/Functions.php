@@ -2583,7 +2583,7 @@ if (!function_exists('PHPUnit\Framework\atLeast')) {
     function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
         return new InvokedAtLeastCountMatcher(
-            $requiredInvocations
+            $requiredInvocations,
         );
     }
 }

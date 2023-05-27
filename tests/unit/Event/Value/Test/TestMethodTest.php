@@ -39,7 +39,7 @@ final class TestMethodTest extends TestCase
             $line,
             $testDox,
             $metadata,
-            $testData
+            $testData,
         );
 
         $this->assertSame($className, $test->className());
@@ -64,7 +64,7 @@ final class TestMethodTest extends TestCase
             1,
             TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([])
+            TestDataCollection::fromArray([]),
         );
 
         $this->assertSame($test->methodName(), $test->name());
@@ -85,16 +85,16 @@ final class TestMethodTest extends TestCase
                 [
                     DataFromDataProvider::from(
                         $dataSetName,
-                        'data'
+                        'data',
                     ),
-                ]
-            )
+                ],
+            ),
         );
 
         $expected = sprintf(
             '%s with data set #%d',
             $test->methodName(),
-            $dataSetName
+            $dataSetName,
         );
 
         $this->assertSame($expected, $test->name());
@@ -116,16 +116,16 @@ final class TestMethodTest extends TestCase
                 [
                     DataFromDataProvider::from(
                         $dataSetName,
-                        'data'
+                        'data',
                     ),
-                ]
-            )
+                ],
+            ),
         );
 
         $expected = sprintf(
             '%s with data set "%s"',
             $test->methodName(),
-            $dataSetName
+            $dataSetName,
         );
 
         $this->assertSame($expected, $test->name());

@@ -77,7 +77,7 @@ final class MockBuilder
             $this->callOriginalMethods,
             $this->proxyTarget,
             $this->allowMockingUnknownTypes,
-            $this->returnValueGeneration
+            $this->returnValueGeneration,
         );
 
         if ($register) {
@@ -108,7 +108,7 @@ final class MockBuilder
             $this->originalClone,
             $this->autoload,
             $this->methods,
-            $this->cloneArguments
+            $this->cloneArguments,
         );
 
         $this->testCase->registerMockObject($object);
@@ -137,7 +137,7 @@ final class MockBuilder
             $this->originalClone,
             $this->autoload,
             $this->methods,
-            $this->cloneArguments
+            $this->cloneArguments,
         );
 
         $this->testCase->registerMockObject($object);
@@ -169,7 +169,7 @@ final class MockBuilder
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -211,7 +211,7 @@ final class MockBuilder
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 

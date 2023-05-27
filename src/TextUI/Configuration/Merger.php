@@ -233,7 +233,7 @@ final class Merger
             $columns = 16;
 
             EventFacade::emitter()->testRunnerTriggeredWarning(
-                'Less than 16 columns requested, number of columns set to 16'
+                'Less than 16 columns requested, number of columns set to 16',
             );
         }
 
@@ -400,7 +400,7 @@ final class Merger
 
         if ($enforceTimeLimit && !(new Invoker)->canInvokeWithTimeout()) {
             EventFacade::emitter()->testRunnerTriggeredWarning(
-                'The pcntl extension is required for enforcing time limits'
+                'The pcntl extension is required for enforcing time limits',
             );
         }
 
@@ -629,12 +629,12 @@ final class Merger
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
                 EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
+                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!',
                 );
             } else {
                 EventFacade::emitter()->testRunnerTriggeredWarning(
                     "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
-                    $xmlConfiguration->validationErrors()
+                    $xmlConfiguration->validationErrors(),
                 );
             }
         }

@@ -24,10 +24,10 @@ final class ClassCannotBeInstantiatedException extends RuntimeException implemen
             sprintf(
                 'Class "%s" cannot be instantiated: %s',
                 $className,
-                $previous->getMessage()
+                $previous->getMessage(),
             ),
             $previous->getCode(),
-            $previous
+            $previous,
         );
     }
 }

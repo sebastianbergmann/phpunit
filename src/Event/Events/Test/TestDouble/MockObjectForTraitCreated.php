@@ -53,7 +53,7 @@ final class MockObjectForTraitCreated implements Event
     {
         return sprintf(
             'Mock Object Created (%s)',
-            $this->traitName
+            $this->traitName,
         );
     }
 }

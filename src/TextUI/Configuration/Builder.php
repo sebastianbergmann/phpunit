@@ -37,13 +37,13 @@ final class Builder
 
             return Registry::init(
                 $cliConfiguration,
-                $xmlConfiguration
+                $xmlConfiguration,
             );
         } catch (CliConfigurationException|XmlConfigurationException $e) {
             throw new ConfigurationCannotBeBuiltException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
     }

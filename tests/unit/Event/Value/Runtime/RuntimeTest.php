@@ -46,7 +46,7 @@ final class RuntimeTest extends TestCase
     {
         $this->assertStringMatchesFormat(
             'PHPUnit %s using PHP %s (%s) on %s',
-            (new Runtime)->asString()
+            (new Runtime)->asString(),
         );
     }
 }

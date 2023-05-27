@@ -70,7 +70,7 @@ final class CachingParser implements Parser
         }
 
         $this->classAndMethodCache[$key] = $this->forClass($className)->mergeWith(
-            $this->forMethod($className, $methodName)
+            $this->forMethod($className, $methodName),
         );
 
         return $this->classAndMethodCache[$key];

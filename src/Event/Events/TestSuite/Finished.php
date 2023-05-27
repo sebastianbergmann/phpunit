@@ -51,7 +51,7 @@ final class Finished implements Event
             'Test Suite Finished (%s%d test%s)',
             $name,
             $this->testSuite->count(),
-            $this->testSuite->count() !== 1 ? 's' : ''
+            $this->testSuite->count() !== 1 ? 's' : '',
         );
     }
 }

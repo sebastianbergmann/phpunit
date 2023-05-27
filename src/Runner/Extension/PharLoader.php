@@ -33,7 +33,7 @@ final class PharLoader
 
         if (!$pharExtensionLoaded) {
             Event\Facade::emitter()->testRunnerTriggeredWarning(
-                'Loading PHPUnit extension(s) from PHP archive(s) failed, PHAR extension not loaded'
+                'Loading PHPUnit extension(s) from PHP archive(s) failed, PHAR extension not loaded',
             );
         }
 
@@ -85,7 +85,7 @@ final class PharLoader
             Event\Facade::emitter()->testRunnerLoadedExtensionFromPhar(
                 $file,
                 $manifest->getName()->asString(),
-                $manifest->getVersion()->getVersionString()
+                $manifest->getVersion()->getVersionString(),
             );
         }
 

@@ -24,7 +24,7 @@ final class BootstrapFinishedTest extends AbstractEventTestCase
 
         $event = new BootstrapFinished(
             $telemetryInfo,
-            $filename
+            $filename,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class BootstrapFinishedTest extends AbstractEventTestCase
     {
         $event = new BootstrapFinished(
             $this->telemetryInfo(),
-            'bootstrap.php'
+            'bootstrap.php',
         );
 
         $this->assertSame('Bootstrap Finished (bootstrap.php)', $event->asString());

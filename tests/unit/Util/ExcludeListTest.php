@@ -25,7 +25,7 @@ final class ExcludeListTest extends TestCase
 
         $this->assertContains(
             realpath(__DIR__ . '/../../../src'),
-            $excludeList->getExcludedDirectories()
+            $excludeList->getExcludedDirectories(),
         );
     }
 

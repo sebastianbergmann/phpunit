@@ -58,14 +58,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\StartedSubscriber::class,
             TestRunner\Started::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testRunnerStarted();
@@ -87,14 +87,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\FinishedSubscriber::class,
             TestRunner\Finished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testRunnerFinished();
@@ -125,7 +125,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAssertionSucceeded(
@@ -152,14 +152,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AssertionSucceededSubscriber::class,
             Test\AssertionSucceeded::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAssertionSucceeded(
@@ -200,7 +200,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAssertionFailed(
@@ -227,14 +227,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AssertionFailedSubscriber::class,
             Test\AssertionFailed::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAssertionFailed(
@@ -269,14 +269,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\BootstrapFinishedSubscriber::class,
             TestRunner\BootstrapFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testRunnerBootstrapFinished($filename);
@@ -305,14 +305,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\ComparatorRegisteredSubscriber::class,
             Test\ComparatorRegistered::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testRegisteredComparator($className);
@@ -339,20 +339,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\ExtensionLoadedFromPharSubscriber::class,
             TestRunner\ExtensionLoadedFromPhar::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testRunnerLoadedExtensionFromPhar(
             'filename',
             'example-extension',
-            '1.2.3'
+            '1.2.3',
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -374,21 +374,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\ErroredSubscriber::class,
             Test\Errored::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $throwable = ThrowableBuilder::from(new Exception('error'));
 
         $emitter->testErrored(
             $test,
-            $throwable
+            $throwable,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -416,14 +416,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\FailedSubscriber::class,
             Test\Failed::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $throwable = ThrowableBuilder::from(new Exception('failure'));
@@ -432,7 +432,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $emitter->testFailed(
             $test,
             $throwable,
-            $failure
+            $failure,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -461,14 +461,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\FinishedSubscriber::class,
             Test\Finished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testFinished($test, 1);
@@ -498,14 +498,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PassedSubscriber::class,
             Test\Passed::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testPassed($test);
@@ -534,14 +534,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\ConsideredRiskySubscriber::class,
             Test\ConsideredRisky::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $message = 'message';
@@ -572,21 +572,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\MarkedIncompleteSubscriber::class,
             Test\MarkedIncomplete::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $throwable = ThrowableBuilder::from(new Exception('incomplete'));
 
         $emitter->testMarkedAsIncomplete(
             $test,
-            $throwable
+            $throwable,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -614,21 +614,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\SkippedSubscriber::class,
             Test\Skipped::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $message = 'skipped';
 
         $emitter->testSkipped(
             $test,
-            $message
+            $message,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -656,14 +656,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PreparedSubscriber::class,
             Test\Prepared::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testPrepared($test);
@@ -683,9 +683,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
-                $methodName
+                $methodName,
             ),
-            get_class_methods($this)
+            get_class_methods($this),
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodFinishedSubscriber
@@ -699,19 +699,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterTestMethodFinishedSubscriber::class,
             Test\AfterTestMethodFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAfterTestMethodFinished(
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -729,7 +729,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
-            __METHOD__
+            __METHOD__,
         )));
 
         $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodCalledSubscriber
@@ -743,19 +743,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterTestMethodCalledSubscriber::class,
             Test\AfterTestMethodCalled::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAfterTestMethodCalled(
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -774,9 +774,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
-                $methodName
+                $methodName,
             ),
-            get_class_methods($this)
+            get_class_methods($this),
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodFinishedSubscriber
@@ -790,19 +790,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterLastTestMethodFinishedSubscriber::class,
             Test\AfterLastTestMethodFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAfterLastTestMethodFinished(
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -820,7 +820,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
-            __METHOD__
+            __METHOD__,
         )));
 
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodCalledSubscriber
@@ -834,19 +834,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeFirstTestMethodCalledSubscriber::class,
             Test\BeforeFirstTestMethodCalled::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testBeforeFirstTestMethodCalled(
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -865,9 +865,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
-                $methodName
+                $methodName,
             ),
-            get_class_methods($this)
+            get_class_methods($this),
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodFinishedSubscriber
@@ -881,19 +881,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeFirstTestMethodFinishedSubscriber::class,
             Test\BeforeFirstTestMethodFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testBeforeFirstTestMethodFinished(
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -911,7 +911,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
-            __METHOD__
+            __METHOD__,
         )));
 
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodCalledSubscriber
@@ -925,19 +925,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeTestMethodCalledSubscriber::class,
             Test\BeforeTestMethodCalled::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testBeforeTestMethodCalled(
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -955,7 +955,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
-            __METHOD__
+            __METHOD__,
         )));
 
         $subscriber = new class extends RecordingSubscriber implements Test\PreConditionCalledSubscriber
@@ -969,19 +969,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PreConditionCalledSubscriber::class,
             Test\PreConditionCalled::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testPreConditionCalled(
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -999,7 +999,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
-            __METHOD__
+            __METHOD__,
         )));
 
         $subscriber = new class extends RecordingSubscriber implements Test\PostConditionCalledSubscriber
@@ -1013,19 +1013,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PostConditionCalledSubscriber::class,
             Test\PostConditionCalled::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testPostConditionCalled(
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1044,9 +1044,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
-                $methodName
+                $methodName,
             ),
-            get_class_methods($this)
+            get_class_methods($this),
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PostConditionFinishedSubscriber
@@ -1060,19 +1060,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PostConditionFinishedSubscriber::class,
             Test\PostConditionFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testPostConditionFinished(
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1091,9 +1091,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
-                $methodName
+                $methodName,
             ),
-            get_class_methods($this)
+            get_class_methods($this),
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodFinishedSubscriber
@@ -1107,19 +1107,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeTestMethodFinishedSubscriber::class,
             Test\BeforeTestMethodFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testBeforeTestMethodFinished(
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1138,9 +1138,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
-                $methodName
+                $methodName,
             ),
-            get_class_methods($this)
+            get_class_methods($this),
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PreConditionFinishedSubscriber
@@ -1154,19 +1154,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PreConditionFinishedSubscriber::class,
             Test\PreConditionFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testPreConditionFinished(
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1184,7 +1184,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
-            __METHOD__
+            __METHOD__,
         )));
 
         $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber
@@ -1198,19 +1198,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterLastTestMethodCalledSubscriber::class,
             Test\AfterLastTestMethodCalled::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testAfterLastTestMethodCalled(
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1238,14 +1238,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\MockObjectCreatedSubscriber::class,
             Test\MockObjectCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedMockObject($className);
@@ -1274,14 +1274,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\MockObjectForTraitCreatedSubscriber::class,
             Test\MockObjectForTraitCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedMockObjectForTrait($traitName);
@@ -1309,14 +1309,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\MockObjectForAbstractClassCreatedSubscriber::class,
             Test\MockObjectForAbstractClassCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedMockObjectForAbstractClass($className);
@@ -1357,14 +1357,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\MockObjectFromWsdlCreatedSubscriber::class,
             Test\MockObjectFromWsdlCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedMockObjectFromWsdl(
@@ -1373,7 +1373,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $mockClassName,
             $methods,
             $callOriginalConstructor,
-            $options
+            $options,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1410,19 +1410,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PartialMockObjectCreatedSubscriber::class,
             Test\PartialMockObjectCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedPartialMockObject(
             $className,
-            ...$methodNames
+            ...$methodNames,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1451,19 +1451,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\TestProxyCreatedSubscriber::class,
             Test\TestProxyCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedTestProxy(
             $className,
-            $constructorArguments
+            $constructorArguments,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1491,14 +1491,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\TestStubCreatedSubscriber::class,
             Test\TestStubCreated::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testCreatedStub($className);
@@ -1525,14 +1525,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestSuiteLoadedSubscriber::class,
             TestSuiteLoaded::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testSuiteLoaded($this->testSuiteValueObject());
@@ -1554,14 +1554,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestSuiteFinishedSubscriber::class,
             TestSuiteFinished::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testSuiteFinished($this->testSuiteValueObject());
@@ -1593,20 +1593,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestSuiteSortedSubscriber::class,
             TestSuiteSorted::class,
-            $subscriber
+            $subscriber,
         );
 
         $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testSuiteSorted(
             $executionOrder,
             $executionOrderDefects,
-            $resolveDependencies
+            $resolveDependencies,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1649,7 +1649,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
-            $telemetrySystem
+            $telemetrySystem,
         );
 
         $emitter->testSuiteStarted($this->testSuiteValueObject());
@@ -1669,7 +1669,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         return new TestSuiteWithName(
             'Test Suite',
             0,
-            TestCollection::fromArray([])
+            TestCollection::fromArray([]),
         );
     }
 
@@ -1679,7 +1679,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $typeMap->addMapping(
             $subscriberInterface,
-            $eventClass
+            $eventClass,
         );
 
         $dispatcher = new DirectDispatcher($typeMap);
@@ -1695,12 +1695,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $typeMap->addMapping(
             $subscriberInterfaceOne,
-            $eventClassOne
+            $eventClassOne,
         );
 
         $typeMap->addMapping(
             $subscriberInterfaceTwo,
-            $eventClassTwo
+            $eventClassTwo,
         );
 
         $dispatcher = new DirectDispatcher($typeMap);
@@ -1722,7 +1722,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
             new Telemetry\SystemMemoryMeter,
-            $garbageCollectorStatusProvider
+            $garbageCollectorStatusProvider,
         );
     }
 
@@ -1735,7 +1735,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             1,
             TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([])
+            TestDataCollection::fromArray([]),
         );
     }
 }

@@ -215,7 +215,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public static function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
         return new InvokedAtLeastCountMatcher(
-            $requiredInvocations
+            $requiredInvocations,
         );
     }
 
@@ -363,7 +363,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $buffer = sprintf(
             '%s::%s',
             (new ReflectionClass($this))->getName(),
-            $this->name
+            $this->name,
         );
 
         return $buffer . $this->dataSetAsStringWithData();
@@ -470,7 +470,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             (new TestRunner)->runInSeparateProcess(
                 $this,
                 $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess,
-                $this->preserveGlobalState
+                $this->preserveGlobalState,
             );
         }
     }
@@ -530,7 +530,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         return (new Groups)->size(
             static::class,
-            $this->name
+            $this->name,
         );
     }
 
@@ -596,7 +596,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $emitter = Event\Facade::emitter();
 
         $emitter->testPreparationStarted(
-            $this->valueObjectForEvents()
+            $this->valueObjectForEvents(),
         );
 
         $this->snapshotGlobalState();
@@ -625,7 +625,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->invokePreConditionHookMethods($hookMethods, $emitter);
 
             $emitter->testPrepared(
-                $this->valueObjectForEvents()
+                $this->valueObjectForEvents(),
             );
 
             $this->wasPrepared = true;
@@ -640,14 +640,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testMarkedAsIncomplete(
                 $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($e)
+                Event\Code\ThrowableBuilder::from($e),
             );
         } catch (SkippedTest $e) {
             $this->status = TestStatus::skipped($e->getMessage());
 
             $emitter->testSkipped(
                 $this->valueObjectForEvents(),
-                $e->getMessage()
+                $e->getMessage(),
             );
         } catch (AssertionError|AssertionFailedError $e) {
             $this->status = TestStatus::failure($e->getMessage());
@@ -655,7 +655,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter->testFailed(
                 $this->valueObjectForEvents(),
                 Event\Code\ThrowableBuilder::from($e),
-                Event\Code\ComparisonFailureBuilder::from($e)
+                Event\Code\ComparisonFailureBuilder::from($e),
             );
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
@@ -666,7 +666,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $emitter->testFailed(
                     $this->valueObjectForEvents(),
                     Event\Code\ThrowableBuilder::from($_e),
-                    null
+                    null,
                 );
             } else {
                 $e = $this->transformException($_e);
@@ -675,7 +675,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
                 $emitter->testErrored(
                     $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($e)
+                    Event\Code\ThrowableBuilder::from($e),
                 );
             }
         }
@@ -692,7 +692,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if (!$this->usesDataProvider()) {
                 PassedTests::instance()->testMethodPassed(
                     $this->valueObjectForEvents(),
-                    $this->testResult
+                    $this->testResult,
                 );
             }
         }
@@ -716,7 +716,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
                 $emitter->testErrored(
                     $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($exceptionRaisedDuringTearDown)
+                    Event\Code\ThrowableBuilder::from($exceptionRaisedDuringTearDown),
                 );
             }
         }
@@ -947,7 +947,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         return $this->dataSetAsString() . sprintf(
             ' (%s)',
-            (new Exporter)->shortenedRecursiveExport($this->data)
+            (new Exporter)->shortenedRecursiveExport($this->data),
         );
     }
 
@@ -1096,8 +1096,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 sprintf(
                     'INI setting "%s" could not be set to "%s".',
                     $varName,
-                    $newValue
-                )
+                    $newValue,
+                ),
             );
         }
     }
@@ -1132,7 +1132,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             throw new Exception(
                 'The locale functionality is not implemented on your platform, ' .
                 'the specified locale does not exist or the category name is ' .
-                'invalid.'
+                'invalid.',
             );
         }
     }
@@ -1283,7 +1283,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testCreatedPartialMockObject(
             $originalClassName,
-            ...$methods
+            ...$methods,
         );
 
         return $partialMock;
@@ -1312,7 +1312,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testCreatedTestProxy(
             $originalClassName,
-            $constructorArguments
+            $constructorArguments,
         );
 
         return $testProxy;
@@ -1344,7 +1344,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $callOriginalClone,
             $callAutoload,
             $mockedMethods,
-            $cloneArguments
+            $cloneArguments,
         );
 
         $this->registerMockObject($mockObject);
@@ -1380,7 +1380,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $wsdlFile,
                     $originalClassName,
                     $methods,
-                    $options
+                    $options,
                 )
             );
         }
@@ -1392,7 +1392,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $mockClassName,
             $callOriginalConstructor,
             false,
-            false
+            false,
         );
 
         Event\Facade::emitter()->testCreatedMockObjectFromWsdl(
@@ -1401,7 +1401,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $mockClassName,
             $methods,
             $callOriginalConstructor,
-            $options
+            $options,
         );
 
         $this->registerMockObject($mockObject);
@@ -1431,7 +1431,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $callOriginalClone,
             $callAutoload,
             $mockedMethods,
-            $cloneArguments
+            $cloneArguments,
         );
 
         $this->registerMockObject($mockObject);
@@ -1457,7 +1457,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $traitClassName,
             $callAutoload,
             $callOriginalConstructor,
-            $arguments
+            $arguments,
         );
     }
 
@@ -1487,7 +1487,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             $mockObject->__phpunit_verify(
-                $this->shouldInvocationMockerBeReset($mockObject)
+                $this->shouldInvocationMockerBeReset($mockObject),
             );
         }
     }
@@ -1503,7 +1503,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor(
             static::class,
-            $this->name
+            $this->name,
         );
 
         if (!empty($missingRequirements)) {
@@ -1559,7 +1559,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
                 Event\Facade::emitter()->testConsideredRisky(
                     $this->valueObjectForEvents(),
-                    'This test depends on a test that is larger than itself'
+                    'This test depends on a test that is larger than itself',
                 );
 
                 return false;
@@ -1596,7 +1596,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($dependency !== null) {
             $message = sprintf(
                 'This test depends on "%s" which does not exist',
-                $dependency->targetIsClass() ? $dependency->getTargetClassName() : $dependency->getTarget()
+                $dependency->targetIsClass() ? $dependency->getTargetClassName() : $dependency->getTarget(),
             );
         }
 
@@ -1604,7 +1604,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testErrored(
             $this->valueObjectForEvents(),
-            Event\Code\ThrowableBuilder::from($exception)
+            Event\Code\ThrowableBuilder::from($exception),
         );
 
         $this->status = TestStatus::error($message);
@@ -1617,12 +1617,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $message = sprintf(
             'This test depends on "%s" to pass',
-            $dependency->getTarget()
+            $dependency->getTarget(),
         );
 
         Event\Facade::emitter()->testSkipped(
             $this->valueObjectForEvents(),
-            $message
+            $message,
         );
 
         $this->status = TestStatus::skipped($message);
@@ -1665,7 +1665,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             Event\Facade::emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
-                $message
+                $message,
             );
 
             $this->status = TestStatus::risky($message);
@@ -1705,7 +1705,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (ConfigurationRegistry::get()->beStrictAboutChangesToGlobalState()) {
             $this->compareGlobalStateSnapshots(
                 $this->snapshot,
-                $this->createGlobalStateSnapshot($this->backupGlobals === true)
+                $this->createGlobalStateSnapshot($this->backupGlobals === true),
             );
         }
 
@@ -1756,7 +1756,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             false,
             false,
             false,
-            false
+            false,
         );
     }
 
@@ -1771,13 +1771,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->compareGlobalStateSnapshotPart(
                 $before->globalVariables(),
                 $after->globalVariables(),
-                "--- Global variables before the test\n+++ Global variables after the test\n"
+                "--- Global variables before the test\n+++ Global variables after the test\n",
             );
 
             $this->compareGlobalStateSnapshotPart(
                 $before->superGlobalVariables(),
                 $after->superGlobalVariables(),
-                "--- Super-global variables before the test\n+++ Super-global variables after the test\n"
+                "--- Super-global variables before the test\n+++ Super-global variables after the test\n",
             );
         }
 
@@ -1785,7 +1785,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->compareGlobalStateSnapshotPart(
                 $before->staticProperties(),
                 $after->staticProperties(),
-                "--- Static properties before the test\n+++ Static properties after the test\n"
+                "--- Static properties before the test\n+++ Static properties after the test\n",
             );
         }
     }
@@ -1805,9 +1805,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 trim(
                     $differ->diff(
                         $exporter->export($before),
-                        $exporter->export($after)
-                    )
-                )
+                        $exporter->export($after),
+                    ),
+                ),
             );
         }
     }
@@ -1846,7 +1846,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
                     $this->registerMockObjectsFromTestArguments(
                         $testArgument,
-                        $context
+                        $context,
                     );
                 }
             }
@@ -1904,7 +1904,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
 
@@ -1954,7 +1954,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return TestUtil::isTestMethod(
-            $class->getMethod($methodName)
+            $class->getMethod($methodName),
         );
     }
 
@@ -1976,7 +1976,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             callOriginalConstructor: false,
             callOriginalClone: false,
             cloneArguments: false,
-            allowMockingUnknownTypes: false
+            allowMockingUnknownTypes: false,
         );
 
         if ($register) {
@@ -2006,7 +2006,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             Event\Facade::emitter()->testFailed(
                 $this->valueObjectForEvents(),
                 Event\Code\ThrowableBuilder::from($e),
-                Event\Code\ComparisonFailureBuilder::from($e)
+                Event\Code\ComparisonFailureBuilder::from($e),
             );
 
             throw $e;
@@ -2022,7 +2022,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['beforeClass'],
             $emitter,
             'testBeforeFirstTestMethodCalled',
-            'testBeforeFirstTestMethodFinished'
+            'testBeforeFirstTestMethodFinished',
         );
     }
 
@@ -2035,7 +2035,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['before'],
             $emitter,
             'testBeforeTestMethodCalled',
-            'testBeforeTestMethodFinished'
+            'testBeforeTestMethodFinished',
         );
     }
 
@@ -2048,7 +2048,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['preCondition'],
             $emitter,
             'testPreConditionCalled',
-            'testPreConditionFinished'
+            'testPreConditionFinished',
         );
     }
 
@@ -2061,7 +2061,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['postCondition'],
             $emitter,
             'testPostConditionCalled',
-            'testPostConditionFinished'
+            'testPostConditionFinished',
         );
     }
 
@@ -2074,7 +2074,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['after'],
             $emitter,
             'testAfterTestMethodCalled',
-            'testAfterTestMethodFinished'
+            'testAfterTestMethodFinished',
         );
     }
 
@@ -2087,7 +2087,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['afterClass'],
             $emitter,
             'testAfterLastTestMethodCalled',
-            'testAfterLastTestMethodFinished'
+            'testAfterLastTestMethodFinished',
         );
     }
 
@@ -2114,7 +2114,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $methodInvoked = new Event\Code\ClassMethod(
                 static::class,
-                $methodName
+                $methodName,
             );
 
             $emitter->{$calledMethod}(
@@ -2158,8 +2158,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertThat(
                 $exception,
                 new ExceptionConstraint(
-                    $this->expectedException
-                )
+                    $this->expectedException,
+                ),
             );
         }
 
@@ -2167,8 +2167,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertThat(
                 $exception->getMessage(),
                 new ExceptionMessageIsOrContains(
-                    $this->expectedExceptionMessage
-                )
+                    $this->expectedExceptionMessage,
+                ),
             );
         }
 
@@ -2176,8 +2176,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertThat(
                 $exception->getMessage(),
                 new ExceptionMessageMatchesRegularExpression(
-                    $this->expectedExceptionMessageRegExp
-                )
+                    $this->expectedExceptionMessageRegExp,
+                ),
             );
         }
 
@@ -2185,8 +2185,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertThat(
                 $exception->getCode(),
                 new ExceptionCode(
-                    $this->expectedExceptionCode
-                )
+                    $this->expectedExceptionCode,
+                ),
             );
         }
     }
@@ -2199,7 +2199,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($this->expectedException !== null) {
             $this->assertThat(
                 null,
-                new ExceptionConstraint($this->expectedException)
+                new ExceptionConstraint($this->expectedException),
             );
         } elseif ($this->expectedExceptionMessage !== null) {
             $this->numberOfAssertionsPerformed++;
@@ -2207,8 +2207,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             throw new AssertionFailedError(
                 sprintf(
                     'Failed asserting that exception with message "%s" is thrown',
-                    $this->expectedExceptionMessage
-                )
+                    $this->expectedExceptionMessage,
+                ),
             );
         } elseif ($this->expectedExceptionMessageRegExp !== null) {
             $this->numberOfAssertionsPerformed++;
@@ -2216,8 +2216,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             throw new AssertionFailedError(
                 sprintf(
                     'Failed asserting that exception with message matching "%s" is thrown',
-                    $this->expectedExceptionMessageRegExp
-                )
+                    $this->expectedExceptionMessageRegExp,
+                ),
             );
         } elseif ($this->expectedExceptionCode !== null) {
             $this->numberOfAssertionsPerformed++;
@@ -2225,8 +2225,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             throw new AssertionFailedError(
                 sprintf(
                     'Failed asserting that exception with code "%s" is thrown',
-                    $this->expectedExceptionCode
-                )
+                    $this->expectedExceptionCode,
+                ),
             );
         }
     }

@@ -43,8 +43,8 @@ final class TypeMap
             throw new UnknownSubscriberException(
                 sprintf(
                     'Subscriber "%s" does not exist or is not an interface',
-                    $subscriberInterface
-                )
+                    $subscriberInterface,
+                ),
             );
         }
 
@@ -52,8 +52,8 @@ final class TypeMap
             throw new UnknownEventException(
                 sprintf(
                     'Event class "%s" does not exist',
-                    $eventClass
-                )
+                    $eventClass,
+                ),
             );
         }
 
@@ -61,8 +61,8 @@ final class TypeMap
             throw new InvalidSubscriberException(
                 sprintf(
                     'Subscriber "%s" does not implement Subscriber interface',
-                    $subscriberInterface
-                )
+                    $subscriberInterface,
+                ),
             );
         }
 
@@ -70,8 +70,8 @@ final class TypeMap
             throw new InvalidEventException(
                 sprintf(
                     'Event "%s" does not implement Event interface',
-                    $eventClass
-                )
+                    $eventClass,
+                ),
             );
         }
 
@@ -79,8 +79,8 @@ final class TypeMap
             throw new SubscriberTypeAlreadyRegisteredException(
                 sprintf(
                     'Subscriber type "%s" already registered - cannot overwrite',
-                    $subscriberInterface
-                )
+                    $subscriberInterface,
+                ),
             );
         }
 
@@ -88,8 +88,8 @@ final class TypeMap
             throw new EventAlreadyAssignedException(
                 sprintf(
                     'Event "%s" already assigned - cannot add multiple subscriber types for an event type',
-                    $eventClass
-                )
+                    $eventClass,
+                ),
             );
         }
 
@@ -128,8 +128,8 @@ final class TypeMap
         throw new MapError(
             sprintf(
                 'Subscriber "%s" does not implement a known interface',
-                $subscriber::class
-            )
+                $subscriber::class,
+            ),
         );
     }
 }

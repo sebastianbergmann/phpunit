@@ -37,7 +37,7 @@ class Count extends Constraint
     {
         return sprintf(
             'count matches %d',
-            $this->expectedCount
+            $this->expectedCount,
         );
     }
 
@@ -73,7 +73,7 @@ class Count extends Constraint
                     throw new Exception(
                         $e->getMessage(),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
             }
@@ -120,7 +120,7 @@ class Count extends Constraint
         return sprintf(
             'actual size %d matches expected size %d',
             (int) $this->getCountOf($other),
-            $this->expectedCount
+            $this->expectedCount,
         );
     }
 }

@@ -103,7 +103,7 @@ final class MockObjectFromWsdlCreated implements Event
     {
         return sprintf(
             'Mock Object Created (%s)',
-            $this->wsdlFile
+            $this->wsdlFile,
         );
     }
 }

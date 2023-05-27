@@ -24,8 +24,8 @@ final class IncompatibleReturnValueException extends \PHPUnit\Framework\Exceptio
                 'Method %s may not return value of type %s, its declared return type is "%s"',
                 $method->name(),
                 get_debug_type($value),
-                $method->returnTypeDeclaration()
-            )
+                $method->returnTypeDeclaration(),
+            ),
         );
     }
 }

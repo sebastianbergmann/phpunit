@@ -31,7 +31,7 @@ final class RegularExpression extends Constraint
     {
         return sprintf(
             'matches PCRE pattern "%s"',
-            $this->pattern
+            $this->pattern,
         );
     }
 

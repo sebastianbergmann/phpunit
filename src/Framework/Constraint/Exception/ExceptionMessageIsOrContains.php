@@ -53,14 +53,14 @@ final class ExceptionMessageIsOrContains extends Constraint
         if ($this->expectedMessage === '') {
             return sprintf(
                 "exception message is empty but is '%s'",
-                $other
+                $other,
             );
         }
 
         return sprintf(
             "exception message '%s' contains '%s'",
             $other,
-            $this->expectedMessage
+            $this->expectedMessage,
         );
     }
 }

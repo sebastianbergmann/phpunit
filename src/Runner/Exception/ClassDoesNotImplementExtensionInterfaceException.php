@@ -24,8 +24,8 @@ final class ClassDoesNotImplementExtensionInterfaceException extends RuntimeExce
             sprintf(
                 'Class "%s" does not implement interface %s',
                 $className,
-                Extension::class
-            )
+                Extension::class,
+            ),
         );
     }
 }

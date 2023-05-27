@@ -21,8 +21,8 @@ final class ClassIsReadonlyException extends \PHPUnit\Framework\Exception implem
         parent::__construct(
             sprintf(
                 'Class "%s" is declared "readonly" and cannot be doubled',
-                $className
-            )
+                $className,
+            ),
         );
     }
 }

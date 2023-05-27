@@ -62,7 +62,7 @@ final class AfterLastTestMethodCalled implements Event
         return sprintf(
             'After Last Test Method Called (%s::%s)',
             $this->calledMethod->className(),
-            $this->calledMethod->methodName()
+            $this->calledMethod->methodName(),
         );
     }
 }

@@ -65,7 +65,7 @@ final class ResultPrinterTest extends TestCase
             'no tests' => [
                 __DIR__ . '/expectations/no_tests.txt',
                 self::createTestResult(
-                    numberOfTestsRun: 0
+                    numberOfTestsRun: 0,
                 ),
             ],
 
@@ -79,7 +79,7 @@ final class ResultPrinterTest extends TestCase
                 self::createTestResult(
                     testErroredEvents: [
                         self::erroredTest(),
-                    ]
+                    ],
                 ),
             ],
 
@@ -88,7 +88,7 @@ final class ResultPrinterTest extends TestCase
                 self::createTestResult(
                     testFailedEvents: [
                         self::failedTest(),
-                    ]
+                    ],
                 ),
             ],
 
@@ -99,9 +99,9 @@ final class ResultPrinterTest extends TestCase
                         new MarkedIncomplete(
                             self::telemetryInfo(),
                             self::testMethod(),
-                            ThrowableBuilder::from(new IncompleteTestError('message'))
+                            ThrowableBuilder::from(new IncompleteTestError('message')),
                         ),
-                    ]
+                    ],
                 ),
             ],
 
@@ -112,9 +112,9 @@ final class ResultPrinterTest extends TestCase
                         new TestSkipped(
                             self::telemetryInfo(),
                             self::testMethod(),
-                            'message'
+                            'message',
                         ),
-                    ]
+                    ],
                 ),
             ],
 
@@ -125,7 +125,7 @@ final class ResultPrinterTest extends TestCase
                         'Foo::testBar' => [
                             self::riskyTest('message'),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -137,7 +137,7 @@ final class ResultPrinterTest extends TestCase
                             self::riskyTest('message'),
                             self::riskyTest('message'),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -149,7 +149,7 @@ final class ResultPrinterTest extends TestCase
                             self::riskyTest("message\nmessage\nmessage"),
                             self::riskyTest("message\nmessage\nmessage"),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -163,7 +163,7 @@ final class ResultPrinterTest extends TestCase
                         'Foo::testBar' => [
                             self::riskyTest('message'),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -177,7 +177,7 @@ final class ResultPrinterTest extends TestCase
                         'Foo::testBar' => [
                             self::riskyTest('message'),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -195,7 +195,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -221,7 +221,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -233,14 +233,14 @@ final class ResultPrinterTest extends TestCase
                             new PhpunitDeprecationTriggered(
                                 self::telemetryInfo(),
                                 self::testMethod(),
-                                'message'
+                                'message',
                             ),
                         ],
                     ],
                     testRunnerTriggeredDeprecationEvents: [
                         new TestRunnerDeprecationTriggered(
                             self::telemetryInfo(),
-                            'message'
+                            'message',
                         ),
                     ],
                 ),
@@ -260,7 +260,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -278,7 +278,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -296,7 +296,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -314,7 +314,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -332,7 +332,7 @@ final class ResultPrinterTest extends TestCase
                                 false,
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -347,10 +347,10 @@ final class ResultPrinterTest extends TestCase
                             new PhpunitErrorTriggered(
                                 self::telemetryInfo(),
                                 self::testMethod(),
-                                'message'
+                                'message',
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -362,10 +362,10 @@ final class ResultPrinterTest extends TestCase
                             new PhpunitWarningTriggered(
                                 self::telemetryInfo(),
                                 self::testMethod(),
-                                'message'
+                                'message',
                             ),
                         ],
-                    ]
+                    ],
                 ),
             ],
 
@@ -399,7 +399,7 @@ final class ResultPrinterTest extends TestCase
 
         $summaryPrinter = new SummaryPrinter(
             $printer,
-            false
+            false,
         );
 
         $summaryPrinter->print($result);
@@ -407,7 +407,7 @@ final class ResultPrinterTest extends TestCase
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->assertStringMatchesFormatFile(
             $expectationFile,
-            $printer->buffer()
+            $printer->buffer(),
         );
     }
 
@@ -485,7 +485,7 @@ final class ResultPrinterTest extends TestCase
         return new Errored(
             self::telemetryInfo(),
             self::testMethod(),
-            ThrowableBuilder::from(new Exception('message'))
+            ThrowableBuilder::from(new Exception('message')),
         );
     }
 
@@ -496,10 +496,10 @@ final class ResultPrinterTest extends TestCase
             self::testMethod(),
             ThrowableBuilder::from(
                 new ExpectationFailedException(
-                    'Failed asserting that false is true.'
-                )
+                    'Failed asserting that false is true.',
+                ),
             ),
-            null
+            null,
         );
     }
 
@@ -508,7 +508,7 @@ final class ResultPrinterTest extends TestCase
         return new ConsideredRisky(
             self::telemetryInfo(),
             self::testMethod(),
-            $message
+            $message,
         );
     }
 
@@ -521,7 +521,7 @@ final class ResultPrinterTest extends TestCase
             1,
             TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([])
+            TestDataCollection::fromArray([]),
         );
     }
 
@@ -532,7 +532,7 @@ final class ResultPrinterTest extends TestCase
                 HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
                 MemoryUsage::fromBytes(1000),
                 MemoryUsage::fromBytes(2000),
-                new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0)
+                new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0),
             ),
             Duration::fromSecondsAndNanoseconds(123, 456),
             MemoryUsage::fromBytes(2000),

@@ -33,7 +33,7 @@ final class SummaryPrinter
         if ($result->numberOfTestsRun() === 0) {
             $this->printWithColor(
                 'fg-black, bg-yellow',
-                'No tests executed!'
+                'No tests executed!',
             );
 
             return;
@@ -49,8 +49,8 @@ final class SummaryPrinter
                     $result->numberOfTestsRun(),
                     $result->numberOfTestsRun() === 1 ? '' : 's',
                     $result->numberOfAssertions(),
-                    $result->numberOfAssertions() === 1 ? '' : 's'
-                )
+                    $result->numberOfAssertions() === 1 ? '' : 's',
+                ),
             );
 
             return;
@@ -62,12 +62,12 @@ final class SummaryPrinter
             if (!$result->hasTestsWithIssues()) {
                 $this->printWithColor(
                     $color,
-                    'OK, but some tests were skipped!'
+                    'OK, but some tests were skipped!',
                 );
             } else {
                 $this->printWithColor(
                     $color,
-                    'OK, but there are issues!'
+                    'OK, but there are issues!',
                 );
             }
         } else {
@@ -76,29 +76,29 @@ final class SummaryPrinter
 
                 $this->printWithColor(
                     $color,
-                    'ERRORS!'
+                    'ERRORS!',
                 );
             } elseif ($result->hasTestFailedEvents()) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
-                    'FAILURES!'
+                    'FAILURES!',
                 );
             } elseif ($result->hasWarningEvents()) {
                 $this->printWithColor(
                     $color,
-                    'WARNINGS!'
+                    'WARNINGS!',
                 );
             } elseif ($result->hasDeprecationEvents()) {
                 $this->printWithColor(
                     $color,
-                    'DEPRECATIONS!'
+                    'DEPRECATIONS!',
                 );
             } elseif ($result->hasNoticeEvents()) {
                 $this->printWithColor(
                     $color,
-                    'NOTICES!'
+                    'NOTICES!',
                 );
             }
         }
@@ -125,9 +125,9 @@ final class SummaryPrinter
                     '%s%s: %d',
                     $this->countPrinted ? ', ' : '',
                     $name,
-                    $count
+                    $count,
                 ),
-                false
+                false,
             );
 
             $this->countPrinted = true;

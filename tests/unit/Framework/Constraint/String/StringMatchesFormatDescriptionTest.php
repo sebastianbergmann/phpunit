@@ -240,7 +240,7 @@ EOD
     {
         $this->assertSame(
             'matches format description:' . PHP_EOL . 'string',
-            (new StringMatchesFormatDescription('string'))->toString()
+            (new StringMatchesFormatDescription('string'))->toString(),
         );
     }
 

@@ -25,7 +25,7 @@ final class FinishedTest extends AbstractEventTestCase
         $event = new Finished(
             $telemetryInfo,
             $test,
-            1
+            1,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -38,7 +38,7 @@ final class FinishedTest extends AbstractEventTestCase
         $event = new Finished(
             $this->telemetryInfo(),
             $this->testValueObject(),
-            1
+            1,
         );
 
         $this->assertSame('Test Finished (FooTest::testBar)', $event->asString());

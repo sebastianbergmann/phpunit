@@ -35,7 +35,7 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
             if (in_array((string) $group, $groups, true)) {
                 $testHashes = array_map(
                     'spl_object_id',
-                    $tests
+                    $tests,
                 );
 
                 array_push($this->groupTests, ...$testHashes);

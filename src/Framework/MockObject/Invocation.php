@@ -154,7 +154,7 @@ final class Invocation implements SelfDescribing
                     throw new ReflectionException(
                         $e->getMessage(),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
             }
@@ -192,7 +192,7 @@ final class Invocation implements SelfDescribing
                     throw new RuntimeException(
                         $t->getMessage(),
                         (int) $t->getCode(),
-                        $t
+                        $t,
                     );
                 }
             }
@@ -227,8 +227,8 @@ final class Invocation implements SelfDescribing
                 'Return value for %s::%s() cannot be generated%s, please configure a return value for this method',
                 $this->className,
                 $this->methodName,
-                $reason
-            )
+                $reason,
+            ),
         );
     }
 
@@ -244,10 +244,10 @@ final class Invocation implements SelfDescribing
                 ', ',
                 array_map(
                     [$exporter, 'shortenedExport'],
-                    $this->parameters
-                )
+                    $this->parameters,
+                ),
             ),
-            $this->returnType ? sprintf(': %s', $this->returnType) : ''
+            $this->returnType ? sprintf(': %s', $this->returnType) : '',
         );
     }
 

@@ -327,7 +327,7 @@ final class CodeCoverageTest extends TestCase
             (new CodeCoverage)->linesToBeCovered(
                 $className,
                 $methodName,
-            )
+            ),
         );
     }
 
@@ -342,7 +342,7 @@ final class CodeCoverageTest extends TestCase
             (new CodeCoverage)->linesToBeUsed(
                 $className,
                 $methodName,
-            )
+            ),
         );
     }
 
@@ -440,7 +440,7 @@ final class CodeCoverageTest extends TestCase
                 TEST_FILES_PATH . 'CoveredClass.php'    => array_merge(range(12, 27), range(37, 41)),
                 TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
             ],
-            (new CodeCoverage)->linesToBeIgnored(TestSuite::fromClassName(IgnoringCodeUnitsTest::class))
+            (new CodeCoverage)->linesToBeIgnored(TestSuite::fromClassName(IgnoringCodeUnitsTest::class)),
         );
     }
 }

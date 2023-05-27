@@ -53,7 +53,7 @@ final class MockObjectCreated implements Event
     {
         return sprintf(
             'Mock Object Created (%s)',
-            $this->className
+            $this->className,
         );
     }
 }

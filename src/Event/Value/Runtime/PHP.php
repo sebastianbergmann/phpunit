@@ -52,7 +52,7 @@ final class PHP
 
         $extensions = array_merge(
             get_loaded_extensions(true),
-            get_loaded_extensions()
+            get_loaded_extensions(),
         );
 
         sort($extensions);

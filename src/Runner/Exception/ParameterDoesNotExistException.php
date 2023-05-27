@@ -23,7 +23,7 @@ final class ParameterDoesNotExistException extends RuntimeException implements E
             sprintf(
                 'Parameter "%s" does not exist',
                 $name,
-            )
+            ),
         );
     }
 }

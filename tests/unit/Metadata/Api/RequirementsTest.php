@@ -129,7 +129,7 @@ final class RequirementsTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            (new Requirements)->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test)
+            (new Requirements)->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test),
         );
     }
 }

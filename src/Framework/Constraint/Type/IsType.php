@@ -136,7 +136,7 @@ final class IsType extends Constraint
     {
         return sprintf(
             'is of type %s',
-            $this->type
+            $this->type,
         );
     }
 

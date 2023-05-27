@@ -24,7 +24,7 @@ final class PreparedTest extends AbstractEventTestCase
 
         $event = new Prepared(
             $telemetryInfo,
-            $test
+            $test,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());

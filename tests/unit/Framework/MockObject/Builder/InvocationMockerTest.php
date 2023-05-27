@@ -75,7 +75,7 @@ final class InvocationMockerTest extends TestCase
 
         $invocationMocker = new InvocationMocker(
             $matcherCollection,
-            new Matcher($this->any())
+            new Matcher($this->any()),
         );
 
         $this->expectException(MethodCannotBeConfiguredException::class);
@@ -130,7 +130,7 @@ final class InvocationMockerTest extends TestCase
         $this->expectExceptionMessage(sprintf(
             'Method methodWithClassReturnTypeDeclaration may not return value of type %s, its declared return type is "%s"',
             Foo::class,
-            stdClass::class
+            stdClass::class,
         ));
         $invocationMocker->willReturn(new Foo);
     }

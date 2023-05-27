@@ -27,7 +27,7 @@ final class PhpunitDeprecationTriggeredTest extends AbstractEventTestCase
         $event = new PhpunitDeprecationTriggered(
             $telemetryInfo,
             $test,
-            $message
+            $message,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());

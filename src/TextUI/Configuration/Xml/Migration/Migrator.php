@@ -33,7 +33,7 @@ final class Migrator
                 sprintf(
                     '"%s" is not a valid PHPUnit XML configuration file that can be migrated',
                     $filename,
-                )
+                ),
             );
         }
 

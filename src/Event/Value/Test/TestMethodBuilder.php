@@ -78,13 +78,13 @@ final class TestMethodBuilder
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                (new Exporter)->export($testCase->providedData())
+                (new Exporter)->export($testCase->providedData()),
             );
         }
 
         if ($testCase->hasDependencyInput()) {
             $testData[] = DataFromTestDependency::from(
-                (new Exporter)->export($testCase->dependencyInput())
+                (new Exporter)->export($testCase->dependencyInput()),
             );
         }
 

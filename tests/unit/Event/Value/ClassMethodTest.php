@@ -24,7 +24,7 @@ final class ClassMethodTest extends TestCase
 
         $classMethod = new ClassMethod(
             $className,
-            $methodName
+            $methodName,
         );
 
         $this->assertSame($className, $classMethod->className());

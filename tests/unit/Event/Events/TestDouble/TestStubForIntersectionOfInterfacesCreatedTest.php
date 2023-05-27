@@ -24,7 +24,7 @@ final class TestStubForIntersectionOfInterfacesCreatedTest extends AbstractEvent
 
         $event = new TestStubForIntersectionOfInterfacesCreated(
             $telemetryInfo,
-            $interfaces
+            $interfaces,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class TestStubForIntersectionOfInterfacesCreatedTest extends AbstractEvent
     {
         $event = new TestStubForIntersectionOfInterfacesCreated(
             $this->telemetryInfo(),
-            ['AnInterface', 'AnotherInterface']
+            ['AnInterface', 'AnotherInterface'],
         );
 
         $this->assertSame('Test Stub Created (AnInterface&AnotherInterface)', $event->asString());

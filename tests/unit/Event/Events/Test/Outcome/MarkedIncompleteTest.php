@@ -28,7 +28,7 @@ final class MarkedIncompleteTest extends AbstractEventTestCase
         $event = new MarkedIncomplete(
             $telemetryInfo,
             $test,
-            $throwable
+            $throwable,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -41,7 +41,7 @@ final class MarkedIncompleteTest extends AbstractEventTestCase
         $event = new MarkedIncomplete(
             $this->telemetryInfo(),
             $this->testValueObject(),
-            $this->throwable()
+            $this->throwable(),
         );
 
         $this->assertSame(
@@ -49,7 +49,7 @@ final class MarkedIncompleteTest extends AbstractEventTestCase
 Test Marked Incomplete (FooTest::testBar)
 incomplete
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 

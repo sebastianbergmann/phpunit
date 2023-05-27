@@ -32,7 +32,7 @@ final class StartedTest extends AbstractEventTestCase
     {
         $event = new Started(
             $this->telemetryInfo(),
-            $this->testSuiteValueObject()
+            $this->testSuiteValueObject(),
         );
 
         $this->assertSame('Test Suite Started (foo, 9001 tests)', $event->asString());

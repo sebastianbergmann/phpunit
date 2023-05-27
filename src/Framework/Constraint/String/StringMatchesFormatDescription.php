@@ -46,9 +46,9 @@ final class StringMatchesFormatDescription extends Constraint
 
         $matches = preg_match(
             $this->regularExpressionForFormatDescription(
-                $this->convertNewlines($this->formatDescription)
+                $this->convertNewlines($this->formatDescription),
             ),
-            $other
+            $other,
         );
 
         return $matches > 0;
@@ -97,7 +97,7 @@ final class StringMatchesFormatDescription extends Constraint
                 '%x' => '[0-9a-fA-F]+',
                 '%f' => '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
                 '%c' => '.',
-            ]
+            ],
         );
 
         return '/^' . $string . '$/s';

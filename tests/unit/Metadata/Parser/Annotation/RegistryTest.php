@@ -40,13 +40,13 @@ final class RegistryTest extends TestCase
                     '\PHPUnit\TestFixture\Metadata\Annotation\Example',
                 ],
             ],
-            $annotation->symbolAnnotations()
+            $annotation->symbolAnnotations(),
         );
 
         $this->assertSame(
             $annotation,
             Registry::getInstance()->forClassName(CoversTest::class),
-            'Registry memoizes retrieved DocBlock instances'
+            'Registry memoizes retrieved DocBlock instances',
         );
     }
 
@@ -54,7 +54,7 @@ final class RegistryTest extends TestCase
     {
         $annotation = Registry::getInstance()->forMethod(
             NumericGroupAnnotationTest::class,
-            'testTicketAnnotationSupportsNumericValue'
+            'testTicketAnnotationSupportsNumericValue',
         );
 
         $this->assertSame(
@@ -63,16 +63,16 @@ final class RegistryTest extends TestCase
                 'ticket'  => ['3502'],
                 'see'     => ['https://github.com/sebastianbergmann/phpunit/issues/3502'],
             ],
-            $annotation->symbolAnnotations()
+            $annotation->symbolAnnotations(),
         );
 
         $this->assertSame(
             $annotation,
             Registry::getInstance()->forMethod(
                 NumericGroupAnnotationTest::class,
-                'testTicketAnnotationSupportsNumericValue'
+                'testTicketAnnotationSupportsNumericValue',
             ),
-            'Registry memoizes retrieved DocBlock instances'
+            'Registry memoizes retrieved DocBlock instances',
         );
     }
 

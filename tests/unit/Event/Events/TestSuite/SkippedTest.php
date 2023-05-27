@@ -35,7 +35,7 @@ final class SkippedTest extends AbstractEventTestCase
         $event = new Skipped(
             $this->telemetryInfo(),
             $this->testSuiteValueObject(),
-            'the-message'
+            'the-message',
         );
 
         $this->assertSame('Test Suite Skipped (foo, the-message)', $event->asString());

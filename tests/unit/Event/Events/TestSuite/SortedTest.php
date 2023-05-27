@@ -28,7 +28,7 @@ final class SortedTest extends AbstractEventTestCase
             $telemetryInfo,
             $executionOrder,
             $executionOrderDefects,
-            $resolveDependencies
+            $resolveDependencies,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -43,7 +43,7 @@ final class SortedTest extends AbstractEventTestCase
             $this->telemetryInfo(),
             9001,
             5,
-            true
+            true,
         );
 
         $this->assertSame('Test Suite Sorted', $event->asString());

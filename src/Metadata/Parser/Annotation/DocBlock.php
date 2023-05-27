@@ -173,7 +173,7 @@ final class DocBlock
                     throw new InvalidVersionRequirementException(
                         $e->getMessage(),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
             }
@@ -211,8 +211,8 @@ final class DocBlock
                 [
                     'setting'            => $recordedSettings,
                     'extension_versions' => $extensionVersions,
-                ]
-            )
+                ],
+            ),
         );
     }
 
@@ -250,14 +250,14 @@ final class DocBlock
                 $annotations,
                 ...array_map(
                     static fn (ReflectionClass $trait): array => self::parseDocBlock((string) $trait->getDocComment()),
-                    array_values($reflector->getTraits())
-                )
+                    array_values($reflector->getTraits()),
+                ),
             );
         }
 
         return array_merge(
             $annotations,
-            self::parseDocBlock((string) $reflector->getDocComment())
+            self::parseDocBlock((string) $reflector->getDocComment()),
         );
     }
 }

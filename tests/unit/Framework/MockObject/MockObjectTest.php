@@ -306,7 +306,7 @@ final class MockObjectTest extends TestCase
             ->method('doSomething')
             ->will($this->returnCallback(sprintf(
                 '%s::functionCallback',
-                FunctionCallbackWrapper::class
+                FunctionCallbackWrapper::class,
             )));
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
@@ -319,7 +319,7 @@ final class MockObjectTest extends TestCase
             ->method('doSomething')
             ->willReturnCallback(sprintf(
                 '%s::functionCallback',
-                FunctionCallbackWrapper::class
+                FunctionCallbackWrapper::class,
             ));
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
@@ -594,8 +594,8 @@ final class MockObjectTest extends TestCase
                     static function () use (&$actualArguments): void
                     {
                         $actualArguments = func_get_args();
-                    }
-                )
+                    },
+                ),
             );
 
         $mock->doSomethingElse($expectedObject);
@@ -622,8 +622,8 @@ final class MockObjectTest extends TestCase
                     static function () use (&$actualArguments): void
                     {
                         $actualArguments = func_get_args();
-                    }
-                )
+                    },
+                ),
             );
 
         $mock->doSomethingElse($expectedObject);
@@ -665,7 +665,7 @@ final class MockObjectTest extends TestCase
             $this->assertSame(
                 "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
                 'Method was expected to be called 1 times, actually called 0 times.' . "\n",
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -690,7 +690,7 @@ final class MockObjectTest extends TestCase
             $this->assertSame(
                 "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
                 'Method was expected to be called 1 times, actually called 0 times.' . "\n",
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -718,9 +718,9 @@ Parameter 0 for invocation %s::right(Array (...)) does not match expected value.
 Failed asserting that two arrays are equal.
 EOF
                     ,
-                    SomeClass::class
+                    SomeClass::class,
                 ),
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -747,9 +747,9 @@ Failed asserting that two arrays are equal.
 
 EOF
                     ,
-                    SomeClass::class
+                    SomeClass::class,
                 ),
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -773,9 +773,9 @@ EOF
             $this->assertSame(
                 sprintf(
                     '%s::right() was not expected to be called.',
-                    SomeClass::class
+                    SomeClass::class,
                 ),
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -799,9 +799,9 @@ EOF
             $this->assertSame(
                 sprintf(
                     '%s::right() was not expected to be called.',
-                    SomeClass::class
+                    SomeClass::class,
                 ),
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -830,9 +830,9 @@ Parameter count for invocation %s::right() is too low.
 To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.
 EOF
                     ,
-                    SomeClass::class
+                    SomeClass::class,
                 ),
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 
@@ -875,7 +875,7 @@ EOF
                 static function (&$a, &$b, $c): void
                 {
                     $b = 1;
-                }
+                },
             ));
 
         $a = $b = $c = 0;
@@ -934,7 +934,7 @@ EOF
 
         $this->assertStringStartsWith(
             'Mock_WsdlMock_',
-            $mock::class
+            $mock::class,
         );
     }
 
@@ -945,7 +945,7 @@ EOF
 
         $this->assertStringStartsWith(
             'Mock_WsdlMock_',
-            $mock::class
+            $mock::class,
         );
     }
 
@@ -971,7 +971,7 @@ EOF
     {
         $this->assertInstanceOf(
             InterfaceWithStaticMethod::class,
-            $this->getMockBuilder(InterfaceWithStaticMethod::class)->getMock()
+            $this->getMockBuilder(InterfaceWithStaticMethod::class)->getMock(),
         );
     }
 
@@ -988,7 +988,7 @@ EOF
     {
         $this->assertInstanceOf(
             ClassWithSelfTypeDeclaration::class,
-            $this->getMockBuilder(ClassWithSelfTypeDeclaration::class)->getMock()
+            $this->getMockBuilder(ClassWithSelfTypeDeclaration::class)->getMock(),
         );
     }
 
@@ -1050,7 +1050,7 @@ EOF
         $this->expectException(ReturnValueNotConfiguredException::class);
         $this->expectExceptionMessage(sprintf(
             'Return value inference disabled and no expectation set up for %s::doSomethingElse()',
-            SomeClass::class
+            SomeClass::class,
         ));
 
         $mock->doSomethingElse(1);
@@ -1072,9 +1072,9 @@ EOF
             $this->assertSame(
                 sprintf(
                     'Return value inference disabled and no expectation set up for %s::__toString()',
-                    StringableClass::class
+                    StringableClass::class,
                 ),
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
 

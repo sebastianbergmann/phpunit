@@ -28,7 +28,7 @@ final class ExtensionLoadedFromPharTest extends AbstractEventTestCase
             $telemetryInfo,
             $filename,
             $name,
-            $version
+            $version,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -43,7 +43,7 @@ final class ExtensionLoadedFromPharTest extends AbstractEventTestCase
             $this->telemetryInfo(),
             'extension.phar',
             'example-extension',
-            '1.2.3'
+            '1.2.3',
         );
 
         $this->assertSame('Extension Loaded from PHAR (example-extension 1.2.3)', $event->asString());

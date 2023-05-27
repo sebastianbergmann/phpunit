@@ -27,7 +27,7 @@ final class PreConditionFinishedTest extends AbstractEventTestCase
         $event = new PreConditionFinished(
             $telemetryInfo,
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class PreConditionFinishedTest extends AbstractEventTestCase
         $event = new PreConditionFinished(
             $this->telemetryInfo(),
             'Test',
-            ...$this->calledMethods()
+            ...$this->calledMethods(),
         );
 
         $this->assertSame(
@@ -49,7 +49,7 @@ Pre Condition Method Finished:
 - HookClass::hookMethod
 - AnotherHookClass::anotherHookMethod
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 

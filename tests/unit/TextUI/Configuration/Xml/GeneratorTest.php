@@ -51,8 +51,8 @@ final class GeneratorTest extends TestCase
                 'vendor/autoload.php',
                 'tests',
                 'src',
-                '.phpunit.cache'
-            )
+                '.phpunit.cache',
+            ),
         );
     }
 }

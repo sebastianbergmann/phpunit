@@ -27,7 +27,7 @@ final class AfterLastTestMethodCalledTest extends AbstractEventTestCase
         $event = new AfterLastTestMethodCalled(
             $telemetryInfo,
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class AfterLastTestMethodCalledTest extends AbstractEventTestCase
         $event = new AfterLastTestMethodCalled(
             $this->telemetryInfo(),
             'test class name',
-            $this->calledMethod()
+            $this->calledMethod(),
         );
 
         $this->assertSame('After Last Test Method Called (HookClass::hookMethod)', $event->asString());

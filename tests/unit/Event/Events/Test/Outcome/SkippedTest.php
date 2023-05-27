@@ -26,7 +26,7 @@ final class SkippedTest extends AbstractEventTestCase
         $event = new Skipped(
             $telemetryInfo,
             $test,
-            $message
+            $message,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -39,7 +39,7 @@ final class SkippedTest extends AbstractEventTestCase
         $event = new Skipped(
             $this->telemetryInfo(),
             $this->testValueObject(),
-            'skipped'
+            'skipped',
         );
 
         $this->assertSame(
@@ -47,7 +47,7 @@ final class SkippedTest extends AbstractEventTestCase
 Test Skipped (FooTest::testBar)
 skipped
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 }

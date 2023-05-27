@@ -30,7 +30,7 @@ final class PartialMockObjectCreatedTest extends AbstractEventTestCase
         $event = new PartialMockObjectCreated(
             $telemetryInfo,
             $className,
-            ...$methodNames
+            ...$methodNames,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -42,7 +42,7 @@ final class PartialMockObjectCreatedTest extends AbstractEventTestCase
     {
         $event = new PartialMockObjectCreated(
             $this->telemetryInfo(),
-            'OriginalType'
+            'OriginalType',
         );
 
         $this->assertSame('Partial Mock Object Created (OriginalType)', $event->asString());

@@ -31,7 +31,7 @@ final class StringEqualsStringIgnoringLineEndings extends Constraint
     {
         return sprintf(
             'is equal to "%s" ignoring line endings',
-            $this->string
+            $this->string,
         );
     }
 
@@ -51,7 +51,7 @@ final class StringEqualsStringIgnoringLineEndings extends Constraint
             [
                 "\r\n" => "\n",
                 "\r"   => "\n",
-            ]
+            ],
         );
     }
 }

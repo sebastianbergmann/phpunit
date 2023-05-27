@@ -22,8 +22,8 @@ final class InvalidDirectoryException extends RuntimeException implements Except
         parent::__construct(
             sprintf(
                 '"%s" is not a directory',
-                $directory
-            )
+                $directory,
+            ),
         );
     }
 }

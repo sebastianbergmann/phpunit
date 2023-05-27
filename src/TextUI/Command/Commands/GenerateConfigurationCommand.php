@@ -65,8 +65,8 @@ final class GenerateConfigurationCommand implements Command
                 $bootstrapScript,
                 $testsDirectory,
                 $src,
-                $cacheDirectory
-            )
+                $cacheDirectory,
+            ),
         );
 
         /* @noinspection MissingDirectorySeparatorInspection */
