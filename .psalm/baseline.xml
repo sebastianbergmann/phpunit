@@ -28,7 +28,7 @@
                 $expectedElement->childNodes->item($i),
                 $actualElement->childNodes->item($i),
                 $checkAttributes,
-                $message
+                $message,
             )]]></code>
     </DeprecatedMethod>
     <DocblockTypeContradiction>
@@ -161,22 +161,22 @@
       <code>new IsType(IsType::TYPE_STRING)</code>
       <code>new TraversableContainsOnly(
                     $type,
-                    $isNativeType
+                    $isNativeType,
                 )</code>
       <code>new TraversableContainsOnly(
                 $className,
-                false
+                false,
             )</code>
       <code>new TraversableContainsOnly(
                 $type,
-                $isNativeType
+                $isNativeType,
             )</code>
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new TraversableContainsOnly($type)</code>
       <code>static::assertThat(
             $actual,
             static::objectEquals($expected, $method),
-            $message
+            $message,
         )</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
@@ -408,7 +408,7 @@
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
   </file>
@@ -420,7 +420,7 @@
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
   </file>
@@ -573,7 +573,7 @@
                 $callOriginalConstructor,
                 $callOriginalClone,
                 $callAutoload,
-                $cloneArguments
+                $cloneArguments,
             )]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
@@ -668,11 +668,11 @@
                 substr(
                     substr(
                         $parameterAsString,
-                        strpos($parameterAsString, '<optional> ') + strlen('<optional> ')
+                        strpos($parameterAsString, '<optional> ') + strlen('<optional> '),
                     ),
                     0,
-                    -2
-                )
+                    -2,
+                ),
             )[1]]]></code>
       <code>(string) var_export($defaultValue, true)</code>
     </RedundantCastGivenDocblockType>
@@ -777,7 +777,7 @@
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
       <code><![CDATA[new DataProviderTestSuite(
-            $className . '::' . $methodName
+            $className . '::' . $methodName,
         )]]></code>
       <code><![CDATA[throw new Exception('No valid test provided.');]]></code>
     </MissingThrowsDocblock>
@@ -831,7 +831,7 @@
     <MissingThrowsDocblock>
       <code><![CDATA[TestUtil::getMissingRequirements(
             static::class,
-            $this->name
+            $this->name,
         )]]></code>
       <code>cacheDirectory</code>
       <code>endTest</code>
@@ -917,20 +917,20 @@
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
       <code><![CDATA[new Template(
-                    __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
+                    __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl',
                 )]]></code>
       <code><![CDATA[new Template(
-                    __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
+                    __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl',
                 )]]></code>
       <code><![CDATA[throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );]]></code>
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
       <code><![CDATA[throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');]]></code>
     </MissingThrowsDocblock>
@@ -1008,12 +1008,12 @@
       <code><![CDATA[throw new Exception(
                         $e->getMessage(),
                         $e->getCode(),
-                        $e
+                        $e,
                     );]]></code>
       <code><![CDATA[throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
@@ -1067,7 +1067,7 @@
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
@@ -1150,7 +1150,7 @@
     <MissingThrowsDocblock>
       <code>cacheDirectory</code>
       <code><![CDATA[new Template(
-            __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
+            __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl',
         )]]></code>
       <code>stop</code>
     </MissingThrowsDocblock>
@@ -1194,7 +1194,7 @@
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
   </file>
@@ -1247,12 +1247,12 @@
       <code><![CDATA[throw new ReflectionException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );]]></code>
       <code><![CDATA[throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
@@ -1335,7 +1335,7 @@
             $arguments['colors'],
             $arguments['debug'],
             $arguments['columns'],
-            $arguments['reverseList']
+            $arguments['reverseList'],
         )]]></code>
     </InvalidStringClass>
     <MissingThrowsDocblock>
@@ -1578,7 +1578,7 @@
             array_filter([
                 'setting'            => $recordedSettings,
                 'extension_versions' => $extensionVersions,
-            ])
+            ]),
         )]]></code>
     </InvalidPropertyAssignmentValue>
     <InvalidReturnStatement>
@@ -1588,7 +1588,7 @@
             array_filter([
                 'setting'            => $recordedSettings,
                 'extension_versions' => $extensionVersions,
-            ])
+            ]),
         )]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
@@ -1628,8 +1628,8 @@
       <code><![CDATA[throw new Exception(
                 sprintf(
                     '"%s" is not a directory',
-                    $directory
-                )
+                    $directory,
+                ),
             );]]></code>
     </MissingThrowsDocblock>
   </file>
@@ -1668,12 +1668,12 @@
       <code><![CDATA[throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );]]></code>
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue>
@@ -1706,7 +1706,7 @@
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
@@ -1844,7 +1844,7 @@
       <code><![CDATA[throw new UtilException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );]]></code>
     </MissingThrowsDocblock>
     <RedundantConditionGivenDocblockType>
@@ -1894,7 +1894,7 @@
       <code><![CDATA[throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );]]></code>
     </MissingThrowsDocblock>
   </file>
@@ -1925,7 +1925,7 @@
       <code><![CDATA[throw new Exception(
                             $e->getMessage(),
                             $e->getCode(),
-                            $e
+                            $e,
                         );]]></code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType>
