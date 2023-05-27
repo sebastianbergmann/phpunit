@@ -32,6 +32,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCache;
@@ -157,6 +158,13 @@ final class Application
             TestResultFacade::init();
 
             $resultCache = $this->initializeTestResultCache($configuration);
+
+            if ($configuration->controlGarbageCollector()) {
+                new GarbageCollectionHandler(
+                    EventFacade::instance(),
+                    $configuration->numberOfTestsBeforeGarbageCollection(),
+                );
+            }
 
             EventFacade::instance()->seal();
 
