@@ -90,7 +90,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            Test::getRequirements(RequirementsTest::class, $test)
+            Test::getRequirements(RequirementsTest::class, $test),
         );
     }
 
@@ -541,19 +541,19 @@ final class TestClassTest extends TestCase
         foreach ($result as $type => $expected_requirement) {
             $this->assertArrayHasKey(
                 "{$type}_constraint",
-                $requirements
+                $requirements,
             );
             $this->assertArrayHasKey(
                 'constraint',
-                $requirements["{$type}_constraint"]
+                $requirements["{$type}_constraint"],
             );
             $this->assertInstanceOf(
                 VersionConstraint::class,
-                $requirements["{$type}_constraint"]['constraint']
+                $requirements["{$type}_constraint"]['constraint'],
             );
             $this->assertSame(
                 $expected_requirement['constraint'],
-                $requirements["{$type}_constraint"]['constraint']->asString()
+                $requirements["{$type}_constraint"]['constraint']->asString(),
             );
         }
     }
@@ -713,7 +713,7 @@ final class TestClassTest extends TestCase
 
         $this->assertEquals(
             $expectedAnnotations,
-            Test::getRequirements(RequirementsClassDocBlockTest::class, 'testMethod')
+            Test::getRequirements(RequirementsClassDocBlockTest::class, 'testMethod'),
         );
     }
 
@@ -730,7 +730,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            Test::getMissingRequirements(RequirementsTest::class, $test)
+            Test::getMissingRequirements(RequirementsTest::class, $test),
         );
     }
 
@@ -1068,9 +1068,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'anotherAnnotation'
+                'anotherAnnotation',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertNull($result);
@@ -1081,9 +1081,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWith1'
+                'testWith1',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertEquals([[1]], $result);
@@ -1094,9 +1094,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWith1234'
+                'testWith1234',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertEquals([[1, 2], [3, 4]], $result);
@@ -1107,9 +1107,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWithABTrueNull'
+                'testWithABTrueNull',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertEquals([['ab'], [true], [null]], $result);
@@ -1120,9 +1120,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWith12AndAnotherAnnotation'
+                'testWith12AndAnotherAnnotation',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
@@ -1133,9 +1133,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWith12AndBlahBlah'
+                'testWith12AndBlahBlah',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
@@ -1146,9 +1146,9 @@ final class TestClassTest extends TestCase
         $result = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWithEscapedString'
+                'testWithEscapedString',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         )->getProvidedData();
 
         $this->assertEquals([['"', '"']], $result);
@@ -1159,9 +1159,9 @@ final class TestClassTest extends TestCase
         $docBlock = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWithMalformedValue'
+                'testWithMalformedValue',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         );
 
         $this->expectException(Exception::class);
@@ -1175,9 +1175,9 @@ final class TestClassTest extends TestCase
         $docBlock = DocBlock::ofMethod(
             new ReflectionMethod(
                 VariousDocblockDefinedDataProvider::class,
-                'testWithWellFormedAndMalformedValue'
+                'testWithWellFormedAndMalformedValue',
             ),
-            VariousDocblockDefinedDataProvider::class
+            VariousDocblockDefinedDataProvider::class,
         );
 
         $this->expectException(Exception::class);
@@ -1194,7 +1194,7 @@ final class TestClassTest extends TestCase
                 new ExecutionOrderDependency(self::class, 'ほげ'),
                 new ExecutionOrderDependency('AnotherClass::Foo'),
             ],
-            Test::getDependencies(self::class, 'methodForTestParseAnnotation')
+            Test::getDependencies(self::class, 'methodForTestParseAnnotation'),
         );
     }
 
@@ -1213,7 +1213,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [new ExecutionOrderDependency(self::class, 'Bar')],
-            Test::getDependencies(self::class, 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            Test::getDependencies(self::class, 'methodForTestParseAnnotationThatIsOnlyOneLine'),
         );
     }
 
@@ -1236,8 +1236,8 @@ final class TestClassTest extends TestCase
             $expected,
             Test::getLinesToBeCovered(
                 $test,
-                'testSomething'
-            )
+                'testSomething',
+            ),
         );
     }
 
@@ -1247,7 +1247,7 @@ final class TestClassTest extends TestCase
 
         Test::getLinesToBeCovered(
             NotExistingCoveredElementTest::class,
-            'testOne'
+            'testOne',
         );
     }
 
@@ -1257,7 +1257,7 @@ final class TestClassTest extends TestCase
 
         Test::getLinesToBeCovered(
             NotExistingCoveredElementTest::class,
-            'testTwo'
+            'testTwo',
         );
     }
 
@@ -1267,7 +1267,7 @@ final class TestClassTest extends TestCase
 
         Test::getLinesToBeCovered(
             NotExistingCoveredElementTest::class,
-            'testThree'
+            'testThree',
         );
     }
 
@@ -1277,8 +1277,8 @@ final class TestClassTest extends TestCase
             [],
             Test::getLinesToBeCovered(
                 NotExistingCoveredElementTest::class,
-                'methodDoesNotExist'
-            )
+                'methodDoesNotExist',
+            ),
         );
     }
 
@@ -1288,7 +1288,7 @@ final class TestClassTest extends TestCase
 
         Test::getLinesToBeCovered(
             CoverageTwoDefaultClassAnnotations::class,
-            'testSomething'
+            'testSomething',
         );
     }
 
@@ -1298,8 +1298,8 @@ final class TestClassTest extends TestCase
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
                 CoverageFunctionParenthesesTest::class,
-                'testSomething'
-            )
+                'testSomething',
+            ),
         );
     }
 
@@ -1309,8 +1309,8 @@ final class TestClassTest extends TestCase
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
                 CoverageFunctionParenthesesWhitespaceTest::class,
-                'testSomething'
-            )
+                'testSomething',
+            ),
         );
     }
 
@@ -1320,8 +1320,8 @@ final class TestClassTest extends TestCase
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
                 CoverageMethodParenthesesTest::class,
-                'testSomething'
-            )
+                'testSomething',
+            ),
         );
     }
 
@@ -1331,8 +1331,8 @@ final class TestClassTest extends TestCase
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
                 CoverageMethodParenthesesWhitespaceTest::class,
-                'testSomething'
-            )
+                'testSomething',
+            ),
         );
     }
 
@@ -1344,8 +1344,8 @@ final class TestClassTest extends TestCase
             ],
             Test::getLinesToBeCovered(
                 CoverageNamespacedFunctionTest::class,
-                'testFunc'
-            )
+                'testFunc',
+            ),
         );
     }
 
@@ -1528,8 +1528,8 @@ final class TestClassTest extends TestCase
             ],
             Test::getLinesToBeCovered(
                 Test3194::class,
-                'testOne'
-            )
+                'testOne',
+            ),
         );
     }
 

@@ -79,7 +79,7 @@ Failed asserting that 'error' starts with "prefix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -102,7 +102,7 @@ Failed asserting that 'error' starts with "prefix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

@@ -22,7 +22,7 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = new LogicalNot(
             LogicalAnd::fromConstraints(
                 new IsNull,
-            )
+            ),
         );
 
         $this->assertTrue($constraint->evaluate('string', '', true));
@@ -44,8 +44,8 @@ final class LogicalExpressionsTest extends TestCase
             LogicalAnd::fromConstraints(
                 new IsType('int'),
                 new GreaterThan(5),
-                new LessThan(10)
-            )
+                new LessThan(10),
+            ),
         );
 
         $this->assertTrue($constraint->evaluate('string', '', true));
@@ -71,7 +71,7 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = new LogicalNot(
             LogicalOr::fromConstraints(
                 new IsNull,
-            )
+            ),
         );
 
         $this->assertTrue($constraint->evaluate('string', '', true));
@@ -93,8 +93,8 @@ final class LogicalExpressionsTest extends TestCase
             LogicalOr::fromConstraints(
                 new IsNull,
                 new IsType('int'),
-                new IsType('array')
-            )
+                new IsType('array'),
+            ),
         );
 
         $this->assertTrue($constraint->evaluate('string', '', true));
@@ -119,7 +119,7 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = new LogicalNot(
             LogicalXor::fromConstraints(
                 new IsNull,
-            )
+            ),
         );
 
         $this->assertTrue($constraint->evaluate('string', '', true));
@@ -141,7 +141,7 @@ final class LogicalExpressionsTest extends TestCase
             LogicalXor::fromConstraints(
                 new IsType('int'),
                 new IsEqual(false),
-            )
+            ),
         );
 
         $this->assertTrue($constraint->evaluate(0, '', true));
@@ -387,11 +387,11 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = LogicalAnd::fromConstraints(
             LogicalOr::fromConstraints(
                 new IsEqual(false),
-                new GreaterThan(5)
+                new GreaterThan(5),
             ),
             LogicalOr::fromConstraints(
                 new IsType('int'),
-                new IsType('bool')
+                new IsType('bool'),
             ),
         );
 
@@ -419,12 +419,12 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = LogicalOr::fromConstraints(
             LogicalAnd::fromConstraints(
                 new IsType('bool'),
-                new IsEqual(false)
+                new IsEqual(false),
             ),
             LogicalAnd::fromConstraints(
                 new IsType('int'),
-                new GreaterThan(5)
-            )
+                new GreaterThan(5),
+            ),
         );
 
         $this->assertTrue($constraint->evaluate(false, '', true));
@@ -450,14 +450,14 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = LogicalOr::fromConstraints(
             LogicalAnd::fromConstraints(
                 new IsType('bool'),
-                new IsEqual(false)
+                new IsEqual(false),
             ),
             new LogicalNot(
                 LogicalAnd::fromConstraints(
                     new IsType('int'),
-                    new GreaterThan(5)
-                )
-            )
+                    new GreaterThan(5),
+                ),
+            ),
         );
 
         $this->assertTrue($constraint->evaluate(false, '', true));
@@ -483,14 +483,14 @@ final class LogicalExpressionsTest extends TestCase
         $constraint = LogicalOr::fromConstraints(
             LogicalAnd::fromConstraints(
                 new IsType('bool'),
-                new IsEqual(false)
+                new IsEqual(false),
             ),
             new LogicalNot(new LogicalNot(
                 LogicalAnd::fromConstraints(
                     new IsType('int'),
-                    new GreaterThan(5)
-                )
-            ))
+                    new GreaterThan(5),
+                ),
+            )),
         );
 
         $this->assertTrue($constraint->evaluate(false, '', true));

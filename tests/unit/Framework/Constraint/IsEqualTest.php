@@ -42,7 +42,7 @@ Failed asserting that 0 matches expected 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -63,7 +63,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 "custom message\n{$message}",
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimnl(TestFailure::exceptionToString($e)),
             );
 
             return;

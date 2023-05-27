@@ -25,7 +25,7 @@ final class RegularExpression
             static function () use ($pattern, $subject)
             {
                 return preg_match($pattern, $subject);
-            }
+            },
         );
     }
 }

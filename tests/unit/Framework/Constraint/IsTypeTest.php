@@ -43,9 +43,9 @@ Failed asserting that %s Object &%%x () is of type "string".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimnl(TestFailure::exceptionToString($e)),
             );
 
             return;
@@ -69,9 +69,9 @@ Failed asserting that %s Object &%%x () is of type "string".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimnl(TestFailure::exceptionToString($e)),
             );
 
             return;
@@ -133,7 +133,7 @@ PHPUnit\Framework\Exception: Type specified for PHPUnit\Framework\Constraint\IsT
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }

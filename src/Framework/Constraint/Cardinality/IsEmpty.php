@@ -64,7 +64,7 @@ final class IsEmpty extends Constraint
             '%s %s %s',
             strpos($type, 'a') === 0 || strpos($type, 'o') === 0 ? 'an' : 'a',
             $type,
-            $this->toString()
+            $this->toString(),
         );
     }
 }

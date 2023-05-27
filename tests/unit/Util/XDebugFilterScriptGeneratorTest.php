@@ -62,33 +62,33 @@ EOF;
                         __DIR__,
                         '',
                         '.php',
-                        'DEFAULT'
+                        'DEFAULT',
                     ),
                     new Directory(
                         sprintf('%s/', __DIR__),
                         '',
                         '.php',
-                        'DEFAULT'
+                        'DEFAULT',
                     ),
                     new Directory(
                         sprintf('%s/./%s', dirname(__DIR__), basename(__DIR__)),
                         '',
                         '.php',
-                        'DEFAULT'
+                        'DEFAULT',
                     ),
                     new Directory(
                         $directoryPathThatDoesNotExist,
                         '',
                         '.php',
-                        'DEFAULT'
+                        'DEFAULT',
                     ),
-                ]
+                ],
             ),
             FileCollection::fromArray(
                 [
                     new File('src/foo.php'),
                     new File('src/bar.php'),
-                ]
+                ],
             ),
             DirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
@@ -103,7 +103,7 @@ EOF;
             null,
             null,
             null,
-            null
+            null,
         );
 
         $writer = new XdebugFilterScriptGenerator;

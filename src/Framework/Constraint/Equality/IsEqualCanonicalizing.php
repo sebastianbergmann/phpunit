@@ -58,7 +58,7 @@ final class IsEqualCanonicalizing extends Constraint
         try {
             $comparator = $comparatorFactory->getComparatorFor(
                 $this->value,
-                $other
+                $other,
             );
 
             $comparator->assertEquals(
@@ -66,7 +66,7 @@ final class IsEqualCanonicalizing extends Constraint
                 $other,
                 0.0,
                 true,
-                false
+                false,
             );
         } catch (ComparisonFailure $f) {
             if ($returnResult) {
@@ -75,7 +75,7 @@ final class IsEqualCanonicalizing extends Constraint
 
             throw new ExpectationFailedException(
                 trim($description . "\n" . $f->getMessage()),
-                $f
+                $f,
             );
         }
 
@@ -96,13 +96,13 @@ final class IsEqualCanonicalizing extends Constraint
 
             return sprintf(
                 "is equal to '%s'",
-                $this->value
+                $this->value,
             );
         }
 
         return sprintf(
             'is equal to %s',
-            $this->exporter()->export($this->value)
+            $this->exporter()->export($this->value),
         );
     }
 }

@@ -43,7 +43,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             FileLoader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = array_values(
-                array_diff(get_declared_classes(), $loadedClasses)
+                array_diff(get_declared_classes(), $loadedClasses),
             );
 
             if (empty($loadedClasses)) {
@@ -51,8 +51,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     sprintf(
                         'Class %s could not be found in %s',
                         $suiteClassName,
-                        $suiteClassFile
-                    )
+                        $suiteClassFile,
+                    ),
                 );
             }
         }
@@ -76,8 +76,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 sprintf(
                     'Class %s could not be found in %s',
                     $suiteClassName,
-                    $suiteClassFile
-                )
+                    $suiteClassFile,
+                ),
             );
         }
 
@@ -88,7 +88,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
         // @codeCoverageIgnoreEnd
@@ -99,8 +99,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     sprintf(
                         'Class %s declared in %s is abstract',
                         $suiteClassName,
-                        $suiteClassFile
-                    )
+                        $suiteClassFile,
+                    ),
                 );
             }
 
@@ -116,8 +116,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     sprintf(
                         'Method %s::suite() declared in %s is abstract',
                         $suiteClassName,
-                        $suiteClassFile
-                    )
+                        $suiteClassFile,
+                    ),
                 );
             }
 
@@ -126,8 +126,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     sprintf(
                         'Method %s::suite() declared in %s is not public',
                         $suiteClassName,
-                        $suiteClassFile
-                    )
+                        $suiteClassFile,
+                    ),
                 );
             }
 
@@ -136,8 +136,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     sprintf(
                         'Method %s::suite() declared in %s is not static',
                         $suiteClassName,
-                        $suiteClassFile
-                    )
+                        $suiteClassFile,
+                    ),
                 );
             }
         }

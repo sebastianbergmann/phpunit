@@ -48,7 +48,7 @@ final class InvokedAtLeastCount extends InvocationOrder
         if ($count < $this->requiredInvocations) {
             throw new ExpectationFailedException(
                 'Expected invocation at least ' . $this->requiredInvocations .
-                ' times but it occurred ' . $count . ' time(s).'
+                ' times but it occurred ' . $count . ' time(s).',
             );
         }
     }

@@ -48,7 +48,7 @@ final class ExceptionMessageRegularExpression extends Constraint
 
         if ($match === false) {
             throw new \PHPUnit\Framework\Exception(
-                "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
+                "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'",
             );
         }
 
@@ -68,7 +68,7 @@ final class ExceptionMessageRegularExpression extends Constraint
         return sprintf(
             "exception message '%s' matches '%s'",
             $other->getMessage(),
-            $this->expectedMessageRegExp
+            $this->expectedMessageRegExp,
         );
     }
 }

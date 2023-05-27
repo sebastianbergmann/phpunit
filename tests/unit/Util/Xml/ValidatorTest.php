@@ -28,9 +28,9 @@ final class ValidatorTest extends TestCase
                 __DIR__ . '/../../../../phpunit.xml',
                 false,
                 true,
-                true
+                true,
             ),
-            (new SchemaFinder)->find(Version::series())
+            (new SchemaFinder)->find(Version::series()),
         );
 
         $this->assertFalse($result->hasValidationErrors());
@@ -44,9 +44,9 @@ final class ValidatorTest extends TestCase
                 __DIR__ . '/../../../end-to-end/migration/_files/possibility-to-migrate-from-92-is-detected/phpunit.xml',
                 false,
                 true,
-                true
+                true,
             ),
-            (new SchemaFinder)->find(Version::series())
+            (new SchemaFinder)->find(Version::series()),
         );
 
         $this->assertTrue($result->hasValidationErrors());

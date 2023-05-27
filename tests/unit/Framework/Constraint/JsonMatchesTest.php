@@ -116,7 +116,7 @@ Failed asserting that '{"Mascott"::}' matches JSON string "{"Mascott"::}".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }
@@ -135,7 +135,7 @@ Failed asserting that '{"Mascott":"Tux"}' matches JSON string "{"Mascott"::}".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }
@@ -161,7 +161,7 @@ Failed asserting that '{"obj": {}, "val": 2}' matches JSON string "{"obj": {}, "
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }
@@ -188,7 +188,7 @@ Failed asserting that '{"obj": {"y": 2, "x": 1}, "val": 2}' matches JSON string 
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }

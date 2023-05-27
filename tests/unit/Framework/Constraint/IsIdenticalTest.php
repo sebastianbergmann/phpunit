@@ -31,9 +31,9 @@ final class IsIdenticalTest extends ConstraintTestCase
         $this->assertEquals(
             sprintf(
                 'is identical to an object of class "%s"',
-                stdClass::class
+                stdClass::class,
             ),
-            $constraint->toString()
+            $constraint->toString(),
         );
         $this->assertCount(1, $constraint);
 
@@ -46,7 +46,7 @@ Failed asserting that two variables reference the same object.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -72,7 +72,7 @@ Failed asserting that two variables reference the same object.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -100,7 +100,7 @@ Failed asserting that two strings are identical.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -138,7 +138,7 @@ Failed asserting that two arrays are identical.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -197,7 +197,7 @@ Failed asserting that two arrays are identical.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

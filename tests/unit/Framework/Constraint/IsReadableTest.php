@@ -34,7 +34,7 @@ Failed asserting that "foo" is readable.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

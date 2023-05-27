@@ -49,7 +49,7 @@ final class ReturnCallback implements Stub
                 'passed arguments',
                 $class,
                 $type,
-                $this->callback[1]
+                $this->callback[1],
             );
         }
 

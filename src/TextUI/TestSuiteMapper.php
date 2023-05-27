@@ -60,7 +60,7 @@ final class TestSuiteMapper
                         $directory->path(),
                         $directory->suffix(),
                         $directory->prefix(),
-                        $exclude
+                        $exclude,
                     );
 
                     if (!empty($files)) {
@@ -96,7 +96,7 @@ final class TestSuiteMapper
             throw new RuntimeException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
     }

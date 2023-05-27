@@ -64,8 +64,8 @@ final class InvokedAtIndex extends InvocationOrder
             throw new ExpectationFailedException(
                 sprintf(
                     'The expected invocation at index %s was never reached.',
-                    $this->sequenceIndex
-                )
+                    $this->sequenceIndex,
+                ),
             );
         }
     }

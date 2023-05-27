@@ -30,7 +30,7 @@ final class Filesystem
         return str_replace(
             ['_', '\\'],
             DIRECTORY_SEPARATOR,
-            $className
+            $className,
         ) . '.php';
     }
 

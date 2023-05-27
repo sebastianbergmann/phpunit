@@ -91,7 +91,7 @@ abstract class BaseTestRunner
             /** @var string[] $files */
             $files = (new FileIteratorFacade)->getFilesAsArray(
                 $suiteClassFile,
-                $suffixes
+                $suffixes,
             );
 
             $suite = new TestSuite($suiteClassFile);
@@ -109,7 +109,7 @@ abstract class BaseTestRunner
 
         try {
             $testClass = $this->loadSuiteClass(
-                $suiteClassFile
+                $suiteClassFile,
             );
         } catch (\PHPUnit\Exception $e) {
             $this->runFailed($e->getMessage());
@@ -122,7 +122,7 @@ abstract class BaseTestRunner
 
             if (!$suiteMethod->isStatic()) {
                 $this->runFailed(
-                    'suite() method must be static.'
+                    'suite() method must be static.',
                 );
 
                 return null;

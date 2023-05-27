@@ -68,8 +68,8 @@ final class Xml
             '',
             htmlspecialchars(
                 self::convertToUtf8($string),
-                ENT_QUOTES
-            )
+                ENT_QUOTES,
+            ),
         );
     }
 
@@ -127,7 +127,7 @@ final class Xml
                         throw new Exception(
                             $e->getMessage(),
                             $e->getCode(),
-                            $e
+                            $e,
                         );
                     }
                     // @codeCoverageIgnoreEnd

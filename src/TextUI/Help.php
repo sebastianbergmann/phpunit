@@ -246,7 +246,7 @@ final class Help
                         {
                             return Color::colorize('fg-cyan', $matches[0]);
                         },
-                        $arg
+                        $arg,
                     );
                     $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->maxDescLength, PHP_EOL));
 

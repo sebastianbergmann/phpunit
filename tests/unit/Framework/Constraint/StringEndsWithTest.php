@@ -72,7 +72,7 @@ Failed asserting that 'error' ends with "suffix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -95,7 +95,7 @@ Failed asserting that 'error' ends with "suffix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

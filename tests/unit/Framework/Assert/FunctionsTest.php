@@ -22,9 +22,9 @@ final class FunctionsTest extends TestCase
         preg_match_all(
             '/function (assert[^ \(]+)/',
             file_get_contents(
-                __DIR__ . '/../../../../src/Framework/Assert/Functions.php'
+                __DIR__ . '/../../../../src/Framework/Assert/Functions.php',
             ),
-            $matches
+            $matches,
         );
 
         self::$globalAssertionFunctions = $matches[1];
@@ -38,7 +38,7 @@ final class FunctionsTest extends TestCase
         Assert::assertContains(
             $methodName,
             self::$globalAssertionFunctions,
-            "Mapping for Assert::{$methodName} is missing in Functions.php"
+            "Mapping for Assert::{$methodName} is missing in Functions.php",
         );
     }
 
@@ -47,9 +47,9 @@ final class FunctionsTest extends TestCase
         preg_match_all(
             '/public static function (assert[^ \(]+)/',
             file_get_contents(
-                __DIR__ . '/../../../../src/Framework/Assert.php'
+                __DIR__ . '/../../../../src/Framework/Assert.php',
             ),
-            $matches
+            $matches,
         );
 
         return array_reduce(
@@ -60,7 +60,7 @@ final class FunctionsTest extends TestCase
 
                 return $functionNames;
             },
-            []
+            [],
         );
     }
 }

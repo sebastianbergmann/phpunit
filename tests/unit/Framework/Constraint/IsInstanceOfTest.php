@@ -42,9 +42,9 @@ Failed asserting that '%s' is an instance of class "%s".
 EOT
                     ,
                     stdClass::class,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }
@@ -58,9 +58,9 @@ EOT
         $this->assertSame(
             sprintf(
                 'is instance of class "%s"',
-                NotExistingClass::class
+                NotExistingClass::class,
             ),
-            $constraint->toString()
+            $constraint->toString(),
         );
     }
 }

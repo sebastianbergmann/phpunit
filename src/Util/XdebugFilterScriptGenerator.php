@@ -32,10 +32,10 @@ final class XdebugFilterScriptGenerator
             {
                 return sprintf(
                     "        '%s'",
-                    $item
+                    $item,
                 );
             },
-            $this->getItems($filter)
+            $this->getItems($filter),
         );
 
         $files = implode(",\n", $files);
@@ -67,7 +67,7 @@ EOF;
             if (is_string($path)) {
                 $files[] = sprintf(
                     addslashes('%s' . DIRECTORY_SEPARATOR),
-                    $path
+                    $path,
                 );
             }
         }

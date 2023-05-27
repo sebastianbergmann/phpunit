@@ -66,7 +66,7 @@ class MultipleDataProviderTest extends TestCase
                 [null, null, 'ok'],
                 [null, null, 'ok'],
                 [null, null, 'ok'],
-            ]
+            ],
         );
 
         return $object->getIterator();

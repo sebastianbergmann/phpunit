@@ -60,7 +60,7 @@ Failed asserting that an empty string is valid JSON.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }

@@ -23,7 +23,7 @@ class ThrowExceptionTestCase extends TestCase
     {
         throw new RuntimeException(
             'Cannot compute at this time.',
-            9000
+            9000,
         );
     }
 }

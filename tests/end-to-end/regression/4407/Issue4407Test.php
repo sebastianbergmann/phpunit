@@ -15,7 +15,7 @@ final class Issue4407Test extends TestCase
     {
         $this->assertXmlStringEqualsXmlFile(
             __DIR__ . '/test.xml',
-            new DOMDocument
+            new DOMDocument,
         );
     }
 }

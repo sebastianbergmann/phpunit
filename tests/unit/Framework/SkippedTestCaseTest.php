@@ -19,7 +19,7 @@ final class SkippedTestCaseTest extends TestCase
     {
         $testCase = new SkippedTestCase(
             'Foo',
-            'testThatBars'
+            'testThatBars',
         );
 
         $this->assertSame('', $testCase->getMessage());
@@ -32,13 +32,13 @@ final class SkippedTestCaseTest extends TestCase
 
         $testCase = new SkippedTestCase(
             $className,
-            $methodName
+            $methodName,
         );
 
         $name = sprintf(
             '%s::%s',
             $className,
-            $methodName
+            $methodName,
         );
 
         $this->assertSame($name, $testCase->getName());
@@ -51,7 +51,7 @@ final class SkippedTestCaseTest extends TestCase
         $testCase = new SkippedTestCase(
             'Foo',
             'testThatBars',
-            $message
+            $message,
         );
 
         $this->assertSame($message, $testCase->getMessage());
@@ -66,7 +66,7 @@ final class SkippedTestCaseTest extends TestCase
         $testCase = new SkippedTestCase(
             $className,
             $methodName,
-            $message
+            $message,
         );
 
         $result = $testCase->run();
@@ -81,7 +81,7 @@ final class SkippedTestCaseTest extends TestCase
         $name = sprintf(
             '%s::%s',
             $className,
-            $methodName
+            $methodName,
         );
 
         $this->assertSame($name, $failure->getTestName());

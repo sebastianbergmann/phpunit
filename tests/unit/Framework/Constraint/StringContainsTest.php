@@ -35,7 +35,7 @@ Failed asserting that 'barbazbar' contains "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -88,7 +88,7 @@ Failed asserting that 'barbazbar' contains "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

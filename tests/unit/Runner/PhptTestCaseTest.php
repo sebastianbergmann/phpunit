@@ -336,7 +336,7 @@ EOF
                 "\r\n" => PHP_EOL,
                 "\r"   => PHP_EOL,
                 "\n"   => PHP_EOL,
-            ]
+            ],
         );
     }
 }

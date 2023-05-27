@@ -47,8 +47,8 @@ final class ConsecutiveParameters implements ParametersRule
                     sprintf(
                         'Parameter group #%d must be an array or Traversable, got %s',
                         $index,
-                        gettype($parameters)
-                    )
+                        gettype($parameters),
+                    ),
                 );
             }
 
@@ -111,8 +111,8 @@ final class ConsecutiveParameters implements ParametersRule
             throw new ExpectationFailedException(
                 sprintf(
                     'Parameter count for invocation %s is too low.',
-                    $invocation->toString()
-                )
+                    $invocation->toString(),
+                ),
             );
         }
 
@@ -124,8 +124,8 @@ final class ConsecutiveParameters implements ParametersRule
                     'value.',
                     $i,
                     $callIndex,
-                    $invocation->toString()
-                )
+                    $invocation->toString(),
+                ),
             );
         }
     }

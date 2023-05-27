@@ -23,7 +23,7 @@ final class SchemaDetector
             $filename,
             false,
             true,
-            true
+            true,
         );
 
         foreach (['9.2', '8.5'] as $candidate) {

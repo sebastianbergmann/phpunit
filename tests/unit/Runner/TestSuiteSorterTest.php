@@ -152,7 +152,7 @@ final class TestSuiteSorterTest extends TestCase
             $suite,
             TestSuiteSorter::ORDER_DURATION,
             $resolveDependencies,
-            TestSuiteSorter::ORDER_DEFAULT
+            TestSuiteSorter::ORDER_DEFAULT,
         );
 
         $this->assertSame($expected, $sorter->getExecutionOrder());
@@ -205,7 +205,7 @@ final class TestSuiteSorterTest extends TestCase
             $suite,
             TestSuiteSorter::ORDER_DURATION,
             $resolveDependencies,
-            TestSuiteSorter::ORDER_DEFAULT
+            TestSuiteSorter::ORDER_DEFAULT,
         );
 
         $this->assertSame($expected, $sorter->getExecutionOrder());
@@ -604,9 +604,9 @@ final class TestSuiteSorterTest extends TestCase
         $this->assertSame(
             sprintf(
                 'No tests found in class "%s".',
-                EmptyTestCaseTest::class
+                EmptyTestCaseTest::class,
             ),
-            $suite->tests()[0]->tests()[0]->getMessage()
+            $suite->tests()[0]->tests()[0]->getMessage(),
         );
     }
 

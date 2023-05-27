@@ -56,7 +56,7 @@ final class ExceptionWrapperTest extends TestCase
         $this->assertStringNotContainsString(
             'BadFunctionCallException',
             $data,
-            'Assert there is s no other BadFunctionCallException mention in stacktrace'
+            'Assert there is s no other BadFunctionCallException mention in stacktrace',
         );
     }
 }

@@ -23,7 +23,7 @@ final class ClassHasAttributeTest extends ConstraintTestCase
     public function testConstraintClassHasAttribute(): void
     {
         $constraint = new ClassHasAttribute(
-            'privateAttribute'
+            'privateAttribute',
         );
 
         $this->assertTrue($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
@@ -41,9 +41,9 @@ Failed asserting that class "%s" has attribute "privateAttribute".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -55,7 +55,7 @@ EOF
     public function testConstraintClassHasAttribute2(): void
     {
         $constraint = new ClassHasAttribute(
-            'privateAttribute'
+            'privateAttribute',
         );
 
         try {
@@ -69,9 +69,9 @@ Failed asserting that class "%s" has attribute "privateAttribute".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

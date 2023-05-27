@@ -205,7 +205,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             ' %s %s%s' . PHP_EOL,
             $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
-            $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''
+            $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : '',
         );
 
         $this->write($line);

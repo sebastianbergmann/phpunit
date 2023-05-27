@@ -106,7 +106,7 @@ abstract class Constraint implements Countable, SelfDescribing
     {
         $failureDescription = sprintf(
             'Failed asserting that %s.',
-            $this->failureDescription($other)
+            $this->failureDescription($other),
         );
 
         $additionalFailureDescription = $this->additionalFailureDescription($other);
@@ -121,7 +121,7 @@ abstract class Constraint implements Countable, SelfDescribing
 
         throw new ExpectationFailedException(
             $failureDescription,
-            $comparisonFailure
+            $comparisonFailure,
         );
     }
 

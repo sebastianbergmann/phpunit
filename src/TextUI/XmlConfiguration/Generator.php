@@ -67,7 +67,7 @@ EOT;
                 $srcDirectory,
                 $cacheDirectory,
             ],
-            self::TEMPLATE
+            self::TEMPLATE,
         );
     }
 }

@@ -143,9 +143,9 @@ final class Matcher
                     "Expectation failed for %s when %s\n%s",
                     $this->methodNameRule->toString(),
                     $this->invocationRule->toString(),
-                    $e->getMessage()
+                    $e->getMessage(),
                 ),
-                $e->getComparisonFailure()
+                $e->getComparisonFailure(),
             );
         }
 
@@ -199,9 +199,9 @@ final class Matcher
                     "Expectation failed for %s when %s\n%s",
                     $this->methodNameRule->toString(),
                     $this->invocationRule->toString(),
-                    $e->getMessage()
+                    $e->getMessage(),
                 ),
-                $e->getComparisonFailure()
+                $e->getComparisonFailure(),
             );
         }
 
@@ -239,8 +239,8 @@ final class Matcher
                     "Expectation failed for %s when %s.\n%s",
                     $this->methodNameRule->toString(),
                     $this->invocationRule->toString(),
-                    TestFailure::exceptionToString($e)
-                )
+                    TestFailure::exceptionToString($e),
+                ),
             );
         }
     }

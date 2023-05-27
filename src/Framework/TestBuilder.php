@@ -31,28 +31,28 @@ final class TestBuilder
 
         if (!$theClass->isInstantiable()) {
             return new ErrorTestCase(
-                sprintf('Cannot instantiate class "%s".', $className)
+                sprintf('Cannot instantiate class "%s".', $className),
             );
         }
 
         $backupSettings = TestUtil::getBackupSettings(
             $className,
-            $methodName
+            $methodName,
         );
 
         $preserveGlobalState = TestUtil::getPreserveGlobalStateSettings(
             $className,
-            $methodName
+            $methodName,
         );
 
         $runTestInSeparateProcess = TestUtil::getProcessIsolationSettings(
             $className,
-            $methodName
+            $methodName,
         );
 
         $runClassInSeparateProcess = TestUtil::getClassProcessIsolationSettings(
             $className,
-            $methodName
+            $methodName,
         );
 
         $constructor = $theClass->getConstructor();
@@ -71,14 +71,14 @@ final class TestBuilder
             try {
                 $data = TestUtil::getProvidedData(
                     $className,
-                    $methodName
+                    $methodName,
                 );
             } catch (IncompleteTestError $e) {
                 $message = sprintf(
                     "Test for %s::%s marked incomplete by data provider\n%s",
                     $className,
                     $methodName,
-                    $this->throwableToString($e)
+                    $this->throwableToString($e),
                 );
 
                 $data = new IncompleteTestCase($className, $methodName, $message);
@@ -87,7 +87,7 @@ final class TestBuilder
                     "Test for %s::%s skipped by data provider\n%s",
                     $className,
                     $methodName,
-                    $this->throwableToString($e)
+                    $this->throwableToString($e),
                 );
 
                 $data = new SkippedTestCase($className, $methodName, $message);
@@ -96,7 +96,7 @@ final class TestBuilder
                     "The data provider specified for %s::%s is invalid.\n%s",
                     $className,
                     $methodName,
-                    $this->throwableToString($t)
+                    $this->throwableToString($t),
                 );
 
                 $data = new ErrorTestCase($message);
@@ -111,7 +111,7 @@ final class TestBuilder
                     $runTestInSeparateProcess,
                     $preserveGlobalState,
                     $runClassInSeparateProcess,
-                    $backupSettings
+                    $backupSettings,
                 );
             } else {
                 $test = $this->buildTestWithoutData($className);
@@ -125,7 +125,7 @@ final class TestBuilder
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $runClassInSeparateProcess,
-                $backupSettings
+                $backupSettings,
             );
         }
 
@@ -149,7 +149,7 @@ final class TestBuilder
         array $backupSettings
     ): DataProviderTestSuite {
         $dataProviderTestSuite = new DataProviderTestSuite(
-            $className . '::' . $methodName
+            $className . '::' . $methodName,
         );
 
         $groups = TestUtil::getGroups($className, $methodName);
@@ -169,7 +169,7 @@ final class TestBuilder
                     $runTestInSeparateProcess,
                     $preserveGlobalState,
                     $runClassInSeparateProcess,
-                    $backupSettings
+                    $backupSettings,
                 );
 
                 $dataProviderTestSuite->addTest($_test, $groups);
@@ -208,7 +208,7 @@ final class TestBuilder
 
         if ($backupSettings['backupStaticAttributes'] !== null) {
             $test->setBackupStaticAttributes(
-                $backupSettings['backupStaticAttributes']
+                $backupSettings['backupStaticAttributes'],
             );
         }
     }
@@ -225,7 +225,7 @@ final class TestBuilder
             return sprintf(
                 "%s\n%s",
                 $message,
-                Filter::getFilteredStacktrace($t)
+                Filter::getFilteredStacktrace($t),
             );
         }
 
@@ -233,7 +233,7 @@ final class TestBuilder
             "%s: %s\n%s",
             get_class($t),
             $message,
-            Filter::getFilteredStacktrace($t)
+            Filter::getFilteredStacktrace($t),
         );
     }
 }

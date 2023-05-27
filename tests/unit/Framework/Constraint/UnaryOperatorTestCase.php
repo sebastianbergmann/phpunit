@@ -50,7 +50,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $this->assertTrue($reflection->isSubclassOf(Operator::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
-            Operator::class
+            Operator::class,
         ));
     }
 

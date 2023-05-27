@@ -35,7 +35,7 @@ Failed asserting that 1 is less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -58,7 +58,7 @@ Failed asserting that 1 is less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

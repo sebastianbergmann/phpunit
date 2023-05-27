@@ -184,7 +184,7 @@ Failed asserting that actual size 0 matches expected size 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }

@@ -62,7 +62,7 @@ final class IsIdentical extends Constraint
                     $this->value,
                     $other,
                     sprintf("'%s'", $this->value),
-                    sprintf("'%s'", $other)
+                    sprintf("'%s'", $other),
                 );
             }
 
@@ -72,7 +72,7 @@ final class IsIdentical extends Constraint
                     $this->value,
                     $other,
                     $this->exporter()->export($this->value),
-                    $this->exporter()->export($other)
+                    $this->exporter()->export($other),
                 );
             }
 
