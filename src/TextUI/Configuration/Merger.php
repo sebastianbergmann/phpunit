@@ -838,6 +838,8 @@ final class Merger
                 $xmlConfiguration->php()->filesVariables(),
                 $xmlConfiguration->php()->requestVariables(),
             ),
+            $xmlConfiguration->phpunit()->controlGarbageCollector(),
+            $xmlConfiguration->phpunit()->numberOfTestsBeforeGarbageCollection(),
         );
     }
 }
