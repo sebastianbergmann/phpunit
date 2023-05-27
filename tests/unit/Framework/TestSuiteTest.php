@@ -225,7 +225,7 @@ final class TestSuiteTest extends TestCase
                 'Test for %s::testDependency skipped by data provider',
                 DataProviderDependencyTest::class,
             ),
-            $message
+            $message,
         );
     }
 
@@ -252,7 +252,7 @@ final class TestSuiteTest extends TestCase
     public function testDoNotSkipInheritedClass(): void
     {
         $suite = new TestSuite(
-            'DontSkipInheritedClass'
+            'DontSkipInheritedClass',
         );
 
         $dir = TEST_FILES_PATH . DIRECTORY_SEPARATOR . 'Inheritance' . DIRECTORY_SEPARATOR;
@@ -281,7 +281,7 @@ final class TestSuiteTest extends TestCase
         $this->assertSame(
             'Exception in PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest::tearDownAfterClass' . PHP_EOL .
             'throw Exception in tearDownAfterClass()',
-            $failure->thrownException()->getMessage()
+            $failure->thrownException()->getMessage(),
         );
     }
 

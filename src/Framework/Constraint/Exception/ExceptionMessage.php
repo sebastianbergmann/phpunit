@@ -65,14 +65,14 @@ final class ExceptionMessage extends Constraint
         if ($this->expectedMessage === '') {
             return sprintf(
                 "exception message is empty but is '%s'",
-                $other->getMessage()
+                $other->getMessage(),
             );
         }
 
         return sprintf(
             "exception message '%s' contains '%s'",
             $other->getMessage(),
-            $this->expectedMessage
+            $this->expectedMessage,
         );
     }
 }

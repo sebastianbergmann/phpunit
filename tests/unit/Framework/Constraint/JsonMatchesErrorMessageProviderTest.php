@@ -73,7 +73,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            JsonMatchesErrorMessageProvider::translateTypeToPrefix($type)
+            JsonMatchesErrorMessageProvider::translateTypeToPrefix($type),
         );
     }
 
@@ -91,8 +91,8 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
             $expected,
             JsonMatchesErrorMessageProvider::determineJsonError(
                 (string) $error,
-                $prefix
-            )
+                $prefix,
+            ),
         );
     }
 }

@@ -107,7 +107,7 @@ final class DefaultTestResultCache implements TestResultCache
 
         $data = json_decode(
             file_get_contents($this->cacheFilename),
-            true
+            true,
         );
 
         if ($data === null) {
@@ -138,8 +138,8 @@ final class DefaultTestResultCache implements TestResultCache
             throw new Exception(
                 sprintf(
                     'Cannot create directory "%s" for result cache file',
-                    $this->cacheFilename
-                )
+                    $this->cacheFilename,
+                ),
             );
         }
 
@@ -150,9 +150,9 @@ final class DefaultTestResultCache implements TestResultCache
                     'version' => self::VERSION,
                     'defects' => $this->defects,
                     'times'   => $this->times,
-                ]
+                ],
             ),
-            LOCK_EX
+            LOCK_EX,
         );
     }
 }

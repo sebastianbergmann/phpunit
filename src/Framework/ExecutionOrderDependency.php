@@ -77,8 +77,8 @@ final class ExecutionOrderDependency
                 static function (self $d)
                 {
                     return $d->isValid();
-                }
-            )
+                },
+            ),
         );
     }
 
@@ -95,7 +95,7 @@ final class ExecutionOrderDependency
             {
                 return $dependency->getTarget();
             },
-            $existing
+            $existing,
         );
 
         foreach ($additional as $dependency) {
@@ -132,7 +132,7 @@ final class ExecutionOrderDependency
             {
                 return $dependency->getTarget();
             },
-            $right
+            $right,
         );
 
         foreach ($left as $dependency) {

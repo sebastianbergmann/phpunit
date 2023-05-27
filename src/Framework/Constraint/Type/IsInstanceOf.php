@@ -36,7 +36,7 @@ final class IsInstanceOf extends Constraint
         return sprintf(
             'is instance of %s "%s"',
             $this->getType(),
-            $this->className
+            $this->className,
         );
     }
 
@@ -67,7 +67,7 @@ final class IsInstanceOf extends Constraint
             '%s is an instance of %s "%s"',
             $this->exporter()->shortenedExport($other),
             $this->getType(),
-            $this->className
+            $this->className,
         );
     }
 

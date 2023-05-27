@@ -30,7 +30,7 @@ final class GlobalStateTest extends TestCase
         $this->assertEquals(
             "require_once '" . $dir . "/GlobalStateTest.php';\n" .
             "require_once 'file://" . $dir . "/XmlTest.php';\n",
-            GlobalState::processIncludedFilesAsString($files)
+            GlobalState::processIncludedFilesAsString($files),
         );
     }
 }

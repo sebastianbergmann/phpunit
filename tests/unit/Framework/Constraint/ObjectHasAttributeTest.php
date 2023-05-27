@@ -39,9 +39,9 @@ Failed asserting that object of class "%s" has attribute "privateAttribute".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -65,9 +65,9 @@ Failed asserting that object of class "%s" has attribute "privateAttribute".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

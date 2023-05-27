@@ -30,7 +30,7 @@ abstract class ConstraintTestCase extends TestCase
         $this->assertTrue($reflection->implementsInterface(Countable::class), sprintf(
             'Failed to assert that "%s" implements "%s".',
             $className,
-            Countable::class
+            Countable::class,
         ));
     }
 
@@ -43,7 +43,7 @@ abstract class ConstraintTestCase extends TestCase
         $this->assertTrue($reflection->implementsInterface(SelfDescribing::class), sprintf(
             'Failed to assert that "%s" implements "%s".',
             $className,
-            SelfDescribing::class
+            SelfDescribing::class,
         ));
     }
 
@@ -55,7 +55,7 @@ abstract class ConstraintTestCase extends TestCase
         return preg_replace(
             '/Test$/',
             '',
-            static::class
+            static::class,
         );
     }
 }

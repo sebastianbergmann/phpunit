@@ -65,13 +65,13 @@ final class IsJson extends Constraint
 
         json_decode($other);
         $error = (string) JsonMatchesErrorMessageProvider::determineJsonError(
-            (string) json_last_error()
+            (string) json_last_error(),
         );
 
         return sprintf(
             '%s is valid JSON (%s)',
             $this->exporter()->shortenedExport($other),
-            $error
+            $error,
         );
     }
 }

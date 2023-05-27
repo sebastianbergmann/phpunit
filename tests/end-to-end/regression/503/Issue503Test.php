@@ -15,7 +15,7 @@ class Issue503Test extends TestCase
     {
         $this->assertSame(
             "foo\n",
-            "foo\r\n"
+            "foo\r\n",
         );
     }
 }

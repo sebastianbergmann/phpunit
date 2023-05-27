@@ -28,8 +28,8 @@ final class DuplicateMethodException extends \PHPUnit\Framework\Exception implem
             sprintf(
                 'Cannot double using a method list that contains duplicates: "%s" (duplicate: "%s")',
                 implode(', ', $methods),
-                implode(', ', array_unique(array_diff_assoc($methods, array_unique($methods))))
-            )
+                implode(', ', array_unique(array_diff_assoc($methods, array_unique($methods)))),
+            ),
         );
     }
 }

@@ -56,7 +56,7 @@ Failed asserting that actual size 2 matches expected size 5.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

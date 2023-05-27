@@ -29,7 +29,7 @@ final class ConsecutiveParametersTest extends TestCase
             ->method('foo')
             ->withConsecutive(
                 ['bar'],
-                [21, 42]
+                [21, 42],
             );
 
         $this->assertNull($mock->foo('bar'));
@@ -45,7 +45,7 @@ final class ConsecutiveParametersTest extends TestCase
         $mock->expects($this->any())
             ->method('foo')
             ->withConsecutive(
-                ['bar']
+                ['bar'],
             );
 
         $this->assertNull($mock->foo('bar'));
@@ -62,7 +62,7 @@ final class ConsecutiveParametersTest extends TestCase
             ->method('foo')
             ->withConsecutive(
                 ['bar'],
-                [21, 42]
+                [21, 42],
             );
 
         $mock->foo('bar');
@@ -85,7 +85,7 @@ final class ConsecutiveParametersTest extends TestCase
             ->method('foo')
             ->withConsecutive(
                 ['bar'],
-                $this->identicalTo([21, 42]) // this is not an array
+                $this->identicalTo([21, 42]), // this is not an array
             );
     }
 }

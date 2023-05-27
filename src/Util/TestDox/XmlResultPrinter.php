@@ -164,7 +164,7 @@ final class XmlResultPrinter extends Printer implements TestListener
             static function ($group)
             {
                 return !($group === 'small' || $group === 'medium' || $group === 'large' || strpos($group, '__phpunit_') === 0);
-            }
+            },
         );
 
         $testNode = $this->document->createElement('test');
@@ -188,7 +188,7 @@ final class XmlResultPrinter extends Printer implements TestListener
 
         $annotations = TestUtil::parseTestMethodAnnotations(
             get_class($test),
-            $test->getName(false)
+            $test->getName(false),
         );
 
         foreach (['class', 'method'] as $type) {
@@ -240,7 +240,7 @@ final class XmlResultPrinter extends Printer implements TestListener
                 throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
             // @codeCoverageIgnoreEnd

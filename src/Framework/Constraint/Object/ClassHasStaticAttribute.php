@@ -28,7 +28,7 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
     {
         return sprintf(
             'has static attribute "%s"',
-            $this->attributeName()
+            $this->attributeName(),
         );
     }
 
@@ -51,7 +51,7 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
         // @codeCoverageIgnoreEnd

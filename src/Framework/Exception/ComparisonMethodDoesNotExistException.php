@@ -23,10 +23,10 @@ final class ComparisonMethodDoesNotExistException extends Exception
             sprintf(
                 'Comparison method %s::%s() does not exist.',
                 $className,
-                $methodName
+                $methodName,
             ),
             0,
-            null
+            null,
         );
     }
 

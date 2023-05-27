@@ -130,8 +130,8 @@ final class IsType extends Constraint
                 sprintf(
                     'Type specified for PHPUnit\Framework\Constraint\IsType <%s> ' .
                     'is not a valid type.',
-                    $type
-                )
+                    $type,
+                ),
             );
         }
 
@@ -145,7 +145,7 @@ final class IsType extends Constraint
     {
         return sprintf(
             'is of type "%s"',
-            $this->type
+            $this->type,
         );
     }
 

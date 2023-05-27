@@ -129,13 +129,13 @@ final class Builder
             $options = (new CliParser)->parse(
                 $parameters,
                 self::SHORT_OPTIONS,
-                array_merge(self::LONG_OPTIONS, $additionalLongOptions)
+                array_merge(self::LONG_OPTIONS, $additionalLongOptions),
             );
         } catch (CliParserException $e) {
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -880,7 +880,7 @@ final class Builder
             $verbose,
             $version,
             $coverageFilter,
-            $xdebugFilterFile
+            $xdebugFilterFile,
         );
     }
 }

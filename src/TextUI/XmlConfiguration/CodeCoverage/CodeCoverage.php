@@ -150,7 +150,7 @@ final class CodeCoverage
     {
         if (!$this->hasCacheDirectory()) {
             throw new Exception(
-                'No cache directory has been configured'
+                'No cache directory has been configured',
             );
         }
 
@@ -222,7 +222,7 @@ final class CodeCoverage
     {
         if (!$this->hasClover()) {
             throw new Exception(
-                'Code Coverage report "Clover XML" has not been configured'
+                'Code Coverage report "Clover XML" has not been configured',
             );
         }
 
@@ -244,7 +244,7 @@ final class CodeCoverage
     {
         if (!$this->hasCobertura()) {
             throw new Exception(
-                'Code Coverage report "Cobertura XML" has not been configured'
+                'Code Coverage report "Cobertura XML" has not been configured',
             );
         }
 
@@ -266,7 +266,7 @@ final class CodeCoverage
     {
         if (!$this->hasCrap4j()) {
             throw new Exception(
-                'Code Coverage report "Crap4J" has not been configured'
+                'Code Coverage report "Crap4J" has not been configured',
             );
         }
 
@@ -288,7 +288,7 @@ final class CodeCoverage
     {
         if (!$this->hasHtml()) {
             throw new Exception(
-                'Code Coverage report "HTML" has not been configured'
+                'Code Coverage report "HTML" has not been configured',
             );
         }
 
@@ -310,7 +310,7 @@ final class CodeCoverage
     {
         if (!$this->hasPhp()) {
             throw new Exception(
-                'Code Coverage report "PHP" has not been configured'
+                'Code Coverage report "PHP" has not been configured',
             );
         }
 
@@ -332,7 +332,7 @@ final class CodeCoverage
     {
         if (!$this->hasText()) {
             throw new Exception(
-                'Code Coverage report "Text" has not been configured'
+                'Code Coverage report "Text" has not been configured',
             );
         }
 
@@ -354,7 +354,7 @@ final class CodeCoverage
     {
         if (!$this->hasXml()) {
             throw new Exception(
-                'Code Coverage report "XML" has not been configured'
+                'Code Coverage report "XML" has not been configured',
             );
         }
 

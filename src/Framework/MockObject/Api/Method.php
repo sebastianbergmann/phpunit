@@ -24,7 +24,7 @@ trait Method
 
         return call_user_func_array(
             [$expects, 'method'],
-            func_get_args()
+            func_get_args(),
         );
     }
 }

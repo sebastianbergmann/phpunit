@@ -226,37 +226,37 @@ final class JUnit extends Printer implements TestListener
     {
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'tests',
-            (string) $this->testSuiteTests[$this->testSuiteLevel]
+            (string) $this->testSuiteTests[$this->testSuiteLevel],
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'assertions',
-            (string) $this->testSuiteAssertions[$this->testSuiteLevel]
+            (string) $this->testSuiteAssertions[$this->testSuiteLevel],
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'errors',
-            (string) $this->testSuiteErrors[$this->testSuiteLevel]
+            (string) $this->testSuiteErrors[$this->testSuiteLevel],
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'warnings',
-            (string) $this->testSuiteWarnings[$this->testSuiteLevel]
+            (string) $this->testSuiteWarnings[$this->testSuiteLevel],
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'failures',
-            (string) $this->testSuiteFailures[$this->testSuiteLevel]
+            (string) $this->testSuiteFailures[$this->testSuiteLevel],
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'skipped',
-            (string) $this->testSuiteSkipped[$this->testSuiteLevel]
+            (string) $this->testSuiteSkipped[$this->testSuiteLevel],
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'time',
-            sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
+            sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel]),
         );
 
         if ($this->testSuiteLevel > 1) {
@@ -293,7 +293,7 @@ final class JUnit extends Printer implements TestListener
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
         // @codeCoverageIgnoreEnd
@@ -308,7 +308,7 @@ final class JUnit extends Printer implements TestListener
                 throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
             // @codeCoverageIgnoreEnd
@@ -337,16 +337,16 @@ final class JUnit extends Printer implements TestListener
 
         $this->currentTestCase->setAttribute(
             'assertions',
-            (string) $numAssertions
+            (string) $numAssertions,
         );
 
         $this->currentTestCase->setAttribute(
             'time',
-            sprintf('%F', $time)
+            sprintf('%F', $time),
         );
 
         $this->testSuites[$this->testSuiteLevel]->appendChild(
-            $this->currentTestCase
+            $this->currentTestCase,
         );
 
         $this->testSuiteTests[$this->testSuiteLevel]++;
@@ -361,7 +361,7 @@ final class JUnit extends Printer implements TestListener
         if (!empty($testOutput)) {
             $systemOut = $this->document->createElement(
                 'system-out',
-                Xml::prepareString($testOutput)
+                Xml::prepareString($testOutput),
             );
 
             $this->currentTestCase->appendChild($systemOut);
@@ -392,12 +392,12 @@ final class JUnit extends Printer implements TestListener
 
         $buffer .= trim(
             TestFailure::exceptionToString($t) . "\n" .
-            Filter::getFilteredStacktrace($t)
+            Filter::getFilteredStacktrace($t),
         );
 
         $fault = $this->document->createElement(
             $type,
-            Xml::prepareString($buffer)
+            Xml::prepareString($buffer),
         );
 
         if ($t instanceof ExceptionWrapper) {

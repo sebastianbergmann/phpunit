@@ -50,8 +50,8 @@ final class VersionComparisonOperator
             throw new Exception(
                 sprintf(
                     '"%s" is not a valid version_compare() operator',
-                    $operator
-                )
+                    $operator,
+                ),
             );
         }
     }

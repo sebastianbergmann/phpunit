@@ -45,8 +45,8 @@ final class XmlTest extends TestCase
                 '%s::prepareString("\x%02x") should not crash %s',
                 Xml::class,
                 ord($char),
-                DOMDocument::class
-            )
+                DOMDocument::class,
+            ),
         );
     }
 

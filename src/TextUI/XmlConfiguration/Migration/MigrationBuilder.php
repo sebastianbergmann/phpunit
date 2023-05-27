@@ -51,8 +51,8 @@ final class MigrationBuilder
             throw new MigrationBuilderException(
                 sprintf(
                     'Migration from schema version %s is not supported',
-                    $fromVersion
-                )
+                    $fromVersion,
+                ),
             );
         }
 

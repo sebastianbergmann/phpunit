@@ -52,7 +52,7 @@ abstract class TraversableContains extends Constraint
         return sprintf(
             '%s %s',
             is_array($other) ? 'an array' : 'a traversable',
-            $this->toString()
+            $this->toString(),
         );
     }
 

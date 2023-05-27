@@ -40,7 +40,7 @@ class ClassHasAttribute extends Constraint
     {
         return sprintf(
             'has attribute "%s"',
-            $this->attributeName
+            $this->attributeName,
         );
     }
 
@@ -59,7 +59,7 @@ class ClassHasAttribute extends Constraint
             throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
         // @codeCoverageIgnoreEnd
@@ -79,7 +79,7 @@ class ClassHasAttribute extends Constraint
             '%sclass "%s" %s',
             is_object($other) ? 'object of ' : '',
             is_object($other) ? get_class($other) : $other,
-            $this->toString()
+            $this->toString(),
         );
     }
 

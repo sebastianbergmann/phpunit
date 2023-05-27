@@ -369,14 +369,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlFileEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'foo.xml'
+            TEST_FILES_PATH . 'foo.xml',
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlFileEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'bar.xml'
+            TEST_FILES_PATH . 'bar.xml',
         );
     }
 
@@ -384,14 +384,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlFileNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'bar.xml'
+            TEST_FILES_PATH . 'bar.xml',
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlFileNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'foo.xml'
+            TEST_FILES_PATH . 'foo.xml',
         );
     }
 
@@ -399,14 +399,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlStringEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml'),
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
     }
 
@@ -414,14 +414,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlStringNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml'),
         );
     }
 
@@ -638,7 +638,7 @@ XML;
 
         $tempFile = tempnam(
             sys_get_temp_dir(),
-            'unreadable'
+            'unreadable',
         );
 
         chmod($tempFile, octdec('0'));
@@ -810,17 +810,17 @@ XML;
     {
         $this->assertNotSame(
             new stdClass,
-            null
+            null,
         );
 
         $this->assertNotSame(
             null,
-            new stdClass
+            new stdClass,
         );
 
         $this->assertNotSame(
             new stdClass,
-            new stdClass
+            new stdClass,
         );
 
         $o = new stdClass;
@@ -919,8 +919,8 @@ XML;
             'anything',
             $this->logicalAnd(
                 $this->anything(),
-                $this->anything()
-            )
+                $this->anything(),
+            ),
         );
     }
 
@@ -933,8 +933,8 @@ XML;
             'anything',
             $this->logicalOr(
                 $this->anything(),
-                $this->anything()
-            )
+                $this->anything(),
+            ),
         );
     }
 
@@ -947,8 +947,8 @@ XML;
             'anything',
             $this->logicalXor(
                 $this->anything(),
-                $this->logicalNot($this->anything())
-            )
+                $this->logicalNot($this->anything()),
+            ),
         );
     }
 
@@ -1042,7 +1042,7 @@ XML;
             $this->callback(static function ($other)
             {
                 return true;
-            })
+            }),
         );
     }
 
@@ -1055,14 +1055,14 @@ XML;
     {
         $this->assertFileEquals(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'foo.xml'
+            TEST_FILES_PATH . 'foo.xml',
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileEquals(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'bar.xml'
+            TEST_FILES_PATH . 'bar.xml',
         );
     }
 
@@ -1070,14 +1070,14 @@ XML;
     {
         $this->assertFileNotEquals(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'bar.xml'
+            TEST_FILES_PATH . 'bar.xml',
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileNotEquals(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'foo.xml'
+            TEST_FILES_PATH . 'foo.xml',
         );
     }
 
@@ -1085,14 +1085,14 @@ XML;
     {
         $this->assertStringEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml'),
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
     }
 
@@ -1100,14 +1100,14 @@ XML;
     {
         $this->assertStringEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml'),
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
     }
 
@@ -1115,14 +1115,14 @@ XML;
     {
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml'),
         );
     }
 
@@ -1130,14 +1130,14 @@ XML;
     {
         $this->assertStringNotEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml'),
         );
     }
 
@@ -1145,14 +1145,14 @@ XML;
     {
         $this->assertFileEqualsIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'fooUppercase.xml'
+            TEST_FILES_PATH . 'fooUppercase.xml',
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileEqualsIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'bar.xml'
+            TEST_FILES_PATH . 'bar.xml',
         );
     }
 
@@ -1160,14 +1160,14 @@ XML;
     {
         $this->assertFileNotEqualsIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'bar.xml'
+            TEST_FILES_PATH . 'bar.xml',
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileNotEqualsIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            TEST_FILES_PATH . 'fooUppercase.xml'
+            TEST_FILES_PATH . 'fooUppercase.xml',
         );
     }
 
@@ -1461,7 +1461,7 @@ XML;
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 'Failed asserting that \'{"Mascott":"Beastie"}\' matches JSON string "{"Mascott":"Tux"}".',
-                $e->getMessage()
+                $e->getMessage(),
             );
 
             return;
@@ -1930,8 +1930,8 @@ XML;
             true,
             $this->logicalAnd(
                 $this->isTrue(),
-                $this->isTrue()
-            )
+                $this->isTrue(),
+            ),
         );
 
         $this->expectException(AssertionFailedError::class);
@@ -1940,8 +1940,8 @@ XML;
             true,
             $this->logicalAnd(
                 $this->isTrue(),
-                $this->isFalse()
-            )
+                $this->isFalse(),
+            ),
         );
     }
 
@@ -1951,8 +1951,8 @@ XML;
             true,
             $this->logicalOr(
                 $this->isTrue(),
-                $this->isFalse()
-            )
+                $this->isFalse(),
+            ),
         );
 
         $this->expectException(AssertionFailedError::class);
@@ -1961,8 +1961,8 @@ XML;
             true,
             $this->logicalOr(
                 $this->isFalse(),
-                $this->isFalse()
-            )
+                $this->isFalse(),
+            ),
         );
     }
 
@@ -1972,8 +1972,8 @@ XML;
             true,
             $this->logicalXor(
                 $this->isTrue(),
-                $this->isFalse()
-            )
+                $this->isFalse(),
+            ),
         );
 
         $this->expectException(AssertionFailedError::class);
@@ -1982,8 +1982,8 @@ XML;
             true,
             $this->logicalXor(
                 $this->isTrue(),
-                $this->isTrue()
-            )
+                $this->isTrue(),
+            ),
         );
     }
 

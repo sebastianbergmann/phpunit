@@ -330,7 +330,7 @@ final class XmlConfigurationTest extends TestCase
                             7 => TEST_FILES_PATH . 'MyRelativePath',
                             8 => true,
                         ],
-                        $listener->arguments()
+                        $listener->arguments(),
                     );
 
                     break;
@@ -389,7 +389,7 @@ final class XmlConfigurationTest extends TestCase
                             6 => TEST_FILES_PATH . 'MyTestFile.php',
                             7 => TEST_FILES_PATH . 'MyRelativePath',
                         ],
-                        $extension->arguments()
+                        $extension->arguments(),
                     );
 
                     break;
@@ -675,7 +675,7 @@ final class XmlConfigurationTest extends TestCase
     {
         $this->assertSame(
             CliTestDoxPrinter::class,
-            $this->configuration('configuration_testdox.xml')->phpunit()->printerClass()
+            $this->configuration('configuration_testdox.xml')->phpunit()->printerClass(),
         );
     }
 

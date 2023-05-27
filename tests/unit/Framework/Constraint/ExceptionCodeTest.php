@@ -31,7 +31,7 @@ Failed asserting that 456 is equal to expected exception code 123.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

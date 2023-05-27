@@ -39,7 +39,7 @@ final class ReturnReference implements Stub
 
         return sprintf(
             'return user-specified reference %s',
-            $exporter->export($this->reference)
+            $exporter->export($this->reference),
         );
     }
 }

@@ -34,7 +34,7 @@ Failed asserting that an array has the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -56,7 +56,7 @@ custom message\nFailed asserting that an array has the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -78,7 +78,7 @@ Failed asserting that an array has the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
         }
     }

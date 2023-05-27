@@ -23,9 +23,9 @@ final class MigrationTest extends TestCase
             (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.3.xml'),
             (new XmlLoader)->load(
                 (new Migrator)->migrate(
-                    __DIR__ . '/../../_files/XmlConfigurationMigration/input-9.2.xml'
-                )
-            )
+                    __DIR__ . '/../../_files/XmlConfigurationMigration/input-9.2.xml',
+                ),
+            ),
         );
     }
 }

@@ -23,7 +23,7 @@ abstract class OperatorTestCase extends ConstraintTestCase
         $this->assertTrue($reflection->isSubclassOf(Constraint::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
-            Constraint::class
+            Constraint::class,
         ));
     }
 

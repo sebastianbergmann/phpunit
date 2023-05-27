@@ -161,8 +161,8 @@ final class ExcludeList
             throw new Exception(
                 sprintf(
                     '"%s" is not a directory',
-                    $directory
-                )
+                    $directory,
+                ),
             );
         }
 

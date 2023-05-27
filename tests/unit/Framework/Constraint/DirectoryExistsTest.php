@@ -58,7 +58,7 @@ Failed asserting that directory "{$directory}" exists.
 
 PHP
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

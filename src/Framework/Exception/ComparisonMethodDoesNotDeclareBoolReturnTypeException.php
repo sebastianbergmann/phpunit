@@ -23,10 +23,10 @@ final class ComparisonMethodDoesNotDeclareBoolReturnTypeException extends Except
             sprintf(
                 'Comparison method %s::%s() does not declare bool return type.',
                 $className,
-                $methodName
+                $methodName,
             ),
             0,
-            null
+            null,
         );
     }
 

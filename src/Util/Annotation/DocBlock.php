@@ -128,7 +128,7 @@ final class DocBlock
             $class->getEndLine(),
             $class->getFileName(),
             $className,
-            $className
+            $className,
         );
     }
 
@@ -145,7 +145,7 @@ final class DocBlock
             $method->getEndLine(),
             $method->getFileName(),
             $method->getName(),
-            $classNameInHierarchy
+            $classNameInHierarchy,
         );
     }
 
@@ -263,7 +263,7 @@ final class DocBlock
             array_filter([
                 'setting'            => $recordedSettings,
                 'extension_versions' => $extensionVersions,
-            ])
+            ]),
         );
     }
 
@@ -290,8 +290,8 @@ final class DocBlock
                 throw new InvalidDataSetException(
                     sprintf(
                         'Data set %s is invalid.',
-                        is_int($key) ? '#' . $key : '"' . $key . '"'
-                    )
+                        is_int($key) ? '#' . $key : '"' . $key . '"',
+                    ),
                 );
             }
         }
@@ -399,14 +399,14 @@ final class DocBlock
                 $dataProviderClass = new ReflectionClass($dataProviderClassName);
 
                 $dataProviderMethod = $dataProviderClass->getMethod(
-                    $dataProviderMethodName
+                    $dataProviderMethodName,
                 );
                 // @codeCoverageIgnoreStart
             } catch (ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
                 // @codeCoverageIgnoreEnd
             }
@@ -435,8 +435,8 @@ final class DocBlock
                             sprintf(
                                 'The key "%s" has already been defined in the data provider "%s".',
                                 $key,
-                                $match
-                            )
+                                $match,
+                            ),
                         );
                     } else {
                         $data[$key] = $value;
@@ -478,7 +478,7 @@ final class DocBlock
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception(
-                    'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
+                    'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg(),
                 );
             }
 
@@ -533,14 +533,14 @@ final class DocBlock
                     {
                         return self::parseDocBlock((string) $trait->getDocComment());
                     },
-                    array_values($reflector->getTraits())
-                )
+                    array_values($reflector->getTraits()),
+                ),
             );
         }
 
         return array_merge(
             $annotations,
-            self::parseDocBlock((string) $reflector->getDocComment())
+            self::parseDocBlock((string) $reflector->getDocComment()),
         );
     }
 }

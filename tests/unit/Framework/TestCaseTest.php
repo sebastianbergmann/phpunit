@@ -98,9 +98,9 @@ class TestCaseTest extends TestCase
         $this->assertEquals(
             sprintf(
                 '%s::testCaseToString',
-                self::class
+                self::class,
             ),
-            $this->toString()
+            $this->toString(),
         );
     }
 
@@ -113,12 +113,12 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             [new ExecutionOrderDependency(static::class, 'testCaseDefaultExecutionOrderDependencies')],
-            $this->provides()
+            $this->provides(),
         );
 
         $this->assertEquals(
             [],
-            $this->requires()
+            $this->requires(),
         );
     }
 
@@ -377,7 +377,7 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals(
             "Failed asserting that exception message 'A runtime error occurred' contains 'A logic error occurred'.",
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -427,7 +427,7 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals(
             "Failed asserting that exception message 'A runtime error occurred' matches '/logic .*? occurred/'.",
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -441,7 +441,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             "Invalid expected exception message regex given: '#runtime .*? occurred/'",
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -449,7 +449,7 @@ class TestCaseTest extends TestCase
     {
         $exception = new InvalidArgumentException(
             'Cannot compute at this time.',
-            9000
+            9000,
         );
 
         $test = new ThrowExceptionTestCase('testWithExpectExceptionObject');
@@ -466,7 +466,7 @@ class TestCaseTest extends TestCase
     {
         $exception = new RuntimeException(
             'This is fine!',
-            9000
+            9000,
         );
 
         $test = new ThrowExceptionTestCase('testWithExpectExceptionObject');
@@ -483,7 +483,7 @@ class TestCaseTest extends TestCase
     {
         $exception = new RuntimeException(
             'Cannot compute at this time.',
-            9001
+            9001,
         );
 
         $test = new ThrowExceptionTestCase('testWithExpectExceptionObject');
@@ -500,7 +500,7 @@ class TestCaseTest extends TestCase
     {
         $exception = new RuntimeException(
             'Cannot compute at this time',
-            9000
+            9000,
         );
 
         $test = new ThrowExceptionTestCase('testWithExpectExceptionObject');
@@ -517,7 +517,7 @@ class TestCaseTest extends TestCase
     {
         $exception = new RuntimeException(
             'Cannot compute at this time',
-            9000
+            9000,
         );
 
         $test = new ThrowExceptionTestCase('testWithExpectExceptionObject');
@@ -727,7 +727,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'PHPUnit >= 1111111 is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -739,7 +739,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'PHP >= 9999999 is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -751,7 +751,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'Operating system matching /DOESNOTEXIST/i is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -763,7 +763,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'Operating system DOESNOTEXIST is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -775,7 +775,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'Function testFunc is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -786,7 +786,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             'Extension testExt is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -797,7 +797,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             'Extension testExt >= 1.8.0 is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -816,7 +816,7 @@ class TestCaseTest extends TestCase
             'Extension testExtOne is required.' . PHP_EOL .
             'Extension testExt2 is required.' . PHP_EOL .
             'Extension testExtThree >= 2.0 is required.',
-            $test->getStatusMessage()
+            $test->getStatusMessage(),
         );
     }
 
@@ -992,7 +992,7 @@ class TestCaseTest extends TestCase
             Mockable::class,
             [
                 'mockableMethod' => false,
-            ]
+            ],
         );
 
         $this->assertFalse($mock->mockableMethod());
@@ -1133,7 +1133,7 @@ class TestCaseTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(sprintf(
             '%s::$name must be a non-blank string.',
-            TestCase::class
+            TestCase::class,
         ));
 
         $testCase->runBare();

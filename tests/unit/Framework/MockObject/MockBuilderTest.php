@@ -58,7 +58,7 @@ final class MockBuilderTest extends TestCase
         $this->expectException(CannotUseOnlyMethodsException::class);
         $this->expectExceptionMessage(sprintf(
             'Trying to configure method "mockableMethodWithCrazyName" with onlyMethods(), but it does not exist in class "%s". Use addMethods() for methods that do not exist in the class',
-            Mockable::class
+            Mockable::class,
         ));
 
         $this->getMockBuilder(Mockable::class)
@@ -90,7 +90,7 @@ final class MockBuilderTest extends TestCase
         $this->expectException(CannotUseAddMethodsException::class);
         $this->expectExceptionMessage(sprintf(
             'Trying to configure method "mockableMethod" with addMethods(), but it exists in class "%s". Use onlyMethods() for methods that exist in the class',
-            Mockable::class
+            Mockable::class,
         ));
 
         $this->getMockBuilder(Mockable::class)

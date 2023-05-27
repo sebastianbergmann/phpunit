@@ -52,7 +52,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $this->assertTrue($reflection->isSubclassOf(Operator::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
-            Operator::class
+            Operator::class,
         ));
     }
 
@@ -192,8 +192,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
                     {
                         return $operand->toString();
                     },
-                    $constraints
-                )
+                    $constraints,
+                ),
             );
             $message = "Failed asserting that 'the following expression is true' " . $expectedString;
             $this->expectException(ExpectationFailedException::class);

@@ -48,7 +48,7 @@ final class IsReadable extends Constraint
     {
         return sprintf(
             '"%s" is readable',
-            $other
+            $other,
         );
     }
 }

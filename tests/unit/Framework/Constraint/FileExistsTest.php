@@ -34,7 +34,7 @@ Failed asserting that file "foo" exists.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -57,7 +57,7 @@ Failed asserting that file "foo" exists.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

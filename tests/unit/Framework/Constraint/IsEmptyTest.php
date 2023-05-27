@@ -39,7 +39,7 @@ Failed asserting that an array is empty.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -61,7 +61,7 @@ custom message\nFailed asserting that an array is empty.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

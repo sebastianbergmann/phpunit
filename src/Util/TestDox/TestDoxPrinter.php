@@ -381,8 +381,8 @@ class TestDoxPrinter extends DefaultResultPrinter
                 {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
-                preg_split('/\r\n|\r|\n/', $message)
-            )
+                preg_split('/\r\n|\r|\n/', $message),
+            ),
         );
     }
 }

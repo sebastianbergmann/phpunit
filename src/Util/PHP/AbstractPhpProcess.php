@@ -184,7 +184,7 @@ abstract class AbstractPhpProcess
             $test,
             $result,
             $_result['stdout'],
-            $_result['stderr']
+            $_result['stderr'],
         );
     }
 
@@ -199,15 +199,15 @@ abstract class AbstractPhpProcess
             $settings = array_merge(
                 $settings,
                 $this->runtime->getCurrentSettings(
-                    array_keys(ini_get_all('pcov'))
-                )
+                    array_keys(ini_get_all('pcov')),
+                ),
             );
         } elseif ($this->runtime->hasXdebug()) {
             $settings = array_merge(
                 $settings,
                 $this->runtime->getCurrentSettings(
-                    array_keys(ini_get_all('xdebug'))
-                )
+                    array_keys(ini_get_all('xdebug')),
+                ),
             );
         }
 
@@ -268,7 +268,7 @@ abstract class AbstractPhpProcess
             $result->addError(
                 $test,
                 new Exception(trim($stderr)),
-                $time
+                $time,
             );
         } else {
             set_error_handler(
@@ -278,7 +278,7 @@ abstract class AbstractPhpProcess
                 static function ($errno, $errstr, $errfile, $errline): void
                 {
                     throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-                }
+                },
             );
 
             try {
@@ -293,7 +293,7 @@ abstract class AbstractPhpProcess
                     $result->addFailure(
                         $test,
                         new AssertionFailedError('Test was run in child process and ended unexpectedly'),
-                        $time
+                        $time,
                     );
                 }
             } catch (ErrorException $e) {
@@ -303,7 +303,7 @@ abstract class AbstractPhpProcess
                 $result->addError(
                     $test,
                     new Exception(trim($stdout), 0, $e),
-                    $time
+                    $time,
                 );
             }
 
@@ -322,7 +322,7 @@ abstract class AbstractPhpProcess
 
                 if ($result->getCollectCodeCoverageInformation()) {
                     $result->getCodeCoverage()->merge(
-                        $childResult->getCodeCoverage()
+                        $childResult->getCodeCoverage(),
                     );
                 }
 
@@ -338,37 +338,37 @@ abstract class AbstractPhpProcess
                     $result->addError(
                         $test,
                         $this->getException($notImplemented[0]),
-                        $time
+                        $time,
                     );
                 } elseif (!empty($risky)) {
                     $result->addError(
                         $test,
                         $this->getException($risky[0]),
-                        $time
+                        $time,
                     );
                 } elseif (!empty($skipped)) {
                     $result->addError(
                         $test,
                         $this->getException($skipped[0]),
-                        $time
+                        $time,
                     );
                 } elseif (!empty($errors)) {
                     $result->addError(
                         $test,
                         $this->getException($errors[0]),
-                        $time
+                        $time,
                     );
                 } elseif (!empty($warnings)) {
                     $result->addWarning(
                         $test,
                         $this->getException($warnings[0]),
-                        $time
+                        $time,
                     );
                 } elseif (!empty($failures)) {
                     $result->addFailure(
                         $test,
                         $this->getException($failures[0]),
-                        $time
+                        $time,
                     );
                 }
             }
@@ -402,12 +402,12 @@ abstract class AbstractPhpProcess
                 sprintf(
                     '%s: %s',
                     $exceptionArray['_PHP_Incomplete_Class_Name'],
-                    $exceptionArray['message']
+                    $exceptionArray['message'],
                 ),
                 $exceptionArray['code'],
                 $exceptionArray['file'],
                 $exceptionArray['line'],
-                $exceptionArray['trace']
+                $exceptionArray['trace'],
             );
         }
 

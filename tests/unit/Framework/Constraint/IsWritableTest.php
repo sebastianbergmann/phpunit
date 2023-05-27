@@ -34,7 +34,7 @@ Failed asserting that "foo" is writable.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

@@ -122,8 +122,8 @@ EOT;
         $this->write(
             sprintf(
                 self::CLASS_HEADER,
-                $this->currentTestClassPrettified
-            )
+                $this->currentTestClassPrettified,
+            ),
         );
     }
 
@@ -136,8 +136,8 @@ EOT;
             sprintf(
                 "            <li class=\"%s\">%s</li>\n",
                 $success ? 'success' : 'defect',
-                $name
-            )
+                $name,
+            ),
         );
     }
 

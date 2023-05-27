@@ -39,9 +39,9 @@ Failed asserting that class "%s" has static attribute "privateStaticAttribute".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;
@@ -65,9 +65,9 @@ Failed asserting that class "%s" has static attribute "foo".
 
 EOF
                     ,
-                    stdClass::class
+                    stdClass::class,
                 ),
-                TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e),
             );
 
             return;

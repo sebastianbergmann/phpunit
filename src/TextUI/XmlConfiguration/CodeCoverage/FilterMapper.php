@@ -22,7 +22,7 @@ final class FilterMapper
             $filter->includeDirectory(
                 $directory->path(),
                 $directory->suffix(),
-                $directory->prefix()
+                $directory->prefix(),
             );
         }
 
@@ -34,7 +34,7 @@ final class FilterMapper
             $filter->excludeDirectory(
                 $directory->path(),
                 $directory->suffix(),
-                $directory->prefix()
+                $directory->prefix(),
             );
         }
 
