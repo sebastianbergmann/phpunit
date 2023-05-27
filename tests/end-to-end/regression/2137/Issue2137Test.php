@@ -24,7 +24,7 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
     public function provideBrandService()
     {
         return [
-            //[true, true]
+            // [true, true]
             new stdClass, // not valid
         ];
     }

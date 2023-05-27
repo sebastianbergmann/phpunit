@@ -2287,7 +2287,7 @@ XML;
                 new DateTime('2013-03-29T05:13:35-0500'),
             ],
             // Exception
-            //array(new Exception('Exception 1'), new Exception('Exception 2')),
+            // array(new Exception('Exception 1'), new Exception('Exception 2')),
             // different types
             [new SampleClass(4, 8, 15), false],
             [false, new SampleClass(4, 8, 15)],
@@ -2372,7 +2372,7 @@ XML;
                 new DateTime('2013-03-29T04:13:35-0600'),
             ],
             // Exception
-            //array(new Exception('Exception 1'), new Exception('Exception 1')),
+            // array(new Exception('Exception 1'), new Exception('Exception 1')),
             // mixed types
             [0, '0'],
             ['0', 0],

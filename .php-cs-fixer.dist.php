@@ -109,9 +109,10 @@ $config->setFinder($finder)
         'implode_call' => true,
         'include' => true,
         'increment_style' => [
-            'style' => PhpCsFixer\Fixer\Operator\IncrementStyleFixer::STYLE_POST,
+            'style' => 'post',
         ],
         'indentation_type' => true,
+        'integer_literal_case' => true,
         'is_null' => true,
         'lambda_not_used_import' => true,
         'line_ending' => true,
@@ -158,8 +159,8 @@ $config->setFinder($finder)
         'no_leading_import_slash' => true,
         'no_leading_namespace_whitespace' => true,
         'no_mixed_echo_print' => ['use' => 'print'],
-        'no_multiple_statements_per_line' => true,
         'no_multiline_whitespace_around_double_arrow' => true,
+        'no_multiple_statements_per_line' => true,
         'no_null_property_initialization' => true,
         'no_php4_constructor' => true,
         'no_short_bool_cast' => true,
@@ -184,6 +185,7 @@ $config->setFinder($finder)
         'no_unset_cast' => true,
         'no_unset_on_property' => true,
         'no_unused_imports' => true,
+        'no_useless_concat_operator' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
         'no_useless_sprintf' => true,
@@ -222,9 +224,9 @@ $config->setFinder($finder)
         ],
         'ordered_imports' => [
             'imports_order' => [
-                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CONST,
-                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_FUNCTION,
-                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CLASS,
+                'const',
+                'function',
+                'class',
             ]
         ],
         'ordered_interfaces' => [
@@ -248,7 +250,6 @@ $config->setFinder($finder)
         'phpdoc_no_package' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_order' => true,
-        'phpdoc_param_order' => true,
         'phpdoc_order_by_value' => [
             'annotations' => [
                 'covers',
@@ -257,6 +258,7 @@ $config->setFinder($finder)
                 'uses',
             ],
         ],
+        'phpdoc_param_order' => true,
         'phpdoc_return_self_reference' => true,
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
@@ -286,6 +288,7 @@ $config->setFinder($finder)
         'single_class_element_per_statement' => true,
         'single_import_per_statement' => true,
         'single_line_after_imports' => true,
+        'single_line_comment_spacing' => true,
         'single_quote' => true,
         'single_space_around_construct' => true,
         'single_trait_insert_per_statement' => true,
