@@ -34,7 +34,7 @@ final class TestIterator2 implements Iterator
         next($this->data);
     }
 
-    public function key(): string|int|null
+    public function key(): null|int|string
     {
         return key($this->data);
     }

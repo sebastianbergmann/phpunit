@@ -15,7 +15,7 @@ class ClassWithUnionReturnTypes
     {
     }
 
-    public function returnsBoolOrIntOrNull(): bool|int|null
+    public function returnsBoolOrIntOrNull(): null|bool|int
     {
     }
 

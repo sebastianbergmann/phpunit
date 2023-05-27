@@ -408,7 +408,7 @@ final class JunitXmlLogger
      *
      * @psalm-assert !null $this->currentTestCase
      */
-    private function createTestCase(Prepared|MarkedIncomplete|Skipped|Errored|Failed $event): void
+    private function createTestCase(Errored|Failed|MarkedIncomplete|Prepared|Skipped $event): void
     {
         $testCase = $this->document->createElement('testcase');
 

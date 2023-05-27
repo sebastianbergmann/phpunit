@@ -32,7 +32,7 @@ final class TestIterator implements Iterator
         return $this->position < count($this->array);
     }
 
-    public function key(): string|int
+    public function key(): int|string
     {
         return $this->position;
     }

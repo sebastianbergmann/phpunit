@@ -503,11 +503,11 @@ final class Loader
         $include = [];
         $exclude = [];
 
-        foreach ($xpath->query('groups' . '/include/group') as $group) {
+        foreach ($xpath->query('groups/include/group') as $group) {
             $include[] = new Group($group->textContent);
         }
 
-        foreach ($xpath->query('groups' . '/exclude/group') as $group) {
+        foreach ($xpath->query('groups/exclude/group') as $group) {
             $exclude[] = new Group($group->textContent);
         }
 

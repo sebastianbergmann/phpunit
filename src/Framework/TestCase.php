@@ -2152,7 +2152,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @throws ExpectationFailedException
      */
-    private function verifyExceptionExpectations(Throwable|\Exception $exception): void
+    private function verifyExceptionExpectations(\Exception|Throwable $exception): void
     {
         if ($this->expectedException !== null) {
             $this->assertThat(

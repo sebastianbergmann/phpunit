@@ -105,7 +105,7 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::incomplete());
     }
 
-    public function testTriggeredNotice(PhpNoticeTriggered|NoticeTriggered $event): void
+    public function testTriggeredNotice(NoticeTriggered|PhpNoticeTriggered $event): void
     {
         if ($this->restrictNotices && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
@@ -114,7 +114,7 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::notice());
     }
 
-    public function testTriggeredDeprecation(PhpDeprecationTriggered|PhpunitDeprecationTriggered|DeprecationTriggered $event): void
+    public function testTriggeredDeprecation(DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered $event): void
     {
         if (!$event instanceof PhpunitDeprecationTriggered &&
             $this->restrictDeprecations &&
@@ -130,7 +130,7 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::risky());
     }
 
-    public function testTriggeredWarning(PhpWarningTriggered|PhpunitWarningTriggered|WarningTriggered $event): void
+    public function testTriggeredWarning(PhpunitWarningTriggered|PhpWarningTriggered|WarningTriggered $event): void
     {
         if (!$event instanceof PhpunitWarningTriggered &&
             $this->restrictWarnings &&

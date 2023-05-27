@@ -32,7 +32,7 @@ Hello PHPUnit!
 EOF;
     private string $filename;
     private ?PhptTestCase $testCase;
-    private AbstractPhpProcess|MockObject|null $phpProcess;
+    private null|AbstractPhpProcess|MockObject $phpProcess;
 
     protected function setUp(): void
     {

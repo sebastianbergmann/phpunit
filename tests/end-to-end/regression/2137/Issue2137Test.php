@@ -17,7 +17,7 @@ class Issue2137Test extends TestCase
     public static function provideBrandService()
     {
         return [
-            //[true, true]
+            // [true, true]
             new stdClass, // not valid
         ];
     }

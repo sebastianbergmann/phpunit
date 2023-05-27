@@ -329,7 +329,7 @@ final class Application
         return $cliConfiguration;
     }
 
-    private function loadXmlConfiguration(string|false $configurationFile): XmlConfiguration
+    private function loadXmlConfiguration(false|string $configurationFile): XmlConfiguration
     {
         if (!$configurationFile) {
             return DefaultConfiguration::create();
@@ -387,7 +387,7 @@ final class Application
         ];
     }
 
-    private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration, string|false $configurationFile): void
+    private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration, false|string $configurationFile): void
     {
         if ($cliConfiguration->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
