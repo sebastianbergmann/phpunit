@@ -314,7 +314,8 @@ $config->setFinder($finder)
         'trailing_comma_in_multiline' => [
             'elements' => [
                 'arguments',
-                'arrays'
+                'arrays',
+                'match',
             ]
         ],
         'trim_array_spaces' => true,
