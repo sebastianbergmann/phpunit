@@ -319,6 +319,7 @@ $config->setFinder($finder)
             ]
         ],
         'trim_array_spaces' => true,
+        'types_spaces' => true,
         'unary_operator_spaces' => true,
         'visibility_required' => [
             'elements' => [
