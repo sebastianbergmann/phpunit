@@ -342,6 +342,8 @@ final class LoaderTest extends TestCase
         $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $phpunit->executionOrder());
         $this->assertFalse($phpunit->defectsFirst());
         $this->assertTrue($phpunit->resolveDependencies());
+        $this->assertTrue($phpunit->controlGarbageCollector());
+        $this->assertSame(1000, $phpunit->numberOfTestsBeforeGarbageCollection());
     }
 
     public function test_TestDox_configuration_is_parsed_correctly(): void
