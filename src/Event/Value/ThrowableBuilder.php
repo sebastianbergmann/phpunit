@@ -36,7 +36,7 @@ final class ThrowableBuilder
             $t->getMessage(),
             ThrowableToStringMapper::map($t),
             Filter::getFilteredStacktrace($t),
-            $previous
+            $previous,
         );
     }
 }

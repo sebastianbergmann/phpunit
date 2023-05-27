@@ -116,7 +116,7 @@ final class GroupsTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            (new Groups)->groups($className, $methodName, $includeVirtual)
+            (new Groups)->groups($className, $methodName, $includeVirtual),
         );
     }
 

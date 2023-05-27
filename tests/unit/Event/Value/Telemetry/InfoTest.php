@@ -62,7 +62,7 @@ final class InfoTest extends TestCase
     {
         $this->assertStringMatchesFormat(
             '[00:00:00.000000000 / 00:00:00.000000000] [%d bytes]',
-            $this->info()->asString()
+            $this->info()->asString(),
         );
     }
 
@@ -90,7 +90,7 @@ final class InfoTest extends TestCase
         return new System(
             new SystemStopWatch,
             new SystemMemoryMeter,
-            $garbageCollectorStatusProvider
+            $garbageCollectorStatusProvider,
         );
     }
 }

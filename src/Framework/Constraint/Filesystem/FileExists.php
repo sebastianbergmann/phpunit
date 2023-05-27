@@ -44,7 +44,7 @@ final class FileExists extends Constraint
     {
         return sprintf(
             'file "%s" exists',
-            $other
+            $other,
         );
     }
 }

@@ -52,8 +52,8 @@ final class DirectDispatcher implements SubscribableDispatcher
             throw new UnknownSubscriberTypeException(
                 sprintf(
                     'Subscriber "%s" does not implement any known interface - did you forget to register it?',
-                    $subscriber::class
-                )
+                    $subscriber::class,
+                ),
             );
         }
 
@@ -93,8 +93,8 @@ final class DirectDispatcher implements SubscribableDispatcher
             throw new UnknownEventTypeException(
                 sprintf(
                     'Unknown event type "%s"',
-                    $eventClassName
-                )
+                    $eventClassName,
+                ),
             );
         }
 

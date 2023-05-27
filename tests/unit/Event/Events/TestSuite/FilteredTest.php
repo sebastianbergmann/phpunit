@@ -24,7 +24,7 @@ final class FilteredTest extends AbstractEventTestCase
 
         $event = new Filtered(
             $telemetryInfo,
-            $testSuite
+            $testSuite,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class FilteredTest extends AbstractEventTestCase
     {
         $event = new Filtered(
             $this->telemetryInfo(),
-            $this->testSuiteValueObject()
+            $this->testSuiteValueObject(),
         );
 
         $this->assertSame('Test Suite Filtered (9001 tests)', $event->asString());

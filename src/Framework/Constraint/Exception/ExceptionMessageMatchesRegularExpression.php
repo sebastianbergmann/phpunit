@@ -45,8 +45,8 @@ final class ExceptionMessageMatchesRegularExpression extends Constraint
             throw new \PHPUnit\Framework\Exception(
                 sprintf(
                     'Invalid expected exception message regular expression given: %s',
-                    $this->regularExpression
-                )
+                    $this->regularExpression,
+                ),
             );
         }
 
@@ -64,7 +64,7 @@ final class ExceptionMessageMatchesRegularExpression extends Constraint
         return sprintf(
             "exception message '%s' matches '%s'",
             $other,
-            $this->regularExpression
+            $this->regularExpression,
         );
     }
 }

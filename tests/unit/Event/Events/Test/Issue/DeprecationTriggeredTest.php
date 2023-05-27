@@ -31,7 +31,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             $test,
             $message,
             $file,
-            $line
+            $line,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());

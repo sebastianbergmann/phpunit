@@ -32,7 +32,7 @@ final class LoadedTest extends AbstractEventTestCase
     {
         $event = new Loaded(
             $this->telemetryInfo(),
-            $this->testSuiteValueObject()
+            $this->testSuiteValueObject(),
         );
 
         $this->assertSame('Test Suite Loaded (9001 tests)', $event->asString());

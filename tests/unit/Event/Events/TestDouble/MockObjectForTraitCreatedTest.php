@@ -24,7 +24,7 @@ final class MockObjectForTraitCreatedTest extends AbstractEventTestCase
 
         $event = new MockObjectForTraitCreated(
             $telemetryInfo,
-            $traitName
+            $traitName,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class MockObjectForTraitCreatedTest extends AbstractEventTestCase
     {
         $event = new MockObjectForTraitCreated(
             $this->telemetryInfo(),
-            'TraitName'
+            'TraitName',
         );
 
         $this->assertSame('Mock Object Created (TraitName)', $event->asString());

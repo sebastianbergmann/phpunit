@@ -211,7 +211,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         if (is_string($constraint)) {
             $this->configurableMethodNames ??= array_flip(array_map(
                 static fn (ConfigurableMethod $configurable) => strtolower($configurable->name()),
-                $this->configurableMethods
+                $this->configurableMethods,
             ));
 
             if (!array_key_exists(strtolower($constraint), $this->configurableMethodNames)) {
@@ -271,7 +271,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             if (!$configuredMethod->mayReturn($value)) {
                 throw new IncompatibleReturnValueException(
                     $configuredMethod,
-                    $value
+                    $value,
                 );
             }
         }

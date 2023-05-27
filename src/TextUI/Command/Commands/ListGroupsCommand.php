@@ -42,7 +42,7 @@ final class ListGroupsCommand implements Command
 
             $buffer .= sprintf(
                 ' - %s' . PHP_EOL,
-                $group
+                $group,
             );
         }
 

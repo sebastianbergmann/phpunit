@@ -26,7 +26,7 @@ final class TestProxyCreatedTest extends AbstractEventTestCase
         $event = new TestProxyCreated(
             $telemetryInfo,
             $className,
-            $constructorArguments
+            $constructorArguments,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -39,7 +39,7 @@ final class TestProxyCreatedTest extends AbstractEventTestCase
         $event = new TestProxyCreated(
             $this->telemetryInfo(),
             'OriginalType',
-            'exported constructor arguments'
+            'exported constructor arguments',
         );
 
         $this->assertSame('Test Proxy Created (OriginalType)', $event->asString());

@@ -45,7 +45,7 @@ final class ExecutionStarted implements Event
         return sprintf(
             'Test Runner Execution Started (%d test%s)',
             $this->testSuite->count(),
-            $this->testSuite->count() !== 1 ? 's' : ''
+            $this->testSuite->count() !== 1 ? 's' : '',
         );
     }
 }

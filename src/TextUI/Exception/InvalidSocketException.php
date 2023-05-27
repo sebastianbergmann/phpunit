@@ -22,8 +22,8 @@ final class InvalidSocketException extends RuntimeException implements Exception
         parent::__construct(
             sprintf(
                 '"%s" does not match "socket://hostname:port" format',
-                $socket
-            )
+                $socket,
+            ),
         );
     }
 }

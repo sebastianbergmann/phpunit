@@ -44,7 +44,7 @@ final class IsWritable extends Constraint
     {
         return sprintf(
             '"%s" is writable',
-            $other
+            $other,
         );
     }
 }

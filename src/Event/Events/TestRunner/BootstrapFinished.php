@@ -43,7 +43,7 @@ final class BootstrapFinished implements Event
     {
         return sprintf(
             'Bootstrap Finished (%s)',
-            $this->filename
+            $this->filename,
         );
     }
 }

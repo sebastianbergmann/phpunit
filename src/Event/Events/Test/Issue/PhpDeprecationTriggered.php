@@ -73,7 +73,7 @@ final class PhpDeprecationTriggered implements Event
         return sprintf(
             'Test Triggered PHP Deprecation (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

@@ -22,8 +22,8 @@ final class TestDirectoryNotFoundException extends RuntimeException implements E
         parent::__construct(
             sprintf(
                 'Test directory "%s" not found',
-                $path
-            )
+                $path,
+            ),
         );
     }
 }

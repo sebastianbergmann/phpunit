@@ -142,7 +142,7 @@ final class GeneratorTest extends TestCase
             true,
             true,
             true,
-            ['nonexistentMethod']
+            ['nonexistentMethod'],
         );
 
         $this->assertTrue(method_exists($mock, 'nonexistentMethod'));
@@ -176,7 +176,7 @@ final class GeneratorTest extends TestCase
             true,
             true,
             true,
-            ['nonexistentMethod']
+            ['nonexistentMethod'],
         );
 
         $this->assertTrue(method_exists($mock, 'nonexistentMethod'));
@@ -291,7 +291,7 @@ final class GeneratorTest extends TestCase
             false,
             true,
             false,
-            true
+            true,
         );
 
         $arguments = [1, 'foo', false];
@@ -341,7 +341,7 @@ final class GeneratorTest extends TestCase
             [
                 AnInterface::class,
                 AnotherInterface::class,
-            ]
+            ],
         );
 
         $this->assertInstanceOf(AnInterface::class, $stub);

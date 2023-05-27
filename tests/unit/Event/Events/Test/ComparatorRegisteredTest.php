@@ -24,7 +24,7 @@ final class ComparatorRegisteredTest extends AbstractEventTestCase
 
         $event = new ComparatorRegistered(
             $telemetryInfo,
-            $className
+            $className,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class ComparatorRegisteredTest extends AbstractEventTestCase
     {
         $event = new ComparatorRegistered(
             $this->telemetryInfo(),
-            'ClassName'
+            'ClassName',
         );
 
         $this->assertSame('Comparator Registered (ClassName)', $event->asString());

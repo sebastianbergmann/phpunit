@@ -23,8 +23,8 @@ final class ClassCannotBeFoundException extends RuntimeException implements Exce
             sprintf(
                 'Class %s cannot be found in %s',
                 $className,
-                $file
-            )
+                $file,
+            ),
         );
     }
 }

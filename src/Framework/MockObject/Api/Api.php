@@ -30,7 +30,7 @@ trait Api
     {
         if (isset(static::$__phpunit_configurableMethods)) {
             throw new ConfigurableMethodsAlreadyInitializedException(
-                'Configurable methods is already initialized and can not be reinitialized'
+                'Configurable methods is already initialized and can not be reinitialized',
             );
         }
 
@@ -55,7 +55,7 @@ trait Api
         if ($this->__phpunit_invocationMocker === null) {
             $this->__phpunit_invocationMocker = new InvocationHandler(
                 static::$__phpunit_configurableMethods,
-                $this->__phpunit_returnValueGeneration
+                $this->__phpunit_returnValueGeneration,
             );
         }
 

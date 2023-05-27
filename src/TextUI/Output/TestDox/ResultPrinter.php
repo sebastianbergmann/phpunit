@@ -96,8 +96,8 @@ final class ResultPrinter
             $this->printer->print(
                 Color::colorizeTextBox(
                     $this->colorFor($test->status()),
-                    $buffer
-                )
+                    $buffer,
+                ),
             );
         } else {
             $this->printer->print($buffer);
@@ -126,8 +126,8 @@ final class ResultPrinter
         $this->printer->print(
             $this->prefixLines(
                 $this->prefixFor('start', $test->status()),
-                ''
-            )
+                '',
+            ),
         );
 
         $this->printer->print(PHP_EOL);
@@ -140,8 +140,8 @@ final class ResultPrinter
         $this->printer->print(
             $this->prefixLines(
                 $this->prefixFor('last', $test->status()),
-                ''
-            )
+                '',
+            ),
         );
 
         $this->printer->print(PHP_EOL);
@@ -160,7 +160,7 @@ final class ResultPrinter
         if (!empty($message) && $this->colors) {
             ['message' => $message, 'diff' => $diff] = $this->colorizeMessageAndDiff(
                 $message,
-                $this->messageColorFor($test->status())
+                $this->messageColorFor($test->status()),
             );
         }
 
@@ -168,8 +168,8 @@ final class ResultPrinter
             $this->printer->print(
                 $this->prefixLines(
                     $this->prefixFor('message', $test->status()),
-                    $message
-                )
+                    $message,
+                ),
             );
 
             $this->printer->print(PHP_EOL);
@@ -179,8 +179,8 @@ final class ResultPrinter
             $this->printer->print(
                 $this->prefixLines(
                     $this->prefixFor('diff', $test->status()),
-                    $diff
-                )
+                    $diff,
+                ),
             );
 
             $this->printer->print(PHP_EOL);
@@ -194,7 +194,7 @@ final class ResultPrinter
             }
 
             $this->printer->print(
-                $this->prefixLines($prefix, PHP_EOL . $stackTrace)
+                $this->prefixLines($prefix, PHP_EOL . $stackTrace),
             );
         }
     }
@@ -272,8 +272,8 @@ final class ResultPrinter
             PHP_EOL,
             array_map(
                 static fn (string $line) => '   ' . $prefix . ($line ? ' ' . $line : ''),
-                preg_split('/\r\n|\r|\n/', $message)
-            )
+                preg_split('/\r\n|\r|\n/', $message),
+            ),
         );
     }
 
@@ -295,7 +295,7 @@ final class ResultPrinter
                 'diff'    => '┊',
                 'trace'   => '╵',
                 'last'    => '┴'
-            }
+            },
         );
     }
 

@@ -110,7 +110,7 @@ final class LogicalNotTest extends TestCase
             $this->logicalOr(
                 $this->isTrue(),
                 $this->isFalse(),
-            )
+            ),
         );
 
         $this->assertSame('not( is true or is false )', $constraint->toString());
@@ -122,7 +122,7 @@ final class LogicalNotTest extends TestCase
             $this->logicalOr(
                 $this->isTrue(),
                 $this->isFalse(),
-            )
+            ),
         );
 
         $this->assertCount(2, $constraint);

@@ -27,7 +27,7 @@ final class ReflectionTest extends TestCase
                 'file' => realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
                 'line' => 30,
             ],
-            Reflection::sourceLocationFor(BankAccountTest::class, 'testBalanceIsInitiallyZero')
+            Reflection::sourceLocationFor(BankAccountTest::class, 'testBalanceIsInitiallyZero'),
         );
     }
 
@@ -38,7 +38,7 @@ final class ReflectionTest extends TestCase
                 'file' => 'unknown',
                 'line' => 0,
             ],
-            Reflection::sourceLocationFor('DoesNotExist', 'doesNotExist')
+            Reflection::sourceLocationFor('DoesNotExist', 'doesNotExist'),
         );
     }
 

@@ -33,7 +33,7 @@ final class Registry
     {
         $result = file_put_contents(
             $path,
-            serialize(self::get())
+            serialize(self::get()),
         );
 
         if ($result) {
@@ -77,7 +77,7 @@ final class Registry
                     VersionComparisonOperator::class,
                     Source::class,
                 ],
-            ]
+            ],
         );
     }
 

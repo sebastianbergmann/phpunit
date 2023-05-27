@@ -58,7 +58,7 @@ final class ExtensionLoadedFromPhar implements Event
         return sprintf(
             'Extension Loaded from PHAR (%s %s)',
             $this->name,
-            $this->version
+            $this->version,
         );
     }
 }

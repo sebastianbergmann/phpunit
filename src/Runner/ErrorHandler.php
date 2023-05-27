@@ -54,7 +54,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 return true;
@@ -64,7 +64,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 break;
@@ -74,7 +74,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 break;
@@ -84,7 +84,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 break;
@@ -94,7 +94,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 break;
@@ -104,7 +104,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 break;
@@ -114,7 +114,7 @@ final class ErrorHandler
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
                 );
 
                 break;

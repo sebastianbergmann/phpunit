@@ -69,7 +69,7 @@ final class DataProvider
 
         if ($data === []) {
             throw new InvalidDataProviderException(
-                'Empty data set provided by data provider'
+                'Empty data set provided by data provider',
             );
         }
 
@@ -78,8 +78,8 @@ final class DataProvider
                 throw new InvalidDataProviderException(
                     sprintf(
                         'Data set %s is invalid',
-                        is_int($key) ? '#' . $key : '"' . $key . '"'
-                    )
+                        is_int($key) ? '#' . $key : '"' . $key . '"',
+                    ),
                 );
             }
         }
@@ -114,8 +114,8 @@ final class DataProvider
                         sprintf(
                             'Data Provider method %s::%s() is not public',
                             $_dataProvider->className(),
-                            $_dataProvider->methodName()
-                        )
+                            $_dataProvider->methodName(),
+                        ),
                     );
                 }
 
@@ -128,8 +128,8 @@ final class DataProvider
                         sprintf(
                             'Data Provider method %s::%s() is not static',
                             $_dataProvider->className(),
-                            $_dataProvider->methodName()
-                        )
+                            $_dataProvider->methodName(),
+                        ),
                     );
 
                     $object = $class->newInstanceWithoutConstructor();
@@ -146,8 +146,8 @@ final class DataProvider
                         sprintf(
                             'Data Provider method %s::%s() expects an argument',
                             $_dataProvider->className(),
-                            $_dataProvider->methodName()
-                        )
+                            $_dataProvider->methodName(),
+                        ),
                     );
 
                     $data = $method->invoke($object, $_dataProvider->methodName());
@@ -156,7 +156,7 @@ final class DataProvider
                 throw new InvalidDataProviderException(
                     $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 );
             }
 
@@ -172,7 +172,7 @@ final class DataProvider
                             sprintf(
                                 'The key "%s" has already been defined by a previous data provider',
                                 $key,
-                            )
+                            ),
                         );
                     } else {
                         $data[$key] = $value;
@@ -238,7 +238,7 @@ final class DataProvider
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new InvalidDataProviderException(
-                    'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
+                    'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg(),
                 );
             }
 
@@ -247,7 +247,7 @@ final class DataProvider
 
         if (!$data) {
             throw new InvalidDataProviderException(
-                'The data set for the @testWith annotation cannot be parsed.'
+                'The data set for the @testWith annotation cannot be parsed.',
             );
         }
 
@@ -271,13 +271,13 @@ final class DataProvider
             $location['line'],
             Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                 $className,
-                $methodName
+                $methodName,
             ),
             MetadataRegistry::parser()->forClassAndMethod(
                 $className,
-                $methodName
+                $methodName,
             ),
-            TestDataCollection::fromArray([])
+            TestDataCollection::fromArray([]),
         );
     }
 }

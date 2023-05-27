@@ -37,7 +37,7 @@ final class CountConstraint extends Constraint
     {
         return sprintf(
             'is accepted by %s',
-            self::class
+            self::class,
         );
     }
 

@@ -2361,8 +2361,8 @@ final class MetadataTest extends TestCase
         $metadata = Metadata::requiresPhpOnClass(
             new ComparisonRequirement(
                 '8.0.0',
-                new VersionComparisonOperator('>=')
-            )
+                new VersionComparisonOperator('>='),
+            ),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -2419,8 +2419,8 @@ final class MetadataTest extends TestCase
         $metadata = Metadata::requiresPhpOnMethod(
             new ComparisonRequirement(
                 '8.0.0',
-                new VersionComparisonOperator('>=')
-            )
+                new VersionComparisonOperator('>='),
+            ),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -2535,8 +2535,8 @@ final class MetadataTest extends TestCase
             'test',
             new ComparisonRequirement(
                 '1.0.0',
-                new VersionComparisonOperator('>=')
-            )
+                new VersionComparisonOperator('>='),
+            ),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -2653,8 +2653,8 @@ final class MetadataTest extends TestCase
             'test',
             new ComparisonRequirement(
                 '1.0.0',
-                new VersionComparisonOperator('>=')
-            )
+                new VersionComparisonOperator('>='),
+            ),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -2713,8 +2713,8 @@ final class MetadataTest extends TestCase
         $metadata = Metadata::requiresPhpunitOnClass(
             new ComparisonRequirement(
                 '10.0.0',
-                new VersionComparisonOperator('>=')
-            )
+                new VersionComparisonOperator('>='),
+            ),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -2771,8 +2771,8 @@ final class MetadataTest extends TestCase
         $metadata = Metadata::requiresPhpunitOnMethod(
             new ComparisonRequirement(
                 '10.0.0',
-                new VersionComparisonOperator('>=')
-            )
+                new VersionComparisonOperator('>='),
+            ),
         );
 
         $this->assertFalse($metadata->isAfter());

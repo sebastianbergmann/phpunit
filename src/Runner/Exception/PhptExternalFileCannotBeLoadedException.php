@@ -23,8 +23,8 @@ final class PhptExternalFileCannotBeLoadedException extends RuntimeException imp
             sprintf(
                 'Could not load --%s-- %s for PHPT file',
                 $section . '_EXTERNAL',
-                $file
-            )
+                $file,
+            ),
         );
     }
 }

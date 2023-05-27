@@ -21,7 +21,7 @@ final class AnnotationsAreNotSupportedForInternalClassesExceptionTest extends Te
     {
         $this->assertSame(
             'Annotations can only be parsed for user-defined classes, trying to parse annotations for class "the-class"',
-            (new AnnotationsAreNotSupportedForInternalClassesException('the-class'))->getMessage()
+            (new AnnotationsAreNotSupportedForInternalClassesException('the-class'))->getMessage(),
         );
     }
 }

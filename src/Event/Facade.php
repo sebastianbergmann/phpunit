@@ -91,8 +91,8 @@ final class Facade
             new Telemetry\System(
                 new Telemetry\SystemStopWatchWithOffset($offset),
                 new Telemetry\SystemMemoryMeter,
-                $this->garbageCollectorStatusProvider()
-            )
+                $this->garbageCollectorStatusProvider(),
+            ),
         );
 
         $this->sealed = true;
@@ -126,7 +126,7 @@ final class Facade
     {
         return new DispatchingEmitter(
             $this->deferredDispatcher(),
-            $this->createTelemetrySystem()
+            $this->createTelemetrySystem(),
         );
     }
 
@@ -135,7 +135,7 @@ final class Facade
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
             new Telemetry\SystemMemoryMeter,
-            $this->garbageCollectorStatusProvider()
+            $this->garbageCollectorStatusProvider(),
         );
     }
 
@@ -143,7 +143,7 @@ final class Facade
     {
         if ($this->deferringDispatcher === null) {
             $this->deferringDispatcher = new DeferringDispatcher(
-                new DirectDispatcher($this->typeMap())
+                new DirectDispatcher($this->typeMap()),
             );
         }
 
@@ -240,7 +240,7 @@ final class Facade
         foreach ($defaultEvents as $eventClass) {
             $typeMap->addMapping(
                 $eventClass . 'Subscriber',
-                $eventClass
+                $eventClass,
             );
         }
     }

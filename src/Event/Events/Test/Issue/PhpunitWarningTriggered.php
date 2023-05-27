@@ -59,7 +59,7 @@ final class PhpunitWarningTriggered implements Event
         return sprintf(
             'Test Triggered PHPUnit Warning (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

@@ -26,7 +26,7 @@ abstract class BinaryOperator extends Operator
     {
         $this->constraints = array_map(
             fn ($constraint): Constraint => $this->checkConstraint($constraint),
-            $constraints
+            $constraints,
         );
     }
 

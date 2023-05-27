@@ -22,8 +22,8 @@ final class DirectoryDoesNotExistException extends RuntimeException implements E
         parent::__construct(
             sprintf(
                 'Directory "%s" does not exist and could not be created',
-                $directory
-            )
+                $directory,
+            ),
         );
     }
 }

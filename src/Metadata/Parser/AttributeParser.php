@@ -140,7 +140,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::excludeStaticPropertyFromBackupOnClass(
                         $attributeInstance->className(),
-                        $attributeInstance->propertyName()
+                        $attributeInstance->propertyName(),
                     );
 
                     break;
@@ -195,7 +195,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresMethodOnClass(
                         $attributeInstance->className(),
-                        $attributeInstance->methodName()
+                        $attributeInstance->methodName(),
                     );
 
                     break;
@@ -226,8 +226,8 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpOnClass(
                         ConstraintRequirement::from(
-                            $attributeInstance->versionRequirement()
-                        )
+                            $attributeInstance->versionRequirement(),
+                        ),
                     );
 
                     break;
@@ -244,7 +244,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpExtensionOnClass(
                         $attributeInstance->extension(),
-                        $versionConstraint
+                        $versionConstraint,
                     );
 
                     break;
@@ -254,8 +254,8 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpunitOnClass(
                         ConstraintRequirement::from(
-                            $attributeInstance->versionRequirement()
-                        )
+                            $attributeInstance->versionRequirement(),
+                        ),
                     );
 
                     break;
@@ -265,7 +265,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresSettingOnClass(
                         $attributeInstance->setting(),
-                        $attributeInstance->value()
+                        $attributeInstance->value(),
                     );
 
                     break;
@@ -469,7 +469,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::excludeStaticPropertyFromBackupOnMethod(
                         $attributeInstance->className(),
-                        $attributeInstance->propertyName()
+                        $attributeInstance->propertyName(),
                     );
 
                     break;
@@ -503,7 +503,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresMethodOnMethod(
                         $attributeInstance->className(),
-                        $attributeInstance->methodName()
+                        $attributeInstance->methodName(),
                     );
 
                     break;
@@ -534,8 +534,8 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpOnMethod(
                         ConstraintRequirement::from(
-                            $attributeInstance->versionRequirement()
-                        )
+                            $attributeInstance->versionRequirement(),
+                        ),
                     );
 
                     break;
@@ -552,7 +552,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpExtensionOnMethod(
                         $attributeInstance->extension(),
-                        $versionConstraint
+                        $versionConstraint,
                     );
 
                     break;
@@ -562,8 +562,8 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpunitOnMethod(
                         ConstraintRequirement::from(
-                            $attributeInstance->versionRequirement()
-                        )
+                            $attributeInstance->versionRequirement(),
+                        ),
                     );
 
                     break;
@@ -573,7 +573,7 @@ final class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresSettingOnMethod(
                         $attributeInstance->setting(),
-                        $attributeInstance->value()
+                        $attributeInstance->value(),
                     );
 
                     break;
@@ -628,7 +628,7 @@ final class AttributeParser implements Parser
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection
     {
         return $this->forClass($className)->mergeWith(
-            $this->forMethod($className, $methodName)
+            $this->forMethod($className, $methodName),
         );
     }
 }

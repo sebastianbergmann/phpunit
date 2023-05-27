@@ -83,7 +83,7 @@ final class HRTimeTest extends TestCase
 
         HRTime::fromSecondsAndNanoseconds(
             -1,
-            0
+            0,
         );
     }
 
@@ -94,7 +94,7 @@ final class HRTimeTest extends TestCase
 
         HRTime::fromSecondsAndNanoseconds(
             0,
-            -1
+            -1,
         );
     }
 
@@ -105,7 +105,7 @@ final class HRTimeTest extends TestCase
 
         HRTime::fromSecondsAndNanoseconds(
             0,
-            1000000000
+            1000000000,
         );
     }
 
@@ -116,7 +116,7 @@ final class HRTimeTest extends TestCase
 
         $time = HRTime::fromSecondsAndNanoseconds(
             $seconds,
-            $nanoseconds
+            $nanoseconds,
         );
 
         $this->assertSame($seconds, $time->seconds());
@@ -132,12 +132,12 @@ final class HRTimeTest extends TestCase
     ): void {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
-            $startNanoseconds
+            $startNanoseconds,
         );
 
         $end = HRTime::fromSecondsAndNanoseconds(
             $endSeconds,
-            $endNanoseconds
+            $endNanoseconds,
         );
 
         $this->expectException(InvalidArgumentException::class);
@@ -156,12 +156,12 @@ final class HRTimeTest extends TestCase
     ): void {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
-            $startNanoseconds
+            $startNanoseconds,
         );
 
         $end = HRTime::fromSecondsAndNanoseconds(
             $endSeconds,
-            $endNanoseconds
+            $endNanoseconds,
         );
 
         $this->assertEquals($duration, $end->duration($start));

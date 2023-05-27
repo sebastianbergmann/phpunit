@@ -27,7 +27,7 @@ final class AfterLastTestMethodFinishedTest extends AbstractEventTestCase
         $event = new AfterLastTestMethodFinished(
             $telemetryInfo,
             $testClassName,
-            ...$calledMethods
+            ...$calledMethods,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class AfterLastTestMethodFinishedTest extends AbstractEventTestCase
         $event = new AfterLastTestMethodFinished(
             $this->telemetryInfo(),
             self::class,
-            ...$this->calledMethods()
+            ...$this->calledMethods(),
         );
 
         $this->assertSame(
@@ -50,7 +50,7 @@ After Last Test Method Finished:
 - AnotherHookClass::anotherHookMethod
 EOT
             ,
-            $event->asString()
+            $event->asString(),
         );
     }
 

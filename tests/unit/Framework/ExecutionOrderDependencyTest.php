@@ -61,13 +61,13 @@ class ExecutionOrderDependencyTest extends TestCase
         $this->assertSame(
             $expectedTarget,
             $dependency->getTarget(),
-            'Incorrect dependency class::method target'
+            'Incorrect dependency class::method target',
         );
 
         $this->assertSame(
             $expectedTargetIsClass,
             $dependency->targetIsClass(),
-            'Incorrect targetIsClass'
+            'Incorrect targetIsClass',
         );
     }
 
@@ -79,13 +79,13 @@ class ExecutionOrderDependencyTest extends TestCase
         $this->assertSame(
             $expectedShallowClone,
             $dependency->shallowClone(),
-            'Incorrect shallowClone option'
+            'Incorrect shallowClone option',
         );
 
         $this->assertSame(
             $expectedDeepClone,
             $dependency->deepClone(),
-            'Incorrect clone option'
+            'Incorrect clone option',
         );
     }
 
@@ -98,18 +98,18 @@ class ExecutionOrderDependencyTest extends TestCase
             [$depOne, $depTwo],
             ExecutionOrderDependency::mergeUnique(
                 [],
-                [$depOne, $depTwo]
+                [$depOne, $depTwo],
             ),
-            'Left side of merge could be empty'
+            'Left side of merge could be empty',
         );
 
         $this->assertSame(
             [$depOne, $depTwo],
             ExecutionOrderDependency::mergeUnique(
                 [$depOne, $depTwo],
-                []
+                [],
             ),
-            'Right side of merge could be empty'
+            'Right side of merge could be empty',
         );
     }
 }

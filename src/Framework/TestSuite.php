@@ -110,8 +110,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             Event\Facade::emitter()->testRunnerTriggeredWarning(
                 sprintf(
                     'Class "%s" has no public constructor.',
-                    $class->getName()
-                )
+                    $class->getName(),
+                ),
             );
 
             return $testSuite;
@@ -137,8 +137,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             Event\Facade::emitter()->testRunnerTriggeredWarning(
                 sprintf(
                     'No tests found in class "%s".',
-                    $class->getName()
-                )
+                    $class->getName(),
+                ),
             );
         }
 
@@ -214,8 +214,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             throw new Exception(
                 sprintf(
                     'Class %s is abstract',
-                    $testClass->getName()
-                )
+                    $testClass->getName(),
+                ),
             );
         }
 
@@ -224,8 +224,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 sprintf(
                     'Class %s is not a subclass of %s',
                     $testClass->getName(),
-                    TestCase::class
-                )
+                    TestCase::class,
+                ),
             );
         }
 
@@ -249,7 +249,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $this->addTest(new PhptTestCase($filename));
             } catch (RunnerException $e) {
                 Event\Facade::emitter()->testRunnerTriggeredWarning(
-                    $e->getMessage()
+                    $e->getMessage(),
                 );
             }
 
@@ -258,11 +258,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         try {
             $this->addTestSuite(
-                (new TestSuiteLoader)->load($filename)
+                (new TestSuiteLoader)->load($filename),
             );
         } catch (RunnerException $e) {
             Event\Facade::emitter()->testRunnerTriggeredWarning(
-                $e->getMessage()
+                $e->getMessage(),
             );
         }
     }
@@ -315,7 +315,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         return array_map(
             'strval',
-            array_keys($this->groups)
+            array_keys($this->groups),
         );
     }
 
@@ -456,7 +456,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 $this->requiredTests = ExecutionOrderDependency::mergeUnique(
                     ExecutionOrderDependency::filterInvalid($this->requiredTests),
-                    $test->requires()
+                    $test->requires(),
                 );
             }
 
@@ -501,17 +501,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $method->getStartLine(),
                     Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                         $className,
-                        $methodName
+                        $methodName,
                     ),
                     MetadataCollection::fromArray([]),
-                    Event\TestData\TestDataCollection::fromArray([])
+                    Event\TestData\TestDataCollection::fromArray([]),
                 ),
                 sprintf(
                     "The data provider specified for %s::%s is invalid\n%s",
                     $className,
                     $methodName,
-                    $this->throwableToString($e)
-                )
+                    $this->throwableToString($e),
+                ),
             );
 
             return;
@@ -519,13 +519,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
-                Dependencies::dependencies($class->getName(), $methodName)
+                Dependencies::dependencies($class->getName(), $methodName),
             );
         }
 
         $this->addTest(
             $test,
-            (new Groups)->groups($class->getName(), $methodName)
+            (new Groups)->groups($class->getName(), $methodName),
         );
     }
 
@@ -569,7 +569,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return sprintf(
                 "%s\n%s",
                 $message,
-                Filter::getFilteredStacktrace($t)
+                Filter::getFilteredStacktrace($t),
             );
         }
 
@@ -577,7 +577,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             "%s: %s\n%s",
             $t::class,
             $message,
-            Filter::getFilteredStacktrace($t)
+            Filter::getFilteredStacktrace($t),
         );
     }
 
@@ -607,12 +607,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
                     $this->name,
-                    $beforeClassMethod
+                    $beforeClassMethod,
                 );
 
                 $emitter->testBeforeFirstTestMethodCalled(
                     $this->name,
-                    $methodCalledBeforeFirstTest
+                    $methodCalledBeforeFirstTest,
                 );
 
                 $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
@@ -622,7 +622,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         } catch (SkippedTest|SkippedTestSuiteError $e) {
             $emitter->testSuiteSkipped(
                 $testSuiteValueObjectForEvents,
-                $e->getMessage()
+                $e->getMessage(),
             );
 
             return false;
@@ -632,13 +632,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $emitter->testBeforeFirstTestMethodErrored(
                 $this->name,
                 $methodCalledBeforeFirstTest,
-                Event\Code\ThrowableBuilder::from($t)
+                Event\Code\ThrowableBuilder::from($t),
             );
 
             if (!empty($methodsCalledBeforeFirstTest)) {
                 $emitter->testBeforeFirstTestMethodFinished(
                     $this->name,
-                    ...$methodsCalledBeforeFirstTest
+                    ...$methodsCalledBeforeFirstTest,
                 );
             }
 
@@ -648,7 +648,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         if (!empty($methodsCalledBeforeFirstTest)) {
             $emitter->testBeforeFirstTestMethodFinished(
                 $this->name,
-                ...$methodsCalledBeforeFirstTest
+                ...$methodsCalledBeforeFirstTest,
             );
         }
 
@@ -675,12 +675,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 $methodCalledAfterLastTest = new Event\Code\ClassMethod(
                     $this->name,
-                    $afterClassMethod
+                    $afterClassMethod,
                 );
 
                 $emitter->testAfterLastTestMethodCalled(
                     $this->name,
-                    $methodCalledAfterLastTest
+                    $methodCalledAfterLastTest,
                 );
 
                 $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
@@ -692,7 +692,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         if (!empty($methodsCalledAfterLastTest)) {
             $emitter->testAfterLastTestMethodFinished(
                 $this->name,
-                ...$methodsCalledAfterLastTest
+                ...$methodsCalledAfterLastTest,
             );
         }
     }

@@ -24,7 +24,7 @@ final class WarningTriggeredTest extends AbstractEventTestCase
 
         $event = new WarningTriggered(
             $telemetryInfo,
-            $message
+            $message,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class WarningTriggeredTest extends AbstractEventTestCase
     {
         $event = new WarningTriggered(
             $this->telemetryInfo(),
-            'message'
+            'message',
         );
 
         $this->assertSame('Test Runner Triggered Warning (message)', $event->asString());

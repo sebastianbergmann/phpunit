@@ -31,7 +31,7 @@ final class System
             $this->stopWatch->current(),
             $this->memoryMeter->memoryUsage(),
             $this->memoryMeter->peakMemoryUsage(),
-            $this->garbageCollectorStatusProvider->status()
+            $this->garbageCollectorStatusProvider->status(),
         );
     }
 }

@@ -23,8 +23,8 @@ final class ClassDoesNotExtendTestCaseException extends RuntimeException impleme
             sprintf(
                 'Class %s declared in %s does not extend PHPUnit\Framework\TestCase',
                 $className,
-                $file
-            )
+                $file,
+            ),
         );
     }
 }

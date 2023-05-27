@@ -70,7 +70,7 @@ final class TeamCityLogger
 
             $this->writeMessage(
                 'testCount',
-                ['count' => $testSuite->count()]
+                ['count' => $testSuite->count()],
             );
         }
 
@@ -86,7 +86,7 @@ final class TeamCityLogger
             $parameters['locationHint'] = sprintf(
                 'php_qn://%s::\\%s',
                 $testSuite->file(),
-                $testSuite->name()
+                $testSuite->name(),
             );
         } elseif ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
@@ -94,7 +94,7 @@ final class TeamCityLogger
             $parameters['locationHint'] = sprintf(
                 'php_qn://%s::\\%s',
                 $testSuite->file(),
-                $testSuite->name()
+                $testSuite->name(),
             );
 
             $parameters['name'] = $testSuite->methodName();
@@ -137,7 +137,7 @@ final class TeamCityLogger
                 'php_qn://%s::\\%s::%s',
                 $test->file(),
                 $test->className(),
-                $test->methodName()
+                $test->methodName(),
             );
         }
 
@@ -162,7 +162,7 @@ final class TeamCityLogger
                 'message'  => $event->throwable()->message(),
                 'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
-            ]
+            ],
         );
     }
 
@@ -201,7 +201,7 @@ final class TeamCityLogger
                 'message'  => $this->message($event->throwable()),
                 'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
-            ]
+            ],
         );
     }
 
@@ -246,7 +246,7 @@ final class TeamCityLogger
                 'message'  => $event->message(),
                 'details'  => '',
                 'duration' => $this->duration($event),
-            ]
+            ],
         );
     }
 
@@ -260,7 +260,7 @@ final class TeamCityLogger
             [
                 'name'     => $event->test()->name(),
                 'duration' => $this->duration($event),
-            ]
+            ],
         );
 
         $this->time = null;
@@ -303,8 +303,8 @@ final class TeamCityLogger
         $this->printer->print(
             sprintf(
                 "\n##teamcity[%s",
-                $eventName
-            )
+                $eventName,
+            ),
         );
 
         if ($this->flowId !== null) {
@@ -316,8 +316,8 @@ final class TeamCityLogger
                 sprintf(
                     " %s='%s'",
                     $key,
-                    $this->escape((string) $value)
-                )
+                    $this->escape((string) $value),
+                ),
             );
         }
 
@@ -341,7 +341,7 @@ final class TeamCityLogger
         return str_replace(
             ['|', "'", "\n", "\r", ']', '['],
             ['||', "|'", '|n', '|r', '|]', '|['],
-            $string
+            $string,
         );
     }
 
@@ -370,7 +370,7 @@ final class TeamCityLogger
             $buffer .= sprintf(
                 "\nCaused by\n%s\n%s",
                 $throwable->description(),
-                $throwable->stackTrace()
+                $throwable->stackTrace(),
             );
         }
 

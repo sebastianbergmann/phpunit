@@ -24,7 +24,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
 
         $event = new DeprecationTriggered(
             $telemetryInfo,
-            $message
+            $message,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
     {
         $event = new DeprecationTriggered(
             $this->telemetryInfo(),
-            'message'
+            'message',
         );
 
         $this->assertSame('Test Runner Triggered Deprecation (message)', $event->asString());

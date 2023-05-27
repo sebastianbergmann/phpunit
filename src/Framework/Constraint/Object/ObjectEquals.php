@@ -57,7 +57,7 @@ final class ObjectEquals extends Constraint
         if (!$object->hasMethod($this->method)) {
             throw new ComparisonMethodDoesNotExistException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
@@ -66,7 +66,7 @@ final class ObjectEquals extends Constraint
         if (!$method->hasReturnType()) {
             throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
@@ -75,28 +75,28 @@ final class ObjectEquals extends Constraint
         if (!$returnType instanceof ReflectionNamedType) {
             throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
         if ($returnType->allowsNull()) {
             throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
         if ($returnType->getName() !== 'bool') {
             throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
         if ($method->getNumberOfParameters() !== 1 || $method->getNumberOfRequiredParameters() !== 1) {
             throw new ComparisonMethodDoesNotDeclareExactlyOneParameterException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
@@ -105,7 +105,7 @@ final class ObjectEquals extends Constraint
         if (!$parameter->hasType()) {
             throw new ComparisonMethodDoesNotDeclareParameterTypeException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
@@ -114,7 +114,7 @@ final class ObjectEquals extends Constraint
         if (!$type instanceof ReflectionNamedType) {
             throw new ComparisonMethodDoesNotDeclareParameterTypeException(
                 $other::class,
-                $this->method
+                $this->method,
             );
         }
 
@@ -128,7 +128,7 @@ final class ObjectEquals extends Constraint
             throw new ComparisonMethodDoesNotAcceptParameterTypeException(
                 $other::class,
                 $this->method,
-                $this->expected::class
+                $this->expected::class,
             );
         }
 

@@ -32,7 +32,7 @@ final class SourceFilterTest extends TestCase
                     FileCollection::fromArray(
                         [
                             new File($fixtureDirectory . '/a/PrefixSuffix.php'),
-                        ]
+                        ],
                     ),
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray([]),
@@ -46,16 +46,16 @@ final class SourceFilterTest extends TestCase
                     FileCollection::fromArray(
                         [
                             new File($fixtureDirectory . '/a/PrefixSuffix.php'),
-                        ]
+                        ],
                     ),
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
                                 $fixtureDirectory . '/a',
                                 '',
-                                '.php'
+                                '.php',
                             ),
-                        ]
+                        ],
                     ),
                     FileCollection::fromArray([]),
                 ),
@@ -68,13 +68,13 @@ final class SourceFilterTest extends TestCase
                     FileCollection::fromArray(
                         [
                             new File($fixtureDirectory . '/a/PrefixSuffix.php'),
-                        ]
+                        ],
                     ),
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
                             new File($fixtureDirectory . '/a/PrefixSuffix.php'),
-                        ]
+                        ],
                     ),
                 ),
             ],
@@ -87,9 +87,9 @@ final class SourceFilterTest extends TestCase
                             new FilterDirectory(
                                 $fixtureDirectory,
                                 '',
-                                '.php'
+                                '.php',
                             ),
-                        ]
+                        ],
                     ),
                     FileCollection::fromArray([]),
                     FilterDirectoryCollection::fromArray([]),
@@ -105,16 +105,16 @@ final class SourceFilterTest extends TestCase
                             new FilterDirectory(
                                 $fixtureDirectory,
                                 '',
-                                '.php'
+                                '.php',
                             ),
-                        ]
+                        ],
                     ),
                     FileCollection::fromArray([]),
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
                             new File($fixtureDirectory . '/a/PrefixSuffix.php'),
-                        ]
+                        ],
                     ),
                 ),
             ],
@@ -127,9 +127,9 @@ final class SourceFilterTest extends TestCase
                             new FilterDirectory(
                                 $fixtureDirectory,
                                 '',
-                                '.php'
+                                '.php',
                             ),
-                        ]
+                        ],
                     ),
                     FileCollection::fromArray([]),
                     FilterDirectoryCollection::fromArray(
@@ -137,9 +137,9 @@ final class SourceFilterTest extends TestCase
                             new FilterDirectory(
                                 $fixtureDirectory . '/a',
                                 '',
-                                '.php'
+                                '.php',
                             ),
-                        ]
+                        ],
                     ),
                     FileCollection::fromArray([]),
                 ),

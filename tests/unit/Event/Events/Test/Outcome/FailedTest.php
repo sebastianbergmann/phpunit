@@ -31,7 +31,7 @@ final class FailedTest extends AbstractEventTestCase
             $telemetryInfo,
             $test,
             $throwable,
-            $comparisonFailure
+            $comparisonFailure,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -51,7 +51,7 @@ final class FailedTest extends AbstractEventTestCase
             $telemetryInfo,
             $test,
             $throwable,
-            null
+            null,
         );
 
         $this->assertFalse($event->hasComparisonFailure());
@@ -67,7 +67,7 @@ final class FailedTest extends AbstractEventTestCase
             $this->telemetryInfo(),
             $this->testValueObject(),
             $this->throwable(),
-            null
+            null,
         );
 
         $this->assertSame(
@@ -75,7 +75,7 @@ final class FailedTest extends AbstractEventTestCase
 Test Failed (FooTest::testBar)
 failure
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 

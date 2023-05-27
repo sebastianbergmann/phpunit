@@ -168,7 +168,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'PHPUnit deprecation'
+            'PHPUnit deprecation',
         );
 
         $this->printList($elements['elements']);
@@ -223,7 +223,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'PHPUnit warning'
+            'PHPUnit warning',
         );
 
         $this->printList($elements['elements']);
@@ -359,7 +359,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'PHP deprecation'
+            'PHP deprecation',
         );
 
         $this->printList($elements['elements']);
@@ -376,7 +376,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'deprecation'
+            'deprecation',
         );
 
         $this->printList($elements['elements']);
@@ -392,7 +392,7 @@ final class ResultPrinter
 
         $this->printListHeaderWithNumber(
             $elements['numberOfIssues'],
-            'error'
+            'error',
         );
 
         $this->printList($elements['elements']);
@@ -409,7 +409,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'PHP notice'
+            'PHP notice',
         );
 
         $this->printList($elements['elements']);
@@ -426,7 +426,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'notice'
+            'notice',
         );
 
         $this->printList($elements['elements']);
@@ -443,7 +443,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'PHP warning'
+            'PHP warning',
         );
 
         $this->printList($elements['elements']);
@@ -460,7 +460,7 @@ final class ResultPrinter
         $this->printListHeaderWithNumberOfTestsAndNumberOfIssues(
             $elements['numberOfTestsWithIssues'],
             $elements['numberOfIssues'],
-            'warning'
+            'warning',
         );
 
         $this->printList($elements['elements']);
@@ -476,7 +476,7 @@ final class ResultPrinter
                 $numberOfIssues,
                 $type,
                 $numberOfIssues !== 1 ? 's' : '',
-            )
+            ),
         );
     }
 
@@ -488,8 +488,8 @@ final class ResultPrinter
                 ($number === 1) ? 'was' : 'were',
                 $number,
                 $type,
-                ($number === 1) ? '' : 's'
-            )
+                ($number === 1) ? '' : 's',
+            ),
         );
     }
 
@@ -533,8 +533,8 @@ final class ResultPrinter
                 $number,
                 $title,
                 $body,
-                !empty($body) ? "\n" : ''
-            )
+                !empty($body) ? "\n" : '',
+            ),
         );
     }
 
@@ -613,7 +613,7 @@ final class ResultPrinter
             PHP_EOL,
             $test->file(),
             $test->line(),
-            PHP_EOL
+            PHP_EOL,
         );
     }
 

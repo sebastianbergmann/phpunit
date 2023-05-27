@@ -22,8 +22,8 @@ final class UnsupportedPhptSectionException extends RuntimeException implements 
         parent::__construct(
             sprintf(
                 'PHPUnit does not support PHPT %s sections',
-                $section
-            )
+                $section,
+            ),
         );
     }
 }

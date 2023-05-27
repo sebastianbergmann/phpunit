@@ -38,7 +38,7 @@ final class LoadedFromFileConfiguration extends Configuration
             $logging,
             $php,
             $phpunit,
-            $testSuite
+            $testSuite,
         );
     }
 

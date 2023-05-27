@@ -61,7 +61,7 @@ final class IsEqual extends Constraint
         try {
             $comparator = $comparatorFactory->getComparatorFor(
                 $this->value,
-                $other
+                $other,
             );
 
             $comparator->assertEquals(
@@ -69,7 +69,7 @@ final class IsEqual extends Constraint
                 $other,
                 $this->delta,
                 $this->canonicalize,
-                $this->ignoreCase
+                $this->ignoreCase,
             );
         } catch (ComparisonFailure $f) {
             if ($returnResult) {
@@ -78,7 +78,7 @@ final class IsEqual extends Constraint
 
             throw new ExpectationFailedException(
                 trim($description . "\n" . $f->getMessage()),
-                $f
+                $f,
             );
         }
 
@@ -99,21 +99,21 @@ final class IsEqual extends Constraint
 
             return sprintf(
                 "is equal to '%s'",
-                $this->value
+                $this->value,
             );
         }
 
         if ($this->delta != 0) {
             $delta = sprintf(
                 ' with delta <%F>',
-                $this->delta
+                $this->delta,
             );
         }
 
         return sprintf(
             'is equal to %s%s',
             $this->exporter()->export($this->value),
-            $delta
+            $delta,
         );
     }
 }

@@ -25,7 +25,7 @@ final class ValidatorTest extends TestCase
     {
         $result = (new Validator)->validate(
             (new Loader)->loadFile(__DIR__ . '/../../../../../phpunit.xml'),
-            (new SchemaFinder)->find(Version::series())
+            (new SchemaFinder)->find(Version::series()),
         );
 
         $this->assertFalse($result->hasValidationErrors());
@@ -36,15 +36,15 @@ final class ValidatorTest extends TestCase
     {
         $result = (new Validator)->validate(
             (new Loader)->loadFile(
-                __DIR__ . '/../../../../end-to-end/migration/_files/possibility-to-migrate-from-92-is-detected/phpunit.xml'
+                __DIR__ . '/../../../../end-to-end/migration/_files/possibility-to-migrate-from-92-is-detected/phpunit.xml',
             ),
-            (new SchemaFinder)->find(Version::series())
+            (new SchemaFinder)->find(Version::series()),
         );
 
         $this->assertTrue($result->hasValidationErrors());
         $this->assertStringEqualsStringIgnoringLineEndings(
             file_get_contents(__DIR__ . '/../../../../_files/invalid-configuration.txt'),
-            $result->asString()
+            $result->asString(),
         );
     }
 }

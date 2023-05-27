@@ -21,8 +21,8 @@ final class UnknownClassException extends InvalidArgumentException
         parent::__construct(
             sprintf(
                 'Class "%s" does not exist',
-                $name
-            )
+                $name,
+            ),
         );
     }
 }

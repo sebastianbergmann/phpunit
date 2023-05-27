@@ -45,7 +45,7 @@ final class TestSuiteBuilder
 
             $testSuite = $this->testSuiteFromPath(
                 $argument,
-                $configuration->testSuffixes()
+                $configuration->testSuffixes(),
             );
         }
 
@@ -53,7 +53,7 @@ final class TestSuiteBuilder
             $testSuite = (new TestSuiteMapper)->map(
                 $configuration->testSuite(),
                 $configuration->includeTestSuite(),
-                $configuration->excludeTestSuite()
+                $configuration->excludeTestSuite(),
             );
         }
 

@@ -24,7 +24,7 @@ final class MockObjectCreatedTest extends AbstractEventTestCase
 
         $event = new MockObjectCreated(
             $telemetryInfo,
-            $className
+            $className,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class MockObjectCreatedTest extends AbstractEventTestCase
     {
         $event = new MockObjectCreated(
             $this->telemetryInfo(),
-            'OriginalType'
+            'OriginalType',
         );
 
         $this->assertSame('Mock Object Created (OriginalType)', $event->asString());

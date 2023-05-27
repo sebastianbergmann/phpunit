@@ -44,13 +44,13 @@ final class TestSuiteFilterProcessor
 
         if ($configuration->hasExcludeGroups()) {
             $this->filterFactory->addExcludeGroupFilter(
-                $configuration->excludeGroups()
+                $configuration->excludeGroups(),
             );
         }
 
         if ($configuration->hasGroups()) {
             $this->filterFactory->addIncludeGroupFilter(
-                $configuration->groups()
+                $configuration->groups(),
             );
         }
 
@@ -58,8 +58,8 @@ final class TestSuiteFilterProcessor
             $this->filterFactory->addIncludeGroupFilter(
                 array_map(
                     static fn (string $name): string => '__phpunit_covers_' . $name,
-                    $configuration->testsCovering()
-                )
+                    $configuration->testsCovering(),
+                ),
             );
         }
 
@@ -67,21 +67,21 @@ final class TestSuiteFilterProcessor
             $this->filterFactory->addIncludeGroupFilter(
                 array_map(
                     static fn (string $name): string => '__phpunit_uses_' . $name,
-                    $configuration->testsUsing()
-                )
+                    $configuration->testsUsing(),
+                ),
             );
         }
 
         if ($configuration->hasFilter()) {
             $this->filterFactory->addNameFilter(
-                $configuration->filter()
+                $configuration->filter(),
             );
         }
 
         $suite->injectFilter($this->filterFactory);
 
         Event\Facade::emitter()->testSuiteFiltered(
-            Event\TestSuite\TestSuiteBuilder::from($suite)
+            Event\TestSuite\TestSuiteBuilder::from($suite),
         );
     }
 }

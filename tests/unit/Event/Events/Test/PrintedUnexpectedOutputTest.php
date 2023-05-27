@@ -24,7 +24,7 @@ final class PrintedUnexpectedOutputTest extends AbstractEventTestCase
 
         $event = new PrintedUnexpectedOutput(
             $telemetryInfo,
-            $output
+            $output,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class PrintedUnexpectedOutputTest extends AbstractEventTestCase
     {
         $event = new PrintedUnexpectedOutput(
             $this->telemetryInfo(),
-            'output'
+            'output',
         );
 
         $this->assertSame(
@@ -44,7 +44,7 @@ Test Printed Unexpected Output
 output
 EOT
             ,
-            $event->asString()
+            $event->asString(),
         );
     }
 }

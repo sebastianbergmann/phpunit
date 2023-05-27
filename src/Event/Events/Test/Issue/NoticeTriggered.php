@@ -73,7 +73,7 @@ final class NoticeTriggered implements Event
         return sprintf(
             'Test Triggered Notice (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

@@ -21,8 +21,8 @@ final class GeneratorNotSupportedException extends InvalidArgumentException
         return new self(
             sprintf(
                 'Passing an argument of type Generator for the %s parameter is not supported',
-                $parameterName
-            )
+                $parameterName,
+            ),
         );
     }
 }

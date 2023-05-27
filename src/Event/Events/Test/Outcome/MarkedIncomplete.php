@@ -60,7 +60,7 @@ final class MarkedIncomplete implements Event
         return sprintf(
             'Test Marked Incomplete (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

@@ -44,7 +44,7 @@ final class Filtered implements Event
         return sprintf(
             'Test Suite Filtered (%d test%s)',
             $this->testSuite->count(),
-            $this->testSuite->count() !== 1 ? 's' : ''
+            $this->testSuite->count() !== 1 ? 's' : '',
         );
     }
 }

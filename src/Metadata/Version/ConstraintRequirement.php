@@ -33,7 +33,7 @@ final class ConstraintRequirement extends Requirement
     public function isSatisfiedBy(string $version): bool
     {
         return $this->constraint->complies(
-            new Version($this->sanitize($version))
+            new Version($this->sanitize($version)),
         );
     }
 
@@ -50,7 +50,7 @@ final class ConstraintRequirement extends Requirement
         return preg_replace(
             '/^(\d+\.\d+(?:.\d+)?).*$/',
             '$1',
-            $version
+            $version,
         );
     }
 }

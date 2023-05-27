@@ -27,7 +27,7 @@ final class ConsideredRiskyTest extends AbstractEventTestCase
         $event = new ConsideredRisky(
             $telemetryInfo,
             $test,
-            $message
+            $message,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class ConsideredRiskyTest extends AbstractEventTestCase
         $event = new ConsideredRisky(
             $this->telemetryInfo(),
             $this->testValueObject(),
-            'message'
+            'message',
         );
 
         $this->assertSame(
@@ -48,7 +48,7 @@ final class ConsideredRiskyTest extends AbstractEventTestCase
 Test Considered Risky (FooTest::testBar)
 message
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 }

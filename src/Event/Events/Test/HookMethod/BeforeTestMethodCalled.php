@@ -62,7 +62,7 @@ final class BeforeTestMethodCalled implements Event
         return sprintf(
             'Before Test Method Called (%s::%s)',
             $this->calledMethod->className(),
-            $this->calledMethod->methodName()
+            $this->calledMethod->methodName(),
         );
     }
 }

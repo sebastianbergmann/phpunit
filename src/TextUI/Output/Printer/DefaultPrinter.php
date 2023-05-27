@@ -76,8 +76,8 @@ final class DefaultPrinter implements Printer
                 throw new InvalidSocketException(
                     sprintf(
                         '"%s" does not match "socket://hostname:port" format',
-                        $out
-                    )
+                        $out,
+                    ),
                 );
             }
 

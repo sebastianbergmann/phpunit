@@ -102,7 +102,7 @@ final class LogicalXorTest extends TestCase
     {
         $constraint = $this->logicalXor(
             $this->isType('bool'),
-            $this->isTrue()
+            $this->isTrue(),
         );
 
         $this->assertCount(2, $constraint);

@@ -57,7 +57,7 @@ final class Skipped implements Event
         return sprintf(
             'Test Suite Skipped (%s%s)',
             $name,
-            $this->message
+            $this->message,
         );
     }
 }

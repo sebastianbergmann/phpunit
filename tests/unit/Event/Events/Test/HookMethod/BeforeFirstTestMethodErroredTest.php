@@ -30,7 +30,7 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
             $telemetryInfo,
             $testClassName,
             $calledMethod,
-            $throwable
+            $throwable,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -45,7 +45,7 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
             $this->telemetryInfo(),
             'Test',
             $this->calledMethod(),
-            Code\ThrowableBuilder::from(new Exception('message'))
+            Code\ThrowableBuilder::from(new Exception('message')),
         );
 
         $this->assertSame(
@@ -53,7 +53,7 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
 Before First Test Method Errored (HookClass::hookMethod)
 message
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 

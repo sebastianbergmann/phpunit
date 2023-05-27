@@ -166,7 +166,7 @@ abstract class AbstractPhpProcess
         $this->processChildResult(
             $test,
             $_result['stdout'],
-            $_result['stderr']
+            $_result['stderr'],
         );
     }
 
@@ -181,15 +181,15 @@ abstract class AbstractPhpProcess
             $settings = array_merge(
                 $settings,
                 $this->runtime->getCurrentSettings(
-                    array_keys(ini_get_all('pcov'))
-                )
+                    array_keys(ini_get_all('pcov')),
+                ),
             );
         } elseif ($this->runtime->hasXdebug()) {
             $settings = array_merge(
                 $settings,
                 $this->runtime->getCurrentSettings(
-                    array_keys(ini_get_all('xdebug'))
-                )
+                    array_keys(ini_get_all('xdebug')),
+                ),
             );
         }
 
@@ -252,7 +252,7 @@ abstract class AbstractPhpProcess
 
             Facade::emitter()->testErrored(
                 TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception)
+                ThrowableBuilder::from($exception),
             );
 
             return;
@@ -265,7 +265,7 @@ abstract class AbstractPhpProcess
             static function (int $errno, string $errstr, string $errfile, int $errline): never
             {
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-            }
+            },
         );
 
         try {
@@ -283,12 +283,12 @@ abstract class AbstractPhpProcess
 
                 Facade::emitter()->testErrored(
                     TestMethodBuilder::fromTestCase($test),
-                    ThrowableBuilder::from($exception)
+                    ThrowableBuilder::from($exception),
                 );
 
                 Facade::emitter()->testFinished(
                     TestMethodBuilder::fromTestCase($test),
-                    0
+                    0,
                 );
             }
         } catch (ErrorException $e) {
@@ -301,7 +301,7 @@ abstract class AbstractPhpProcess
 
             Facade::emitter()->testErrored(
                 TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception)
+                ThrowableBuilder::from($exception),
             );
         }
 
@@ -320,7 +320,7 @@ abstract class AbstractPhpProcess
 
             if (CodeCoverage::instance()->isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
                 CodeCoverage::instance()->codeCoverage()->merge(
-                    $childResult['codeCoverage']
+                    $childResult['codeCoverage'],
                 );
             }
         }

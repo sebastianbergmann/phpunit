@@ -33,8 +33,8 @@ final class Registry
         return new CachingParser(
             new ParserChain(
                 new AttributeParser,
-                new AnnotationParser
-            )
+                new AnnotationParser,
+            ),
         );
     }
 }

@@ -28,7 +28,7 @@ final class ErroredTest extends AbstractEventTestCase
         $event = new Errored(
             $telemetryInfo,
             $test,
-            $throwable
+            $throwable,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -41,7 +41,7 @@ final class ErroredTest extends AbstractEventTestCase
         $event = new Errored(
             $this->telemetryInfo(),
             $this->testValueObject(),
-            $this->throwable()
+            $this->throwable(),
         );
 
         $this->assertSame(
@@ -49,7 +49,7 @@ final class ErroredTest extends AbstractEventTestCase
 Test Errored (FooTest::testBar)
 error
 EOT,
-            $event->asString()
+            $event->asString(),
         );
     }
 

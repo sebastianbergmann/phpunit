@@ -24,7 +24,7 @@ final class MockObjectForIntersectionOfInterfacesCreatedTest extends AbstractEve
 
         $event = new MockObjectForIntersectionOfInterfacesCreated(
             $telemetryInfo,
-            $interfaces
+            $interfaces,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -35,7 +35,7 @@ final class MockObjectForIntersectionOfInterfacesCreatedTest extends AbstractEve
     {
         $event = new MockObjectForIntersectionOfInterfacesCreated(
             $this->telemetryInfo(),
-            ['AnInterface', 'AnotherInterface']
+            ['AnInterface', 'AnotherInterface'],
         );
 
         $this->assertSame('Mock Object Created (AnInterface&AnotherInterface)', $event->asString());

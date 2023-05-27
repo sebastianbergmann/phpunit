@@ -118,7 +118,7 @@ final class MetadataCollectionTest extends TestCase
             [
                 Metadata::coversOnClass(''),
                 Metadata::coversOnMethod(''),
-            ]
+            ],
         );
 
         $this->assertCount(2, $collection);
@@ -511,14 +511,14 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::requiresPhpOnClass(
                     new ComparisonRequirement(
                         '8.0.0',
-                        new VersionComparisonOperator('>=')
-                    )
+                        new VersionComparisonOperator('>='),
+                    ),
                 ),
                 Metadata::requiresPhpunitOnClass(
                     new ComparisonRequirement(
                         '10.0.0',
-                        new VersionComparisonOperator('>=')
-                    )
+                        new VersionComparisonOperator('>='),
+                    ),
                 ),
                 Metadata::requiresSettingOnClass('foo', 'bar'),
                 Metadata::runClassInSeparateProcess(),
@@ -531,7 +531,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesClass(''),
                 Metadata::usesDefaultClass(''),
                 Metadata::usesFunction(''),
-            ]
+            ],
         );
     }
 }

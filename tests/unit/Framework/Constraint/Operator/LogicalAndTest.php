@@ -44,7 +44,7 @@ final class LogicalAndTest extends TestCase
                     self::isType('boolean'),
                     self::logicalOr(
                         self::isTrue(),
-                        self::isFalse()
+                        self::isFalse(),
                     ),
                 ),
                 true,
@@ -69,7 +69,7 @@ final class LogicalAndTest extends TestCase
                     self::isType('boolean'),
                     self::logicalOr(
                         self::isTrue(),
-                        self::isFalse()
+                        self::isFalse(),
                     ),
                 ),
                 'string',
@@ -102,7 +102,7 @@ final class LogicalAndTest extends TestCase
     {
         $constraint = $this->logicalAnd(
             $this->isType('bool'),
-            $this->isTrue()
+            $this->isTrue(),
         );
 
         $this->assertCount(2, $constraint);

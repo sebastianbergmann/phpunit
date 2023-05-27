@@ -59,9 +59,9 @@ class TestCaseTest extends TestCase
         $this->assertEquals(
             sprintf(
                 '%s::testCaseToString',
-                self::class
+                self::class,
             ),
-            $this->toString()
+            $this->toString(),
         );
     }
 
@@ -71,12 +71,12 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             [new ExecutionOrderDependency(static::class, 'testCaseDefaultExecutionOrderDependencies')],
-            $this->provides()
+            $this->provides(),
         );
 
         $this->assertEquals(
             [],
-            $this->requires()
+            $this->requires(),
         );
     }
 
@@ -166,7 +166,7 @@ class TestCaseTest extends TestCase
             Mockable::class,
             [
                 'mockableMethod' => false,
-            ]
+            ],
         );
 
         $this->assertFalse($stub->mockableMethod());
@@ -179,7 +179,7 @@ class TestCaseTest extends TestCase
             Mockable::class,
             [
                 'mockableMethod' => false,
-            ]
+            ],
         );
 
         $this->assertFalse($mock->mockableMethod());

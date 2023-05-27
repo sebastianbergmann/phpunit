@@ -36,8 +36,8 @@ final class Xml
             '',
             htmlspecialchars(
                 self::convertToUtf8($string),
-                ENT_QUOTES
-            )
+                ENT_QUOTES,
+            ),
         );
     }
 

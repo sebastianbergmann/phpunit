@@ -21,8 +21,8 @@ final class MatchBuilderNotFoundException extends \PHPUnit\Framework\Exception i
         parent::__construct(
             sprintf(
                 'No builder found for match builder identification <%s>',
-                $id
-            )
+                $id,
+            ),
         );
     }
 }

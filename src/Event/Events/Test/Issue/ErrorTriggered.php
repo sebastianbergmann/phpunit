@@ -73,7 +73,7 @@ final class ErrorTriggered implements Event
         return sprintf(
             'Test Triggered Error (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

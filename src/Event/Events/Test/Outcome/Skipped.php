@@ -59,7 +59,7 @@ final class Skipped implements Event
         return sprintf(
             'Test Skipped (%s)%s',
             $this->test->id(),
-            $message
+            $message,
         );
     }
 }

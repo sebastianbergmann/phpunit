@@ -43,7 +43,7 @@ final class DeprecationTriggered implements Event
     {
         return sprintf(
             'Test Runner Triggered Deprecation (%s)',
-            $this->message
+            $this->message,
         );
     }
 }

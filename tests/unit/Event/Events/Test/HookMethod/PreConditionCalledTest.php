@@ -27,7 +27,7 @@ final class PreConditionCalledTest extends AbstractEventTestCase
         $event = new PreConditionCalled(
             $telemetryInfo,
             $testClassName,
-            $calledMethod
+            $calledMethod,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -40,7 +40,7 @@ final class PreConditionCalledTest extends AbstractEventTestCase
         $event = new PreConditionCalled(
             $this->telemetryInfo(),
             'Test',
-            $this->calledMethod()
+            $this->calledMethod(),
         );
 
         $this->assertSame('Pre Condition Method Called (HookClass::hookMethod)', $event->asString());

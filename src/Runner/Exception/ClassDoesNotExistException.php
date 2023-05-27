@@ -22,8 +22,8 @@ final class ClassDoesNotExistException extends RuntimeException implements Excep
         parent::__construct(
             sprintf(
                 'Class "%s" does not exist',
-                $className
-            )
+                $className,
+            ),
         );
     }
 }

@@ -31,7 +31,7 @@ final class WarningTriggeredTest extends AbstractEventTestCase
             $test,
             $message,
             $file,
-            $line
+            $line,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());

@@ -60,7 +60,7 @@ final class TestProxyCreated implements Event
     {
         return sprintf(
             'Test Proxy Created (%s)',
-            $this->className
+            $this->className,
         );
     }
 }

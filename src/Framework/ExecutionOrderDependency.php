@@ -35,7 +35,7 @@ final class ExecutionOrderDependency implements Stringable
             '',
             '',
             false,
-            false
+            false,
         );
     }
 
@@ -45,7 +45,7 @@ final class ExecutionOrderDependency implements Stringable
             $metadata->className(),
             'class',
             $metadata->deepClone(),
-            $metadata->shallowClone()
+            $metadata->shallowClone(),
         );
     }
 
@@ -55,7 +55,7 @@ final class ExecutionOrderDependency implements Stringable
             $metadata->className(),
             $metadata->methodName(),
             $metadata->deepClone(),
-            $metadata->shallowClone()
+            $metadata->shallowClone(),
         );
     }
 
@@ -69,8 +69,8 @@ final class ExecutionOrderDependency implements Stringable
         return array_values(
             array_filter(
                 $dependencies,
-                static fn (self $d) => $d->isValid()
-            )
+                static fn (self $d) => $d->isValid(),
+            ),
         );
     }
 
@@ -84,7 +84,7 @@ final class ExecutionOrderDependency implements Stringable
     {
         $existingTargets = array_map(
             static fn ($dependency) => $dependency->getTarget(),
-            $existing
+            $existing,
         );
 
         foreach ($additional as $dependency) {
@@ -118,7 +118,7 @@ final class ExecutionOrderDependency implements Stringable
         $diff         = [];
         $rightTargets = array_map(
             static fn ($dependency) => $dependency->getTarget(),
-            $right
+            $right,
         );
 
         foreach ($left as $dependency) {

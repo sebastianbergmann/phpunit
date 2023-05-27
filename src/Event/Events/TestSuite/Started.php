@@ -51,7 +51,7 @@ final class Started implements Event
             'Test Suite Started (%s%d test%s)',
             $name,
             $this->testSuite->count(),
-            $this->testSuite->count() !== 1 ? 's' : ''
+            $this->testSuite->count() !== 1 ? 's' : '',
         );
     }
 }

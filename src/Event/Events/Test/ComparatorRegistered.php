@@ -53,7 +53,7 @@ final class ComparatorRegistered implements Event
     {
         return sprintf(
             'Comparator Registered (%s)',
-            $this->className
+            $this->className,
         );
     }
 }

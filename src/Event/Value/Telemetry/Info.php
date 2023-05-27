@@ -79,7 +79,7 @@ final class Info
             '[%s / %s] [%d bytes]',
             $this->durationSinceStart()->asString(),
             $this->durationSincePrevious()->asString(),
-            $this->memoryUsage()->bytes()
+            $this->memoryUsage()->bytes(),
         );
     }
 }

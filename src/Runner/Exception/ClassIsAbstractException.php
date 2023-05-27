@@ -23,8 +23,8 @@ final class ClassIsAbstractException extends RuntimeException implements Excepti
             sprintf(
                 'Class %s declared in %s is abstract',
                 $className,
-                $file
-            )
+                $file,
+            ),
         );
     }
 }
