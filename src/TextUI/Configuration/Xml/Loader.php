@@ -821,6 +821,8 @@ final class Loader
             $backupStaticProperties,
             $this->getBooleanAttribute($document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
             $this->getBooleanAttribute($document->documentElement, 'testdox', false),
+            $this->getBooleanAttribute($document->documentElement, 'controlGarbageCollector', false),
+            $this->getIntegerAttribute($document->documentElement, 'numberOfTestsBeforeGarbageCollection', 100),
         );
     }
 
