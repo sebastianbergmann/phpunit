@@ -619,7 +619,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 call_user_func([$this->name, $beforeClassMethod]);
             }
-        } catch (SkippedTestSuiteError|SkippedTest $e) {
+        } catch (SkippedTest|SkippedTestSuiteError $e) {
             $emitter->testSuiteSkipped(
                 $testSuiteValueObjectForEvents,
                 $e->getMessage()

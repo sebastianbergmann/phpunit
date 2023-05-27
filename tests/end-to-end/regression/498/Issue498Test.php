@@ -16,7 +16,7 @@ class Issue498Test extends TestCase
 {
     public static function shouldBeTrueDataProvider()
     {
-        //throw new Exception("Can't create the data");
+        // throw new Exception("Can't create the data");
         return [
             [true],
             [false],

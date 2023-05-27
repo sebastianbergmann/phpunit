@@ -73,7 +73,7 @@ final class Filter
         return $filteredStacktrace;
     }
 
-    private static function shouldPrintFrame(array $frame, string|false $prefix, ExcludeList $excludeList): bool
+    private static function shouldPrintFrame(array $frame, false|string $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;

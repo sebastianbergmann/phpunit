@@ -22,7 +22,7 @@ final class ProxyObjectTest extends TestCase
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('returnString');
+            ->method('returnString');
 
         assert($proxy instanceof MockObject);
         assert($proxy instanceof TestProxyFixture);
@@ -35,7 +35,7 @@ final class ProxyObjectTest extends TestCase
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('returnTypedString');
+            ->method('returnTypedString');
 
         assert($proxy instanceof MockObject);
         assert($proxy instanceof TestProxyFixture);
@@ -48,7 +48,7 @@ final class ProxyObjectTest extends TestCase
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('returnObject');
+            ->method('returnObject');
 
         assert($proxy instanceof MockObject);
         assert($proxy instanceof TestProxyFixture);
@@ -61,7 +61,7 @@ final class ProxyObjectTest extends TestCase
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('returnTypedObject');
+            ->method('returnTypedObject');
 
         assert($proxy instanceof MockObject);
         assert($proxy instanceof TestProxyFixture);
@@ -74,7 +74,7 @@ final class ProxyObjectTest extends TestCase
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('returnObjectOfFinalClass');
+            ->method('returnObjectOfFinalClass');
 
         assert($proxy instanceof MockObject);
         assert($proxy instanceof TestProxyFixture);
@@ -87,7 +87,7 @@ final class ProxyObjectTest extends TestCase
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('returnTypedObjectOfFinalClass');
+            ->method('returnTypedObjectOfFinalClass');
 
         assert($proxy instanceof MockObject);
         assert($proxy instanceof TestProxyFixture);

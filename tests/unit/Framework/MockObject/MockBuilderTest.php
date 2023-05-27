@@ -38,8 +38,8 @@ final class MockBuilderTest extends TestCase
     public function testMethodsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->onlyMethods(['mockableMethod'])
-                     ->getMock();
+            ->onlyMethods(['mockableMethod'])
+            ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertTrue($mock->anotherMockableMethod());
@@ -54,15 +54,15 @@ final class MockBuilderTest extends TestCase
         ));
 
         $this->getMockBuilder(Mockable::class)
-             ->onlyMethods(['mockableMethodWithCrazyName'])
-             ->getMock();
+            ->onlyMethods(['mockableMethodWithCrazyName'])
+            ->getMock();
     }
 
     public function testOnlyMethodsWithExistingMethodNames(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->onlyMethods(['mockableMethod'])
-                     ->getMock();
+            ->onlyMethods(['mockableMethod'])
+            ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertTrue($mock->anotherMockableMethod());
@@ -71,8 +71,8 @@ final class MockBuilderTest extends TestCase
     public function testOnlyMethodsWithEmptyArray(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->onlyMethods([])
-                     ->getMock();
+            ->onlyMethods([])
+            ->getMock();
 
         $this->assertTrue($mock->mockableMethod());
     }
@@ -86,15 +86,15 @@ final class MockBuilderTest extends TestCase
         ));
 
         $this->getMockBuilder(Mockable::class)
-             ->addMethods(['mockableMethod'])
-             ->getMock();
+            ->addMethods(['mockableMethod'])
+            ->getMock();
     }
 
     public function testAddMethodsWithNonExistingMethodNames(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->addMethods(['mockableMethodWithFakeMethod'])
-                     ->getMock();
+            ->addMethods(['mockableMethodWithFakeMethod'])
+            ->getMock();
 
         $this->assertNull($mock->mockableMethodWithFakeMethod());
         $this->assertTrue($mock->anotherMockableMethod());
@@ -103,8 +103,8 @@ final class MockBuilderTest extends TestCase
     public function testAddMethodsWithEmptyArray(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->addMethods([])
-                     ->getMock();
+            ->addMethods([])
+            ->getMock();
 
         $this->assertTrue($mock->mockableMethod());
     }
@@ -112,9 +112,9 @@ final class MockBuilderTest extends TestCase
     public function testAbleToUseAddMethodsAfterOnlyMethods(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->onlyMethods(['mockableMethod'])
-                     ->addMethods(['mockableMethodWithFakeMethod'])
-                     ->getMock();
+            ->onlyMethods(['mockableMethod'])
+            ->addMethods(['mockableMethodWithFakeMethod'])
+            ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->mockableMethodWithFakeMethod());
@@ -123,9 +123,9 @@ final class MockBuilderTest extends TestCase
     public function testAbleToUseOnlyMethodsAfterAddMethods(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->addMethods(['mockableMethodWithFakeMethod'])
-                     ->onlyMethods(['mockableMethod'])
-                     ->getMock();
+            ->addMethods(['mockableMethodWithFakeMethod'])
+            ->onlyMethods(['mockableMethod'])
+            ->getMock();
 
         $this->assertNull($mock->mockableMethodWithFakeMethod());
         $this->assertNull($mock->mockableMethod());
@@ -141,8 +141,8 @@ final class MockBuilderTest extends TestCase
     public function testMockClassNameCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->setMockClassName(ACustomClassName::class)
-                     ->getMock();
+            ->setMockClassName(ACustomClassName::class)
+            ->getMock();
 
         $this->assertInstanceOf('ACustomClassName', $mock);
     }
@@ -150,8 +150,8 @@ final class MockBuilderTest extends TestCase
     public function testConstructorArgumentsCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->setConstructorArgs([23, 42])
-                     ->getMock();
+            ->setConstructorArgs([23, 42])
+            ->getMock();
 
         $this->assertEquals([23, 42], $mock->constructorArgs);
     }
@@ -159,8 +159,8 @@ final class MockBuilderTest extends TestCase
     public function testOriginalConstructorCanBeDisabled(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->disableOriginalConstructor()
-                     ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->assertNull($mock->constructorArgs);
     }
@@ -168,7 +168,7 @@ final class MockBuilderTest extends TestCase
     public function testByDefaultOriginalCloneIsPreserved(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->getMock();
+            ->getMock();
 
         $cloned = clone $mock;
 
@@ -178,8 +178,8 @@ final class MockBuilderTest extends TestCase
     public function testOriginalCloneCanBeDisabled(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->disableOriginalClone()
-                     ->getMock();
+            ->disableOriginalClone()
+            ->getMock();
 
         $mock->cloned = false;
         $cloned       = clone $mock;
@@ -190,12 +190,12 @@ final class MockBuilderTest extends TestCase
     public function testProvidesAFluentInterface(): void
     {
         $spec = $this->getMockBuilder(Mockable::class)
-                     ->onlyMethods(['mockableMethod'])
-                     ->setConstructorArgs([])
-                     ->setMockClassName('DummyClassName')
-                     ->disableOriginalConstructor()
-                     ->disableOriginalClone()
-                     ->disableAutoload();
+            ->onlyMethods(['mockableMethod'])
+            ->setConstructorArgs([])
+            ->setMockClassName('DummyClassName')
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableAutoload();
 
         $this->assertInstanceOf(MockBuilder::class, $spec);
     }

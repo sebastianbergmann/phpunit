@@ -617,7 +617,7 @@ final class ResultPrinter
         );
     }
 
-    private function reasonMessage(ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|PhpWarningTriggered|WarningTriggered|PhpunitWarningTriggered|PhpunitDeprecationTriggered|PhpunitErrorTriggered|NoticeTriggered|PhpNoticeTriggered $reason, bool $single): string
+    private function reasonMessage(ConsideredRisky|DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpunitDeprecationTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered|PhpWarningTriggered|WarningTriggered $reason, bool $single): string
     {
         $message = trim($reason->message());
 
@@ -637,7 +637,7 @@ final class ResultPrinter
         return $buffer;
     }
 
-    private function reasonLocation(ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered $reason, bool $single): string
+    private function reasonLocation(ConsideredRisky|DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpunitDeprecationTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered|PhpWarningTriggered|WarningTriggered $reason, bool $single): string
     {
         if (!$reason instanceof DeprecationTriggered &&
             !$reason instanceof PhpDeprecationTriggered &&
