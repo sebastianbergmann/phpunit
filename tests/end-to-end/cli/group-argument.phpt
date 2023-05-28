@@ -1,20 +1,22 @@
 --TEST--
-phpunit --process-isolation --group balanceIsInitiallyZero ../../_files/BankAccountTest.php
+phpunit --group one tests/FooTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = '--group';
-$_SERVER['argv'][] = 'balanceIsInitiallyZero';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/BankAccountTest.php';
+$_SERVER['argv'][] = 'one';
+$_SERVER['argv'][] = __DIR__ . '/../_files/groups/tests/FooTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.                                                                   1 / 1 (100%)
+Test 'PHPUnit\TestFixture\Groups\FooTest::testOne' started
+Test 'PHPUnit\TestFixture\Groups\FooTest::testOne' ended
+
 
 Time: %s, Memory: %s
 
