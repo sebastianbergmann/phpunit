@@ -1,11 +1,11 @@
 --TEST--
-phpunit --list-groups ../../_files/BankAccountTest.php
+phpunit --list-groups
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
-$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/../_files/groups';
 $_SERVER['argv'][] = '--list-groups';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/BankAccountTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
@@ -13,6 +13,6 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Available test group(s):
- - balanceCannotBecomeNegative
- - balanceIsInitiallyZero
- - specification
+ - default
+ - one
+ - two
