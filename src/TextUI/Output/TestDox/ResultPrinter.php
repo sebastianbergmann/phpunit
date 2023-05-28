@@ -294,7 +294,7 @@ final class ResultPrinter
                 'message' => '├',
                 'diff'    => '┊',
                 'trace'   => '╵',
-                'last'    => '┴'
+                'last'    => '┴',
             },
         );
     }
