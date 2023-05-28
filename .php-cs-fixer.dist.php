@@ -10,14 +10,15 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->files()
-    ->in([
-        __DIR__ . '/src',
-        __DIR__ . '/tests/_files',
-        __DIR__ . '/tests/end-to-end',
-        __DIR__ . '/tests/unit',
+    ->ignoreDotFiles(false)
+    ->in(__DIR__)
+    ->exclude([
+        'build',
+        'tests/static-analysis',
     ])
     ->notName([
         '*.phpt',
+        'bootstrap.php',
         'ClassWithAllPossibleReturnTypes.php',
         'ClassWithStaticReturnTypes.php',
         'ClassWithUnionReturnTypes.php',
