@@ -54,7 +54,7 @@ class ExecutionOrderDependencyTest extends TestCase
         string $className,
         ?string $methodName,
         string $expectedTarget,
-        bool $expectedTargetIsClass
+        bool $expectedTargetIsClass,
     ): void {
         $dependency = new ExecutionOrderDependency($className, $methodName);
 

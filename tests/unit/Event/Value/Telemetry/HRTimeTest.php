@@ -128,7 +128,7 @@ final class HRTimeTest extends TestCase
         int $startSeconds,
         int $startNanoseconds,
         int $endSeconds,
-        int $endNanoseconds
+        int $endNanoseconds,
     ): void {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
@@ -152,7 +152,7 @@ final class HRTimeTest extends TestCase
         int $startNanoseconds,
         int $endSeconds,
         int $endNanoseconds,
-        Duration $duration
+        Duration $duration,
     ): void {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
