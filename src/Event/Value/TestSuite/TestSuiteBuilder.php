@@ -16,7 +16,6 @@ use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\PhptTestCase;
-use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -43,16 +42,9 @@ final class TestSuiteBuilder
             }
         }
 
-        /* @see https://github.com/sebastianbergmann/phpunit/issues/5366 */
-        if ($testSuite->isForTestClass()) {
-            $_testSuite = $testSuite->tests();
-        } else {
-            $_testSuite = new RecursiveIteratorIterator($testSuite);
-        }
-
         $tests = [];
 
-        foreach ($_testSuite as $test) {
+        foreach ($testSuite->tests() as $test) {
             if ($test instanceof TestCase || $test instanceof PhptTestCase) {
                 $tests[] = $test->valueObjectForEvents();
             }
