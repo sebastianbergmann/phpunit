@@ -63,12 +63,8 @@ class ExecutionOrderDependencyTest extends TestCase
      *
      * @dataProvider createFromParametersProvider
      */
-    public function testCreateDependencyFromParameters(
-        string $className,
-        ?string $methodName,
-        string $expectedTarget,
-        bool $expectedTargetIsClass
-    ): void {
+    public function testCreateDependencyFromParameters(string $className, ?string $methodName, string $expectedTarget, bool $expectedTargetIsClass): void
+    {
         $dependency = new ExecutionOrderDependency($className, $methodName);
 
         $this->assertSame(
@@ -89,11 +85,8 @@ class ExecutionOrderDependencyTest extends TestCase
      *
      * @dataProvider createWithCloneOptionProvider
      */
-    public function testCreateDependencyWithCloneOption(
-        ?string $option,
-        bool $expectedShallowClone,
-        bool $expectedDeepClone
-    ): void {
+    public function testCreateDependencyWithCloneOption(?string $option, bool $expectedShallowClone, bool $expectedDeepClone): void
+    {
         $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $option);
 
         $this->assertSame(
