@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestSuite;
 
 use function explode;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
@@ -44,11 +45,7 @@ final class TestSuiteBuilder
 
         $tests = [];
 
-        foreach ($testSuite->tests() as $test) {
-            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-                $tests[] = $test->valueObjectForEvents();
-            }
-        }
+        self::process($testSuite, $tests);
 
         if ($testSuite instanceof DataProviderTestSuite) {
             [$className, $methodName] = explode('::', $testSuite->getName());
@@ -99,5 +96,23 @@ final class TestSuiteBuilder
             $testSuite->count(),
             TestCollection::fromArray($tests),
         );
+    }
+
+    /**
+     * @psalm-param list<Test> $tests
+     */
+    private static function process(FrameworkTestSuite $testSuite, &$tests): void
+    {
+        foreach ($testSuite->tests() as $test) {
+            if ($test instanceof FrameworkTestSuite) {
+                self::process($test, $tests);
+
+                continue;
+            }
+
+            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+                $tests[] = $test->valueObjectForEvents();
+            }
+        }
     }
 }
