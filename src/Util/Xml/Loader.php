@@ -37,7 +37,7 @@ final class Loader
         if ($contents === false) {
             throw new XmlException(
                 sprintf(
-                    'Could not read "%s".',
+                    'Could not read XML from file "%s"',
                     $filename,
                 ),
             );
@@ -52,7 +52,16 @@ final class Loader
     public function load(string $actual, ?string $filename = null): DOMDocument
     {
         if ($actual === '') {
-            throw new XmlException('Could not load XML from empty string');
+            if ($filename === null) {
+                throw new XmlException('Could not parse XML from empty string');
+            }
+
+            throw new XmlException(
+                sprintf(
+                    'Could not parse XML from empty file "%s"',
+                    $filename,
+                ),
+            );
         }
 
         $document                     = new DOMDocument;
@@ -94,9 +103,9 @@ final class Loader
             if ($filename !== null) {
                 throw new XmlException(
                     sprintf(
-                        'Could not load "%s".%s',
+                        'Could not load "%s"%s',
                         $filename,
-                        $message !== '' ? "\n" . $message : '',
+                        $message !== '' ? ":\n" . $message : '',
                     ),
                 );
             }
