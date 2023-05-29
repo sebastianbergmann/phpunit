@@ -7,7 +7,7 @@ All notable changes of the PHPUnit 10.1 release series are documented in this fi
 ### Fixed
 
 * [#5364](https://github.com/sebastianbergmann/phpunit/issues/5364): Confusing warning message `Class ... cannot be found` when class is found, but does not extend `PHPUnit\Framework\TestCase`
-* [#5366](https://github.com/sebastianbergmann/phpunit/issues/5366): `PHPUnit\Event\TestSuite\Loaded` event has incomplete `PHPUnit\Event\TestSuite\TestSuite` value object´
+* [#5366](https://github.com/sebastianbergmann/phpunit/issues/5366): `PHPUnit\Event\TestSuite\Loaded` event has incomplete `PHPUnit\Event\TestSuite\TestSuite` value object
 
 ## [10.1.3] - 2023-05-11
 
