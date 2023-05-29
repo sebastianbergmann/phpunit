@@ -124,12 +124,8 @@ final class HRTimeTest extends TestCase
     }
 
     #[DataProvider('provideStartGreaterThanEnd')]
-    public function testDurationRejectsStartGreaterThanEnd(
-        int $startSeconds,
-        int $startNanoseconds,
-        int $endSeconds,
-        int $endNanoseconds
-    ): void {
+    public function testDurationRejectsStartGreaterThanEnd(int $startSeconds, int $startNanoseconds, int $endSeconds, int $endNanoseconds): void
+    {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
             $startNanoseconds,
@@ -147,13 +143,8 @@ final class HRTimeTest extends TestCase
     }
 
     #[DataProvider('provideStartEndAndDuration')]
-    public function testDurationReturnsDifferenceBetweenEndAndStart(
-        int $startSeconds,
-        int $startNanoseconds,
-        int $endSeconds,
-        int $endNanoseconds,
-        Duration $duration
-    ): void {
+    public function testDurationReturnsDifferenceBetweenEndAndStart(int $startSeconds, int $startNanoseconds, int $endSeconds, int $endNanoseconds, Duration $duration): void
+    {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
             $startNanoseconds,
