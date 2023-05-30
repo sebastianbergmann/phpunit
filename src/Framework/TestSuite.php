@@ -150,7 +150,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function toString(): string
     {
-        return $this->getName();
+        return $this->name();
     }
 
     /**
@@ -165,7 +165,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $this->clearCaches();
 
             if ($test instanceof self && empty($groups)) {
-                $groups = $test->getGroups();
+                $groups = $test->groups();
             }
 
             if ($this->containsOnlyVirtualGroups($groups)) {
@@ -284,7 +284,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * @psalm-return non-empty-string
      */
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
@@ -294,7 +294,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *
      * @psalm-return list<string>
      */
-    public function getGroups(): array
+    public function groups(): array
     {
         return array_map(
             'strval',
@@ -302,7 +302,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         );
     }
 
-    public function getGroupDetails(): array
+    public function groupDetails(): array
     {
         return $this->groups;
     }
@@ -451,7 +451,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function sortId(): string
     {
-        return $this->getName() . '::class';
+        return $this->name() . '::class';
     }
 
     /**

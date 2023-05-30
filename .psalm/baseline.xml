@@ -102,8 +102,8 @@
       <code>$className</code>
       <code>$className</code>
       <code>$methodName</code>
-      <code><![CDATA[$testSuite->getName()]]></code>
-      <code><![CDATA[$testSuite->getName()]]></code>
+      <code><![CDATA[$testSuite->name()]]></code>
+      <code><![CDATA[$testSuite->name()]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Assert/Functions.php">
