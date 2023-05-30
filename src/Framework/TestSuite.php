@@ -54,7 +54,10 @@ use Throwable;
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
-    private string $name = '';
+    /**
+     * @psalm-var non-empty-string
+     */
+    private string $name;
 
     /**
      * @psalm-var array<string,list<Test>>
@@ -69,12 +72,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
 
-    public static function empty(string $name = null): static
+    /**
+     * @psalm-param non-empty-string $name
+     */
+    public static function empty(string $name): static
     {
-        if ($name === null) {
-            $name = '';
-        }
-
         return new static($name);
     }
 
@@ -135,6 +137,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $testSuite;
     }
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
     final private function __construct(string $name)
     {
         $this->name = $name;
@@ -277,7 +282,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Returns the name of the suite.
+     * @psalm-return non-empty-string
      */
     public function getName(): string
     {

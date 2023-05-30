@@ -18,10 +18,16 @@ use PHPUnit\Event\Code\TestCollection;
  */
 abstract class TestSuite
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $name;
     private readonly int $count;
     private readonly TestCollection $tests;
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
     public function __construct(string $name, int $size, TestCollection $tests)
     {
         $this->name  = $name;
@@ -29,6 +35,9 @@ abstract class TestSuite
         $this->tests = $tests;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;

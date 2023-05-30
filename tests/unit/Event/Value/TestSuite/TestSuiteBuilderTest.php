@@ -27,7 +27,7 @@ final class TestSuiteBuilderTest extends TestCase
         $testSuite = TestSuiteBuilder::from($this->testSuiteFromXmlConfiguration());
 
         $this->assertTrue($testSuite->isWithName());
-        $this->assertSame('', $testSuite->name());
+        $this->assertStringEndsWith('phpunit.xml', $testSuite->name());
         $this->assertSame(3, $testSuite->count());
         $this->assertCount(3, $testSuite->tests());
     }
@@ -49,6 +49,7 @@ final class TestSuiteBuilderTest extends TestCase
         $configuration    = (new ConfigurationMerger)->merge($cliConfiguration, $xmlConfiguration);
 
         return (new TestSuiteMapper)->map(
+            $configuration->configurationFile(),
             $configuration->testSuite(),
             $configuration->includeTestSuite(),
             $configuration->excludeTestSuite(),

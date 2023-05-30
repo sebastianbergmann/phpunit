@@ -74,10 +74,6 @@ final class TeamCityLogger
             );
         }
 
-        if ($testSuite->isWithName() && $testSuite->name() === '') {
-            return;
-        }
-
         $parameters = ['name' => $testSuite->name()];
 
         if ($testSuite->isForTestClass()) {
@@ -106,10 +102,6 @@ final class TeamCityLogger
     public function testSuiteFinished(TestSuiteFinished $event): void
     {
         $testSuite = $event->testSuite();
-
-        if ($testSuite->isWithName() && $testSuite->name() === '') {
-            return;
-        }
 
         $parameters = ['name' => $testSuite->name()];
 
