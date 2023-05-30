@@ -54,13 +54,13 @@ use Throwable;
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
-    protected string $name = '';
+    private string $name = '';
 
     /**
      * @psalm-var array<string,list<Test>>
      */
-    protected array $groups         = [];
-    protected ?array $requiredTests = null;
+    private array $groups         = [];
+    private ?array $requiredTests = null;
 
     /**
      * @psalm-var list<Test>
