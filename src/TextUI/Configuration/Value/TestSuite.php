@@ -16,11 +16,17 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final class TestSuite
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $name;
     private readonly TestDirectoryCollection $directories;
     private readonly TestFileCollection $files;
     private readonly FileCollection $exclude;
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
     public function __construct(string $name, TestDirectoryCollection $directories, TestFileCollection $files, FileCollection $exclude)
     {
         $this->name        = $name;
@@ -29,6 +35,9 @@ final class TestSuite
         $this->exclude     = $exclude;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;

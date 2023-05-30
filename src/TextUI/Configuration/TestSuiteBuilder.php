@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function is_dir;
 use function is_file;
 use function realpath;
@@ -50,7 +51,12 @@ final class TestSuiteBuilder
         }
 
         if (!isset($testSuite)) {
+            $xmlConfigurationFile = $configuration->hasConfigurationFile() ? $configuration->configurationFile() : 'Root Test Suite';
+
+            assert(!empty($xmlConfigurationFile));
+
             $testSuite = (new TestSuiteMapper)->map(
+                $xmlConfigurationFile,
                 $configuration->testSuite(),
                 $configuration->includeTestSuite(),
                 $configuration->excludeTestSuite(),
@@ -63,6 +69,7 @@ final class TestSuiteBuilder
     }
 
     /**
+     * @psalm-param non-empty-string $path
      * @psalm-param list<string> $suffixes
      *
      * @throws \PHPUnit\Framework\Exception
@@ -79,7 +86,7 @@ final class TestSuiteBuilder
         }
 
         if (is_file($path) && str_ends_with($path, '.phpt')) {
-            $suite = TestSuite::empty();
+            $suite = TestSuite::empty($path);
             $suite->addTestFile($path);
 
             return $suite;
