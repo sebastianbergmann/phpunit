@@ -507,6 +507,11 @@
       <code>stop</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/Runner/Exception/ClassCannotBeInstantiatedException.php">
+    <PossiblyInvalidArgument>
+      <code><![CDATA[$previous->getCode()]]></code>
+    </PossiblyInvalidArgument>
+  </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingTemplateParam>
       <code>GroupFilterIterator</code>
