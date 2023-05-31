@@ -77,7 +77,7 @@ final class PharLoader
             }
 
             try {
-                /*
+                /**
                  * @psalm-suppress UnresolvableInclude
                  */
                 @require $file;
