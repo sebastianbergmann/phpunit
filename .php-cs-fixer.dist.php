@@ -266,7 +266,7 @@ $config->setFinder($finder)
         'phpdoc_summary' => true,
         'phpdoc_tag_casing' => true,
         'phpdoc_tag_type' => true,
-        'phpdoc_to_comment' => true,
+        'phpdoc_to_comment' => false,
         'phpdoc_trim' => true,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'phpdoc_types' => ['groups' => ['simple', 'meta']],
