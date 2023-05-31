@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(VersionComparisonOperator::class)]
+#[CoversClass(InvalidVersionOperatorException::class)]
 #[Small]
 final class VersionComparisonOperatorTest extends TestCase
 {
