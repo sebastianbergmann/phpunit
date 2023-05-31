@@ -20,7 +20,7 @@ use PHPUnit\Runner\ClassDoesNotImplementExtensionInterfaceException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TextUI\Configuration\Configuration;
 use ReflectionClass;
-use ReflectionException;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -54,8 +54,8 @@ final class ExtensionBootstrapper
 
         try {
             $instance = (new ReflectionClass($className))->newInstance();
-        } catch (ReflectionException $e) {
-            throw new ClassCannotBeInstantiatedException($className, $e);
+        } catch (Throwable $t) {
+            throw new ClassCannotBeInstantiatedException($className, $t);
         }
 
         assert($instance instanceof Extension);
