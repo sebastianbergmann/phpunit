@@ -18,6 +18,7 @@ use PharIo\Version\Version as PharIoVersion;
 use PHPUnit\Event;
 use PHPUnit\Runner\Version;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -75,10 +76,14 @@ final class PharLoader
                 continue;
             }
 
-            /**
-             * @psalm-suppress UnresolvableInclude
-             */
-            require $file;
+            try {
+                /** @psalm-suppress UnresolvableInclude */
+                @require $file;
+            } catch (Throwable $t) {
+                $notLoadedExtensions[] = $file . ': ' . $t->getMessage();
+
+                continue;
+            }
 
             $loadedExtensions[] = $manifest->getName()->asString() . ' ' . $manifest->getVersion()->getVersionString();
 
