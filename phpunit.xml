@@ -17,6 +17,7 @@
             <directory suffix=".phpt">tests/end-to-end/code-coverage</directory>
             <directory suffix=".phpt">tests/end-to-end/event</directory>
             <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
+            <directory suffix=".phpt">tests/end-to-end/extension</directory>
             <directory suffix=".phpt">tests/end-to-end/generic</directory>
             <directory suffix=".phpt">tests/end-to-end/logging</directory>
             <directory suffix=".phpt">tests/end-to-end/migration</directory>
