@@ -77,9 +77,7 @@ final class PharLoader
             }
 
             try {
-                /*
-                 * @psalm-suppress UnresolvableInclude
-                 */
+                /** @psalm-suppress UnresolvableInclude */
                 @require $file;
             } catch (Throwable $t) {
                 $notLoadedExtensions[] = $file . ': ' . $t->getMessage();
