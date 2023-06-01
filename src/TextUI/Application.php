@@ -364,19 +364,10 @@ final class Application
         );
 
         foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
-            try {
-                $extensionBootstrapper->bootstrap(
-                    $bootstrapper['className'],
-                    $bootstrapper['parameters'],
-                );
-            } catch (\PHPUnit\Runner\Exception $e) {
-                $this->exitWithErrorMessage(
-                    sprintf(
-                        'Error while bootstrapping extension: %s',
-                        $e->getMessage(),
-                    ),
-                );
-            }
+            $extensionBootstrapper->bootstrap(
+                $bootstrapper['className'],
+                $bootstrapper['parameters'],
+            );
         }
 
         return [
@@ -478,7 +469,7 @@ final class Application
     }
 
     /**
-     * @psalm-param ?array{loadedExtensions: list<string>, notLoadedExtensions: list<string>} $pharExtensions
+     * @psalm-param ?list<string> $pharExtensions
      */
     private function writePharExtensionInformation(Printer $printer, ?array $pharExtensions): void
     {
@@ -486,15 +477,7 @@ final class Application
             return;
         }
 
-        foreach ($pharExtensions['loadedExtensions'] as $extension) {
-            $this->writeMessage(
-                $printer,
-                'Extension',
-                $extension,
-            );
-        }
-
-        foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
+        foreach ($pharExtensions as $extension) {
             $this->writeMessage(
                 $printer,
                 'Extension',

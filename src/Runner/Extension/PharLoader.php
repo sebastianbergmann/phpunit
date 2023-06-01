@@ -14,6 +14,7 @@ use function explode;
 use function extension_loaded;
 use function implode;
 use function is_file;
+use function sprintf;
 use function str_contains;
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
@@ -30,30 +31,32 @@ use Throwable;
 final class PharLoader
 {
     /**
-     * @psalm-return array{loadedExtensions: list<string>, notLoadedExtensions: list<string>}
+     * @psalm-return list<string>
      */
     public function loadPharExtensionsInDirectory(string $directory): array
     {
         $pharExtensionLoaded = extension_loaded('phar');
-
-        if (!$pharExtensionLoaded) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
-                'Loading PHPUnit extension(s) from PHP archive(s) failed, PHAR extension not loaded',
-            );
-        }
-
         $loadedExtensions    = [];
-        $notLoadedExtensions = [];
 
         foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
             if (!$pharExtensionLoaded) {
-                $notLoadedExtensions[] = $file . ' cannot be loaded';
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot load extension from %s because the PHAR extension is not available',
+                        $file,
+                    ),
+                );
 
                 continue;
             }
 
             if (!is_file('phar://' . $file . '/manifest.xml')) {
-                $notLoadedExtensions[] = $file . ' is not an extension for PHPUnit';
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        '%s is not an extension for PHPUnit',
+                        $file,
+                    ),
+                );
 
                 continue;
             }
@@ -64,18 +67,35 @@ final class PharLoader
                 $manifest        = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
 
                 if (!$manifest->isExtensionFor($applicationName)) {
-                    $notLoadedExtensions[] = $file . ' is not an extension for PHPUnit';
+                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                        sprintf(
+                            '%s is not an extension for PHPUnit',
+                            $file,
+                        ),
+                    );
 
                     continue;
                 }
 
                 if (!$manifest->isExtensionFor($applicationName, $version)) {
-                    $notLoadedExtensions[] = $file . ' is not compatible with this version of PHPUnit';
+                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                        sprintf(
+                            '%s is not compatible with PHPUnit %s',
+                            $file,
+                            Version::series(),
+                        ),
+                    );
 
                     continue;
                 }
             } catch (ManifestException $e) {
-                $notLoadedExtensions[] = $file . ': ' . $e->getMessage();
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot load extension from %s: %s',
+                        $file,
+                        $e->getMessage(),
+                    ),
+                );
 
                 continue;
             }
@@ -84,7 +104,13 @@ final class PharLoader
                 /** @psalm-suppress UnresolvableInclude */
                 @require $file;
             } catch (Throwable $t) {
-                $notLoadedExtensions[] = $file . ': ' . $t->getMessage();
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot load extension from %s: %s',
+                        $file,
+                        $t->getMessage(),
+                    ),
+                );
 
                 continue;
             }
@@ -98,10 +124,7 @@ final class PharLoader
             );
         }
 
-        return [
-            'loadedExtensions'    => $loadedExtensions,
-            'notLoadedExtensions' => $notLoadedExtensions,
-        ];
+        return $loadedExtensions;
     }
 
     private function phpunitVersion(): string
