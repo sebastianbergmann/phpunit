@@ -13,11 +13,9 @@ use function assert;
 use function class_exists;
 use function class_implements;
 use function in_array;
+use function sprintf;
 use PHPUnit\Event;
-use PHPUnit\Runner\ClassCannotBeInstantiatedException;
-use PHPUnit\Runner\ClassDoesNotExistException;
-use PHPUnit\Runner\ClassDoesNotImplementExtensionInterfaceException;
-use PHPUnit\Runner\Exception;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 use ReflectionClass;
 use Throwable;
@@ -39,23 +37,44 @@ final class ExtensionBootstrapper
     /**
      * @psalm-param class-string $className
      * @psalm-param array<string, string> $parameters
-     *
-     * @throws Exception
      */
     public function bootstrap(string $className, array $parameters): void
     {
         if (!class_exists($className)) {
-            throw new ClassDoesNotExistException($className);
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Cannot bootstrap extension because class %s does not exist',
+                    $className,
+                ),
+            );
+
+            return;
         }
 
         if (!in_array(Extension::class, class_implements($className), true)) {
-            throw new ClassDoesNotImplementExtensionInterfaceException($className);
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Cannot bootstrap extension because class %s does not implement interface %s',
+                    $className,
+                    Extension::class,
+                ),
+            );
+
+            return;
         }
 
         try {
             $instance = (new ReflectionClass($className))->newInstance();
         } catch (Throwable $t) {
-            throw new ClassCannotBeInstantiatedException($className, $t);
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Cannot bootstrap extension because class %s cannot be instantiated: %s',
+                    $className,
+                    $t->getMessage(),
+                ),
+            );
+
+            return;
         }
 
         assert($instance instanceof Extension);
