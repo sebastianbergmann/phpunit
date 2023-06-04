@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 
 ### Changed
 
-* `PHPUnit\Runner\ErrorHandler` no longer emits events for `E_WARNING` errors, for instances, when they occur in PHPUnit's own code (or code of its dependencies) and are suppressed using the `@` operator
+* `PHPUnit\Runner\ErrorHandler` no longer emits events for errors that occur in PHPUnit's own code (or code of its dependencies) and are suppressed using the `@` operator
 
 ## [10.2.0] - 2023-06-02
 
