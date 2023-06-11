@@ -28,7 +28,7 @@ final class MigrationBuilder
             IntroduceCoverageElement::class,
             MoveAttributesFromRootToCoverage::class,
             MoveAttributesFromFilterWhitelistToCoverage::class,
-            MoveWhitelistDirectoriesToCoverage::class,
+            MoveWhitelistIncludesToCoverage::class,
             MoveWhitelistExcludesToCoverage::class,
             RemoveEmptyFilter::class,
             CoverageCloverToReport::class,
