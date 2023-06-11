@@ -16,7 +16,7 @@ use PHPUnit\Util\Xml\SnapshotNodeList;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MoveWhitelistDirectoriesToCoverage implements Migration
+final class MoveWhitelistIncludesToCoverage implements Migration
 {
     /**
      * @throws MigrationException
@@ -39,7 +39,11 @@ final class MoveWhitelistDirectoriesToCoverage implements Migration
         $coverage->appendChild($include);
 
         foreach (SnapshotNodeList::fromNodeList($whitelist->childNodes) as $child) {
-            if (!$child instanceof DOMElement || $child->nodeName !== 'directory') {
+            if (!$child instanceof DOMElement) {
+                continue;
+            }
+
+            if (!($child->nodeName === 'directory' || $child->nodeName === 'file')) {
                 continue;
             }
 

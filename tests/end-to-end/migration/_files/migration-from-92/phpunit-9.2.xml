@@ -17,6 +17,7 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
+            <file>file.php</file>
         </whitelist>
     </filter>
 </phpunit>

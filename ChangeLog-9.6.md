@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 
 ### Fixed
 
+* [#5405](https://github.com/sebastianbergmann/phpunit/issues/5405): XML configuration migration does not migrate `whitelist/file` elements
 * Always use `X.Y.Z` version number (and not just `X.Y`) of PHPUnit's version when checking whether a PHAR-distributed extension is compatible
 
 ## [9.6.8] - 2023-05-11
