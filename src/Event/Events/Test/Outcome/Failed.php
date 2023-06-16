@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use function sprintf;
+use function trim;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
@@ -74,7 +75,7 @@ final class Failed implements Event
 
     public function asString(): string
     {
-        $message = $this->throwable->message();
+        $message = trim($this->throwable->message());
 
         if (!empty($message)) {
             $message = PHP_EOL . $message;
