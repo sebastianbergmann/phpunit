@@ -13,14 +13,14 @@ use PHPUnit\Framework\Attributes\Small;
 use unit\Framework\MockObject\TestDoubleTestCase;
 
 #[Small]
-final class MockObjectTest extends TestDoubleTestCase
+final class StubTest extends TestDoubleTestCase
 {
     /**
      * @psalm-param class-string $type
      */
     protected function createTestDouble(string $type): object
     {
-        return $this->createMock($type);
+        return $this->createStub($type);
     }
 
     /**
@@ -28,6 +28,6 @@ final class MockObjectTest extends TestDoubleTestCase
      */
     protected function createTestDoubleForIntersection(array $interfaces): object
     {
-        return $this->createMockForIntersectionOfInterfaces($interfaces);
+        return $this->createStubForIntersectionOfInterfaces($interfaces);
     }
 }

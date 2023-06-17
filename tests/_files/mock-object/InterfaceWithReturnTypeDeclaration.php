@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-interface InterfaceWithMethodReturningIntersectionWithClass
+interface InterfaceWithReturnTypeDeclaration
 {
-    public function method(): AnInterface&ExtendableClass;
+    public function doSomething(): bool;
+
+    public function doSomethingElse(int $x): int;
+
+    public function selfReference(): self;
 }

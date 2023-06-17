@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-interface InterfaceWithMethodReturningIntersectionWithClass
+enum Enumeration
 {
-    public function method(): AnInterface&ExtendableClass;
 }
