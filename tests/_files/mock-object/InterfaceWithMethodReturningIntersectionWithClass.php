@@ -11,5 +11,5 @@ namespace PHPUnit\TestFixture\MockObject;
 
 interface InterfaceWithMethodReturningIntersectionWithClass
 {
-    public function method(): ExtendableClass&AnInterface;
+    public function method(): AnInterface&ExtendableClass;
 }
