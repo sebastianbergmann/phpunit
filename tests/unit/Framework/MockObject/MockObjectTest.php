@@ -11,7 +11,11 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
+use ReflectionProperty;
 
 #[Small]
 final class MockObjectTest extends TestDoubleTestCase
@@ -31,6 +35,50 @@ final class MockObjectTest extends TestDoubleTestCase
         $this->assertSame(1, $mock->doSomethingElse(0));
     }
 
+    public function testExpectationThatMethodIsCalledOnceSucceedsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->once())->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledOnceFailsWhenMethodIsNeverCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->once())->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 1 time.
+Method was expected to be called 1 time, actually called 0 times.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledOnceFailsWhenMethodIsCalledMoreThanOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->once())->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 1 time.
+Method was expected to be called 1 time, actually called 2 times.
+
+EOT,
+            $mock,
+        );
+    }
+
     /**
      * @psalm-param class-string $type
      */
@@ -45,5 +93,20 @@ final class MockObjectTest extends TestDoubleTestCase
     protected function createTestDoubleForIntersection(array $interfaces): object
     {
         return $this->createMockForIntersectionOfInterfaces($interfaces);
+    }
+
+    private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock): void
+    {
+        try {
+            $mock->__phpunit_verify();
+        } catch (ExpectationFailedException $e) {
+            $this->assertSame($expectationFailureMessage, $e->getMessage());
+
+            return;
+        } finally {
+            (new ReflectionProperty(TestCase::class, 'mockObjects'))->setValue($this, []);
+        }
+
+        $this->fail();
     }
 }
