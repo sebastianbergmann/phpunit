@@ -666,8 +666,8 @@ final class OldTestDoubleTestsTest extends TestCase
             $this->fail('Expected exception');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
-                "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
-                'Method was expected to be called 1 times, actually called 0 times.' . "\n",
+                "Expectation failed for method name is \"right\" when invoked 1 time.\n" .
+                'Method was expected to be called 1 time, actually called 0 times.' . "\n",
                 $e->getMessage(),
             );
         }
@@ -691,8 +691,8 @@ final class OldTestDoubleTestsTest extends TestCase
             $this->fail('Expected exception');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
-                "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
-                'Method was expected to be called 1 times, actually called 0 times.' . "\n",
+                "Expectation failed for method name is \"right\" when invoked 1 time.\n" .
+                'Method was expected to be called 1 time, actually called 0 times.' . "\n",
                 $e->getMessage(),
             );
         }
@@ -716,7 +716,7 @@ final class OldTestDoubleTestsTest extends TestCase
             $this->assertSame(
                 sprintf(
                     <<<'EOF'
-Expectation failed for method name is "right" when invoked 1 time(s)
+Expectation failed for method name is "right" when invoked 1 time
 Parameter 0 for invocation %s::right(Array (...)) does not match expected value.
 Failed asserting that two arrays are equal.
 EOF
@@ -736,7 +736,7 @@ EOF
             $this->assertSame(
                 sprintf(
                     <<<'EOF'
-Expectation failed for method name is "right" when invoked 1 time(s).
+Expectation failed for method name is "right" when invoked 1 time.
 Parameter 0 for invocation %s::right(Array (...)) does not match expected value.
 Failed asserting that two arrays are equal.
 --- Expected
@@ -776,7 +776,7 @@ EOF
             $this->assertSame(
                 sprintf(
                     <<<'EOF'
-Expectation failed for method name is "right" when invoked 1 time(s)
+Expectation failed for method name is "right" when invoked 1 time
 Parameter count for invocation %s::right() is too low.
 To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.
 EOF
