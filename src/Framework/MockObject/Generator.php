@@ -619,7 +619,7 @@ final class Generator
             $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
         }
 
-        if ($object instanceof MockObject) {
+        if ($object instanceof StubInternal) {
             $object->__phpunit_setReturnValueGeneration($returnValueGeneration);
         }
 
@@ -873,7 +873,7 @@ final class Generator
     {
         $buffer = 'class ';
 
-        $additionalInterfaces[] = MockObject::class;
+        $additionalInterfaces[] = MockObjectInternal::class;
         $interfaces             = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {

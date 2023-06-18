@@ -22,7 +22,7 @@ class NonExistentClass
 {
 }
 
-class MockFoo extends NonExistentClass implements PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends NonExistentClass implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use \PHPUnit\Framework\MockObject\StubApi;
     use \PHPUnit\Framework\MockObject\MockObjectApi;

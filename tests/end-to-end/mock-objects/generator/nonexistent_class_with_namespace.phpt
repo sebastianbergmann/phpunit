@@ -28,7 +28,7 @@ class Foo
 
 namespace {
 
-class MockFoo extends NS\Foo implements PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends NS\Foo implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use \PHPUnit\Framework\MockObject\StubApi;
     use \PHPUnit\Framework\MockObject\MockObjectApi;

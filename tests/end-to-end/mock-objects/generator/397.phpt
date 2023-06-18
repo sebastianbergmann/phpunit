@@ -25,7 +25,7 @@ print $mock->classCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
+class MockC extends C implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use \PHPUnit\Framework\MockObject\StubApi;
     use \PHPUnit\Framework\MockObject\MockObjectApi;

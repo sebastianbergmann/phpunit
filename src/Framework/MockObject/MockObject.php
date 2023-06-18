@@ -19,9 +19,5 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
  */
 interface MockObject extends Stub
 {
-    public function __phpunit_setOriginalObject(object $originalObject): void;
-
-    public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
-
     public function expects(InvocationOrder $invocationRule): InvocationMocker;
 }

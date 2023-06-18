@@ -51,10 +51,4 @@ trait StubApi
 
         return $this->__phpunit_invocationMocker;
     }
-
-    /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_hasMatchers(): bool
-    {
-        return $this->__phpunit_getInvocationHandler()->hasMatchers();
-    }
 }

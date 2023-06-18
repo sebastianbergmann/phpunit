@@ -21,6 +21,7 @@ use const PHP_URL_PATH;
 use function array_keys;
 use function array_merge;
 use function array_values;
+use function assert;
 use function basename;
 use function chdir;
 use function class_exists;
@@ -64,6 +65,7 @@ use PHPUnit\Framework\Constraint\ExceptionMessageMatchesRegularExpression;
 use PHPUnit\Framework\MockObject\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\MockObjectInternal;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
@@ -164,7 +166,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?MockGenerator $mockObjectGenerator = null;
 
     /**
-     * @psalm-var list<MockObject>
+     * @psalm-var list<MockObjectInternal>
      */
     private array $mockObjects                                    = [];
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
@@ -883,6 +885,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function registerMockObject(MockObject $mockObject): void
     {
+        assert($mockObject instanceof MockObjectInternal);
+
         $this->mockObjects[] = $mockObject;
     }
 

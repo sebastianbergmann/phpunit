@@ -30,7 +30,7 @@ print $mock->classCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockBar extends Bar implements PHPUnit\Framework\MockObject\MockObject
+class MockBar extends Bar implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use \PHPUnit\Framework\MockObject\StubApi;
     use \PHPUnit\Framework\MockObject\MockObjectApi;
