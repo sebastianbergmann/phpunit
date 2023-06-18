@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-use PHPUnit\Framework\MockObject\Api;
+use PHPUnit\Framework\MockObject\StubApi;
 
 class MockClassWithConfigurableMethods
 {
-    use Api;
+    use StubApi;
 
     public static function getConfigurableMethods(): array
     {

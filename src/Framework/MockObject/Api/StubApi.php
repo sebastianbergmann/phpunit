@@ -9,19 +9,15 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
-use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
-
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
  */
-trait Api
+trait StubApi
 {
     /**
      * @psalm-var list<ConfigurableMethod>
      */
     private static array $__phpunit_configurableMethods;
-    private object $__phpunit_originalObject;
     private bool $__phpunit_returnValueGeneration          = true;
     private ?InvocationHandler $__phpunit_invocationMocker = null;
 
@@ -35,12 +31,6 @@ trait Api
         }
 
         static::$__phpunit_configurableMethods = $configurableMethods;
-    }
-
-    /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_setOriginalObject(object $originalObject): void
-    {
-        $this->__phpunit_originalObject = $originalObject;
     }
 
     /** @noinspection MagicMethodsValidityInspection */
@@ -66,20 +56,5 @@ trait Api
     public function __phpunit_hasMatchers(): bool
     {
         return $this->__phpunit_getInvocationHandler()->hasMatchers();
-    }
-
-    /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_verify(bool $unsetInvocationMocker = true): void
-    {
-        $this->__phpunit_getInvocationHandler()->verify();
-
-        if ($unsetInvocationMocker) {
-            $this->__phpunit_invocationMocker = null;
-        }
-    }
-
-    public function expects(InvocationOrder $matcher): InvocationMockerBuilder
-    {
-        return $this->__phpunit_getInvocationHandler()->expects($matcher);
     }
 }
