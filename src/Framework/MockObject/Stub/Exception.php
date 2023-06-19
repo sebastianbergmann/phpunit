@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
-use function sprintf;
 use PHPUnit\Framework\MockObject\Invocation;
-use SebastianBergmann\Exporter\Exporter;
 use Throwable;
 
 /**
@@ -32,15 +30,5 @@ final class Exception implements Stub
     public function invoke(Invocation $invocation): never
     {
         throw $this->exception;
-    }
-
-    public function toString(): string
-    {
-        $exporter = new Exporter;
-
-        return sprintf(
-            'raise user-specified exception %s',
-            $exporter->export($this->exception),
-        );
     }
 }
