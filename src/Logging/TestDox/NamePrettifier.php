@@ -251,10 +251,6 @@ final class NamePrettifier
 
             if (!is_scalar($value)) {
                 $value = gettype($value);
-
-                if ($value === 'NULL') {
-                    $value = 'null';
-                }
             }
 
             if (is_bool($value) || is_int($value) || is_float($value)) {
