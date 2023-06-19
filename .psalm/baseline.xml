@@ -253,11 +253,6 @@
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
-    <PossiblyInvalidOperand>
-      <code><![CDATA[$this->callback]]></code>
-    </PossiblyInvalidOperand>
-  </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>
       <code>$mockClassName</code>
