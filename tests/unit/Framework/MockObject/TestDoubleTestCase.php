@@ -100,6 +100,15 @@ abstract class TestDoubleTestCase extends TestCase
         $double->method('doSomething')->willReturn(null);
     }
 
+    public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomethingElse')->willReturnArgument(0);
+
+        $this->assertSame(123, $double->doSomethingElse(123));
+    }
+
     public function testMethodCanBeConfiguredToThrowAnException(): void
     {
         $expectedException = new Exception('exception configured using throwException()');
