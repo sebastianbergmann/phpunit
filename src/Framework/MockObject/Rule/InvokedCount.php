@@ -66,4 +66,27 @@ final class InvokedCount extends InvocationOrder
             );
         }
     }
+
+    /**
+     * @throws ExpectationFailedException
+     */
+    protected function invokedDo(BaseInvocation $invocation): void
+    {
+        $count = $this->numberOfInvocations();
+
+        if ($count > $this->expectedCount) {
+            $message = $invocation->toString() . ' ';
+
+            $message .= match ($this->expectedCount) {
+                0       => 'was not expected to be called.',
+                1       => 'was not expected to be called more than once.',
+                default => sprintf(
+                    'was not expected to be called more than %d times.',
+                    $this->expectedCount,
+                ),
+            };
+
+            throw new ExpectationFailedException($message);
+        }
+    }
 }
