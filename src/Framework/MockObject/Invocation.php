@@ -34,9 +34,9 @@ final class Invocation implements SelfDescribing
      * @psalm-var non-empty-string
      */
     private readonly string $methodName;
-    private readonly array $parameters;
+    private array $parameters;
     private readonly string $returnType;
-    private readonly bool $isReturnTypeNullable;
+    private bool $isReturnTypeNullable = false;
     private readonly bool $proxiedCall;
     private readonly object $object;
 
@@ -48,6 +48,7 @@ final class Invocation implements SelfDescribing
     {
         $this->className   = $className;
         $this->methodName  = $methodName;
+        $this->parameters  = $parameters;
         $this->object      = $object;
         $this->proxiedCall = $proxiedCall;
 
@@ -58,25 +59,19 @@ final class Invocation implements SelfDescribing
         if (str_starts_with($returnType, '?')) {
             $returnType                 = substr($returnType, 1);
             $this->isReturnTypeNullable = true;
-        } else {
-            $this->isReturnTypeNullable = false;
         }
 
         $this->returnType = $returnType;
 
         if (!$cloneObjects) {
-            $this->parameters = $parameters;
-
             return;
         }
 
-        foreach ($parameters as $key => $value) {
+        foreach ($this->parameters as $key => $value) {
             if (is_object($value)) {
-                $parameters[$key] = Cloner::clone($value);
+                $this->parameters[$key] = Cloner::clone($value);
             }
         }
-
-        $this->parameters = $parameters;
     }
 
     public function className(): string
