@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -18,7 +17,6 @@ use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use ReflectionProperty;
 
-#[Group('test-doubles')]
 #[Small]
 final class MockObjectTest extends TestDoubleTestCase
 {

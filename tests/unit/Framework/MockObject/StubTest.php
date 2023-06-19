@@ -9,12 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
-#[Group('test-doubles')]
 #[Small]
 final class StubTest extends TestDoubleTestCase
 {
