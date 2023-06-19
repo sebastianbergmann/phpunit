@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
+use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
@@ -37,12 +38,17 @@ final class InvokedAtLeastCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $count = $this->numberOfInvocations();
+        $actualInvocations = $this->numberOfInvocations();
 
-        if ($count < $this->requiredInvocations) {
+        if ($actualInvocations < $this->requiredInvocations) {
             throw new ExpectationFailedException(
-                'Expected invocation at least ' . $this->requiredInvocations .
-                ' times but it occurred ' . $count . ' time(s).',
+                sprintf(
+                    'Expected invocation at least %d time%s but it occurred %d time%s.',
+                    $this->requiredInvocations,
+                    $this->requiredInvocations !== 1 ? 's' : '',
+                    $actualInvocations,
+                    $actualInvocations !== 1 ? 's' : '',
+                ),
             );
         }
     }
