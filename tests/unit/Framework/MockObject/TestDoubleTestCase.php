@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\MockObject\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\ClassIsReadonlyException;
-use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +21,6 @@ use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
-use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 
 abstract class TestDoubleTestCase extends TestCase
@@ -72,31 +70,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectException(ClassIsEnumerationException::class);
 
         $this->createTestDouble(Enumeration::class);
-    }
-
-    public function testMethodReturnsGeneratedValueWhenNoReturnValueIsConfigured(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $this->assertFalse($double->doSomething());
-    }
-
-    public function testMethodReturnsConfiguredValueWhenReturnValueIsConfigured(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $double->method('doSomething')->willReturn(true);
-
-        $this->assertTrue($double->doSomething());
-    }
-
-    public function testConfiguredReturnValueMustBeCompatibleWithReturnTypeDeclaration(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $this->expectException(IncompatibleReturnValueException::class);
-
-        $double->method('doSomething')->willReturn(null);
     }
 
     /**
