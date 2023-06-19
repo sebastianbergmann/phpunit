@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\AClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
@@ -41,9 +41,9 @@ final class StubTest extends TestCase
 
     public function testCanBeCreatedForClassThatCanBeExtended(): void
     {
-        $stub = $this->createStub(ExtendableClass::class);
+        $stub = $this->createStub(AClass::class);
 
-        $this->assertInstanceOf(ExtendableClass::class, $stub);
+        $this->assertInstanceOf(AClass::class, $stub);
         $this->assertInstanceOf(Stub::class, $stub);
     }
 

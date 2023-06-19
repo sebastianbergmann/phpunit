@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\AClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
@@ -41,9 +41,9 @@ final class MockObjectTest extends TestCase
 
     public function testCanBeCreatedForClassThatCanBeExtended(): void
     {
-        $mock = $this->createMock(ExtendableClass::class);
+        $mock = $this->createMock(AClass::class);
 
-        $this->assertInstanceOf(ExtendableClass::class, $mock);
+        $this->assertInstanceOf(AClass::class, $mock);
         $this->assertInstanceOf(MockObject::class, $mock);
     }
 
