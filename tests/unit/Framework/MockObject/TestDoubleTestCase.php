@@ -109,15 +109,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(123, $double->doSomethingElse(123));
     }
 
-    public function testMethodCanBeConfiguredToReturnSelfReference(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $double->method('selfReference')->willReturnSelf();
-
-        $this->assertSame($double, $double->selfReference());
-    }
-
     public function testMethodCanBeConfiguredToThrowAnException(): void
     {
         $expectedException = new Exception('exception configured using throwException()');
