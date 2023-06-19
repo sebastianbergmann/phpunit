@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +19,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use ReflectionProperty;
 
 #[Group('test-doubles')]
-#[Small]
+#[Medium]
 final class MockObjectTest extends TestDoubleTestCase
 {
     #[TestDox('createConfiguredMock() can be used to create a mock object and configure the return value for multiple methods')]
