@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function assert;
+use function implode;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
@@ -209,5 +210,28 @@ final class Matcher
                 ),
             );
         }
+    }
+
+    public function toString(): string
+    {
+        $list = [$this->invocationRule->toString()];
+
+        if ($this->methodNameRule !== null) {
+            $list[] = 'where ' . $this->methodNameRule->toString();
+        }
+
+        if ($this->parametersRule !== null) {
+            $list[] = 'and ' . $this->parametersRule->toString();
+        }
+
+        if ($this->afterMatchBuilderId !== null) {
+            $list[] = 'after ' . $this->afterMatchBuilderId;
+        }
+
+        if ($this->stub !== null) {
+            $list[] = 'will ' . $this->stub->toString();
+        }
+
+        return implode(' ', $list);
     }
 }

@@ -24,4 +24,9 @@ final class ReturnSelf implements Stub
     {
         return $invocation->object();
     }
+
+    public function toString(): string
+    {
+        return 'return the current object';
+    }
 }

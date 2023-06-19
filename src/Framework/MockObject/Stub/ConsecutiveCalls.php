@@ -10,7 +10,9 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use function array_shift;
+use function sprintf;
 use PHPUnit\Framework\MockObject\Invocation;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -18,6 +20,7 @@ use PHPUnit\Framework\MockObject\Invocation;
 final class ConsecutiveCalls implements Stub
 {
     private array $stack;
+    private mixed $value;
 
     public function __construct(array $stack)
     {
@@ -26,12 +29,22 @@ final class ConsecutiveCalls implements Stub
 
     public function invoke(Invocation $invocation): mixed
     {
-        $value = array_shift($this->stack);
+        $this->value = array_shift($this->stack);
 
-        if ($value instanceof Stub) {
-            $value = $value->invoke($invocation);
+        if ($this->value instanceof Stub) {
+            $this->value = $this->value->invoke($invocation);
         }
 
-        return $value;
+        return $this->value;
+    }
+
+    public function toString(): string
+    {
+        $exporter = new Exporter;
+
+        return sprintf(
+            'return user-specified value %s',
+            $exporter->export($this->value),
+        );
     }
 }
