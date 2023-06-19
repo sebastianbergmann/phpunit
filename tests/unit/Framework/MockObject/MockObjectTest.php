@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function call_user_func_array;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -69,15 +70,11 @@ EOT,
         $mock->expects($this->once())->method('doSomething');
 
         $mock->doSomething();
-        $mock->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked 1 time.
-Method was expected to be called 1 time, actually called 2 times.
-
-EOT,
+            AnInterface::class . '::doSomething() was not expected to be called more than once.',
             $mock,
+            'doSomething',
         );
     }
 
@@ -97,10 +94,10 @@ EOT,
         return $this->createMockForIntersectionOfInterfaces($interfaces);
     }
 
-    private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock): void
+    private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock, string $methodName = '__phpunit_verify', array $arguments = []): void
     {
         try {
-            $mock->__phpunit_verify();
+            call_user_func_array([$mock, $methodName], $arguments);
         } catch (ExpectationFailedException $e) {
             $this->assertSame($expectationFailureMessage, $e->getMessage());
 
