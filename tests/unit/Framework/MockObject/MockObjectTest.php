@@ -78,6 +78,33 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
+    {
+        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->with(1);
+
+        $mock->doSomethingElse(1);
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterFailsWhenMethodIsCalledButWithUnexpectedParameter(): void
+    {
+        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->with(1);
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomethingElse" when invoked 1 time
+Parameter 0 for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(0): int does not match expected value.
+Failed asserting that 0 matches expected 1.
+EOT,
+            $mock,
+            'doSomethingElse',
+            [0],
+        );
+    }
+
     /**
      * @psalm-param class-string $type
      */
