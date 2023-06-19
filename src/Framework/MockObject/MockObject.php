@@ -21,4 +21,3 @@ interface MockObject extends Stub
 {
     public function expects(InvocationOrder $invocationRule): InvocationMocker;
 }
-
