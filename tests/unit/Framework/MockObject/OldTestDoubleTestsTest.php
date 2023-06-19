@@ -759,6 +759,58 @@ EOF
         $this->resetMockObjects();
     }
 
+    public function testVerificationOfNeverFailsWithEmptyParameters(): void
+    {
+        $mock = $this->getMockBuilder(SomeClass::class)
+            ->addMethods(['right', 'wrong'])
+            ->getMock();
+
+        $mock->expects($this->never())
+            ->method('right')
+            ->with();
+
+        try {
+            $mock->right();
+            $this->fail('Expected exception');
+        } catch (ExpectationFailedException $e) {
+            $this->assertSame(
+                sprintf(
+                    '%s::right() was not expected to be called.',
+                    SomeClass::class,
+                ),
+                $e->getMessage(),
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    public function testVerificationOfNeverFailsWithAnyParameters(): void
+    {
+        $mock = $this->getMockBuilder(SomeClass::class)
+            ->addMethods(['right', 'wrong'])
+            ->getMock();
+
+        $mock->expects($this->never())
+            ->method('right')
+            ->withAnyParameters();
+
+        try {
+            $mock->right();
+            $this->fail('Expected exception');
+        } catch (ExpectationFailedException $e) {
+            $this->assertSame(
+                sprintf(
+                    '%s::right() was not expected to be called.',
+                    SomeClass::class,
+                ),
+                $e->getMessage(),
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
     public function testWithAnythingInsteadOfWithAnyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
