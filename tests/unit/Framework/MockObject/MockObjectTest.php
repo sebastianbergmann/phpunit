@@ -48,11 +48,8 @@ use RuntimeException;
 use stdClass;
 use Traversable;
 
-/**
- * @todo Evaluate each test, if it should be kept then move it to either StubTest or MockTest
- */
 #[Small]
-final class OldTestDoubleTestsTest extends TestCase
+final class MockObjectTest extends TestCase
 {
     public static function traversableProvider(): array
     {
