@@ -128,24 +128,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(4, $double->doSomethingElse(3));
     }
 
-    public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $double->method('doSomethingElse')->willReturnCallback(
-            static function (int $x)
-            {
-                return match ($x) {
-                    1 => 2,
-                    3 => 4,
-                };
-            },
-        );
-
-        $this->assertSame(2, $double->doSomethingElse(1));
-        $this->assertSame(4, $double->doSomethingElse(3));
-    }
-
     public function testMethodCanBeConfiguredToThrowAnException(): void
     {
         $expectedException = new Exception('exception configured using throwException()');
