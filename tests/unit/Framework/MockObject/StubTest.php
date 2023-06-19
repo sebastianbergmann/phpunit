@@ -10,28 +10,11 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use unit\Framework\MockObject\TestDoubleTestCase;
 
 #[Small]
 final class StubTest extends TestDoubleTestCase
 {
-    #[TestDox('createConfiguredStub() can be used to create a stub and configure the return value for multiple methods')]
-    public function test_createConfiguredStub_works(): void
-    {
-        $stub = $this->createConfiguredStub(
-            InterfaceWithReturnTypeDeclaration::class,
-            [
-                'doSomething'     => true,
-                'doSomethingElse' => 1,
-            ],
-        );
-
-        $this->assertTrue($stub->doSomething());
-        $this->assertSame(1, $stub->doSomethingElse(0));
-    }
-
     /**
      * @psalm-param class-string $type
      */
