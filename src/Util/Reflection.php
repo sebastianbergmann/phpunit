@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util;
 
+use function array_keys;
+use function array_merge;
+use function array_reverse;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -65,18 +68,30 @@ final class Reflection
      */
     private static function filterMethods(ReflectionClass $class, ?int $filter): array
     {
-        $methods = [];
+        $methodsByClass = [];
 
         foreach ($class->getMethods($filter) as $method) {
-            if ($method->getDeclaringClass()->getName() === TestCase::class) {
+            $declaringClassName = $method->getDeclaringClass()->getName();
+
+            if ($declaringClassName === TestCase::class) {
                 continue;
             }
 
-            if ($method->getDeclaringClass()->getName() === Assert::class) {
+            if ($declaringClassName === Assert::class) {
                 continue;
             }
 
-            $methods[] = $method;
+            if (!isset($methodsByClass[$declaringClassName])) {
+                $methodsByClass[$declaringClassName] = [];
+            }
+
+            $methodsByClass[$declaringClassName][] = $method;
+        }
+
+        $methods = [];
+
+        foreach (array_reverse(array_keys($methodsByClass)) as $className) {
+            $methods = array_merge($methods, $methodsByClass[$className]);
         }
 
         return $methods;
