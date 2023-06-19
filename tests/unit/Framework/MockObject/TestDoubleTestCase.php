@@ -9,6 +9,7 @@
  */
 namespace unit\Framework\MockObject;
 
+use Exception;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\MockObject\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\ClassIsFinalException;
@@ -97,6 +98,25 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectException(IncompatibleReturnValueException::class);
 
         $double->method('doSomething')->willReturn(null);
+    }
+
+    public function testMethodCanBeConfiguredToThrowAnException(): void
+    {
+        $expectedException = new Exception('exception configured using throwException()');
+
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomething')->will($this->throwException($expectedException));
+
+        try {
+            $double->doSomething();
+        } catch (Exception $actualException) {
+            $this->assertSame($expectedException, $actualException);
+
+            return;
+        }
+
+        $this->fail();
     }
 
     /**
