@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
- * @method InvocationMocker method($constraint)
+ * @method BuilderInvocationMocker method($constraint)
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -23,5 +23,5 @@ interface MockObject extends Stub
 
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
 
-    public function expects(InvocationOrder $invocationRule): InvocationMocker;
+    public function expects(InvocationOrder $invocationRule): BuilderInvocationMocker;
 }
