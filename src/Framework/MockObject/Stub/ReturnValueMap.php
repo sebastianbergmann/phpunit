@@ -44,4 +44,9 @@ final class ReturnValueMap implements Stub
 
         return null;
     }
+
+    public function toString(): string
+    {
+        return 'return value from a map';
+    }
 }

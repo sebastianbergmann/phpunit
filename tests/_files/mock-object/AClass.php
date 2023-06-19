@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class ExtendableClass
+class AClass
 {
 }

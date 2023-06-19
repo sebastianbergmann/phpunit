@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
+use function sprintf;
 use PHPUnit\Framework\MockObject\Invocation;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -26,5 +28,15 @@ final class ReturnStub implements Stub
     public function invoke(Invocation $invocation): mixed
     {
         return $this->value;
+    }
+
+    public function toString(): string
+    {
+        $exporter = new Exporter;
+
+        return sprintf(
+            'return user-specified value %s',
+            $exporter->export($this->value),
+        );
     }
 }

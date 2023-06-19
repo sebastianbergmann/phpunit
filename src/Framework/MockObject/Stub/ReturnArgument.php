@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
+use function sprintf;
 use PHPUnit\Framework\MockObject\Invocation;
 
 /**
@@ -26,5 +27,10 @@ final class ReturnArgument implements Stub
     public function invoke(Invocation $invocation): mixed
     {
         return $invocation->parameters()[$this->argumentIndex] ?? null;
+    }
+
+    public function toString(): string
+    {
+        return sprintf('return argument #%d', $this->argumentIndex);
     }
 }

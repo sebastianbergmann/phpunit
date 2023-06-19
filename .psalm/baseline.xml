@@ -195,6 +195,12 @@
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Framework/MockObject/Invocation.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->returnType]]></code>
+      <code>$types</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Framework/MockObject/Matcher.php">
     <InvalidNullableReturnType>
       <code>MethodName</code>
@@ -242,16 +248,15 @@
       <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
     </PossiblyFalseOperand>
   </file>
-  <file src="src/Framework/MockObject/ReturnValueGenerator.php">
-    <ArgumentTypeCoercion>
-      <code>$returnType</code>
-      <code>$types</code>
-    </ArgumentTypeCoercion>
-  </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PropertyNotSetInConstructor>
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
+    <PossiblyInvalidOperand>
+      <code><![CDATA[$this->callback]]></code>
+    </PossiblyInvalidOperand>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>

@@ -10,11 +10,12 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-interface Stub
+interface Stub extends SelfDescribing
 {
     /**
      * Fakes the processing of the invocation $invocation by returning a

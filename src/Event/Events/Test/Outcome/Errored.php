@@ -11,7 +11,6 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use function sprintf;
-use function trim;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
@@ -52,7 +51,7 @@ final class Errored implements Event
 
     public function asString(): string
     {
-        $message = trim($this->throwable->message());
+        $message = $this->throwable->message();
 
         if (!empty($message)) {
             $message = PHP_EOL . $message;

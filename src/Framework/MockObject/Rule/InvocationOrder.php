@@ -37,7 +37,13 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
     final public function invoked(BaseInvocation $invocation): void
     {
         $this->invocations[] = $invocation;
+
+        $this->invokedDo($invocation);
     }
 
     abstract public function matches(BaseInvocation $invocation): bool;
+
+    protected function invokedDo(BaseInvocation $invocation): void
+    {
+    }
 }
