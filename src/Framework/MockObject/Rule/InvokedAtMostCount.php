@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
-use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
@@ -38,17 +37,12 @@ final class InvokedAtMostCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $actualInvocations = $this->numberOfInvocations();
+        $count = $this->numberOfInvocations();
 
-        if ($actualInvocations > $this->allowedInvocations) {
+        if ($count > $this->allowedInvocations) {
             throw new ExpectationFailedException(
-                sprintf(
-                    'Expected invocation at most %d time%s but it occurred %d time%s.',
-                    $this->allowedInvocations,
-                    $this->allowedInvocations !== 1 ? 's' : '',
-                    $actualInvocations,
-                    $actualInvocations !== 1 ? 's' : '',
-                ),
+                'Expected invocation at most ' . $this->allowedInvocations .
+                ' times but it occurred ' . $count . ' time(s).',
             );
         }
     }

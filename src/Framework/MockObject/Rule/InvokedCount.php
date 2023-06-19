@@ -32,11 +32,7 @@ final class InvokedCount extends InvocationOrder
 
     public function toString(): string
     {
-        return sprintf(
-            'invoked %d time%s',
-            $this->expectedCount,
-            $this->expectedCount !== 1 ? 's' : '',
-        );
+        return 'invoked ' . $this->expectedCount . ' time(s)';
     }
 
     public function matches(BaseInvocation $invocation): bool
@@ -52,16 +48,15 @@ final class InvokedCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $actualCount = $this->numberOfInvocations();
+        $count = $this->numberOfInvocations();
 
-        if ($actualCount !== $this->expectedCount) {
+        if ($count !== $this->expectedCount) {
             throw new ExpectationFailedException(
                 sprintf(
-                    'Method was expected to be called %d time%s, actually called %d time%s.',
+                    'Method was expected to be called %d times, ' .
+                    'actually called %d times.',
                     $this->expectedCount,
-                    $this->expectedCount !== 1 ? 's' : '',
-                    $actualCount,
-                    $actualCount !== 1 ? 's' : '',
+                    $count,
                 ),
             );
         }
