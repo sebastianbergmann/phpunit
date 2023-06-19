@@ -9,63 +9,25 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\ExtendableClass;
-use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\AnotherInterface;
-use PHPUnit\TestFixture\MockObject\Enumeration;
-use PHPUnit\TestFixture\MockObject\FinalClass;
-use PHPUnit\TestFixture\MockObject\ReadonlyClass;
+use unit\Framework\MockObject\TestDoubleTestCase;
 
 #[Small]
-final class StubTest extends TestCase
+final class StubTest extends TestDoubleTestCase
 {
-    public function testCanBeCreatedForInterface(): void
+    /**
+     * @psalm-param class-string $type
+     */
+    protected function createTestDouble(string $type): object
     {
-        $stub = $this->createStub(AnInterface::class);
-
-        $this->assertInstanceOf(AnInterface::class, $stub);
-        $this->assertInstanceOf(Stub::class, $stub);
+        return $this->createStub($type);
     }
 
-    public function testCanBeCreatedForIntersectionOfInterfaces(): void
+    /**
+     * @psalm-param list<class-string> $interfaces
+     */
+    protected function createTestDoubleForIntersection(array $interfaces): object
     {
-        $stub = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
-
-        $this->assertInstanceOf(AnInterface::class, $stub);
-        $this->assertInstanceOf(AnotherInterface::class, $stub);
-        $this->assertInstanceOf(Stub::class, $stub);
-    }
-
-    public function testCanBeCreatedForClassThatCanBeExtended(): void
-    {
-        $stub = $this->createStub(ExtendableClass::class);
-
-        $this->assertInstanceOf(ExtendableClass::class, $stub);
-        $this->assertInstanceOf(Stub::class, $stub);
-    }
-
-    public function testCannotBeCreatedForFinalClass(): void
-    {
-        $this->expectException(ClassIsFinalException::class);
-
-        $this->createStub(FinalClass::class);
-    }
-
-    #[RequiresPhp('8.2')]
-    public function testCannotBeCreatedForReadonlyClass(): void
-    {
-        $this->expectException(ClassIsReadonlyException::class);
-
-        $this->createStub(ReadonlyClass::class);
-    }
-
-    public function testCannotBeCreatedForEnumeration(): void
-    {
-        $this->expectException(ClassIsEnumerationException::class);
-
-        $this->createStub(Enumeration::class);
+        return $this->createStubForIntersectionOfInterfaces($interfaces);
     }
 }
