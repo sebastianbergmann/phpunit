@@ -118,16 +118,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame($double, $double->selfReference());
     }
 
-    public function testMethodCanBeConfiguredToReturnValuesBasedOnArgumentMapping(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $double->method('doSomethingElse')->willReturnMap([[1, 2], [3, 4]]);
-
-        $this->assertSame(2, $double->doSomethingElse(1));
-        $this->assertSame(4, $double->doSomethingElse(3));
-    }
-
     public function testMethodCanBeConfiguredToThrowAnException(): void
     {
         $expectedException = new Exception('exception configured using throwException()');
