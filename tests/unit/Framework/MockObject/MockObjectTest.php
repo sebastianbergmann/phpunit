@@ -427,7 +427,6 @@ EOT,
         } finally {
             $this->resetMockObjects();
         }
-
     }
 
     /**
