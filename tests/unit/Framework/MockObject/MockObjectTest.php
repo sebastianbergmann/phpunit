@@ -407,6 +407,29 @@ EOT,
         );
     }
 
+    public function testExpectationsCannotHaveDuplicateIds(): void
+    {
+        $id   = 'the-id';
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $mock->expects($this->once())
+            ->method('one')
+            ->id($id);
+
+        try {
+            $mock->expects($this->once())
+                ->method('one')
+                ->id($id);
+        } catch (MatcherAlreadyRegisteredException $e) {
+            $this->assertSame('Matcher with id <the-id> is already registered', $e->getMessage());
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
+
+    }
+
     /**
      * @psalm-param class-string $type
      */
