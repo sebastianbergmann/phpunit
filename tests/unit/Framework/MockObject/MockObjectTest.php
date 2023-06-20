@@ -117,6 +117,80 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledAtLeastOnceSucceedsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeastOnce())->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastOnceSucceedsWhenMethodIsCalledTwice(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeastOnce())->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastTwiceSucceedsWhenMethodIsCalledTwice(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeast(2))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastTwiceSucceedsWhenMethodIsCalledThreeTimes(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeast(2))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastOnceFailsWhenMethodIsNotCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeastOnce())->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked at least once.
+Expected invocation at least once but it never occurred.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastTwiceFailsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeast(2))->method('doSomething');
+
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked at least 2 times.
+Expected invocation at least 2 times but it occurred 1 time.
+
+EOT,
+            $mock,
+        );
+    }
+
     public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
     {
         $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
