@@ -22,7 +22,7 @@ use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 
 abstract class TestDoubleTestCase extends TestCase
 {
-    public function testCanBeCreatedForInterface(): void
+    final public function testCanBeCreatedForInterface(): void
     {
         $double = $this->createTestDouble(AnInterface::class);
 
@@ -30,7 +30,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCanBeCreatedForIntersectionOfInterfaces(): void
+    final public function testCanBeCreatedForIntersectionOfInterfaces(): void
     {
         $double = $this->createTestDoubleForIntersection([AnInterface::class, AnotherInterface::class]);
 
@@ -39,7 +39,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCanBeCreatedForClassThatCanBeExtended(): void
+    final public function testCanBeCreatedForClassThatCanBeExtended(): void
     {
         $double = $this->createTestDouble(ExtendableClass::class);
 
@@ -47,7 +47,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCannotBeCreatedForFinalClass(): void
+    final public function testCannotBeCreatedForFinalClass(): void
     {
         $this->expectException(ClassIsFinalException::class);
 
@@ -55,28 +55,28 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[RequiresPhp('8.2')]
-    public function testCannotBeCreatedForReadonlyClass(): void
+    final public function testCannotBeCreatedForReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);
 
         $this->createTestDouble(ReadonlyClass::class);
     }
 
-    public function testCannotBeCreatedForEnumeration(): void
+    final public function testCannotBeCreatedForEnumeration(): void
     {
         $this->expectException(ClassIsEnumerationException::class);
 
         $this->createTestDouble(Enumeration::class);
     }
 
-    public function testMethodReturnsGeneratedValueWhenNoReturnValueIsConfigured(): void
+    final public function testMethodReturnsGeneratedValueWhenNoReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
         $this->assertFalse($double->doSomething());
     }
 
-    public function testMethodReturnsConfiguredValueWhenReturnValueIsConfigured(): void
+    final public function testMethodReturnsConfiguredValueWhenReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -85,7 +85,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertTrue($double->doSomething());
     }
 
-    public function testConfiguredReturnValueMustBeCompatibleWithReturnTypeDeclaration(): void
+    final public function testConfiguredReturnValueMustBeCompatibleWithReturnTypeDeclaration(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -94,7 +94,7 @@ abstract class TestDoubleTestCase extends TestCase
         $double->method('doSomething')->willReturn(null);
     }
 
-    public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
+    final public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -103,7 +103,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(123, $double->doSomethingElse(123));
     }
 
-    public function testMethodCanBeConfiguredToReturnSelfReference(): void
+    final public function testMethodCanBeConfiguredToReturnSelfReference(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -112,7 +112,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame($double, $double->selfReference());
     }
 
-    public function testMethodCanBeConfiguredToReturnReference(): void
+    final public function testMethodCanBeConfiguredToReturnReference(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -123,7 +123,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame($value, $double->doSomething());
     }
 
-    public function testMethodCanBeConfiguredToReturnValuesBasedOnArgumentMapping(): void
+    final public function testMethodCanBeConfiguredToReturnValuesBasedOnArgumentMapping(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -133,7 +133,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(4, $double->doSomethingElse(3));
     }
 
-    public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void
+    final public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -151,7 +151,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(4, $double->doSomethingElse(3));
     }
 
-    public function testMethodCanBeConfiguredToReturnDifferentValuesOnConsecutiveCalls(): void
+    final public function testMethodCanBeConfiguredToReturnDifferentValuesOnConsecutiveCalls(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
@@ -163,7 +163,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertTrue($double->doSomething());
     }
 
-    public function testMethodCanBeConfiguredToThrowAnException(): void
+    final public function testMethodCanBeConfiguredToThrowAnException(): void
     {
         $expectedException = new Exception('exception configured using throwException()');
 
