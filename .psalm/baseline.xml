@@ -247,6 +247,12 @@
       <code>$returnType</code>
       <code>$types</code>
     </ArgumentTypeCoercion>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[(new ReflectionClass($stubClassName))->newInstanceWithoutConstructor()]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code>MockObject</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Runtime/Rule/Parameters.php">
     <PropertyNotSetInConstructor>
