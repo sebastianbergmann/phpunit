@@ -286,6 +286,15 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledWithAnyParameterSucceedsWhenMethodIsCalledWithParameter(): void
+    {
+        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->withAnyParameters();
+
+        $mock->doSomethingElse(1);
+    }
+
     public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
     {
         $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
