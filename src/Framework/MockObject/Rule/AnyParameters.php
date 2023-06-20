@@ -16,11 +16,6 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  */
 final class AnyParameters implements ParametersRule
 {
-    public function toString(): string
-    {
-        return 'with any parameters';
-    }
-
     public function apply(BaseInvocation $invocation): void
     {
     }

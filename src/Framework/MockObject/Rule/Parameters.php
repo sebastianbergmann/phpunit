@@ -46,21 +46,6 @@ final class Parameters implements ParametersRule
         }
     }
 
-    public function toString(): string
-    {
-        $text = 'with parameter';
-
-        foreach ($this->parameters as $index => $parameter) {
-            if ($index > 0) {
-                $text .= ' and';
-            }
-
-            $text .= ' ' . $index . ' ' . $parameter->toString();
-        }
-
-        return $text;
-    }
-
     /**
      * @throws Exception
      */

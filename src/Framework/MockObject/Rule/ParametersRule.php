@@ -12,12 +12,11 @@ namespace PHPUnit\Framework\MockObject\Rule;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\Verifiable;
-use PHPUnit\Framework\SelfDescribing;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface ParametersRule extends SelfDescribing, Verifiable
+interface ParametersRule extends Verifiable
 {
     /**
      * @throws ExpectationFailedException if the invocation violates the rule
