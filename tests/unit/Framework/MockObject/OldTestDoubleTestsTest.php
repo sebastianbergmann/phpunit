@@ -16,7 +16,6 @@ use function sprintf;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -928,46 +927,6 @@ EOF
             ->will($this->returnCallback([$foo, 'callback']));
 
         $this->assertNull($foo->bar($a, $b, $c));
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateMockFromWsdl(): void
-    {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'WsdlMock');
-
-        $this->assertStringStartsWith(
-            'Mock_WsdlMock_',
-            $mock::class,
-        );
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateNamespacedMockFromWsdl(): void
-    {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
-
-        $this->assertStringStartsWith(
-            'Mock_WsdlMock_',
-            $mock::class,
-        );
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateTwoMocksOfOneWsdlFile(): void
-    {
-        $a = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
-        $b = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
-
-        $this->assertStringStartsWith('Mock_GoogleSearch_', $a::class);
-        $this->assertEquals($a::class, $b::class);
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateMockOfWsdlFileWithSpecialChars(): void
-    {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'Go ogle-Sea.rch.wsdl');
-
-        $this->assertStringStartsWith('Mock_GoogleSearch_', $mock::class);
     }
 
     public function testInterfaceWithStaticMethodCanBeStubbed(): void
