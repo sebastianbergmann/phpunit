@@ -38,6 +38,26 @@ final class MockObjectTest extends TestDoubleTestCase
         $this->assertSame(1, $mock->doSomethingElse(0));
     }
 
+    public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->never())->method('doSomething');
+    }
+
+    public function testExpectationThatMethodIsNeverCalledFailsWhenMethodIsCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->never())->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            AnInterface::class . '::doSomething() was not expected to be called.',
+            $mock,
+            'doSomething',
+        );
+    }
+
     public function testExpectationThatMethodIsCalledOnceSucceedsWhenMethodIsCalledOnce(): void
     {
         $mock = $this->createMock(AnInterface::class);
