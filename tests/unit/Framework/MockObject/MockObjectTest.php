@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\AbstractClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
@@ -38,6 +39,30 @@ final class MockObjectTest extends TestDoubleTestCase
 
         $this->assertTrue($mock->doSomething());
         $this->assertSame(1, $mock->doSomethingElse(0));
+    }
+
+    public function testCanBeCreatedForAbstractClassAllowingConfigurationOfAbstractMethods(): void
+    {
+        $mock = $this->getMockForAbstractClass(AbstractClass::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+
+        $this->assertTrue($mock->doSomething());
+    }
+
+    public function testCanBeCreatedForAbstractClassNotAllowingConfigurationOfConcreteMethods(): void
+    {
+        $mock = $this->getMockForAbstractClass(AbstractClass::class);
+
+        try {
+            $mock->expects($this->once())->method('doSomething');
+        } catch (MethodCannotBeConfiguredException $e) {
+            $this->assertSame('Trying to configure method "doSomething" which cannot be configured because it does not exist, has not been specified, is final, or is static', $e->getMessage());
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
     }
 
     public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
