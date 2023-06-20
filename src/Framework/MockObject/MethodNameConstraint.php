@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function is_string;
 use function sprintf;
 use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -36,10 +35,6 @@ final class MethodNameConstraint extends Constraint
 
     protected function matches(mixed $other): bool
     {
-        if (!is_string($other)) {
-            return false;
-        }
-
-        return strtolower($this->methodName) === strtolower($other);
+        return strtolower($this->methodName) === strtolower((string) $other);
     }
 }
