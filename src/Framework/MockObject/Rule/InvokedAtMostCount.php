@@ -27,7 +27,11 @@ final class InvokedAtMostCount extends InvocationOrder
 
     public function toString(): string
     {
-        return 'invoked at most ' . $this->allowedInvocations . ' times';
+        return sprintf(
+            'invoked at most %d time%s',
+            $this->allowedInvocations,
+            $this->allowedInvocations !== 1 ? 's' : '',
+        );
     }
 
     /**

@@ -27,7 +27,11 @@ final class InvokedAtLeastCount extends InvocationOrder
 
     public function toString(): string
     {
-        return 'invoked at least ' . $this->requiredInvocations . ' times';
+        return sprintf(
+            'invoked at least %d time%s',
+            $this->requiredInvocations,
+            $this->requiredInvocations !== 1 ? 's' : '',
+        );
     }
 
     /**
