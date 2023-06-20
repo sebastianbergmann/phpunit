@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function call_user_func_array;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -56,6 +57,24 @@ final class MockObjectTest extends TestDoubleTestCase
             $mock,
             'doSomething',
         );
+    }
+
+    #[DoesNotPerformAssertions]
+    public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsNotCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->any())->method('doSomething');
+    }
+
+    #[DoesNotPerformAssertions]
+    public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->any())->method('doSomething');
+
+        $mock->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledOnceSucceedsWhenMethodIsCalledOnce(): void
