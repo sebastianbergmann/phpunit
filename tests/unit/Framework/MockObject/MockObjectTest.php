@@ -432,9 +432,14 @@ EOT,
 
             return;
         } finally {
-            (new ReflectionProperty(TestCase::class, 'mockObjects'))->setValue($this, []);
+            $this->resetMockObjects();
         }
 
         $this->fail();
+    }
+
+    private function resetMockObjects(): void
+    {
+        (new ReflectionProperty(TestCase::class, 'mockObjects'))->setValue($this, []);
     }
 }
