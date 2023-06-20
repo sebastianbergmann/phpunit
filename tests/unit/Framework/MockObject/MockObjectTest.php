@@ -365,6 +365,21 @@ EOT,
         );
     }
 
+    public function testExpectationCannotBeContingentOnExpectationThatHasNotBeenConfigured(): void
+    {
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $mock->expects($this->once())
+            ->method('two')
+            ->after('the-id');
+
+        $this->assertThatMockObjectExpectationFails(
+            'No builder found for match builder identification <the-id>',
+            $mock,
+            'two',
+        );
+    }
+
     /**
      * @psalm-param class-string $type
      */
@@ -401,7 +416,7 @@ EOT,
     {
         try {
             call_user_func_array([$mock, $methodName], $arguments);
-        } catch (ExpectationFailedException $e) {
+        } catch (ExpectationFailedException|MatchBuilderNotFoundException $e) {
             $this->assertSame($expectationFailureMessage, $e->getMessage());
 
             return;
