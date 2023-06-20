@@ -251,6 +251,41 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledAtMostOnceSucceedsWhenMethodIsNeverCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atMost(1))->method('doSomething');
+    }
+
+    public function testExpectationThatMethodIsCalledAtMostOnceSucceedsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atMost(1))->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledAtMostOnceFailsWhenMethodIsCalledTwice(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atMost(1))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked at most 1 time.
+Expected invocation at most 1 time but it occurred 2 times.
+
+EOT,
+            $mock,
+        );
+    }
+
     public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
     {
         $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
