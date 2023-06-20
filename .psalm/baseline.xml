@@ -169,12 +169,7 @@
       <code><![CDATA[list<ExecutionOrderDependency>]]></code>
     </MoreSpecificReturnType>
   </file>
-  <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <PropertyTypeCoercion>
-      <code>$configurableMethods</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/Framework/MockObject/Generator.php">
+  <file src="src/Framework/MockObject/Generator/Generator.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$className</code>
@@ -195,13 +190,25 @@
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/MockObject/Matcher.php">
-    <InvalidNullableReturnType>
-      <code>MethodName</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement>
-      <code><![CDATA[$this->methodNameRule]]></code>
-    </NullableReturnStatement>
+  <file src="src/Framework/MockObject/Generator/MockMethod.php">
+    <InvalidArgument>
+      <code><![CDATA[[
+                'arguments_decl'     => $this->argumentsForDeclaration,
+                'arguments_call'     => $this->argumentsForCall,
+                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
+                'return_type'        => $this->returnType->asString(),
+                'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
+                'class_name'         => $this->className,
+                'method_name'        => $this->methodName,
+                'modifier'           => $this->modifier,
+                'reference'          => $this->reference,
+                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
+                'deprecation'        => $deprecation,
+            ]]]></code>
+    </InvalidArgument>
+    <PossiblyFalseOperand>
+      <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
+    </PossiblyFalseOperand>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion>
@@ -222,33 +229,26 @@
       <code><![CDATA[MockObject&MockedType]]></code>
     </InvalidReturnType>
   </file>
-  <file src="src/Framework/MockObject/MockMethod.php">
-    <InvalidArgument>
-      <code><![CDATA[[
-                'arguments_decl'     => $this->argumentsForDeclaration,
-                'arguments_call'     => $this->argumentsForCall,
-                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
-                'return_type'        => $this->returnType->asString(),
-                'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
-                'class_name'         => $this->className,
-                'method_name'        => $this->methodName,
-                'modifier'           => $this->modifier,
-                'reference'          => $this->reference,
-                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
-                'deprecation'        => $deprecation,
-            ]]]></code>
-    </InvalidArgument>
-    <PossiblyFalseOperand>
-      <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
-    </PossiblyFalseOperand>
+  <file src="src/Framework/MockObject/Runtime/Builder/InvocationMocker.php">
+    <PropertyTypeCoercion>
+      <code>$configurableMethods</code>
+    </PropertyTypeCoercion>
   </file>
-  <file src="src/Framework/MockObject/ReturnValueGenerator.php">
+  <file src="src/Framework/MockObject/Runtime/Matcher.php">
+    <InvalidNullableReturnType>
+      <code>MethodName</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement>
+      <code><![CDATA[$this->methodNameRule]]></code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Framework/MockObject/Runtime/ReturnValueGenerator.php">
     <ArgumentTypeCoercion>
       <code>$returnType</code>
       <code>$types</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Framework/MockObject/Rule/Parameters.php">
+  <file src="src/Framework/MockObject/Runtime/Rule/Parameters.php">
     <PropertyNotSetInConstructor>
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
