@@ -37,11 +37,13 @@ trait MockObjectApi
         $this->__phpunit_getInvocationHandler()->verify();
 
         if ($unsetInvocationMocker) {
-            $this->__phpunit_invocationMocker = null;
+            $this->__phpunit_unsetInvocationMocker();
         }
     }
 
     abstract public function __phpunit_getInvocationHandler(): InvocationHandler;
+
+    abstract public function __phpunit_unsetInvocationMocker(): void;
 
     public function expects(InvocationOrder $matcher): InvocationMockerBuilder
     {

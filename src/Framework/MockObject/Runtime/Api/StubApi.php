@@ -45,4 +45,10 @@ trait StubApi
 
         return $this->__phpunit_invocationMocker;
     }
+
+    /** @noinspection MagicMethodsValidityInspection */
+    public function __phpunit_unsetInvocationMocker(): void
+    {
+        $this->__phpunit_invocationMocker = null;
+    }
 }
