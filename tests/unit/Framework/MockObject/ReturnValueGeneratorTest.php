@@ -11,6 +11,7 @@ namespace unit\Framework\MockObject;
 
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\ReturnValueGenerator;
@@ -21,6 +22,7 @@ use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use stdClass;
 
 #[CoversClass(ReturnValueGenerator::class)]
+#[Group('test-doubles')]
 #[Small]
 final class ReturnValueGeneratorTest extends TestCase
 {
