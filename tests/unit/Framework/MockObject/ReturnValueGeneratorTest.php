@@ -136,6 +136,47 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $value);
     }
 
+    public function testGenerates_null_for_union_that_contains_null(): void
+    {
+        $this->assertNull($this->generate('null|bool'));
+    }
+
+    public function testGenerates_true_for_union_that_contains_true(): void
+    {
+        $this->assertTrue($this->generate('true|string'));
+    }
+
+    public function testGenerates_false_for_union_that_contains_bool(): void
+    {
+        $this->assertFalse($this->generate('bool|string'));
+    }
+
+    #[TestDox('Generates 0.0 for union that contains float')]
+    public function test_Generates_00_for_union_that_contains_float(): void
+    {
+        $this->assertSame(0.0, $this->generate('float|string'));
+    }
+
+    public function test_Generates_0_for_union_that_contains_int(): void
+    {
+        $this->assertSame(0, $this->generate('int|string'));
+    }
+
+    public function test_Generates_empty_string_for_union_that_contains_string(): void
+    {
+        $this->assertSame('', $this->generate('string|array'));
+    }
+
+    public function test_Generates_empty_array_for_union_that_contains_array(): void
+    {
+        $this->assertSame([], $this->generate('array|stdClass'));
+    }
+
+    public function test_Generates_stdClass_object_for_union_that_contains_object(): void
+    {
+        $this->assertInstanceOf(stdClass::class, $this->generate('object|ThisDoesNotExist'));
+    }
+
     private function generate(string $typeDeclaration): mixed
     {
         return (new ReturnValueGenerator)->generate(
