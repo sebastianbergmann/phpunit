@@ -26,7 +26,7 @@ trait TemplateLoader
      */
     private function loadTemplate(string $template): Template
     {
-        $filename = __DIR__ . '/Generator/' . $template;
+        $filename = __DIR__ . '/templates/' . $template;
 
         if (!isset(self::$templates[$filename])) {
             self::$templates[$filename] = new Template($filename);
