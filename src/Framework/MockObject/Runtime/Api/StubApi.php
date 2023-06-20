@@ -24,12 +24,6 @@ trait StubApi
     /** @noinspection MagicMethodsValidityInspection */
     public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void
     {
-        if (isset(static::$__phpunit_configurableMethods)) {
-            throw new ConfigurableMethodsAlreadyInitializedException(
-                'Configurable methods is already initialized and can not be reinitialized',
-            );
-        }
-
         static::$__phpunit_configurableMethods = $configurableMethods;
     }
 
