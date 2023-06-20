@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\TestProxyFixture;
 
 #[Small]
-final class ProxyObjectTest extends TestCase
+final class TestProxyTest extends TestCase
 {
     public function testProxyingWorksForMethodThatReturnsUndeclaredScalarValue(): void
     {
