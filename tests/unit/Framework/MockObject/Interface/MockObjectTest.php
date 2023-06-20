@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use ReflectionProperty;
 
@@ -323,6 +324,48 @@ EOT,
     }
 
     /**
+     * With <code>$mock->expects($this->once())->method('one')->id($id);</code>,
+     * we configure an expectation that one() is called once. This expectation is given the ID $id.
+     *
+     * With <code>$mock->expects($this->once())->method('two')->after($id);</code>,
+     * we configure an expectation that two() is called once. However, this expectation will only be verified
+     * if/after one() has been called.
+     */
+    public function testMethodCallCanBeExpectedContingentOnWhetherAnotherMethodWasPreviouslyCalled(): void
+    {
+        $mock = $this->mockWithContingentExpectation();
+
+        $mock->one();
+        $mock->two();
+    }
+
+    public function testContingentExpectationsAreNotEvaluatedUntilTheirConditionIsMet(): void
+    {
+        $mock = $this->mockWithContingentExpectation();
+
+        $mock->two();
+        $mock->one();
+        $mock->two();
+    }
+
+    public function testContingentExpectationsAreEvaluatedWhenTheirConditionIsMet(): void
+    {
+        $mock = $this->mockWithContingentExpectation();
+
+        $mock->two();
+        $mock->one();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "two" when invoked 1 time.
+Method was expected to be called 1 time, actually called 0 times.
+
+EOT,
+            $mock,
+        );
+    }
+
+    /**
      * @psalm-param class-string $type
      */
     protected function createTestDouble(string $type): object
@@ -336,6 +379,22 @@ EOT,
     protected function createTestDoubleForIntersection(array $interfaces): object
     {
         return $this->createMockForIntersectionOfInterfaces($interfaces);
+    }
+
+    private function mockWithContingentExpectation(): InterfaceWithImplicitProtocol&MockObject
+    {
+        $id   = 'the-id';
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $mock->expects($this->once())
+            ->method('one')
+            ->id($id);
+
+        $mock->expects($this->once())
+            ->method('two')
+            ->after($id);
+
+        return $mock;
     }
 
     private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock, string $methodName = '__phpunit_verify', array $arguments = []): void

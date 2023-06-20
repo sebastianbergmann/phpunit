@@ -9,13 +9,9 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class ClassWithImplicitProtocol
+interface InterfaceWithImplicitProtocol
 {
-    public function firstCall(): void
-    {
-    }
+    public function one(): void;
 
-    public function secondCall(): void
-    {
-    }
+    public function two(): void;
 }

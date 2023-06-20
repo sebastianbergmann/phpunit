@@ -20,7 +20,6 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Foo;
 use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
-use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 use stdClass;
 
 #[CoversClass(InvocationMocker::class)]
@@ -193,39 +192,6 @@ final class InvocationMockerTest extends TestCase
         $this->expectException(IncompatibleReturnValueException::class);
         $this->expectExceptionMessage('Method methodWithVoidReturnTypeDeclaration may not return value of type bool, its declared return type is "void"');
         $method->willReturn(true);
-    }
-
-    public function testExpectationsAreEnabledByPreviousMethodCallWhenChainedWithAfter(): void
-    {
-        $mock = $this->createMock(ClassWithImplicitProtocol::class);
-
-        $mock->expects($this->once())
-            ->method('firstCall')
-            ->id($fristCallId = 'first-call-id');
-
-        $mock->expects($this->once())
-            ->method('secondCall')
-            ->after($fristCallId);
-
-        $mock->firstCall();
-        $mock->secondCall();
-    }
-
-    public function testExpectationsAreNotTriggeredUntilPreviousMethodWasCalled(): void
-    {
-        $mock = $this->createMock(ClassWithImplicitProtocol::class);
-
-        $mock->expects($this->once())
-            ->method('firstCall')
-            ->id($firstCallId = 'first-call-id');
-
-        $mock->expects($this->once())
-            ->method('secondCall')
-            ->after($firstCallId);
-
-        $mock->secondCall();
-        $mock->firstCall();
-        $mock->secondCall();
     }
 
     public function testWillReturnAlreadyInstantiatedStubs(): void
