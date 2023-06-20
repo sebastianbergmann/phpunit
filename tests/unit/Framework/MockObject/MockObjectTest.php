@@ -191,6 +191,66 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledTwiceSucceedsWhenMethodIsCalledTwice(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsNeverCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 2 times.
+Method was expected to be called 2 times, actually called 0 times.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 2 times.
+Method was expected to be called 2 times, actually called 1 time.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsCalledThreeTimes(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            AnInterface::class . '::doSomething() was not expected to be called more than 2 times.',
+            $mock,
+            'doSomething',
+        );
+    }
+
     public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
     {
         $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
