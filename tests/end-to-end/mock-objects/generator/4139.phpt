@@ -8,7 +8,7 @@ interface InterfaceWithConstructor
 }
 require_once __DIR__ . '/../../../bootstrap.php';
 
-$generator = new \PHPUnit\Framework\MockObject\Generator;
+$generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(InterfaceWithConstructor::class);
 

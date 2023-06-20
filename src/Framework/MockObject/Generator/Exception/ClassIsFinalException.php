@@ -9,13 +9,20 @@
  */
 namespace PHPUnit\Framework\MockObject\Generator;
 
+use function sprintf;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-interface MockType
+final class ClassIsFinalException extends \PHPUnit\Framework\Exception implements Exception
 {
-    /**
-     * @psalm-return class-string
-     */
-    public function generate(): string;
+    public function __construct(string $className)
+    {
+        parent::__construct(
+            sprintf(
+                'Class "%s" is declared "final" and cannot be doubled',
+                $className,
+            ),
+        );
+    }
 }

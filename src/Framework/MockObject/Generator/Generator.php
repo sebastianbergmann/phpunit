@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject;
+namespace PHPUnit\Framework\MockObject\Generator;
 
 use const PHP_EOL;
 use const PREG_OFFSET_CAPTURE;
@@ -44,6 +44,10 @@ use Exception;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\ConfigurableMethod;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\MockObjectInternal;
+use PHPUnit\Framework\MockObject\StubInternal;
 use ReflectionClass;
 use ReflectionMethod;
 use SoapClient;

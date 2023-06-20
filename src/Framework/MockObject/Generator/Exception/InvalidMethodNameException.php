@@ -7,21 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject;
+namespace PHPUnit\Framework\MockObject\Generator;
 
 use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ClassIsFinalException extends \PHPUnit\Framework\Exception implements Exception
+final class InvalidMethodNameException extends \PHPUnit\Framework\Exception implements Exception
 {
-    public function __construct(string $className)
+    public function __construct(string $method)
     {
         parent::__construct(
             sprintf(
-                'Class "%s" is declared "final" and cannot be doubled',
-                $className,
+                'Cannot double method with invalid name "%s"',
+                $method,
             ),
         );
     }

@@ -9,13 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject\Generator;
 
+use PHPUnit\Framework\MockObject\Exception as BaseException;
+
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
-interface MockType
+interface Exception extends BaseException
 {
-    /**
-     * @psalm-return class-string
-     */
-    public function generate(): string;
 }

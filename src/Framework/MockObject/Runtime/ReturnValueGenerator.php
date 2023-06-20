@@ -15,6 +15,7 @@ use function in_array;
 use function interface_exists;
 use function sprintf;
 use function str_contains;
+use PHPUnit\Framework\MockObject\Generator\Generator;
 use ReflectionClass;
 use stdClass;
 use Throwable;

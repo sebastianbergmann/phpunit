@@ -7,15 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject;
+namespace PHPUnit\Framework\MockObject\Generator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class OriginalConstructorInvocationRequiredException extends \PHPUnit\Framework\Exception implements Exception
+final class RuntimeException extends \PHPUnit\Framework\Exception implements Exception
 {
-    public function __construct()
-    {
-        parent::__construct('Proxying to original methods requires invoking the original constructor');
-    }
 }

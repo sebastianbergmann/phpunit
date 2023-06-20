@@ -1,5 +1,5 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('Bar', [], 'MockBar', true, true)
+\PHPUnit\Framework\MockObject\Generator\Generator::generate('Bar', [], 'MockBar', true, true)
 --FILE--
 <?php declare(strict_types=1);
 abstract class Foo
@@ -16,7 +16,7 @@ class Bar extends Foo
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-$generator = new \PHPUnit\Framework\MockObject\Generator;
+$generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
     'Bar',
