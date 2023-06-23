@@ -11,6 +11,7 @@ namespace unit\Framework\MockObject;
 
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -26,6 +27,21 @@ use stdClass;
 #[Small]
 final class ReturnValueGeneratorTest extends TestCase
 {
+    public static function unionProvider(): array
+    {
+        return [
+            [null, 'null|true|float|int|string|array|object'],
+            [null, 'null|false|float|int|string|array|object'],
+            [null, 'null|bool|float|int|string|array|object'],
+            [true, 'true|float|int|string|array|object'],
+            [false, 'false|float|int|string|array|object'],
+            [false, 'bool|float|int|string|array|object'],
+            [0, 'int|string|array|object'],
+            ['', 'string|array|object'],
+            [[], 'array|object'],
+        ];
+    }
+
     public function test_Generates_null_for_empty_string(): void
     {
         $this->assertNull($this->generate(''));
@@ -136,40 +152,11 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $value);
     }
 
-    public function testGenerates_null_for_union_that_contains_null_and_bool(): void
+    #[DataProvider('unionProvider')]
+    #[TestDox('Generates $expected for $union')]
+    public function test_Generates_return_value_for_union(mixed $expected, string $union): void
     {
-        $this->assertNull($this->generate('null|bool'));
-    }
-
-    public function testGenerates_true_for_union_that_contains_true_and_string(): void
-    {
-        $this->assertTrue($this->generate('true|string'));
-    }
-
-    public function testGenerates_false_for_union_that_contains_bool_and_string(): void
-    {
-        $this->assertFalse($this->generate('bool|string'));
-    }
-
-    #[TestDox('Generates 0.0 for union that contains float')]
-    public function test_Generates_00_for_union_that_contains_float_and_string(): void
-    {
-        $this->assertSame(0.0, $this->generate('float|string'));
-    }
-
-    public function test_Generates_0_for_union_that_contains_int_and_string(): void
-    {
-        $this->assertSame(0, $this->generate('int|string'));
-    }
-
-    public function test_Generates_empty_string_for_union_that_contains_string_and_array(): void
-    {
-        $this->assertSame('', $this->generate('string|array'));
-    }
-
-    public function test_Generates_empty_array_for_union_that_contains_array_and_object(): void
-    {
-        $this->assertSame([], $this->generate('array|stdClass'));
+        $this->assertSame($expected, $this->generate($union));
     }
 
     public function test_Generates_stdClass_object_for_union_that_contains_object_and_unknown_type(): void
