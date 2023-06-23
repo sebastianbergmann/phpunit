@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.2.3] - 2023-MM-DD
+
+### Changed
+
+* [#5419](https://github.com/sebastianbergmann/phpunit/pull/5419): Allow empty `<extensions>` element in XML configuration
+
 ## [10.2.2] - 2023-06-11
 
 ### Fixed
@@ -37,6 +43,7 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 * [#5366](https://github.com/sebastianbergmann/phpunit/issues/5366): `PHPUnit\Event\TestSuite\Loaded` event has incomplete `PHPUnit\Event\TestSuite\TestSuite` value object
 * Always use `X.Y.Z` version number (and not just `X.Y`) of PHPUnit's version when checking whether a PHAR-distributed extension is compatible
 
+[10.2.3]: https://github.com/sebastianbergmann/phpunit/compare/10.2.2...10.2
 [10.2.2]: https://github.com/sebastianbergmann/phpunit/compare/10.2.1...10.2.2
 [10.2.1]: https://github.com/sebastianbergmann/phpunit/compare/10.2.0...10.2.1
 [10.2.0]: https://github.com/sebastianbergmann/phpunit/compare/10.1.3...10.2.0
