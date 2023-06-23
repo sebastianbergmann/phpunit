@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.10] - 2023-MM-DD
+
+### Changed
+
+* [#5419](https://github.com/sebastianbergmann/phpunit/pull/5419): Allow empty `<extensions>` element in XML configuration
+
 ## [9.6.9] - 2023-06-11
 
 ### Fixed
@@ -71,6 +77,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.10]: https://github.com/sebastianbergmann/phpunit/compare/9.6.9...9.6
 [9.6.9]: https://github.com/sebastianbergmann/phpunit/compare/9.6.8...9.6.9
 [9.6.8]: https://github.com/sebastianbergmann/phpunit/compare/9.6.7...9.6.8
 [9.6.7]: https://github.com/sebastianbergmann/phpunit/compare/9.6.6...9.6.7
