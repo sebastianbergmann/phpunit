@@ -86,7 +86,7 @@ final class TestSuiteLoader
 
     private function classNameFromFileName(string $suiteClassFile): string
     {
-        $className = basename($suiteClassFile, '.php');
+        $className = str_replace('-', '_', basename($suiteClassFile, '.php'));
         $dotPos    = strpos($className, '.');
 
         if ($dotPos !== false) {
