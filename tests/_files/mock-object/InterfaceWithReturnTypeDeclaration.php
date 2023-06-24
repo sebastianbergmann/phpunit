@@ -11,6 +11,8 @@ namespace PHPUnit\TestFixture\MockObject;
 
 interface InterfaceWithReturnTypeDeclaration
 {
+    public function __toString(): string;
+
     public function doSomething(): bool;
 
     public function doSomethingElse(int $x): int;

@@ -72,11 +72,32 @@ abstract class TestDoubleTestCase extends TestCase
         $this->createTestDouble(Enumeration::class);
     }
 
-    final public function testMethodReturnsGeneratedValueWhenNoReturnValueIsConfigured(): void
+    final public function testMethodReturnsGeneratedValueWhenReturnValueGenerationIsEnabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
         $this->assertFalse($double->doSomething());
+    }
+
+    final public function testToStringMethodReturnsEmptyStringWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
+    {
+        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->disableAutoReturnValueGeneration()
+            ->getMock();
+
+        $this->assertSame('', $double->__toString());
+    }
+
+    final public function testMethodDoesNotReturnValueWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
+    {
+        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->disableAutoReturnValueGeneration()
+            ->getMock();
+
+        $this->expectException(ReturnValueNotConfiguredException::class);
+        $this->expectExceptionMessage('No return value is configured for ' . InterfaceWithReturnTypeDeclaration::class . '::doSomething() and return value generation is disabled');
+
+        $double->doSomething();
     }
 
     final public function testMethodReturnsConfiguredValueWhenReturnValueIsConfigured(): void
