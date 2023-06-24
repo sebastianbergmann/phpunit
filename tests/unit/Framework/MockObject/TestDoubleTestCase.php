@@ -72,6 +72,13 @@ abstract class TestDoubleTestCase extends TestCase
         $this->createTestDouble(Enumeration::class);
     }
 
+    final public function testMethodReturnsNullWhenReturnValueIsNullableAndNoReturnValueIsConfigured(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $this->assertNull($double->returnsNullOrString());
+    }
+
     final public function testMethodReturnsGeneratedValueWhenReturnValueGenerationIsEnabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);

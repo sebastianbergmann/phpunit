@@ -18,4 +18,6 @@ interface InterfaceWithReturnTypeDeclaration
     public function doSomethingElse(int $x): int;
 
     public function selfReference(): self;
+
+    public function returnsNullOrString(): ?string;
 }
