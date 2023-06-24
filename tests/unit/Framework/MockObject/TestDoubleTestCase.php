@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use Exception;
 use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
@@ -208,7 +209,21 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(4, $double->doSomethingElse(3));
     }
 
+    #[TestDox('Method can be configured to return different values on consecutive calls using willReturn()')]
     final public function testMethodCanBeConfiguredToReturnDifferentValuesOnConsecutiveCalls(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomething')->willReturn(false, true, false, true);
+
+        $this->assertFalse($double->doSomething());
+        $this->assertTrue($double->doSomething());
+        $this->assertFalse($double->doSomething());
+        $this->assertTrue($double->doSomething());
+    }
+
+    #[TestDox('Method can be configured to return different values on consecutive calls using willReturnOnConsecutiveCalls()')]
+    final public function testMethodCanBeConfiguredToReturnDifferentValuesOnConsecutiveCalls2(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
