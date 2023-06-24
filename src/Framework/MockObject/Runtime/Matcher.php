@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function assert;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
@@ -140,8 +139,6 @@ final class Matcher
             if (!$matcher) {
                 throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
             }
-
-            assert($matcher instanceof self);
 
             if (!$matcher->invocationRule->hasBeenInvoked()) {
                 return false;

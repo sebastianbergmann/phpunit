@@ -38,13 +38,13 @@ final class Invocation implements SelfDescribing
     private readonly string $returnType;
     private readonly bool $isReturnTypeNullable;
     private readonly bool $proxiedCall;
-    private readonly object $object;
+    private readonly MockObjectInternal|StubInternal $object;
 
     /**
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      */
-    public function __construct(string $className, string $methodName, array $parameters, string $returnType, object $object, bool $cloneObjects = false, bool $proxiedCall = false)
+    public function __construct(string $className, string $methodName, array $parameters, string $returnType, MockObjectInternal|StubInternal $object, bool $cloneObjects = false, bool $proxiedCall = false)
     {
         $this->className   = $className;
         $this->methodName  = $methodName;
@@ -130,7 +130,7 @@ final class Invocation implements SelfDescribing
         );
     }
 
-    public function object(): object
+    public function object(): MockObjectInternal|StubInternal
     {
         return $this->object;
     }
