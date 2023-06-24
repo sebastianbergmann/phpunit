@@ -44,9 +44,6 @@
         </exclude>
     </source>
 
-    <coverage ignoreDeprecatedCodeUnits="true">
-    </coverage>
-
     <php>
         <ini name="precision" value="14"/>
         <ini name="serialize_precision" value="14"/>
