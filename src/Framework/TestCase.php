@@ -1136,6 +1136,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * resets the locale to its original value after the test is run.
      *
      * @throws Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5216
      */
     protected function setLocale(mixed ...$arguments): void
     {
