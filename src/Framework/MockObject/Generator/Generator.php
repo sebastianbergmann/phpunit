@@ -951,16 +951,18 @@ final class Generator
      */
     private function ensureValidMethods(?array $methods): void
     {
-        if (null !== $methods) {
-            foreach ($methods as $method) {
-                if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method)) {
-                    throw new InvalidMethodNameException((string) $method);
-                }
-            }
+        if ($methods === null) {
+            return;
+        }
 
-            if ($methods !== array_unique($methods)) {
-                throw new DuplicateMethodException($methods);
+        foreach ($methods as $method) {
+            if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method)) {
+                throw new InvalidMethodNameException((string) $method);
             }
+        }
+
+        if ($methods !== array_unique($methods)) {
+            throw new DuplicateMethodException($methods);
         }
     }
 
