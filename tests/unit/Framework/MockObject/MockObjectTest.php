@@ -63,6 +63,8 @@ final class MockObjectTest extends TestDoubleTestCase
         } finally {
             $this->resetMockObjects();
         }
+
+        $this->fail();
     }
 
     public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
@@ -452,6 +454,8 @@ EOT,
         } finally {
             $this->resetMockObjects();
         }
+
+        $this->fail();
     }
 
     /**
