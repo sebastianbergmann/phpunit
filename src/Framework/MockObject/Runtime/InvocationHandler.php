@@ -35,7 +35,6 @@ final class InvocationHandler
      */
     private readonly array $configurableMethods;
     private readonly bool $returnValueGeneration;
-    private ?ReturnValueNotConfiguredException $deferredError = null;
 
     /**
      * @psalm-param list<ConfigurableMethod> $configurableMethods
@@ -126,15 +125,11 @@ final class InvocationHandler
         }
 
         if (!$this->returnValueGeneration) {
-            $exception = new ReturnValueNotConfiguredException($invocation);
-
             if (strtolower($invocation->methodName()) === '__tostring') {
-                $this->deferredError = $exception;
-
                 return '';
             }
 
-            throw $exception;
+            throw new ReturnValueNotConfiguredException($invocation);
         }
 
         return $invocation->generateReturnValue();
@@ -158,10 +153,6 @@ final class InvocationHandler
     {
         foreach ($this->matchers as $matcher) {
             $matcher->verify();
-        }
-
-        if ($this->deferredError) {
-            throw $this->deferredError;
         }
     }
 
