@@ -434,6 +434,8 @@ final class MockBuilder
 
     /**
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5421
      */
     public function enableAutoReturnValueGeneration(): self
     {
@@ -444,6 +446,8 @@ final class MockBuilder
 
     /**
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5421
      */
     public function disableAutoReturnValueGeneration(): self
     {
