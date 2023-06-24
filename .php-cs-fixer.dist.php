@@ -15,7 +15,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
     ->notName('DeprecatedPhpFeatureTest.php')
-    ->notName('InterfaceWithMethodReturningDisjunctiveNormalFormType.php')
     ->notName('ReadonlyClass.php')
     ->notName('*.phpt');
 
