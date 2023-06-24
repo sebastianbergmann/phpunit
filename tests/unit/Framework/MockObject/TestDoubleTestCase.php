@@ -20,8 +20,10 @@ use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\ReadonlyClass;
+use stdClass;
 
 abstract class TestDoubleTestCase extends TestCase
 {
@@ -123,6 +125,30 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectException(IncompatibleReturnValueException::class);
 
         $double->method('doSomething')->willReturn(null);
+    }
+
+    public function testObjectsPassedAsArgumentAreNotClonedByDefault(): void
+    {
+        $object = new stdClass;
+
+        $double = $this->createTestDouble(InterfaceWithMethodThatExpectsObject::class);
+
+        $double->method('doSomething')->willReturnArgument(0);
+
+        $this->assertSame($object, $double->doSomething($object));
+    }
+
+    public function testCloningOfObjectsPassedAsArgumentCanBeEnabled(): void
+    {
+        $object = new stdClass;
+
+        $double = $this->getMockBuilder(InterfaceWithMethodThatExpectsObject::class)
+            ->enableArgumentCloning()
+            ->getMock();
+
+        $double->method('doSomething')->willReturnArgument(0);
+
+        $this->assertNotSame($object, $double->doSomething($object));
     }
 
     final public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
