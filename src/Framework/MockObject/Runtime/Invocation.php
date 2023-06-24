@@ -79,11 +79,17 @@ final class Invocation implements SelfDescribing
         $this->parameters = $parameters;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function className(): string
     {
         return $this->className;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function methodName(): string
     {
         return $this->methodName;
