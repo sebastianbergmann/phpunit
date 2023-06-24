@@ -226,7 +226,7 @@ abstract class TestDoubleTestCase extends TestCase
 
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->method('doSomething')->will($this->throwException($expectedException));
+        $double->method('doSomething')->willThrowException($expectedException);
 
         try {
             $double->doSomething();
