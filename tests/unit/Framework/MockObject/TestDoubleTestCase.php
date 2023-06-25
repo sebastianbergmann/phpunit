@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use Exception;
 use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
@@ -88,6 +89,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertFalse($double->doSomething());
     }
 
+    #[TestDox('__toString() method returns empty string when return value generation is disabled and no return value is configured')]
     final public function testToStringMethodReturnsEmptyStringWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
