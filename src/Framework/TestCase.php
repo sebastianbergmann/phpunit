@@ -310,8 +310,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @deprecated Use <code>$double->willReturnOnConsecutiveCalls()</code> instead of <code>$double->will($this->onConsecutiveCalls())</code>
+     * @deprecated Use <code>$double->willReturn()</code> instead of <code>$double->will($this->onConsecutiveCalls())</code>
      * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5425
      */
     final public static function onConsecutiveCalls(mixed ...$arguments): ConsecutiveCallsStub
     {
