@@ -10,71 +10,14 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
-use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
-use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
-use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\AnotherInterface;
-use PHPUnit\TestFixture\MockObject\Enumeration;
-use PHPUnit\TestFixture\MockObject\ExtendableClass;
-use PHPUnit\TestFixture\MockObject\FinalClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
-use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 use stdClass;
 
 abstract class TestDoubleTestCase extends TestCase
 {
-    final public function testCanBeCreatedForInterface(): void
-    {
-        $double = $this->createTestDouble(AnInterface::class);
-
-        $this->assertInstanceOf(AnInterface::class, $double);
-        $this->assertInstanceOf(Stub::class, $double);
-    }
-
-    final public function testCanBeCreatedForIntersectionOfInterfaces(): void
-    {
-        $double = $this->createTestDoubleForIntersection([AnInterface::class, AnotherInterface::class]);
-
-        $this->assertInstanceOf(AnInterface::class, $double);
-        $this->assertInstanceOf(AnotherInterface::class, $double);
-        $this->assertInstanceOf(Stub::class, $double);
-    }
-
-    final public function testCanBeCreatedForClassThatCanBeExtended(): void
-    {
-        $double = $this->createTestDouble(ExtendableClass::class);
-
-        $this->assertInstanceOf(ExtendableClass::class, $double);
-        $this->assertInstanceOf(Stub::class, $double);
-    }
-
-    final public function testCannotBeCreatedForFinalClass(): void
-    {
-        $this->expectException(ClassIsFinalException::class);
-
-        $this->createTestDouble(FinalClass::class);
-    }
-
-    #[RequiresPhp('8.2')]
-    final public function testCannotBeCreatedForReadonlyClass(): void
-    {
-        $this->expectException(ClassIsReadonlyException::class);
-
-        $this->createTestDouble(ReadonlyClass::class);
-    }
-
-    final public function testCannotBeCreatedForEnumeration(): void
-    {
-        $this->expectException(ClassIsEnumerationException::class);
-
-        $this->createTestDouble(Enumeration::class);
-    }
-
     final public function testMethodReturnsNullWhenReturnValueIsNullableAndNoReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);

@@ -13,12 +13,9 @@ use function call_user_func_array;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
-use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\AbstractClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use ReflectionProperty;
@@ -27,82 +24,6 @@ use ReflectionProperty;
 #[Medium]
 final class MockObjectTest extends TestDoubleTestCase
 {
-    #[TestDox('createConfiguredMock() can be used to create a mock object and configure the return value for multiple methods')]
-    public function test_createConfiguredMock_works(): void
-    {
-        $mock = $this->createConfiguredMock(
-            InterfaceWithReturnTypeDeclaration::class,
-            [
-                'doSomething'     => true,
-                'doSomethingElse' => 1,
-            ],
-        );
-
-        $this->assertTrue($mock->doSomething());
-        $this->assertSame(1, $mock->doSomethingElse(0));
-    }
-
-    #[TestDox('createPartialMock() can be used to create a partial mock object, making only a list of methods configurable')]
-    public function testPartialMockCanBeCreatedForClassThatCanBeExtended(): void
-    {
-        $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
-
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
-
-        $this->assertTrue($mock->doSomething());
-    }
-
-    public function testMethodOfPartialMockThatIsNotConfigurableCannotBeConfigured(): void
-    {
-        $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
-
-        try {
-            $mock->expects($this->once())->method('doSomething')->willReturn(true);
-        } catch (MethodCannotBeConfiguredException $e) {
-            $this->assertSame('Trying to configure method "doSomething" which cannot be configured because it does not exist, has not been specified, is final, or is static', $e->getMessage());
-
-            return;
-        } finally {
-            $this->resetMockObjects();
-        }
-
-        $this->fail();
-    }
-
-    public function testMethodOfPartialMockThatDoesNotExistCannotBeConfigured(): void
-    {
-        $this->expectException(CannotUseOnlyMethodsException::class);
-        $this->expectExceptionMessage('Trying to configure method "doesNotExist" with onlyMethods(), but it does not exist in class "PHPUnit\TestFixture\MockObject\ExtendableClass"');
-
-        $this->createPartialMock(ExtendableClass::class, ['doesNotExist']);
-    }
-
-    public function testCanBeCreatedForAbstractClassAllowingConfigurationOfAbstractMethods(): void
-    {
-        $mock = $this->getMockForAbstractClass(AbstractClass::class);
-
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
-
-        $this->assertTrue($mock->doSomething());
-    }
-
-    public function testCanBeCreatedForAbstractClassNotAllowingConfigurationOfConcreteMethods(): void
-    {
-        $mock = $this->getMockForAbstractClass(AbstractClass::class);
-
-        try {
-            $mock->expects($this->once())->method('doSomething');
-        } catch (MethodCannotBeConfiguredException $e) {
-            $this->assertSame('Trying to configure method "doSomething" which cannot be configured because it does not exist, has not been specified, is final, or is static', $e->getMessage());
-
-            return;
-        } finally {
-            $this->resetMockObjects();
-        }
-
-        $this->fail();
-    }
-
     public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
     {
         $mock = $this->createMock(AnInterface::class);

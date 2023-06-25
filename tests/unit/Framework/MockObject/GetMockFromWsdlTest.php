@@ -12,14 +12,17 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 #[Group('test-doubles')]
 #[Medium]
 #[RequiresPhpExtension('soap')]
-final class SoapServiceMockObjectTest extends TestCase
+#[TestDox('getMockFromWsdl()')]
+final class GetMockFromWsdlTest extends TestCase
 {
-    public function testCanBeCreatedFromWsdlWithNonNamespacedClassName(): void
+    #[TestDox('Creates mock object from WSDL file with non-namespaced class name')]
+    public function test_CreatesMockObjectFromWsdlFileWithNonNamespacedClassName(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'WsdlMock');
 
@@ -29,7 +32,8 @@ final class SoapServiceMockObjectTest extends TestCase
         );
     }
 
-    public function testCanBeCreatedFromWsdlWithNamespacedClassName(): void
+    #[TestDox('Creates mock object from WSDL file with namespaced class name')]
+    public function testCreatesMockObjectFromWsdlWithNamespacedClassName(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
 
@@ -39,7 +43,8 @@ final class SoapServiceMockObjectTest extends TestCase
         );
     }
 
-    public function testCanBeCreatedFromWsdlFileWithStrangeCharactersInFilename(): void
+    #[TestDox('Creates mock object from WSDL file with strange characters in filename')]
+    public function testCreatesMockObjectFromWsdlFileWithStrangeCharactersInFilename(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'Go ogle-Sea.rch.wsdl');
 
