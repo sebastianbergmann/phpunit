@@ -16,7 +16,7 @@ trait ProxiedCloneMethod
 {
     public function __clone(): void
     {
-        $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationHandler();
+        $this->__phpunit_stubInternalState->cloneInvocationHandler();
 
         parent::__clone();
     }

@@ -576,6 +576,8 @@ final class Generator
         $className = $mockClass->generate();
         $object    = $this->instantiate($className, $callOriginalConstructor, $arguments);
 
+        $this->instantiateInternalState($object);
+
         if ($callOriginalMethods) {
             $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
         }
@@ -1000,6 +1002,16 @@ final class Generator
                 $e,
             );
             // @codeCoverageIgnoreEnd
+        }
+    }
+
+    private function instantiateInternalState(object $object): void
+    {
+        if ($object instanceof StubInternal) {
+            $object->__phpunit_initStubInternalState();
+        }
+        if ($object instanceof MockObjectInternal) {
+            $object->__phpunit_initMockObjectInternalState();
         }
     }
 
