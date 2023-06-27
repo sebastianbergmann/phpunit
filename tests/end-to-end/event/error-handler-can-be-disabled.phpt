@@ -38,7 +38,7 @@ Test Suite Started (default, 2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodA)
 Test Prepared (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodA)
-Assertion Succeeded (Constraint: exception of type "Exception", Value: Exception Object #92 (
+Assertion Succeeded (Constraint: exception of type "Exception", Value: Exception Object #%d (
     'message' => 'fopen(%s/missing/directory): Failed to open stream: No such file or directory'
     'string' => ''
     'code' => 0
