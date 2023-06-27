@@ -84,7 +84,9 @@ final class TestRunner
         $risky      = false;
         $skipped    = false;
 
-        ErrorHandler::instance()->enable();
+        if ($this->shouldErrorHandlerBeUsed($test)) {
+            ErrorHandler::instance()->enable();
+        }
 
         $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
                                $shouldCodeCoverageBeCollected;
@@ -451,5 +453,14 @@ final class TestRunner
         }
 
         return $path;
+    }
+
+    private function shouldErrorHandlerBeUsed(TestCase $test): bool
+    {
+        if (MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isNotEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 }
