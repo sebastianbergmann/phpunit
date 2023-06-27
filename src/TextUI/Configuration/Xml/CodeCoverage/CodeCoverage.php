@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage;
 
 use function count;
-use PHPUnit\TextUI\Configuration\Directory;
 use PHPUnit\TextUI\Configuration\FileCollection;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
@@ -29,7 +28,6 @@ use PHPUnit\TextUI\XmlConfiguration\Exception;
  */
 final class CodeCoverage
 {
-    private readonly ?Directory $cacheDirectory;
     private readonly FilterDirectoryCollection $directories;
     private readonly FileCollection $files;
     private readonly FilterDirectoryCollection $excludeDirectories;
@@ -46,9 +44,8 @@ final class CodeCoverage
     private readonly ?Text $text;
     private readonly ?Xml $xml;
 
-    public function __construct(?Directory $cacheDirectory, FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
-        $this->cacheDirectory            = $cacheDirectory;
         $this->directories               = $directories;
         $this->files                     = $files;
         $this->excludeDirectories        = $excludeDirectories;
@@ -64,32 +61,6 @@ final class CodeCoverage
         $this->php                       = $php;
         $this->text                      = $text;
         $this->xml                       = $xml;
-    }
-
-    /**
-     * @psalm-assert-if-true !null $this->cacheDirectory
-     *
-     * @deprecated
-     */
-    public function hasCacheDirectory(): bool
-    {
-        return $this->cacheDirectory !== null;
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @deprecated
-     */
-    public function cacheDirectory(): Directory
-    {
-        if (!$this->hasCacheDirectory()) {
-            throw new Exception(
-                'No cache directory has been configured',
-            );
-        }
-
-        return $this->cacheDirectory;
     }
 
     public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool

@@ -16,8 +16,7 @@
         </exclude>
     </source>
 
-    <coverage cacheDirectory="/tmp/cache"
-              pathCoverage="true"
+    <coverage pathCoverage="true"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
         <report>

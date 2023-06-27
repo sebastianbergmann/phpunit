@@ -299,7 +299,6 @@ final class Loader
 
     private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage
     {
-        $cacheDirectory            = null;
         $pathCoverage              = false;
         $includeUncoveredFiles     = true;
         $ignoreDeprecatedCodeUnits = false;
@@ -308,14 +307,6 @@ final class Loader
         $element = $this->element($xpath, 'coverage');
 
         if ($element) {
-            $cacheDirectory = $this->getStringAttribute($element, 'cacheDirectory');
-
-            if ($cacheDirectory !== null) {
-                $cacheDirectory = new Directory(
-                    $this->toAbsolutePath($filename, $cacheDirectory),
-                );
-            }
-
             $pathCoverage = $this->getBooleanAttribute(
                 $element,
                 'pathCoverage',
@@ -454,7 +445,6 @@ final class Loader
         }
 
         return new CodeCoverage(
-            $cacheDirectory,
             $this->readFilterDirectories($filename, $xpath, 'coverage/include/directory'),
             $this->readFilterFiles($filename, $xpath, 'coverage/include/file'),
             $this->readFilterDirectories($filename, $xpath, 'coverage/exclude/directory'),
@@ -741,12 +731,6 @@ final class Loader
             $cacheDirectory = $this->toAbsolutePath($filename, $cacheDirectory);
         }
 
-        $cacheResultFile = $this->getStringAttribute($document->documentElement, 'cacheResultFile');
-
-        if ($cacheResultFile !== null) {
-            $cacheResultFile = $this->toAbsolutePath($filename, $cacheResultFile);
-        }
-
         $bootstrap = $this->getStringAttribute($document->documentElement, 'bootstrap');
 
         if ($bootstrap !== null) {
@@ -786,7 +770,6 @@ final class Loader
         return new PHPUnit(
             $cacheDirectory,
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
-            $cacheResultFile,
             $this->getColumns($document),
             $this->getColors($document),
             $this->getBooleanAttribute($document->documentElement, 'stderr', false),
