@@ -23,7 +23,7 @@ final class SnapshotTest extends TestCase
         $time                   = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
         $memoryUsage            = MemoryUsage::fromBytes(2000);
         $peakMemoryUsage        = MemoryUsage::fromBytes(3000);
-        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0);
+        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
 
         $snapshot = new Snapshot(
             $time,

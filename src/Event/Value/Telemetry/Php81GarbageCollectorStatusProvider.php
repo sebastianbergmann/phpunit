@@ -29,6 +29,10 @@ final class Php81GarbageCollectorStatusProvider implements GarbageCollectorStatu
             null,
             null,
             null,
+            null,
+            null,
+            null,
+            null,
         );
     }
 }
