@@ -83,6 +83,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
+use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
 
 #[CoversClass(After::class)]
 #[CoversClass(AfterClass::class)]
@@ -131,6 +132,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 #[CoversClass(Ticket::class)]
 #[CoversClass(UsesClass::class)]
 #[CoversClass(UsesFunction::class)]
+#[CoversClass(WithoutErrorHandler::class)]
 #[CoversClass(AttributeParser::class)]
 #[Small]
 final class AttributeParserTest extends TestCase
@@ -964,6 +966,15 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('another-ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    #[TestDox('Parses #[WithoutErrorHandler] attribute on method')]
+    public function test_parses_WithoutErrorHandler_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(WithoutErrorHandlerTest::class, 'testOne')->isWithoutErrorHandler();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isWithoutErrorHandler());
     }
 
     public function test_parses_attributes_for_class_and_method(): void

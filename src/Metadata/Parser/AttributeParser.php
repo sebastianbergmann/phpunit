@@ -64,6 +64,7 @@ use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
+use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
@@ -613,6 +614,13 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof Ticket);
 
                     $result[] = Metadata::groupOnMethod($attributeInstance->text());
+
+                    break;
+
+                case WithoutErrorHandler::class:
+                    assert($attributeInstance instanceof WithoutErrorHandler);
+
+                    $result[] = Metadata::withoutErrorHandler();
 
                     break;
             }
