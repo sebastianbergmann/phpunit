@@ -475,6 +475,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesFunction());
     }
 
+    public function test_Can_be_filtered_for_WithoutErrorHandler(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isWithoutErrorHandler());
+    }
+
     private function collectionWithOneOfEach(): MetadataCollection
     {
         return MetadataCollection::fromArray(
@@ -531,6 +539,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesClass(''),
                 Metadata::usesDefaultClass(''),
                 Metadata::usesFunction(''),
+                Metadata::withoutErrorHandler(),
             ],
         );
     }

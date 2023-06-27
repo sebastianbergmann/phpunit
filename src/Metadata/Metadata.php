@@ -364,6 +364,11 @@ abstract class Metadata
         return new UsesDefaultClass(self::CLASS_LEVEL, $className);
     }
 
+    public static function withoutErrorHandler(): WithoutErrorHandler
+    {
+        return new WithoutErrorHandler(self::METHOD_LEVEL);
+    }
+
     protected function __construct(int $level)
     {
         $this->level = $level;
@@ -705,6 +710,14 @@ abstract class Metadata
      * @psalm-assert-if-true UsesFunction $this
      */
     public function isUsesFunction(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true WithoutErrorHandler $this
+     */
+    public function isWithoutErrorHandler(): bool
     {
         return false;
     }
