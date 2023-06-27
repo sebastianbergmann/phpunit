@@ -14,41 +14,34 @@ namespace PHPUnit\Framework\MockObject;
  */
 trait StubApi
 {
-    /**
-     * @psalm-var list<ConfigurableMethod>
-     */
-    private static array $__phpunit_configurableMethods;
-    private bool $__phpunit_returnValueGeneration          = true;
-    private ?InvocationHandler $__phpunit_invocationMocker = null;
+    private readonly StubInternalState $__phpunit_stubInternalState;
+
+    public function __phpunit_initStubInternalState(): void
+    {
+        $this->__phpunit_stubInternalState = new StubInternalState;
+    }
 
     /** @noinspection MagicMethodsValidityInspection */
     public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void
     {
-        static::$__phpunit_configurableMethods = $configurableMethods;
+        StubInternalState::initConfigurableMethods(self::class, $configurableMethods);
     }
 
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void
     {
-        $this->__phpunit_returnValueGeneration = $returnValueGeneration;
+        $this->__phpunit_stubInternalState->setReturnValueGeneration($returnValueGeneration);
     }
 
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_getInvocationHandler(): InvocationHandler
     {
-        if ($this->__phpunit_invocationMocker === null) {
-            $this->__phpunit_invocationMocker = new InvocationHandler(
-                static::$__phpunit_configurableMethods,
-                $this->__phpunit_returnValueGeneration,
-            );
-        }
-
-        return $this->__phpunit_invocationMocker;
+        return $this->__phpunit_stubInternalState->getInvocationHandler(self::class);
     }
 
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_unsetInvocationMocker(): void
     {
-        $this->__phpunit_invocationMocker = null;
+        $this->__phpunit_stubInternalState->unsetInvocationHandler();
     }
 }
