@@ -17,7 +17,12 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
  */
 trait MockObjectApi
 {
-    private object $__phpunit_originalObject;
+    private readonly MockObjectInternalState $__phpunit_mockObjectInternalState;
+
+    public function __phpunit_initMockObjectInternalState(): void
+    {
+        $this->__phpunit_mockObjectInternalState = new MockObjectInternalState;
+    }
 
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_hasMatchers(): bool
@@ -28,7 +33,13 @@ trait MockObjectApi
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_setOriginalObject(object $originalObject): void
     {
-        $this->__phpunit_originalObject = $originalObject;
+        $this->__phpunit_mockObjectInternalState->setOriginalObject($originalObject);
+    }
+
+    /** @noinspection MagicMethodsValidityInspection */
+    private function __phpunit_getOriginalObject(): ?object
+    {
+        return $this->__phpunit_mockObjectInternalState->getOriginalObject();
     }
 
     /** @noinspection MagicMethodsValidityInspection */
