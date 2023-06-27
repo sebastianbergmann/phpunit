@@ -21,9 +21,6 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
  */
 trait MockObjectApi
 {
-    private static array $__phpunit_deprecation_emitted_for_test = [];
-    private object $__phpunit_originalObject;
-
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_hasMatchers(): bool
     {
@@ -33,7 +30,13 @@ trait MockObjectApi
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_setOriginalObject(object $originalObject): void
     {
-        $this->__phpunit_originalObject = $originalObject;
+        InternalMockObjectState::getInstance()->setOriginalObject($this, $originalObject);
+    }
+
+    /** @noinspection MagicMethodsValidityInspection */
+    private function __phpunit_getOriginalObject(): ?object
+    {
+        return InternalMockObjectState::getInstance()->getOriginalObject($this);
     }
 
     /** @noinspection MagicMethodsValidityInspection */
@@ -60,13 +63,13 @@ trait MockObjectApi
             try {
                 $test = TestMethodBuilder::fromCallStack();
 
-                if (!isset(self::$__phpunit_deprecation_emitted_for_test[$test->id()])) {
+                if (!InternalMockObjectState::getInstance()->issetDeprecationEmittedForTest(self::class, $test->id())) {
                     EventFacade::emitter()->testTriggeredPhpunitDeprecation(
                         $test,
                         $message,
                     );
 
-                    self::$__phpunit_deprecation_emitted_for_test[$test->id()] = true;
+                    InternalMockObjectState::getInstance()->setDeprecationEmittedForTest(self::class, $test->id());
                 }
             } catch (NoTestCaseObjectOnCallStackException) {
                 EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
