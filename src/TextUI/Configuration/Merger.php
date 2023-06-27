@@ -77,20 +77,8 @@ final class Merger
             $testResultCacheFile    = $cacheDirectory . DIRECTORY_SEPARATOR . 'test-results';
         }
 
-        if ($coverageCacheDirectory === null) {
-            if ($cliConfiguration->hasCoverageCacheDirectory() && Filesystem::createDirectory($cliConfiguration->coverageCacheDirectory())) {
-                $coverageCacheDirectory = realpath($cliConfiguration->coverageCacheDirectory());
-            } elseif ($xmlConfiguration->codeCoverage()->hasCacheDirectory()) {
-                $coverageCacheDirectory = $xmlConfiguration->codeCoverage()->cacheDirectory()->path();
-            }
-        }
-
         if (!isset($testResultCacheFile)) {
-            if ($cliConfiguration->hasCacheResultFile()) {
-                $testResultCacheFile = $cliConfiguration->cacheResultFile();
-            } elseif ($xmlConfiguration->phpunit()->hasCacheResultFile()) {
-                $testResultCacheFile = $xmlConfiguration->phpunit()->cacheResultFile();
-            } elseif ($xmlConfiguration->wasLoadedFromFile()) {
+            if ($xmlConfiguration->wasLoadedFromFile()) {
                 $testResultCacheFile = dirname(realpath($xmlConfiguration->filename())) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
             } else {
                 $candidate = realpath($_SERVER['PHP_SELF']);
