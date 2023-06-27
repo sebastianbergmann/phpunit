@@ -404,7 +404,6 @@
       <code>testDouble</code>
       <code>testDouble</code>
       <code>testDouble</code>
-      <code>testDouble</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$client->__getFunctions()]]></code>
