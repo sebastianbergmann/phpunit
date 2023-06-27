@@ -532,7 +532,7 @@ final class ResultPrinterTest extends TestCase
                 HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
                 MemoryUsage::fromBytes(1000),
                 MemoryUsage::fromBytes(2000),
-                new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0),
+                new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0),
             ),
             Duration::fromSecondsAndNanoseconds(123, 456),
             MemoryUsage::fromBytes(2000),

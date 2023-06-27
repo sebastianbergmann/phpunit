@@ -62,7 +62,7 @@ final class SystemTest extends TestCase
             }
         };
 
-        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, false, false, false, 0);
+        $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
 
         $garbageCollectorProvider = new class($garbageCollectorStatus) implements GarbageCollectorStatusProvider
         {

@@ -48,6 +48,26 @@ final class GarbageCollectorStatusTest extends TestCase
         $this->assertTrue($this->withDetails()->isRunning());
     }
 
+    public function testMayHaveApplicationTime(): void
+    {
+        $this->assertSame(5.0, $this->withDetails()->applicationTime());
+    }
+
+    public function testMayHaveCollectorTime(): void
+    {
+        $this->assertSame(6.0, $this->withDetails()->collectorTime());
+    }
+
+    public function testMayHaveDestructorTime(): void
+    {
+        $this->assertSame(7.0, $this->withDetails()->destructorTime());
+    }
+
+    public function testMayHaveFreeTime(): void
+    {
+        $this->assertSame(8.0, $this->withDetails()->freeTime());
+    }
+
     public function testMayHaveProtected(): void
     {
         $this->assertTrue($this->withDetails()->isProtected());
@@ -60,7 +80,7 @@ final class GarbageCollectorStatusTest extends TestCase
 
     public function testMayHaveBufferSize(): void
     {
-        $this->assertSame(5, $this->withDetails()->bufferSize());
+        $this->assertSame(9, $this->withDetails()->bufferSize());
     }
 
     public function testMayNotHaveExtendedInformation(): void
@@ -107,6 +127,10 @@ final class GarbageCollectorStatusTest extends TestCase
             null,
             null,
             null,
+            null,
+            null,
+            null,
+            null,
         );
     }
 
@@ -117,10 +141,14 @@ final class GarbageCollectorStatusTest extends TestCase
             2,
             3,
             4,
+            5.0,
+            6.0,
+            7.0,
+            8.0,
             true,
             true,
             true,
-            5,
+            9,
         );
     }
 }
