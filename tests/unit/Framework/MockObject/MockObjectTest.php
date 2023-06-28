@@ -21,6 +21,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use ReflectionProperty;
 
 #[Group('test-doubles')]
+#[Group('test-doubles/mock-object')]
 #[Medium]
 final class MockObjectTest extends TestDoubleTestCase
 {

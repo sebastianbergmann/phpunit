@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
@@ -22,53 +24,57 @@ use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
 use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 
-#[TestDox('createMock()')]
-final class CreateMockTest extends TestCase
+#[Group('test-doubles')]
+#[Group('test-doubles/creation')]
+#[Group('test-doubles/test-stub')]
+#[Medium]
+#[TestDox('createStub()')]
+final class CreateStubTest extends TestCase
 {
-    public function testCreatesMockObjectForInterface(): void
+    public function testCreatesTestStubForInterface(): void
     {
-        $double = $this->createMock(AnInterface::class);
+        $double = $this->createStub(AnInterface::class);
 
         $this->assertInstanceOf(AnInterface::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCreatesMockObjectForIntersectionOfInterfaces(): void
+    public function testCreatesTestStubForIntersectionOfInterfaces(): void
     {
-        $double = $this->createMockForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
+        $double = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
 
         $this->assertInstanceOf(AnInterface::class, $double);
         $this->assertInstanceOf(AnotherInterface::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCreatesMockObjectForClassThatCanBeExtended(): void
+    public function testCreatesTestStubForClassThatCanBeExtended(): void
     {
-        $double = $this->createMock(ExtendableClass::class);
+        $double = $this->createStub(ExtendableClass::class);
 
         $this->assertInstanceOf(ExtendableClass::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCannotCreateMockObjectForFinalClass(): void
+    public function testCannotCreateTestStubForFinalClass(): void
     {
         $this->expectException(ClassIsFinalException::class);
 
-        $this->createMock(FinalClass::class);
+        $this->createStub(FinalClass::class);
     }
 
     #[RequiresPhp('8.2')]
-    public function testCannotCreateMockObjectForReadonlyClass(): void
+    public function testCannotCreateTestStubForReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);
 
-        $this->createMock(ReadonlyClass::class);
+        $this->createStub(ReadonlyClass::class);
     }
 
-    public function testCannotCreateMockObjectForEnumeration(): void
+    public function testCannotCreateTestStubForEnumeration(): void
     {
         $this->expectException(ClassIsEnumerationException::class);
 
-        $this->createMock(Enumeration::class);
+        $this->createStub(Enumeration::class);
     }
 }

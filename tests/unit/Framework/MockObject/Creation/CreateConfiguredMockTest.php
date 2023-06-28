@@ -9,10 +9,16 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
+#[Group('test-doubles')]
+#[Group('test-doubles/creation')]
+#[Group('test-doubles/mock-object')]
+#[Medium]
 #[TestDox('createConfiguredMock()')]
 final class CreateConfiguredMockTest extends TestCase
 {

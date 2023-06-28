@@ -18,6 +18,8 @@ use PHPUnit\TestFixture\MockObject\AbstractClass;
 use ReflectionProperty;
 
 #[Group('test-doubles')]
+#[Group('test-doubles/creation')]
+#[Group('test-doubles/mock-object')]
 #[Medium]
 #[RequiresPhpExtension('soap')]
 #[TestDox('getMockForAbstractClass()')]

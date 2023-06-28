@@ -24,6 +24,7 @@ use stdClass;
 
 #[CoversClass(ReturnValueGenerator::class)]
 #[Group('test-doubles')]
+#[Group('test-doubles/test-stub')]
 #[Small]
 final class ReturnValueGeneratorTest extends TestCase
 {

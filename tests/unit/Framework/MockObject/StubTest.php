@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[Group('test-doubles')]
+#[Group('test-doubles/test-stub')]
 #[Medium]
 #[TestDox('Test Stub')]
 final class StubTest extends TestDoubleTestCase
