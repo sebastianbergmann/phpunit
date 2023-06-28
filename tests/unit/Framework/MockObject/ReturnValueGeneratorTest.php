@@ -11,6 +11,7 @@ namespace unit\Framework\MockObject;
 
 use function assert;
 use function interface_exists;
+use function sprintf;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,6 +23,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
+use PHPUnit\TestFixture\MockObject\YetAnotherInterface;
 use stdClass;
 
 #[CoversClass(ReturnValueGenerator::class)]
@@ -172,6 +174,23 @@ final class ReturnValueGeneratorTest extends TestCase
     public function test_Generates_stdClass_object_for_union_that_contains_object_and_unknown_type(): void
     {
         $this->assertInstanceOf(stdClass::class, $this->generate('object|ThisDoesNotExist'));
+    }
+
+    public function test_Generates_test_stub_for_first_intersection_of_interfaces_found_in_union_of_intersections(): void
+    {
+        $value = $this->generate(
+            sprintf(
+                '(%s&%s)|(%s&%s)',
+                AnInterface::class,
+                AnotherInterface::class,
+                AnInterface::class,
+                YetAnotherInterface::class,
+            ),
+        );
+
+        $this->assertInstanceOf(Stub::class, $value);
+        $this->assertInstanceOf(AnInterface::class, $value);
+        $this->assertInstanceOf(AnotherInterface::class, $value);
     }
 
     public function test_Generates_test_stub_for_unknown_type(): void
