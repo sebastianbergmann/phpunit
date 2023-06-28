@@ -174,6 +174,11 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $this->generate('object|ThisDoesNotExist'));
     }
 
+    public function test_Generates_test_stub_for_unknown_type(): void
+    {
+        $this->assertInstanceOf(Stub::class, $this->generate('ThisDoesNotExist'));
+    }
+
     private function generate(string $typeDeclaration, string $stubClassName = 'StubClassName'): mixed
     {
         return (new ReturnValueGenerator)->generate(
