@@ -155,6 +155,13 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $value);
     }
 
+    public function test_Generates_new_instance_of_test_stub_for_static(): void
+    {
+        $stubClassName = ($this->createStub(AnInterface::class))::class;
+
+        $this->assertInstanceOf($stubClassName, $this->generate('static', $stubClassName));
+    }
+
     #[DataProvider('unionProvider')]
     #[TestDox('Generates $expected for $union')]
     public function test_Generates_return_value_for_union(mixed $expected, string $union): void
@@ -167,12 +174,12 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $this->generate('object|ThisDoesNotExist'));
     }
 
-    private function generate(string $typeDeclaration): mixed
+    private function generate(string $typeDeclaration, string $stubClassName = 'StubClassName'): mixed
     {
         return (new ReturnValueGenerator)->generate(
             'OriginalClassName',
             'methodName',
-            'StubClassName',
+            $stubClassName,
             $typeDeclaration,
         );
     }
