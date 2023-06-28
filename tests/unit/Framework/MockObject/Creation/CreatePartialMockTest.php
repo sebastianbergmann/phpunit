@@ -23,7 +23,7 @@ use ReflectionProperty;
 #[TestDox('createPartialMock()')]
 final class CreatePartialMockTest extends TestCase
 {
-    public function testCreatesPartialMockObjectForClassThatCanBeExtended(): void
+    public function testCreatesPartialMockObjectForExtendableClass(): void
     {
         $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
 

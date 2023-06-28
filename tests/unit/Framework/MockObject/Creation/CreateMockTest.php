@@ -48,7 +48,7 @@ final class CreateMockTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCreatesMockObjectForClassThatCanBeExtended(): void
+    public function testCreatesMockObjectForExtendableClass(): void
     {
         $double = $this->createMock(ExtendableClass::class);
 
