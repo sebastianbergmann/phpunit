@@ -9,6 +9,8 @@
  */
 namespace unit\Framework\MockObject;
 
+use function assert;
+use function interface_exists;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -144,7 +146,7 @@ final class ReturnValueGeneratorTest extends TestCase
          * when only the tests of this class are run; the interface is found as
          * expected when the entire (unit) test suite is run
          */
-        require_once __DIR__ . '/../../../_files/mock-object/AnotherInterface.php';
+        assert(interface_exists(AnotherInterface::class));
 
         $value = $this->generate(AnInterface::class . '&' . AnotherInterface::class);
 
