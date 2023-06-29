@@ -12,12 +12,12 @@ namespace PHPUnit\Metadata\Parser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
-#[CoversClass(AnnotationParser::class)]
+#[CoversClass(CachingParser::class)]
 #[Small]
-final class AnnotationParserTest extends AnnotationParserTestCase
+final class CachedAttributeParserTest extends AttributeParserTestCase
 {
     protected function parser(): Parser
     {
-        return new AnnotationParser;
+        return new CachingParser(new AttributeParser);
     }
 }
