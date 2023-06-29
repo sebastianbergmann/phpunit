@@ -143,13 +143,23 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    public function test_Parses_requiresFunction_annotation_on_class(): void
+    public function test_Parses_requiresFunction_annotation_with_function_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresFunctionTest::class)->isRequiresFunction();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
+    }
+
+    public function test_Parses_requiresFunction_annotation_with_method_on_class(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(RequiresFunctionTest::class)->isRequiresMethod();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresMethod());
+        $this->assertSame('SomeClass', $metadata->asArray()[0]->className());
+        $this->assertSame('someMethod', $metadata->asArray()[0]->methodName());
     }
 
     public function test_Parses_requiresOperatingSystem_annotation_on_class(): void
@@ -620,13 +630,23 @@ final class AnnotationParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    public function test_Parses_requiresFunction_annotation_on_method(): void
+    public function test_Parses_requiresFunction_annotation_with_function_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresFunctionTest::class, 'testOne')->isRequiresFunction();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
         $this->assertSame('g', $metadata->asArray()[0]->functionName());
+    }
+
+    public function test_Parses_requiresFunction_annotation_with_method_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(RequiresFunctionTest::class, 'testOne')->isRequiresMethod();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresMethod());
+        $this->assertSame('SomeOtherClass', $metadata->asArray()[0]->className());
+        $this->assertSame('someOtherMethod', $metadata->asArray()[0]->methodName());
     }
 
     public function test_Parses_requiresOperatingSystem_annotation_on_method(): void
