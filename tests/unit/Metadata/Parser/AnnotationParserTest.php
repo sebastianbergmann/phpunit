@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\AnnotationParser;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\TestFixture\Metadata\Annotation\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Annotation\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Annotation\BackupStaticPropertiesTest;
@@ -30,9 +31,12 @@ use PHPUnit\TestFixture\Metadata\Annotation\ProcessIsolationTest;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresOperatingSystemTest;
+use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhp2Test;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpExtensionTest;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpTest;
+use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpunit2Test;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpunitTest;
+use PHPUnit\TestFixture\Metadata\Annotation\RequiresSettingTest;
 use PHPUnit\TestFixture\Metadata\Annotation\SmallTest;
 use PHPUnit\TestFixture\Metadata\Annotation\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
@@ -166,7 +170,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    public function test_Parses_requiresPhp_annotation_on_class(): void
+    public function test_Parses_requiresPhp_annotation_on_class_with_version_comparison(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresPhpTest::class)->isRequiresPhp();
 
@@ -177,7 +181,6 @@ final class AnnotationParserTest extends TestCase
         assert($requirement instanceof RequiresPhp);
 
         $this->assertTrue($requirement->isRequiresPhp());
-        $this->assertInstanceOf(ComparisonRequirement::class, $requirement->versionRequirement());
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -186,17 +189,51 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('>= 8.0.0', $versionRequirement->asString());
     }
 
+    public function test_Parses_requiresPhp_annotation_on_class_with_version_constraint(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(RequiresPhp2Test::class)->isRequiresPhp();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        assert($requirement instanceof RequiresPhp);
+
+        $this->assertTrue($requirement->isRequiresPhp());
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof ConstraintRequirement);
+
+        $this->assertSame('^8.0', $versionRequirement->asString());
+    }
+
     public function test_Parses_requiresPhpExtension_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresPhpExtensionTest::class)->isRequiresPhpExtension();
 
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
-        $this->assertSame('foo', $metadata->asArray()[0]->extension());
-        $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
+        $this->assertCount(2, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpExtension());
+        $this->assertSame('bar', $requirement->extension());
+        $this->assertFalse($requirement->hasVersionRequirement());
+
+        $requirement = $metadata->asArray()[1];
+
+        $this->assertTrue($requirement->isRequiresPhpExtension());
+        $this->assertSame('foo', $requirement->extension());
+        $this->assertTrue($requirement->hasVersionRequirement());
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof ComparisonRequirement);
+
+        $this->assertSame('>= 1.0.0', $versionRequirement->asString());
     }
 
-    public function test_Parses_requiresPhpunit_annotation_on_class(): void
+    public function test_Parses_requiresPhpunit_annotation_on_class_with_version_comparison(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresPhpunitTest::class)->isRequiresPhpunit();
 
@@ -207,13 +244,47 @@ final class AnnotationParserTest extends TestCase
         assert($requirement instanceof RequiresPhpunit);
 
         $this->assertTrue($requirement->isRequiresPhpunit());
-        $this->assertInstanceOf(ComparisonRequirement::class, $requirement->versionRequirement());
 
         $versionRequirement = $requirement->versionRequirement();
 
         assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
+    }
+
+    public function test_Parses_requiresPhpunit_annotation_on_class_with_version_constraint(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(RequiresPhpunit2Test::class)->isRequiresPhpunit();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        assert($requirement instanceof RequiresPhpunit);
+
+        $this->assertTrue($requirement->isRequiresPhpunit());
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof ConstraintRequirement);
+
+        $this->assertSame('^10.0', $versionRequirement->asString());
+    }
+
+    public function test_Parses_requiresSetting_annotation_on_class(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(RequiresSettingTest::class)->isRequiresSetting();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresSetting());
+
+        assert($requirement instanceof RequiresSetting);
+
+        $this->assertSame('foo', $requirement->setting());
+        $this->assertSame('bar', $requirement->value());
     }
 
     public function test_Parses_runClassInSeparateProcess_annotation_on_class(): void
@@ -577,7 +648,7 @@ final class AnnotationParserTest extends TestCase
     }
 
     #[DataProvider('provideRequiresPhpTestMethods')]
-    public function test_Parses_requiresPhp_annotation_on_method(string $method): void
+    public function test_Parses_requiresPhp_annotation_on_method_with_version_comparison(string $method): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, $method)->isRequiresPhp();
 
@@ -596,13 +667,41 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('< 9.0.0', $versionRequirement->asString());
     }
 
-    public function test_Parses_requiresPhpExtension_annotation_on_method(): void
+    public function test_Parses_requiresPhp_annotation_on_method_with_version_constraint(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne')->isRequiresPhpExtension();
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhp2Test::class, 'testOne')->isRequiresPhp();
 
         $this->assertCount(1, $metadata);
 
         $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhp());
+
+        assert($requirement instanceof RequiresPhp);
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof ConstraintRequirement);
+
+        $this->assertSame('^8.0', $versionRequirement->asString());
+    }
+
+    public function test_Parses_requiresPhpExtension_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne')->isRequiresPhpExtension();
+
+        $this->assertCount(2, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpExtension());
+
+        assert($requirement instanceof RequiresPhpExtension);
+
+        $this->assertSame('foo', $requirement->extension());
+        $this->assertFalse($requirement->hasVersionRequirement());
+
+        $requirement = $metadata->asArray()[1];
 
         $this->assertTrue($requirement->isRequiresPhpExtension());
 
@@ -637,7 +736,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('< 2.0.0', $versionRequirement->asString());
     }
 
-    public function test_Parses_requiresPhpunit_annotation_on_method(): void
+    public function test_Parses_requiresPhpunit_annotation_on_method_with_version_comparison(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpunitTest::class, 'testOne')->isRequiresPhpunit();
 
@@ -654,6 +753,41 @@ final class AnnotationParserTest extends TestCase
         assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('< 11.0.0', $versionRequirement->asString());
+    }
+
+    public function test_Parses_requiresPhpunit_annotation_on_method_with_version_constraint(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhpunit2Test::class, 'testOne')->isRequiresPhpunit();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpunit());
+
+        assert($requirement instanceof RequiresPhpunit);
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof ConstraintRequirement);
+
+        $this->assertSame('^11.0', $versionRequirement->asString());
+    }
+
+    public function test_Parses_requiresSetting_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(RequiresSettingTest::class, 'testOne')->isRequiresSetting();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresSetting());
+
+        assert($requirement instanceof RequiresSetting);
+
+        $this->assertSame('bar', $requirement->setting());
+        $this->assertSame('baz', $requirement->value());
     }
 
     public function test_Parses_runInSeparateProcess_annotation_on_method(): void

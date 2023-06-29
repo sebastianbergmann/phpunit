@@ -12,23 +12,14 @@ namespace PHPUnit\TestFixture\Metadata\Annotation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @requires extension bar
- * @requires extension foo >= 1.0.0
+ * @requires setting foo bar
  */
-final class RequiresPhpExtensionTest extends TestCase
+final class RequiresSettingTest extends TestCase
 {
     /**
-     * @requires extension foo
-     * @requires extension bar >= 1.0.0
+     * @requires setting bar baz
      */
     public function testOne(): void
-    {
-    }
-
-    /**
-     * @requires extension baz < 2.0.0
-     */
-    public function testTwo(): void
     {
     }
 }
