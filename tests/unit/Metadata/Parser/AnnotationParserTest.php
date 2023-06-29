@@ -560,7 +560,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresOperatingSystem_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class)->isRequiresOperatingSystem();
+        $metadata = (new AnnotationParser)->forMethod(RequiresOperatingSystemTest::class, 'testOne')->isRequiresOperatingSystem();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
