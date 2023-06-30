@@ -41,13 +41,13 @@ final class CodeCoverageFilterRegistry
         return $this->filter;
     }
 
-    public function init(Configuration $configuration): void
+    public function init(Configuration $configuration, bool $force = false): void
     {
-        if (!$configuration->hasCoverageReport()) {
+        if (!$configuration->hasCoverageReport() && !$force) {
             return;
         }
 
-        if ($this->configured) {
+        if ($this->configured && !$force) {
             return;
         }
 

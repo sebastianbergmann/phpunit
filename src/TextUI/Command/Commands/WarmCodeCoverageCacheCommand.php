@@ -44,7 +44,7 @@ final class WarmCodeCoverageCacheCommand implements Command
             );
         }
 
-        $this->codeCoverageFilterRegistry->init($this->configuration);
+        $this->codeCoverageFilterRegistry->init($this->configuration, true);
 
         if (!$this->codeCoverageFilterRegistry->configured()) {
             return Result::from(
