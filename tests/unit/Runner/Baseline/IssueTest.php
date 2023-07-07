@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\FileDoesNotExistException;
-use PHPUnit\Runner\FileDoesNotHaveLineException;
 
 #[CoversClass(Issue::class)]
 #[CoversClass(FileDoesNotExistException::class)]

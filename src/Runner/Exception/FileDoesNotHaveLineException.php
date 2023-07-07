@@ -7,9 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Runner\Baseline;
 
 use function sprintf;
+use PHPUnit\Runner\Exception;
 use RuntimeException;
 
 /**

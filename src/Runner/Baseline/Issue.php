@@ -14,7 +14,6 @@ use function file;
 use function is_file;
 use function sha1;
 use PHPUnit\Runner\FileDoesNotExistException;
-use PHPUnit\Runner\FileDoesNotHaveLineException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
