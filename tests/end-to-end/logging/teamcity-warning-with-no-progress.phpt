@@ -31,6 +31,8 @@ Configuration: %s
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Test' flowId='%d']
 
 ##teamcity[testSuiteFinished name='default' flowId='%d']
+
+##teamcity[testSuiteFinished name='%s/tests/end-to-end/logging/_files/teamcity-warning/phpunit.xml' flowId='%d']
 Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
