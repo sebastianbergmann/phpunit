@@ -12,11 +12,6 @@ namespace PHPUnit\Framework;
 use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
-use PHPUnit\TestFixture\Mockable;
-use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
 #[CoversClass(TestCase::class)]
@@ -80,112 +75,6 @@ class TestCaseTest extends TestCase
         );
     }
 
-    public function testCreateMockFromClassName(): void
-    {
-        $mock = $this->createMock(Mockable::class);
-
-        $this->assertInstanceOf(Mockable::class, $mock);
-        $this->assertInstanceOf(MockObject::class, $mock);
-    }
-
-    public function testCreateMockMocksAllMethods(): void
-    {
-        $mock = $this->createMock(Mockable::class);
-
-        $this->assertNull($mock->mockableMethod());
-        $this->assertNull($mock->anotherMockableMethod());
-    }
-
-    public function testCreateStubFromClassName(): void
-    {
-        $mock = $this->createStub(Mockable::class);
-
-        $this->assertInstanceOf(Mockable::class, $mock);
-        $this->assertInstanceOf(Stub::class, $mock);
-    }
-
-    public function testCreateStubStubsAllMethods(): void
-    {
-        $mock = $this->createStub(Mockable::class);
-
-        $this->assertNull($mock->mockableMethod());
-        $this->assertNull($mock->anotherMockableMethod());
-    }
-
-    public function testCreatePartialMockDoesNotMockAllMethods(): void
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createPartialMock(Mockable::class, ['mockableMethod']);
-
-        $this->assertNull($mock->mockableMethod());
-        $this->assertTrue($mock->anotherMockableMethod());
-    }
-
-    public function testCreatePartialMockCanMockNoMethods(): void
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createPartialMock(Mockable::class, []);
-
-        $this->assertTrue($mock->mockableMethod());
-        $this->assertTrue($mock->anotherMockableMethod());
-    }
-
-    public function testCreateMockSkipsConstructor(): void
-    {
-        $mock = $this->createMock(Mockable::class);
-
-        $this->assertNull($mock->constructorArgs);
-    }
-
-    public function testCreateMockDisablesOriginalClone(): void
-    {
-        $mock = $this->createMock(Mockable::class);
-
-        $cloned = clone $mock;
-        $this->assertNull($cloned->cloned);
-    }
-
-    public function testCreateStubSkipsConstructor(): void
-    {
-        $mock = $this->createStub(Mockable::class);
-
-        $this->assertNull($mock->constructorArgs);
-    }
-
-    public function testCreateStubDisablesOriginalClone(): void
-    {
-        $mock = $this->createStub(Mockable::class);
-
-        $cloned = clone $mock;
-        $this->assertNull($cloned->cloned);
-    }
-
-    public function testConfiguredStubCanBeCreated(): void
-    {
-        $stub = $this->createConfiguredStub(
-            Mockable::class,
-            [
-                'mockableMethod' => false,
-            ],
-        );
-
-        $this->assertFalse($stub->mockableMethod());
-        $this->assertNull($stub->anotherMockableMethod());
-    }
-
-    public function testConfiguredMockCanBeCreated(): void
-    {
-        $mock = $this->createConfiguredMock(
-            Mockable::class,
-            [
-                'mockableMethod' => false,
-            ],
-        );
-
-        $this->assertFalse($mock->mockableMethod());
-        $this->assertNull($mock->anotherMockableMethod());
-    }
-
     public function testGetNameReturnsMethodName(): void
     {
         $methodName = 'testWithName';
@@ -193,23 +82,5 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($methodName);
 
         $this->assertSame($methodName, $testCase->nameWithDataSet());
-    }
-
-    public function testStubCanBeCreatedForIntersectionOfInterfaces(): void
-    {
-        $intersection = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
-
-        $this->assertInstanceOf(AnInterface::class, $intersection);
-        $this->assertInstanceOf(AnotherInterface::class, $intersection);
-        $this->assertInstanceOf(Stub::class, $intersection);
-    }
-
-    public function testMockObjectCanBeCreatedForIntersectionOfInterfaces(): void
-    {
-        $intersection = $this->createMockForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
-
-        $this->assertInstanceOf(AnInterface::class, $intersection);
-        $this->assertInstanceOf(AnotherInterface::class, $intersection);
-        $this->assertInstanceOf(MockObject::class, $intersection);
     }
 }

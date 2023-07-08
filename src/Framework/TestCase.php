@@ -21,6 +21,7 @@ use const PHP_URL_PATH;
 use function array_keys;
 use function array_merge;
 use function array_values;
+use function assert;
 use function basename;
 use function chdir;
 use function class_exists;
@@ -61,9 +62,10 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessageIsOrContains;
 use PHPUnit\Framework\Constraint\ExceptionMessageMatchesRegularExpression;
-use PHPUnit\Framework\MockObject\Generator as MockGenerator;
+use PHPUnit\Framework\MockObject\Generator\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\MockObjectInternal;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
@@ -164,7 +166,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?MockGenerator $mockObjectGenerator = null;
 
     /**
-     * @psalm-var list<MockObject>
+     * @psalm-var list<MockObjectInternal>
      */
     private array $mockObjects                                    = [];
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
@@ -253,41 +255,65 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new InvokedAtMostCountMatcher($allowedInvocations);
     }
 
+    /**
+     * @deprecated Use <code>$double->willReturn()</code> instead of <code>$double->will($this->returnValue())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     */
     final public static function returnValue(mixed $value): ReturnStub
     {
         return new ReturnStub($value);
     }
 
+    /**
+     * @deprecated Use <code>$double->willReturnMap()</code> instead of <code>$double->will($this->returnValueMap())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     */
     final public static function returnValueMap(array $valueMap): ReturnValueMapStub
     {
         return new ReturnValueMapStub($valueMap);
     }
 
+    /**
+     * @deprecated Use <code>$double->willReturnArgument()</code> instead of <code>$double->will($this->returnArgument())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     */
     final public static function returnArgument(int $argumentIndex): ReturnArgumentStub
     {
         return new ReturnArgumentStub($argumentIndex);
     }
 
+    /**
+     * @deprecated Use <code>$double->willReturnCallback()</code> instead of <code>$double->will($this->returnCallback())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     */
     final public static function returnCallback(callable $callback): ReturnCallbackStub
     {
         return new ReturnCallbackStub($callback);
     }
 
     /**
-     * Returns the current object.
-     *
-     * This method is useful when mocking a fluent interface.
+     * @deprecated Use <code>$double->willReturnSelf()</code> instead of <code>$double->will($this->returnSelf())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
      */
     final public static function returnSelf(): ReturnSelfStub
     {
         return new ReturnSelfStub;
     }
 
+    /**
+     * @deprecated Use <code>$double->willThrowException()</code> instead of <code>$double->will($this->throwException())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     */
     final public static function throwException(Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
     }
 
+    /**
+     * @deprecated Use <code>$double->willReturn()</code> instead of <code>$double->will($this->onConsecutiveCalls())</code>
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5423
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5425
+     */
     final public static function onConsecutiveCalls(mixed ...$arguments): ConsecutiveCallsStub
     {
         return new ConsecutiveCallsStub($arguments);
@@ -883,6 +909,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function registerMockObject(MockObject $mockObject): void
     {
+        assert($mockObject instanceof MockObjectInternal);
+
         $this->mockObjects[] = $mockObject;
     }
 
@@ -1084,6 +1112,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * test is run.
      *
      * @throws Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5214
      */
     protected function iniSet(string $varName, string $newValue): void
     {
@@ -1107,6 +1137,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * resets the locale to its original value after the test is run.
      *
      * @throws Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5216
      */
     protected function setLocale(mixed ...$arguments): void
     {

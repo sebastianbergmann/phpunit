@@ -13,11 +13,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @requires function f
+ * @requires function SomeClass::someMethod
  */
 final class RequiresFunctionTest extends TestCase
 {
     /**
      * @requires function g
+     * @requires function SomeOtherClass::someOtherMethod
      */
     public function testOne(): void
     {

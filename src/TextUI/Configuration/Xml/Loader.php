@@ -18,6 +18,7 @@ use function explode;
 use function is_file;
 use function is_numeric;
 use function preg_match;
+use function realpath;
 use function str_contains;
 use function str_starts_with;
 use function stream_resolve_include_path;
@@ -106,7 +107,7 @@ final class Loader
         }
 
         return new LoadedFromFileConfiguration(
-            $filename,
+            realpath($filename),
             (new Validator)->validate($document, $xsdFilename),
             $this->extensions($xpath),
             $this->source($filename, $xpath),
@@ -954,8 +955,12 @@ final class Loader
                 );
             }
 
+            $name = $element->getAttribute('name');
+
+            assert(!empty($name));
+
             $testSuites[] = new TestSuiteConfiguration(
-                $element->getAttribute('name'),
+                $name,
                 TestDirectoryCollection::fromArray($directories),
                 TestFileCollection::fromArray($files),
                 FileCollection::fromArray($exclude),

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
+<files psalm-version="5.13.0@a0a9c27630bcf8301ee78cb06741d2907d8c9fef">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -107,8 +107,8 @@
       <code>$className</code>
       <code>$className</code>
       <code>$methodName</code>
-      <code><![CDATA[$testSuite->getName()]]></code>
-      <code><![CDATA[$testSuite->getName()]]></code>
+      <code><![CDATA[$testSuite->name()]]></code>
+      <code><![CDATA[$testSuite->name()]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Assert/Functions.php">
@@ -169,12 +169,7 @@
       <code><![CDATA[list<ExecutionOrderDependency>]]></code>
     </MoreSpecificReturnType>
   </file>
-  <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <PropertyTypeCoercion>
-      <code>$configurableMethods</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/Framework/MockObject/Generator.php">
+  <file src="src/Framework/MockObject/Generator/Generator.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
       <code>$className</code>
@@ -195,19 +190,25 @@
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/MockObject/Invocation.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$this->returnType]]></code>
-      <code>$types</code>
-    </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Framework/MockObject/Matcher.php">
-    <InvalidNullableReturnType>
-      <code>MethodName</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement>
-      <code><![CDATA[$this->methodNameRule]]></code>
-    </NullableReturnStatement>
+  <file src="src/Framework/MockObject/Generator/MockMethod.php">
+    <InvalidArgument>
+      <code><![CDATA[[
+                'arguments_decl'     => $this->argumentsForDeclaration,
+                'arguments_call'     => $this->argumentsForCall,
+                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
+                'return_type'        => $this->returnType->asString(),
+                'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
+                'class_name'         => $this->className,
+                'method_name'        => $this->methodName,
+                'modifier'           => $this->modifier,
+                'reference'          => $this->reference,
+                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
+                'deprecation'        => $deprecation,
+            ]]]></code>
+    </InvalidArgument>
+    <PossiblyFalseOperand>
+      <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
+    </PossiblyFalseOperand>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion>
@@ -228,35 +229,35 @@
       <code><![CDATA[MockObject&MockedType]]></code>
     </InvalidReturnType>
   </file>
-  <file src="src/Framework/MockObject/MockMethod.php">
-    <InvalidArgument>
-      <code><![CDATA[[
-                'arguments_decl'     => $this->argumentsForDeclaration,
-                'arguments_call'     => $this->argumentsForCall,
-                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
-                'return_type'        => $this->returnType->asString(),
-                'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
-                'class_name'         => $this->className,
-                'method_name'        => $this->methodName,
-                'modifier'           => $this->modifier,
-                'reference'          => $this->reference,
-                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
-                'deprecation'        => $deprecation,
-            ]]]></code>
-    </InvalidArgument>
-    <PossiblyFalseOperand>
-      <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
-    </PossiblyFalseOperand>
+  <file src="src/Framework/MockObject/Runtime/Builder/InvocationMocker.php">
+    <PropertyTypeCoercion>
+      <code>$configurableMethods</code>
+    </PropertyTypeCoercion>
   </file>
-  <file src="src/Framework/MockObject/Rule/Parameters.php">
+  <file src="src/Framework/MockObject/Runtime/Matcher.php">
+    <InvalidNullableReturnType>
+      <code>MethodName</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement>
+      <code><![CDATA[$this->methodNameRule]]></code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Framework/MockObject/Runtime/ReturnValueGenerator.php">
+    <ArgumentTypeCoercion>
+      <code>$returnType</code>
+      <code>$types</code>
+    </ArgumentTypeCoercion>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[(new ReflectionClass($stubClassName))->newInstanceWithoutConstructor()]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code>MockObject</code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/Framework/MockObject/Runtime/Rule/Parameters.php">
     <PropertyNotSetInConstructor>
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
-    <PossiblyInvalidOperand>
-      <code><![CDATA[$this->callback]]></code>
-    </PossiblyInvalidOperand>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>
@@ -607,6 +608,10 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
+    <DeprecatedMethod>
+      <code>hasCacheResultFile</code>
+      <code>hasCoverageCacheDirectory</code>
+    </DeprecatedMethod>
     <InvalidNullableReturnType>
       <code>bool</code>
       <code>string</code>
@@ -640,8 +645,13 @@
     <DeprecatedMethod>
       <code>cacheDirectory</code>
       <code>cacheResultFile</code>
+      <code>cacheResultFile</code>
+      <code>coverageCacheDirectory</code>
+      <code>coverageCacheDirectory</code>
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
+      <code>hasCacheResultFile</code>
+      <code>hasCoverageCacheDirectory</code>
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>detect</code>

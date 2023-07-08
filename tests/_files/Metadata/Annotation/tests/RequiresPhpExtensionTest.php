@@ -12,11 +12,13 @@ namespace PHPUnit\TestFixture\Metadata\Annotation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @requires extension foo
+ * @requires extension bar
+ * @requires extension foo >= 1.0.0
  */
 final class RequiresPhpExtensionTest extends TestCase
 {
     /**
+     * @requires extension foo
      * @requires extension bar >= 1.0.0
      */
     public function testOne(): void

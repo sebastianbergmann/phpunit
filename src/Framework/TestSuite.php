@@ -39,7 +39,6 @@ use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
-use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
@@ -55,13 +54,16 @@ use Throwable;
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
-    protected string $name = '';
+    /**
+     * @psalm-var non-empty-string
+     */
+    private string $name;
 
     /**
      * @psalm-var array<string,list<Test>>
      */
-    protected array $groups         = [];
-    protected ?array $requiredTests = null;
+    private array $groups         = [];
+    private ?array $requiredTests = null;
 
     /**
      * @psalm-var list<Test>
@@ -69,22 +71,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private array $tests             = [];
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
-    private readonly bool $stopOnDefect;
-    private readonly bool $stopOnDeprecation;
-    private readonly bool $stopOnError;
-    private readonly bool $stopOnFailure;
-    private readonly bool $stopOnIncomplete;
-    private readonly bool $stopOnNotice;
-    private readonly bool $stopOnRisky;
-    private readonly bool $stopOnSkipped;
-    private readonly bool $stopOnWarning;
 
-    public static function empty(string $name = null): static
+    /**
+     * @psalm-param non-empty-string $name
+     */
+    public static function empty(string $name): static
     {
-        if ($name === null) {
-            $name = '';
-        }
-
         return new static($name);
     }
 
@@ -145,21 +137,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $testSuite;
     }
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
     final private function __construct(string $name)
     {
         $this->name = $name;
-
-        $configuration = Registry::get();
-
-        $this->stopOnDeprecation = $configuration->stopOnDeprecation();
-        $this->stopOnDefect      = $configuration->stopOnDefect();
-        $this->stopOnError       = $configuration->stopOnError();
-        $this->stopOnFailure     = $configuration->stopOnFailure();
-        $this->stopOnIncomplete  = $configuration->stopOnIncomplete();
-        $this->stopOnNotice      = $configuration->stopOnNotice();
-        $this->stopOnRisky       = $configuration->stopOnRisky();
-        $this->stopOnSkipped     = $configuration->stopOnSkipped();
-        $this->stopOnWarning     = $configuration->stopOnWarning();
     }
 
     /**
@@ -167,7 +150,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function toString(): string
     {
-        return $this->getName();
+        return $this->name();
     }
 
     /**
@@ -182,7 +165,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $this->clearCaches();
 
             if ($test instanceof self && empty($groups)) {
-                $groups = $test->getGroups();
+                $groups = $test->groups();
             }
 
             if ($this->containsOnlyVirtualGroups($groups)) {
@@ -299,9 +282,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Returns the name of the suite.
+     * @psalm-return non-empty-string
      */
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
@@ -311,7 +294,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *
      * @psalm-return list<string>
      */
-    public function getGroups(): array
+    public function groups(): array
     {
         return array_map(
             'strval',
@@ -319,7 +302,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         );
     }
 
-    public function getGroupDetails(): array
+    public function groupDetails(): array
     {
         return $this->groups;
     }
@@ -468,7 +451,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function sortId(): string
     {
-        return $this->getName() . '::class';
+        return $this->name() . '::class';
     }
 
     /**

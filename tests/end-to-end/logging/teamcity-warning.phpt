@@ -19,6 +19,8 @@ Configuration: %s
 
 ##teamcity[testCount count='1' flowId='%d']
 
+##teamcity[testSuiteStarted name='%s/tests/end-to-end/logging/_files/teamcity-warning/phpunit.xml' flowId='%d']
+
 ##teamcity[testSuiteStarted name='default' flowId='%d']
 
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\Test' locationHint='php_qn://%s/teamcity-warning/tests/Test.php::\PHPUnit\TestFixture\Test' flowId='%d']
@@ -30,6 +32,8 @@ Configuration: %s
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Test' flowId='%d']
 
 ##teamcity[testSuiteFinished name='default' flowId='%d']
+
+##teamcity[testSuiteFinished name='%s/tests/end-to-end/logging/_files/teamcity-warning/phpunit.xml' flowId='%d']
 
 
 Time: %s, Memory: %s

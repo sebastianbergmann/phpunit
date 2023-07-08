@@ -378,6 +378,8 @@ final class Configuration
 
     /**
      * @psalm-assert-if-true !null $this->cacheResultFile
+     *
+     * @deprecated
      */
     public function hasCacheResultFile(): bool
     {
@@ -386,6 +388,8 @@ final class Configuration
 
     /**
      * @throws Exception
+     *
+     * @deprecated
      */
     public function cacheResultFile(): string
     {
@@ -683,6 +687,8 @@ final class Configuration
 
     /**
      * @psalm-assert-if-true !null $this->coverageCacheDirectory
+     *
+     * @deprecated
      */
     public function hasCoverageCacheDirectory(): bool
     {
@@ -691,6 +697,8 @@ final class Configuration
 
     /**
      * @throws Exception
+     *
+     * @deprecated
      */
     public function coverageCacheDirectory(): string
     {

@@ -9,45 +9,10 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-use stdClass;
-
 class TestProxyFixture
 {
-    public function returnString()
+    public function returnString(): string
     {
         return 'result';
-    }
-
-    public function returnTypedString(): string
-    {
-        return 'result';
-    }
-
-    public function returnObject()
-    {
-        $result = new stdClass;
-
-        $result->foo = 'bar';
-
-        return $result;
-    }
-
-    public function returnTypedObject(): stdClass
-    {
-        $result = new stdClass;
-
-        $result->foo = 'bar';
-
-        return $result;
-    }
-
-    public function returnObjectOfFinalClass()
-    {
-        return new FinalClass('value');
-    }
-
-    public function returnTypedObjectOfFinalClass(): FinalClass
-    {
-        return new FinalClass('value');
     }
 }

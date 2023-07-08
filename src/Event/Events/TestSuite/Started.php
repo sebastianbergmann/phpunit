@@ -41,15 +41,9 @@ final class Started implements Event
 
     public function asString(): string
     {
-        $name = '';
-
-        if (!empty($this->testSuite->name())) {
-            $name = $this->testSuite->name() . ', ';
-        }
-
         return sprintf(
-            'Test Suite Started (%s%d test%s)',
-            $name,
+            'Test Suite Started (%s, %d test%s)',
+            $this->testSuite->name(),
             $this->testSuite->count(),
             $this->testSuite->count() !== 1 ? 's' : '',
         );

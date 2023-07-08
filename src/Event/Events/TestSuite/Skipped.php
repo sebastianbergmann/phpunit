@@ -48,15 +48,9 @@ final class Skipped implements Event
 
     public function asString(): string
     {
-        $name = '';
-
-        if (!empty($this->testSuite->name())) {
-            $name = $this->testSuite->name() . ', ';
-        }
-
         return sprintf(
-            'Test Suite Skipped (%s%s)',
-            $name,
+            'Test Suite Skipped (%s, %s)',
+            $this->testSuite->name(),
             $this->message,
         );
     }

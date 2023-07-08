@@ -9,1210 +9,446 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function class_uses;
-use function func_get_args;
-use function get_parent_class;
-use function sprintf;
-use Exception;
-use PHPUnit\Framework\Attributes\DataProvider;
+use function call_user_func_array;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\AbstractTrait;
-use PHPUnit\TestFixture\Foo;
-use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\AnotherInterface;
-use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
-use PHPUnit\TestFixture\MockObject\ClassWithSelfTypeDeclaration;
-use PHPUnit\TestFixture\MockObject\ClassWithStaticMethod;
-use PHPUnit\TestFixture\MockObject\ClassWithStaticReturnTypes;
-use PHPUnit\TestFixture\MockObject\ClassWithUnionReturnTypes;
-use PHPUnit\TestFixture\MockObject\ExampleTrait;
-use PHPUnit\TestFixture\MockObject\FunctionCallbackWrapper;
-use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersection;
-use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersectionWithClass;
-use PHPUnit\TestFixture\MockObject\InterfaceWithMethodsThatDeclareBooleanReturnTypes;
-use PHPUnit\TestFixture\MockObject\InterfaceWithStaticMethod;
-use PHPUnit\TestFixture\MockObject\MethodCallback;
-use PHPUnit\TestFixture\MockObject\MethodCallbackByReference;
-use PHPUnit\TestFixture\MockObject\StringableClass;
-use PHPUnit\TestFixture\MockObject\TraitWithConstructor;
-use PHPUnit\TestFixture\MockObject\TraversableMockTestInterface;
-use PHPUnit\TestFixture\PartialMockTestClass;
-use PHPUnit\TestFixture\SomeClass;
-use ReflectionObject;
-use RuntimeException;
-use stdClass;
-use Traversable;
+use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
+use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
+use ReflectionProperty;
 
-#[Small]
-final class MockObjectTest extends TestCase
+#[Group('test-doubles')]
+#[Group('test-doubles/mock-object')]
+#[Medium]
+final class MockObjectTest extends TestDoubleTestCase
 {
-    public static function traversableProvider(): array
+    public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
     {
-        return [
-            Traversable::class                  => [Traversable::class],
-            TraversableMockTestInterface::class => [TraversableMockTestInterface::class],
-        ];
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->never())->method('doSomething');
     }
 
-    public function testMockedMethodIsNeverCalled(): void
+    public function testExpectationThatMethodIsNeverCalledFailsWhenMethodIsCalled(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->never())
-            ->method('doSomething');
-    }
+        $mock->expects($this->never())->method('doSomething');
 
-    public function testMockedMethodIsNeverCalledWithParameter(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->getMock();
-
-        $mock->expects($this->never())
-            ->method('doSomething')
-            ->with('someArg');
+        $this->assertThatMockObjectExpectationFails(
+            AnInterface::class . '::doSomething() was not expected to be called.',
+            $mock,
+            'doSomething',
+        );
     }
 
     #[DoesNotPerformAssertions]
-    public function testMockedMethodIsNotCalledWhenExpectsAnyWithParameter(): void
+    public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsNotCalled(): void
     {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->method('doSomethingElse')
-            ->with('someArg');
+        $mock->expects($this->any())->method('doSomething');
     }
 
     #[DoesNotPerformAssertions]
-    public function testMockedMethodIsNotCalledWhenMethodSpecifiedDirectlyWithParameter(): void
+    public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->method('doSomethingElse')
-            ->with('someArg');
-    }
-
-    public function testMockedMethodIsCalledAtLeastOnce(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->expects($this->atLeastOnce())
-            ->method('doSomething');
+        $mock->expects($this->any())->method('doSomething');
 
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtLeastOnce2(): void
+    public function testExpectationThatMethodIsCalledOnceSucceedsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeastOnce())
-            ->method('doSomething');
+        $mock->expects($this->once())->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledOnceFailsWhenMethodIsNeverCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->once())->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 1 time.
+Method was expected to be called 1 time, actually called 0 times.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledOnceFailsWhenMethodIsCalledMoreThanOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->once())->method('doSomething');
+
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            AnInterface::class . '::doSomething() was not expected to be called more than once.',
+            $mock,
+            'doSomething',
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastOnceSucceedsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeastOnce())->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastOnceSucceedsWhenMethodIsCalledTwice(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeastOnce())->method('doSomething');
 
         $mock->doSomething();
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtLeastTwice(): void
+    public function testExpectationThatMethodIsCalledAtLeastTwiceSucceedsWhenMethodIsCalledTwice(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeast(2))
-            ->method('doSomething');
+        $mock->expects($this->atLeast(2))->method('doSomething');
 
         $mock->doSomething();
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtLeastTwice2(): void
+    public function testExpectationThatMethodIsCalledAtLeastTwiceSucceedsWhenMethodIsCalledThreeTimes(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeast(2))
-            ->method('doSomething');
+        $mock->expects($this->atLeast(2))->method('doSomething');
 
         $mock->doSomething();
         $mock->doSomething();
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtMostTwice(): void
+    public function testExpectationThatMethodIsCalledAtLeastOnceFailsWhenMethodIsNotCalled(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atMost(2))
-            ->method('doSomething');
+        $mock->expects($this->atLeastOnce())->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked at least once.
+Expected invocation at least once but it never occurred.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastTwiceFailsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atLeast(2))->method('doSomething');
+
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked at least 2 times.
+Expected invocation at least 2 times but it occurred 1 time.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledTwiceSucceedsWhenMethodIsCalledTwice(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
 
         $mock->doSomething();
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtMosttTwice2(): void
+    public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsNeverCalled(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atMost(2))
-            ->method('doSomething');
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 2 times.
+Method was expected to be called 2 times, actually called 0 times.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked 2 times.
+Method was expected to be called 2 times, actually called 1 time.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsCalledThreeTimes(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->exactly(2))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            AnInterface::class . '::doSomething() was not expected to be called more than 2 times.',
+            $mock,
+            'doSomething',
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledAtMostOnceSucceedsWhenMethodIsNeverCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atMost(1))->method('doSomething');
+    }
+
+    public function testExpectationThatMethodIsCalledAtMostOnceSucceedsWhenMethodIsCalledOnce(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atMost(1))->method('doSomething');
 
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledOnce(): void
+    public function testExpectationThatMethodIsCalledAtMostOnceFailsWhenMethodIsCalledTwice(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(AnInterface::class);
+
+        $mock->expects($this->atMost(1))->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomething" when invoked at most 1 time.
+Expected invocation at most 1 time but it occurred 2 times.
+
+EOT,
+            $mock,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithAnyParameterSucceedsWhenMethodIsCalledWithParameter(): void
+    {
+        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->withAnyParameters();
+
+        $mock->doSomethingElse(1);
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
+    {
+        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->with(1);
+
+        $mock->doSomethingElse(1);
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterFailsWhenMethodIsCalledButWithUnexpectedParameter(): void
+    {
+        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $mock->expects($this->once())->method('doSomethingElse')->with(1);
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomethingElse" when invoked 1 time
+Parameter 0 for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(0): int does not match expected value.
+Failed asserting that 0 matches expected 1.
+EOT,
+            $mock,
+            'doSomethingElse',
+            [0],
+        );
+    }
+
+    /**
+     * With <code>$mock->expects($this->once())->method('one')->id($id);</code>,
+     * we configure an expectation that one() is called once. This expectation is given the ID $id.
+     *
+     * With <code>$mock->expects($this->once())->method('two')->after($id);</code>,
+     * we configure an expectation that two() is called once. However, this expectation will only be verified
+     * if/after one() has been called.
+     */
+    public function testMethodCallCanBeExpectedContingentOnWhetherAnotherMethodWasPreviouslyCalled(): void
+    {
+        $id   = 'the-id';
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
 
         $mock->expects($this->once())
-            ->method('doSomething');
-
-        $mock->doSomething();
-    }
-
-    public function testMockedMethodIsCalledOnceWithParameter(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->getMock();
+            ->method('one')
+            ->id($id);
 
         $mock->expects($this->once())
-            ->method('doSomethingElse')
-            ->with($this->equalTo('something'));
+            ->method('two')
+            ->after($id);
 
-        $mock->doSomethingElse('something');
+        $mock->one();
+        $mock->two();
     }
 
-    public function testMockedMethodIsCalledExactly(): void
+    public function testContingentExpectationsAreNotEvaluatedUntilTheirConditionIsMet(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->expects($this->exactly(2))
-            ->method('doSomething');
-
-        $mock->doSomething();
-        $mock->doSomething();
-    }
-
-    public function testStubbedException(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->will($this->throwException(new Exception));
-
-        $this->expectException(Exception::class);
-
-        $mock->doSomething();
-    }
-
-    public function testStubbedWillThrowException(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->willThrowException(new Exception);
-
-        $this->expectException(Exception::class);
-
-        $mock->doSomething();
-    }
-
-    public function testStubbedReturnValue(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->will($this->returnValue('something'));
-
-        $this->assertEquals('something', $mock->doSomething());
-
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->willReturn('something');
-
-        $this->assertEquals('something', $mock->doSomething());
-    }
-
-    public function testStubbedReturnValueMap(): void
-    {
-        $map = [
-            ['a', 'b', 'c', 'd'],
-            ['e', 'f', 'g', 'h'],
-        ];
-
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->will($this->returnValueMap($map));
-
-        $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
-        $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertNull($mock->doSomething('foo', 'bar'));
-
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->willReturnMap($map);
-
-        $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
-        $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertNull($mock->doSomething('foo', 'bar'));
-    }
-
-    public function testStubbedReturnArgument(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->will($this->returnArgument(1));
-
-        $this->assertEquals('b', $mock->doSomething('a', 'b'));
-
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->willReturnArgument(1);
-
-        $this->assertEquals('b', $mock->doSomething('a', 'b'));
-    }
-
-    public function testFunctionCallback(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomething'])
-            ->getMock();
+        $id   = 'the-id';
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
 
         $mock->expects($this->once())
-            ->method('doSomething')
-            ->will($this->returnCallback(sprintf(
-                '%s::functionCallback',
-                FunctionCallbackWrapper::class,
-            )));
-
-        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
-
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomething'])
-            ->getMock();
+            ->method('one')
+            ->id($id);
 
         $mock->expects($this->once())
-            ->method('doSomething')
-            ->willReturnCallback(sprintf(
-                '%s::functionCallback',
-                FunctionCallbackWrapper::class,
-            ));
+            ->method('two')
+            ->after($id);
 
-        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
+        $mock->two();
+        $mock->one();
+        $mock->two();
     }
 
-    public function testStubbedReturnSelf(): void
+    public function testContingentExpectationsAreEvaluatedWhenTheirConditionIsMet(): void
     {
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->will($this->returnSelf());
-
-        $this->assertEquals($mock, $mock->doSomething());
-
-        $mock = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
-
-        $mock->method('doSomething')
-            ->willReturnSelf();
-
-        $this->assertEquals($mock, $mock->doSomething());
-    }
-
-    public function testStaticMethodCallback(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomething'])
-            ->getMock();
+        $id   = 'the-id';
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
 
         $mock->expects($this->once())
-            ->method('doSomething')
-            ->will($this->returnCallback([MethodCallback::class, 'staticCallback']));
-
-        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
-    }
-
-    public function testPublicMethodCallback(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomething'])
-            ->getMock();
+            ->method('one')
+            ->id($id);
 
         $mock->expects($this->once())
-            ->method('doSomething')
-            ->will($this->returnCallback([new MethodCallback, 'nonStaticCallback']));
+            ->method('two')
+            ->after($id);
 
-        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
+        $mock->two();
+        $mock->one();
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "two" when invoked 1 time.
+Method was expected to be called 1 time, actually called 0 times.
+
+EOT,
+            $mock,
+        );
     }
 
-    public function testMockClassOnlyGeneratedOnce(): void
+    public function testExpectationCannotBeContingentOnExpectationThatHasNotBeenConfigured(): void
     {
-        $mock1 = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock2 = $this->getMockBuilder(AnInterface::class)
-            ->getMock();
+        $mock->expects($this->once())
+            ->method('two')
+            ->after('the-id');
 
-        $this->assertEquals($mock1::class, $mock2::class);
+        $this->assertThatMockObjectExpectationFails(
+            'No builder found for match builder identification <the-id>',
+            $mock,
+            'two',
+        );
     }
 
-    public function testMockClassDifferentForPartialMocks(): void
+    public function testExpectationsCannotHaveDuplicateIds(): void
     {
-        $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->getMock();
+        $id   = 'the-id';
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock2 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->onlyMethods(['doSomething'])
-            ->getMock();
+        $mock->expects($this->once())
+            ->method('one')
+            ->id($id);
 
-        $mock3 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->onlyMethods(['doSomething'])
-            ->getMock();
+        try {
+            $mock->expects($this->once())
+                ->method('one')
+                ->id($id);
+        } catch (MatcherAlreadyRegisteredException $e) {
+            $this->assertSame('Matcher with id <the-id> is already registered', $e->getMessage());
 
-        $mock4 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->onlyMethods(['doAnotherThing'])
-            ->getMock();
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
 
-        $mock5 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->onlyMethods(['doAnotherThing'])
-            ->getMock();
-
-        $this->assertNotEquals($mock1::class, $mock2::class);
-        $this->assertNotEquals($mock1::class, $mock3::class);
-        $this->assertNotEquals($mock1::class, $mock4::class);
-        $this->assertNotEquals($mock1::class, $mock5::class);
-        $this->assertEquals($mock2::class, $mock3::class);
-        $this->assertNotEquals($mock2::class, $mock4::class);
-        $this->assertNotEquals($mock2::class, $mock5::class);
-        $this->assertEquals($mock4::class, $mock5::class);
-    }
-
-    public function testMockClassStoreOverrulable(): void
-    {
-        $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->getMock();
-
-        $mock2 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->setMockClassName('MyMockClassNameForPartialMockTestClass1')
-            ->getMock();
-
-        $mock3 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->getMock();
-
-        $mock4 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->onlyMethods(['doSomething'])
-            ->setMockClassName('AnotherMockClassNameForPartialMockTestClass')
-            ->getMock();
-
-        $mock5 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->setMockClassName('MyMockClassNameForPartialMockTestClass2')
-            ->getMock();
-
-        $this->assertNotEquals($mock1::class, $mock2::class);
-        $this->assertEquals($mock1::class, $mock3::class);
-        $this->assertNotEquals($mock1::class, $mock4::class);
-        $this->assertNotEquals($mock2::class, $mock3::class);
-        $this->assertNotEquals($mock2::class, $mock4::class);
-        $this->assertNotEquals($mock2::class, $mock5::class);
-        $this->assertNotEquals($mock3::class, $mock4::class);
-        $this->assertNotEquals($mock3::class, $mock5::class);
-        $this->assertNotEquals($mock4::class, $mock5::class);
-    }
-
-    public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice(): void
-    {
-        $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
-        $this->assertInstanceOf(stdClass::class, $mock);
-    }
-
-    public function testOriginalConstructorSettingConsidered(): void
-    {
-        $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->getMock();
-
-        $mock2 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->assertTrue($mock1->constructorCalled);
-        $this->assertFalse($mock2->constructorCalled);
-    }
-
-    public function testOriginalCloneSettingConsidered(): void
-    {
-        $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->getMock();
-
-        $mock2 = $this->getMockBuilder(PartialMockTestClass::class)
-            ->disableOriginalClone()
-            ->getMock();
-
-        $this->assertNotEquals($mock1::class, $mock2::class);
-    }
-
-    public function testGetMockForAbstractClass(): void
-    {
-        $mock = $this->getMockBuilder(AbstractMockTestClass::class)
-            ->getMock();
-
-        $mock->expects($this->never())
-            ->method('doSomething');
+        $this->fail();
     }
 
     /**
      * @psalm-param class-string $type
      */
-    #[DataProvider('traversableProvider')]
-    public function testGetMockForTraversable(string $type): void
+    protected function createTestDouble(string $type): object
     {
-        $mock = $this->getMockBuilder($type)
-            ->getMock();
-
-        $this->assertInstanceOf(Traversable::class, $mock);
-    }
-
-    public function testGetMockForTrait(): void
-    {
-        $mock = $this->getMockForTrait(AbstractTrait::class);
-
-        $mock->expects($this->never())
-            ->method('doSomething');
-
-        $parent = get_parent_class($mock);
-        $traits = class_uses($parent, false);
-
-        $this->assertContains(AbstractTrait::class, $traits);
-    }
-
-    public function testClonedMockObjectShouldStillEqualTheOriginal(): void
-    {
-        $a = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $b = clone $a;
-
-        $this->assertEquals($a, $b);
-    }
-
-    public function testMockObjectsConstructedIndepentantlyShouldBeEqual(): void
-    {
-        $a = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $b = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $this->assertEquals($a, $b);
-    }
-
-    public function testMockObjectsConstructedIndepentantlyShouldNotBeTheSame(): void
-    {
-        $a = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $b = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $this->assertNotSame($a, $b);
-    }
-
-    public function testClonedMockObjectCanBeUsedInPlaceOfOriginalOne(): void
-    {
-        $x = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $y = clone $x;
-
-        $mock = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['foo'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('foo')
-            ->with($this->equalTo($x));
-
-        $mock->foo($y);
-    }
-
-    public function testClonedMockObjectIsNotIdenticalToOriginalOne(): void
-    {
-        $x = $this->getMockBuilder(stdClass::class)
-            ->getMock();
-
-        $y = clone $x;
-
-        $mock = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['foo'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('foo')
-            ->with($this->logicalNot($this->identicalTo($x)));
-
-        $mock->foo($y);
-    }
-
-    public function testObjectMethodCallWithArgumentCloningEnabled(): void
-    {
-        $expectedObject = new stdClass;
-
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomethingElse'])
-            ->enableArgumentCloning()
-            ->getMock();
-
-        $actualArguments = [];
-
-        $mock->method('doSomethingElse')
-            ->will(
-                $this->returnCallback(
-                    static function () use (&$actualArguments): void
-                    {
-                        $actualArguments = func_get_args();
-                    },
-                ),
-            );
-
-        $mock->doSomethingElse($expectedObject);
-
-        $this->assertCount(1, $actualArguments);
-        $this->assertEquals($expectedObject, $actualArguments[0]);
-        $this->assertNotSame($expectedObject, $actualArguments[0]);
-    }
-
-    public function testObjectMethodCallWithArgumentCloningDisabled(): void
-    {
-        $expectedObject = new stdClass;
-
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomethingElse'])
-            ->disableArgumentCloning()
-            ->getMock();
-
-        $actualArguments = [];
-
-        $mock->method('doSomethingElse')
-            ->will(
-                $this->returnCallback(
-                    static function () use (&$actualArguments): void
-                    {
-                        $actualArguments = func_get_args();
-                    },
-                ),
-            );
-
-        $mock->doSomethingElse($expectedObject);
-
-        $this->assertCount(1, $actualArguments);
-        $this->assertSame($expectedObject, $actualArguments[0]);
-    }
-
-    public function testArgumentCloningOptionGeneratesUniqueMock(): void
-    {
-        $mockWithCloning = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomethingElse'])
-            ->enableArgumentCloning()
-            ->getMock();
-
-        $mockWithoutCloning = $this->getMockBuilder(SomeClass::class)
-            ->onlyMethods(['doSomethingElse'])
-            ->disableArgumentCloning()
-            ->getMock();
-
-        $this->assertNotEquals($mockWithCloning, $mockWithoutCloning);
-    }
-
-    public function testVerificationOfMethodNameFailsWithoutParameters(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->addMethods(['right', 'wrong'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('right');
-
-        $mock->wrong();
-
-        try {
-            $mock->__phpunit_verify();
-            $this->fail('Expected exception');
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
-                'Method was expected to be called 1 times, actually called 0 times.' . "\n",
-                $e->getMessage(),
-            );
-        }
-
-        $this->resetMockObjects();
-    }
-
-    public function testVerificationOfMethodNameFailsWithParameters(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->addMethods(['right', 'wrong'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('right');
-
-        $mock->wrong();
-
-        try {
-            $mock->__phpunit_verify();
-            $this->fail('Expected exception');
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
-                'Method was expected to be called 1 times, actually called 0 times.' . "\n",
-                $e->getMessage(),
-            );
-        }
-
-        $this->resetMockObjects();
-    }
-
-    public function testVerificationOfMethodNameFailsWithWrongParameters(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->addMethods(['right', 'wrong'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('right')
-            ->with(['first', 'second']);
-
-        try {
-            $mock->right(['second']);
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                sprintf(
-                    <<<'EOF'
-Expectation failed for method name is "right" when invoked 1 time(s)
-Parameter 0 for invocation %s::right(Array (...)) does not match expected value.
-Failed asserting that two arrays are equal.
-EOF
-                    ,
-                    SomeClass::class,
-                ),
-                $e->getMessage(),
-            );
-        }
-
-        try {
-            $mock->__phpunit_verify();
-
-            // CHECKOUT THIS MORE CAREFULLY
-            // $this->fail('Expected exception');
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                sprintf(
-                    <<<'EOF'
-Expectation failed for method name is "right" when invoked 1 time(s).
-Parameter 0 for invocation %s::right(Array (...)) does not match expected value.
-Failed asserting that two arrays are equal.
---- Expected
-+++ Actual
-@@ @@
- Array (
--    0 => 'first'
--    1 => 'second'
-+    0 => 'second'
- )
-
-EOF
-                    ,
-                    SomeClass::class,
-                ),
-                $e->getMessage(),
-            );
-        }
-
-        $this->resetMockObjects();
-    }
-
-    public function testVerificationOfNeverFailsWithEmptyParameters(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->addMethods(['right', 'wrong'])
-            ->getMock();
-
-        $mock->expects($this->never())
-            ->method('right')
-            ->with();
-
-        try {
-            $mock->right();
-            $this->fail('Expected exception');
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                sprintf(
-                    '%s::right() was not expected to be called.',
-                    SomeClass::class,
-                ),
-                $e->getMessage(),
-            );
-        }
-
-        $this->resetMockObjects();
-    }
-
-    public function testVerificationOfNeverFailsWithAnyParameters(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->addMethods(['right', 'wrong'])
-            ->getMock();
-
-        $mock->expects($this->never())
-            ->method('right')
-            ->withAnyParameters();
-
-        try {
-            $mock->right();
-            $this->fail('Expected exception');
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                sprintf(
-                    '%s::right() was not expected to be called.',
-                    SomeClass::class,
-                ),
-                $e->getMessage(),
-            );
-        }
-
-        $this->resetMockObjects();
-    }
-
-    public function testWithAnythingInsteadOfWithAnyParameters(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->addMethods(['right', 'wrong'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('right')
-            ->with($this->anything());
-
-        try {
-            $mock->right();
-            $this->fail('Expected exception');
-        } catch (ExpectationFailedException $e) {
-            $this->assertSame(
-                sprintf(
-                    <<<'EOF'
-Expectation failed for method name is "right" when invoked 1 time(s)
-Parameter count for invocation %s::right() is too low.
-To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.
-EOF
-                    ,
-                    SomeClass::class,
-                ),
-                $e->getMessage(),
-            );
-        }
-
-        $this->resetMockObjects();
+        return $this->createMock($type);
     }
 
     /**
-     * @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
+     * @psalm-param list<class-string> $interfaces
      */
-    public function testMockArgumentsPassedByReference(): void
+    protected function createTestDoubleForIntersection(array $interfaces): object
     {
-        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-            ->onlyMethods(['bar'])
-            ->disableOriginalConstructor()
-            ->disableArgumentCloning()
-            ->getMock();
-
-        $foo->method('bar')
-            ->will($this->returnCallback([$foo, 'callback']));
-
-        $a = $b = $c = 0;
-
-        $foo->bar($a, $b, $c);
-
-        $this->assertEquals(1, $b);
+        return $this->createMockForIntersectionOfInterfaces($interfaces);
     }
 
-    /**
-     * @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
-     */
-    public function testMockArgumentsPassedByReference2(): void
+    private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock, string $methodName = '__phpunit_verify', array $arguments = []): void
     {
-        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-            ->disableOriginalConstructor()
-            ->disableArgumentCloning()
-            ->getMock();
-
-        $foo->method('bar')
-            ->will($this->returnCallback(
-                static function (&$a, &$b, $c): void
-                {
-                    $b = 1;
-                },
-            ));
-
-        $a = $b = $c = 0;
-
-        $foo->bar($a, $b, $c);
-
-        $this->assertEquals(1, $b);
-    }
-
-    /**
-     * @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/116
-     */
-    public function testMockArgumentsPassedByReference3(): void
-    {
-        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-            ->onlyMethods(['bar'])
-            ->disableOriginalConstructor()
-            ->disableArgumentCloning()
-            ->getMock();
-
-        $a = new stdClass;
-        $b = $c = 0;
-
-        $foo->method('bar')
-            ->with($a, $b, $c)
-            ->will($this->returnCallback([$foo, 'callback']));
-
-        $this->assertNull($foo->bar($a, $b, $c));
-    }
-
-    /**
-     * @see https://github.com/sebastianbergmann/phpunit/issues/796
-     */
-    public function testMockArgumentsPassedByReference4(): void
-    {
-        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-            ->onlyMethods(['bar'])
-            ->disableOriginalConstructor()
-            ->disableArgumentCloning()
-            ->getMock();
-
-        $a = new stdClass;
-        $b = $c = 0;
-
-        $foo->method('bar')
-            ->with($this->isInstanceOf(stdClass::class), $b, $c)
-            ->will($this->returnCallback([$foo, 'callback']));
-
-        $this->assertNull($foo->bar($a, $b, $c));
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateMockFromWsdl(): void
-    {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'WsdlMock');
-
-        $this->assertStringStartsWith(
-            'Mock_WsdlMock_',
-            $mock::class,
-        );
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateNamespacedMockFromWsdl(): void
-    {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
-
-        $this->assertStringStartsWith(
-            'Mock_WsdlMock_',
-            $mock::class,
-        );
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateTwoMocksOfOneWsdlFile(): void
-    {
-        $a = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
-        $b = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
-
-        $this->assertStringStartsWith('Mock_GoogleSearch_', $a::class);
-        $this->assertEquals($a::class, $b::class);
-    }
-
-    #[RequiresPhpExtension('soap')]
-    public function testCreateMockOfWsdlFileWithSpecialChars(): void
-    {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'Go ogle-Sea.rch.wsdl');
-
-        $this->assertStringStartsWith('Mock_GoogleSearch_', $mock::class);
-    }
-
-    public function testInterfaceWithStaticMethodCanBeStubbed(): void
-    {
-        $this->assertInstanceOf(
-            InterfaceWithStaticMethod::class,
-            $this->getMockBuilder(InterfaceWithStaticMethod::class)->getMock(),
-        );
-    }
-
-    public function testInvokingStubbedStaticMethodRaisesException(): void
-    {
-        $mock = $this->getMockBuilder(ClassWithStaticMethod::class)->getMock();
-
-        $this->expectException(\PHPUnit\Framework\MockObject\BadMethodCallException::class);
-
-        $mock->staticMethod();
-    }
-
-    public function testGetMockForClassWithSelfTypeHint(): void
-    {
-        $this->assertInstanceOf(
-            ClassWithSelfTypeDeclaration::class,
-            $this->getMockBuilder(ClassWithSelfTypeDeclaration::class)->getMock(),
-        );
-    }
-
-    public function testStringableClassDoesNotThrow(): void
-    {
-        /** @var PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
-        $mock = $this->getMockBuilder(StringableClass::class)->getMock();
-
-        $this->assertIsString((string) $mock);
-    }
-
-    public function testStringableClassCanBeMocked(): void
-    {
-        /** @var PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
-        $mock = $this->getMockBuilder(StringableClass::class)->getMock();
-
-        $mock->method('__toString')->willReturn('foo');
-
-        $this->assertSame('foo', (string) $mock);
-    }
-
-    public function testParameterCallbackConstraintOnlyEvaluatedOnce(): void
-    {
-        $mock                  = $this->getMockBuilder(Foo::class)->addMethods(['bar'])->getMock();
-        $expectedNumberOfCalls = 1;
-        $callCount             = 0;
-
-        $mock->expects($this->exactly($expectedNumberOfCalls))->method('bar')
-            ->with($this->callback(static function ($argument) use (&$callCount)
-            {
-                return $argument === 'call_' . $callCount++;
-            }));
-
-        for ($i = 0; $i < $expectedNumberOfCalls; $i++) {
-            $mock->bar('call_' . $i);
-        }
-    }
-
-    public function testReturnTypesAreMockedCorrectly(): void
-    {
-        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
-        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
-
-        $this->assertNull($stub->methodWithNoReturnTypeDeclaration());
-        $this->assertSame('', $stub->methodWithStringReturnTypeDeclaration());
-        $this->assertSame(0.0, $stub->methodWithFloatReturnTypeDeclaration());
-        $this->assertSame(0, $stub->methodWithIntReturnTypeDeclaration());
-        $this->assertFalse($stub->methodWithBoolReturnTypeDeclaration());
-        $this->assertSame([], $stub->methodWithArrayReturnTypeDeclaration());
-        $this->assertInstanceOf(MockObject::class, $stub->methodWithClassReturnTypeDeclaration());
-    }
-
-    public function testDisableAutomaticReturnValueGeneration(): void
-    {
-        $mock = $this->getMockBuilder(SomeClass::class)
-            ->disableAutoReturnValueGeneration()
-            ->getMock();
-
-        $this->expectException(ReturnValueNotConfiguredException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Return value inference disabled and no expectation set up for %s::doSomethingElse()',
-            SomeClass::class,
-        ));
-
-        $mock->doSomethingElse(1);
-    }
-
-    public function testDisableAutomaticReturnValueGenerationWithToString(): void
-    {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
-        $mock = $this->getMockBuilder(StringableClass::class)
-            ->disableAutoReturnValueGeneration()
-            ->getMock();
-
-        (string) $mock;
-
         try {
-            $mock->__phpunit_verify();
-            $this->fail('Exception expected');
-        } catch (RuntimeException $e) {
-            $this->assertSame(
-                sprintf(
-                    'Return value inference disabled and no expectation set up for %s::__toString()',
-                    StringableClass::class,
-                ),
-                $e->getMessage(),
-            );
+            call_user_func_array([$mock, $methodName], $arguments);
+        } catch (ExpectationFailedException|MatchBuilderNotFoundException $e) {
+            $this->assertSame($expectationFailureMessage, $e->getMessage());
+
+            return;
+        } finally {
+            $this->resetMockObjects();
         }
 
-        $this->resetMockObjects();
-    }
-
-    public function testVoidReturnTypeIsMockedCorrectly(): void
-    {
-        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
-        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
-
-        $this->assertNull($stub->methodWithVoidReturnTypeDeclaration());
-    }
-
-    public function testObjectReturnTypeIsMockedCorrectly(): void
-    {
-        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
-        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
-
-        $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
-    }
-
-    public function testUnionReturnTypeIsDoubledCorrectly(): void
-    {
-        /** @var ClassWithUnionReturnTypes|MockObject $stub */
-        $stub = $this->createMock(ClassWithUnionReturnTypes::class);
-
-        $this->assertFalse($stub->returnsBoolOrInt());
-    }
-
-    public function testNullableUnionReturnTypeIsDoubledCorrectly(): void
-    {
-        /** @var ClassWithUnionReturnTypes|MockObject $stub */
-        $stub = $this->createMock(ClassWithUnionReturnTypes::class);
-
-        $this->assertNull($stub->returnsBoolOrIntOrNull());
-    }
-
-    public function testMixedReturnTypeIsDoubledCorrectly(): void
-    {
-        /** @var ClassWithUnionReturnTypes|MockObject $stub */
-        $stub = $this->createMock(ClassWithUnionReturnTypes::class);
-
-        $this->assertNull($stub->returnsMixed());
-    }
-
-    public function testStaticReturnTypeIsDoubledCorrectly(): void
-    {
-        /** @var ClassWithStaticReturnTypes|Stub $stub */
-        $stub = $this->createStub(ClassWithStaticReturnTypes::class);
-
-        $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsStatic());
-    }
-
-    public function testUnionReturnTypeWithStaticIsDoubledCorrectly(): void
-    {
-        /** @var ClassWithStaticReturnTypes|Stub $stub */
-        $stub = $this->createStub(ClassWithStaticReturnTypes::class);
-
-        $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsUnionWithStatic());
-    }
-
-    public function testNullableStaticReturnTypeIsDoubledCorrectly(): void
-    {
-        /** @var ClassWithStaticReturnTypes|Stub $stub */
-        $stub = $this->createStub(ClassWithStaticReturnTypes::class);
-
-        $this->assertNull($stub->returnsStaticOrNull());
-    }
-
-    public function testTraitCanBeDoubled(): void
-    {
-        $object = $this->getObjectForTrait(ExampleTrait::class);
-
-        $this->assertSame('ohHai', $object->ohHai());
-    }
-
-    public function testTraitWithConstructorCanBeDoubled(): void
-    {
-        $object = $this->getObjectForTrait(TraitWithConstructor::class, ['value']);
-
-        $this->assertSame('value', $object->value());
-    }
-
-    public function testMethodThatReturnsIntOrFalseCanBeStubbed(): void
-    {
-        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
-
-        $i->method('returnsIntOrFalse')->willReturn(false);
-
-        $this->assertFalse($i->returnsIntOrFalse());
-
-        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
-
-        $i->method('returnsIntOrFalse')->willReturn(1);
-
-        $this->assertSame(1, $i->returnsIntOrFalse());
-    }
-
-    public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntOrFalse(): void
-    {
-        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
-
-        $this->assertFalse($i->returnsIntOrFalse());
-    }
-
-    public function testMethodThatReturnsBoolCanBeStubbed(): void
-    {
-        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
-
-        $i->method('returnsBool')->willReturn(false);
-
-        $this->assertFalse($i->returnsBool());
-    }
-
-    public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntersectionOfInterfaces(): void
-    {
-        $result = $this->createStub(InterfaceWithMethodReturningIntersection::class)->method();
-
-        $this->assertInstanceOf(AnInterface::class, $result);
-        $this->assertInstanceOf(AnotherInterface::class, $result);
-    }
-
-    public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersectionWithClass(): void
-    {
-        $stub = $this->createStub(InterfaceWithMethodReturningIntersectionWithClass::class);
-
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
-
-        $stub->method();
+        $this->fail();
     }
 
     private function resetMockObjects(): void
     {
-        $refl = new ReflectionObject($this);
-        $refl = $refl->getParentClass();
-        $prop = $refl->getProperty('mockObjects');
-        $prop->setAccessible(true);
-        $prop->setValue($this, []);
+        (new ReflectionProperty(TestCase::class, 'mockObjects'))->setValue($this, []);
     }
 }

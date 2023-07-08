@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 
 /**

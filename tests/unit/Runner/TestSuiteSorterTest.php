@@ -442,7 +442,7 @@ final class TestSuiteSorterTest extends TestCase
 
     public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
@@ -453,7 +453,7 @@ final class TestSuiteSorterTest extends TestCase
 
     public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption(): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
@@ -466,7 +466,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testShouldNotAffectEmptyTestSuite(int $order, bool $resolveDependencies, int $orderDefects): void
     {
         $sorter = new TestSuiteSorter;
-        $suite  = TestSuite::empty();
+        $suite  = TestSuite::empty('test suite name');
 
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, $orderDefects);
 
@@ -478,7 +478,7 @@ final class TestSuiteSorterTest extends TestCase
     #[DataProvider('commonSorterOptionsProvider')]
     public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expectedOrder): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
@@ -490,7 +490,7 @@ final class TestSuiteSorterTest extends TestCase
 
     public function testCanSetRandomizationWithASeed(): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
@@ -510,7 +510,7 @@ final class TestSuiteSorterTest extends TestCase
 
     public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
@@ -531,7 +531,7 @@ final class TestSuiteSorterTest extends TestCase
     #[DataProvider('orderDurationWithoutCacheProvider')]
     public function testOrderDurationWithoutCache(bool $resolveDependencies, array $expected): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
 
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
 
@@ -550,7 +550,7 @@ final class TestSuiteSorterTest extends TestCase
     #[DataProvider('orderDurationWithCacheProvider')]
     public function testOrderDurationWithCache(bool $resolveDependencies, array $testTimes, array $expected): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
 
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
 
@@ -575,7 +575,7 @@ final class TestSuiteSorterTest extends TestCase
     #[DataProvider('defectsSorterOptionsProvider')]
     public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
 
         $cache = new DefaultResultCache;
@@ -593,7 +593,7 @@ final class TestSuiteSorterTest extends TestCase
 
     public function testOrderBySize(): void
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty('test suite name');
         $suite->addTestSuite(new ReflectionClass(TestWithDifferentSizes::class));
         $sorter = new TestSuiteSorter;
 

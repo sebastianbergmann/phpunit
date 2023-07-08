@@ -33,7 +33,7 @@ final class TestSuiteBuilder
     {
         $groups = [];
 
-        foreach ($testSuite->getGroupDetails() as $groupName => $tests) {
+        foreach ($testSuite->groupDetails() as $groupName => $tests) {
             if (!isset($groups[$groupName])) {
                 $groups[$groupName] = [];
             }
@@ -48,13 +48,13 @@ final class TestSuiteBuilder
         self::process($testSuite, $tests);
 
         if ($testSuite instanceof DataProviderTestSuite) {
-            [$className, $methodName] = explode('::', $testSuite->getName());
+            [$className, $methodName] = explode('::', $testSuite->name());
 
             try {
                 $reflector = new ReflectionMethod($className, $methodName);
 
                 return new TestSuiteForTestMethodWithDataProvider(
-                    $testSuite->getName(),
+                    $testSuite->name(),
                     $testSuite->count(),
                     TestCollection::fromArray($tests),
                     $className,
@@ -73,10 +73,10 @@ final class TestSuiteBuilder
 
         if ($testSuite->isForTestClass()) {
             try {
-                $reflector = new ReflectionClass($testSuite->getName());
+                $reflector = new ReflectionClass($testSuite->name());
 
                 return new TestSuiteForTestClass(
-                    $testSuite->getName(),
+                    $testSuite->name(),
                     $testSuite->count(),
                     TestCollection::fromArray($tests),
                     $reflector->getFileName(),
@@ -92,7 +92,7 @@ final class TestSuiteBuilder
         }
 
         return new TestSuiteWithName(
-            $testSuite->getName(),
+            $testSuite->name(),
             $testSuite->count(),
             TestCollection::fromArray($tests),
         );

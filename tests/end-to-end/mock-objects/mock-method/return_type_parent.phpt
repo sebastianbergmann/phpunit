@@ -14,7 +14,7 @@ class Foo extends Baz
 require_once __DIR__ . '/../../../bootstrap.php';
 
 $class = new ReflectionClass('Foo');
-$mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(
+$mockMethod = \PHPUnit\Framework\MockObject\Generator\MockMethod::fromReflection(
     $class->getMethod('bar'),
     false,
     false
