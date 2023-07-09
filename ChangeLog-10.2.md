@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 ### Fixed
 
 * `--warm-coverage-cache` does not work
+* The short option `-v` (short for `--verbose`)  was still accepted by the test runner, but no longer had an effect since `--verbose` was removed in PHPUnit 10.0
 
 ## [10.2.3] - 2023-06-30
 
