@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.13.0@a0a9c27630bcf8301ee78cb06741d2907d8c9fef">
+<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
     </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Event/Emitter/DispatchingEmitter.php">
+    <ArgumentTypeCoercion>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$line</code>
+      <code>$line</code>
+      <code>$line</code>
+      <code>$line</code>
+      <code>$line</code>
+      <code>$line</code>
+      <code>$line</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/AfterLastTestMethodFinished.php">
     <PropertyTypeCoercion>
