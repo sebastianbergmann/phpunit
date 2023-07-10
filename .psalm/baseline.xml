@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
+<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -485,11 +485,6 @@
       <code>DataProviderTestSuite</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/Framework/ErrorTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
-  </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType>
       <code>$code</code>
@@ -516,11 +511,6 @@
     <PossiblyUndefinedArrayOffset>
       <code>$parts[1]</code>
     </PossiblyUndefinedArrayOffset>
-  </file>
-  <file src="src/Framework/IncompleteTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType>
@@ -761,11 +751,6 @@
       <code>invoke</code>
     </MissingReturnType>
   </file>
-  <file src="src/Framework/SkippedTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
-  </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType>
       <code>$data</code>
@@ -800,11 +785,8 @@
       <code><![CDATA[$this->backupStaticAttributesBlacklist]]></code>
     </DeprecatedProperty>
     <DocblockTypeContradiction>
-      <code><![CDATA[$this->backupStaticAttributes === null]]></code>
       <code><![CDATA[$this->mockObjectGenerator === null]]></code>
       <code><![CDATA[$this->prophet === null]]></code>
-      <code><![CDATA[$this->runClassInSeparateProcess === null]]></code>
-      <code><![CDATA[$this->runTestInSeparateProcess === null]]></code>
     </DocblockTypeContradiction>
     <InvalidArgument>
       <code>$header</code>
@@ -940,17 +922,11 @@
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
     <PropertyNotSetInConstructor>
-      <code>$backupStaticAttributes</code>
       <code>$mockObjectGenerator</code>
       <code>$outputBufferingLevel</code>
       <code>$prophet</code>
       <code>$result</code>
-      <code>$runClassInSeparateProcess</code>
-      <code>$runTestInSeparateProcess</code>
     </PropertyNotSetInConstructor>
-    <RedundantCastGivenDocblockType>
-      <code><![CDATA[(bool) $this->backupStaticAttributes]]></code>
-    </RedundantCastGivenDocblockType>
     <RedundantCondition>
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
@@ -1088,11 +1064,6 @@
       <code><![CDATA[null === $this->backupStaticAttributes && is_bool($backupStaticAttributes)]]></code>
       <code><![CDATA[null === $this->beStrictAboutChangesToGlobalState && is_bool($beStrictAboutChangesToGlobalState)]]></code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Framework/WarningTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Runner/BaseTestRunner.php">
     <DeprecatedClass>
