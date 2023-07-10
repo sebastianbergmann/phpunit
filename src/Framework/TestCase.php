@@ -127,7 +127,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $backupGlobalsBlacklist = [];
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupStaticAttributes;
 
@@ -137,7 +137,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $backupStaticAttributesBlacklist = [];
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $runTestInSeparateProcess;
 
@@ -147,7 +147,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $preserveGlobalState = true;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     private $runClassInSeparateProcess;
 
@@ -167,17 +167,17 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $dataName;
 
     /**
-     * @var null|string
+     * @var ?string
      */
     private $expectedException;
 
     /**
-     * @var null|string
+     * @var ?string
      */
     private $expectedExceptionMessage;
 
     /**
-     * @var null|string
+     * @var ?string
      */
     private $expectedExceptionMessageRegExp;
 
@@ -1961,7 +1961,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param null|string $classOrInterface
+     * @param ?string $classOrInterface
      *
      * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
      * @throws \Prophecy\Exception\Doubler\DoubleException

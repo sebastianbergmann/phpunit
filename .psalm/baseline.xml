@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
+<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -679,11 +679,6 @@
       <code><![CDATA[$t->getPrevious()]]></code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/IncompleteTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
-  </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType>
       <code>id</code>
@@ -969,11 +964,6 @@
       <code>invoke</code>
     </MissingReturnType>
   </file>
-  <file src="src/Framework/SkippedTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
-  </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType>
       <code>$data</code>
@@ -1003,12 +993,9 @@
       <code>setMethods</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction>
-      <code><![CDATA[$this->backupStaticAttributes === null]]></code>
       <code><![CDATA[$this->mockObjectGenerator === null]]></code>
       <code><![CDATA[$this->name === null]]></code>
       <code><![CDATA[$this->prophet === null]]></code>
-      <code><![CDATA[$this->runClassInSeparateProcess === null]]></code>
-      <code><![CDATA[$this->runTestInSeparateProcess === null]]></code>
       <code><![CDATA['']]></code>
       <code><![CDATA[is_int($this->dataName)]]></code>
     </DocblockTypeContradiction>
@@ -1196,20 +1183,14 @@
       <code>$categories</code>
     </PossiblyUndefinedVariable>
     <PropertyNotSetInConstructor>
-      <code>$backupStaticAttributes</code>
       <code>$mockObjectGenerator</code>
       <code>$outputBufferingLevel</code>
       <code>$outputExpectedRegex</code>
       <code>$outputExpectedString</code>
       <code>$prophet</code>
       <code>$result</code>
-      <code>$runClassInSeparateProcess</code>
-      <code>$runTestInSeparateProcess</code>
       <code>$snapshot</code>
     </PropertyNotSetInConstructor>
-    <RedundantCastGivenDocblockType>
-      <code><![CDATA[(bool) $this->backupStaticAttributes]]></code>
-    </RedundantCastGivenDocblockType>
     <RedundantCondition>
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
@@ -1399,11 +1380,6 @@
       <code><![CDATA[null === $this->backupStaticAttributes && is_bool($backupStaticAttributes)]]></code>
       <code><![CDATA[null === $this->beStrictAboutChangesToGlobalState && is_bool($beStrictAboutChangesToGlobalState)]]></code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Framework/WarningTestCase.php">
-    <NonInvariantDocblockPropertyType>
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Runner/Filter/Factory.php">
     <MissingParamType>

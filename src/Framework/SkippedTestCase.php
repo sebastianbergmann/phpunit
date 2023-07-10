@@ -15,17 +15,17 @@ namespace PHPUnit\Framework;
 final class SkippedTestCase extends TestCase
 {
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupGlobals = false;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $runTestInSeparateProcess = false;
 
