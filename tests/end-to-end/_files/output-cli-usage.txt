@@ -14,6 +14,7 @@ Configuration:
   --cache-directory <dir>          Specify cache directory
   --generate-configuration         Generate configuration file with suggested settings
   --migrate-configuration          Migrate configuration file to current format
+  --generate-baseline              Generate baseline for issues
 
 Selection:
 

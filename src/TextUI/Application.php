@@ -28,6 +28,8 @@ use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
+use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
@@ -166,6 +168,17 @@ final class Application
                 );
             }
 
+            if ($configuration->generateBaseline()) {
+                if (!$configuration->source()->hasBaseline()) {
+                    // @todo
+                }
+
+                $baselineGenerator = new BaselineGenerator(
+                    EventFacade::instance(),
+                    $configuration->source(),
+                );
+            }
+
             EventFacade::instance()->seal();
 
             $timer = new Timer;
@@ -208,6 +221,20 @@ final class Application
             }
 
             CodeCoverage::instance()->generateReports($printer, $configuration);
+
+            if (isset($baselineGenerator)) {
+                (new Writer)->write(
+                    $configuration->source()->baseline(),
+                    $baselineGenerator->baseline(),
+                );
+
+                $printer->print(
+                    sprintf(
+                        PHP_EOL . 'Baseline written to %s.' . PHP_EOL,
+                        realpath($configuration->source()->baseline()),
+                    ),
+                );
+            }
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnDeprecation(),
