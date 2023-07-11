@@ -31,8 +31,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 ##teamcity[testFailed name='testError' message='RuntimeException' details='%sStatusTest.php:%d|n' duration='%d' flowId='%d']
 
-##teamcity[testFailed name='testError' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
-
 ##teamcity[testFinished name='testError' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testIncomplete' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testIncomplete' flowId='%d']
@@ -66,8 +64,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 ##teamcity[testStarted name='testErrorWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage' flowId='%d']
 
 ##teamcity[testFailed name='testErrorWithMessage' message='RuntimeException: error with custom message' details='%sStatusTest.php:%d|n' duration='%d' flowId='%d']
-
-##teamcity[testFailed name='testErrorWithMessage' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testErrorWithMessage' duration='%d' flowId='%d']
 
