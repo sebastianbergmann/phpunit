@@ -183,6 +183,11 @@
       <code>bool</code>
     </InvalidArgument>
   </file>
+  <file src="src/Framework/Constraint/Traversable/TraversableContainsOnly.php">
+    <ArgumentTypeCoercion>
+      <code>$type</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
