@@ -16,6 +16,7 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final class Source
 {
+    private readonly ?string $baseline;
     private readonly FilterDirectoryCollection $includeDirectories;
     private readonly FileCollection $includeFiles;
     private readonly FilterDirectoryCollection $excludeDirectories;
@@ -31,8 +32,9 @@ final class Source
     private readonly bool $ignoreSuppressionOfWarnings;
     private readonly bool $ignoreSuppressionOfPhpWarnings;
 
-    public function __construct(FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
+    public function __construct(?string $baseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
     {
+        $this->baseline                           = $baseline;
         $this->includeDirectories                 = $includeDirectories;
         $this->includeFiles                       = $includeFiles;
         $this->excludeDirectories                 = $excludeDirectories;
@@ -47,6 +49,26 @@ final class Source
         $this->ignoreSuppressionOfPhpNotices      = $ignoreSuppressionOfPhpNotices;
         $this->ignoreSuppressionOfWarnings        = $ignoreSuppressionOfWarnings;
         $this->ignoreSuppressionOfPhpWarnings     = $ignoreSuppressionOfPhpWarnings;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->baseline
+     */
+    public function hasBaseline(): bool
+    {
+        return $this->baseline !== null;
+    }
+
+    /**
+     * @throws NoBaselineException
+     */
+    public function baseline(): string
+    {
+        if (!$this->hasBaseline()) {
+            throw new NoBaselineException;
+        }
+
+        return $this->baseline;
     }
 
     public function includeDirectories(): FilterDirectoryCollection

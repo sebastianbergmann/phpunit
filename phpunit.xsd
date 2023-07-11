@@ -24,6 +24,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:all>
+        <xs:attribute name="baseline" type="xs:anyURI"/>
         <xs:attribute name="restrictDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="restrictNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="restrictWarnings" type="xs:boolean" default="false"/>

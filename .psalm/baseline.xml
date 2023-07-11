@@ -726,6 +726,7 @@
       <code>hasCoverageCacheDirectory</code>
     </DeprecatedMethod>
     <MissingThrowsDocblock>
+      <code>baseline</code>
       <code>detect</code>
     </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset>

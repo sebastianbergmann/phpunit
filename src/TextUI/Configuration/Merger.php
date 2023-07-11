@@ -705,6 +705,12 @@ final class Merger
             $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
         }
 
+        $baseline = null;
+
+        if ($xmlConfiguration->source()->hasBaseline()) {
+            $baseline = $xmlConfiguration->source()->baseline();
+        }
+
         return new Configuration(
             $cliConfiguration->arguments(),
             $configurationFile,
@@ -713,6 +719,7 @@ final class Merger
             $cacheDirectory,
             $coverageCacheDirectory,
             new Source(
+                $baseline,
                 FilterDirectoryCollection::fromArray($sourceIncludeDirectories),
                 $sourceIncludeFiles,
                 $sourceExcludeDirectories,
