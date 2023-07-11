@@ -61,24 +61,9 @@ Failed asserting that false is true.
 
 --
 
-There were 4 risky tests:
+There was 1 risky test:
 
 1) PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithRisky
-This test did not perform any assertions
-
-%sOutcomesAndIssuesTest.php:%d
-
-2) PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
-This test did not perform any assertions
-
-%sOutcomesAndIssuesTest.php:%d
-
-3) PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithNotice
-This test did not perform any assertions
-
-%sOutcomesAndIssuesTest.php:%d
-
-4) PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithWarning
 This test did not perform any assertions
 
 %sOutcomesAndIssuesTest.php:%d
@@ -218,4 +203,4 @@ deprecation message
 %sOutcomesAndIssuesTest.php:%d
 
 ERRORS!
-Tests: 17, Assertions: 7, Errors: 3, Failures: 3, Warnings: 5, Deprecations: 5, Notices: 5, Skipped: 3, Incomplete: 3, Risky: 4.
+Tests: 17, Assertions: 7, Errors: 3, Failures: 3, Warnings: 5, Deprecations: 5, Notices: 5, Skipped: 3, Incomplete: 3, Risky: 1.

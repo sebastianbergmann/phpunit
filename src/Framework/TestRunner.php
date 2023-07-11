@@ -194,7 +194,8 @@ final class TestRunner
 
         ErrorHandler::instance()->disable();
 
-        if (!$incomplete &&
+        if (!$error &&
+            !$incomplete &&
             !$skipped &&
             $this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&

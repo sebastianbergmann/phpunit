@@ -37,8 +37,6 @@ Before Test Method Called (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::setUp
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInSetUpTest::setUp
 Test Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
-Test Considered Risky (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
-This test did not perform any assertions
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInSetUpTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
