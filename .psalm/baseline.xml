@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.12.0@f90118cdeacd0088e7215e64c0c99ceca819e176">
+<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -156,6 +156,11 @@
     <InvalidArgument>
       <code>bool</code>
     </InvalidArgument>
+  </file>
+  <file src="src/Framework/Constraint/Traversable/TraversableContainsOnly.php">
+    <ArgumentTypeCoercion>
+      <code>$type</code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>
