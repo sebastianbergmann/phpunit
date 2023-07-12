@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use function assert;
+use function file;
+use function is_file;
+use function sha1;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -69,9 +73,10 @@ final class Generator
         }
 
         $this->baseline->add(
-            Issue::fromFileAndLine(
-                $event->file(),
+            Issue::from(
+                $this->relativePathFromBaseline($event->file()),
                 $event->line(),
+                $this->hash($event->file(), $event->line()),
                 $event->message(),
             ),
         );
@@ -92,9 +97,10 @@ final class Generator
         }
 
         $this->baseline->add(
-            Issue::fromFileAndLine(
-                $event->file(),
+            Issue::from(
+                $this->relativePathFromBaseline($event->file()),
                 $event->line(),
+                $this->hash($event->file(), $event->line()),
                 $event->message(),
             ),
         );
@@ -115,9 +121,10 @@ final class Generator
         }
 
         $this->baseline->add(
-            Issue::fromFileAndLine(
-                $event->file(),
+            Issue::from(
+                $this->relativePathFromBaseline($event->file()),
                 $event->line(),
+                $this->hash($event->file(), $event->line()),
                 $event->message(),
             ),
         );
@@ -138,9 +145,10 @@ final class Generator
         }
 
         $this->baseline->add(
-            Issue::fromFileAndLine(
-                $event->file(),
+            Issue::from(
+                $this->relativePathFromBaseline($event->file()),
                 $event->line(),
+                $this->hash($event->file(), $event->line()),
                 $event->message(),
             ),
         );
@@ -161,9 +169,10 @@ final class Generator
         }
 
         $this->baseline->add(
-            Issue::fromFileAndLine(
-                $event->file(),
+            Issue::from(
+                $this->relativePathFromBaseline($event->file()),
                 $event->line(),
+                $this->hash($event->file(), $event->line()),
                 $event->message(),
             ),
         );
@@ -184,11 +193,53 @@ final class Generator
         }
 
         $this->baseline->add(
-            Issue::fromFileAndLine(
-                $event->file(),
+            Issue::from(
+                $this->relativePathFromBaseline($event->file()),
                 $event->line(),
+                $this->hash($event->file(), $event->line()),
                 $event->message(),
             ),
         );
+    }
+
+    /**
+     * @psalm-param non-empty-string $file
+     *
+     * @psalm-return non-empty-string
+     *
+     * @todo Actually implement this method
+     */
+    private function relativePathFromBaseline(string $file): string
+    {
+        return $file;
+    }
+
+    /**
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @psalm-return non-empty-string
+     *
+     * @throws FileDoesNotExistException
+     * @throws FileDoesNotHaveLineException
+     */
+    private function hash(string $file, int $line): string
+    {
+        if (!is_file($file)) {
+            throw new FileDoesNotExistException($file);
+        }
+
+        $lines = file($file, FILE_IGNORE_NEW_LINES);
+        $key   = $line - 1;
+
+        if (!isset($lines[$key])) {
+            throw new FileDoesNotHaveLineException($file, $line);
+        }
+
+        $hash = sha1($lines[$key]);
+
+        assert(!empty($hash));
+
+        return $hash;
     }
 }

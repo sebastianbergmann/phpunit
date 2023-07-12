@@ -9,12 +9,6 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
-use function assert;
-use function file;
-use function is_file;
-use function sha1;
-use PHPUnit\Runner\FileDoesNotExistException;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -39,34 +33,6 @@ final class Issue
      * @psalm-var non-empty-string
      */
     private readonly string $description;
-
-    /**
-     * @psalm-param non-empty-string $file
-     * @psalm-param positive-int $line
-     * @psalm-param non-empty-string $description
-     *
-     * @throws FileDoesNotExistException
-     * @throws FileDoesNotHaveLineException
-     */
-    public static function fromFileAndLine(string $file, int $line, string $description): self
-    {
-        if (!is_file($file)) {
-            throw new FileDoesNotExistException($file);
-        }
-
-        $lines = file($file, FILE_IGNORE_NEW_LINES);
-        $key   = $line - 1;
-
-        if (!isset($lines[$key])) {
-            throw new FileDoesNotHaveLineException($file, $line);
-        }
-
-        $hash = sha1($lines[$key]);
-
-        assert(!empty($hash));
-
-        return self::from($file, $line, $hash, $description);
-    }
 
     /**
      * @psalm-param non-empty-string $file
