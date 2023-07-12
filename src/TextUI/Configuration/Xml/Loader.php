@@ -104,17 +104,19 @@ final class Loader
             );
         }
 
+        $configurationFileRealpath = realpath($filename);
+
         return new LoadedFromFileConfiguration(
-            realpath($filename),
+            $configurationFileRealpath,
             (new Validator)->validate($document, $xsdFilename),
             $this->extensions($xpath),
-            $this->source($filename, $xpath),
-            $this->codeCoverage($filename, $xpath),
+            $this->source($configurationFileRealpath, $xpath),
+            $this->codeCoverage($configurationFileRealpath, $xpath),
             $this->groups($xpath),
-            $this->logging($filename, $xpath),
-            $this->php($filename, $xpath),
-            $this->phpunit($filename, $document),
-            $this->testSuite($filename, $xpath),
+            $this->logging($configurationFileRealpath, $xpath),
+            $this->php($configurationFileRealpath, $xpath),
+            $this->phpunit($configurationFileRealpath, $document),
+            $this->testSuite($configurationFileRealpath, $xpath),
         );
     }
 
