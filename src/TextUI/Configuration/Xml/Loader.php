@@ -15,13 +15,11 @@ use function assert;
 use function defined;
 use function dirname;
 use function explode;
-use function is_file;
 use function is_numeric;
 use function preg_match;
 use function realpath;
 use function str_contains;
 use function str_starts_with;
-use function stream_resolve_include_path;
 use function strlen;
 use function strtolower;
 use function substr;
@@ -210,7 +208,7 @@ final class Loader
         return ExtensionBootstrapCollection::fromArray($extensionBootstrappers);
     }
 
-    private function toAbsolutePath(string $filename, string $path, bool $useIncludePath = false): string
+    private function toAbsolutePath(string $filename, string $path): string
     {
         $path = trim($path);
 
@@ -235,17 +233,7 @@ final class Loader
             return $path;
         }
 
-        $file = dirname($filename) . DIRECTORY_SEPARATOR . $path;
-
-        if ($useIncludePath && !is_file($file)) {
-            $includePathFile = stream_resolve_include_path($path);
-
-            if ($includePathFile) {
-                $file = $includePathFile;
-            }
-        }
-
-        return $file;
+        return dirname($filename) . DIRECTORY_SEPARATOR . $path;
     }
 
     private function source(string $filename, DOMXPath $xpath): Source
