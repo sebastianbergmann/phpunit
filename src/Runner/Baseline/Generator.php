@@ -9,10 +9,20 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use function array_shift;
 use function assert;
+use function count;
+use function dirname;
+use function explode;
 use function file;
+use function implode;
 use function is_file;
+use function min;
+use function range;
 use function sha1;
+use function str_repeat;
+use function str_replace;
+use function str_starts_with;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -206,12 +216,40 @@ final class Generator
      * @psalm-param non-empty-string $file
      *
      * @psalm-return non-empty-string
-     *
-     * @todo Actually implement this method
      */
     private function relativePathFromBaseline(string $file): string
     {
-        return $file;
+        /** @psalm-suppress MissingThrowsDocblock */
+        $baselineDirectory = dirname($this->source->baseline());
+
+        if (str_starts_with($file, $baselineDirectory . DIRECTORY_SEPARATOR)) {
+            $result = str_replace($baselineDirectory . DIRECTORY_SEPARATOR, '', $file);
+
+            assert(!empty($result));
+
+            return $result;
+        }
+
+        $from   = explode(DIRECTORY_SEPARATOR, $baselineDirectory);
+        $to     = explode(DIRECTORY_SEPARATOR, $file);
+        $common = 0;
+
+        foreach (range(1, min(count($from), count($to))) as $i) {
+            if ($from[0] === $to[0]) {
+                array_shift($from);
+                array_shift($to);
+
+                $common++;
+            }
+        }
+
+        assert($common > 0);
+
+        $result = str_repeat('..' . DIRECTORY_SEPARATOR, count($from)) . implode(DIRECTORY_SEPARATOR, $to);
+
+        assert(!empty($result));
+
+        return $result;
     }
 
     /**
