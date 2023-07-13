@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\UnknownTraitException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
@@ -29,5 +30,13 @@ final class GetMockForTraitTest extends TestCase
         $mock->method('abstractMethod')->willReturn(true);
 
         $this->assertTrue($mock->concreteMethod());
+    }
+
+    public function testCannotCreateMockObjectForTraitThatDoesNotExist(): void
+    {
+        $this->expectException(UnknownTraitException::class);
+        $this->expectExceptionMessage('Trait "TraitThatDoesNotExist" does not exist');
+
+        $this->getMockForTrait('TraitThatDoesNotExist');
     }
 }

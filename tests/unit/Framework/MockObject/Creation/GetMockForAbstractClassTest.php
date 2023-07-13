@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\UnknownClassException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AbstractClass;
 use ReflectionProperty;
@@ -32,6 +33,14 @@ final class GetMockForAbstractClassTest extends TestCase
         $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
         $this->assertTrue($mock->doSomething());
+    }
+
+    public function testCannotCreateMockObjectForAbstractClassThatDoesNotExist(): void
+    {
+        $this->expectException(UnknownClassException::class);
+        $this->expectExceptionMessage('Class "DoesNotExist" does not exist');
+
+        $this->getMockForAbstractClass('DoesNotExist');
     }
 
     public function testCreatesMockObjectForAbstractClassAndDoesNotAllowConfigurationOfConcreteMethods(): void
