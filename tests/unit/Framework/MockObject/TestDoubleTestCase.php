@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use Exception;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
@@ -182,6 +183,25 @@ abstract class TestDoubleTestCase extends TestCase
         }
 
         $this->fail();
+    }
+
+    #[TestDox('Original __clone() method is not called by default when test double object is cloned')]
+    public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
+    {
+        $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
+
+        $this->assertFalse($double->method());
+    }
+
+    #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
+    public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
+    {
+        $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
+
+        clone $double;
     }
 
     /**
