@@ -231,17 +231,8 @@ final class Generator
     {
         if (class_exists($originalClassName, $callAutoload) ||
             interface_exists($originalClassName, $callAutoload)) {
-            try {
-                $reflector = new ReflectionClass($originalClassName);
-            } catch (\ReflectionException $e) {
-                throw new ReflectionException(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e,
-                );
-            }
-
-            $methods = $mockedMethods;
+            $reflector = $this->reflectClass($originalClassName);
+            $methods   = $mockedMethods;
 
             foreach ($reflector->getMethods() as $method) {
                 if ($method->isAbstract() && !in_array($method->getName(), $methods ?? [], true)) {
@@ -503,16 +494,7 @@ final class Generator
      */
     public function getClassMethods(string $className): array
     {
-        try {
-            $class = new ReflectionClass($className);
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
-            );
-        }
-
+        $class   = $this->reflectClass($className);
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
@@ -531,16 +513,7 @@ final class Generator
      */
     public function mockClassMethods(string $className, bool $callOriginalMethods, bool $cloneArguments): array
     {
-        try {
-            $class = new ReflectionClass($className);
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
-            );
-        }
-
+        $class   = $this->reflectClass($className);
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
@@ -559,16 +532,7 @@ final class Generator
      */
     public function mockInterfaceMethods(string $interfaceName, bool $cloneArguments): array
     {
-        try {
-            $class = new ReflectionClass($interfaceName);
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
-            );
-        }
-
+        $class   = $this->reflectClass($interfaceName);
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
@@ -587,17 +551,8 @@ final class Generator
      */
     private function userDefinedInterfaceMethods(string $interfaceName): array
     {
-        try {
-            $interface = new ReflectionClass($interfaceName);
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
-            );
-        }
-
-        $methods = [];
+        $interface = $this->reflectClass($interfaceName);
+        $methods   = [];
 
         foreach ($interface->getMethods() as $method) {
             if (!$method->isUserDefined()) {
@@ -673,15 +628,7 @@ final class Generator
 
             $mockedCloneMethod = true;
         } else {
-            try {
-                $class = new ReflectionClass($_mockClassName['fullClassName']);
-            } catch (\ReflectionException $e) {
-                throw new ReflectionException(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e,
-                );
-            }
+            $class = $this->reflectClass($_mockClassName['fullClassName']);
 
             if ($class->isEnum()) {
                 throw new ClassIsEnumerationException($_mockClassName['fullClassName']);
@@ -700,16 +647,7 @@ final class Generator
                 $actualClassName        = Exception::class;
                 $additionalInterfaces[] = $class->getName();
                 $isInterface            = false;
-
-                try {
-                    $class = new ReflectionClass($actualClassName);
-                } catch (\ReflectionException $e) {
-                    throw new ReflectionException(
-                        $e->getMessage(),
-                        $e->getCode(),
-                        $e,
-                    );
-                }
+                $class                  = $this->reflectClass($actualClassName);
 
                 foreach ($this->userDefinedInterfaceMethods($_mockClassName['fullClassName']) as $method) {
                     $methodName = $method->getName();
@@ -973,15 +911,7 @@ final class Generator
     private function ensureMockedClassDoesNotAlreadyExist(string $mockClassName): void
     {
         if ($mockClassName !== '' && class_exists($mockClassName, false)) {
-            try {
-                $reflector = new ReflectionClass($mockClassName);
-            } catch (\ReflectionException $e) {
-                throw new ReflectionException(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e,
-                );
-            }
+            $reflector = $this->reflectClass($mockClassName);
 
             if (!$reflector->implementsInterface(MockObject::class)) {
                 throw new ClassAlreadyExistsException($mockClassName);
@@ -1051,5 +981,25 @@ final class Generator
         }
 
         $object->__phpunit_setOriginalObject($proxyTarget);
+    }
+
+    /**
+     * @psalm-param class-string $className
+     *
+     * @throws ReflectionException
+     */
+    private function reflectClass(string $className): ReflectionClass
+    {
+        try {
+            $class = new ReflectionClass($className);
+        } catch (\ReflectionException $e) {
+            throw new ReflectionException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
+        }
+
+        return $class;
     }
 }
