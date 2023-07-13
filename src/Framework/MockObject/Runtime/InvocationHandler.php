@@ -135,17 +135,6 @@ final class InvocationHandler
         return $invocation->generateReturnValue();
     }
 
-    public function matches(Invocation $invocation): bool
-    {
-        foreach ($this->matchers as $matcher) {
-            if (!$matcher->matches($invocation)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * @throws Throwable
      */
