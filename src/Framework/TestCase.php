@@ -161,9 +161,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var array<string,string>
      */
-    private array $iniSettings                  = [];
-    private array $locale                       = [];
-    private ?MockGenerator $mockObjectGenerator = null;
+    private array $iniSettings = [];
+    private array $locale      = [];
 
     /**
      * @psalm-var list<MockObjectInternal>
@@ -1170,66 +1169,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Creates a test stub for the specified interface or class.
-     *
-     * @psalm-template RealInstanceType of object
-     *
-     * @psalm-param class-string<RealInstanceType> $originalClassName
-     *
-     * @psalm-return Stub&RealInstanceType
-     *
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     */
-    protected function createStub(string $originalClassName): Stub
-    {
-        $stub = $this->createTestDouble($originalClassName, false);
-
-        Event\Facade::emitter()->testCreatedStub($originalClassName);
-
-        return $stub;
-    }
-
-    /**
-     * @psalm-param list<class-string> $interfaces
-     *
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
-    protected function createStubForIntersectionOfInterfaces(array $interfaces): Stub
-    {
-        $stub = $this->mockObjectGenerator()->getMockForInterfaces($interfaces);
-
-        Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
-
-        return $stub;
-    }
-
-    /**
-     * Creates (and configures) a test stub for the specified interface or class.
-     *
-     * @psalm-template RealInstanceType of object
-     *
-     * @psalm-param class-string<RealInstanceType> $originalClassName
-     *
-     * @psalm-return Stub&RealInstanceType
-     *
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     */
-    final protected function createConfiguredStub(string $originalClassName, array $configuration): Stub
-    {
-        $o = $this->createStub($originalClassName);
-
-        foreach ($configuration as $method => $return) {
-            $o->method($method)->willReturn($return);
-        }
-
-        return $o;
-    }
-
-    /**
      * Creates a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
@@ -1244,7 +1183,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMock(string $originalClassName): MockObject
     {
-        $mock = $this->createTestDouble($originalClassName);
+        $mock = (new MockGenerator)->getMock(
+            $originalClassName,
+            callOriginalConstructor: false,
+            callOriginalClone: false,
+            cloneArguments: false,
+            allowMockingUnknownTypes: false,
+        );
+
+        $this->registerMockObject($mock);
 
         Event\Facade::emitter()->testCreatedMockObject($originalClassName);
 
@@ -1258,7 +1205,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
     {
-        $mock = $this->mockObjectGenerator()->getMockForInterfaces($interfaces);
+        $mock = (new MockGenerator)->getMockForInterfaces($interfaces);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
 
@@ -1368,7 +1315,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $mockObject = $this->mockObjectGenerator()->getMockForAbstractClass(
+        $mockObject = (new MockGenerator)->getMockForAbstractClass(
             $originalClassName,
             $arguments,
             $mockClassName,
@@ -1408,7 +1355,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (!class_exists($originalClassName)) {
             eval(
-                $this->mockObjectGenerator()->generateClassFromWsdl(
+                (new MockGenerator)->generateClassFromWsdl(
                     $wsdlFile,
                     $originalClassName,
                     $methods,
@@ -1417,7 +1364,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        $mockObject = $this->mockObjectGenerator()->getMock(
+        $mockObject = (new MockGenerator)->getMock(
             $originalClassName,
             $methods,
             ['', $options],
@@ -1455,7 +1402,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $mockObject = $this->mockObjectGenerator()->getMockForTrait(
+        $mockObject = (new MockGenerator)->getMockForTrait(
             $traitName,
             $arguments,
             $mockClassName,
@@ -1484,7 +1431,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
-        return $this->mockObjectGenerator()->getObjectForTrait(
+        return (new MockGenerator)->getObjectForTrait(
             $traitName,
             $traitClassName,
             $callAutoload,
@@ -1658,15 +1605,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         $this->status = TestStatus::skipped($message);
-    }
-
-    private function mockObjectGenerator(): MockGenerator
-    {
-        if ($this->mockObjectGenerator === null) {
-            $this->mockObjectGenerator = new MockGenerator;
-        }
-
-        return $this->mockObjectGenerator;
     }
 
     private function startOutputBuffering(): void
@@ -1991,34 +1929,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @psalm-template RealInstanceType of object
-     *
-     * @psalm-param class-string<RealInstanceType> $originalClassName
-     *
-     * @psalm-return MockObject&RealInstanceType
-     *
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     */
-    private function createTestDouble(string $originalClassName, bool $register = true): MockObject
-    {
-        $testDouble = $this->mockObjectGenerator()->getMock(
-            $originalClassName,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            cloneArguments: false,
-            allowMockingUnknownTypes: false,
-        );
-
-        if ($register) {
-            $this->registerMockObject($testDouble);
-        }
-
-        return $testDouble;
-    }
-
-    /**
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws MoreThanOneDataSetFromDataProviderException
@@ -2272,5 +2182,71 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return false;
+    }
+
+    /**
+     * Creates a test stub for the specified interface or class.
+     *
+     * @psalm-template RealInstanceType of object
+     *
+     * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
+     * @psalm-return Stub&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     */
+    protected static function createStub(string $originalClassName): Stub
+    {
+        $stub = (new MockGenerator)->getMock(
+            $originalClassName,
+            callOriginalConstructor: false,
+            callOriginalClone: false,
+            cloneArguments: false,
+            allowMockingUnknownTypes: false,
+        );
+
+        Event\Facade::emitter()->testCreatedStub($originalClassName);
+
+        return $stub;
+    }
+
+    /**
+     * @psalm-param list<class-string> $interfaces
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
+    protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
+    {
+        $stub = (new MockGenerator)->getMockForInterfaces($interfaces);
+
+        Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
+
+        return $stub;
+    }
+
+    /**
+     * Creates (and configures) a test stub for the specified interface or class.
+     *
+     * @psalm-template RealInstanceType of object
+     *
+     * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
+     * @psalm-return Stub&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     */
+    final protected static function createConfiguredStub(string $originalClassName, array $configuration): Stub
+    {
+        $o = self::createStub($originalClassName);
+
+        foreach ($configuration as $method => $return) {
+            $o->method($method)->willReturn($return);
+        }
+
+        return $o;
     }
 }
