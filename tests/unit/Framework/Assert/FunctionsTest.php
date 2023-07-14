@@ -14,8 +14,10 @@ use function file_get_contents;
 use function preg_match_all;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversNothing]
+#[TestDox('Global Assertion Functions')]
 final class FunctionsTest extends TestCase
 {
     private static array $globalAssertionFunctions = [];
@@ -56,6 +58,7 @@ final class FunctionsTest extends TestCase
     }
 
     #[DataProvider('provideStaticAssertionMethodNames')]
+    #[TestDox('PHPUnit\Framework\Assert::$methodName() is available as global function $methodName()')]
     public function testGlobalFunctionsFileContainsAllStaticAssertions(string $methodName): void
     {
         Assert::assertContains(
