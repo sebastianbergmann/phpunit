@@ -23,6 +23,7 @@ use function json_encode;
 use function log;
 use function mkdir;
 use function octdec;
+use function PHPUnit\TestFixture\Generator\f;
 use function rmdir;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -49,6 +50,7 @@ use SplObjectStorage;
 use stdClass;
 
 #[CoversClass(Assert::class)]
+#[CoversClass(GeneratorNotSupportedException::class)]
 #[Small]
 final class AssertTest extends TestCase
 {
@@ -1240,6 +1242,16 @@ XML;
         $this->assertEmpty(['foo']);
     }
 
+    public function testAssertEmptyGenerator(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $actual parameter is not supported');
+
+        $this->assertEmpty($generator);
+    }
+
     public function testAssertNotEmpty(): void
     {
         $this->assertNotEmpty(['foo']);
@@ -1247,6 +1259,16 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotEmpty([]);
+    }
+
+    public function testAssertNotEmptyGenerator(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $actual parameter is not supported');
+
+        $this->assertNotEmpty($generator);
     }
 
     public function testMarkTestIncomplete(): void
@@ -1284,6 +1306,16 @@ XML;
         $this->assertCount(2, [1, 2, 3]);
     }
 
+    public function testAssertCountGenerator(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $haystack parameter is not supported');
+
+        $this->assertCount(0, $generator);
+    }
+
     public function testAssertCountTraversable(): void
     {
         $this->assertCount(2, new ArrayIterator([1, 2]));
@@ -1302,6 +1334,16 @@ XML;
         $this->assertNotCount(2, [1, 2]);
     }
 
+    public function testAssertNotCountGenerator(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $haystack parameter is not supported');
+
+        $this->assertNotCount(0, $generator);
+    }
+
     public function testAssertSameSize(): void
     {
         $this->assertSameSize([1, 2], [3, 4]);
@@ -1311,6 +1353,26 @@ XML;
         $this->assertSameSize([1, 2], [1, 2, 3]);
     }
 
+    public function testAssertSameSizeGenerator(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $expected parameter is not supported');
+
+        $this->assertSameSize($generator, []);
+    }
+
+    public function testAssertSameSizeGenerator2(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $actual parameter is not supported');
+
+        $this->assertSameSize([], $generator);
+    }
+
     public function testAssertNotSameSize(): void
     {
         $this->assertNotSameSize([1, 2], [1, 2, 3]);
@@ -1318,6 +1380,26 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotSameSize([1, 2], [3, 4]);
+    }
+
+    public function testAssertNotSameSizeGenerator(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $expected parameter is not supported');
+
+        $this->assertNotSameSize($generator, []);
+    }
+
+    public function testAssertNotSameSizeGenerator2(): void
+    {
+        $generator = f();
+
+        $this->expectException(GeneratorNotSupportedException::class);
+        $this->expectExceptionMessage('Passing an argument of type Generator for the $actual parameter is not supported');
+
+        $this->assertNotSameSize([], $generator);
     }
 
     public function testAssertJson(): void
