@@ -21,6 +21,7 @@ use Throwable;
 
 #[CoversClass(IsInstanceOf::class)]
 #[CoversClass(Constraint::class)]
+#[CoversClass(UnknownClassOrInterfaceException::class)]
 #[Small]
 final class IsInstanceOfTest extends TestCase
 {

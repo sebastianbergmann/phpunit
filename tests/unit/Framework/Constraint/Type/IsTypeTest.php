@@ -21,6 +21,7 @@ use stdClass;
 
 #[CoversClass(IsType::class)]
 #[CoversClass(Constraint::class)]
+#[CoversClass(UnknownTypeException::class)]
 #[Small]
 final class IsTypeTest extends TestCase
 {
