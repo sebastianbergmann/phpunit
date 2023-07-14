@@ -23,7 +23,6 @@ use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -229,11 +228,6 @@ final class ProgressPrinter
         }
     }
 
-    public function testPrintedOutput(PrintedUnexpectedOutput $event): void
-    {
-        $this->printer->print($event->output());
-    }
-
     public function testFinished(): void
     {
         if ($this->status === null) {
@@ -284,7 +278,6 @@ final class ProgressPrinter
             new TestTriggeredPhpunitWarningSubscriber($this),
             new TestTriggeredPhpWarningSubscriber($this),
             new TestTriggeredWarningSubscriber($this),
-            new TestPrintedUnexpectedOutputSubscriber($this),
         );
     }
 
