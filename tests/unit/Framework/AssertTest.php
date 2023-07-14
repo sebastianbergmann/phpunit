@@ -52,7 +52,7 @@ use stdClass;
 #[Small]
 final class AssertTest extends TestCase
 {
-    public static function validInvalidJsonDataprovider(): array
+    public static function validInvalidJsonProvider(): array
     {
         return [
             'error syntax in expected JSON' => ['{"Mascott"::}', '{"Mascott" : "Tux"}'],
@@ -1334,7 +1334,7 @@ XML;
         $this->assertJsonStringEqualsJsonString($expected, $actual, $message);
     }
 
-    #[DataProvider('validInvalidJsonDataprovider')]
+    #[DataProvider('validInvalidJsonProvider')]
     public function testAssertJsonStringEqualsJsonStringErrorRaised(string $expected, string $actual): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -1351,7 +1351,7 @@ XML;
         $this->assertJsonStringNotEqualsJsonString($expected, $actual, $message);
     }
 
-    #[DataProvider('validInvalidJsonDataprovider')]
+    #[DataProvider('validInvalidJsonProvider')]
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised(string $expected, string $actual): void
     {
         $this->expectException(AssertionFailedError::class);
