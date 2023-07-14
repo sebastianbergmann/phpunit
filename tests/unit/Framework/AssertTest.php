@@ -220,7 +220,7 @@ final class AssertTest extends TestCase
         $this->assertArrayNotHasKey('bar', $array);
     }
 
-    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue(): void
+    public function testAssertArrayNotHasKeyProperlyFailsWithArrayAccessValue(): void
     {
         $array        = new ArrayObject;
         $array['bar'] = 'bar';
