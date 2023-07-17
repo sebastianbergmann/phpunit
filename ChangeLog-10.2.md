@@ -4,6 +4,8 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 
 ## [10.2.6] - 2023-07-17
 
+### Changed
+
 * [#5445](https://github.com/sebastianbergmann/phpunit/issues/5445): Decouple printing of unexpected output from progress printer
 
 ## [10.2.5] - 2023-07-14
