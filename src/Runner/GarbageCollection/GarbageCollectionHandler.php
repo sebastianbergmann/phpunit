@@ -21,6 +21,7 @@ use PHPUnit\Event\UnknownSubscriberTypeException;
  */
 final class GarbageCollectionHandler
 {
+    private readonly Facade $facade;
     private readonly int $threshold;
     private int $tests = 0;
 
@@ -30,21 +31,32 @@ final class GarbageCollectionHandler
      */
     public function __construct(Facade $facade, int $threshold)
     {
+        $this->facade    = $facade;
         $this->threshold = $threshold;
 
-        $this->registerSubscribers($facade);
+        $this->registerSubscribers();
     }
 
     public function executionStarted(): void
     {
         gc_disable();
+
+        $this->facade->emitter()->testRunnerDisabledGarbageCollection();
+
         gc_collect_cycles();
+
+        $this->facade->emitter()->testRunnerTriggeredGarbageCollection();
     }
 
     public function executionFinished(): void
     {
         gc_collect_cycles();
+
+        $this->facade->emitter()->testRunnerTriggeredGarbageCollection();
+
         gc_enable();
+
+        $this->facade->emitter()->testRunnerEnabledGarbageCollection();
     }
 
     public function testFinished(): void
@@ -54,6 +66,8 @@ final class GarbageCollectionHandler
         if ($this->tests === $this->threshold) {
             gc_collect_cycles();
 
+            $this->facade->emitter()->testRunnerTriggeredGarbageCollection();
+
             $this->tests = 0;
         }
     }
@@ -62,9 +76,9 @@ final class GarbageCollectionHandler
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    private function registerSubscribers(Facade $facade): void
+    private function registerSubscribers(): void
     {
-        $facade->registerSubscribers(
+        $this->facade->registerSubscribers(
             new ExecutionStartedSubscriber($this),
             new ExecutionFinishedSubscriber($this),
             new TestFinishedSubscriber($this),

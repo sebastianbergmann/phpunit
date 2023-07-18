@@ -230,6 +230,9 @@ final class Facade
             TestRunner\Started::class,
             TestRunner\DeprecationTriggered::class,
             TestRunner\WarningTriggered::class,
+            TestRunner\GarbageCollectionDisabled::class,
+            TestRunner\GarbageCollectionTriggered::class,
+            TestRunner\GarbageCollectionEnabled::class,
 
             TestSuite\Filtered::class,
             TestSuite\Finished::class,
