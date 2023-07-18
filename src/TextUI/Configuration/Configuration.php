@@ -237,7 +237,6 @@ final class Configuration
         $this->php                                             = $php;
         $this->controlGarbageCollector                         = $controlGarbageCollector;
         $this->numberOfTestsBeforeGarbageCollection            = $numberOfTestsBeforeGarbageCollection;
-
     }
 
     /**
