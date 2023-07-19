@@ -1,0 +1,13 @@
+1 test triggered 2 PHP deprecations:
+
+1) FooTest::testBar
+* message
+  Foo.php:1
+
+* message
+  Foo.php:1
+
+FooTest.php:1
+
+OK, but there are issues!
+Tests: 1, Assertions: 1, Deprecations: 1.

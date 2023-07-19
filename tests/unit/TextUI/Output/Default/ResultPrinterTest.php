@@ -225,6 +225,32 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
+            'successful test that triggers the same PHP deprecation multiple times' => [
+                __DIR__ . '/expectations/successful_test_with_php_deprecation_multiple.txt',
+                self::createTestResult(
+                    testTriggeredPhpDeprecationEvents: [
+                        'Foo::testBar' => [
+                            new PhpDeprecationTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                                'Foo.php',
+                                1,
+                                false,
+                            ),
+                            new PhpDeprecationTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                                'Foo.php',
+                                1,
+                                false,
+                            ),
+                        ],
+                    ],
+                ),
+            ],
+
             'successful test that triggers PHPUnit deprecation' => [
                 __DIR__ . '/expectations/successful_test_with_phpunit_deprecation.txt',
                 self::createTestResult(
