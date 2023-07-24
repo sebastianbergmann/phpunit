@@ -16,11 +16,6 @@ namespace PHPUnit\Event\Code;
  */
 final class Phpt extends Test
 {
-    public function __construct(string $file)
-    {
-        parent::__construct($file);
-    }
-
     /**
      * @psalm-assert-if-true Phpt $this
      */
