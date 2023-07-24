@@ -24,11 +24,17 @@ final class Phpt extends Test
         return true;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function id(): string
     {
         return $this->file();
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function name(): string
     {
         return $this->file();

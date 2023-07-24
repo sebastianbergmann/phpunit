@@ -70,12 +70,17 @@ use Throwable;
  */
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $filename;
     private readonly AbstractPhpProcess $phpUtil;
     private string $output = '';
 
     /**
      * Constructs a test case with the given filename.
+     *
+     * @psalm-param non-empty-string $filename
      *
      * @throws Exception
      */

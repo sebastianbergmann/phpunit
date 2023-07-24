@@ -32,6 +32,10 @@ final class TestMethod extends Test
      * @psalm-var non-empty-string
      */
     private readonly string $methodName;
+
+    /**
+     * @psalm-var non-negative-int
+     */
     private readonly int $line;
     private readonly TestDox $testDox;
     private readonly MetadataCollection $metadata;
@@ -40,6 +44,8 @@ final class TestMethod extends Test
     /**
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
+     * @psalm-param non-empty-string $file
+     * @psalm-param non-negative-int $line
      */
     public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData)
     {
@@ -69,6 +75,9 @@ final class TestMethod extends Test
         return $this->methodName;
     }
 
+    /**
+     * @psalm-return non-negative-int
+     */
     public function line(): int
     {
         return $this->line;
@@ -98,6 +107,8 @@ final class TestMethod extends Test
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @throws NoDataSetFromDataProviderException
      */
     public function id(): string
@@ -112,6 +123,8 @@ final class TestMethod extends Test
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @throws NoDataSetFromDataProviderException
      */
     public function nameWithClass(): string
@@ -120,6 +133,8 @@ final class TestMethod extends Test
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @throws NoDataSetFromDataProviderException
      */
     public function name(): string

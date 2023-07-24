@@ -27,7 +27,7 @@ final class Reflection
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
-     * @psalm-return array{file: string, line: int}
+     * @psalm-return array{file: non-empty-string, line: non-negative-int}
      */
     public static function sourceLocationFor(string $className, string $methodName): array
     {
