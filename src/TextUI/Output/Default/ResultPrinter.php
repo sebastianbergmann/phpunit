@@ -126,7 +126,7 @@ final class ResultPrinter
         }
 
         if ($this->displayDetailsOnTestsThatTriggerErrors) {
-            $this->printDetailsOnTestsThatTriggerErrors($result);
+            $this->printIssueList('error', $result->errors());
         }
 
         if ($this->displayDetailsOnTestsThatTriggerWarnings) {

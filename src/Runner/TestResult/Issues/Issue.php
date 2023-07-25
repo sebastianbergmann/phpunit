@@ -41,6 +41,16 @@ abstract class Issue
      * @psalm-param positive-int $line
      * @psalm-param non-empty-string $description
      */
+    final public static function error(string $file, int $line, string $description, Test $triggeringTest): Error
+    {
+        return new Error($file, $line, $description, $triggeringTest);
+    }
+
+    /**
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     * @psalm-param non-empty-string $description
+     */
     final public static function deprecation(string $file, int $line, string $description, Test $triggeringTest): Deprecation
     {
         return new Deprecation($file, $line, $description, $triggeringTest);
@@ -159,6 +169,14 @@ abstract class Issue
     public function triggeringTests(): array
     {
         return $this->triggeringTests;
+    }
+
+    /**
+     * @psalm-assert-if-true Error $this
+     */
+    public function isError(): bool
+    {
+        return false;
     }
 
     /**

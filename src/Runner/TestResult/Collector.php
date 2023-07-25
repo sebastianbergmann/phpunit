@@ -44,6 +44,7 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TestRunner\TestResult\Issues\Deprecation;
+use PHPUnit\TestRunner\TestResult\Issues\Error;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\Issues\Notice;
 use PHPUnit\TestRunner\TestResult\Issues\PhpDeprecation;
@@ -124,6 +125,11 @@ final class Collector
      * @psalm-var list<TestRunnerDeprecationTriggered>
      */
     private array $testRunnerTriggeredDeprecationEvents = [];
+
+    /**
+     * @psalm-var array<non-empty-string, Error>
+     */
+    private array $errors = [];
 
     /**
      * @psalm-var array<non-empty-string, Deprecation>
@@ -209,6 +215,7 @@ final class Collector
             $this->testTriggeredPhpunitWarningEvents,
             $this->testRunnerTriggeredDeprecationEvents,
             $this->testRunnerTriggeredWarningEvents,
+            array_values($this->errors),
             array_values($this->deprecations),
             array_values($this->notices),
             array_values($this->warnings),
@@ -418,6 +425,21 @@ final class Collector
         }
 
         $this->testTriggeredErrorEvents[$event->test()->id()][] = $event;
+
+        $id = $this->issueId($event);
+
+        if (!isset($this->errors[$id])) {
+            $this->errors[$id] = Issue::error(
+                $event->file(),
+                $event->line(),
+                $event->message(),
+                $event->test(),
+            );
+
+            return;
+        }
+
+        $this->errors[$id]->triggeredBy($event->test());
     }
 
     public function testTriggeredNotice(NoticeTriggered $event): void
@@ -602,7 +624,7 @@ final class Collector
     /**
      * @psalm-return non-empty-string
      */
-    private function issueId(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
+    private function issueId(DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
     {
         return implode(':', [$event->file(), $event->line(), $event->message()]);
     }

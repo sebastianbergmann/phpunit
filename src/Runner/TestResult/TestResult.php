@@ -24,6 +24,7 @@ use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTrigge
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\TestRunner\TestResult\Issues\Deprecation;
+use PHPUnit\TestRunner\TestResult\Issues\Error;
 use PHPUnit\TestRunner\TestResult\Issues\Notice;
 use PHPUnit\TestRunner\TestResult\Issues\PhpDeprecation;
 use PHPUnit\TestRunner\TestResult\Issues\PhpNotice;
@@ -100,6 +101,11 @@ final class TestResult
     private readonly array $testRunnerTriggeredWarningEvents;
 
     /**
+     * @psalm-var list<Error>
+     */
+    private readonly array $errors;
+
+    /**
      * @psalm-var list<Deprecation>
      */
     private readonly array $deprecations;
@@ -142,6 +148,7 @@ final class TestResult
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
+     * @psalm-param list<Error> $errors
      * @psalm-param list<Deprecation> $deprecations
      * @psalm-param list<Notice> $notices
      * @psalm-param list<Warning> $warnings
@@ -149,7 +156,7 @@ final class TestResult
      * @psalm-param list<PhpNotice> $phpNotices
      * @psalm-param list<PhpWarning> $phpWarnings
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings)
     {
         $this->numberOfTests                         = $numberOfTests;
         $this->numberOfTestsRun                      = $numberOfTestsRun;
@@ -166,6 +173,7 @@ final class TestResult
         $this->testTriggeredPhpunitWarningEvents     = $testTriggeredPhpunitWarningEvents;
         $this->testRunnerTriggeredDeprecationEvents  = $testRunnerTriggeredDeprecationEvents;
         $this->testRunnerTriggeredWarningEvents      = $testRunnerTriggeredWarningEvents;
+        $this->errors                                = $errors;
         $this->deprecations                          = $deprecations;
         $this->notices                               = $notices;
         $this->warnings                              = $warnings;
@@ -423,9 +431,17 @@ final class TestResult
         return $this->hasRiskyTests() ||
                $this->hasIncompleteTests() ||
                $this->hasDeprecations() ||
-               !empty($this->testErroredEvents) ||
+               !empty($this->errors) ||
                $this->hasNotices() ||
                $this->hasWarnings();
+    }
+
+    /**
+     * @psalm-return list<Error>
+     */
+    public function errors(): array
+    {
+        return $this->errors;
     }
 
     /**

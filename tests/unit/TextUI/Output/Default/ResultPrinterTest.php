@@ -483,12 +483,30 @@ final class ResultPrinterTest extends TestCase
      */
     private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
     {
+        $errors          = [];
         $deprecations    = [];
         $notices         = [];
         $warnings        = [];
         $phpDeprecations = [];
         $phpNotices      = [];
         $phpWarnings     = [];
+
+        foreach ($testTriggeredErrorEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($errors[$id])) {
+                    $errors[$id] = Issue::error(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $errors[$id]->triggeredBy($event->test());
+                }
+            }
+        }
 
         foreach ($testTriggeredDeprecationEvents as $events) {
             foreach ($events as $event) {
@@ -608,6 +626,7 @@ final class ResultPrinterTest extends TestCase
             $testTriggeredPhpunitWarningEvents,
             $testRunnerTriggeredDeprecationEvents,
             $testRunnerTriggeredWarningEvents,
+            $errors,
             $deprecations,
             $notices,
             $warnings,
@@ -678,7 +697,7 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
-    private static function issueId(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
+    private static function issueId(DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
     {
         return implode(':', [$event->file(), $event->line(), $event->message()]);
     }
