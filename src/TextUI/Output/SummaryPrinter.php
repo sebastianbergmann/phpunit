@@ -71,7 +71,7 @@ final class SummaryPrinter
                 );
             }
         } else {
-            if ($result->hasTestErroredEvents()) {
+            if ($result->hasTestErroredEvents() || $result->hasTestTriggeredPhpunitErrorEvents()) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
@@ -105,7 +105,7 @@ final class SummaryPrinter
 
         $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
-        $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfTestsWithTestTriggeredErrorEvents(), 'Errors', $color);
+        $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfTestsWithTestTriggeredErrorEvents() + $result->numberOfTestsWithTestTriggeredPhpunitErrorEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
         $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfDeprecationEvents(), 'Deprecations', $color);
