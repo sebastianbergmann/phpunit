@@ -274,6 +274,24 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
+            'successful test that triggers error' => [
+                __DIR__ . '/expectations/successful_test_with_error.txt',
+                self::createTestResult(
+                    testTriggeredErrorEvents: [
+                        'Foo::testBar' => [
+                            new ErrorTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                                'Foo.php',
+                                1,
+                                false,
+                            ),
+                        ],
+                    ],
+                ),
+            ],
+
             'successful test that triggers notice' => [
                 __DIR__ . '/expectations/successful_test_with_notice.txt',
                 self::createTestResult(
