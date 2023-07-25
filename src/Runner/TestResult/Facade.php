@@ -48,35 +48,35 @@ final class Facade
         $configuration = ConfigurationRegistry::get();
         $collector     = self::collector();
 
-        if (($configuration->stopOnDefect() || $configuration->stopOnError()) && $collector->hasTestErroredEvents()) {
+        if (($configuration->stopOnDefect() || $configuration->stopOnError()) && $collector->hasErroredTests()) {
             return true;
         }
 
-        if (($configuration->stopOnDefect() || $configuration->stopOnFailure()) && $collector->hasTestFailedEvents()) {
+        if (($configuration->stopOnDefect() || $configuration->stopOnFailure()) && $collector->hasFailedTests()) {
             return true;
         }
 
-        if (($configuration->stopOnDefect() || $configuration->stopOnWarning()) && $collector->hasWarningEvents()) {
+        if (($configuration->stopOnDefect() || $configuration->stopOnWarning()) && $collector->hasWarnings()) {
             return true;
         }
 
-        if (($configuration->stopOnDefect() || $configuration->stopOnRisky()) && $collector->hasTestConsideredRiskyEvents()) {
+        if (($configuration->stopOnDefect() || $configuration->stopOnRisky()) && $collector->hasRiskyTests()) {
             return true;
         }
 
-        if ($configuration->stopOnDeprecation() && $collector->hasDeprecationEvents()) {
+        if ($configuration->stopOnDeprecation() && $collector->hasDeprecations()) {
             return true;
         }
 
-        if ($configuration->stopOnNotice() && $collector->hasNoticeEvents()) {
+        if ($configuration->stopOnNotice() && $collector->hasNotices()) {
             return true;
         }
 
-        if ($configuration->stopOnIncomplete() && $collector->hasTestMarkedIncompleteEvents()) {
+        if ($configuration->stopOnIncomplete() && $collector->hasIncompleteTests()) {
             return true;
         }
 
-        if ($configuration->stopOnSkipped() && $collector->hasTestSkippedEvents()) {
+        if ($configuration->stopOnSkipped() && $collector->hasSkippedTests()) {
             return true;
         }
 

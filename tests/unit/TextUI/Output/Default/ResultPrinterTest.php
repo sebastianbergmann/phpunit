@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Output\Default;
 
 use function hrtime;
+use function implode;
 use Exception;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
@@ -47,6 +48,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\Output\SummaryPrinter;
@@ -272,24 +274,6 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers error' => [
-                __DIR__ . '/expectations/successful_test_with_error.txt',
-                self::createTestResult(
-                    testTriggeredErrorEvents: [
-                        'Foo::testBar' => [
-                            new ErrorTriggered(
-                                self::telemetryInfo(),
-                                self::testMethod(),
-                                'message',
-                                'Foo.php',
-                                1,
-                                false,
-                            ),
-                        ],
-                    ],
-                ),
-            ],
-
             'successful test that triggers notice' => [
                 __DIR__ . '/expectations/successful_test_with_notice.txt',
                 self::createTestResult(
@@ -481,6 +465,115 @@ final class ResultPrinterTest extends TestCase
      */
     private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
     {
+        $deprecations    = [];
+        $notices         = [];
+        $warnings        = [];
+        $phpDeprecations = [];
+        $phpNotices      = [];
+        $phpWarnings     = [];
+
+        foreach ($testTriggeredDeprecationEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($deprecations[$id])) {
+                    $deprecations[$id] = Issue::deprecation(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $deprecations[$id]->triggeredBy($event->test());
+                }
+            }
+        }
+
+        foreach ($testTriggeredPhpDeprecationEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($phpDeprecations[$id])) {
+                    $phpDeprecations[$id] = Issue::phpDeprecation(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $phpDeprecations[$id]->triggeredBy($event->test());
+                }
+            }
+        }
+
+        foreach ($testTriggeredNoticeEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($notices[$id])) {
+                    $notices[$id] = Issue::notice(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $notices[$id]->triggeredBy($event->test());
+                }
+            }
+        }
+
+        foreach ($testTriggeredPhpNoticeEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($phpNotices[$id])) {
+                    $phpNotices[$id] = Issue::phpNotice(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $phpNotices[$id]->triggeredBy($event->test());
+                }
+            }
+        }
+
+        foreach ($testTriggeredWarningEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($warnings[$id])) {
+                    $warnings[$id] = Issue::warning(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $warnings[$id]->triggeredBy($event->test());
+                }
+            }
+        }
+
+        foreach ($testTriggeredPhpWarningEvents as $events) {
+            foreach ($events as $event) {
+                $id = self::issueId($event);
+
+                if (!isset($phpWarnings[$id])) {
+                    $phpWarnings[$id] = Issue::phpWarning(
+                        $event->file(),
+                        $event->line(),
+                        $event->message(),
+                        $event->test(),
+                    );
+                } else {
+                    $phpWarnings[$id]->triggeredBy($event->test());
+                }
+            }
+        }
+
         return new TestResult(
             $numberOfTests,
             $numberOfTestsRun,
@@ -491,18 +584,18 @@ final class ResultPrinterTest extends TestCase
             $testSuiteSkippedEvents,
             $testSkippedEvents,
             $testMarkedIncompleteEvents,
-            $testTriggeredDeprecationEvents,
-            $testTriggeredPhpDeprecationEvents,
             $testTriggeredPhpunitDeprecationEvents,
             $testTriggeredErrorEvents,
-            $testTriggeredNoticeEvents,
-            $testTriggeredPhpNoticeEvents,
-            $testTriggeredWarningEvents,
-            $testTriggeredPhpWarningEvents,
             $testTriggeredPhpunitErrorEvents,
             $testTriggeredPhpunitWarningEvents,
             $testRunnerTriggeredDeprecationEvents,
             $testRunnerTriggeredWarningEvents,
+            $deprecations,
+            $notices,
+            $warnings,
+            $phpDeprecations,
+            $phpNotices,
+            $phpWarnings,
         );
     }
 
@@ -565,5 +658,10 @@ final class ResultPrinterTest extends TestCase
             Duration::fromSecondsAndNanoseconds(234, 567),
             MemoryUsage::fromBytes(3000),
         );
+    }
+
+    private static function issueId(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
+    {
+        return implode(':', [$event->file(), $event->line(), $event->message()]);
     }
 }

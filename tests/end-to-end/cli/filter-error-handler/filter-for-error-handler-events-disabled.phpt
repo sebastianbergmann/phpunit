@@ -24,40 +24,49 @@ Time: %s, Memory: %s
 
 1 test triggered 2 warnings:
 
-1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-* warning
-  %s/src/SourceClass.php:23
+1) %s/src/SourceClass.php:23
+warning
 
-* warning
-  %s/vendor/VendorClass.php:10
+Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+%s/tests/SourceClassTest.php:16
 
+2) %s/vendor/VendorClass.php:10
+warning
+
+Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 %s/tests/SourceClassTest.php:16
 
 --
 
 1 test triggered 2 notices:
 
-1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-* notice
-  %s/src/SourceClass.php:22
+1) %s/src/SourceClass.php:22
+notice
 
-* notice
-  %s/vendor/VendorClass.php:9
+Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+%s/tests/SourceClassTest.php:16
 
+2) %s/vendor/VendorClass.php:9
+notice
+
+Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 %s/tests/SourceClassTest.php:16
 
 --
 
 1 test triggered 2 deprecations:
 
-1) PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-* deprecation
-  %s/src/SourceClass.php:21
+1) %s/src/SourceClass.php:21
+deprecation
 
-* deprecation
-  %s/vendor/VendorClass.php:8
+Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+%s/tests/SourceClassTest.php:16
 
+2) %s/vendor/VendorClass.php:8
+deprecation
+
+Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
 %s/tests/SourceClassTest.php:16
 
 OK, but there are issues!
-Tests: 1, Assertions: 1, Warnings: 1, Deprecations: 1, Notices: 1.
+Tests: 1, Assertions: 1, Warnings: 2, Deprecations: 2, Notices: 2.

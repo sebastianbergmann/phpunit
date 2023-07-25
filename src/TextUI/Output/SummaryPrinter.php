@@ -85,17 +85,17 @@ final class SummaryPrinter
                     $color,
                     'FAILURES!',
                 );
-            } elseif ($result->hasWarningEvents()) {
+            } elseif ($result->hasWarnings()) {
                 $this->printWithColor(
                     $color,
                     'WARNINGS!',
                 );
-            } elseif ($result->hasDeprecationEvents()) {
+            } elseif ($result->hasDeprecations()) {
                 $this->printWithColor(
                     $color,
                     'DEPRECATIONS!',
                 );
-            } elseif ($result->hasNoticeEvents()) {
+            } elseif ($result->hasNotices()) {
                 $this->printWithColor(
                     $color,
                     'NOTICES!',
@@ -107,9 +107,9 @@ final class SummaryPrinter
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfTestsWithTestTriggeredErrorEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
-        $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
-        $this->printCountString($result->numberOfDeprecationEvents(), 'Deprecations', $color);
-        $this->printCountString($result->numberOfNoticeEvents(), 'Notices', $color);
+        $this->printCountString($result->numberOfWarnings(), 'Warnings', $color);
+        $this->printCountString($result->numberOfDeprecations(), 'Deprecations', $color);
+        $this->printCountString($result->numberOfNotices(), 'Notices', $color);
         $this->printCountString($result->numberOfTestSuiteSkippedEvents() + $result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);

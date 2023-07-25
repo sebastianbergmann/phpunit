@@ -1,13 +1,16 @@
 1 test triggered 2 PHP deprecations:
 
-1) FooTest::testBar
-* message
-  Foo.php:1
+1) Foo.php:1
+message
 
-* another message
-  Foo.php:2
+Triggered by FooTest::testBar
+FooTest.php:1
 
+2) Foo.php:2
+another message
+
+Triggered by FooTest::testBar
 FooTest.php:1
 
 OK, but there are issues!
-Tests: 1, Assertions: 1, Deprecations: 1.
+Tests: 1, Assertions: 1, Deprecations: 2.

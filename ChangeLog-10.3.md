@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 
 ### Changed
 
+* Deprecations (`E_DEPRECATED`, `E_USER_DEPRECATED`), notices (`E_STRICT`, `E_NOTICE`, `E_USER_NOTICE`), and warnings (`E_WARNING`, `E_USER_WARNINGS`) are now displayed grouped by issue
 * When a test case class inherits test methods from a parent class then, by default (when no test reordering is requested), the test methods from the class that is highest in the inheritance tree (instead of the class that is lowest in the inheritance tree) are now run first
 * Invocation count expectation failure messages have been slightly improved
 * When a test case class inherits test methods from a parent class then the TestDox output for such a test case class now starts with test methods from the class that is highest in the inheritance tree (instead of the class that is lowest in the inheritance tree)

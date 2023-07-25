@@ -1,12 +1,9 @@
-1 test triggered 2 PHP deprecations:
+1 test triggered 1 PHP deprecation:
 
-1) FooTest::testBar
-* message
-  Foo.php:1
+1) Foo.php:1
+message
 
-* message
-  Foo.php:1
-
+Triggered 2 times by FooTest::testBar
 FooTest.php:1
 
 OK, but there are issues!

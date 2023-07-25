@@ -1,9 +1,9 @@
 1 test triggered 1 notice:
 
-1) FooTest::testBar
+1) Foo.php:1
 message
-Foo.php:1
 
+Triggered by FooTest::testBar
 FooTest.php:1
 
 OK, but there are issues!
