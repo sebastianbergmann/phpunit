@@ -1,10 +1,10 @@
 --TEST--
-GH-765: Fatal error triggered in PHPUnit when exception is thrown in data provider of a test with a dependency
+https://github.com/sebastianbergmann/phpunit/issues/5451
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/765/Issue765Test.php';
+$_SERVER['argv'][] = __DIR__ . '/5451';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -20,11 +20,11 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\Issue765Test::testDependent
-The data provider specified for PHPUnit\TestFixture\Issue765Test::testDependent is invalid
-<no message>
+1) PHPUnit\TestFixture\Issue5451\Issue5451Test::testWithErrorInDataProvider
+The data provider specified for PHPUnit\TestFixture\Issue5451\Issue5451Test::testWithErrorInDataProvider is invalid
+Call to a member function bar() on array
 
-%s:%d
+%s/Issue5451Test.php:26
 
 ERRORS!
 Tests: 1, Assertions: 1, Errors: 1.

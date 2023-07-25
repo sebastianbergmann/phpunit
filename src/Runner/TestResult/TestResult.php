@@ -411,6 +411,7 @@ final class TestResult
     public function wasSuccessful(): bool
     {
         return $this->wasSuccessfulIgnoringPhpunitWarnings() &&
+               !$this->hasTestTriggeredPhpunitErrorEvents() &&
                !$this->hasTestRunnerTriggeredWarningEvents() &&
                !$this->hasTestTriggeredPhpunitWarningEvents();
     }
