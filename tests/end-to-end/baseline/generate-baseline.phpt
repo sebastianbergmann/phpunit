@@ -30,10 +30,10 @@ Time: %s, Memory: %s
 
 1 test triggered 1 deprecation:
 
-1) PHPUnit\TestFixture\Baseline\Test::testOne
+1) %s/Test.php:%d
 deprecation
-%s/Test.php:%d
 
+Triggered by PHPUnit\TestFixture\Baseline\Test::testOne
 %s/Test.php:%d
 
 OK, but there are issues!
