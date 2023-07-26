@@ -80,5 +80,5 @@ Triggered by:
 * PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
   %s/tests/SourceClassTest.php:16
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 2, Deprecations: 2, Notices: 2.

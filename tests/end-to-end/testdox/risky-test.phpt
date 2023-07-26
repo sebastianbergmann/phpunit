@@ -22,5 +22,5 @@ Time: %s, Memory: %s
 Risky (PHPUnit\TestFixture\TestDox\Risky)
  ☢ This is a useless test that does not test anything
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 1, Assertions: 0, Risky: 1.

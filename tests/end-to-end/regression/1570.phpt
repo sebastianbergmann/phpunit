@@ -25,5 +25,5 @@ This test printed output: *
 
 %s:%d
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Risky: 1.

@@ -26,5 +26,5 @@ There was 1 PHPUnit test runner deprecation:
 
 1) Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.

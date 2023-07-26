@@ -105,5 +105,5 @@ This test did not perform any assertions
 
 %stests%e_files%eRequirementsTest.php:%d
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 60, Assertions: 0, Skipped: 43, Risky: 17.

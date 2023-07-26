@@ -11,5 +11,5 @@ There was 1 risky test:
 
 %s:%i
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Risky: 1.

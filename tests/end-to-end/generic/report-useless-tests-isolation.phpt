@@ -25,5 +25,5 @@ This test did not perform any assertions
 
 %s:%d
 
-OK, but there are issues!
+OK, but there were issues!
 Tests: 1, Assertions: 0, Risky: 1.
