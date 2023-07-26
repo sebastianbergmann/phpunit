@@ -27,14 +27,18 @@ Time: %s, Memory: %s
 1) %s/src/SourceClass.php:23
 warning
 
-Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-%s/tests/SourceClassTest.php:16
+Triggered by:
+
+* PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+  %s/tests/SourceClassTest.php:16
 
 2) %s/vendor/VendorClass.php:10
 warning
 
-Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-%s/tests/SourceClassTest.php:16
+Triggered by:
+
+* PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+  %s/tests/SourceClassTest.php:16
 
 --
 
@@ -43,14 +47,18 @@ Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomethi
 1) %s/src/SourceClass.php:22
 notice
 
-Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-%s/tests/SourceClassTest.php:16
+Triggered by:
+
+* PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+  %s/tests/SourceClassTest.php:16
 
 2) %s/vendor/VendorClass.php:9
 notice
 
-Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-%s/tests/SourceClassTest.php:16
+Triggered by:
+
+* PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+  %s/tests/SourceClassTest.php:16
 
 --
 
@@ -59,14 +67,18 @@ Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomethi
 1) %s/src/SourceClass.php:21
 deprecation
 
-Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-%s/tests/SourceClassTest.php:16
+Triggered by:
+
+* PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+  %s/tests/SourceClassTest.php:16
 
 2) %s/vendor/VendorClass.php:8
 deprecation
 
-Triggered by PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
-%s/tests/SourceClassTest.php:16
+Triggered by:
+
+* PHPUnit\TestFixture\FilterErrorHandler\SourceClassTest::testSomething
+  %s/tests/SourceClassTest.php:16
 
 OK, but there are issues!
 Tests: 1, Assertions: 1, Warnings: 2, Deprecations: 2, Notices: 2.

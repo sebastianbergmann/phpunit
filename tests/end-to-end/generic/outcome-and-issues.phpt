@@ -107,32 +107,42 @@ skipped message
 1) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithWarning
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithWarning
+  %sOutcomesAndIssuesTest.php:%d
 
 2) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
+  %sOutcomesAndIssuesTest.php:%d
 
 3) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithWarning
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithWarning
+  %sOutcomesAndIssuesTest.php:%d
 
 4) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithWarning
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithWarning
+  %sOutcomesAndIssuesTest.php:%d
 
 5) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithWarning
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithWarning
+  %sOutcomesAndIssuesTest.php:%d
 
 --
 
@@ -141,32 +151,42 @@ Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithWarning
 1) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithNotice
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithNotice
+  %sOutcomesAndIssuesTest.php:%d
 
 2) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
+  %sOutcomesAndIssuesTest.php:%d
 
 3) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithNotice
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithNotice
+  %sOutcomesAndIssuesTest.php:%d
 
 4) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithNotice
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithNotice
+  %sOutcomesAndIssuesTest.php:%d
 
 5) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithNotice
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithNotice
+  %sOutcomesAndIssuesTest.php:%d
 
 --
 
@@ -175,32 +195,42 @@ Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithNotice
 1) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithDeprecation
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithDeprecation
+  %sOutcomesAndIssuesTest.php:%d
 
 2) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
+  %sOutcomesAndIssuesTest.php:%d
 
 3) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
+  %sOutcomesAndIssuesTest.php:%d
 
 4) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithDeprecation
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithDeprecation
+  %sOutcomesAndIssuesTest.php:%d
 
 5) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithDeprecation
-%sOutcomesAndIssuesTest.php:%d
+Triggered by:
+
+* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithDeprecation
+  %sOutcomesAndIssuesTest.php:%d
 
 ERRORS!
 Tests: 17, Assertions: 7, Errors: 3, Failures: 3, Warnings: 5, Deprecations: 5, Notices: 5, Skipped: 3, Incomplete: 3, Risky: 1.
