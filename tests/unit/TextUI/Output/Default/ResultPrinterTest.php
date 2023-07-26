@@ -621,7 +621,6 @@ final class ResultPrinterTest extends TestCase
             $testSkippedEvents,
             $testMarkedIncompleteEvents,
             $testTriggeredPhpunitDeprecationEvents,
-            $testTriggeredErrorEvents,
             $testTriggeredPhpunitErrorEvents,
             $testTriggeredPhpunitWarningEvents,
             $testRunnerTriggeredDeprecationEvents,

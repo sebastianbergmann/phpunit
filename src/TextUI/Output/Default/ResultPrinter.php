@@ -424,22 +424,6 @@ final class ResultPrinter
         }
     }
 
-    private function printDetailsOnTestsThatTriggerErrors(TestResult $result): void
-    {
-        if (!$result->hasTestTriggeredErrorEvents()) {
-            return;
-        }
-
-        $elements = $this->mapTestsWithIssuesEventsToElements($result->testTriggeredErrorEvents());
-
-        $this->printListHeaderWithNumber(
-            $elements['numberOfIssues'],
-            'error',
-        );
-
-        $this->printList($elements['elements']);
-    }
-
     private function printListHeaderWithNumberOfTestsAndNumberOfIssues(int $numberOfTestsWithIssues, int $numberOfIssues, string $type): void
     {
         $this->printListHeader(

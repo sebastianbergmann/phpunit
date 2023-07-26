@@ -105,7 +105,7 @@ final class SummaryPrinter
 
         $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
-        $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfTestsWithTestTriggeredErrorEvents() + $result->numberOfTestsWithTestTriggeredPhpunitErrorEvents(), 'Errors', $color);
+        $this->printCountString($result->numberOfErrors(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
         $this->printCountString($result->numberOfWarnings(), 'Warnings', $color);
         $this->printCountString($result->numberOfDeprecations(), 'Deprecations', $color);

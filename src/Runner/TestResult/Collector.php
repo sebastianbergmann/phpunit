@@ -102,11 +102,6 @@ final class Collector
     private array $testTriggeredPhpunitDeprecationEvents = [];
 
     /**
-     * @psalm-var array<string,list<ErrorTriggered>>
-     */
-    private array $testTriggeredErrorEvents = [];
-
-    /**
      * @psalm-var array<string,list<PhpunitErrorTriggered>>
      */
     private array $testTriggeredPhpunitErrorEvents = [];
@@ -210,7 +205,6 @@ final class Collector
             $this->testSkippedEvents,
             $this->testMarkedIncompleteEvents,
             $this->testTriggeredPhpunitDeprecationEvents,
-            $this->testTriggeredErrorEvents,
             $this->testTriggeredPhpunitErrorEvents,
             $this->testTriggeredPhpunitWarningEvents,
             $this->testRunnerTriggeredDeprecationEvents,
@@ -419,12 +413,6 @@ final class Collector
         if (!$this->source->ignoreSuppressionOfErrors() && $event->wasSuppressed()) {
             return;
         }
-
-        if (!isset($this->testTriggeredErrorEvents[$event->test()->id()])) {
-            $this->testTriggeredErrorEvents[$event->test()->id()] = [];
-        }
-
-        $this->testTriggeredErrorEvents[$event->test()->id()][] = $event;
 
         $id = $this->issueId($event);
 
