@@ -313,7 +313,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var \Prophecy\Prophet
      */
-    private $prophet;
+    private static $prophet;
+
+    /**
+     * @internal
+     *
+     * @var string[]
+     */
+    private static $prophecyDoubledTypes = [];
 
     /**
      * @var bool
@@ -1250,7 +1257,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->mockObjects = [];
-        $this->prophet     = null;
+        self::$prophet     = null;
 
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
@@ -2037,19 +2044,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4141
      */
-    protected function prophesize(?string $classOrInterface = null): ObjectProphecy
+    protected static function prophesize(?string $classOrInterface = null): ObjectProphecy
     {
         if (!class_exists(Prophet::class)) {
             throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');
         }
 
-        $this->addWarning('PHPUnit\Framework\TestCase::prophesize() is deprecated and will be removed in PHPUnit 10. Please use the trait provided by phpspec/prophecy-phpunit.');
-
         if (is_string($classOrInterface)) {
-            $this->recordDoubledType($classOrInterface);
+            self::$prophecyDoubledTypes[] = $classOrInterface;
         }
 
-        return $this->getProphet()->prophesize($classOrInterface);
+        return self::getProphet()->prophesize($classOrInterface);
     }
 
     /**
@@ -2092,11 +2097,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        if ($this->prophet !== null) {
+        if (self::$prophet !== null) {
+            $this->addWarning(
+                'PHPUnit\Framework\TestCase::prophesize() is deprecated and will be removed in PHPUnit 10. Please use the trait provided by phpspec/prophecy-phpunit.'
+            );
+
+            $this->doubledTypes = array_merge($this->doubledTypes, self::$prophecyDoubledTypes);
+            self::$prophecyDoubledTypes = [];
+
             try {
-                $this->prophet->checkPredictions();
+                self::$prophet->checkPredictions();
             } finally {
-                foreach ($this->prophet->getProphecies() as $objectProphecy) {
+                foreach (self::$prophet->getProphecies() as $objectProphecy) {
                     foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
                         foreach ($methodProphecies as $methodProphecy) {
                             /* @var MethodProphecy $methodProphecy */
@@ -2104,6 +2116,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         }
                     }
                 }
+
+                self::$prophet = null;
             }
         }
     }
@@ -2474,13 +2488,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    private function getProphet(): Prophet
+    private static function getProphet(): Prophet
     {
-        if ($this->prophet === null) {
-            $this->prophet = new Prophet;
+        if (self::$prophet === null) {
+            self::$prophet = new Prophet;
         }
 
-        return $this->prophet;
+        return self::$prophet;
     }
 
     /**
