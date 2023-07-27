@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 * [#5368](https://github.com/sebastianbergmann/phpunit/pull/5368): Control when PHP's garbage collector is triggered
 * [#5428](https://github.com/sebastianbergmann/phpunit/issues/5428): Attribute `#[WithoutErrorHandler]` to disable PHPUnit's error handler for a test method
 * [#5431](https://github.com/sebastianbergmann/phpunit/pull/5431): Add more garbage collector details to event telemetry
+* `TestRunner\CodeCoverageDataCollectionStarted` and `TestRunner\CodeCoverageDataCollectionStopped` events
 
 ### Changed
 

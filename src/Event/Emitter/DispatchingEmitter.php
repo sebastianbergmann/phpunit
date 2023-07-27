@@ -260,6 +260,28 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testRunnerStartedCollectionOfCodeCoverageData(): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\CodeCoverageDataCollectionStarted($this->telemetryInfo()),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testRunnerStoppedCollectionOfCodeCoverageData(): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\CodeCoverageDataCollectionStopped($this->telemetryInfo()),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSuiteSkipped(TestSuite $testSuite, string $message): void
     {
         $this->dispatcher->dispatch(

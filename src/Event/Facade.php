@@ -233,6 +233,8 @@ final class Facade
             TestRunner\GarbageCollectionDisabled::class,
             TestRunner\GarbageCollectionTriggered::class,
             TestRunner\GarbageCollectionEnabled::class,
+            TestRunner\CodeCoverageDataCollectionStarted::class,
+            TestRunner\CodeCoverageDataCollectionStopped::class,
 
             TestSuite\Filtered::class,
             TestSuite\Finished::class,
