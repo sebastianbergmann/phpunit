@@ -167,8 +167,6 @@ final class CodeCoverage
         );
 
         $this->collecting = true;
-
-        EventFacade::emitter()->testRunnerStartedCollectionOfCodeCoverageData();
     }
 
     public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
@@ -192,8 +190,6 @@ final class CodeCoverage
 
         $this->test       = null;
         $this->collecting = false;
-
-        EventFacade::emitter()->testRunnerStoppedCollectionOfCodeCoverageData();
     }
 
     public function deactivate(): void

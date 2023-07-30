@@ -55,10 +55,6 @@ interface Emitter
 
     public function testRunnerTriggeredGarbageCollection(): void;
 
-    public function testRunnerStartedCollectionOfCodeCoverageData(): void;
-
-    public function testRunnerStoppedCollectionOfCodeCoverageData(): void;
-
     public function testSuiteSkipped(TestSuite $testSuite, string $message): void;
 
     public function testSuiteStarted(TestSuite $testSuite): void;
