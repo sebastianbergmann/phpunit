@@ -43,14 +43,7 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
-use PHPUnit\TestRunner\TestResult\Issues\Deprecation;
-use PHPUnit\TestRunner\TestResult\Issues\Error;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
-use PHPUnit\TestRunner\TestResult\Issues\Notice;
-use PHPUnit\TestRunner\TestResult\Issues\PhpDeprecation;
-use PHPUnit\TestRunner\TestResult\Issues\PhpNotice;
-use PHPUnit\TestRunner\TestResult\Issues\PhpWarning;
-use PHPUnit\TestRunner\TestResult\Issues\Warning;
 use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 
@@ -122,37 +115,37 @@ final class Collector
     private array $testRunnerTriggeredDeprecationEvents = [];
 
     /**
-     * @psalm-var array<non-empty-string, Error>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $errors = [];
 
     /**
-     * @psalm-var array<non-empty-string, Deprecation>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $deprecations = [];
 
     /**
-     * @psalm-var array<non-empty-string, Notice>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $notices = [];
 
     /**
-     * @psalm-var array<non-empty-string, Warning>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $warnings = [];
 
     /**
-     * @psalm-var array<non-empty-string, PhpDeprecation>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $phpDeprecations = [];
 
     /**
-     * @psalm-var array<non-empty-string, PhpNotice>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $phpNotices = [];
 
     /**
-     * @psalm-var array<non-empty-string, PhpWarning>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $phpWarnings = [];
 
@@ -360,7 +353,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->deprecations[$id])) {
-            $this->deprecations[$id] = Issue::deprecation(
+            $this->deprecations[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),
@@ -386,7 +379,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->phpDeprecations[$id])) {
-            $this->phpDeprecations[$id] = Issue::phpDeprecation(
+            $this->phpDeprecations[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),
@@ -417,7 +410,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->errors[$id])) {
-            $this->errors[$id] = Issue::error(
+            $this->errors[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),
@@ -443,7 +436,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->notices[$id])) {
-            $this->notices[$id] = Issue::notice(
+            $this->notices[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),
@@ -469,7 +462,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->phpNotices[$id])) {
-            $this->phpNotices[$id] = Issue::phpNotice(
+            $this->phpNotices[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),
@@ -495,7 +488,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->warnings[$id])) {
-            $this->warnings[$id] = Issue::warning(
+            $this->warnings[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),
@@ -521,7 +514,7 @@ final class Collector
         $id = $this->issueId($event);
 
         if (!isset($this->phpWarnings[$id])) {
-            $this->phpWarnings[$id] = Issue::phpWarning(
+            $this->phpWarnings[$id] = Issue::from(
                 $event->file(),
                 $event->line(),
                 $event->message(),

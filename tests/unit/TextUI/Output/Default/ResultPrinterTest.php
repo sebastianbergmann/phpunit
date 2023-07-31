@@ -40,14 +40,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\TestRunner\TestResult\Issues\Deprecation;
-use PHPUnit\TestRunner\TestResult\Issues\Error;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
-use PHPUnit\TestRunner\TestResult\Issues\Notice;
-use PHPUnit\TestRunner\TestResult\Issues\PhpDeprecation;
-use PHPUnit\TestRunner\TestResult\Issues\PhpNotice;
-use PHPUnit\TestRunner\TestResult\Issues\PhpWarning;
-use PHPUnit\TestRunner\TestResult\Issues\Warning;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\Output\SummaryPrinter;
@@ -186,7 +179,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_deprecation.txt',
                 self::createTestResult(
                     deprecations: [
-                        Issue::deprecation(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
@@ -200,13 +193,13 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_php_deprecation.txt',
                 self::createTestResult(
                     phpDeprecations: [
-                        Issue::deprecation(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
                             self::testMethod(),
                         ),
-                        Issue::deprecation(
+                        Issue::from(
                             'Foo.php',
                             2,
                             'another message',
@@ -248,7 +241,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_error.txt',
                 self::createTestResult(
                     errors: [
-                        Issue::error(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
@@ -262,7 +255,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_notice.txt',
                 self::createTestResult(
                     notices: [
-                        Issue::notice(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
@@ -276,7 +269,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_php_notice.txt',
                 self::createTestResult(
                     phpNotices: [
-                        Issue::phpNotice(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
@@ -290,7 +283,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_warning.txt',
                 self::createTestResult(
                     warnings: [
-                        Issue::warning(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
@@ -304,7 +297,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/successful_test_with_php_warning.txt',
                 self::createTestResult(
                     phpWarnings: [
-                        Issue::phpWarning(
+                        Issue::from(
                             'Foo.php',
                             1,
                             'message',
@@ -418,14 +411,14 @@ final class ResultPrinterTest extends TestCase
      * @psalm-param list<TestSuiteSkipped> $testSuiteSkippedEvents
      * @psalm-param list<TestSkipped> $testSkippedEvents
      * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
-     * @psalm-param list<Deprecation> $deprecations
-     * @psalm-param list<PhpDeprecation> $phpDeprecations
+     * @psalm-param list<Issue> $deprecations
+     * @psalm-param list<Issue> $phpDeprecations
      * @psalm-param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
-     * @psalm-param list<Error> $errors
-     * @psalm-param list<Notice> $notices
-     * @psalm-param list<PhpNotice> $phpNotices
-     * @psalm-param list<Warning> $warnings
-     * @psalm-param list<PhpWarning> $phpWarnings
+     * @psalm-param list<Issue> $errors
+     * @psalm-param list<Issue> $notices
+     * @psalm-param list<Issue> $phpNotices
+     * @psalm-param list<Issue> $warnings
+     * @psalm-param list<Issue> $phpWarnings
      * @psalm-param array<string,list<PhpunitErrorTriggered>> $testTriggeredPhpunitErrorEvents
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
@@ -521,7 +514,7 @@ final class ResultPrinterTest extends TestCase
 
     private static function samePhpDeprecationsTriggeredTwice(): array
     {
-        $issue = Issue::deprecation(
+        $issue = Issue::from(
             'Foo.php',
             1,
             'message',

@@ -22,13 +22,7 @@ use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
-use PHPUnit\TestRunner\TestResult\Issues\Deprecation;
-use PHPUnit\TestRunner\TestResult\Issues\Error;
-use PHPUnit\TestRunner\TestResult\Issues\Notice;
-use PHPUnit\TestRunner\TestResult\Issues\PhpDeprecation;
-use PHPUnit\TestRunner\TestResult\Issues\PhpNotice;
-use PHPUnit\TestRunner\TestResult\Issues\PhpWarning;
-use PHPUnit\TestRunner\TestResult\Issues\Warning;
+use PHPUnit\TestRunner\TestResult\Issues\Issue;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -95,37 +89,37 @@ final class TestResult
     private readonly array $testRunnerTriggeredWarningEvents;
 
     /**
-     * @psalm-var list<Error>
+     * @psalm-var list<Issue>
      */
     private readonly array $errors;
 
     /**
-     * @psalm-var list<Deprecation>
+     * @psalm-var list<Issue>
      */
     private readonly array $deprecations;
 
     /**
-     * @psalm-var list<Notice>
+     * @psalm-var list<Issue>
      */
     private readonly array $notices;
 
     /**
-     * @psalm-var list<Warning>
+     * @psalm-var list<Issue>
      */
     private readonly array $warnings;
 
     /**
-     * @psalm-var list<PhpDeprecation>
+     * @psalm-var list<Issue>
      */
     private readonly array $phpDeprecations;
 
     /**
-     * @psalm-var list<PhpNotice>
+     * @psalm-var list<Issue>
      */
     private readonly array $phpNotices;
 
     /**
-     * @psalm-var list<PhpWarning>
+     * @psalm-var list<Issue>
      */
     private readonly array $phpWarnings;
 
@@ -141,13 +135,13 @@ final class TestResult
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
-     * @psalm-param list<Error> $errors
-     * @psalm-param list<Deprecation> $deprecations
-     * @psalm-param list<Notice> $notices
-     * @psalm-param list<Warning> $warnings
-     * @psalm-param list<PhpDeprecation> $phpDeprecations
-     * @psalm-param list<PhpNotice> $phpNotices
-     * @psalm-param list<PhpWarning> $phpWarnings
+     * @psalm-param list<Issue> $errors
+     * @psalm-param list<Issue> $deprecations
+     * @psalm-param list<Issue> $notices
+     * @psalm-param list<Issue> $warnings
+     * @psalm-param list<Issue> $phpDeprecations
+     * @psalm-param list<Issue> $phpNotices
+     * @psalm-param list<Issue> $phpWarnings
      */
     public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings)
     {
@@ -412,7 +406,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<Error>
+     * @psalm-return list<Issue>
      */
     public function errors(): array
     {
@@ -420,7 +414,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<Deprecation>
+     * @psalm-return list<Issue>
      */
     public function deprecations(): array
     {
@@ -428,7 +422,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<Notice>
+     * @psalm-return list<Issue>
      */
     public function notices(): array
     {
@@ -436,7 +430,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<Warning>
+     * @psalm-return list<Issue>
      */
     public function warnings(): array
     {
@@ -444,7 +438,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<PhpDeprecation>
+     * @psalm-return list<Issue>
      */
     public function phpDeprecations(): array
     {
@@ -452,7 +446,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<PhpNotice>
+     * @psalm-return list<Issue>
      */
     public function phpNotices(): array
     {
@@ -460,7 +454,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return list<PhpWarning>
+     * @psalm-return list<Issue>
      */
     public function phpWarnings(): array
     {
