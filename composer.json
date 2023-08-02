@@ -84,7 +84,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "10.3-dev"
+            "dev-main": "10.4-dev"
         }
     }
 }
