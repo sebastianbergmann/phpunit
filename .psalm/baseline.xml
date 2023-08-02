@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015">
+<files psalm-version="5.14.1@b9d355e0829c397b9b3b47d0c0ed042a8a70284d">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -453,7 +453,15 @@
       <code>$constraint</code>
     </MissingParamType>
   </file>
+  <file src="src/Framework/Constraint/String/RegularExpression.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->pattern]]></code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
+    <ArgumentTypeCoercion>
+      <code>$line</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock>
       <code><![CDATA[new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"))]]></code>
     </MissingThrowsDocblock>
@@ -1090,6 +1098,9 @@
     </MissingTemplateParam>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->filter]]></code>
+    </ArgumentTypeCoercion>
     <MissingTemplateParam>
       <code>NameFilterIterator</code>
     </MissingTemplateParam>
@@ -1161,6 +1172,9 @@
       <code>$parameters</code>
       <code>array_merge(self::LONG_OPTIONS, $additionalLongOptions)</code>
     </ArgumentTypeCoercion>
+    <InvalidArgument>
+      <code>$unrecognizedOptions</code>
+    </InvalidArgument>
     <MissingThrowsDocblock>
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
@@ -1755,6 +1769,11 @@
       <code>$filter</code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Util/RegularExpression.php">
+    <ArgumentTypeCoercion>
+      <code>$pattern</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Util/Test.php">
     <MissingReturnType>
       <code>sanitizeVersionNumber</code>
@@ -1818,6 +1837,9 @@
                 $e,
             );]]></code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidArgument>
+      <code>preg_replace($variables, $providedData, $annotation)</code>
+    </PossiblyInvalidArgument>
     <RedundantConditionGivenDocblockType>
       <code>is_string($value)</code>
     </RedundantConditionGivenDocblockType>
