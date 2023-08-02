@@ -33,10 +33,12 @@ Time: %s, Memory: %s
 1) %s/Test.php:%d
 deprecation
 
-Triggered by PHPUnit\TestFixture\Baseline\Test::testOne
-%s/Test.php:%d
+Triggered by:
 
-OK, but there are issues!
+* PHPUnit\TestFixture\Baseline\Test::testOne
+  %s/Test.php:%d
+
+OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.
 
 Baseline written to %s/baseline.xml.
