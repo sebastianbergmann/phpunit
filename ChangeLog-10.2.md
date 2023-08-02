@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 10.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [10.2.7] - 2023-MM-DD
+## [10.2.7] - 2023-08-02
 
 ### Fixed
 
@@ -68,7 +68,7 @@ All notable changes of the PHPUnit 10.2 release series are documented in this fi
 * [#5366](https://github.com/sebastianbergmann/phpunit/issues/5366): `PHPUnit\Event\TestSuite\Loaded` event has incomplete `PHPUnit\Event\TestSuite\TestSuite` value object
 * Always use `X.Y.Z` version number (and not just `X.Y`) of PHPUnit's version when checking whether a PHAR-distributed extension is compatible
 
-[10.2.7]: https://github.com/sebastianbergmann/phpunit/compare/10.2.6...10.2
+[10.2.7]: https://github.com/sebastianbergmann/phpunit/compare/10.2.6...10.2.7
 [10.2.6]: https://github.com/sebastianbergmann/phpunit/compare/10.2.5...10.2.6
 [10.2.5]: https://github.com/sebastianbergmann/phpunit/compare/10.2.4...10.2.5
 [10.2.4]: https://github.com/sebastianbergmann/phpunit/compare/10.2.3...10.2.4
