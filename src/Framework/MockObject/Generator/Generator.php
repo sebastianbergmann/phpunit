@@ -409,6 +409,7 @@ final class Generator
         try {
             $client   = new SoapClient($wsdlFile, $options);
             $_methods = array_unique($client->__getFunctions());
+
             unset($client);
         } catch (SoapFault $e) {
             throw new RuntimeException(
@@ -425,6 +426,7 @@ final class Generator
 
         foreach ($_methods as $method) {
             preg_match_all('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\(/', $method, $matches, PREG_OFFSET_CAPTURE);
+
             $lastFunction = array_pop($matches[0]);
             $nameStart    = $lastFunction[1];
             $nameEnd      = $nameStart + strlen($lastFunction[0]) - 1;
