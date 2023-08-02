@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015">
+<files psalm-version="5.14.1@b9d355e0829c397b9b3b47d0c0ed042a8a70284d">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -604,15 +604,29 @@
       <code>hasProperty</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Framework/Constraint/RegularExpression.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->pattern]]></code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Framework/Constraint/SameSize.php">
     <PossiblyNullArgument>
       <code><![CDATA[$this->getCountOf($expected)]]></code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/Constraint/StringMatchesFormatDescription.php">
+    <ArgumentTypeCoercion>
+      <code>$line</code>
+    </ArgumentTypeCoercion>
     <InvalidArgument>
       <code><![CDATA["--- Expected\n+++ Actual\n"]]></code>
     </InvalidArgument>
+    <InvalidReturnStatement>
+      <code><![CDATA[preg_replace('/\r\n/', "\n", $text)]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code>string</code>
+    </InvalidReturnType>
     <MissingParamType>
       <code>$text</code>
     </MissingParamType>
@@ -1395,6 +1409,9 @@
     </MissingTemplateParam>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->filter]]></code>
+    </ArgumentTypeCoercion>
     <MissingTemplateParam>
       <code>NameFilterIterator</code>
     </MissingTemplateParam>
@@ -1501,6 +1518,10 @@
     <PossiblyFalseArgument>
       <code><![CDATA[strrpos($this->arguments['test'], '.')]]></code>
     </PossiblyFalseArgument>
+    <PossiblyInvalidOperand>
+      <code>$optionName</code>
+      <code>$optionName</code>
+    </PossiblyInvalidOperand>
     <PossiblyNullArgument>
       <code>$suite</code>
       <code>$suite</code>
@@ -2107,6 +2128,11 @@
       <code>$filter</code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Util/RegularExpression.php">
+    <ArgumentTypeCoercion>
+      <code>$pattern</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Util/Test.php">
     <InvalidScalarArgument>
       <code>array_flip($lineNumbers)</code>
@@ -2187,6 +2213,9 @@
                 $e
             );]]></code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidArgument>
+      <code>preg_replace($variables, $providedData, $annotation)</code>
+    </PossiblyInvalidArgument>
     <RedundantConditionGivenDocblockType>
       <code>is_string($value)</code>
     </RedundantConditionGivenDocblockType>
