@@ -73,6 +73,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
     /**
      * Asserts that an array has a specified key.
      *
+     * @psalm-param array-key $key
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -89,6 +91,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
 if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     /**
      * Asserts that an array does not have a specified key.
+     *
+     * @psalm-param array-key $key
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -183,6 +187,8 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
     /**
      * Asserts that a haystack contains only values of a given type.
      *
+     * @psalm-param non-empty-string $type
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -200,6 +206,8 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @psalm-param class-string $className
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -216,6 +224,8 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
 if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
     /**
      * Asserts that a haystack does not contain only values of a given type.
+     *
+     * @psalm-param non-empty-string $type
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -515,6 +525,9 @@ if (!function_exists('PHPUnit\Framework\assertFileEquals')) {
      * Asserts that the contents of one file is equal to the contents of another
      * file.
      *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -531,6 +544,9 @@ if (!function_exists('PHPUnit\Framework\assertFileEqualsCanonicalizing')) {
     /**
      * Asserts that the contents of one file is equal to the contents of another
      * file (canonicalizing).
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      *
@@ -549,6 +565,9 @@ if (!function_exists('PHPUnit\Framework\assertFileEqualsIgnoringCase')) {
      * Asserts that the contents of one file is equal to the contents of another
      * file (ignoring case).
      *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -565,6 +584,9 @@ if (!function_exists('PHPUnit\Framework\assertFileNotEquals')) {
     /**
      * Asserts that the contents of one file is not equal to the contents of
      * another file.
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      *
@@ -583,6 +605,9 @@ if (!function_exists('PHPUnit\Framework\assertFileNotEqualsCanonicalizing')) {
      * Asserts that the contents of one file is not equal to the contents of another
      * file (canonicalizing).
      *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -599,6 +624,9 @@ if (!function_exists('PHPUnit\Framework\assertFileNotEqualsIgnoringCase')) {
     /**
      * Asserts that the contents of one file is not equal to the contents of another
      * file (ignoring case).
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      *
@@ -617,6 +645,8 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsFile')) {
      * Asserts that the contents of a string is equal
      * to the contents of a file.
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -633,6 +663,8 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsFileCanonicalizing')) 
     /**
      * Asserts that the contents of a string is equal
      * to the contents of a file (canonicalizing).
+     *
+     * @psalm-param non-empty-string $expectedFile
      *
      * @throws ExpectationFailedException
      *
@@ -651,6 +683,8 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsFileIgnoringCase')) {
      * Asserts that the contents of a string is equal
      * to the contents of a file (ignoring case).
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -667,6 +701,8 @@ if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFile')) {
     /**
      * Asserts that the contents of a string is not equal
      * to the contents of a file.
+     *
+     * @psalm-param non-empty-string $expectedFile
      *
      * @throws ExpectationFailedException
      *
@@ -685,6 +721,8 @@ if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileCanonicalizing'
      * Asserts that the contents of a string is not equal
      * to the contents of a file (canonicalizing).
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -702,6 +740,8 @@ if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringCase'))
      * Asserts that the contents of a string is not equal
      * to the contents of a file (ignoring case).
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -717,6 +757,8 @@ if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringCase'))
 if (!function_exists('PHPUnit\Framework\assertIsReadable')) {
     /**
      * Asserts that a file/dir is readable.
+     *
+     * @psalm-param non-empty-string $filename
      *
      * @throws ExpectationFailedException
      *
@@ -734,6 +776,8 @@ if (!function_exists('PHPUnit\Framework\assertIsNotReadable')) {
     /**
      * Asserts that a file/dir exists and is not readable.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -749,6 +793,8 @@ if (!function_exists('PHPUnit\Framework\assertIsNotReadable')) {
 if (!function_exists('PHPUnit\Framework\assertIsWritable')) {
     /**
      * Asserts that a file/dir exists and is writable.
+     *
+     * @psalm-param non-empty-string $filename
      *
      * @throws ExpectationFailedException
      *
@@ -766,6 +812,8 @@ if (!function_exists('PHPUnit\Framework\assertIsNotWritable')) {
     /**
      * Asserts that a file/dir exists and is not writable.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -781,6 +829,8 @@ if (!function_exists('PHPUnit\Framework\assertIsNotWritable')) {
 if (!function_exists('PHPUnit\Framework\assertDirectoryExists')) {
     /**
      * Asserts that a directory exists.
+     *
+     * @psalm-param non-empty-string $directory
      *
      * @throws ExpectationFailedException
      *
@@ -798,6 +848,8 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryDoesNotExist')) {
     /**
      * Asserts that a directory does not exist.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -813,6 +865,8 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryDoesNotExist')) {
 if (!function_exists('PHPUnit\Framework\assertDirectoryIsReadable')) {
     /**
      * Asserts that a directory exists and is readable.
+     *
+     * @psalm-param non-empty-string $directory
      *
      * @throws ExpectationFailedException
      *
@@ -830,6 +884,8 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryIsNotReadable')) {
     /**
      * Asserts that a directory exists and is not readable.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -845,6 +901,8 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryIsNotReadable')) {
 if (!function_exists('PHPUnit\Framework\assertDirectoryIsWritable')) {
     /**
      * Asserts that a directory exists and is writable.
+     *
+     * @psalm-param non-empty-string $directory
      *
      * @throws ExpectationFailedException
      *
@@ -862,6 +920,8 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryIsNotWritable')) {
     /**
      * Asserts that a directory exists and is not writable.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -877,6 +937,8 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryIsNotWritable')) {
 if (!function_exists('PHPUnit\Framework\assertFileExists')) {
     /**
      * Asserts that a file exists.
+     *
+     * @psalm-param non-empty-string $filename
      *
      * @throws ExpectationFailedException
      *
@@ -894,6 +956,8 @@ if (!function_exists('PHPUnit\Framework\assertFileDoesNotExist')) {
     /**
      * Asserts that a file does not exist.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -909,6 +973,8 @@ if (!function_exists('PHPUnit\Framework\assertFileDoesNotExist')) {
 if (!function_exists('PHPUnit\Framework\assertFileIsReadable')) {
     /**
      * Asserts that a file exists and is readable.
+     *
+     * @psalm-param non-empty-string $file
      *
      * @throws ExpectationFailedException
      *
@@ -926,6 +992,8 @@ if (!function_exists('PHPUnit\Framework\assertFileIsNotReadable')) {
     /**
      * Asserts that a file exists and is not readable.
      *
+     * @psalm-param non-empty-string $file
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -942,6 +1010,8 @@ if (!function_exists('PHPUnit\Framework\assertFileIsWritable')) {
     /**
      * Asserts that a file exists and is writable.
      *
+     * @psalm-param non-empty-string $file
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -957,6 +1027,8 @@ if (!function_exists('PHPUnit\Framework\assertFileIsWritable')) {
 if (!function_exists('PHPUnit\Framework\assertFileIsNotWritable')) {
     /**
      * Asserts that a file exists and is not writable.
+     *
+     * @psalm-param non-empty-string $file
      *
      * @throws ExpectationFailedException
      *
@@ -1130,13 +1202,15 @@ if (!function_exists('PHPUnit\Framework\assertObjectHasProperty')) {
     /**
      * Asserts that an object has a specified property.
      *
+     * @psalm-param non-empty-string $propertyName
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertObjectHasProperty()
+     * @see Assert::assertObjectHasProperty
      */
-    function assertObjectHasProperty(string $attributeName, object $object, string $message = ''): void
+    function assertObjectHasProperty(string $propertyName, object $object, string $message = ''): void
     {
         Assert::assertObjectHasProperty(...func_get_args());
     }
@@ -1146,13 +1220,15 @@ if (!function_exists('PHPUnit\Framework\assertObjectNotHasProperty')) {
     /**
      * Asserts that an object does not have a specified property.
      *
+     * @psalm-param non-empty-string $propertyName
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertObjectNotHasProperty()
+     * @see Assert::assertObjectNotHasProperty
      */
-    function assertObjectNotHasProperty(string $attributeName, object $object, string $message = ''): void
+    function assertObjectNotHasProperty(string $propertyName, object $object, string $message = ''): void
     {
         Assert::assertObjectNotHasProperty(...func_get_args());
     }
@@ -1206,6 +1282,7 @@ if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws UnknownClassOrInterfaceException
      *
      * @psalm-template ExpectedType of object
      *
@@ -1706,6 +1783,9 @@ if (!function_exists('PHPUnit\Framework\assertMatchesRegularExpression')) {
     /**
      * Asserts that a string matches a given regular expression.
      *
+     * @psalm-param non-empty-string $pattern
+     * @psalm-param non-empty-string $string
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1721,6 +1801,9 @@ if (!function_exists('PHPUnit\Framework\assertMatchesRegularExpression')) {
 if (!function_exists('PHPUnit\Framework\assertDoesNotMatchRegularExpression')) {
     /**
      * Asserts that a string does not match a given regular expression.
+     *
+     * @psalm-param non-empty-string $pattern
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      *
@@ -1774,6 +1857,9 @@ if (!function_exists('PHPUnit\Framework\assertNotSameSize')) {
 
 if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEndings')) {
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1789,6 +1875,9 @@ if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEn
 if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndings')) {
     /**
      * Asserts that two strings are equal except for line endings.
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      *
@@ -1806,6 +1895,9 @@ if (!function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
     /**
      * Asserts that a string matches a given format string.
      *
+     * @psalm-param non-empty-string $format
+     * @psalm-param non-empty-string $string
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1821,6 +1913,9 @@ if (!function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
 if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormat')) {
     /**
      * Asserts that a string does not match a given format string.
+     *
+     * @psalm-param non-empty-string $format
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      *
@@ -1838,6 +1933,9 @@ if (!function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
     /**
      * Asserts that a string matches a given format file.
      *
+     * @psalm-param non-empty-string $formatFile
+     * @psalm-param non-empty-string $string
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1853,6 +1951,9 @@ if (!function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
 if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormatFile')) {
     /**
      * Asserts that a string does not match a given format string.
+     *
+     * @psalm-param non-empty-string $formatFile
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      *
@@ -1906,6 +2007,9 @@ if (!function_exists('PHPUnit\Framework\assertStringStartsNotWith')) {
 
 if (!function_exists('PHPUnit\Framework\assertStringContainsString')) {
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1920,6 +2024,9 @@ if (!function_exists('PHPUnit\Framework\assertStringContainsString')) {
 
 if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringCase')) {
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1934,6 +2041,9 @@ if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringCase')
 
 if (!function_exists('PHPUnit\Framework\assertStringNotContainsString')) {
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1948,6 +2058,9 @@ if (!function_exists('PHPUnit\Framework\assertStringNotContainsString')) {
 
 if (!function_exists('PHPUnit\Framework\assertStringNotContainsStringIgnoringCase')) {
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -2002,6 +2115,9 @@ if (!function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
     /**
      * Asserts that two XML files are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -2020,6 +2136,9 @@ if (!function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
     /**
      * Asserts that two XML files are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws \PHPUnit\Util\Exception
      * @throws ExpectationFailedException
      *
@@ -2036,6 +2155,9 @@ if (!function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
 if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are equal.
+     *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -2054,6 +2176,9 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws ExpectationFailedException
      * @throws XmlException
      *
@@ -2071,6 +2196,9 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     /**
      * Asserts that two XML documents are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws ExpectationFailedException
      * @throws XmlException
      *
@@ -2087,6 +2215,9 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
 if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     /**
      * Asserts that two XML documents are not equal.
+     *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -2121,6 +2252,8 @@ if (!function_exists('PHPUnit\Framework\assertJson')) {
     /**
      * Asserts that a string is a valid JSON string.
      *
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -2136,6 +2269,9 @@ if (!function_exists('PHPUnit\Framework\assertJson')) {
 if (!function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonString')) {
     /**
      * Asserts that two given JSON encoded objects or arrays are equal.
+     *
+     * @psalm-param non-empty-string $expectedJson
+     * @psalm-param non-empty-string $actualJson
      *
      * @throws ExpectationFailedException
      *
@@ -2153,6 +2289,9 @@ if (!function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonString')) {
     /**
      * Asserts that two given JSON encoded objects or arrays are not equal.
      *
+     * @psalm-param non-empty-string $expectedJson
+     * @psalm-param non-empty-string $actualJson
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -2169,7 +2308,11 @@ if (!function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonFile')) {
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualJson
+     *
      * @throws ExpectationFailedException
+     * @throws Exception
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2185,7 +2328,11 @@ if (!function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonFile')) {
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualJson
+     *
      * @throws ExpectationFailedException
+     * @throws Exception
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2201,7 +2348,11 @@ if (!function_exists('PHPUnit\Framework\assertJsonFileEqualsJsonFile')) {
     /**
      * Asserts that two JSON files are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws ExpectationFailedException
+     * @throws Exception
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2217,7 +2368,11 @@ if (!function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
     /**
      * Asserts that two JSON files are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws ExpectationFailedException
+     * @throws Exception
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2457,7 +2612,7 @@ if (!function_exists('PHPUnit\Framework\identicalTo')) {
 
 if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
     /**
-     * @throws UnknownClassOrInterfaceException
+     * @throws Exception
      */
     function isInstanceOf(string $className): IsInstanceOf
     {
@@ -2505,7 +2660,7 @@ if (!function_exists('PHPUnit\Framework\matches')) {
 
 if (!function_exists('PHPUnit\Framework\stringStartsWith')) {
     /**
-     * @throws InvalidArgumentException
+     * @throws Exception
      */
     function stringStartsWith(string $prefix): StringStartsWith
     {
@@ -2514,9 +2669,6 @@ if (!function_exists('PHPUnit\Framework\stringStartsWith')) {
 }
 
 if (!function_exists('PHPUnit\Framework\stringContains')) {
-    /**
-     * @throws InvalidArgumentException
-     */
     function stringContains(string $string, bool $case = true): StringContains
     {
         return Assert::stringContains(...func_get_args());
@@ -2525,7 +2677,7 @@ if (!function_exists('PHPUnit\Framework\stringContains')) {
 
 if (!function_exists('PHPUnit\Framework\stringEndsWith')) {
     /**
-     * @throws InvalidArgumentException
+     * @throws Exception
      */
     function stringEndsWith(string $suffix): StringEndsWith
     {

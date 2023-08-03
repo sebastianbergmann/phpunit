@@ -20,7 +20,7 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) PHPUnit\TestFixture\Issue433Test::testNotMatchingOutput
-Failed asserting that two strings are equal.
+Failed asserting that two strings are identical.
 --- Expected
 +++ Actual
 @@ @@
