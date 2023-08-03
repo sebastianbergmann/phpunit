@@ -1956,7 +1956,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             } elseif ($this->outputExpectedString !== null) {
                 assert(!empty($this->outputExpectedString));
 
-                $this->assertEquals($this->outputExpectedString, $this->output);
+                $this->assertSame($this->outputExpectedString, $this->output);
             }
         } catch (ExpectationFailedException $e) {
             $this->status = TestStatus::failure($e->getMessage());
