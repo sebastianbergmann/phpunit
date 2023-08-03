@@ -924,12 +924,4 @@
       <code>$filter</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Util/VersionComparisonOperator.php">
-    <DocblockTypeContradiction>
-      <code><![CDATA[in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'], true)]]></code>
-    </DocblockTypeContradiction>
-    <NoValue>
-      <code>$operator</code>
-    </NoValue>
-  </file>
 </files>
