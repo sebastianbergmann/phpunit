@@ -19,4 +19,8 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 * `TestCase::createStub()`, `TestCase::createStubForIntersectionOfInterfaces()`, and `TestCase::createConfiguredStub()` are now static (and can be used from static data provider methods)
 * The internal methods `__phpunit_*()` have been removed from the `Stub` and `MockObject` interfaces
 
+### Fixed
+
+* [#5456](https://github.com/sebastianbergmann/phpunit/issues/5456): Risky Test Check for Output Buffering is performed before after-test methods are called
+
 [10.3.0]: https://github.com/sebastianbergmann/phpunit/compare/10.2.7...main

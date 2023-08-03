@@ -705,7 +705,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        if ($this->stopOutputBuffering() && !isset($e)) {
+        $outputBufferingStopped = false;
+
+        if (!isset($e) &&
+            $this->hasExpectationOnOutput() &&
+            $this->stopOutputBuffering()) {
+            $outputBufferingStopped = true;
+
             $this->performAssertionsOnOutput();
         }
 
@@ -744,6 +750,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     Event\Code\ThrowableBuilder::from($exceptionRaisedDuringTearDown),
                 );
             }
+        }
+
+        if (!$outputBufferingStopped) {
+            $this->stopOutputBuffering();
         }
 
         clearstatcache();
