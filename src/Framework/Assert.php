@@ -75,6 +75,8 @@ abstract class Assert
     /**
      * Asserts that an array has a specified key.
      *
+     * @psalm-param array-key $key
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -87,6 +89,8 @@ abstract class Assert
 
     /**
      * Asserts that an array does not have a specified key.
+     *
+     * @psalm-param array-key $key
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -163,6 +167,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
+     * @psalm-param non-empty-string $type
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -185,6 +191,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @psalm-param class-string $className
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -202,6 +210,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack does not contain only values of a given type.
+     *
+     * @psalm-param non-empty-string $type
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -468,6 +478,9 @@ abstract class Assert
      * Asserts that the contents of one file is equal to the contents of another
      * file.
      *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileEquals(string $expected, string $actual, string $message = ''): void
@@ -483,6 +496,9 @@ abstract class Assert
     /**
      * Asserts that the contents of one file is equal to the contents of another
      * file (canonicalizing).
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      */
@@ -502,6 +518,9 @@ abstract class Assert
      * Asserts that the contents of one file is equal to the contents of another
      * file (ignoring case).
      *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileEqualsIgnoringCase(string $expected, string $actual, string $message = ''): void
@@ -517,6 +536,9 @@ abstract class Assert
     /**
      * Asserts that the contents of one file is not equal to the contents of
      * another file.
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      */
@@ -536,6 +558,9 @@ abstract class Assert
      * Asserts that the contents of one file is not equal to the contents of another
      * file (canonicalizing).
      *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileNotEqualsCanonicalizing(string $expected, string $actual, string $message = ''): void
@@ -553,6 +578,9 @@ abstract class Assert
     /**
      * Asserts that the contents of one file is not equal to the contents of another
      * file (ignoring case).
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      */
@@ -572,6 +600,8 @@ abstract class Assert
      * Asserts that the contents of a string is equal
      * to the contents of a file.
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
@@ -586,6 +616,8 @@ abstract class Assert
     /**
      * Asserts that the contents of a string is equal
      * to the contents of a file (canonicalizing).
+     *
+     * @psalm-param non-empty-string $expectedFile
      *
      * @throws ExpectationFailedException
      */
@@ -602,6 +634,8 @@ abstract class Assert
      * Asserts that the contents of a string is equal
      * to the contents of a file (ignoring case).
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
@@ -616,6 +650,8 @@ abstract class Assert
     /**
      * Asserts that the contents of a string is not equal
      * to the contents of a file.
+     *
+     * @psalm-param non-empty-string $expectedFile
      *
      * @throws ExpectationFailedException
      */
@@ -634,6 +670,8 @@ abstract class Assert
      * Asserts that the contents of a string is not equal
      * to the contents of a file (canonicalizing).
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringNotEqualsFileCanonicalizing(string $expectedFile, string $actualString, string $message = ''): void
@@ -651,6 +689,8 @@ abstract class Assert
      * Asserts that the contents of a string is not equal
      * to the contents of a file (ignoring case).
      *
+     * @psalm-param non-empty-string $expectedFile
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringNotEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
@@ -667,6 +707,8 @@ abstract class Assert
     /**
      * Asserts that a file/dir is readable.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertIsReadable(string $filename, string $message = ''): void
@@ -676,6 +718,8 @@ abstract class Assert
 
     /**
      * Asserts that a file/dir exists and is not readable.
+     *
+     * @psalm-param non-empty-string $filename
      *
      * @throws ExpectationFailedException
      */
@@ -687,6 +731,8 @@ abstract class Assert
     /**
      * Asserts that a file/dir exists and is writable.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertIsWritable(string $filename, string $message = ''): void
@@ -696,6 +742,8 @@ abstract class Assert
 
     /**
      * Asserts that a file/dir exists and is not writable.
+     *
+     * @psalm-param non-empty-string $filename
      *
      * @throws ExpectationFailedException
      */
@@ -707,6 +755,8 @@ abstract class Assert
     /**
      * Asserts that a directory exists.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertDirectoryExists(string $directory, string $message = ''): void
@@ -717,6 +767,8 @@ abstract class Assert
     /**
      * Asserts that a directory does not exist.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertDirectoryDoesNotExist(string $directory, string $message = ''): void
@@ -726,6 +778,8 @@ abstract class Assert
 
     /**
      * Asserts that a directory exists and is readable.
+     *
+     * @psalm-param non-empty-string $directory
      *
      * @throws ExpectationFailedException
      */
@@ -738,6 +792,8 @@ abstract class Assert
     /**
      * Asserts that a directory exists and is not readable.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertDirectoryIsNotReadable(string $directory, string $message = ''): void
@@ -748,6 +804,8 @@ abstract class Assert
 
     /**
      * Asserts that a directory exists and is writable.
+     *
+     * @psalm-param non-empty-string $directory
      *
      * @throws ExpectationFailedException
      */
@@ -760,6 +818,8 @@ abstract class Assert
     /**
      * Asserts that a directory exists and is not writable.
      *
+     * @psalm-param non-empty-string $directory
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertDirectoryIsNotWritable(string $directory, string $message = ''): void
@@ -771,6 +831,8 @@ abstract class Assert
     /**
      * Asserts that a file exists.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileExists(string $filename, string $message = ''): void
@@ -781,6 +843,8 @@ abstract class Assert
     /**
      * Asserts that a file does not exist.
      *
+     * @psalm-param non-empty-string $filename
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileDoesNotExist(string $filename, string $message = ''): void
@@ -790,6 +854,8 @@ abstract class Assert
 
     /**
      * Asserts that a file exists and is readable.
+     *
+     * @psalm-param non-empty-string $file
      *
      * @throws ExpectationFailedException
      */
@@ -802,6 +868,8 @@ abstract class Assert
     /**
      * Asserts that a file exists and is not readable.
      *
+     * @psalm-param non-empty-string $file
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileIsNotReadable(string $file, string $message = ''): void
@@ -813,6 +881,8 @@ abstract class Assert
     /**
      * Asserts that a file exists and is writable.
      *
+     * @psalm-param non-empty-string $file
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertFileIsWritable(string $file, string $message = ''): void
@@ -823,6 +893,8 @@ abstract class Assert
 
     /**
      * Asserts that a file exists and is not writable.
+     *
+     * @psalm-param non-empty-string $file
      *
      * @throws ExpectationFailedException
      */
@@ -937,6 +1009,8 @@ abstract class Assert
     /**
      * Asserts that an object has a specified property.
      *
+     * @psalm-param non-empty-string $propertyName
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertObjectHasProperty(string $propertyName, object $object, string $message = ''): void
@@ -950,6 +1024,8 @@ abstract class Assert
 
     /**
      * Asserts that an object does not have a specified property.
+     *
+     * @psalm-param non-empty-string $propertyName
      *
      * @throws ExpectationFailedException
      */
@@ -1472,6 +1548,9 @@ abstract class Assert
     /**
      * Asserts that a string matches a given regular expression.
      *
+     * @psalm-param non-empty-string $pattern
+     * @psalm-param non-empty-string $string
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertMatchesRegularExpression(string $pattern, string $string, string $message = ''): void
@@ -1481,6 +1560,9 @@ abstract class Assert
 
     /**
      * Asserts that a string does not match a given regular expression.
+     *
+     * @psalm-param non-empty-string $pattern
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      */
@@ -1548,6 +1630,9 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
@@ -1557,6 +1642,9 @@ abstract class Assert
 
     /**
      * Asserts that two strings are equal except for line endings.
+     *
+     * @psalm-param non-empty-string $expected
+     * @psalm-param non-empty-string $actual
      *
      * @throws ExpectationFailedException
      */
@@ -1568,6 +1656,9 @@ abstract class Assert
     /**
      * Asserts that a string matches a given format string.
      *
+     * @psalm-param non-empty-string $format
+     * @psalm-param non-empty-string $string
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringMatchesFormat(string $format, string $string, string $message = ''): void
@@ -1577,6 +1668,9 @@ abstract class Assert
 
     /**
      * Asserts that a string does not match a given format string.
+     *
+     * @psalm-param non-empty-string $format
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      */
@@ -1593,6 +1687,9 @@ abstract class Assert
 
     /**
      * Asserts that a string matches a given format file.
+     *
+     * @psalm-param non-empty-string $formatFile
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      */
@@ -1611,6 +1708,9 @@ abstract class Assert
 
     /**
      * Asserts that a string does not match a given format string.
+     *
+     * @psalm-param non-empty-string $formatFile
+     * @psalm-param non-empty-string $string
      *
      * @throws ExpectationFailedException
      */
@@ -1662,6 +1762,9 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringContainsString(string $needle, string $haystack, string $message = ''): void
@@ -1672,6 +1775,9 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
@@ -1682,6 +1788,9 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringNotContainsString(string $needle, string $haystack, string $message = ''): void
@@ -1692,6 +1801,9 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param non-empty-string $needle
+     * @psalm-param non-empty-string $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertStringNotContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
@@ -1736,6 +1848,9 @@ abstract class Assert
     /**
      * Asserts that two XML files are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -1751,6 +1866,9 @@ abstract class Assert
     /**
      * Asserts that two XML files are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws \PHPUnit\Util\Exception
      * @throws ExpectationFailedException
      */
@@ -1764,6 +1882,9 @@ abstract class Assert
 
     /**
      * Asserts that two XML documents are equal.
+     *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -1779,6 +1900,9 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws ExpectationFailedException
      * @throws XmlException
      */
@@ -1793,6 +1917,9 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
      * @throws ExpectationFailedException
      * @throws XmlException
      */
@@ -1806,6 +1933,9 @@ abstract class Assert
 
     /**
      * Asserts that two XML documents are not equal.
+     *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -1853,6 +1983,8 @@ abstract class Assert
     /**
      * Asserts that a string is a valid JSON string.
      *
+     * @psalm-param non-empty-string $actual
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertJson(string $actual, string $message = ''): void
@@ -1862,6 +1994,9 @@ abstract class Assert
 
     /**
      * Asserts that two given JSON encoded objects or arrays are equal.
+     *
+     * @psalm-param non-empty-string $expectedJson
+     * @psalm-param non-empty-string $actualJson
      *
      * @throws ExpectationFailedException
      */
@@ -1875,6 +2010,9 @@ abstract class Assert
 
     /**
      * Asserts that two given JSON encoded objects or arrays are not equal.
+     *
+     * @psalm-param non-empty-string $expectedJson
+     * @psalm-param non-empty-string $actualJson
      *
      * @throws ExpectationFailedException
      */
@@ -1895,13 +2033,20 @@ abstract class Assert
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualJson
+     *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertJsonStringEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
+
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson);
+        static::assertNotEmpty($expectedJson);
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
@@ -1911,13 +2056,20 @@ abstract class Assert
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualJson
+     *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertJsonStringNotEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
+
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson, $message);
+        static::assertNotEmpty($expectedJson, $message);
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
@@ -1933,17 +2085,28 @@ abstract class Assert
     /**
      * Asserts that two JSON files are equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertJsonFileEqualsJsonFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
-        static::assertFileExists($actualFile, $message);
 
-        $actualJson   = file_get_contents($actualFile);
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson, $message);
+        static::assertNotEmpty($expectedJson, $message);
         static::assertJson($expectedJson, $message);
+
+        static::assertFileExists($actualFile, $message);
+
+        $actualJson = file_get_contents($actualFile);
+
+        static::assertIsString($actualJson, $message);
+        static::assertNotEmpty($actualJson, $message);
         static::assertJson($actualJson, $message);
 
         $constraintExpected = new JsonMatches(
@@ -1959,17 +2122,28 @@ abstract class Assert
     /**
      * Asserts that two JSON files are not equal.
      *
+     * @psalm-param non-empty-string $expectedFile
+     * @psalm-param non-empty-string $actualFile
+     *
+     * @throws Exception
      * @throws ExpectationFailedException
      */
     final public static function assertJsonFileNotEqualsJsonFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
-        static::assertFileExists($actualFile, $message);
 
-        $actualJson   = file_get_contents($actualFile);
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson, $message);
+        static::assertNotEmpty($expectedJson, $message);
         static::assertJson($expectedJson, $message);
+
+        static::assertFileExists($actualFile, $message);
+
+        $actualJson = file_get_contents($actualFile);
+
+        static::assertIsString($actualJson, $message);
+        static::assertNotEmpty($actualJson, $message);
         static::assertJson($actualJson, $message);
 
         $constraintExpected = new JsonMatches(
@@ -2068,6 +2242,8 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param non-empty-string $type
+     *
      * @throws Exception
      */
     final public static function containsOnly(string $type): TraversableContainsOnly
@@ -2076,6 +2252,8 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param class-string $className
+     *
      * @throws Exception
      */
     final public static function containsOnlyInstancesOf(string $className): TraversableContainsOnly
@@ -2083,6 +2261,9 @@ abstract class Assert
         return new TraversableContainsOnly($className, false);
     }
 
+    /**
+     * @psalm-param array-key $key
+     */
     final public static function arrayHasKey(int|string $key): ArrayHasKey
     {
         return new ArrayHasKey($key);
@@ -2157,6 +2338,8 @@ abstract class Assert
     }
 
     /**
+     * @psalm-param class-string $className
+     *
      * @throws UnknownClassOrInterfaceException
      */
     final public static function isInstanceOf(string $className): IsInstanceOf
@@ -2187,11 +2370,17 @@ abstract class Assert
         );
     }
 
+    /**
+     * @psalm-param non-empty-string $pattern
+     */
     final public static function matchesRegularExpression(string $pattern): RegularExpression
     {
         return new RegularExpression($pattern);
     }
 
+    /**
+     * @psalm-param non-empty-string $string
+     */
     final public static function matches(string $string): StringMatchesFormatDescription
     {
         return new StringMatchesFormatDescription($string);
@@ -2207,6 +2396,9 @@ abstract class Assert
         return new StringStartsWith($prefix);
     }
 
+    /**
+     * @psalm-param non-empty-string $string
+     */
     final public static function stringContains(string $string, bool $case = true): StringContains
     {
         return new StringContains($string, $case);
@@ -2222,6 +2414,9 @@ abstract class Assert
         return new StringEndsWith($suffix);
     }
 
+    /**
+     * @psalm-param non-empty-string $string
+     */
     final public static function stringEqualsStringIgnoringLineEndings(string $string): StringEqualsStringIgnoringLineEndings
     {
         return new StringEqualsStringIgnoringLineEndings($string);
@@ -2285,6 +2480,9 @@ abstract class Assert
         self::$count = 0;
     }
 
+    /**
+     * @psalm-param non-empty-string $type
+     */
     private static function isNativeType(string $type): bool
     {
         return match ($type) {
