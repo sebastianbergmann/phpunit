@@ -44,7 +44,7 @@ final class VersionComparisonOperator
     }
 
     /**
-     * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
+     * @psalm-param string $operator
      *
      * @throws InvalidVersionOperatorException
      */
