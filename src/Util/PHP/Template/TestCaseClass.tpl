@@ -58,7 +58,7 @@ function __phpunit_run_isolated_test()
 
     $output = '';
 
-    if (!$test->hasExpectationOnOutput()) {
+    if (!$test->expectsOutput()) {
         $output = $test->output();
     }
 
