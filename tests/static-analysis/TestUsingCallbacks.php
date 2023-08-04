@@ -27,16 +27,11 @@ final class TestUsingCallbacks extends TestCase
         $mock
             ->expects(self::once())
             ->method('hey')
-            ->with(
-                self::callback(
-                    /** @psalm-param non-empty-string $input */
-                    static function (string $input): bool {
-                        self::assertStringContainsString('Joe', $input);
+            ->with(self::callback(static function (string $input): bool {
+                self::assertStringContainsString('Joe', $input);
 
-                        return true;
-                    }
-                )
-            )
+                return true;
+            }))
             ->willReturn('Hey Joe!');
 
         self::assertSame('Hey Joe!', $mock->hey('Joe'));
