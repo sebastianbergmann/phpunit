@@ -168,6 +168,11 @@ final class TestResult
         $this->phpWarnings                           = $phpWarnings;
     }
 
+    public function numberOfTests(): int
+    {
+        return $this->numberOfTests;
+    }
+
     public function numberOfTestsRun(): int
     {
         return $this->numberOfTestsRun;
