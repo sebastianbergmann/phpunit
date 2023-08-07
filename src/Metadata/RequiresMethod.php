@@ -33,7 +33,7 @@ final class RequiresMethod extends Metadata
         $this->methodName = $methodName;
     }
 
-    public function isrequiresMethod(): bool
+    public function isRequiresMethod(): bool
     {
         return true;
     }
