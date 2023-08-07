@@ -27,6 +27,7 @@ final class IgnoreMethodForCodeCoverage extends Metadata
     private readonly string $methodName;
 
     /**
+     * @psalm-param 0|1 $level
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      */
@@ -38,6 +39,9 @@ final class IgnoreMethodForCodeCoverage extends Metadata
         $this->methodName = $methodName;
     }
 
+    /**
+     * @psalm-assert-if-true IgnoreMethodForCodeCoverage $this
+     */
     public function isIgnoreMethodForCodeCoverage(): bool
     {
         return true;

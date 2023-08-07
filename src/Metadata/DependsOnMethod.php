@@ -20,12 +20,18 @@ final class DependsOnMethod extends Metadata
      * @psalm-var class-string
      */
     private readonly string $className;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $methodName;
     private readonly bool $deepClone;
     private readonly bool $shallowClone;
 
     /**
+     * @psalm-param 0|1 $level
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      */
     protected function __construct(int $level, string $className, string $methodName, bool $deepClone, bool $shallowClone)
     {
@@ -37,6 +43,9 @@ final class DependsOnMethod extends Metadata
         $this->shallowClone = $shallowClone;
     }
 
+    /**
+     * @psalm-assert-if-true DependsOnMethod $this
+     */
     public function isDependsOnMethod(): bool
     {
         return true;
@@ -50,6 +59,9 @@ final class DependsOnMethod extends Metadata
         return $this->className;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function methodName(): string
     {
         return $this->methodName;

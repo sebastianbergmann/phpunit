@@ -22,6 +22,7 @@ final class UsesDefaultClass extends Metadata
     private readonly string $className;
 
     /**
+     * @psalm-param 0|1 $level
      * @psalm-param class-string $className
      */
     protected function __construct(int $level, string $className)
@@ -31,6 +32,9 @@ final class UsesDefaultClass extends Metadata
         $this->className = $className;
     }
 
+    /**
+     * @psalm-assert-if-true UsesDefaultClass $this
+     */
     public function isUsesDefaultClass(): bool
     {
         return true;

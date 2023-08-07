@@ -16,6 +16,9 @@ namespace PHPUnit\Metadata;
  */
 final class BeforeClass extends Metadata
 {
+    /**
+     * @psalm-assert-if-true BeforeClass $this
+     */
     public function isBeforeClass(): bool
     {
         return true;

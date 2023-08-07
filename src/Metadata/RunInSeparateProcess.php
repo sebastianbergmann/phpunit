@@ -16,6 +16,9 @@ namespace PHPUnit\Metadata;
  */
 final class RunInSeparateProcess extends Metadata
 {
+    /**
+     * @psalm-assert-if-true RunInSeparateProcess $this
+     */
     public function isRunInSeparateProcess(): bool
     {
         return true;

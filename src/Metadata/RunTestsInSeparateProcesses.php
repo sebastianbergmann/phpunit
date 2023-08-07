@@ -16,6 +16,9 @@ namespace PHPUnit\Metadata;
  */
 final class RunTestsInSeparateProcesses extends Metadata
 {
+    /**
+     * @psalm-assert-if-true RunTestsInSeparateProcesses $this
+     */
     public function isRunTestsInSeparateProcesses(): bool
     {
         return true;

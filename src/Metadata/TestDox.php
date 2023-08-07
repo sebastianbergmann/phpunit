@@ -16,8 +16,15 @@ namespace PHPUnit\Metadata;
  */
 final class TestDox extends Metadata
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $text;
 
+    /**
+     * @psalm-param 0|1 $level
+     * @psalm-param non-empty-string $text
+     */
     protected function __construct(int $level, string $text)
     {
         parent::__construct($level);
@@ -25,11 +32,17 @@ final class TestDox extends Metadata
         $this->text = $text;
     }
 
+    /**
+     * @psalm-assert-if-true TestDox $this
+     */
     public function isTestDox(): bool
     {
         return true;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function text(): string
     {
         return $this->text;

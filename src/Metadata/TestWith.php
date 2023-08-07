@@ -18,6 +18,9 @@ final class TestWith extends Metadata
 {
     private readonly array $data;
 
+    /**
+     * @psalm-param 0|1 $level
+     */
     protected function __construct(int $level, array $data)
     {
         parent::__construct($level);
@@ -25,6 +28,9 @@ final class TestWith extends Metadata
         $this->data = $data;
     }
 
+    /**
+     * @psalm-assert-if-true TestWith $this
+     */
     public function isTestWith(): bool
     {
         return true;

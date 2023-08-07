@@ -421,9 +421,6 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$_dataProvider->methodName()]]></code>
-    </ArgumentTypeCoercion>
     <PossiblyInvalidArgument>
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
@@ -459,12 +456,6 @@
       <code>assert($metadata instanceof RequiresPhpunit)</code>
       <code>assert($metadata instanceof RequiresSetting)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/Metadata/Metadata.php">
-    <ArgumentTypeCoercion>
-      <code>$className</code>
-      <code>$className</code>
-    </ArgumentTypeCoercion>
   </file>
   <file src="src/Metadata/MetadataCollection.php">
     <PropertyTypeCoercion>
@@ -512,10 +503,26 @@
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$function</code>
+      <code>$function</code>
+      <code>$methodName</code>
       <code>$pieces[0]</code>
       <code>$pieces[0]</code>
+      <code>$pieces[1]</code>
+      <code>$pieces[1]</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code><![CDATA[explode('::', $value)]]></code>
       <code><![CDATA[explode('::', $value)]]></code>
       <code>trim($tmp[0])</code>
+      <code>trim($tmp[1])</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Metadata/Version/Requirement.php">

@@ -16,6 +16,9 @@ namespace PHPUnit\Metadata;
  */
 final class DoesNotPerformAssertions extends Metadata
 {
+    /**
+     * @psalm-assert-if-true DoesNotPerformAssertions $this
+     */
     public function isDoesNotPerformAssertions(): bool
     {
         return true;

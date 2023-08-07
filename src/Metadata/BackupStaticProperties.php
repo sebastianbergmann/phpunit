@@ -18,6 +18,9 @@ final class BackupStaticProperties extends Metadata
 {
     private readonly bool $enabled;
 
+    /**
+     * @psalm-param 0|1 $level
+     */
     protected function __construct(int $level, bool $enabled)
     {
         parent::__construct($level);
@@ -25,6 +28,9 @@ final class BackupStaticProperties extends Metadata
         $this->enabled = $enabled;
     }
 
+    /**
+     * @psalm-assert-if-true BackupStaticProperties $this
+     */
     public function isBackupStaticProperties(): bool
     {
         return true;

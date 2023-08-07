@@ -20,10 +20,16 @@ final class DataProvider extends Metadata
      * @psalm-var class-string
      */
     private readonly string $className;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $methodName;
 
     /**
+     * @psalm-param 0|1 $level
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      */
     protected function __construct(int $level, string $className, string $methodName)
     {
@@ -33,6 +39,9 @@ final class DataProvider extends Metadata
         $this->methodName = $methodName;
     }
 
+    /**
+     * @psalm-assert-if-true DataProvider $this
+     */
     public function isDataProvider(): bool
     {
         return true;
@@ -46,6 +55,9 @@ final class DataProvider extends Metadata
         return $this->className;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function methodName(): string
     {
         return $this->methodName;

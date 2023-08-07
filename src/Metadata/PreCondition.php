@@ -16,6 +16,9 @@ namespace PHPUnit\Metadata;
  */
 final class PreCondition extends Metadata
 {
+    /**
+     * @psalm-assert-if-true PreCondition $this
+     */
     public function isPreCondition(): bool
     {
         return true;

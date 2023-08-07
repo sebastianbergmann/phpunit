@@ -16,9 +16,21 @@ namespace PHPUnit\Metadata;
  */
 final class RequiresSetting extends Metadata
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $setting;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $value;
 
+    /**
+     * @psalm-param 0|1 $level
+     * @psalm-param non-empty-string $setting
+     * @psalm-param non-empty-string $value
+     */
     protected function __construct(int $level, string $setting, string $value)
     {
         parent::__construct($level);
@@ -27,16 +39,25 @@ final class RequiresSetting extends Metadata
         $this->value   = $value;
     }
 
+    /**
+     * @psalm-assert-if-true RequiresSetting $this
+     */
     public function isRequiresSetting(): bool
     {
         return true;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function setting(): string
     {
         return $this->setting;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function value(): string
     {
         return $this->value;

@@ -24,6 +24,7 @@ final class DependsOnClass extends Metadata
     private readonly bool $shallowClone;
 
     /**
+     * @psalm-param 0|1 $level
      * @psalm-param class-string $className
      */
     protected function __construct(int $level, string $className, bool $deepClone, bool $shallowClone)
@@ -35,6 +36,9 @@ final class DependsOnClass extends Metadata
         $this->shallowClone = $shallowClone;
     }
 
+    /**
+     * @psalm-assert-if-true DependsOnClass $this
+     */
     public function isDependsOnClass(): bool
     {
         return true;

@@ -16,8 +16,15 @@ namespace PHPUnit\Metadata;
  */
 final class RequiresFunction extends Metadata
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $functionName;
 
+    /**
+     * @psalm-param 0|1 $level
+     * @psalm-param non-empty-string $functionName
+     */
     protected function __construct(int $level, string $functionName)
     {
         parent::__construct($level);
@@ -25,11 +32,17 @@ final class RequiresFunction extends Metadata
         $this->functionName = $functionName;
     }
 
+    /**
+     * @psalm-assert-if-true RequiresFunction $this
+     */
     public function isRequiresFunction(): bool
     {
         return true;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function functionName(): string
     {
         return $this->functionName;

@@ -18,9 +18,16 @@ use PHPUnit\Metadata\Version\Requirement;
  */
 final class RequiresPhpExtension extends Metadata
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $extension;
     private readonly ?Requirement $versionRequirement;
 
+    /**
+     * @psalm-param 0|1 $level
+     * @psalm-param non-empty-string $extension
+     */
     protected function __construct(int $level, string $extension, ?Requirement $versionRequirement)
     {
         parent::__construct($level);
@@ -29,11 +36,17 @@ final class RequiresPhpExtension extends Metadata
         $this->versionRequirement = $versionRequirement;
     }
 
+    /**
+     * @psalm-assert-if-true RequiresPhpExtension $this
+     */
     public function isRequiresPhpExtension(): bool
     {
         return true;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function extension(): string
     {
         return $this->extension;
