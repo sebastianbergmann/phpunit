@@ -28,10 +28,10 @@ final class MockBuilderTest extends TestCase
     {
         $className = 'random_' . md5((string) mt_rand());
 
-        $o = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
             ->setMockClassName($className)
             ->getMock();
 
-        $this->assertSame($className, $o::class);
+        $this->assertSame($className, $double::class);
     }
 }
