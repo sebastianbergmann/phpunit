@@ -228,8 +228,6 @@ abstract class TestDoubleTestCase extends TestCase
      * @psalm-param class-string<RealInstanceType> $type
      *
      * @psalm-return (Stub|MockObject)&RealInstanceType
-     *
-     * @noinspection PhpParameterNameChangedDuringInheritanceInspection
      */
     abstract protected function createTestDouble(string $type): object;
 
