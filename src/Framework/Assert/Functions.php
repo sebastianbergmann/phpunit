@@ -252,7 +252,6 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeContainsOnly')) {
      * or an attribute of an object contains only values of a given type.
      *
      * @param object|string $haystackClassOrObject
-     * @param bool          $isNativeType
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
@@ -292,7 +291,6 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotContainsOnly')) {
      * type.
      *
      * @param object|string $haystackClassOrObject
-     * @param bool          $isNativeType
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
