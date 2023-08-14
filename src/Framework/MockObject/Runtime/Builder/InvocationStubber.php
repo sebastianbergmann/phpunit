@@ -34,10 +34,6 @@ interface InvocationStubber
 
     public function willReturnSelf(): self;
 
-    /**
-     * @deprecated Use <code>$double->willReturn(1, 2, 3)</code> instead of <code>$double->willReturnOnConsecutiveCalls(1, 2, 3)</code>
-     * @see https://github.com/sebastianbergmann/phpunit/issues/5425
-     */
     public function willReturnOnConsecutiveCalls(mixed ...$values): self;
 
     public function willThrowException(Throwable $exception): self;

@@ -166,6 +166,24 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertTrue($double->doSomething());
     }
 
+    final public function testMethodCanBeConfiguredToReturnDifferentValuesAndThrowExceptionsOnConsecutiveCalls(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomething')->willReturnOnConsecutiveCalls(
+            false,
+            true,
+            $this->throwException(new Exception),
+        );
+
+        $this->assertFalse($double->doSomething());
+        $this->assertTrue($double->doSomething());
+
+        $this->expectException(Exception::class);
+
+        $double->doSomething();
+    }
+
     final public function testMethodCanBeConfiguredToThrowAnException(): void
     {
         $expectedException = new Exception('exception configured using throwException()');

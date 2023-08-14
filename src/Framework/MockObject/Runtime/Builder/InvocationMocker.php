@@ -142,10 +142,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this->will($stub);
     }
 
-    /**
-     * @deprecated Use <code>$double->willReturn(1, 2, 3)</code> instead of <code>$double->willReturnOnConsecutiveCalls(1, 2, 3)</code>
-     * @see https://github.com/sebastianbergmann/phpunit/issues/5425
-     */
     public function willReturnOnConsecutiveCalls(mixed ...$values): self
     {
         $stub = new ConsecutiveCalls($values);
