@@ -264,13 +264,6 @@
     </PossiblyFalseOperand>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$this->type]]></code>
-      <code><![CDATA[$this->type]]></code>
-      <code><![CDATA[$this->type]]></code>
-      <code><![CDATA[$this->type]]></code>
-      <code><![CDATA[$this->type]]></code>
-    </ArgumentTypeCoercion>
     <InvalidReturnStatement>
       <code>$object</code>
       <code>$object</code>

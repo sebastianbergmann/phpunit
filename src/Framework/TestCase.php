@@ -1249,7 +1249,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Creates a partial mock object for the specified interface or class.
      *
-     * @psalm-param list<string> $methods
+     * @psalm-param list<non-empty-string> $methods
      *
      * @psalm-template RealInstanceType of object
      *

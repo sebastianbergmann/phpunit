@@ -10,6 +10,8 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function array_merge;
+use function assert;
+use function trait_exists;
 use PHPUnit\Framework\MockObject\Generator\ClassAlreadyExistsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
@@ -32,10 +34,22 @@ use ReflectionClass;
 final class MockBuilder
 {
     private readonly TestCase $testCase;
+
+    /**
+     * @psalm-var class-string|trait-string
+     */
     private readonly string $type;
-    private ?array $methods                = [];
-    private bool $emptyMethodsArray        = false;
-    private string $mockClassName          = '';
+
+    /**
+     * @psalm-var list<non-empty-string>
+     */
+    private array $methods          = [];
+    private bool $emptyMethodsArray = false;
+
+    /**
+     * @psalm-var ?class-string
+     */
+    private ?string $mockClassName         = null;
     private array $constructorArgs         = [];
     private bool $originalConstructor      = true;
     private bool $originalClone            = true;
@@ -48,7 +62,7 @@ final class MockBuilder
     private readonly Generator $generator;
 
     /**
-     * @psalm-param class-string $type
+     * @psalm-param class-string|trait-string $type
      */
     public function __construct(TestCase $testCase, string $type)
     {
@@ -80,7 +94,7 @@ final class MockBuilder
             $this->type,
             !$this->emptyMethodsArray ? $this->methods : null,
             $this->constructorArgs,
-            $this->mockClassName,
+            $this->mockClassName ?? '',
             $this->originalConstructor,
             $this->originalClone,
             $this->autoload,
@@ -114,7 +128,7 @@ final class MockBuilder
         $object = $this->generator->getMockForAbstractClass(
             $this->type,
             $this->constructorArgs,
-            $this->mockClassName,
+            $this->mockClassName ?? '',
             $this->originalConstructor,
             $this->originalClone,
             $this->autoload,
@@ -140,10 +154,12 @@ final class MockBuilder
      */
     public function getMockForTrait(): MockObject
     {
+        assert(trait_exists($this->type));
+
         $object = $this->generator->getMockForTrait(
             $this->type,
             $this->constructorArgs,
-            $this->mockClassName,
+            $this->mockClassName ?? '',
             $this->originalConstructor,
             $this->originalClone,
             $this->autoload,
@@ -159,7 +175,7 @@ final class MockBuilder
     /**
      * Specifies the subset of methods to mock, requiring each to exist in the class.
      *
-     * @psalm-param list<string> $methods
+     * @psalm-param list<non-empty-string> $methods
      *
      * @throws CannotUseOnlyMethodsException
      * @throws ReflectionException
@@ -190,7 +206,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = array_merge($this->methods ?? [], $methods);
+        $this->methods = array_merge($this->methods, $methods);
 
         return $this;
     }
@@ -198,7 +214,7 @@ final class MockBuilder
     /**
      * Specifies methods that don't exist in the class which you want to mock.
      *
-     * @psalm-param list<string> $methods
+     * @psalm-param list<non-empty-string> $methods
      *
      * @throws CannotUseAddMethodsException
      * @throws ReflectionException
@@ -232,7 +248,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = array_merge($this->methods ?? [], $methods);
+        $this->methods = array_merge($this->methods, $methods);
 
         return $this;
     }
@@ -251,6 +267,8 @@ final class MockBuilder
 
     /**
      * Specifies the name for the mock class.
+     *
+     * @psalm-param class-string $name
      *
      * @return $this
      */
