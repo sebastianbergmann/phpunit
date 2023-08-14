@@ -16,15 +16,24 @@ use SebastianBergmann\Type\Type;
  */
 final class ConfigurableMethod
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $name;
     private readonly Type $returnType;
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
     public function __construct(string $name, Type $returnType)
     {
         $this->name       = $name;
         $this->returnType = $returnType;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;
