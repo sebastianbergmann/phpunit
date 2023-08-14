@@ -253,8 +253,6 @@ final class MockBuilder
      * Specifies the name for the mock class.
      *
      * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5444
      */
     public function setMockClassName(string $name): self
     {
