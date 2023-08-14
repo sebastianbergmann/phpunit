@@ -41,10 +41,6 @@ final class ConfigurableMethod
 
     public function mayReturn(mixed $value): bool
     {
-        if ($value === null && $this->returnType->allowsNull()) {
-            return true;
-        }
-
         return $this->returnType->isAssignable(Type::fromValue($value, false));
     }
 
