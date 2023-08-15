@@ -25,6 +25,15 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 * `TestCase::createStub()`, `TestCase::createStubForIntersectionOfInterfaces()`, and `TestCase::createConfiguredStub()` are now static (and can be used from static data provider methods)
 * The internal methods `__phpunit_*()` have been removed from the `Stub` and `MockObject` interfaces
 
+# Deprecated
+
+* [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214): Deprecate `TestCase::iniSet()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
+* [#5216](https://github.com/sebastianbergmann/phpunit/issues/5216): Deprecate `TestCase::setLocale()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
+* [#5421](https://github.com/sebastianbergmann/phpunit/issues/5421): Deprecate `MockBuilder::enableAutoReturnValueGeneration()` and `MockBuilder::disableAutoReturnValueGeneration()` (these methods only have a `@deprecated` annotation for now; using these methods will trigger a deprecation warning in PHPUnit 11; these methods will be removed in PHPUnit 12)
+* [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423): Deprecate `TestCase::returnValue()`, `TestCase::onConsecutiveCalls()`, `TestCase::returnValueMap()`, `TestCase::returnArgument()`, `TestCase::returnSelf()`, `TestCase::returnCallback()`, and `TestCase::throwException()` (these methods only have a `@deprecated` annotation for now; using these methods will trigger a deprecation warning in PHPUnit 11; these methods will be removed in PHPUnit 12)
+* [#5425](https://github.com/sebastianbergmann/phpunit/issues/5425): Deprecate `InvocationMocker::willReturnOnConsecutiveCalls()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
+* [#5444](https://github.com/sebastianbergmann/phpunit/issues/5444): Deprecate `MockBuilder::setMockClassName()` (this method only has a `@deprecated` annotation for now; using this method will trigger a deprecation warning in PHPUnit 11; this method will be removed in PHPUnit 12)
+
 ### Fixed
 
 * [#5456](https://github.com/sebastianbergmann/phpunit/issues/5456): Risky Test Check for Output Buffering is performed before after-test methods are called
