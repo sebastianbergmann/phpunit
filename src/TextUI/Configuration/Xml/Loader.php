@@ -210,6 +210,9 @@ final class Loader
         return ExtensionBootstrapCollection::fromArray($extensionBootstrappers);
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     private function toAbsolutePath(string $filename, string $path): string
     {
         $path = trim($path);
@@ -227,6 +230,7 @@ final class Loader
         //  - C:/windows
         //  - c:/windows
         if (defined('PHP_WINDOWS_VERSION_BUILD') &&
+            !empty($path) &&
             ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
         }
