@@ -60,9 +60,9 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 * [#4141](https://github.com/sebastianbergmann/phpunit/issues/4141): `TestCase::prophesize()` (since PHPUnit 9.1.0)
 * [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): `TestCase::at()` (since PHPUnit 9.3.0)
 * [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): `InvokedAtIndex` (since PHPUnit 9.3.0)
-* `TestCase::getMockClass()` (since PHPUnit 9.6.0)
-* `InvocationMocker::withConsecutive()` (since PHPUnit 9.6.0)
-* `ConsecutiveParameters` (since PHPUnit 9.6.0)
+* [#5063](https://github.com/sebastianbergmann/phpunit/issues/5063): `InvocationMocker::withConsecutive()` (since PHPUnit 9.6.0)
+* [#5063](https://github.com/sebastianbergmann/phpunit/issues/5063): `ConsecutiveParameters` (since PHPUnit 9.6.0)
+* [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): `TestCase::getMockClass()` (since PHPUnit 9.6.0)
 
 #### Miscellaneous
 
