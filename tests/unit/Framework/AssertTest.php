@@ -1528,6 +1528,30 @@ XML;
         $this->assertNotInstanceOf(stdClass::class, new stdClass);
     }
 
+    public function testAssertFileMatchesFormat(): void
+    {
+        $this->assertFileMatchesFormat("FOO\n", TEST_FILES_PATH . 'expectedFileFormat.txt');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileMatchesFormat("BAR\n", TEST_FILES_PATH . 'expectedFileFormat.txt');
+    }
+
+    public function testAssertFileMatchesFormatFile(): void
+    {
+        $this->assertFileMatchesFormatFile(
+            TEST_FILES_PATH . 'expectedFileFormat.txt',
+            TEST_FILES_PATH . 'expectedFileFormat.txt',
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileMatchesFormatFile(
+            TEST_FILES_PATH . 'expectedFileFormat.txt',
+            TEST_FILES_PATH . 'actualFileFormat.txt',
+        );
+    }
+
     public function testAssertStringMatchesFormatFile(): void
     {
         $this->assertStringMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "FOO\n");
