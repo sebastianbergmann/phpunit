@@ -66,6 +66,7 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 #### Miscellaneous
 
+* [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): `Test` suffix for abstract test case classes
 * `TestCase::$backupGlobalsBlacklist` (since PHPUnit 9.3.0)
 * `TestCase::$backupStaticAttributesBlacklist` (since PHPUnit 9.3.0)
 
