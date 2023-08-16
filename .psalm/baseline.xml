@@ -142,6 +142,10 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Assert/Functions.php">
+    <DeprecatedMethod>
+      <code>Assert::assertStringNotMatchesFormat(...func_get_args())</code>
+      <code>Assert::assertStringNotMatchesFormatFile(...func_get_args())</code>
+    </DeprecatedMethod>
     <TooManyArguments>
       <code>Assert::anything(...func_get_args())</code>
       <code>Assert::directoryExists(...func_get_args())</code>

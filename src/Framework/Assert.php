@@ -1579,6 +1579,8 @@ abstract class Assert
      * Asserts that a string does not match a given format string.
      *
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
      */
     final public static function assertStringNotMatchesFormat(string $format, string $string, string $message = ''): void
     {
@@ -1613,6 +1615,8 @@ abstract class Assert
      * Asserts that a string does not match a given format string.
      *
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
      */
     final public static function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
     {

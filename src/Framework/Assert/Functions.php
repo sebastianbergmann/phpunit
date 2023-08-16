@@ -1827,6 +1827,7 @@ if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormat')) {
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertStringNotMatchesFormat
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
      */
     function assertStringNotMatchesFormat(string $format, string $string, string $message = ''): void
     {
@@ -1859,6 +1860,7 @@ if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormatFile')) {
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertStringNotMatchesFormatFile
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
      */
     function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
     {
