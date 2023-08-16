@@ -569,6 +569,17 @@
       <code>stop</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/Runner/ErrorHandler.php">
+    <ArgumentTypeCoercion>
+      <code>$errorFile</code>
+      <code>$errorLine</code>
+      <code>$errorString</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock>
+      <code>Issue::from($file, $line, null, $description)</code>
+      <code>Issue::from($file, $line, null, $description)</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingTemplateParam>
       <code>GroupFilterIterator</code>
