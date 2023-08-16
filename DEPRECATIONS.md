@@ -6,8 +6,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 ### Writing Tests
 
-#### Assertions, Constraints, and Expectations
-
 #### Test Double API
 
 * [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240): `TestCase::createTestProxy()` (since PHPUnit 10.1.0)
