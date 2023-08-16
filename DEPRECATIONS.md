@@ -4,9 +4,12 @@
 
 This functionality is currently [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation):
 
-* [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214): `TestCase::iniSet()` (since PHPUnit 10.3.0)
-* [#5216](https://github.com/sebastianbergmann/phpunit/issues/5216): `TestCase::setLocale()` (since PHPUnit 10.3.0)
-* [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236): `PHPUnit\Framework\Attributes\CodeCoverageIgnore()` (since PHPUnit 10.1.0)
+### Writing Tests
+
+#### Assertions, Constraints, and Expectations
+
+#### Test Double API
+
 * [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240): `TestCase::createTestProxy()` (since PHPUnit 10.1.0)
 * [#5241](https://github.com/sebastianbergmann/phpunit/issues/5241): `TestCase::getMockForAbstractClass()` (since PHPUnit 10.1.0)
 * [#5242](https://github.com/sebastianbergmann/phpunit/issues/5242): `TestCase::getMockFromWsdl()` (since PHPUnit 10.1.0)
@@ -32,6 +35,15 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 * [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423): `TestCase::returnSelf()` (since PHPUnit 10.3.0)
 * [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423): `TestCase::returnValue()` (since PHPUnit 10.3.0)
 * [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423): `TestCase::returnValueMap()` (since PHPUnit 10.3.0)
+
+#### Miscellaneous
+
+* [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214): `TestCase::iniSet()` (since PHPUnit 10.3.0)
+* [#5216](https://github.com/sebastianbergmann/phpunit/issues/5216): `TestCase::setLocale()` (since PHPUnit 10.3.0)
+* [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236): `PHPUnit\Framework\Attributes\CodeCoverageIgnore()` (since PHPUnit 10.1.0)
+
+### Extending PHPUnit
+
 * `PHPUnit\TextUI\Configuration\Configuration::excludeDirectories()` (since PHPUnit 10.2.0)
 * `PHPUnit\TextUI\Configuration\Configuration::excludeFiles()` (since PHPUnit 10.2.0)
 * `PHPUnit\TextUI\Configuration\Configuration::includeDirectories()` (since PHPUnit 10.2.0)
@@ -45,5 +57,9 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 ## Hard Deprecations
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):
+
+### Writing Tests
+
+#### Miscellaneous
 
 * [#5100](https://github.com/sebastianbergmann/phpunit/issues/5100): Support for non-static data provider methods, non-public data provider methods, and data provider methods that declare parameters (since PHPUnit 10.0.0)
