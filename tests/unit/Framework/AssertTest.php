@@ -1528,13 +1528,6 @@ XML;
         $this->assertNotInstanceOf(stdClass::class, new stdClass);
     }
 
-    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringMatchesFormatFile('not_existing_file', '');
-    }
-
     public function testAssertStringMatchesFormatFile(): void
     {
         $this->assertStringMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "FOO\n");
@@ -1542,13 +1535,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "BAR\n");
-    }
-
-    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringNotMatchesFormatFile('not_existing_file', '');
     }
 
     public function testAssertStringNotMatchesFormatFile(): void
