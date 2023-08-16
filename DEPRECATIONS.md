@@ -4,12 +4,13 @@
 
 This functionality is currently [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation):
 
+* [#3687](https://github.com/sebastianbergmann/phpunit/issues/3687): `MockBuilder::setMethods()` (since PHPUnit 8.3.0)
+* [#3687](https://github.com/sebastianbergmann/phpunit/issues/3687): `MockBuilder::setMethodsExcept()` (since PHPUnit 9.6.0)
+
 ## Hard Deprecations
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):
 
-* [#3687](https://github.com/sebastianbergmann/phpunit/issues/3687): `MockBuilder::setMethods()` (since PHPUnit 8.3.0)
-* [#3687](https://github.com/sebastianbergmann/phpunit/issues/3687): `MockBuilder::setMethodsExcept()` (since PHPUnit 9.6.0)
 * [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `Command::handleLoader()` (since PHPUnit 9.1.0)
 * [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `TestSuiteLoader` (since PHPUnit 9.1.0)
 * [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `StandardTestSuiteLoader` (since PHPUnit 9.1.0)
