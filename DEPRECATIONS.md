@@ -4,6 +4,10 @@
 
 This functionality is currently [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation):
 
+### Writing Tests
+
+#### Test Double API
+
 * [#3687](https://github.com/sebastianbergmann/phpunit/issues/3687): `MockBuilder::setMethods()` (since PHPUnit 8.3.0)
 * [#3687](https://github.com/sebastianbergmann/phpunit/issues/3687): `MockBuilder::setMethodsExcept()` (since PHPUnit 9.6.0)
 
@@ -11,9 +15,10 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):
 
-* [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `Command::handleLoader()` (since PHPUnit 9.1.0)
-* [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `TestSuiteLoader` (since PHPUnit 9.1.0)
-* [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `StandardTestSuiteLoader` (since PHPUnit 9.1.0)
+### Writing Tests
+
+#### Assertions, Constraints, and Expectations
+
 * [#4062](https://github.com/sebastianbergmann/phpunit/issues/4062): `TestCase::assertNotIsReadable()` (since PHPUnit 9.1.0)
 * [#4065](https://github.com/sebastianbergmann/phpunit/issues/4065): `TestCase::assertNotIsWritable()` (since PHPUnit 9.1.0)
 * [#4068](https://github.com/sebastianbergmann/phpunit/issues/4068): `TestCase::assertDirectoryNotExists()` (since PHPUnit 9.1.0)
@@ -25,9 +30,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 * [#4086](https://github.com/sebastianbergmann/phpunit/issues/4086): `TestCase::assertRegExp()` (since PHPUnit 9.1.0)
 * [#4089](https://github.com/sebastianbergmann/phpunit/issues/4089): `TestCase::assertNotRegExp()` (since PHPUnit 9.1.0)
 * [#4091](https://github.com/sebastianbergmann/phpunit/issues/4091): `TestCase::assertEqualXMLStructure()` (since PHPUnit 9.1.0)
-* [#4141](https://github.com/sebastianbergmann/phpunit/issues/4141): `TestCase::prophesize()` (since PHPUnit 9.1.0)
-* [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): `TestCase::at()` (since PHPUnit 9.3.0)
-* [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): `InvokedAtIndex` (since PHPUnit 9.3.0)
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): `TestCase::assertClassHasAttribute()` (since PHPUnit 9.6.1)
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): `TestCase::assertClassNotHasAttribute()` (since PHPUnit 9.6.1)
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): `TestCase::assertClassHasStaticAttribute()` (since PHPUnit 9.6.1)
@@ -40,8 +42,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): `ClassHasAttribute` (since PHPUnit 9.6.1)
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): `ClassHasStaticAttribute` (since PHPUnit 9.6.1)
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): `ObjectHasAttribute` (since PHPUnit 9.6.1)
-* [#4676](https://github.com/sebastianbergmann/phpunit/issues/4676): `TestListener` (since PHPUnit 8.0.0)
-* [#4676](https://github.com/sebastianbergmann/phpunit/issues/4676): `TestListenerDefaultImplementation` (since PHPUnit 8.2.4)
 * [#5062](https://github.com/sebastianbergmann/phpunit/issues/5062): `TestCase::expectDeprecation()` (since PHPUnit 9.6.0)
 * [#5062](https://github.com/sebastianbergmann/phpunit/issues/5062): `TestCase::expectDeprecationMessage()` (since PHPUnit 9.6.0)
 * [#5062](https://github.com/sebastianbergmann/phpunit/issues/5062): `TestCase::expectDeprecationMessageMatches()` (since PHPUnit 9.6.0)
@@ -54,8 +54,25 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 * [#5062](https://github.com/sebastianbergmann/phpunit/issues/5062): `TestCase::expectWarning()` (since PHPUnit 9.6.0)
 * [#5062](https://github.com/sebastianbergmann/phpunit/issues/5062): `TestCase::expectWarningMessage()` (since PHPUnit 9.6.0)
 * [#5062](https://github.com/sebastianbergmann/phpunit/issues/5062): `TestCase::expectWarningMessageMatches()` (since PHPUnit 9.6.0)
-* `TestCase::$backupGlobalsBlacklist` (since PHPUnit 9.3.0)
-* `TestCase::$backupStaticAttributesBlacklist` (since PHPUnit 9.3.0)
+
+#### Test Double API
+
+* [#4141](https://github.com/sebastianbergmann/phpunit/issues/4141): `TestCase::prophesize()` (since PHPUnit 9.1.0)
+* [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): `TestCase::at()` (since PHPUnit 9.3.0)
+* [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): `InvokedAtIndex` (since PHPUnit 9.3.0)
 * `TestCase::getMockClass()` (since PHPUnit 9.6.0)
 * `InvocationMocker::withConsecutive()` (since PHPUnit 9.6.0)
 * `ConsecutiveParameters` (since PHPUnit 9.6.0)
+
+#### Miscellaneous
+
+* `TestCase::$backupGlobalsBlacklist` (since PHPUnit 9.3.0)
+* `TestCase::$backupStaticAttributesBlacklist` (since PHPUnit 9.3.0)
+
+### Extending PHPUnit
+
+* [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `Command::handleLoader()` (since PHPUnit 9.1.0)
+* [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `TestSuiteLoader` (since PHPUnit 9.1.0)
+* [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): `StandardTestSuiteLoader` (since PHPUnit 9.1.0)
+* [#4676](https://github.com/sebastianbergmann/phpunit/issues/4676): `TestListener` (since PHPUnit 8.0.0)
+* [#4676](https://github.com/sebastianbergmann/phpunit/issues/4676): `TestListenerDefaultImplementation` (since PHPUnit 8.2.4)
