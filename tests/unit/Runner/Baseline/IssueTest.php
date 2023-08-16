@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -22,22 +23,25 @@ final class IssueTest extends TestCase
 {
     public function testHasFile(): void
     {
-        $this->assertSame('file.php', $this->issue()->file());
+        $this->assertSame(
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            $this->issue()->file(),
+        );
     }
 
     public function testHasLine(): void
     {
-        $this->assertSame(1, $this->issue()->line());
+        $this->assertSame(10, $this->issue()->line());
     }
 
     public function testHasHash(): void
     {
-        $this->assertSame('hash', $this->issue()->hash());
+        $this->assertSame('6bf70f0b8c461415955e2d3a97cfbe664f5b957b', $this->issue()->hash());
     }
 
     public function testHasDescription(): void
     {
-        $this->assertSame('description', $this->issue()->description());
+        $this->assertSame('Undefined variable $b', $this->issue()->description());
     }
 
     public function testIsComparable(): void
@@ -49,20 +53,20 @@ final class IssueTest extends TestCase
     private function issue(): Issue
     {
         return Issue::from(
-            'file.php',
-            1,
-            'hash',
-            'description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            'Undefined variable $b',
         );
     }
 
     private function anotherIssue(): Issue
     {
         return Issue::from(
-            'file.php',
-            2,
-            'hash',
-            'description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            11,
+            null,
+            'Undefined variable $c',
         );
     }
 }

@@ -10,6 +10,8 @@
 namespace PHPUnit\Runner\Baseline;
 
 use function assert;
+use function dirname;
+use function realpath;
 use DOMElement;
 use DOMXPath;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
@@ -23,12 +25,13 @@ final class Reader
     /**
      * @throws CannotLoadBaselineException
      */
-    public function read(string $source): Baseline
+    public function read(string $baselineFile): Baseline
     {
-        $baseline = new Baseline;
+        $baseline          = new Baseline;
+        $baselineDirectory = dirname(realpath($baselineFile));
 
         try {
-            $document = (new XmlLoader)->loadFile($source);
+            $document = (new XmlLoader)->loadFile($baselineFile);
         } catch (XmlException $e) {
             throw new CannotLoadBaselineException(
                 $e->getMessage(),
@@ -42,7 +45,7 @@ final class Reader
         foreach ($xpath->query('file') as $fileElement) {
             assert($fileElement instanceof DOMElement);
 
-            $file = $fileElement->getAttribute('path');
+            $file = $baselineDirectory . DIRECTORY_SEPARATOR . $fileElement->getAttribute('path');
 
             foreach ($xpath->query('line', $fileElement) as $lineElement) {
                 assert($lineElement instanceof DOMElement);

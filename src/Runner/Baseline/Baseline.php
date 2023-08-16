@@ -15,31 +15,31 @@ namespace PHPUnit\Runner\Baseline;
 final class Baseline
 {
     /**
-     * @psalm-var array<string, array<positive-int, list<Issue>>>
+     * @psalm-var array<non-empty-string, array<positive-int, list<Issue>>>
      */
     private array $issues = [];
 
-    public function add(Issue $entry): void
+    public function add(Issue $issue): void
     {
-        if (!isset($this->issues[$entry->file()])) {
-            $this->issues[$entry->file()] = [];
+        if (!isset($this->issues[$issue->file()])) {
+            $this->issues[$issue->file()] = [];
         }
 
-        if (!isset($this->issues[$entry->file()][$entry->line()])) {
-            $this->issues[$entry->file()][$entry->line()] = [];
+        if (!isset($this->issues[$issue->file()][$issue->line()])) {
+            $this->issues[$issue->file()][$issue->line()] = [];
         }
 
-        $this->issues[$entry->file()][$entry->line()][] = $entry;
+        $this->issues[$issue->file()][$issue->line()][] = $issue;
     }
 
-    public function has(Issue $entry): bool
+    public function has(Issue $issue): bool
     {
-        if (!isset($this->issues[$entry->file()][$entry->line()])) {
+        if (!isset($this->issues[$issue->file()][$issue->line()])) {
             return false;
         }
 
-        foreach ($this->issues[$entry->file()][$entry->line()] as $_entry) {
-            if ($_entry->equals($entry)) {
+        foreach ($this->issues[$issue->file()][$issue->line()] as $_issue) {
+            if ($_issue->equals($issue)) {
                 return true;
             }
         }

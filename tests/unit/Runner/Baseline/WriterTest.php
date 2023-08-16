@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
-use function sha1;
-use function sys_get_temp_dir;
-use function tempnam;
+use function realpath;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -25,7 +23,7 @@ final class WriterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->target = tempnam(sys_get_temp_dir(), sha1(__FILE__));
+        $this->target = realpath(__DIR__ . '/../../../_files/baseline') . DIRECTORY_SEPARATOR . 'actual.xml';
     }
 
     protected function tearDown(): void
@@ -37,7 +35,7 @@ final class WriterTest extends TestCase
     {
         (new Writer)->write($this->target, $this->baseline());
 
-        $this->assertXmlFileEqualsXmlFile(__DIR__ . '/../../../_files/baseline.xml', $this->target);
+        $this->assertXmlFileEqualsXmlFile(__DIR__ . '/../../../_files/baseline/expected.xml', $this->target);
     }
 
     private function baseline(): Baseline
@@ -54,30 +52,30 @@ final class WriterTest extends TestCase
     private function issue(): Issue
     {
         return Issue::from(
-            'file.php',
-            1,
-            'hash',
-            'description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            'Undefined variable $b',
         );
     }
 
     private function anotherIssue(): Issue
     {
         return Issue::from(
-            'file.php',
-            2,
-            'hash',
-            'description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            11,
+            null,
+            'Undefined variable $c',
         );
     }
 
     private function yetAnotherIssue(): Issue
     {
         return Issue::from(
-            'file.php',
-            1,
-            'hash',
-            'yet another description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            'yet another issue',
         );
     }
 }

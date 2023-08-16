@@ -16,6 +16,9 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final class Source
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly ?string $baseline;
     private readonly FilterDirectoryCollection $includeDirectories;
     private readonly FileCollection $includeFiles;
@@ -32,6 +35,9 @@ final class Source
     private readonly bool $ignoreSuppressionOfWarnings;
     private readonly bool $ignoreSuppressionOfPhpWarnings;
 
+    /**
+     * @psalm-param non-empty-string $baseline
+     */
     public function __construct(?string $baseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
     {
         $this->baseline                           = $baseline;
@@ -60,6 +66,8 @@ final class Source
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @throws NoBaselineException
      */
     public function baseline(): string

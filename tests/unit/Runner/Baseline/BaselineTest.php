@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -26,14 +27,14 @@ final class BaselineTest extends TestCase
         $issues = $baseline->groupedByFileAndLine();
 
         $this->assertCount(1, $issues);
-        $this->assertArrayHasKey('file.php', $issues);
+        $this->assertArrayHasKey($this->issue()->file(), $issues);
 
-        $lines = $issues['file.php'];
+        $lines = $issues[$this->issue()->file()];
 
         $this->assertCount(1, $lines);
-        $this->assertArrayHasKey(1, $lines);
+        $this->assertArrayHasKey(10, $lines);
 
-        $line = $lines[1];
+        $line = $lines[10];
 
         $this->assertCount(1, $line);
         $this->assertArrayHasKey(0, $line);
@@ -55,30 +56,30 @@ final class BaselineTest extends TestCase
     private function issue(): Issue
     {
         return Issue::from(
-            'file.php',
-            1,
-            'hash',
-            'description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            'Undefined variable $b',
         );
     }
 
     private function anotherIssue(): Issue
     {
         return Issue::from(
-            'file.php',
-            2,
-            'hash',
-            'description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            11,
+            null,
+            'Undefined variable $c',
         );
     }
 
     private function yetAnotherIssue(): Issue
     {
         return Issue::from(
-            'file.php',
-            1,
-            'hash',
-            'yet another description',
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            'yet another issue',
         );
     }
 }

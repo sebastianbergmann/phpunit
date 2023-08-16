@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use function assert;
+use function file;
+use function is_file;
+use function sha1;
+use PHPUnit\Runner\FileDoesNotExistException;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -37,11 +43,18 @@ final class Issue
     /**
      * @psalm-param non-empty-string $file
      * @psalm-param positive-int $line
-     * @psalm-param non-empty-string $hash
+     * @psalm-param ?non-empty-string $hash
      * @psalm-param non-empty-string $description
+     *
+     * @throws FileDoesNotExistException
+     * @throws FileDoesNotHaveLineException
      */
-    public static function from(string $file, int $line, string $hash, string $description): self
+    public static function from(string $file, int $line, ?string $hash, string $description): self
     {
+        if ($hash === null) {
+            $hash = self::calculateHash($file, $line);
+        }
+
         return new self($file, $line, $hash, $description);
     }
 
@@ -97,5 +110,34 @@ final class Issue
                $this->line() === $other->line() &&
                $this->hash() === $other->hash() &&
                $this->description() === $other->description();
+    }
+
+    /**
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @psalm-return non-empty-string
+     *
+     * @throws FileDoesNotExistException
+     * @throws FileDoesNotHaveLineException
+     */
+    private static function calculateHash(string $file, int $line): string
+    {
+        if (!is_file($file)) {
+            throw new FileDoesNotExistException($file);
+        }
+
+        $lines = file($file, FILE_IGNORE_NEW_LINES);
+        $key   = $line - 1;
+
+        if (!isset($lines[$key])) {
+            throw new FileDoesNotHaveLineException($file, $line);
+        }
+
+        $hash = sha1($lines[$key]);
+
+        assert(!empty($hash));
+
+        return $hash;
     }
 }
