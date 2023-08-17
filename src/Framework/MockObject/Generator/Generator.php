@@ -596,7 +596,7 @@ final class Generator
      */
     private function generateMock(string $type, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
-        $classTemplate        = $this->loadTemplate('mocked_class.tpl');
+        $classTemplate        = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces = [];
         $mockedCloneMethod    = false;
         $unmockedCloneMethod  = false;

@@ -156,11 +156,11 @@ final class MockMethod
     public function generateCode(): string
     {
         if ($this->static) {
-            $templateFile = 'mocked_static_method.tpl';
+            $templateFile = 'doubled_static_method.tpl';
         } else {
             $templateFile = sprintf(
                 '%s_method.tpl',
-                $this->callOriginalMethod ? 'proxied' : 'mocked',
+                $this->callOriginalMethod ? 'proxied' : 'doubled',
             );
         }
 
