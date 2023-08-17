@@ -30,7 +30,7 @@ class MockFoo extends ClassWithMethodWithVariadicArguments implements PHPUnit\Fr
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
     use PHPUnit\Framework\MockObject\Method;
-    use PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function methodWithVariadicArguments($a, ...$parameters)
     {

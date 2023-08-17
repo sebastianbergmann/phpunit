@@ -59,7 +59,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
     use PHPUnit\Framework\MockObject\Method;
-    use PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function speak()
     {

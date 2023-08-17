@@ -28,7 +28,7 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObjectInternal, Foo
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
     use PHPUnit\Framework\MockObject\Method;
-    use PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function bar(): Generator
     {

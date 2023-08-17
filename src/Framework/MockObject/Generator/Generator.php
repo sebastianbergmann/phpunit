@@ -45,14 +45,14 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
+use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 use PHPUnit\Framework\MockObject\Method;
-use PHPUnit\Framework\MockObject\MockedCloneMethod;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
+use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
-use PHPUnit\Framework\MockObject\UnmockedCloneMethod;
 use ReflectionClass;
 use ReflectionMethod;
 use SoapClient;
@@ -606,8 +606,8 @@ final class Generator
 
         $classTemplate        = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces = [];
-        $mockedCloneMethod    = false;
-        $unmockedCloneMethod  = false;
+        $doubledCloneMethod   = false;
+        $proxiedCloneMethod   = false;
         $isClass              = false;
         $isInterface          = false;
         $class                = null;
@@ -636,7 +636,7 @@ final class Generator
                 $epilogue = "\n\n}";
             }
 
-            $mockedCloneMethod = true;
+            $doubledCloneMethod = true;
         } else {
             $class = $this->reflectClass($_mockClassName['fullClassName']);
 
@@ -698,13 +698,13 @@ final class Generator
 
                 if (!$cloneMethod->isFinal()) {
                     if ($callOriginalClone && !$isInterface) {
-                        $unmockedCloneMethod = true;
+                        $proxiedCloneMethod = true;
                     } else {
-                        $mockedCloneMethod = true;
+                        $doubledCloneMethod = true;
                     }
                 }
             } else {
-                $mockedCloneMethod = true;
+                $doubledCloneMethod = true;
             }
         }
 
@@ -762,12 +762,12 @@ final class Generator
             $traits[] = Method::class;
         }
 
-        if ($mockedCloneMethod) {
-            $traits[] = MockedCloneMethod::class;
+        if ($doubledCloneMethod) {
+            $traits[] = DoubledCloneMethod::class;
         }
 
-        if ($unmockedCloneMethod) {
-            $traits[] = UnmockedCloneMethod::class;
+        if ($proxiedCloneMethod) {
+            $traits[] = ProxiedCloneMethod::class;
         }
 
         $useStatements = '';

@@ -12,12 +12,10 @@ namespace PHPUnit\Framework\MockObject;
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
  */
-trait UnmockedCloneMethod
+trait DoubledCloneMethod
 {
     public function __clone(): void
     {
         $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationHandler();
-
-        parent::__clone();
     }
 }
