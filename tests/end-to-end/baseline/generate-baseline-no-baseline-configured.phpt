@@ -1,5 +1,5 @@
 --TEST--
-phpunit --configuration ../_files/baseline/generate-baseline/phpunit.xml --generate-baseline
+phpunit --configuration ../_files/baseline/generate-baseline-no-baseline-configured/phpunit.xml --generate-baseline
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
