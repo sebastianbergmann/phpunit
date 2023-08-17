@@ -18,5 +18,5 @@
             )
         );
 
-        $__phpunit_result = call_user_func_array(array($this->__phpunit_originalObject, "{method_name}"), $__phpunit_arguments);{return_result}
+        $__phpunit_result = call_user_func_array([$this->__phpunit_originalObject, "{method_name}"], $__phpunit_arguments);{return_result}
     }

@@ -16,7 +16,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'Foo',
     true,
-    array('bar'),
+    ['bar'],
     'MockFoo',
     true,
     true
