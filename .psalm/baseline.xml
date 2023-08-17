@@ -321,14 +321,6 @@
       <code>disallowMockingUnknownTypes</code>
       <code>enableProxyingToOriginalMethods</code>
     </DeprecatedMethod>
-    <InvalidReturnStatement>
-      <code>$partialMock</code>
-      <code>$testProxy</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[MockObject&RealInstanceType]]></code>
-      <code><![CDATA[MockObject&RealInstanceType]]></code>
-    </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
