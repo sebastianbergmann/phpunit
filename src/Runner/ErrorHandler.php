@@ -51,7 +51,7 @@ final class ErrorHandler
         }
 
         if ($this->ignoredByBaseline($errorFile, $errorLine, $errorString)) {
-            return false;
+            return true;
         }
 
         switch ($errorNumber) {
