@@ -183,6 +183,8 @@ interface Emitter
 
     public function testTriggeredPhpunitError(Code\Test $test, string $message): void;
 
+    public function testTriggeredPhpunitNotice(Code\Test $test, string $message): void;
+
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void;
 
     /**

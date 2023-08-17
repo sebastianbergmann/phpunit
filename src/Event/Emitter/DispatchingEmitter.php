@@ -893,6 +893,21 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testTriggeredPhpunitNotice(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpunitNoticeTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+            ),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(

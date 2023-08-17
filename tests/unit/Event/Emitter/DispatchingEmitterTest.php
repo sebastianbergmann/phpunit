@@ -1664,6 +1664,38 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(0, $event->testSuite()->count());
     }
 
+    public function testTestTriggeredPhpunitNoticeDispatchesTestTriggeredPhpunitNoticeEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PhpunitNoticeTriggeredSubscriber
+        {
+            public function notify(Test\PhpunitNoticeTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PhpunitNoticeTriggeredSubscriber::class,
+            Test\PhpunitNoticeTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testTriggeredPhpunitNotice(
+            $this->testValueObject(),
+            'message',
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+        $this->assertInstanceOf(Test\PhpunitNoticeTriggered::class, $subscriber->lastRecordedEvent());
+    }
+
     private function testSuiteValueObject(): TestSuiteWithName
     {
         return new TestSuiteWithName(

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.4 release series are documented in this fi
 ### Added
 
 * [#5471](https://github.com/sebastianbergmann/phpunit/issues/5471): `assertFileMatchesFormat()` and `assertFileMatchesFormatFile()`
+* [#5475](https://github.com/sebastianbergmann/phpunit/issues/5475): "Test Triggered PHPUnit Notice" event
 
 ### Deprecated
 
