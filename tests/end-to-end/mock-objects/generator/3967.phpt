@@ -17,6 +17,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
     'Baz',
+    true,
     [],
     'MockBaz',
     true,

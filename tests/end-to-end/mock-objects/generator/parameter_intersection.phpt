@@ -23,6 +23,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
     Foo::class,
+    true,
     [],
     'MockFoo',
     true,

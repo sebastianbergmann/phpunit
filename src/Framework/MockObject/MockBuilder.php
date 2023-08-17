@@ -92,6 +92,7 @@ final class MockBuilder
     {
         $object = $this->generator->getMock(
             $this->type,
+            true,
             !$this->emptyMethodsArray ? $this->methods : null,
             $this->constructorArgs,
             $this->mockClassName ?? '',

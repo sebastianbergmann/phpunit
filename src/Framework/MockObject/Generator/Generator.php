@@ -104,7 +104,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function getMock(string $type, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
+    public function getMock(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -123,6 +123,7 @@ final class Generator
 
         $mock = $this->generate(
             $type,
+            true,
             $methods,
             $mockClassName,
             $callOriginalClone,
@@ -204,7 +205,7 @@ final class Generator
 
         eval($template->render());
 
-        return $this->getMock($intersectionName);
+        return $this->getMock($intersectionName, true);
     }
 
     /**
@@ -251,6 +252,7 @@ final class Generator
 
             return $this->getMock(
                 $originalClassName,
+                true,
                 $methods,
                 $arguments,
                 $mockClassName,
@@ -362,11 +364,12 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    public function generate(string $type, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
+    public function generate(string $type, bool $mockObject, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
     {
         if ($mockClassName !== '') {
             return $this->generateMock(
                 $type,
+                $mockObject,
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
@@ -387,6 +390,7 @@ final class Generator
         if (!isset(self::$cache[$key])) {
             self::$cache[$key] = $this->generateMock(
                 $type,
+                $mockObject,
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
@@ -599,21 +603,16 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function generateMock(string $type, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
+    private function generateMock(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
-        /** @todo This will become a parameter */
-        $mockObject = true;
-
-        $classTemplate        = $this->loadTemplate('test_double_class.tpl');
-        $additionalInterfaces = [];
-        $doubledCloneMethod   = false;
-        $proxiedCloneMethod   = false;
-        $isClass              = false;
-        $isInterface          = false;
-        $class                = null;
-        $mockMethods          = new MockMethodSet;
-
-        /** @psalm-suppress RedundantCondition,TypeDoesNotContainType */
+        $classTemplate         = $this->loadTemplate('test_double_class.tpl');
+        $additionalInterfaces  = [];
+        $doubledCloneMethod    = false;
+        $proxiedCloneMethod    = false;
+        $isClass               = false;
+        $isInterface           = false;
+        $class                 = null;
+        $mockMethods           = new MockMethodSet;
         $testDoubleClassPrefix = $mockObject ? 'MockObject_' : 'TestStub_';
 
         $_mockClassName = $this->generateClassName(
@@ -756,7 +755,6 @@ final class Generator
         /** @psalm-var trait-string[] $traits */
         $traits = [StubApi::class];
 
-        /** @psalm-suppress RedundantCondition */
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
         }

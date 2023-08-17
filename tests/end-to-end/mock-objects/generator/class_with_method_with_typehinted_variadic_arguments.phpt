@@ -15,6 +15,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
     'ClassWithMethodWithTypehintedVariadicArguments',
+    true,
     [],
     'MockFoo',
     true,

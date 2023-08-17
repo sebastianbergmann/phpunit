@@ -22,6 +22,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
     'NS\Foo',
+    true,
     [],
     'MockFoo',
     true

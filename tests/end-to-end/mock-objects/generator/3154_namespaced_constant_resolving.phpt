@@ -29,6 +29,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
     Issue3154::class,
+    true,
     [],
     'Issue3154Mock',
     true,

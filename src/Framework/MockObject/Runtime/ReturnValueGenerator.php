@@ -204,7 +204,7 @@ final class ReturnValueGenerator
     private function testDoubleFor(string $type, string $className, string $methodName): MockObject
     {
         try {
-            return (new Generator)->getMock($type, [], [], '', false);
+            return (new Generator)->getMock($type, false, [], [], '', false);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(

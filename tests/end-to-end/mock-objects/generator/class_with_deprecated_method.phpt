@@ -19,6 +19,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
   'ClassWithDeprecatedMethod',
+  true,
   [],
   'MockFoo',
   TRUE,

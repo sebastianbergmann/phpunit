@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
-$mock = $generator->generate(InterfaceWithConstructor::class);
+$mock = $generator->generate(InterfaceWithConstructor::class, true);
 
 print $mock->classCode();
 --EXPECTF--

@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
-$mock = $generator->getMock('Foo');
+$mock = $generator->getMock('Foo', false);
 
 var_dump(iterator_to_array($mock->forTraversable()));
 var_dump(iterator_to_array($mock->forGenerator()));
