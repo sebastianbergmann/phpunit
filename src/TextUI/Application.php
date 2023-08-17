@@ -168,18 +168,7 @@ final class Application
                 );
             }
 
-            if ($configuration->generateBaseline()) {
-                if (!$configuration->source()->hasBaseline()) {
-                    EventFacade::emitter()->testRunnerTriggeredWarning(
-                        'Generation of baseline requested using --generate-baseline, but no baseline is configured',
-                    );
-                } else {
-                    $baselineGenerator = new BaselineGenerator(
-                        EventFacade::instance(),
-                        $configuration->source(),
-                    );
-                }
-            }
+            $baselineGenerator = $this->configureBaseline($configuration);
 
             EventFacade::instance()->seal();
 
@@ -624,5 +613,25 @@ final class Application
         }
 
         return new NullResultCache;
+    }
+
+    private function configureBaseline(Configuration $configuration): ?BaselineGenerator
+    {
+        if ($configuration->generateBaseline()) {
+            if (!$configuration->source()->hasBaseline()) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    'Generation of baseline requested using --generate-baseline, but no baseline is configured',
+                );
+
+                return null;
+            }
+
+            return new BaselineGenerator(
+                EventFacade::instance(),
+                $configuration->source(),
+            );
+        }
+
+        return null;
     }
 }
