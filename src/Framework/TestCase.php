@@ -55,6 +55,7 @@ use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
@@ -507,6 +508,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function getMockBuilder(string $className): MockBuilder
     {
+        self::notifyAboutTestDoubleForConcreteClass($className);
+
         return new MockBuilder($this, $className);
     }
 
@@ -1201,6 +1204,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testCreatedMockObject($originalClassName);
 
+        self::notifyAboutTestDoubleForConcreteClass($originalClassName);
+
         return $mock;
     }
 
@@ -1234,6 +1239,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
         $o = $this->createMock($originalClassName);
+
+        self::notifyAboutTestDoubleForConcreteClass($originalClassName);
 
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);
@@ -2223,6 +2230,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testCreatedStub($originalClassName);
 
+        self::notifyAboutTestDoubleForConcreteClass($originalClassName);
+
         return $stub;
     }
 
@@ -2257,10 +2266,34 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $o = self::createStub($originalClassName);
 
+        self::notifyAboutTestDoubleForConcreteClass($originalClassName);
+
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);
         }
 
         return $o;
+    }
+
+    /**
+     * @psalm-param class-string $originalClassName
+     */
+    private static function notifyAboutTestDoubleForConcreteClass(string $originalClassName): void
+    {
+        try {
+            $test = TestMethodBuilder::fromCallStack();
+        } catch (Event\Code\NoTestCaseObjectOnCallStackException) {
+            return;
+        }
+
+        if (class_exists($originalClassName)) {
+            Event\Facade::emitter()->testTriggeredPhpunitNotice(
+                $test,
+                sprintf(
+                    'Consider doubling interfaces instead of concrete classes such as %s',
+                    $originalClassName,
+                ),
+            );
+        }
     }
 }
