@@ -40,5 +40,7 @@ private function bar(...$args)
             )
         );
 
-        return call_user_func_array(array($this->__phpunit_originalObject, "bar"), $__phpunit_arguments);
+        $__phpunit_result = call_user_func_array(array($this->__phpunit_originalObject, "bar"), $__phpunit_arguments);
+
+        return $__phpunit_result;
     }

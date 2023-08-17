@@ -157,11 +157,6 @@ final class MockMethod
     {
         if ($this->static) {
             $templateFile = 'mocked_static_method.tpl';
-        } elseif ($this->returnType->isNever() || $this->returnType->isVoid()) {
-            $templateFile = sprintf(
-                '%s_method_never_or_void.tpl',
-                $this->callOriginalMethod ? 'proxied' : 'mocked',
-            );
         } else {
             $templateFile = sprintf(
                 '%s_method.tpl',
@@ -169,7 +164,16 @@ final class MockMethod
             );
         }
 
-        $deprecation = $this->deprecation;
+        $deprecation  = $this->deprecation;
+        $returnResult = '';
+
+        if (!$this->returnType->isNever() && !$this->returnType->isVoid()) {
+            $returnResult = <<<'EOT'
+
+
+        return $__phpunit_result;
+EOT;
+        }
 
         if (null !== $this->deprecation) {
             $deprecation         = "The {$this->className}::{$this->methodName} method is deprecated ({$this->deprecation}).";
@@ -199,6 +203,7 @@ final class MockMethod
                 'reference'          => $this->reference,
                 'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
                 'deprecation'        => $deprecation,
+                'return_result'      => $returnResult,
             ],
         );
 

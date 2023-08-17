@@ -16,7 +16,5 @@
             new \PHPUnit\Framework\MockObject\Invocation(
                 '{class_name}', '{method_name}', $__phpunit_arguments, '{return_type}', $this, {clone_arguments}
             )
-        );
-
-        return $__phpunit_result;
+        );{return_result}
     }

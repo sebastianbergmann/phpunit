@@ -51,7 +51,9 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
             )
         );
 
-        return call_user_func_array(array($this->__phpunit_originalObject, "bar"), $__phpunit_arguments);
+        $__phpunit_result = call_user_func_array(array($this->__phpunit_originalObject, "bar"), $__phpunit_arguments);
+
+        return $__phpunit_result;
     }
 
     public function baz(Foo $foo)
@@ -73,6 +75,8 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
             )
         );
 
-        return call_user_func_array(array($this->__phpunit_originalObject, "baz"), $__phpunit_arguments);
+        $__phpunit_result = call_user_func_array(array($this->__phpunit_originalObject, "baz"), $__phpunit_arguments);
+
+        return $__phpunit_result;
     }
 }

@@ -261,6 +261,7 @@
                 'reference'          => $this->reference,
                 'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
                 'deprecation'        => $deprecation,
+                'return_result'      => $returnResult,
             ]]]></code>
     </InvalidArgument>
     <PossiblyFalseOperand>
