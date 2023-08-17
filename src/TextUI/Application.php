@@ -170,13 +170,15 @@ final class Application
 
             if ($configuration->generateBaseline()) {
                 if (!$configuration->source()->hasBaseline()) {
-                    // @todo
+                    EventFacade::emitter()->testRunnerTriggeredWarning(
+                        'Generation of baseline requested using --generate-baseline, but no baseline is configured',
+                    );
+                } else {
+                    $baselineGenerator = new BaselineGenerator(
+                        EventFacade::instance(),
+                        $configuration->source(),
+                    );
                 }
-
-                $baselineGenerator = new BaselineGenerator(
-                    EventFacade::instance(),
-                    $configuration->source(),
-                );
             }
 
             EventFacade::instance()->seal();
