@@ -29,7 +29,7 @@ final class GetMockFromWsdlTest extends TestCase
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
 
         $this->assertStringStartsWith(
-            'Mock_GoogleSearch_',
+            'MockObject_GoogleSearch_',
             $mock::class,
         );
     }

@@ -613,10 +613,13 @@ final class Generator
         $class                = null;
         $mockMethods          = new MockMethodSet;
 
+        /** @psalm-suppress RedundantCondition,TypeDoesNotContainType */
+        $testDoubleClassPrefix = $mockObject ? 'MockObject_' : 'TestStub_';
+
         $_mockClassName = $this->generateClassName(
             $type,
             $mockClassName,
-            'Mock_',
+            $testDoubleClassPrefix,
         );
 
         if (class_exists($_mockClassName['fullClassName'], $callAutoload)) {
@@ -678,7 +681,7 @@ final class Generator
                 $_mockClassName = $this->generateClassName(
                     $actualClassName,
                     $_mockClassName['className'],
-                    'Mock_',
+                    $testDoubleClassPrefix,
                 );
             }
 
