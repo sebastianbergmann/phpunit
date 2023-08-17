@@ -15,7 +15,7 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/baseline/generate-baseline/phpunit.xm
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 
-var_dump(file_exists($baseline));
+print file_get_contents($baseline);
 
 @unlink($baseline);
 --EXPECTF--
@@ -42,4 +42,11 @@ OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.
 
 Baseline written to %s/baseline.xml.
-bool(true)
+<?xml version="1.0"?>
+<files>
+ <file path="tests/Test.php">
+  <line number="19" hash="a1022fb62c4705938dd2c6df5ff35b2621f9e97d">
+   <issue><![CDATA[deprecation]]></issue>
+  </line>
+ </file>
+</files>
