@@ -596,6 +596,9 @@ final class Generator
      */
     private function generateMock(string $type, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
+        /** @todo This will become a parameter */
+        $mockObject = true;
+
         $classTemplate        = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces = [];
         $mockedCloneMethod    = false;
@@ -758,15 +761,24 @@ final class Generator
             $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\UnmockedCloneMethod;';
         }
 
+        $mockApiTrait = '';
+
+        /** @psalm-suppress RedundantCondition */
+        if ($mockObject) {
+            $mockApiTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\MockObjectApi;';
+        }
+
         $classTemplate->setVar(
             [
                 'prologue'          => $prologue ?? '',
                 'epilogue'          => $epilogue ?? '',
-                'class_declaration' => $this->generateMockClassDeclaration(
+                'class_declaration' => $this->generateTestDoubleClassDeclaration(
+                    $mockObject,
                     $_mockClassName,
                     $isInterface,
                     $additionalInterfaces,
                 ),
+                'mock_api'        => $mockApiTrait,
                 'clone'           => $cloneTrait,
                 'mock_class_name' => $_mockClassName['className'],
                 'mocked_methods'  => $mockedMethods,
@@ -813,12 +825,16 @@ final class Generator
         ];
     }
 
-    private function generateMockClassDeclaration(array $mockClassName, bool $isInterface, array $additionalInterfaces = []): string
+    private function generateTestDoubleClassDeclaration(bool $mockObject, array $mockClassName, bool $isInterface, array $additionalInterfaces = []): string
     {
-        $buffer = 'class ';
+        if ($mockObject) {
+            $additionalInterfaces[] = MockObjectInternal::class;
+        } else {
+            $additionalInterfaces[] = StubInternal::class;
+        }
 
-        $additionalInterfaces[] = MockObjectInternal::class;
-        $interfaces             = implode(', ', $additionalInterfaces);
+        $buffer     = 'class ';
+        $interfaces = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {
             $buffer .= sprintf(
