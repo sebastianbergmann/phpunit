@@ -20,12 +20,13 @@ final class PhpNoticeTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = $this->telemetryInfo();
-        $test          = $this->testValueObject();
-        $message       = 'message';
-        $file          = 'file';
-        $line          = 1;
-        $suppressed    = false;
+        $telemetryInfo     = $this->telemetryInfo();
+        $test              = $this->testValueObject();
+        $message           = 'message';
+        $file              = 'file';
+        $line              = 1;
+        $suppressed        = false;
+        $ignoredByBaseline = false;
 
         $event = new PhpNoticeTriggered(
             $telemetryInfo,
@@ -34,6 +35,7 @@ final class PhpNoticeTriggeredTest extends AbstractEventTestCase
             $file,
             $line,
             $suppressed,
+            $ignoredByBaseline,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -42,6 +44,39 @@ final class PhpNoticeTriggeredTest extends AbstractEventTestCase
         $this->assertSame($file, $event->file());
         $this->assertSame($line, $event->line());
         $this->assertSame($suppressed, $event->wasSuppressed());
+        $this->assertSame($ignoredByBaseline, $event->ignoredByBaseline());
         $this->assertSame('Test Triggered PHP Notice (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+    }
+
+    public function testCanBeIgnoredByBaseline(): void
+    {
+        $event = new PhpNoticeTriggered(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+            'message',
+            'file',
+            1,
+            false,
+            true,
+        );
+
+        $this->assertTrue($event->ignoredByBaseline());
+        $this->assertSame('Test Triggered Baseline-Ignored PHP Notice (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+    }
+
+    public function testCanBeSuppressed(): void
+    {
+        $event = new PhpNoticeTriggered(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+            'message',
+            'file',
+            1,
+            true,
+            false,
+        );
+
+        $this->assertTrue($event->wasSuppressed());
+        $this->assertSame('Test Triggered Suppressed PHP Notice (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
     }
 }

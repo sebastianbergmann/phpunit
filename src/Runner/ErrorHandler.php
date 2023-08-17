@@ -50,9 +50,7 @@ final class ErrorHandler
             return false;
         }
 
-        if ($this->ignoredByBaseline($errorFile, $errorLine, $errorString)) {
-            return true;
-        }
+        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
 
         switch ($errorNumber) {
             case E_NOTICE:
@@ -63,6 +61,7 @@ final class ErrorHandler
                     $errorFile,
                     $errorLine,
                     $suppressed,
+                    $ignoredByBaseline,
                 );
 
                 break;
@@ -74,6 +73,7 @@ final class ErrorHandler
                     $errorFile,
                     $errorLine,
                     $suppressed,
+                    $ignoredByBaseline,
                 );
 
                 break;
@@ -85,6 +85,7 @@ final class ErrorHandler
                     $errorFile,
                     $errorLine,
                     $suppressed,
+                    $ignoredByBaseline,
                 );
 
                 break;
@@ -96,6 +97,7 @@ final class ErrorHandler
                     $errorFile,
                     $errorLine,
                     $suppressed,
+                    $ignoredByBaseline,
                 );
 
                 break;
@@ -107,6 +109,7 @@ final class ErrorHandler
                     $errorFile,
                     $errorLine,
                     $suppressed,
+                    $ignoredByBaseline,
                 );
 
                 break;
@@ -118,6 +121,7 @@ final class ErrorHandler
                     $errorFile,
                     $errorLine,
                     $suppressed,
+                    $ignoredByBaseline,
                 );
 
                 break;
