@@ -28,9 +28,12 @@ use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
 use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
+use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
@@ -615,6 +618,10 @@ final class Application
         return new NullResultCache;
     }
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     private function configureBaseline(Configuration $configuration): ?BaselineGenerator
     {
         if ($configuration->generateBaseline()) {
@@ -630,6 +637,23 @@ final class Application
                 EventFacade::instance(),
                 $configuration->source(),
             );
+        }
+
+        if ($configuration->source()->hasBaseline()) {
+            /** @psalm-suppress MissingThrowsDocblock */
+            $baselineFile = $configuration->source()->baseline();
+
+            try {
+                $baseline = (new Reader)->read($baselineFile);
+            } catch (CannotLoadBaselineException $e) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    'Failed to load baseline: ' . $e->getMessage(),
+                );
+
+                return null;
+            }
+
+            ErrorHandler::instance()->use($baseline);
         }
 
         return null;
