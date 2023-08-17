@@ -27,9 +27,9 @@ declare(strict_types=1);
 
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use \PHPUnit\Framework\MockObject\StubApi;
-    use \PHPUnit\Framework\MockObject\MockObjectApi;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function method()
     {

@@ -29,10 +29,10 @@ declare(strict_types=1);
 
 class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use \PHPUnit\Framework\MockObject\StubApi;
-    use \PHPUnit\Framework\MockObject\MockObjectApi;
-    use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\UnmockedCloneMethod;
+    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\Method;
+    use PHPUnit\Framework\MockObject\UnmockedCloneMethod;
 
     public function foo(): string
     {

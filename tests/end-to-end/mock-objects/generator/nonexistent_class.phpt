@@ -24,8 +24,8 @@ class NonExistentClass
 
 class MockFoo extends NonExistentClass implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use \PHPUnit\Framework\MockObject\StubApi;
-    use \PHPUnit\Framework\MockObject\MockObjectApi;
-    use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\Method;
+    use PHPUnit\Framework\MockObject\MockedCloneMethod;
 }

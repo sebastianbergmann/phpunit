@@ -27,10 +27,10 @@ declare(strict_types=1);
 
 class MockFoo implements PHPUnit\Framework\MockObject\MockObjectInternal, NS\Foo
 {
-    use \PHPUnit\Framework\MockObject\StubApi;
-    use \PHPUnit\Framework\MockObject\MockObjectApi;
-    use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\Method;
+    use PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function bar(NS\Foo $foo)
     {

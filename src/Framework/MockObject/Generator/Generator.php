@@ -45,9 +45,14 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
+use PHPUnit\Framework\MockObject\Method;
+use PHPUnit\Framework\MockObject\MockedCloneMethod;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\MockObjectApi;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
+use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
+use PHPUnit\Framework\MockObject\UnmockedCloneMethod;
 use ReflectionClass;
 use ReflectionMethod;
 use SoapClient;
@@ -745,28 +750,36 @@ final class Generator
             $configurable[] = new ConfigurableMethod($mockMethod->methodName(), $mockMethod->returnType());
         }
 
-        $method = '';
-
-        if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
-            $method = PHP_EOL . '    use \PHPUnit\Framework\MockObject\Method;';
-        }
-
-        $cloneTrait = '';
-
-        if ($mockedCloneMethod) {
-            $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\MockedCloneMethod;';
-        }
-
-        if ($unmockedCloneMethod) {
-            $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\UnmockedCloneMethod;';
-        }
-
-        $mockApiTrait = '';
+        /** @psalm-var trait-string[] $traits */
+        $traits = [StubApi::class];
 
         /** @psalm-suppress RedundantCondition */
         if ($mockObject) {
-            $mockApiTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\MockObjectApi;';
+            $traits[] = MockObjectApi::class;
         }
+
+        if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
+            $traits[] = Method::class;
+        }
+
+        if ($mockedCloneMethod) {
+            $traits[] = MockedCloneMethod::class;
+        }
+
+        if ($unmockedCloneMethod) {
+            $traits[] = UnmockedCloneMethod::class;
+        }
+
+        $useStatements = '';
+
+        foreach ($traits as $trait) {
+            $useStatements .= sprintf(
+                '    use %s;' . PHP_EOL,
+                $trait,
+            );
+        }
+
+        unset($traits);
 
         $classTemplate->setVar(
             [
@@ -778,11 +791,9 @@ final class Generator
                     $isInterface,
                     $additionalInterfaces,
                 ),
-                'mock_api'        => $mockApiTrait,
-                'clone'           => $cloneTrait,
+                'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
                 'mocked_methods'  => $mockedMethods,
-                'method'          => $method,
             ],
         );
 

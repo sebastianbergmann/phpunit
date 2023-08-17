@@ -41,10 +41,10 @@ declare(strict_types=1);
 
 class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use \PHPUnit\Framework\MockObject\StubApi;
-    use \PHPUnit\Framework\MockObject\MockObjectApi;
-    use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\Method;
+    use PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function a(int $i = %d, int $j = 17, string $v = '%s', string $z = '#'): string
     {

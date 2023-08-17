@@ -18,10 +18,10 @@ declare(strict_types=1);
 
 class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWithConstructor
 {
-    use \PHPUnit\Framework\MockObject\StubApi;
-    use \PHPUnit\Framework\MockObject\MockObjectApi;
-    use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\Method;
+    use PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function __construct()
     {
