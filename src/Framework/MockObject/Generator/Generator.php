@@ -143,6 +143,8 @@ final class Generator
             $returnValueGeneration,
         );
 
+        assert($object instanceof $type);
+
         if ($mockObject) {
             assert($object instanceof MockObject);
         } else {
