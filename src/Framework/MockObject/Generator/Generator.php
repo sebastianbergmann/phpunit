@@ -88,12 +88,6 @@ final class Generator
     /**
      * Returns a test double for the specified class.
      *
-     * @psalm-template RealInstanceType of object
-     *
-     * @psalm-param class-string<RealInstanceType> $type
-     *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
@@ -220,12 +214,6 @@ final class Generator
      * methods of the class mocked.
      *
      * Concrete methods to mock can be specified with the $mockedMethods parameter.
-     *
-     * @psalm-template RealInstanceType of object
-     *
-     * @psalm-param class-string<RealInstanceType> $originalClassName
-     *
-     * @psalm-return MockObject&RealInstanceType
      *
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
