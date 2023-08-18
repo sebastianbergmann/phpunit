@@ -308,7 +308,6 @@
     <ArgumentTypeCoercion>
       <code>$mockClassName</code>
       <code>$originalClassName</code>
-      <code>$originalClassName</code>
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
