@@ -1217,7 +1217,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
     {
-        $mock = (new MockGenerator)->getMockForInterfaces($interfaces);
+        $mock = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
 
@@ -2245,7 +2245,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
     {
-        $stub = (new MockGenerator)->getMockForInterfaces($interfaces);
+        $stub = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces);
 
         Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
 

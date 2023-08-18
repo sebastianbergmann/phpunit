@@ -158,7 +158,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function getMockForInterfaces(array $interfaces, bool $callAutoload = true): MockObject
+    public function testDoubleForInterfaceIntersection(array $interfaces, bool $callAutoload = true): MockObject
     {
         if (count($interfaces) < 2) {
             throw new RuntimeException('At least two interfaces must be specified');

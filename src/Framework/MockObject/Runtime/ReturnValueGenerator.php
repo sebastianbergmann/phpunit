@@ -227,7 +227,7 @@ final class ReturnValueGenerator
     private function testDoubleForIntersectionOfInterfaces(array $types, string $className, string $methodName): MockObject
     {
         try {
-            return (new Generator)->getMockForInterfaces($types);
+            return (new Generator)->testDoubleForInterfaceIntersection($types);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
