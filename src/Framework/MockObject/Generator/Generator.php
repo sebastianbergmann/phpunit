@@ -86,7 +86,7 @@ final class Generator
     private static array $cache = [];
 
     /**
-     * Returns a mock object for the specified class.
+     * Returns a test double for the specified class.
      *
      * @psalm-template RealInstanceType of object
      *
