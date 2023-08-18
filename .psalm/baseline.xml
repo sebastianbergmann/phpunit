@@ -229,8 +229,6 @@
   <file src="src/Framework/MockObject/Generator/Generator.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
-      <code>$className</code>
-      <code>$interfaceName</code>
       <code>$methods</code>
       <code>$type</code>
     </ArgumentTypeCoercion>
