@@ -51,6 +51,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
 use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
 use ReflectionClass;
@@ -104,7 +105,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function getMock(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
+    public function getMock(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -142,7 +143,11 @@ final class Generator
             $returnValueGeneration,
         );
 
-        assert($object instanceof MockObject);
+        if ($mockObject) {
+            assert($object instanceof MockObject);
+        } else {
+            assert($object instanceof Stub);
+        }
 
         return $object;
     }
