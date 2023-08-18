@@ -526,11 +526,13 @@ final class Generator
     }
 
     /**
-     * @throws ReflectionException
+     * @psalm-param class-string $interfaceName
      *
      * @psalm-return list<MockMethod>
+     *
+     * @throws ReflectionException
      */
-    public function mockInterfaceMethods(string $interfaceName, bool $cloneArguments): array
+    public function interfaceMethods(string $interfaceName, bool $cloneArguments): array
     {
         $class   = $this->reflectClass($interfaceName);
         $methods = [];
@@ -707,7 +709,7 @@ final class Generator
 
         if ($isInterface && ($explicitMethods === [] || $explicitMethods === null)) {
             $mockMethods->addMethods(
-                ...$this->mockInterfaceMethods($_mockClassName['fullClassName'], $cloneArguments),
+                ...$this->interfaceMethods($_mockClassName['fullClassName'], $cloneArguments),
             );
         }
 
