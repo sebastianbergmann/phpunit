@@ -124,7 +124,7 @@ final class Generator
 
         $mock = $this->generate(
             $type,
-            true,
+            $mockObject,
             $methods,
             $mockClassName,
             $callOriginalClone,
