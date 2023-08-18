@@ -141,6 +141,8 @@ final class MockBuilder
             $this->cloneArguments,
         );
 
+        assert($object instanceof MockObject);
+
         $this->testCase->registerMockObject($object);
 
         return $object;
@@ -171,6 +173,8 @@ final class MockBuilder
             $this->methods,
             $this->cloneArguments,
         );
+
+        assert($object instanceof MockObject);
 
         $this->testCase->registerMockObject($object);
 
