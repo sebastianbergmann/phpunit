@@ -201,7 +201,7 @@ final class ReturnValueGenerator
      *
      * @throws RuntimeException
      */
-    private function testDoubleFor(string $type, string $className, string $methodName): MockObject
+    private function testDoubleFor(string $type, string $className, string $methodName): Stub
     {
         try {
             return (new Generator)->getMock($type, false, [], [], '', false);
