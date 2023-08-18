@@ -234,12 +234,6 @@
       <code>$methods</code>
       <code>$type</code>
     </ArgumentTypeCoercion>
-    <InvalidReturnStatement>
-      <code>$object</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[MockObject&RealInstanceType]]></code>
-    </InvalidReturnType>
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
