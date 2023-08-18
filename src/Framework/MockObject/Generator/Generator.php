@@ -373,7 +373,7 @@ final class Generator
     public function generate(string $type, bool $mockObject, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
     {
         if ($mockClassName !== '') {
-            return $this->generateMock(
+            return $this->generateCodeForTestDoubleClass(
                 $type,
                 $mockObject,
                 $methods,
@@ -394,7 +394,7 @@ final class Generator
         );
 
         if (!isset(self::$cache[$key])) {
-            self::$cache[$key] = $this->generateMock(
+            self::$cache[$key] = $this->generateCodeForTestDoubleClass(
                 $type,
                 $mockObject,
                 $methods,
@@ -611,7 +611,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function generateMock(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
+    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
         $classTemplate         = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces  = [];
