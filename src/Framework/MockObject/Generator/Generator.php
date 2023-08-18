@@ -158,7 +158,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDoubleForInterfaceIntersection(array $interfaces, bool $callAutoload = true): MockObject
+    public function testDoubleForInterfaceIntersection(array $interfaces, bool $mockObject, bool $callAutoload = true): MockObject|Stub
     {
         if (count($interfaces) < 2) {
             throw new RuntimeException('At least two interfaces must be specified');
@@ -210,7 +210,7 @@ final class Generator
 
         eval($template->render());
 
-        return $this->getMock($intersectionName, true);
+        return $this->getMock($intersectionName, $mockObject);
     }
 
     /**
