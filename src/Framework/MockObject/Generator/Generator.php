@@ -105,7 +105,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function getMock(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject|Stub
+    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -212,7 +212,7 @@ final class Generator
 
         eval($template->render());
 
-        return $this->getMock($intersectionName, $mockObject);
+        return $this->testDouble($intersectionName, $mockObject);
     }
 
     /**
@@ -257,7 +257,7 @@ final class Generator
                 $methods = null;
             }
 
-            return $this->getMock(
+            return $this->testDouble(
                 $originalClassName,
                 true,
                 $methods,

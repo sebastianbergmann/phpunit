@@ -90,7 +90,7 @@ final class MockBuilder
      */
     public function getMock(bool $register = true): MockObject
     {
-        $object = $this->generator->getMock(
+        $object = $this->generator->testDouble(
             $this->type,
             true,
             !$this->emptyMethodsArray ? $this->methods : null,

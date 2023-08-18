@@ -1192,7 +1192,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMock(string $originalClassName): MockObject
     {
-        $mock = (new MockGenerator)->getMock(
+        $mock = (new MockGenerator)->testDouble(
             $originalClassName,
             true,
             callOriginalConstructor: false,
@@ -1378,7 +1378,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        $mockObject = (new MockGenerator)->getMock(
+        $mockObject = (new MockGenerator)->testDouble(
             $originalClassName,
             true,
             $methods,
@@ -2222,7 +2222,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected static function createStub(string $originalClassName): Stub
     {
-        $stub = (new MockGenerator)->getMock(
+        $stub = (new MockGenerator)->testDouble(
             $originalClassName,
             true,
             callOriginalConstructor: false,
