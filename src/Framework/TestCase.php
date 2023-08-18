@@ -1329,7 +1329,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $mockObject = (new MockGenerator)->getMockForAbstractClass(
+        $mockObject = (new MockGenerator)->mockObjectForAbstractClass(
             $originalClassName,
             $arguments,
             $mockClassName,
@@ -1417,7 +1417,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $mockObject = (new MockGenerator)->getMockForTrait(
+        $mockObject = (new MockGenerator)->mockObjectForTrait(
             $traitName,
             $arguments,
             $mockClassName,
@@ -1446,7 +1446,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
-        return (new MockGenerator)->getObjectForTrait(
+        return (new MockGenerator)->objectForTrait(
             $traitName,
             $traitClassName,
             $callAutoload,

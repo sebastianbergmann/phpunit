@@ -126,7 +126,7 @@ final class MockBuilder
      */
     public function getMockForAbstractClass(): MockObject
     {
-        $object = $this->generator->getMockForAbstractClass(
+        $object = $this->generator->mockObjectForAbstractClass(
             $this->type,
             $this->constructorArgs,
             $this->mockClassName ?? '',
@@ -157,7 +157,7 @@ final class MockBuilder
     {
         assert(trait_exists($this->type));
 
-        $object = $this->generator->getMockForTrait(
+        $object = $this->generator->mockObjectForTrait(
             $this->type,
             $this->constructorArgs,
             $this->mockClassName ?? '',
