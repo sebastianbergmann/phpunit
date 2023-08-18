@@ -171,7 +171,7 @@ final class Generator
         $methods = [];
 
         foreach ($interfaces as $interface) {
-            $methods = array_merge($methods, $this->getClassMethods($interface));
+            $methods = array_merge($methods, $this->namesOfMethodsIn($interface));
         }
 
         if (count(array_unique($methods)) < count($methods)) {
@@ -507,13 +507,15 @@ final class Generator
     }
 
     /**
-     * @throws ReflectionException
+     * @psalm-param class-string $classOrInterfaceName
      *
      * @psalm-return list<string>
+     *
+     * @throws ReflectionException
      */
-    public function getClassMethods(string $className): array
+    public function namesOfMethodsIn(string $classOrInterfaceName): array
     {
-        $class   = $this->reflectClass($className);
+        $class   = $this->reflectClass($classOrInterfaceName);
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
