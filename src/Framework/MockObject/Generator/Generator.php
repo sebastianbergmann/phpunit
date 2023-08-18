@@ -369,6 +369,10 @@ final class Generator
      * @throws ClassIsReadonlyException
      * @throws ReflectionException
      * @throws RuntimeException
+     *
+     * @todo This method is only public because it is used to test generated code in PHPT tests
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/5476
      */
     public function generate(string $type, bool $mockObject, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
     {
