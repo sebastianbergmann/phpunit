@@ -528,25 +528,6 @@ final class Generator
     /**
      * @psalm-param class-string $interfaceName
      *
-     * @psalm-return list<MockMethod>
-     *
-     * @throws ReflectionException
-     */
-    public function interfaceMethods(string $interfaceName, bool $cloneArguments): array
-    {
-        $class   = $this->reflectClass($interfaceName);
-        $methods = [];
-
-        foreach ($class->getMethods() as $method) {
-            $methods[] = MockMethod::fromReflection($method, false, $cloneArguments);
-        }
-
-        return $methods;
-    }
-
-    /**
-     * @psalm-param class-string $interfaceName
-     *
      * @throws ReflectionException
      *
      * @psalm-return list<ReflectionMethod>
@@ -1040,6 +1021,25 @@ final class Generator
             if ($method->isPublic() || $method->isAbstract()) {
                 $methods[] = $method->getName();
             }
+        }
+
+        return $methods;
+    }
+
+    /**
+     * @psalm-param class-string $interfaceName
+     *
+     * @psalm-return list<MockMethod>
+     *
+     * @throws ReflectionException
+     */
+    private function interfaceMethods(string $interfaceName, bool $cloneArguments): array
+    {
+        $class   = $this->reflectClass($interfaceName);
+        $methods = [];
+
+        foreach ($class->getMethods() as $method) {
+            $methods[] = MockMethod::fromReflection($method, false, $cloneArguments);
         }
 
         return $methods;
