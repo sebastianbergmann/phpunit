@@ -13,6 +13,8 @@ use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
  */
 final class UnknownTraitException extends \PHPUnit\Framework\Exception implements Exception
 {

@@ -13,6 +13,8 @@ use function class_exists;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
  */
 final class MockTrait implements MockType
 {

@@ -227,6 +227,8 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownClassException
      * @throws UnknownTypeException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
      */
     public function mockObjectForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
@@ -286,6 +288,8 @@ final class Generator
      * @throws UnknownClassException
      * @throws UnknownTraitException
      * @throws UnknownTypeException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
      */
     public function mockObjectForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
@@ -323,6 +327,8 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      * @throws UnknownTraitException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5244
      */
     public function objectForTrait(string $traitName, string $traitClassName = '', bool $callAutoload = true, bool $callOriginalConstructor = false, array $arguments = []): object
     {
@@ -406,6 +412,8 @@ final class Generator
     /**
      * @throws RuntimeException
      * @throws SoapExtensionNotAvailableException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5242
      */
     public function generateClassFromWsdl(string $wsdlFile, string $className, array $methods = [], array $options = []): string
     {

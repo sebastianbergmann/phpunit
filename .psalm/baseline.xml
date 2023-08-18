@@ -234,6 +234,18 @@
       <code>$methods</code>
       <code>$type</code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code><![CDATA[new MockTrait(
+                $classTemplate->render(),
+                $className['className'],
+            )]]></code>
+      <code><![CDATA[new MockTrait($classTemplate->render(), $className['className'])]]></code>
+      <code>new UnknownTraitException($traitName)</code>
+      <code>new UnknownTraitException($traitName)</code>
+    </DeprecatedClass>
+    <DeprecatedMethod>
+      <code>mockObjectForAbstractClass</code>
+    </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
@@ -263,6 +275,10 @@
     </PossiblyFalseOperand>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
+    <DeprecatedMethod>
+      <code>mockObjectForAbstractClass</code>
+      <code>mockObjectForTrait</code>
+    </DeprecatedMethod>
     <InvalidReturnStatement>
       <code>$object</code>
       <code>$object</code>
@@ -314,6 +330,10 @@
       <code>disableArgumentCloning</code>
       <code>disallowMockingUnknownTypes</code>
       <code>enableProxyingToOriginalMethods</code>
+      <code>generateClassFromWsdl</code>
+      <code>mockObjectForAbstractClass</code>
+      <code>mockObjectForTrait</code>
+      <code>objectForTrait</code>
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>getMethod</code>
