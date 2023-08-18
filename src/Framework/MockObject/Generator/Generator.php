@@ -257,7 +257,7 @@ final class Generator
                 $methods = null;
             }
 
-            return $this->testDouble(
+            $mockObject = $this->testDouble(
                 $originalClassName,
                 true,
                 $methods,
@@ -268,6 +268,11 @@ final class Generator
                 $callAutoload,
                 $cloneArguments,
             );
+
+            assert($mockObject instanceof $originalClassName);
+            assert($mockObject instanceof MockObject);
+
+            return $mockObject;
         }
 
         throw new UnknownClassException($originalClassName);

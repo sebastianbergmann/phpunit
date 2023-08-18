@@ -106,6 +106,9 @@ final class MockBuilder
             $this->returnValueGeneration,
         );
 
+        assert($object instanceof $this->type);
+        assert($object instanceof MockObject);
+
         if ($register) {
             $this->testCase->registerMockObject($object);
         }

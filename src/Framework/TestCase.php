@@ -1201,6 +1201,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             allowMockingUnknownTypes: false,
         );
 
+        assert($mock instanceof $originalClassName);
+        assert($mock instanceof MockObject);
+
         $this->registerMockObject($mock);
 
         Event\Facade::emitter()->testCreatedMockObject($originalClassName);
@@ -1220,6 +1223,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $mock = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces, true);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
+
+        assert($mock instanceof MockObject);
 
         return $mock;
     }
@@ -1344,6 +1349,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testCreatedMockObjectForAbstractClass($originalClassName);
 
+        assert($mockObject instanceof $originalClassName);
+        assert($mockObject instanceof MockObject);
+
         return $mockObject;
     }
 
@@ -1397,6 +1405,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $callOriginalConstructor,
             $options,
         );
+
+        assert($mockObject instanceof MockObject);
 
         $this->registerMockObject($mockObject);
 
@@ -2234,6 +2244,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         Event\Facade::emitter()->testCreatedStub($originalClassName);
 
         self::notifyAboutTestDoubleForConcreteClass($originalClassName);
+
+        assert($stub instanceof $originalClassName);
+        assert($stub instanceof Stub);
 
         return $stub;
     }
