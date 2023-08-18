@@ -230,9 +230,4 @@ abstract class TestDoubleTestCase extends TestCase
      * @psalm-return (Stub|MockObject)&RealInstanceType
      */
     abstract protected function createTestDouble(string $type): object;
-
-    /**
-     * @psalm-param list<class-string> $interfaces
-     */
-    abstract protected function createTestDoubleForIntersection(array $interfaces): object;
 }

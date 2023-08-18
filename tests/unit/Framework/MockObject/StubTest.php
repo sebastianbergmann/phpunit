@@ -26,12 +26,4 @@ final class StubTest extends TestDoubleTestCase
     {
         return $this->createStub($type);
     }
-
-    /**
-     * @psalm-param list<class-string> $interfaces
-     */
-    protected function createTestDoubleForIntersection(array $interfaces): object
-    {
-        return $this->createStubForIntersectionOfInterfaces($interfaces);
-    }
 }

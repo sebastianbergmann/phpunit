@@ -424,14 +424,6 @@ EOT,
         return $this->createMock($type);
     }
 
-    /**
-     * @psalm-param list<class-string> $interfaces
-     */
-    protected function createTestDoubleForIntersection(array $interfaces): object
-    {
-        return $this->createMockForIntersectionOfInterfaces($interfaces);
-    }
-
     private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock, string $methodName = '__phpunit_verify', array $arguments = []): void
     {
         try {
