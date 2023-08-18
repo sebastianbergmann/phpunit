@@ -507,27 +507,6 @@ final class Generator
     }
 
     /**
-     * @psalm-param class-string $classOrInterfaceName
-     *
-     * @psalm-return list<string>
-     *
-     * @throws ReflectionException
-     */
-    public function namesOfMethodsIn(string $classOrInterfaceName): array
-    {
-        $class   = $this->reflectClass($classOrInterfaceName);
-        $methods = [];
-
-        foreach ($class->getMethods() as $method) {
-            if ($method->isPublic() || $method->isAbstract()) {
-                $methods[] = $method->getName();
-            }
-        }
-
-        return $methods;
-    }
-
-    /**
      * @throws ReflectionException
      *
      * @psalm-return list<MockMethod>
@@ -1041,5 +1020,26 @@ final class Generator
         }
 
         return $class;
+    }
+
+    /**
+     * @psalm-param class-string $classOrInterfaceName
+     *
+     * @psalm-return list<string>
+     *
+     * @throws ReflectionException
+     */
+    private function namesOfMethodsIn(string $classOrInterfaceName): array
+    {
+        $class   = $this->reflectClass($classOrInterfaceName);
+        $methods = [];
+
+        foreach ($class->getMethods() as $method) {
+            if ($method->isPublic() || $method->isAbstract()) {
+                $methods[] = $method->getName();
+            }
+        }
+
+        return $methods;
     }
 }
