@@ -38,6 +38,17 @@ final class LogicalXorTest extends TestCase
 
             [
                 true,
+                'is false xor is equal to true',
+                '',
+                self::logicalXor(
+                    self::isFalse(),
+                    true,
+                ),
+                true,
+            ],
+
+            [
+                true,
                 'is of type bool xor is true',
                 '',
                 self::logicalXor(
@@ -102,7 +113,7 @@ final class LogicalXorTest extends TestCase
     {
         $constraint = $this->logicalXor(
             $this->isType('bool'),
-            $this->isTrue(),
+            true,
         );
 
         $this->assertCount(2, $constraint);
