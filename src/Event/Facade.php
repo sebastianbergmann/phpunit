@@ -196,7 +196,6 @@ final class Facade
             Test\PhpNoticeTriggered::class,
             Test\PhpunitDeprecationTriggered::class,
             Test\PhpunitErrorTriggered::class,
-            Test\PhpunitNoticeTriggered::class,
             Test\PhpunitWarningTriggered::class,
             Test\PhpWarningTriggered::class,
             Test\PostConditionCalled::class,
