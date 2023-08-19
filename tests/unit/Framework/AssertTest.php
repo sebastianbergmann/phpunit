@@ -2122,6 +2122,38 @@ XML;
         $this->fail();
     }
 
+    public function testObjectHasPropertyCanBeAsserted(): void
+    {
+        $objectWithProperty              = new stdClass;
+        $objectWithProperty->theProperty = 'value';
+
+        $this->assertObjectHasProperty('theProperty', $objectWithProperty);
+
+        try {
+            $this->assertObjectHasProperty('doesNotExist', $objectWithProperty);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testObjectDoesNotHavePropertyCanBeAsserted(): void
+    {
+        $objectWithProperty              = new stdClass;
+        $objectWithProperty->theProperty = 'value';
+
+        $this->assertObjectNotHasProperty('doesNotExist', $objectWithProperty);
+
+        try {
+            $this->assertObjectNotHasProperty('theProperty', $objectWithProperty);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     protected static function sameValues(): array
     {
         $object   = new SampleClass(4, 8, 15);
