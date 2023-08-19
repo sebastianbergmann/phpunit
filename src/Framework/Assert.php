@@ -73,6 +73,7 @@ use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\ObjectHasProperty;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -1304,7 +1305,7 @@ abstract class Assert
      */
     public static function assertObjectHasAttribute(string $attributeName, $object, string $message = ''): void
     {
-        self::createWarning('assertObjectHasAttribute() is deprecated and will be removed in PHPUnit 10. Refactor your test to use assertObjectHasProperty() (PHPUnit 10.1.0+) instead.');
+        self::createWarning('assertObjectHasAttribute() is deprecated and will be removed in PHPUnit 10. Refactor your test to use assertObjectHasProperty() instead.');
 
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
@@ -1334,7 +1335,7 @@ abstract class Assert
      */
     public static function assertObjectNotHasAttribute(string $attributeName, $object, string $message = ''): void
     {
-        self::createWarning('assertObjectNotHasAttribute() is deprecated and will be removed in PHPUnit 10. Refactor your test to use assertObjectNotHasProperty() (PHPUnit 10.1.0+) instead.');
+        self::createWarning('assertObjectNotHasAttribute() is deprecated and will be removed in PHPUnit 10. Refactor your test to use assertObjectNotHasProperty() instead.');
 
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
@@ -1348,6 +1349,36 @@ abstract class Assert
             $object,
             new LogicalNot(
                 new ObjectHasAttribute($attributeName),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that an object has a specified property.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertObjectHasProperty(string $propertyName, object $object, string $message = ''): void
+    {
+        static::assertThat(
+            $object,
+            new ObjectHasProperty($propertyName),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that an object does not have a specified property.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertObjectNotHasProperty(string $propertyName, object $object, string $message = ''): void
+    {
+        static::assertThat(
+            $object,
+            new LogicalNot(
+                new ObjectHasProperty($propertyName),
             ),
             $message,
         );
