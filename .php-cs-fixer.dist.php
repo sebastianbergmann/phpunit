@@ -38,6 +38,10 @@ $config->setFinder($finder)
             ],
         ],
         'blank_line_after_namespace' => true,
+        'blank_lines_before_namespace' => [
+            'max_line_breaks' => 1,
+            'min_line_breaks' => 0,
+        ],
         'blank_line_before_statement' => [
             'statements' => [
                 'break',
@@ -154,7 +158,6 @@ $config->setFinder($finder)
         'no_binary_string' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
-        'no_blank_lines_before_namespace' => true,
         'no_break_comment' => true,
         'no_closing_tag' => true,
         'no_empty_comment' => true,
@@ -174,7 +177,6 @@ $config->setFinder($finder)
         'no_space_around_double_colon' => true,
         'no_spaces_after_function_name' => true,
         'no_spaces_around_offset' => true,
-        'no_spaces_inside_parenthesis' => true,
         'no_superfluous_elseif' => true,
         'no_superfluous_phpdoc_tags' => [
             'allow_mixed' => true,
@@ -301,6 +303,9 @@ $config->setFinder($finder)
         'single_space_around_construct' => true,
         'single_trait_insert_per_statement' => true,
         'space_after_semicolon' => true,
+        'spaces_inside_parentheses' => [
+            'space' => 'none',
+        ],
         'standardize_increment' => true,
         'standardize_not_equals' => true,
         'statement_indentation' => true,
@@ -322,9 +327,12 @@ $config->setFinder($finder)
             ]
         ],
         'trim_array_spaces' => true,
-        'types_spaces' => [
-            'space' => 'none',
+        'type_declaration_spaces' => [
+            'elements' => [
+                'function',
+            ],
         ],
+        'types_spaces' => true,
         'unary_operator_spaces' => true,
         'visibility_required' => [
             'elements' => [
