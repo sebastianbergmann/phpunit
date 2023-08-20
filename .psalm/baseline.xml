@@ -589,6 +589,11 @@
       <code><![CDATA[$this->filter]]></code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Runner/Filter/TestIdFilterIterator.php">
+    <MissingTemplateParam>
+      <code>TestIdFilterIterator</code>
+    </MissingTemplateParam>
+  </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>

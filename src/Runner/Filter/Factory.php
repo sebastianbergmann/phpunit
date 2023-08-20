@@ -26,6 +26,16 @@ final class Factory
     private array $filters = [];
 
     /**
+     * @psalm-param list<non-empty-string> $testIds
+     */
+    public function addTestIdFilter(array $testIds): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(TestIdFilterIterator::class), $testIds,
+        ];
+    }
+
+    /**
      * @psalm-param list<non-empty-string> $groups
      */
     public function addExcludeGroupFilter(array $groups): void
