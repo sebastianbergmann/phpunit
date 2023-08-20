@@ -27,10 +27,11 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Data Provider Method Called (PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::provider for test method PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne)
+Data Provider Method Finished for PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne:
+- PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::provider
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne is invalid
 message
-
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\ExceptionInDataProviderTest".)
 Test Suite Loaded (0 tests)
 Event Facade Sealed
