@@ -32,6 +32,9 @@ final class NameFilterIterator extends RecursiveFilterIterator
     private ?int $filterMax = null;
 
     /**
+     * @psalm-param RecursiveIterator<int, Test> $iterator
+     * @psalm-param non-empty-string $filter
+     *
      * @throws Exception
      */
     public function __construct(RecursiveIterator $iterator, string $filter)

@@ -909,6 +909,13 @@
       <code><![CDATA[$this->stream]]></code>
     </PossiblyInvalidArgument>
   </file>
+  <file src="src/TextUI/TestSuiteFilterProcessor.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$configuration->excludeGroups()]]></code>
+      <code><![CDATA[$configuration->filter()]]></code>
+      <code><![CDATA[$configuration->groups()]]></code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Util/ExcludeList.php">
     <InvalidPropertyAssignmentValue>
       <code>self::$directories</code>

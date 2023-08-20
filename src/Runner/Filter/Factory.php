@@ -25,6 +25,9 @@ final class Factory
      */
     private array $filters = [];
 
+    /**
+     * @psalm-param list<non-empty-string> $groups
+     */
     public function addExcludeGroupFilter(array $groups): void
     {
         $this->filters[] = [
@@ -32,6 +35,9 @@ final class Factory
         ];
     }
 
+    /**
+     * @psalm-param list<non-empty-string> $groups
+     */
     public function addIncludeGroupFilter(array $groups): void
     {
         $this->filters[] = [
@@ -39,6 +45,9 @@ final class Factory
         ];
     }
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
     public function addNameFilter(string $name): void
     {
         $this->filters[] = [
