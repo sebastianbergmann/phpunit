@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use function sprintf;
+use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
@@ -50,7 +51,7 @@ final class PhpunitErrorTriggered implements Event
 
     public function asString(): string
     {
-        $message = $this->message;
+        $message = trim($this->message);
 
         if (!empty($message)) {
             $message = PHP_EOL . $message;
