@@ -63,6 +63,9 @@ final class ListTestsAsXmlCommand implements Command
                 $writer->writeAttribute('name', $test->name());
                 $writer->writeAttribute('groups', implode(',', $test->groups()));
 
+                /**
+                 * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5481
+                 */
                 if (!empty($test->dataSetAsString())) {
                     $writer->writeAttribute(
                         'dataSet',
