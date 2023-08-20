@@ -79,7 +79,11 @@ final class ListTestsAsXmlCommand implements Command
                 }
 
                 $writer->endElement();
-            } elseif ($test instanceof PhptTestCase) {
+
+                continue;
+            }
+
+            if ($test instanceof PhptTestCase) {
                 if ($currentTestCase !== null) {
                     $writer->endElement();
 
