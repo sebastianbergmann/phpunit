@@ -79,7 +79,7 @@ final class TestSuiteBuilder
         if (is_dir($path)) {
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
-            $suite = TestSuite::empty($path);
+            $suite = TestSuite::empty('CLI Arguments');
             $suite->addTestFiles($files);
 
             return $suite;

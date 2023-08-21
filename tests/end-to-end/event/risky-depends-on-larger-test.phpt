@@ -31,7 +31,7 @@ Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
-Test Suite Started (%s/test-risky-depends-on-larger-test, 2 tests)
+Test Suite Started (CLI Arguments, 2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\LargeTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\LargeTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\LargeTest::testOne)
@@ -43,7 +43,7 @@ Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest::testOne)
 This test depends on a test that is larger than itself
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest, 1 test)
-Test Suite Finished (%s/test-risky-depends-on-larger-test, 2 tests)
+Test Suite Finished (CLI Arguments, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

@@ -34,7 +34,7 @@ Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (3 tests)
-Test Suite Started (%s/5287, 3 tests)
+Test Suite Started (CLI Arguments, 3 tests)
 Test Suite Started (PHPUnit\TestFixture\Issue5278\A\AnotherClassTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::test, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::test#0)
@@ -59,7 +59,7 @@ Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Issue5278\C\MyClassTest::test)
 Test Finished (PHPUnit\TestFixture\Issue5278\C\MyClassTest::test)
 Test Suite Finished (PHPUnit\TestFixture\Issue5278\C\MyClassTest, 1 test)
-Test Suite Finished (%s/5287, 3 tests)
+Test Suite Finished (CLI Arguments, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 1)

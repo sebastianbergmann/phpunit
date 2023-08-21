@@ -18,7 +18,7 @@ Runtime: %s
 
 ##teamcity[testCount count='19' flowId='%d']
 
-##teamcity[testSuiteStarted name='%stests/end-to-end/_files/basic/unit' flowId='%d']
+##teamcity[testSuiteStarted name='CLI Arguments' flowId='%d']
 
 ##teamcity[testSuiteStarted name='PHPUnit\SelfTest\Basic\SetUpBeforeClassTest' locationHint='php_qn://%stests/end-to-end/_files/basic/unit/SetUpBeforeClassTest.php::\PHPUnit\SelfTest\Basic\SetUpBeforeClassTest' flowId='%d']
 
@@ -116,7 +116,7 @@ Runtime: %s
 
 ##teamcity[testSuiteFinished name='PHPUnit\SelfTest\Basic\TearDownAfterClassTest' flowId='%d']
 
-##teamcity[testSuiteFinished name='%stests/end-to-end/_files/basic/unit' flowId='%d']
+##teamcity[testSuiteFinished name='CLI Arguments' flowId='%d']
 Time: %s, Memory: %s
 
 There were 5 errors:
