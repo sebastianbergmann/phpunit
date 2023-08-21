@@ -35,6 +35,10 @@ In your bug report, please provide the following:
 
 Please do not report a bug for a [version of PHPUnit that is no longer supported](https://phpunit.de/supported-versions.html). Please do not report a bug if you are using a [version of PHP that is not supported by the version of PHPUnit](https://phpunit.de/supported-versions.html) you are using.
 
+Please do not report an issue if you are not using PHPUnit directly, but rather a third-party wrapper around it.
+
+Please do not report an issue if you are using a third-party extension such as alternative output printers.
+
 Please post code and output as text ([using proper markup](https://guides.github.com/features/mastering-markdown/)). Do not post screenshots of code or output.
 
 Please include the output of `composer info | sort` if you installed PHPUnit using Composer.
