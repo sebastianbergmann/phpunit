@@ -35,6 +35,10 @@ In your bug report, please provide the following:
 
 Please do not report a bug for a [version of PHPUnit that is no longer supported](https://phpunit.de/supported-versions.html). Please do not report a bug if you are using a [version of PHP that is not supported by the version of PHPUnit](https://phpunit.de/supported-versions.html) you are using.
 
+Please do not report an issue if you are not using PHPUnit directly, but rather a third-party wrapper around it.
+
+Please do not report an issue if you are using a third-party extension such as alternative output printers.
+
 Please post code and output as text ([using proper markup](https://guides.github.com/features/mastering-markdown/)). Do not post screenshots of code or output.
 
 Please include the output of `composer info | sort` if you installed PHPUnit using Composer.
@@ -56,7 +60,7 @@ Please use the most specific issue tracker to search for existing tickets and to
 5. Ensure the code complies with our coding guidelines (see below).
 6. Send that pull request!
 
-Please make sure you have [set up your user name and email address](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) for use with Git. Strings such as `silly nick name <root@localhost>` look really stupid in the commit history of a project.
+Please make sure you have [set up your username and email address](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) for use with Git. Strings such as `silly nick name <root@localhost>` look really stupid in the commit history of a project.
 
 We encourage you to [sign your Git commits with your GPG key](https://docs.github.com/en/github/authenticating-to-github/signing-commits).
 
