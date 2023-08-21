@@ -13,7 +13,6 @@ labels: type/change-in-php-requires-adaptation, version/10
 - Please keep the table shown below at the top of your issue.
 - Please include the output of "composer info | sort" if you installed PHPUnit using Composer.
 - Please post code as text (using proper markup). Do not post screenshots of code.
-- Visit https://phpunit.de/support.html if you are looking for support.
 - Please remove this comment before submitting your issue.
 -->
 
