@@ -26,20 +26,21 @@ final class DataProviderWithStringDataSetNameAndMetadataWithPlaceholdersTest ext
                 ['key' => 'value'],
                 true,
                 Foo::BAR,
+                Bar::FOO,
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    #[TestDox('Text from method-level TestDox metadata for successful test with placeholders ($a, $b, $c, $d, $e, $f)')]
-    public function testSomethingThatWorks(string $a, int $b, float $c, array $d, bool $e, Foo $f): void
+    #[TestDox('Text from method-level TestDox metadata for successful test with placeholders ($a, $b, $c, $d, $e, $f, $g)')]
+    public function testSomethingThatWorks(string $a, int $b, float $c, array $d, bool $e, Foo $f, Bar $g): void
     {
         $this->assertTrue(true);
     }
 
     #[DataProvider('provider')]
-    #[TestDox('Text from method-level TestDox metadata for failing test with placeholders ($a, $b, $c, $d, $e, $f)')]
-    public function testSomethingThatDoesNotWork(string $a, int $b, float $c, array $d, bool $e, Foo $f): void
+    #[TestDox('Text from method-level TestDox metadata for failing test with placeholders ($a, $b, $c, $d, $e, $f, $g)')]
+    public function testSomethingThatDoesNotWork(string $a, int $b, float $c, array $d, bool $e, Foo $f, Bar $g): void
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */
         $this->assertTrue(false);
