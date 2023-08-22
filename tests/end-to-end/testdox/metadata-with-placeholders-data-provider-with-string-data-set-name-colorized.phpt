@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=always';
-$_SERVER['argv'][] = __DIR__ . '/_files/DataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/DataProviderWithStringDataSetNameAndMetadataWithPlaceholdersTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -25,7 +25,7 @@ Time: %s, Memory: %s
    [31m┐[0m
    [31m├[0m [41;37mFailed asserting that false is true.[0m
    [31m│[0m
-   [31m│[0m %s[22m_files[2m/[22mDataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest.php[2m:[22m[34m%d[0m
+   [31m│[0m %s[22m_files[2m/[22mDataProviderWithStringDataSetNameAndMetadataWithPlaceholdersTest.php[2m:[22m[34m%d[0m
    [31m┴[0m
 
 [37;41mFAILURES![0m

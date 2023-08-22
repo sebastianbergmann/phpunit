@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=never';
-$_SERVER['argv'][] = __DIR__ . '/_files/DataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/DataProviderWithStringDataSetNameAndMetadataWithPlaceholdersTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
