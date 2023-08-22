@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 
 ### Fixed
 
-* [#54254843](https://github.com/sebastianbergmann/phpunit/issues/5484): TestDox name prettifier only supports backed enumerations
+* [#5484](https://github.com/sebastianbergmann/phpunit/issues/5484): TestDox name prettifier only supports backed enumerations
 
 ## [10.3.2] - 2023-08-15
 
