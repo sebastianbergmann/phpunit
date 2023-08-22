@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\TestDox;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DataProviderWithStringDataSetNameTest extends TestCase
@@ -26,17 +27,13 @@ final class DataProviderWithStringDataSetNameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testSomethingThatWorks(string $a, int $b, float $c, array $d, bool $e): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testSomethingThatDoesNotWork(string $a, int $b, float $c, array $d, bool $e): void
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */

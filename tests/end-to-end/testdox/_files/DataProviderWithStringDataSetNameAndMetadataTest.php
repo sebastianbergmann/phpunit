@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TestFixture\TestDox;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @testdox Text from class-level TestDox metadata
- */
+#[TestDox('Text from class-level TestDox metadata')]
 final class DataProviderWithStringDataSetNameAndMetadataTest extends TestCase
 {
     public static function provider(): array
@@ -29,21 +29,15 @@ final class DataProviderWithStringDataSetNameAndMetadataTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provider
-     *
-     * @testdox Text from method-level TestDox metadata for successful test
-     */
+    #[DataProvider('provider')]
+    #[TestDox('Text from method-level TestDox metadata for successful test')]
     public function testSomethingThatWorks(string $a, int $b, float $c, array $d, bool $e): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider provider
-     *
-     * @testdox Text from method-level TestDox metadata for failing test
-     */
+    #[DataProvider('provider')]
+    #[TestDox('Text from method-level TestDox metadata for failing test')]
     public function testSomethingThatDoesNotWork(string $a, int $b, float $c, array $d, bool $e): void
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */

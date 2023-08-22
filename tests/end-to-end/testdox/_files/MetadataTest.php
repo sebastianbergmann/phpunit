@@ -9,24 +9,19 @@
  */
 namespace PHPUnit\TestFixture\TestDox;
 
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @testdox Text from class-level TestDox metadata
- */
+#[TestDox('Text from class-level TestDox metadata')]
 final class MetadataTest extends TestCase
 {
-    /**
-     * @testdox Text from method-level TestDox metadata for successful test
-     */
+    #[TestDox('Text from method-level TestDox metadata for successful test')]
     public function testSomethingThatWorks(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @testdox Text from method-level TestDox metadata for failing test
-     */
+    #[TestDox('Text from method-level TestDox metadata for failing test')]
     public function testSomethingThatDoesNotWork(): void
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */

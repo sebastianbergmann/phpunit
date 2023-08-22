@@ -20,8 +20,8 @@ Runtime:       %s
 Time: %s, Memory: %s
 
 Text from class-level TestDox metadata
- ✔ Text from method-level TestDox metadata for successful test with placeholders (string, 0, 0.0 array, true, bar)
- ✘ Text from method-level TestDox metadata for failing test with placeholders (string, 0, 0.0 array, true, bar)
+ ✔ Text from method-level TestDox metadata for successful test with placeholders (string, 0, 0.0, array, true, bar, FOO)
+ ✘ Text from method-level TestDox metadata for failing test with placeholders (string, 0, 0.0, array, true, bar, FOO)
    │
    │ Failed asserting that false is true.
    │
