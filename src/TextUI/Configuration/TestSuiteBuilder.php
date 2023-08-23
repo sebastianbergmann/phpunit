@@ -37,11 +37,11 @@ final class TestSuiteBuilder
      */
     public function build(Configuration $configuration): TestSuite
     {
-        if ($configuration->hasCliArgument()) {
-            $argument = realpath($configuration->cliArgument());
+        if ($configuration->hasCliArguments()) {
+            $argument = realpath($configuration->cliArguments()[0]);
 
             if (!$argument) {
-                throw new TestFileNotFoundException($configuration->cliArgument());
+                throw new TestFileNotFoundException($configuration->cliArguments()[0]);
             }
 
             $testSuite = $this->testSuiteFromPath(

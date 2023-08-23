@@ -50,8 +50,10 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 ### Extending PHPUnit
 
+* `PHPUnit\TextUI\Configuration\Configuration::cliArgument()` (since PHPUnit 10.4.0)
 * `PHPUnit\TextUI\Configuration\Configuration::excludeDirectories()` (since PHPUnit 10.2.0)
 * `PHPUnit\TextUI\Configuration\Configuration::excludeFiles()` (since PHPUnit 10.2.0)
+* `PHPUnit\TextUI\Configuration\Configuration::hasCliArgument()` (since PHPUnit 10.4.0)
 * `PHPUnit\TextUI\Configuration\Configuration::includeDirectories()` (since PHPUnit 10.2.0)
 * `PHPUnit\TextUI\Configuration\Configuration::includeFiles()` (since PHPUnit 10.2.0)
 * `PHPUnit\TextUI\Configuration\Configuration::noExtensions()` (since PHPUnit 10.2.0)

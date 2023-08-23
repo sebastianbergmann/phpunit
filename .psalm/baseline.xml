@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.14.1@b9d355e0829c397b9b3b47d0c0ed042a8a70284d">
+<files psalm-version="5.15.0@5c774aca4746caf3d239d9c8cadb9f882ca29352">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -674,6 +674,7 @@
   </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
     <ArgumentTypeCoercion>
+      <code>$options[1]</code>
       <code>$parameters</code>
     </ArgumentTypeCoercion>
   </file>
@@ -745,8 +746,6 @@
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
     <MissingThrowsDocblock>
       <code>\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite)</code>
-      <code>cliArgument</code>
-      <code>cliArgument</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Value/ConstantCollection.php">

@@ -41,12 +41,6 @@ final class Merger
      */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
-        $cliArgument = null;
-
-        if ($cliConfiguration->hasArgument()) {
-            $cliArgument = $cliConfiguration->argument();
-        }
-
         $configurationFile = null;
 
         if ($xmlConfiguration->wasLoadedFromFile()) {
@@ -712,7 +706,7 @@ final class Merger
         }
 
         return new Configuration(
-            $cliArgument,
+            $cliConfiguration->arguments(),
             $configurationFile,
             $bootstrap,
             $cacheResult,

@@ -138,7 +138,6 @@ final class Builder
             );
         }
 
-        $argument                          = null;
         $atLeastVersion                    = null;
         $backupGlobals                     = null;
         $backupStaticProperties            = null;
@@ -232,10 +231,6 @@ final class Builder
         $logEventsVerboseText              = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
-
-        if (isset($options[1][0])) {
-            $argument = $options[1][0];
-        }
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
@@ -796,7 +791,7 @@ final class Builder
         }
 
         return new Configuration(
-            $argument,
+            $options[1],
             $atLeastVersion,
             $backupGlobals,
             $backupStaticProperties,
