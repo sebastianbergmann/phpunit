@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\Configuration\Registry;
-use RecursiveIteratorIterator;
+use PHPUnit\Util\TestSuiteIteratorIterator;
 use XMLWriter;
 
 /**
@@ -45,7 +45,7 @@ final readonly class ListTestsAsXmlCommand implements Command
 
         $currentTestCase = null;
 
-        foreach (new RecursiveIteratorIterator($this->suite) as $test) {
+        foreach (new TestSuiteIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
                 if ($test::class !== $currentTestCase) {
                     if ($currentTestCase !== null) {

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\Configuration\Registry;
-use RecursiveIteratorIterator;
+use PHPUnit\Util\TestSuiteIteratorIterator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -35,7 +35,7 @@ final readonly class ListTestsAsTextCommand implements Command
 
         $buffer .= 'Available test(s):' . PHP_EOL;
 
-        foreach (new RecursiveIteratorIterator($this->suite) as $test) {
+        foreach (new TestSuiteIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
                 $name = sprintf(
                     '%s::%s',
