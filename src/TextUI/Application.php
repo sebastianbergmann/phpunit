@@ -19,6 +19,7 @@ use function trim;
 use function unlink;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\RuntimeException as EventRuntimeException;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
@@ -36,6 +37,7 @@ use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
@@ -62,6 +64,7 @@ use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
@@ -106,7 +109,7 @@ final class Application
 
             $testSuite = $this->buildTestSuite($configuration);
 
-            $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
+            $this->executeCommandsThatRequireCompleteConfigurationAndTestSuite($configuration, $cliConfiguration, $testSuite);
             $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
             $pharExtensions                          = null;
@@ -395,24 +398,35 @@ final class Application
         }
     }
 
-    private function executeCommandsThatRequireCliConfigurationAndTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
+    /**
+     * @throws RuntimeException
+     */
+    private function executeCommandsThatRequireCompleteConfigurationAndTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
         if ($cliConfiguration->listGroups()) {
-            $this->execute(new ListGroupsCommand($testSuite));
+            $command = new ListGroupsCommand($testSuite);
+        } elseif ($cliConfiguration->listTests()) {
+            $command = new ListTestsAsTextCommand($testSuite);
+        } elseif ($cliConfiguration->hasListTestsXml()) {
+            $command = new ListTestsAsXmlCommand(
+                $cliConfiguration->listTestsXml(),
+                $testSuite,
+            );
+        } else {
+            return;
         }
 
-        if ($cliConfiguration->listTests()) {
-            $this->execute(new ListTestsAsTextCommand($testSuite));
-        }
-
-        if ($cliConfiguration->hasListTestsXml()) {
-            $this->execute(
-                new ListTestsAsXmlCommand(
-                    $cliConfiguration->listTestsXml(),
-                    $testSuite,
-                ),
+        try {
+            (new TestSuiteFilterProcessor(new Factory))->process($configuration, $testSuite);
+        } catch (EventRuntimeException|FilterNotConfiguredException $ex) {
+            throw new RuntimeException(
+                $ex->getMessage(),
+                $ex->getCode(),
+                $ex,
             );
         }
+
+        $this->execute($command);
     }
 
     private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration): void
