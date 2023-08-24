@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use function assert;
+use function count;
 use function is_dir;
 use function is_file;
 use function realpath;
@@ -38,16 +39,29 @@ final class TestSuiteBuilder
     public function build(Configuration $configuration): TestSuite
     {
         if ($configuration->hasCliArguments()) {
-            $argument = realpath($configuration->cliArguments()[0]);
+            $arguments = [];
 
-            if (!$argument) {
-                throw new TestFileNotFoundException($configuration->cliArguments()[0]);
+            foreach ($configuration->cliArguments() as $cliArgument) {
+                $argument = realpath($cliArgument);
+
+                if (!$argument) {
+                    throw new TestFileNotFoundException($cliArgument);
+                }
+
+                $arguments[] = $argument;
             }
 
-            $testSuite = $this->testSuiteFromPath(
-                $argument,
-                $configuration->testSuffixes(),
-            );
+            if (count($arguments) === 1) {
+                $testSuite = $this->testSuiteFromPath(
+                    $arguments[0],
+                    $configuration->testSuffixes(),
+                );
+            } else {
+                $testSuite = $this->testSuiteFromPathList(
+                    $arguments,
+                    $configuration->testSuffixes(),
+                );
+            }
         }
 
         if (!isset($testSuite)) {
@@ -71,22 +85,23 @@ final class TestSuiteBuilder
     /**
      * @psalm-param non-empty-string $path
      * @psalm-param list<string> $suffixes
+     * @psalm-param ?TestSuite $suite
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    private function testSuiteFromPath(string $path, array $suffixes): TestSuite
+    private function testSuiteFromPath(string $path, array $suffixes, ?TestSuite $suite = null): TestSuite
     {
         if (is_dir($path)) {
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
-            $suite = TestSuite::empty('CLI Arguments');
+            $suite = $suite ?: TestSuite::empty('CLI Arguments');
             $suite->addTestFiles($files);
 
             return $suite;
         }
 
         if (is_file($path) && str_ends_with($path, '.phpt')) {
-            $suite = TestSuite::empty($path);
+            $suite = $suite ?: TestSuite::empty($path);
             $suite->addTestFile($path);
 
             return $suite;
@@ -100,6 +115,29 @@ final class TestSuiteBuilder
             exit(1);
         }
 
-        return TestSuite::fromClassReflector($testClass);
+        if (!$suite) {
+            return TestSuite::fromClassReflector($testClass);
+        }
+
+        $suite->addTestSuite($testClass);
+
+        return $suite;
+    }
+
+    /**
+     * @psalm-param list<non-empty-string> $paths
+     * @psalm-param list<string> $suffixes
+     *
+     * @throws \PHPUnit\Framework\Exception
+     */
+    private function testSuiteFromPathList(array $paths, array $suffixes): TestSuite
+    {
+        $suite = TestSuite::empty('CLI Arguments');
+
+        foreach ($paths as $path) {
+            $this->testSuiteFromPath($path, $suffixes, $suite);
+        }
+
+        return $suite;
     }
 }
