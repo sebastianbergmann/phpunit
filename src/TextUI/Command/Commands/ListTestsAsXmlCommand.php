@@ -15,7 +15,6 @@ use function sprintf;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\TestSuiteIteratorIterator;
 use XMLWriter;
 
@@ -35,7 +34,6 @@ final readonly class ListTestsAsXmlCommand implements Command
 
     public function execute(): Result
     {
-        $buffer = $this->warnAboutConflictingOptions();
         $writer = new XMLWriter;
 
         $writer->openMemory();
@@ -88,36 +86,11 @@ final readonly class ListTestsAsXmlCommand implements Command
 
         file_put_contents($this->filename, $writer->outputMemory());
 
-        $buffer .= sprintf(
+        $buffer = sprintf(
             'Wrote list of tests that would have been run to %s' . PHP_EOL,
             $this->filename,
         );
 
         return Result::from($buffer);
-    }
-
-    private function warnAboutConflictingOptions(): string
-    {
-        $buffer = '';
-
-        $configuration = Registry::get();
-
-        if ($configuration->hasFilter()) {
-            $buffer .= 'The --filter and --list-tests-xml options cannot be combined, --filter is ignored' . PHP_EOL;
-        }
-
-        if ($configuration->hasGroups()) {
-            $buffer .= 'The --group and --list-tests-xml options cannot be combined, --group is ignored' . PHP_EOL;
-        }
-
-        if ($configuration->hasExcludeGroups()) {
-            $buffer .= 'The --exclude-group and --list-tests-xml options cannot be combined, --exclude-group is ignored' . PHP_EOL;
-        }
-
-        if (!empty($buffer)) {
-            $buffer .= PHP_EOL;
-        }
-
-        return $buffer;
     }
 }
