@@ -14,8 +14,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
-..                                                                  2 / 2 (100%)
+.                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-OK (2 tests, 2 assertions)
+OK (1 test, 1 assertion)
