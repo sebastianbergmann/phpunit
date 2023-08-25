@@ -1,6 +1,5 @@
 [33mUsage:[0m
-  phpunit [options] UnitTest.php
-  phpunit [options] <directory>
+  phpunit [options] <directory|file> ...
 
 [33mConfiguration:[0m
 

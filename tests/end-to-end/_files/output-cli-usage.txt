@@ -1,8 +1,7 @@
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Usage:
-  phpunit [options] UnitTest.php
-  phpunit [options] <directory>
+  phpunit [options] <directory|file> ...
 
 Configuration:
 

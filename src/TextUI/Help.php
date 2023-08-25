@@ -29,8 +29,7 @@ final class Help
     private const LEFT_MARGIN = '  ';
     private const HELP_TEXT   = [
         'Usage' => [
-            ['text' => 'phpunit [options] UnitTest.php'],
-            ['text' => 'phpunit [options] <directory>'],
+            ['text' => 'phpunit [options] <directory|file> ...'],
         ],
 
         'Configuration' => [
