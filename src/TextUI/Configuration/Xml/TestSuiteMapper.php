@@ -62,6 +62,10 @@ final class TestSuiteMapper
                 }
 
                 foreach ($testSuiteConfiguration->directories() as $directory) {
+                    if (!str_contains($directory->path(), '*') && !is_dir($directory->path())) {
+                        throw new TestDirectoryNotFoundException($directory->path());
+                    }
+
                     if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
                         continue;
                     }
@@ -77,8 +81,6 @@ final class TestSuiteMapper
                         $testSuite->addTestFiles($files);
 
                         $testSuiteEmpty = false;
-                    } elseif (!str_contains($directory->path(), '*') && !is_dir($directory->path())) {
-                        throw new TestDirectoryNotFoundException($directory->path());
                     }
                 }
 
