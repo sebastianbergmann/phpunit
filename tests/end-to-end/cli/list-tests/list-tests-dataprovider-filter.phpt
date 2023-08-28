@@ -14,10 +14,5 @@ require_once __DIR__ . '/../../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-The --filter and --list-tests options cannot be combined, --filter is ignored
-
 Available test(s):
  - PHPUnit\TestFixture\DataProviderTest::testAdd#0
- - PHPUnit\TestFixture\DataProviderTest::testAdd#1
- - PHPUnit\TestFixture\DataProviderTest::testAdd#2
- - PHPUnit\TestFixture\DataProviderTest::testAdd#3
