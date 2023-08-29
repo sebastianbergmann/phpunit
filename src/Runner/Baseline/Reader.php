@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Baseline;
 
 use function assert;
 use function dirname;
+use function file_exists;
 use function realpath;
 use function sprintf;
 use DOMElement;
@@ -29,6 +30,10 @@ final class Reader
      */
     public function read(string $baselineFile): Baseline
     {
+        if (!file_exists($baselineFile)) {
+            throw new CannotLoadBaselineException;
+        }
+
         $baseline          = new Baseline;
         $baselineDirectory = dirname(realpath($baselineFile));
 
