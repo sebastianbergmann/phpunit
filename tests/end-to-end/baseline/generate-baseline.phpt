@@ -3,12 +3,14 @@ phpunit --configuration ../_files/baseline/generate-baseline/phpunit.xml --gener
 --FILE--
 <?php declare(strict_types=1);
 $baseline = __DIR__ . '/../_files/baseline/generate-baseline/baseline.xml';
-
+@touch($baseline);
+$baseline = realpath($baseline);
 @unlink($baseline);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--display-deprecations';
 $_SERVER['argv'][] = '--generate-baseline';
+$_SERVER['argv'][] = $baseline;
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/baseline/generate-baseline/phpunit.xml';
 

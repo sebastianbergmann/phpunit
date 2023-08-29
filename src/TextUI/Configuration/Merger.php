@@ -841,7 +841,7 @@ final class Merger
             ),
             $xmlConfiguration->phpunit()->controlGarbageCollector(),
             $xmlConfiguration->phpunit()->numberOfTestsBeforeGarbageCollection(),
-            $cliConfiguration->generateBaseline(),
+            $cliConfiguration->hasGenerateBaseline() ? $cliConfiguration->generateBaseline() : null,
         );
     }
 }

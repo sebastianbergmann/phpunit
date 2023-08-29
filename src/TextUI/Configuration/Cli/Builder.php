@@ -55,7 +55,7 @@ final class Builder
         'enforce-time-limit',
         'exclude-group=',
         'filter=',
-        'generate-baseline',
+        'generate-baseline=',
         'generate-configuration',
         'globals-backup',
         'group=',
@@ -194,7 +194,7 @@ final class Builder
         $stopOnSkipped                     = null;
         $stopOnWarning                     = null;
         $filter                            = null;
-        $generateBaseline                  = false;
+        $generateBaseline                  = null;
         $generateConfiguration             = false;
         $migrateConfiguration              = false;
         $groups                            = null;
@@ -372,7 +372,7 @@ final class Builder
                     break;
 
                 case '--generate-baseline':
-                    $generateBaseline = true;
+                    $generateBaseline = $option[1];
 
                     break;
 

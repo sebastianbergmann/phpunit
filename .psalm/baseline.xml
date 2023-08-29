@@ -646,6 +646,9 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/TextUI/Application.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$configuration->generateBaseline()]]></code>
+    </ArgumentTypeCoercion>
     <InternalMethod>
       <code>nameAndVersion</code>
     </InternalMethod>

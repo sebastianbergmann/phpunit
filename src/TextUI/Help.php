@@ -42,7 +42,7 @@ final class Help
             ['arg' => '--cache-directory <dir>', 'desc' => 'Specify cache directory'],
             ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
             ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
-            ['arg' => '--generate-baseline', 'desc' => 'Generate baseline for issues'],
+            ['arg' => '--generate-baseline <file>', 'desc' => 'Generate baseline for issues'],
         ],
 
         'Selection' => [

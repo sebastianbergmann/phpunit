@@ -218,7 +218,7 @@ final class Application
 
             if (isset($baselineGenerator)) {
                 (new Writer)->write(
-                    $configuration->source()->baseline(),
+                    $configuration->generateBaseline(),
                     $baselineGenerator->baseline(),
                 );
 
@@ -624,15 +624,7 @@ final class Application
      */
     private function configureBaseline(Configuration $configuration): ?BaselineGenerator
     {
-        if ($configuration->generateBaseline()) {
-            if (!$configuration->source()->hasBaseline()) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
-                    'Generation of baseline requested using --generate-baseline, but no baseline is configured',
-                );
-
-                return null;
-            }
-
+        if ($configuration->hasGenerateBaseline()) {
             return new BaselineGenerator(
                 EventFacade::instance(),
                 $configuration->source(),
