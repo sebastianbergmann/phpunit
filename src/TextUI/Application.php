@@ -225,7 +225,7 @@ final class Application
                 $printer->print(
                     sprintf(
                         PHP_EOL . 'Baseline written to %s.' . PHP_EOL,
-                        realpath($configuration->source()->baseline()),
+                        realpath($configuration->generateBaseline()),
                     ),
                 );
             }

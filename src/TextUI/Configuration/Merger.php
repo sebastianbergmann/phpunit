@@ -705,11 +705,21 @@ final class Merger
             $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
         }
 
-        $baseline = null;
+        $useBaseline      = null;
+        $generateBaseline = null;
 
-        if ($xmlConfiguration->source()->hasBaseline()) {
-            $baseline = $xmlConfiguration->source()->baseline();
+        if (!$cliConfiguration->hasGenerateBaseline()) {
+            if ($cliConfiguration->hasUseBaseline()) {
+                $useBaseline = $cliConfiguration->useBaseline();
+            } elseif ($xmlConfiguration->source()->hasBaseline()) {
+                $useBaseline = $xmlConfiguration->source()->baseline();
+            }
+        } else {
+            $generateBaseline = $cliConfiguration->generateBaseline();
         }
+
+        assert($useBaseline !== '');
+        assert($generateBaseline !== '');
 
         return new Configuration(
             $cliConfiguration->arguments(),
@@ -719,7 +729,7 @@ final class Merger
             $cacheDirectory,
             $coverageCacheDirectory,
             new Source(
-                $baseline,
+                $useBaseline,
                 FilterDirectoryCollection::fromArray($sourceIncludeDirectories),
                 $sourceIncludeFiles,
                 $sourceExcludeDirectories,
@@ -841,7 +851,7 @@ final class Merger
             ),
             $xmlConfiguration->phpunit()->controlGarbageCollector(),
             $xmlConfiguration->phpunit()->numberOfTestsBeforeGarbageCollection(),
-            $cliConfiguration->hasGenerateBaseline() ? $cliConfiguration->generateBaseline() : null,
+            $generateBaseline,
         );
     }
 }

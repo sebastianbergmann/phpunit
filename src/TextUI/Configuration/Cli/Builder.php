@@ -56,6 +56,7 @@ final class Builder
         'exclude-group=',
         'filter=',
         'generate-baseline=',
+        'use-baseline=',
         'generate-configuration',
         'globals-backup',
         'group=',
@@ -195,6 +196,7 @@ final class Builder
         $stopOnWarning                     = null;
         $filter                            = null;
         $generateBaseline                  = null;
+        $useBaseline                       = null;
         $generateConfiguration             = false;
         $migrateConfiguration              = false;
         $groups                            = null;
@@ -373,6 +375,11 @@ final class Builder
 
                 case '--generate-baseline':
                     $generateBaseline = $option[1];
+
+                    break;
+
+                case '--use-baseline':
+                    $useBaseline = $option[1];
 
                     break;
 
@@ -848,6 +855,7 @@ final class Builder
             $stopOnWarning,
             $filter,
             $generateBaseline,
+            $useBaseline,
             $generateConfiguration,
             $migrateConfiguration,
             $groups,
