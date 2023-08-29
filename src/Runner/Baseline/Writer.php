@@ -40,7 +40,9 @@ final class Writer
         $writer->openMemory();
         $writer->setIndent(true);
         $writer->startDocument();
+
         $writer->startElement('files');
+        $writer->writeAttribute('version', (string) Baseline::VERSION);
 
         foreach ($baseline->groupedByFileAndLine() as $file => $lines) {
             assert(!empty($file));

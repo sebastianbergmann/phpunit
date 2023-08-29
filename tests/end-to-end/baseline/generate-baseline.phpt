@@ -45,7 +45,7 @@ Tests: 1, Assertions: 1, Deprecations: 1.
 
 Baseline written to %s/baseline.xml.
 <?xml version="1.0"?>
-<files>
+<files version="1">
  <file path="tests/Test.php">
   <line number="19" hash="a1022fb62c4705938dd2c6df5ff35b2621f9e97d">
    <issue><![CDATA[deprecation]]></issue>

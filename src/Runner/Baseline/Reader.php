@@ -12,8 +12,10 @@ namespace PHPUnit\Runner\Baseline;
 use function assert;
 use function dirname;
 use function realpath;
+use function sprintf;
 use DOMElement;
 use DOMXPath;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 
@@ -37,6 +39,18 @@ final class Reader
                 $e->getMessage(),
                 $e->getCode(),
                 $e,
+            );
+        }
+
+        $version = (int) $document->documentElement->getAttribute('version');
+
+        if ($version !== Baseline::VERSION) {
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Cannot read baseline %s, version %d is not supported',
+                    $baselineFile,
+                    $version,
+                ),
             );
         }
 
