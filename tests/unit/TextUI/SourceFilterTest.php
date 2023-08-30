@@ -29,6 +29,7 @@ final class SourceFilterTest extends TestCase
                 $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -54,6 +55,7 @@ final class SourceFilterTest extends TestCase
                 $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -87,6 +89,7 @@ final class SourceFilterTest extends TestCase
                 $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -116,6 +119,7 @@ final class SourceFilterTest extends TestCase
                 $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
@@ -145,6 +149,7 @@ final class SourceFilterTest extends TestCase
                 $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
@@ -178,6 +183,7 @@ final class SourceFilterTest extends TestCase
                 $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(

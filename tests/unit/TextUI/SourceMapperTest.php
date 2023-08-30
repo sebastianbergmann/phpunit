@@ -32,6 +32,7 @@ final class SourceMapperTest extends TestCase
                 ],
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -57,6 +58,7 @@ final class SourceMapperTest extends TestCase
                 ],
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -90,6 +92,7 @@ final class SourceMapperTest extends TestCase
                 ],
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -131,6 +134,7 @@ final class SourceMapperTest extends TestCase
                 ],
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
@@ -171,6 +175,7 @@ final class SourceMapperTest extends TestCase
                 ],
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
@@ -209,6 +214,7 @@ final class SourceMapperTest extends TestCase
                 ],
                 new Source(
                     null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(

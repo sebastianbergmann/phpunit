@@ -631,7 +631,7 @@ final class Application
             );
         }
 
-        if ($configuration->source()->hasBaseline()) {
+        if ($configuration->source()->useBaseline()) {
             /** @psalm-suppress MissingThrowsDocblock */
             $baselineFile = $configuration->source()->baseline();
 

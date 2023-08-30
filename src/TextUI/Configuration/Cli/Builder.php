@@ -57,6 +57,7 @@ final class Builder
         'filter=',
         'generate-baseline=',
         'use-baseline=',
+        'ignore-baseline',
         'generate-configuration',
         'globals-backup',
         'group=',
@@ -197,6 +198,7 @@ final class Builder
         $filter                            = null;
         $generateBaseline                  = null;
         $useBaseline                       = null;
+        $ignoreBaseline                    = false;
         $generateConfiguration             = false;
         $migrateConfiguration              = false;
         $groups                            = null;
@@ -380,6 +382,11 @@ final class Builder
 
                 case '--use-baseline':
                     $useBaseline = $option[1];
+
+                    break;
+
+                case '--ignore-baseline':
+                    $ignoreBaseline = true;
 
                     break;
 
@@ -856,6 +863,7 @@ final class Builder
             $filter,
             $generateBaseline,
             $useBaseline,
+            $ignoreBaseline,
             $generateConfiguration,
             $migrateConfiguration,
             $groups,

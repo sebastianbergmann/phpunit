@@ -16,6 +16,7 @@ Configuration:
   --migrate-configuration          Migrate configuration file to current format
   --generate-baseline <file>       Generate baseline for issues
   --use-baseline <file>            Use baseline to ignore issues
+  --ignore-baseline                Do not use baseline to ignore issues
 
 Selection:
 

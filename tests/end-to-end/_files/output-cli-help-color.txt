@@ -18,6 +18,7 @@
   [32m--migrate-configuration         [0m Migrate configuration file to current format
   [32m--generate-baseline [36m<file>[0m      [0m Generate baseline for issues
   [32m--use-baseline [36m<file>[0m           [0m Use baseline to ignore issues
+  [32m--ignore-baseline               [0m Do not use baseline to ignore issues
 
 [33mSelection:[0m
 

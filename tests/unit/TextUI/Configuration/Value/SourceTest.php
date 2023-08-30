@@ -30,6 +30,7 @@ final class SourceTest extends TestCase
 
         $source = new Source(
             null,
+            false,
             $includeDirectories,
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
@@ -55,6 +56,7 @@ final class SourceTest extends TestCase
 
         $source = new Source(
             null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             $includeFiles,
             FilterDirectoryCollection::fromArray([]),
@@ -80,6 +82,7 @@ final class SourceTest extends TestCase
 
         $source = new Source(
             null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             $excludeDirectories,
@@ -105,6 +108,7 @@ final class SourceTest extends TestCase
 
         $source = new Source(
             null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
@@ -130,6 +134,7 @@ final class SourceTest extends TestCase
 
         $source = new Source(
             $baseline,
+            false,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
@@ -154,6 +159,7 @@ final class SourceTest extends TestCase
     {
         $source = new Source(
             null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),

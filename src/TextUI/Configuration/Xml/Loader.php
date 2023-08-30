@@ -279,6 +279,7 @@ final class Loader
 
         return new Source(
             $baseline,
+            false,
             $this->readFilterDirectories($filename, $xpath, 'source/include/directory'),
             $this->readFilterFiles($filename, $xpath, 'source/include/file'),
             $this->readFilterDirectories($filename, $xpath, 'source/exclude/directory'),

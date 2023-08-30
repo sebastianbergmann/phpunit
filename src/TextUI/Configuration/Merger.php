@@ -730,6 +730,7 @@ final class Merger
             $coverageCacheDirectory,
             new Source(
                 $useBaseline,
+                $cliConfiguration->ignoreBaseline(),
                 FilterDirectoryCollection::fromArray($sourceIncludeDirectories),
                 $sourceIncludeFiles,
                 $sourceExcludeDirectories,
