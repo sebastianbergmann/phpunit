@@ -43,7 +43,7 @@ final class LoaderTest extends TestCase
     public function testCannotParseFileWithInvalidXml(): void
     {
         $this->expectException(XmlException::class);
-        $this->expectExceptionMessage('Premature end of data in tag test line 1');
+        $this->expectExceptionMessageMatches("#Premature end of data in tag test line 1|EndTag: '</' not found#");
 
         (new Loader)->loadFile(__DIR__ . '/../../../_files/invalid.xml');
     }
@@ -66,7 +66,7 @@ final class LoaderTest extends TestCase
     public function testCannotParseStringWithInvalidXml(): void
     {
         $this->expectException(XmlException::class);
-        $this->expectExceptionMessage('Premature end of data in tag test line 1');
+        $this->expectExceptionMessageMatches("#Premature end of data in tag test line 1|EndTag: '</' not found#");
 
         (new Loader)->load('<test>');
     }
