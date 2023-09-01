@@ -84,7 +84,7 @@ final class TestSuiteBuilder
 
     /**
      * @psalm-param non-empty-string $path
-     * @psalm-param list<string> $suffixes
+     * @psalm-param list<non-empty-string> $suffixes
      * @psalm-param ?TestSuite $suite
      *
      * @throws \PHPUnit\Framework\Exception
@@ -126,7 +126,7 @@ final class TestSuiteBuilder
 
     /**
      * @psalm-param list<non-empty-string> $paths
-     * @psalm-param list<string> $suffixes
+     * @psalm-param list<non-empty-string> $suffixes
      *
      * @throws \PHPUnit\Framework\Exception
      */

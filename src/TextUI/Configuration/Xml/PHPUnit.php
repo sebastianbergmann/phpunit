@@ -48,6 +48,10 @@ final class PHPUnit
     private readonly bool $stopOnRisky;
     private readonly bool $stopOnSkipped;
     private readonly bool $stopOnWarning;
+
+    /**
+     * @psalm-var ?non-empty-string
+     */
     private readonly ?string $extensionsDirectory;
     private readonly bool $beStrictAboutChangesToGlobalState;
     private readonly bool $beStrictAboutOutputDuringTests;
@@ -69,6 +73,9 @@ final class PHPUnit
     private readonly bool $controlGarbageCollector;
     private readonly int $numberOfTestsBeforeGarbageCollection;
 
+    /**
+     * @psalm-param ?non-empty-string $extensionsDirectory
+     */
     public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection)
     {
         $this->cacheDirectory                                  = $cacheDirectory;
@@ -343,6 +350,8 @@ final class PHPUnit
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @throws Exception
      */
     public function extensionsDirectory(): string

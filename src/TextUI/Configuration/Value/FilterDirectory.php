@@ -16,10 +16,16 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final class FilterDirectory
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $path;
     private readonly string $prefix;
     private readonly string $suffix;
 
+    /**
+     * @psalm-param non-empty-string $path
+     */
     public function __construct(string $path, string $prefix, string $suffix)
     {
         $this->path   = $path;
@@ -27,6 +33,9 @@ final class FilterDirectory
         $this->suffix = $suffix;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function path(): string
     {
         return $this->path;
