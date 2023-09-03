@@ -52,7 +52,7 @@ final class Reflection
      */
     public static function publicMethodsInTestClass(ReflectionClass $class): array
     {
-        return self::filterMethods($class, ReflectionMethod::IS_PUBLIC);
+        return self::filterAndSortMethods($class, ReflectionMethod::IS_PUBLIC);
     }
 
     /**
@@ -60,13 +60,13 @@ final class Reflection
      */
     public static function methodsInTestClass(ReflectionClass $class): array
     {
-        return self::filterMethods($class, null);
+        return self::filterAndSortMethods($class, null);
     }
 
     /**
      * @psalm-return list<ReflectionMethod>
      */
-    private static function filterMethods(ReflectionClass $class, ?int $filter): array
+    private static function filterAndSortMethods(ReflectionClass $class, ?int $filter): array
     {
         $methodsByClass = [];
 
