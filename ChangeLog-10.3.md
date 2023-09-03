@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 
 * [#5484](https://github.com/sebastianbergmann/phpunit/issues/5484): TestDox name prettifier only supports backed enumerations
 * [#5487](https://github.com/sebastianbergmann/phpunit/issues/5487): Tests are run more than once if `<testsuites>` has overlapping `<directory>`s
+* [#5498](https://github.com/sebastianbergmann/phpunit/issues/5498): Hook methods are run in wrong order
 
 ## [10.3.2] - 2023-08-15
 
