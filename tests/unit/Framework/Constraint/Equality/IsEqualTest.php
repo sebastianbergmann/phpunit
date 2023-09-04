@@ -289,8 +289,8 @@ Failed asserting that two strings are equal.
 +another-string'
 
 EOT,
-                'string' . PHP_EOL . 'string',
-                'another-string' . PHP_EOL . 'another-string',
+                "string\nstring",
+                "another-string\nanother-string",
             ],
         ];
     }
