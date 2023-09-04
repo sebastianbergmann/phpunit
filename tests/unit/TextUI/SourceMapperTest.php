@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const DIRECTORY_SEPARATOR;
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -26,7 +27,7 @@ final class SourceMapperTest extends TestCase
         return [
             'file included using file' => [
                 [
-                    $fixtureDirectory . '/a/PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
                     FilterDirectoryCollection::fromArray([]),
@@ -111,18 +112,18 @@ final class SourceMapperTest extends TestCase
             ],
             'file included using directory' => [
                 [
-                    $fixtureDirectory . '/a/PrefixSuffix.php'     => true,
-                    $fixtureDirectory . '/a/c/Prefix.php'         => true,
-                    $fixtureDirectory . '/a/c/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/a/c/Suffix.php'         => true,
-                    $fixtureDirectory . '/a/c/d/Prefix.php'       => true,
-                    $fixtureDirectory . '/a/c/d/PrefixSuffix.php' => true,
-                    $fixtureDirectory . '/a/c/d/Suffix.php'       => true,
-                    $fixtureDirectory . '/b/PrefixSuffix.php'     => true,
-                    $fixtureDirectory . '/b/e/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/b/e/g/PrefixSuffix.php' => true,
-                    $fixtureDirectory . '/b/f/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/b/f/h/PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
                     FilterDirectoryCollection::fromArray(
@@ -151,17 +152,17 @@ final class SourceMapperTest extends TestCase
             ],
             'file included using directory, but excluded using file' => [
                 [
-                    $fixtureDirectory . '/a/c/Prefix.php'         => true,
-                    $fixtureDirectory . '/a/c/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/a/c/Suffix.php'         => true,
-                    $fixtureDirectory . '/a/c/d/Prefix.php'       => true,
-                    $fixtureDirectory . '/a/c/d/PrefixSuffix.php' => true,
-                    $fixtureDirectory . '/a/c/d/Suffix.php'       => true,
-                    $fixtureDirectory . '/b/PrefixSuffix.php'     => true,
-                    $fixtureDirectory . '/b/e/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/b/e/g/PrefixSuffix.php' => true,
-                    $fixtureDirectory . '/b/f/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/b/f/h/PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
                     FilterDirectoryCollection::fromArray(
@@ -194,11 +195,11 @@ final class SourceMapperTest extends TestCase
             ],
             'file included using directory, but excluded using directory' => [
                 [
-                    $fixtureDirectory . '/b/PrefixSuffix.php'     => true,
-                    $fixtureDirectory . '/b/e/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/b/e/g/PrefixSuffix.php' => true,
-                    $fixtureDirectory . '/b/f/PrefixSuffix.php'   => true,
-                    $fixtureDirectory . '/b/f/h/PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+                    $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
                     FilterDirectoryCollection::fromArray(
