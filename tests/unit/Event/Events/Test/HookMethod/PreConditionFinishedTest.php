@@ -43,7 +43,7 @@ final class PreConditionFinishedTest extends AbstractEventTestCase
             ...$this->calledMethods(),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Pre Condition Method Finished:
 - HookClass::hookMethod

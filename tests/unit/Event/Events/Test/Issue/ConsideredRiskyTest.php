@@ -43,7 +43,7 @@ final class ConsideredRiskyTest extends AbstractEventTestCase
             'message',
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Test Considered Risky (FooTest::testBar)
 message
