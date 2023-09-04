@@ -44,7 +44,7 @@ final class ErroredTest extends AbstractEventTestCase
             $this->throwable(),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Test Errored (FooTest::testBar)
 error

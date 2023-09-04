@@ -43,7 +43,7 @@ final class DataProviderMethodFinishedTest extends AbstractEventTestCase
             new ClassMethod('ClassTest', 'dataProvider'),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Data Provider Method Finished for ClassTest::testOne:
 - ClassTest::dataProvider

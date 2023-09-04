@@ -44,7 +44,7 @@ final class MarkedIncompleteTest extends AbstractEventTestCase
             $this->throwable(),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Test Marked Incomplete (FooTest::testBar)
 incomplete

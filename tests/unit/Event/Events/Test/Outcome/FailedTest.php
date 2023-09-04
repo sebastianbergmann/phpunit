@@ -70,7 +70,7 @@ final class FailedTest extends AbstractEventTestCase
             null,
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Test Failed (FooTest::testBar)
 failure

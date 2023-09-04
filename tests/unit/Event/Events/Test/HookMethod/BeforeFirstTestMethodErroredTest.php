@@ -48,7 +48,7 @@ final class BeforeFirstTestMethodErroredTest extends AbstractEventTestCase
             Code\ThrowableBuilder::from(new Exception('message')),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Before First Test Method Errored (HookClass::hookMethod)
 message

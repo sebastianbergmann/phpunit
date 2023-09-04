@@ -38,7 +38,7 @@ final class PrintedUnexpectedOutputTest extends AbstractEventTestCase
             'output',
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Test Printed Unexpected Output
 output
