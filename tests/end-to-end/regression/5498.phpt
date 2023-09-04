@@ -26,7 +26,7 @@ Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
-Test Suite Started (%s/5498, 1 test)
+Test Suite Started (%s%e5498, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue5498\Test, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Issue5498\Test::testOne)
 Before Test Method Called (PHPUnit\TestFixture\Issue5498\Test::parentBefore)
@@ -44,7 +44,7 @@ After Test Method Finished:
 - PHPUnit\TestFixture\Issue5498\Test::parentAfter
 Test Finished (PHPUnit\TestFixture\Issue5498\Test::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Issue5498\Test, 1 test)
-Test Suite Finished (%s/5498, 1 test)
+Test Suite Finished (%s%e5498, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

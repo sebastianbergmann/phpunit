@@ -36,13 +36,13 @@ There were 2 risky tests:
 1) Issue5340Test::testOne
 This test printed output: output printed from passing test
 
-%s/Issue5340Test.php:%d
+%s%eIssue5340Test.php:%d
 
 2) Issue5340Test::testTwo
 This test printed output: 
 output printed from failing test
 
-%s/Issue5340Test.php:%d
+%s%eIssue5340Test.php:%d
 
 FAILURES!
 Tests: 2, Assertions: 2, Failures: 1, Risky: 2.
