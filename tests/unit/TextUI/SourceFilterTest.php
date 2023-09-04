@@ -26,7 +26,7 @@ final class SourceFilterTest extends TestCase
         return [
             'file included using file' => [
                 true,
-                $fixtureDirectory . '/a/PrefixSuffix.php',
+                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
@@ -50,7 +50,7 @@ final class SourceFilterTest extends TestCase
             ],
             'file included using file, but excluded using directory' => [
                 false,
-                $fixtureDirectory . '/a/PrefixSuffix.php',
+                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
@@ -82,7 +82,7 @@ final class SourceFilterTest extends TestCase
             ],
             'file included using file, but excluded using file' => [
                 false,
-                $fixtureDirectory . '/a/PrefixSuffix.php',
+                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
@@ -110,7 +110,7 @@ final class SourceFilterTest extends TestCase
             ],
             'file included using directory' => [
                 true,
-                $fixtureDirectory . '/a/PrefixSuffix.php',
+                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray(
                         [
@@ -138,7 +138,7 @@ final class SourceFilterTest extends TestCase
             ],
             'file included using directory, but excluded using file' => [
                 false,
-                $fixtureDirectory . '/a/PrefixSuffix.php',
+                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray(
                         [
@@ -170,7 +170,7 @@ final class SourceFilterTest extends TestCase
             ],
             'file included using directory, but excluded using directory' => [
                 false,
-                $fixtureDirectory . '/a/PrefixSuffix.php',
+                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php',
                 new Source(
                     FilterDirectoryCollection::fromArray(
                         [
