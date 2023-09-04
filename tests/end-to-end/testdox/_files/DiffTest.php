@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture\TestDox;
 
-use const PHP_EOL;
 use PHPUnit\Framework\TestCase;
 
 final class DiffTest extends TestCase
@@ -17,8 +16,8 @@ final class DiffTest extends TestCase
     public function testSomethingThatDoesNotWork(): void
     {
         $this->assertEquals(
-            'foo' . PHP_EOL . 'bar' . PHP_EOL . 'baz' . PHP_EOL,
-            'foo' . PHP_EOL . 'baz' . PHP_EOL . 'bar' . PHP_EOL,
+            "foo\nbar\nbaz\n",
+            "foo\nbaz\nbar\n",
         );
     }
 }
