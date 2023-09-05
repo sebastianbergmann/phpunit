@@ -12,7 +12,7 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 
 ## [10.3.2] - 2023-08-15
 
-# Deprecated
+### Changed
 
 * [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423): `TestCase::throwException()` is no longer deprecated
 * [#5425](https://github.com/sebastianbergmann/phpunit/issues/5425): `InvocationMocker::willReturnOnConsecutiveCalls()` is no longer deprecated
