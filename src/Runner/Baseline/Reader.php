@@ -25,26 +25,31 @@ use PHPUnit\Util\Xml\XmlException;
  */
 final class Reader
 {
-    /**
-     * @throws CannotLoadBaselineException
-     */
-    public function read(string $baselineFile): Baseline
+    public function read(string $baselineFile): ?Baseline
     {
         if (!file_exists($baselineFile)) {
-            throw new CannotLoadBaselineException;
-        }
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Cannot read baseline %s, file does not exist',
+                    $baselineFile,
+                ),
+            );
 
-        $baseline          = new Baseline;
-        $baselineDirectory = dirname(realpath($baselineFile));
+            return null;
+        }
 
         try {
             $document = (new XmlLoader)->loadFile($baselineFile);
         } catch (XmlException $e) {
-            throw new CannotLoadBaselineException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Cannot read baseline %s: %s',
+                    $baselineFile,
+                    $e->getMessage(),
+                ),
             );
+
+            return null;
         }
 
         $version = (int) $document->documentElement->getAttribute('version');
@@ -57,9 +62,13 @@ final class Reader
                     $version,
                 ),
             );
+
+            return null;
         }
 
-        $xpath = new DOMXPath($document);
+        $baseline          = new Baseline;
+        $baselineDirectory = dirname(realpath($baselineFile));
+        $xpath             = new DOMXPath($document);
 
         foreach ($xpath->query('file') as $fileElement) {
             assert($fileElement instanceof DOMElement);

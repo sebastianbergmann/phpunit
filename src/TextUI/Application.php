@@ -28,7 +28,6 @@ use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
-use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
 use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\Baseline\Writer;
@@ -635,17 +634,11 @@ final class Application
             /** @psalm-suppress MissingThrowsDocblock */
             $baselineFile = $configuration->source()->baseline();
 
-            try {
-                $baseline = (new Reader)->read($baselineFile);
-            } catch (CannotLoadBaselineException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
-                    'Failed to load baseline: ' . $e->getMessage(),
-                );
+            $baseline = (new Reader)->read($baselineFile);
 
-                return null;
+            if ($baseline !== null) {
+                ErrorHandler::instance()->use($baseline);
             }
-
-            ErrorHandler::instance()->use($baseline);
         }
 
         return null;
