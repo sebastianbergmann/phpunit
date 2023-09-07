@@ -43,7 +43,7 @@ Triggered by:
 OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.
 
-Baseline written to %s/baseline.xml.
+Baseline written to %sbaseline.xml.
 <?xml version="1.0"?>
 <files version="1">
  <file path="tests/Test.php">
