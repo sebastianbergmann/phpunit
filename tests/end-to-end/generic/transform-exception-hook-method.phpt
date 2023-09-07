@@ -25,7 +25,7 @@ There was 1 error:
 1) PHPUnit\TestFixture\TransformExceptionHookMethod\Test::testOne
 PHPUnit\TestFixture\TransformExceptionHookMethod\TransformedException: transformed message
 
-%s/Test.php:24
+%s%eTest.php:24
 
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

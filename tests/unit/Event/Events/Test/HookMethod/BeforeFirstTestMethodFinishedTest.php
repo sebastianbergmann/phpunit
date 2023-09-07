@@ -43,7 +43,7 @@ final class BeforeFirstTestMethodFinishedTest extends AbstractEventTestCase
             ...$this->calledMethods(),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Before First Test Method Finished:
 - HookClass::hookMethod

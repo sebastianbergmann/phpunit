@@ -25,7 +25,7 @@ Time: %s, Memory: %s
    [31m┐[0m
    [31m├[0m [41;37mFailed asserting that false is true.[0m
    [31m│[0m
-   [31m│[0m %s[22m_files[2m/[22mDataProviderWithStringDataSetNameTest.php[2m:[22m[34m%d[0m
+   [31m│[0m %s[22m_files[2m%e[22mDataProviderWithStringDataSetNameTest.php[2m:[22m[34m%d[0m
    [31m┴[0m
 
 [37;41mFAILURES![0m

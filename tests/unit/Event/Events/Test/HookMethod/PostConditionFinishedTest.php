@@ -43,7 +43,7 @@ final class PostConditionFinishedTest extends AbstractEventTestCase
             ...$this->calledMethods(),
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Post Condition Method Finished:
 - HookClass::hookMethod

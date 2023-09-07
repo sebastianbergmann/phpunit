@@ -42,7 +42,7 @@ final class SkippedTest extends AbstractEventTestCase
             'skipped',
         );
 
-        $this->assertSame(
+        $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
 Test Skipped (FooTest::testBar)
 skipped

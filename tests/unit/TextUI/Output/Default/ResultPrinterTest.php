@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\TextUI\Output\Default;
 
+use const PHP_OS;
 use function hrtime;
+use function stripos;
 use Exception;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
@@ -136,7 +138,9 @@ final class ResultPrinterTest extends TestCase
             ],
 
             'risky test with multiple reasons with multi-line messages' => [
-                __DIR__ . '/expectations/risky_test_with_multiple_reasons_with_multi_line_messages.txt',
+                (stripos(PHP_OS, 'WIN') === 0) ?
+                    __DIR__ . '/expectations/risky_test_with_multiple_reasons_with_multi_line_messages_windows.txt' :
+                    __DIR__ . '/expectations/risky_test_with_multiple_reasons_with_multi_line_messages.txt',
                 self::createTestResult(
                     testConsideredRiskyEvents: [
                         'Foo::testBar' => [

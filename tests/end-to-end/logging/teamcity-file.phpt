@@ -98,12 +98,12 @@ There were 2 errors:
 1) PHPUnit\SelfTest\Basic\StatusTest::testError
 RuntimeException: 
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 2) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
 RuntimeException: error with custom message
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 --
 
@@ -112,13 +112,13 @@ There were 2 failures:
 1) PHPUnit\SelfTest\Basic\StatusTest::testFailure
 Failed asserting that false is true.
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 2) PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage
 failure with custom message
 Failed asserting that false is true.
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 --
 
@@ -127,12 +127,12 @@ There were 2 risky tests:
 1) PHPUnit\SelfTest\Basic\StatusTest::testRisky
 This test did not perform any assertions
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 2) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
 This test did not perform any assertions
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 ERRORS!
 Tests: 13, Assertions: 4, Errors: 2, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
