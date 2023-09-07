@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -240,6 +241,10 @@ final class SourceMapperTest extends TestCase
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expected, Source $source): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestIncomplete('https://github.com/sebastianbergmann/phpunit/issues/5503');
+        }
+
         $this->assertSame($expected, (new SourceMapper)->map($source));
     }
 }
