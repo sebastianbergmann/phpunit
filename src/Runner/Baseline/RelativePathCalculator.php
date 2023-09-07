@@ -41,7 +41,15 @@ final class RelativePathCalculator
     public function calculate(string $file): string
     {
         if (str_starts_with($file, $this->baselineDirectory . DIRECTORY_SEPARATOR)) {
-            $result = str_replace($this->baselineDirectory . DIRECTORY_SEPARATOR, '', $file);
+            $result = str_replace(
+                DIRECTORY_SEPARATOR,
+                '/',
+                str_replace(
+                    $this->baselineDirectory . DIRECTORY_SEPARATOR,
+                    '',
+                    $file,
+                ),
+            );
 
             assert(!empty($result));
 
@@ -63,7 +71,7 @@ final class RelativePathCalculator
 
         assert($common > 0);
 
-        $result = str_repeat('..' . DIRECTORY_SEPARATOR, count($from)) . implode(DIRECTORY_SEPARATOR, $to);
+        $result = str_replace(DIRECTORY_SEPARATOR, '/', str_repeat('../', count($from)) . implode('/', $to));
 
         assert(!empty($result));
 
