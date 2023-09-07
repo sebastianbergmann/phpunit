@@ -19,15 +19,15 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 ##teamcity[testCount count='2' flowId='%d']
 
-##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/IncompleteTest.php::\PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest' flowId='%d']
+##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest' locationHint='%sIncompleteTest.php::\PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest' flowId='%d']
 
-##teamcity[testStarted name='testOne' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/IncompleteTest.php::\PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne' flowId='%d']
+##teamcity[testStarted name='testOne' locationHint='%sIncompleteTest.php::\PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne' flowId='%d']
 
-##teamcity[testIgnored name='testOne' message='message' details='%s/tests/end-to-end/_files/stop-on-fail-on/IncompleteTest.php:18|n' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testOne' message='message' details='%sIncompleteTest.php:18|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testOne' duration='%d' flowId='%d']
 
-##teamcity[testStarted name='testTwo' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/IncompleteTest.php::\PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo' flowId='%d']
+##teamcity[testStarted name='testTwo' locationHint='%sIncompleteTest.php::\PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo' flowId='%d']
 
 ##teamcity[testFinished name='testTwo' duration='%d' flowId='%d']
 

@@ -19,13 +19,13 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 ##teamcity[testCount count='%d' flowId='%d']
 
-##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/DeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' flowId='%d']
+##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' locationHint='%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' flowId='%d']
 
-##teamcity[testStarted name='testOne' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/DeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne' flowId='%d']
+##teamcity[testStarted name='testOne' locationHint='%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne' flowId='%d']
 
 ##teamcity[testFinished name='testOne' duration='%d' flowId='%d']
 
-##teamcity[testStarted name='testTwo' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/DeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testTwo' flowId='%d']
+##teamcity[testStarted name='testTwo' locationHint='%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testTwo' flowId='%d']
 
 ##teamcity[testFinished name='testTwo' duration='%d' flowId='%d']
 

@@ -19,13 +19,13 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 ##teamcity[testCount count='2' flowId='%d']
 
-##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/NoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' flowId='%d']
+##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' locationHint='%sNoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' flowId='%d']
 
-##teamcity[testStarted name='testOne' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/NoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne' flowId='%d']
+##teamcity[testStarted name='testOne' locationHint='%sNoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne' flowId='%d']
 
 ##teamcity[testFinished name='testOne' duration='%d' flowId='%d']
 
-##teamcity[testStarted name='testTwo' locationHint='%s/tests/end-to-end/_files/stop-on-fail-on/NoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testTwo' flowId='%d']
+##teamcity[testStarted name='testTwo' locationHint='%sNoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testTwo' flowId='%d']
 
 ##teamcity[testFinished name='testTwo' duration='%d' flowId='%d']
 
