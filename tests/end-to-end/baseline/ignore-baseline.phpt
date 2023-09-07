@@ -23,13 +23,13 @@ Time: %s, Memory: %s
 
 1 test triggered 1 deprecation:
 
-1) %s/Test.php:%d
+1) %sTest.php:%d
 deprecation
 
 Triggered by:
 
 * PHPUnit\TestFixture\Baseline\Test::testOne
-  %s/Test.php:%d
+  %sTest.php:%d
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.

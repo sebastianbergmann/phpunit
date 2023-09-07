@@ -142,7 +142,7 @@ final class LoaderTest extends TestCase
         $source = $this->configuration('configuration_codecoverage.xml')->source();
 
         $this->assertTrue($source->hasBaseline());
-        $this->assertSame(realpath(__DIR__ . '/../../../../_files') . '/.phpunit/baseline.xml', $source->baseline());
+        $this->assertSame(realpath(__DIR__ . '/../../../../_files') . DIRECTORY_SEPARATOR . '.phpunit/baseline.xml', $source->baseline());
 
         $directory = iterator_to_array($source->includeDirectories(), false)[0];
 

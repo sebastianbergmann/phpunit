@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
 
-1) Cannot read baseline %s/baseline.xml, version 0 is not supported
+1) Cannot read baseline %sbaseline.xml, version 0 is not supported
 
 WARNINGS!
 Tests: 1, Assertions: 1, Warnings: 1.
