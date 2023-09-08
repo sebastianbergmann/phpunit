@@ -74,11 +74,6 @@ final class IsInstanceOf extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        return sprintf(
-            '%s is an instance of %s %s',
-            $this->exporter()->shortenedExport($other),
-            $this->type,
-            $this->name,
-        );
+        return $this->valueToTypeStringFragment($other) . $this->toString();
     }
 }
