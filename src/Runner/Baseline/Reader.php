@@ -14,6 +14,7 @@ use function dirname;
 use function file_exists;
 use function realpath;
 use function sprintf;
+use function str_replace;
 use DOMElement;
 use DOMXPath;
 use PHPUnit\Event\Facade as EventFacade;
@@ -73,7 +74,7 @@ final class Reader
         foreach ($xpath->query('file') as $fileElement) {
             assert($fileElement instanceof DOMElement);
 
-            $file = $baselineDirectory . DIRECTORY_SEPARATOR . $fileElement->getAttribute('path');
+            $file = $baselineDirectory . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $fileElement->getAttribute('path'));
 
             foreach ($xpath->query('line', $fileElement) as $lineElement) {
                 assert($lineElement instanceof DOMElement);
