@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function gettype;
 use function sprintf;
+use function strtolower;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
@@ -238,5 +240,28 @@ abstract class Constraint implements Countable, SelfDescribing
     protected function reduce(): self
     {
         return $this;
+    }
+
+    /**
+     * @psalm-return non-empty-string
+     */
+    protected function valueToTypeStringFragment(mixed $value): string
+    {
+        $type = strtolower(gettype($value));
+
+        if ($type === 'double') {
+            $type = 'float';
+        }
+
+        if ($type === 'resource (closed)') {
+            $type = 'closed resource';
+        }
+
+        return match ($type) {
+            'array', 'integer', 'object' => 'an ' . $type . ' ',
+            'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ',
+            'null'  => 'null ',
+            default => 'a value of ' . $type . ' ',
+        };
     }
 }
