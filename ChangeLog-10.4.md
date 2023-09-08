@@ -14,6 +14,7 @@ All notable changes of the PHPUnit 10.4 release series are documented in this fi
 
 * The name of the top-level test suite that is created when a directory or file path is passed as an argument to the test runner is now `CLI Arguments`
 * Simplified the failure description for `assertInstanceOf()` and `assertNotInstanceOf()`
+* Simplified the failure description for `assertJson()`
 
 ### Deprecated
 

@@ -38,14 +38,20 @@ final class IsJsonTest extends TestCase
 
             [
                 false,
-                'Failed asserting that \'invalid json\' is valid JSON (Syntax error, malformed JSON).',
+                'Failed asserting that a string is valid JSON (Syntax error, malformed JSON).',
                 'invalid json',
+            ],
+
+            [
+                false,
+                'Failed asserting that an array is valid JSON.',
+                [],
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    public function testCanBeEvaluated(bool $result, string $failureDescription, string $actual): void
+    public function testCanBeEvaluated(bool $result, string $failureDescription, mixed $actual): void
     {
         $constraint = new IsJson;
 
