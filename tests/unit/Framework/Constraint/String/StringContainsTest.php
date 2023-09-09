@@ -23,21 +23,21 @@ final class StringContainsTest extends TestCase
     public static function providesEvaluationCases(): array
     {
         return [
+            'It finds the needle with default options given' => [
+                true,
+                '',
+                false,
+                false,
+                'needle',
+                'prefix needle suffix',
+            ],
+
             'Empty needles are supported with default options given' => [
                 true,
                 '',
                 false,
                 false,
                 '',
-                'prefix needle suffix',
-            ],
-
-            'It finds the needle with default options given' => [ // TODO swap with test case above as this is the "main event" of this constraint
-                true,
-                '',
-                false,
-                false,
-                'needle',
                 'prefix needle suffix',
             ],
 
@@ -59,7 +59,7 @@ final class StringContainsTest extends TestCase
                 'prefix needle suffix',
             ],
 
-            'It finds the needle given letter case is ignored and needle is in a different case to haystack' => [
+            'It finds the needle given letter casing is ignored and needle is in a different case to haystack' => [
                 true,
                 '',
                 true,
@@ -68,7 +68,7 @@ final class StringContainsTest extends TestCase
                 'prefix NEEDLE suffix',
             ],
 
-            'It finds the needle given letter case is ignored and haystack is in a different case to needle' => [
+            'It finds the needle given letter casing is ignored and haystack is in a different case to needle' => [
                 true,
                 '',
                 true,
@@ -95,7 +95,7 @@ final class StringContainsTest extends TestCase
                 "prefix needle\n suffix",
             ],
 
-            'Both \r and \n line endings will be ignored in the needle given line endings are set up to be ignored' => [
+            '\r\n line endings will be ignored in the needle given line endings are set up to be ignored' => [
                 true,
                 '',
                 false,
@@ -104,7 +104,7 @@ final class StringContainsTest extends TestCase
                 "prefix needle\r suffix",
             ],
 
-            'Both \r and \n line endings will be ignored in the haystack given line endings are set up to be ignored' => [
+            '\r\n line endings will be ignored in the haystack given line endings are set up to be ignored' => [
                 true,
                 '',
                 true,
@@ -159,15 +159,15 @@ final class StringContainsTest extends TestCase
 
             'Both the needle and haystack length in the failure message partly account for \r line endings given line endings are ignored' => [
                 false,
-                "Failed asserting that 'Some haytack with\\r\n line\\n\n endings \\n\\r\n' [ASCII](length: 35) contains \"Some needle with\n line\n endings \n\n\" [ASCII](length: 34).",
+                "Failed asserting that 'Some haystack with\\r\n line\\n\n endings \\n\\r\n' [ASCII](length: 35) contains \"Some needle with\n line\n endings \n\n\" [ASCII](length: 34).",
                 false,
                 true,
                 /**
                  * See StringContains::normalizeLineEndings() to
                  * see how "\r" are mapped to "\n".
                  */
-                "Some needle with\r line\n endings \n\r", // 38 characters ling
-                "Some haytack with\r line\n endings \n\r", // 39 characters ling
+                "Some needle with\r line\n endings \n\r", // 38 characters long
+                "Some haystack with\r line\n endings \n\r", // 39 characters long
             ],
         ];
     }
