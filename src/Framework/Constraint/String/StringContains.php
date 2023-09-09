@@ -48,8 +48,10 @@ final class StringContains extends Constraint
         }
 
         return sprintf(
-            'contains "%s"',
+            'contains "%s" [%s](length: %s)',
             $string,
+            mb_detect_encoding($string),
+            strlen($string)
         );
     }
 
