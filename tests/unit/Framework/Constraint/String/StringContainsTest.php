@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class StringContainsTest extends TestCase
 {
-    public static function provider(): array
+    public static function providesEvaluationCases(): array
     {
         return [
             [
@@ -139,7 +139,7 @@ final class StringContainsTest extends TestCase
         ];
     }
 
-    #[DataProvider('provider')]
+    #[DataProvider('providesEvaluationCases')]
     public function testCanBeEvaluated(bool $result, string $failureDescription, bool $ignoreCase, bool $ignoreLineEndings, string $expected, mixed $actual): void
     {
         $constraint = new StringContains($expected, $ignoreCase, $ignoreLineEndings);
@@ -156,11 +156,34 @@ final class StringContainsTest extends TestCase
         $constraint->evaluate($actual);
     }
 
-    public function testCanBeRepresentedAsString(): void
+    public static function providesToStringRepresentationCases(): array
     {
-        $this->assertSame('contains "substring"', (new StringContains('substring'))->toString());
-        $this->assertSame('contains "substring"', (new StringContains('SUBSTRING', true))->toString());
-        $this->assertSame('contains "SUBSTRING' . "\n" . '"', (new StringContains("SUBSTRING\r\n", ignoreLineEndings: true))->toString());
+        return [
+            [
+                'contains "substring"',
+                'substring',
+                false,
+                false,
+            ],
+            [
+                'contains "substring"',
+                'SUBSTRING',
+                true,
+                false,
+            ],
+            [
+                'contains "SUBSTRING' . "\n" . '"',
+                "SUBSTRING\r\n",
+                false,
+                true,
+            ],
+        ];
+    }
+
+    #[DataProvider('providesToStringRepresentationCases')]
+    public function testCanBeRepresentedAsString(string $expected, string $givenString, bool $ignoreCase, bool $ignoreLineEndings): void
+    {
+        $this->assertSame($expected, (new StringContains($givenString, $ignoreCase, $ignoreLineEndings))->toString());
     }
 
     public function testIsCountable(): void
