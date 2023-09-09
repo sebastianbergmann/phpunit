@@ -112,7 +112,6 @@ final class StringContainsTest extends TestCase
                 'substring',
                 null,
             ],
-
             [
                 false,
                 'Failed asserting that \'prefix ... suffix\' contains "substring".',
@@ -120,6 +119,22 @@ final class StringContainsTest extends TestCase
                 false,
                 'substring',
                 'prefix ... suffix',
+            ],
+            [
+                false,
+                'Failed asserting that \'Example character encoding\' contains "Example character encoding".', // These looks identical in console output
+                false,
+                false,
+                /**
+                 * Below is an ASCII string using a 'blank space' character (code 32 in https://smartwebworker.com/ascii-codes)
+                 * between each word
+                 */
+                'Example character encoding',
+                /**
+                 * Below is a UTF-8 string using a 'thin-space' character (https://www.compart.com/en/unicode/U+2009)
+                 * between each word instead of usual 'space' character (https://www.compart.com/en/unicode/U+0020)
+                 */
+                'Example character encoding',
             ],
         ];
     }
