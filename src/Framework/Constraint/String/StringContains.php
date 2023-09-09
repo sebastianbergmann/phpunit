@@ -74,38 +74,6 @@ final class StringContains extends Constraint
         return $haystackInformation . $needleInformation;
     }
 
-    public function getDetectedEncoding(mixed $other): string
-    {
-        if ($this->ignoreCase === true) {
-            return 'Encoding ignored';
-        }
-
-        if (!is_string($other)) {
-            return 'Encoding detection failed';
-        }
-
-        $detectedEncoding = mb_detect_encoding($other, null, true);
-
-        if (!$detectedEncoding) {
-            return 'Encoding detection failed';
-        }
-
-        return $detectedEncoding;
-    }
-
-    public function getHaystackLength(mixed $haystack): int
-    {
-        if (!is_string($haystack)) {
-            return 0;
-        }
-
-        if ($this->ignoreLineEndings) {
-            $haystack = $this->normalizeLineEndings($haystack);
-        }
-
-        return strlen($haystack);
-    }
-
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -143,6 +111,38 @@ final class StringContains extends Constraint
          * data.
          */
         return str_contains($haystack, $this->needle);
+    }
+
+    private function getDetectedEncoding(mixed $other): string
+    {
+        if ($this->ignoreCase === true) {
+            return 'Encoding ignored';
+        }
+
+        if (!is_string($other)) {
+            return 'Encoding detection failed';
+        }
+
+        $detectedEncoding = mb_detect_encoding($other, null, true);
+
+        if (!$detectedEncoding) {
+            return 'Encoding detection failed';
+        }
+
+        return $detectedEncoding;
+    }
+
+    private function getHaystackLength(mixed $haystack): int
+    {
+        if (!is_string($haystack)) {
+            return 0;
+        }
+
+        if ($this->ignoreLineEndings) {
+            $haystack = $this->normalizeLineEndings($haystack);
+        }
+
+        return strlen($haystack);
     }
 
     private function normalizeLineEndings(string $string): string
