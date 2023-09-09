@@ -115,7 +115,7 @@ final class StringContains extends Constraint
 
     private function getDetectedEncoding(mixed $other): string
     {
-        if ($this->ignoreCase === true) {
+        if ($this->ignoreCase) {
             return 'Encoding ignored';
         }
 
