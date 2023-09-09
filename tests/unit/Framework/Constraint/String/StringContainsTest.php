@@ -106,7 +106,7 @@ final class StringContainsTest extends TestCase
 
             [
                 false,
-                'Failed asserting that null contains "substring".',
+                'Failed asserting that null contains "substring" [ASCII](length: 9).',
                 false,
                 false,
                 'substring',
@@ -114,7 +114,7 @@ final class StringContainsTest extends TestCase
             ],
             [
                 false,
-                'Failed asserting that \'prefix ... suffix\' contains "substring".',
+                'Failed asserting that \'prefix ... suffix\' contains "substring" [ASCII](length: 9).',
                 false,
                 false,
                 'substring',
@@ -122,7 +122,7 @@ final class StringContainsTest extends TestCase
             ],
             [
                 false,
-                'Failed asserting that \'Example character encoding\' contains "Example character encoding".', // These looks identical in console output
+                'Failed asserting that \'Example character encoding\' contains "Example character encoding" [ASCII](length: 26).',
                 false,
                 false,
                 /**
@@ -160,19 +160,25 @@ final class StringContainsTest extends TestCase
     {
         return [
             [
-                'contains "substring"',
+                'contains "substring" [ASCII](length: 9)',
                 'substring',
                 false,
                 false,
             ],
             [
-                'contains "substring"',
+                'contains "substring" [ASCII](length: 9)',
                 'SUBSTRING',
                 true,
                 false,
             ],
             [
-                'contains "SUBSTRING' . "\n" . '"',
+                'contains "example UTF-8 substring £$" [UTF-8](length: 27)',
+                'example UTF-8 substring £$',
+                false,
+                false,
+            ],
+            [
+                'contains "SUBSTRING' . "\n" . '" [ASCII](length: 10)',
                 "SUBSTRING\r\n",
                 false,
                 true,
