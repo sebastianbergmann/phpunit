@@ -172,23 +172,6 @@ final class StringContainsTest extends TestCase
         ];
     }
 
-    #[DataProvider('providesEvaluationCases')]
-    public function testCanBeEvaluated(bool $result, string $failureDescription, bool $ignoreCase, bool $ignoreLineEndings, string $needle, mixed $haystack): void
-    {
-        $constraint = new StringContains($needle, $ignoreCase, $ignoreLineEndings);
-
-        $this->assertSame($result, $constraint->evaluate($haystack, returnResult: true));
-
-        if ($result) {
-            return;
-        }
-
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
-
-        $constraint->evaluate($haystack);
-    }
-
     public static function providesToStringRepresentationCases(): array
     {
         return [
@@ -220,6 +203,23 @@ final class StringContainsTest extends TestCase
                 true,
             ],
         ];
+    }
+
+    #[DataProvider('providesEvaluationCases')]
+    public function testCanBeEvaluated(bool $result, string $failureDescription, bool $ignoreCase, bool $ignoreLineEndings, string $needle, mixed $haystack): void
+    {
+        $constraint = new StringContains($needle, $ignoreCase, $ignoreLineEndings);
+
+        $this->assertSame($result, $constraint->evaluate($haystack, returnResult: true));
+
+        if ($result) {
+            return;
+        }
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage($failureDescription);
+
+        $constraint->evaluate($haystack);
     }
 
     #[DataProvider('providesToStringRepresentationCases')]
