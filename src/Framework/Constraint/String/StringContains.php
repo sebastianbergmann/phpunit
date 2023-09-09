@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 use function is_string;
 use function mb_detect_encoding;
-use function mb_detect_order;
 use function mb_stripos;
 use function mb_strtolower;
 use function sprintf;
@@ -85,7 +84,7 @@ final class StringContains extends Constraint
             return 'Encoding detection failed';
         }
 
-        $detectedEncoding = mb_detect_encoding($other, mb_detect_order(), true);
+        $detectedEncoding = mb_detect_encoding($other, null, true);
 
         if (!$detectedEncoding) {
             return 'Encoding detection failed';
