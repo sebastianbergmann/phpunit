@@ -159,7 +159,7 @@ final class StringContainsTest extends TestCase
 
             'Both the needle and haystack length in the failure message partly account for \r line endings given line endings are ignored' => [
                 false,
-                "Failed asserting that 'Some haystack with\\r\n line\\n\n endings \\n\\r\n' [ASCII](length: 35) contains \"Some needle with\n line\n endings \n\n\" [ASCII](length: 34).",
+                "Failed asserting that 'Some haystack with\\r\n line\\n\n endings \\n\\r\n' [ASCII](length: 36) contains \"Some needle with\n line\n endings \n\n\" [ASCII](length: 34).",
                 false,
                 true,
                 /**
