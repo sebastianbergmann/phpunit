@@ -14,6 +14,7 @@ use const PHP_EOL;
 use const PHP_VERSION;
 use function file_put_contents;
 use function iterator_to_array;
+use function realpath;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
@@ -139,6 +140,9 @@ final class LoaderTest extends TestCase
     public function testSourceConfigurationIsReadCorrectly(): void
     {
         $source = $this->configuration('configuration_codecoverage.xml')->source();
+
+        $this->assertTrue($source->hasBaseline());
+        $this->assertSame(realpath(__DIR__ . '/../../../../_files') . DIRECTORY_SEPARATOR . '.phpunit/baseline.xml', $source->baseline());
 
         $directory = iterator_to_array($source->includeDirectories(), false)[0];
 

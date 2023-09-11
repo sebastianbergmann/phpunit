@@ -29,6 +29,8 @@ final class SourceTest extends TestCase
         $includeDirectories = FilterDirectoryCollection::fromArray([]);
 
         $source = new Source(
+            null,
+            false,
             $includeDirectories,
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
@@ -53,6 +55,8 @@ final class SourceTest extends TestCase
         $includeFiles = FileCollection::fromArray([]);
 
         $source = new Source(
+            null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             $includeFiles,
             FilterDirectoryCollection::fromArray([]),
@@ -77,6 +81,8 @@ final class SourceTest extends TestCase
         $excludeDirectories = FilterDirectoryCollection::fromArray([]);
 
         $source = new Source(
+            null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             $excludeDirectories,
@@ -101,6 +107,8 @@ final class SourceTest extends TestCase
         $excludeFiles = FileCollection::fromArray([]);
 
         $source = new Source(
+            null,
+            false,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
@@ -118,5 +126,60 @@ final class SourceTest extends TestCase
         );
 
         $this->assertSame($excludeFiles, $source->excludeFiles());
+    }
+
+    public function testMayHaveBaseline(): void
+    {
+        $baseline = 'baseline.xml';
+
+        $source = new Source(
+            $baseline,
+            false,
+            FilterDirectoryCollection::fromArray([]),
+            FileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        );
+
+        $this->assertSame($baseline, $source->baseline());
+        $this->assertTrue($source->hasBaseline());
+    }
+
+    public function testMayNotHaveBaseline(): void
+    {
+        $source = new Source(
+            null,
+            false,
+            FilterDirectoryCollection::fromArray([]),
+            FileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        );
+
+        $this->assertFalse($source->hasBaseline());
+
+        $this->expectException(NoBaselineException::class);
+
+        $source->baseline();
     }
 }

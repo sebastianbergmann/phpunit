@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<files version="1">
+ <file path="FileWithIssues.php">
+  <line number="10" hash="6bf70f0b8c461415955e2d3a97cfbe664f5b957b">
+   <issue><![CDATA[Undefined variable $b]]></issue>
+   <issue><![CDATA[yet another issue]]></issue>
+  </line>
+  <line number="11" hash="534607d8276b33428e9aa737d75d240a46681404">
+   <issue><![CDATA[Undefined variable $c]]></issue>
+  </line>
+ </file>
+</files>

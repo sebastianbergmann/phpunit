@@ -28,7 +28,12 @@ use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
+use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
+use PHPUnit\Runner\Baseline\Reader;
+use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
@@ -166,6 +171,8 @@ final class Application
                 );
             }
 
+            $baselineGenerator = $this->configureBaseline($configuration);
+
             EventFacade::instance()->seal();
 
             $timer = new Timer;
@@ -208,6 +215,20 @@ final class Application
             }
 
             CodeCoverage::instance()->generateReports($printer, $configuration);
+
+            if (isset($baselineGenerator)) {
+                (new Writer)->write(
+                    $configuration->generateBaseline(),
+                    $baselineGenerator->baseline(),
+                );
+
+                $printer->print(
+                    sprintf(
+                        PHP_EOL . 'Baseline written to %s.' . PHP_EOL,
+                        realpath($configuration->generateBaseline()),
+                    ),
+                );
+            }
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnDeprecation(),
@@ -595,5 +616,37 @@ final class Application
         }
 
         return new NullResultCache;
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    private function configureBaseline(Configuration $configuration): ?BaselineGenerator
+    {
+        if ($configuration->hasGenerateBaseline()) {
+            return new BaselineGenerator(
+                EventFacade::instance(),
+                $configuration->source(),
+            );
+        }
+
+        if ($configuration->source()->useBaseline()) {
+            /** @psalm-suppress MissingThrowsDocblock */
+            $baselineFile = $configuration->source()->baseline();
+            $baseline     = null;
+
+            try {
+                $baseline = (new Reader)->read($baselineFile);
+            } catch (CannotLoadBaselineException $e) {
+                EventFacade::emitter()->testRunnerTriggeredWarning($e->getMessage());
+            }
+
+            if ($baseline !== null) {
+                ErrorHandler::instance()->use($baseline);
+            }
+        }
+
+        return null;
     }
 }

@@ -55,6 +55,9 @@ final class Builder
         'enforce-time-limit',
         'exclude-group=',
         'filter=',
+        'generate-baseline=',
+        'use-baseline=',
+        'ignore-baseline',
         'generate-configuration',
         'globals-backup',
         'group=',
@@ -193,6 +196,9 @@ final class Builder
         $stopOnSkipped                     = null;
         $stopOnWarning                     = null;
         $filter                            = null;
+        $generateBaseline                  = null;
+        $useBaseline                       = null;
+        $ignoreBaseline                    = false;
         $generateConfiguration             = false;
         $migrateConfiguration              = false;
         $groups                            = null;
@@ -366,6 +372,21 @@ final class Builder
 
                 case '--exclude-testsuite':
                     $excludeTestSuite = $option[1];
+
+                    break;
+
+                case '--generate-baseline':
+                    $generateBaseline = $option[1];
+
+                    break;
+
+                case '--use-baseline':
+                    $useBaseline = $option[1];
+
+                    break;
+
+                case '--ignore-baseline':
+                    $ignoreBaseline = true;
 
                     break;
 
@@ -840,6 +861,9 @@ final class Builder
             $stopOnSkipped,
             $stopOnWarning,
             $filter,
+            $generateBaseline,
+            $useBaseline,
+            $ignoreBaseline,
             $generateConfiguration,
             $migrateConfiguration,
             $groups,

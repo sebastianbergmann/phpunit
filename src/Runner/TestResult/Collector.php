@@ -342,6 +342,10 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
             return;
         }
@@ -368,6 +372,10 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfPhpDeprecations() && $event->wasSuppressed()) {
             return;
         }
@@ -425,6 +433,10 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfNotices() && $event->wasSuppressed()) {
             return;
         }
@@ -451,6 +463,10 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfPhpNotices() && $event->wasSuppressed()) {
             return;
         }
@@ -477,6 +493,10 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfWarnings() && $event->wasSuppressed()) {
             return;
         }
@@ -503,6 +523,10 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfPhpWarnings() && $event->wasSuppressed()) {
             return;
         }

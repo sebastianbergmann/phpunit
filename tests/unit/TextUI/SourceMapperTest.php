@@ -31,6 +31,8 @@ final class SourceMapperTest extends TestCase
                     $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
+                    null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -55,6 +57,8 @@ final class SourceMapperTest extends TestCase
                 [
                 ],
                 new Source(
+                    null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -87,6 +91,8 @@ final class SourceMapperTest extends TestCase
                 [
                 ],
                 new Source(
+                    null,
+                    false,
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray(
                         [
@@ -127,6 +133,8 @@ final class SourceMapperTest extends TestCase
                     $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
+                    null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
@@ -166,6 +174,8 @@ final class SourceMapperTest extends TestCase
                     $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
+                    null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
@@ -203,6 +213,8 @@ final class SourceMapperTest extends TestCase
                     $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
                 ],
                 new Source(
+                    null,
+                    false,
                     FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(
