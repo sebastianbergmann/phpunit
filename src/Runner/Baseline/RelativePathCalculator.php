@@ -24,7 +24,7 @@ use function trim;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @see Copyied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
+ * @see Copied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
  */
 final class RelativePathCalculator
 {

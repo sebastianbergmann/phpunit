@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(RelativePathCalculator::class)]
 #[Small]
 /**
- * @see Copyied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
+ * @see Copied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
  */
 final class RelativePathCalculatorTest extends TestCase
 {
