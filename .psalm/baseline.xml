@@ -531,6 +531,14 @@
       <code><![CDATA[!empty($matches['operator']) ? $matches['operator'] : '>=']]></code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Runner/Baseline/RelativePathCalculator.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[array_merge(array_fill(0, $dotsCount, '..'), array_slice($filenameParts, $i))]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code><![CDATA[list<non-empty-string>]]></code>
+    </MoreSpecificReturnType>
+  </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType>
       <code>Driver</code>

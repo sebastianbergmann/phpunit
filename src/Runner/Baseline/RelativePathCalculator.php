@@ -9,72 +9,95 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
-use function array_shift;
+use function array_fill;
+use function array_merge;
+use function array_slice;
 use function assert;
 use function count;
 use function explode;
 use function implode;
-use function min;
-use function range;
-use function str_repeat;
 use function str_replace;
-use function str_starts_with;
+use function strpos;
+use function substr;
+use function trim;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @see Copyied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
  */
 final class RelativePathCalculator
 {
+    /**
+     * @psalm-var non-empty-string $baselineDirectory
+     */
     private readonly string $baselineDirectory;
 
+    /**
+     * @psalm-param non-empty-string $baselineDirectory
+     */
     public function __construct(string $baselineDirectory)
     {
         $this->baselineDirectory = $baselineDirectory;
     }
 
     /**
-     * @psalm-param non-empty-string $baselineDirectory
-     * @psalm-param non-empty-string $file
+     * @psalm-param non-empty-string $filename
      *
      * @psalm-return non-empty-string
      */
-    public function calculate(string $file): string
+    public function calculate(string $filename): string
     {
-        if (str_starts_with($file, $this->baselineDirectory . DIRECTORY_SEPARATOR)) {
-            $result = str_replace(
-                DIRECTORY_SEPARATOR,
-                '/',
-                str_replace(
-                    $this->baselineDirectory . DIRECTORY_SEPARATOR,
-                    '',
-                    $file,
-                ),
-            );
+        $result = implode('/', $this->parts($filename));
 
-            assert(!empty($result));
+        assert($result !== '');
 
-            return $result;
+        return $result;
+    }
+
+    /**
+     * @psalm-param non-empty-string $filename
+     *
+     * @psalm-return list<non-empty-string>
+     */
+    public function parts(string $filename): array
+    {
+        $schemePosition = strpos($filename, '://');
+
+        if ($schemePosition !== false) {
+            $filename = substr($filename, $schemePosition + 3);
+
+            assert($filename !== '');
         }
 
-        $from   = explode(DIRECTORY_SEPARATOR, $this->baselineDirectory);
-        $to     = explode(DIRECTORY_SEPARATOR, $file);
-        $common = 0;
+        $parentParts        = explode('/', trim(str_replace('\\', '/', $this->baselineDirectory), '/'));
+        $parentPartsCount   = count($parentParts);
+        $filenameParts      = explode('/', trim(str_replace('\\', '/', $filename), '/'));
+        $filenamePartsCount = count($filenameParts);
 
-        foreach (range(1, min(count($from), count($to))) as $i) {
-            if ($from[0] === $to[0]) {
-                array_shift($from);
-                array_shift($to);
+        $i = 0;
 
-                $common++;
+        for (; $i < $filenamePartsCount; $i++) {
+            if ($parentPartsCount < $i + 1) {
+                break;
+            }
+
+            $parentPath   = implode('/', array_slice($parentParts, 0, $i + 1));
+            $filenamePath = implode('/', array_slice($filenameParts, 0, $i + 1));
+
+            if ($parentPath !== $filenamePath) {
+                break;
             }
         }
 
-        assert($common > 0);
+        if ($i === 0) {
+            return [$filename];
+        }
 
-        $result = str_replace(DIRECTORY_SEPARATOR, '/', str_repeat('../', count($from)) . implode('/', $to));
+        $dotsCount = $parentPartsCount - $i;
 
-        assert(!empty($result));
+        assert($dotsCount >= 0);
 
-        return $result;
+        return array_merge(array_fill(0, $dotsCount, '..'), array_slice($filenameParts, $i));
     }
 }
