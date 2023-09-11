@@ -118,12 +118,10 @@ final class RelativePathCalculatorTest extends TestCase
     }
 
     #[DataProvider('dataGetRelativePath')]
-    public function testGetRelativePath(
-        string $baselineDirectory,
-        string $filename,
-        string $expectedRelativePath,
-    ): void {
+    public function testGetRelativePath(string $baselineDirectory, string $filename, string $expectedRelativePath): void
+    {
         $calculator = new RelativePathCalculator($baselineDirectory);
+
         $this->assertSame(
             $expectedRelativePath,
             $calculator->calculate($filename),
