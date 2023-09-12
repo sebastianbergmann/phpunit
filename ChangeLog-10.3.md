@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.3.4] - 2023-MM-DD
+
+### Changed
+
+* [#5509](https://github.com/sebastianbergmann/phpunit/pull/5509): Generate code coverage report in PHP format as first in list to avoid serializing cache data
+
 ## [10.3.3] - 2023-09-05
 
 ### Fixed
@@ -54,6 +60,7 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 
 * [#5456](https://github.com/sebastianbergmann/phpunit/issues/5456): Risky Test Check for Output Buffering is performed before after-test methods are called
 
+[10.3.4]: https://github.com/sebastianbergmann/phpunit/compare/10.3.3...10.3
 [10.3.3]: https://github.com/sebastianbergmann/phpunit/compare/10.3.2...10.3.3
 [10.3.2]: https://github.com/sebastianbergmann/phpunit/compare/10.3.1...10.3.2
 [10.3.1]: https://github.com/sebastianbergmann/phpunit/compare/10.3.0...10.3.1
