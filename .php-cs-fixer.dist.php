@@ -106,7 +106,6 @@ $config->setFinder($finder)
         'fully_qualified_strict_types' => true,
         'function_declaration' => true,
         'function_to_constant' => true,
-        'function_typehint_space' => true,
         'get_class_to_class_keyword' => true,
         'global_namespace_import' => [
             'import_classes' => true,
