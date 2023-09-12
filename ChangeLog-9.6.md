@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.12] - 2023-MM-DD
+
+### Changed
+
+* [#5508](https://github.com/sebastianbergmann/phpunit/pull/5508): Generate code coverage report in PHP format as first in list to avoid serializing cache data
+
 ## [9.6.11] - 2023-08-19
 
 ### Added
@@ -83,6 +89,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.12]: https://github.com/sebastianbergmann/phpunit/compare/9.6.11...9.6
 [9.6.11]: https://github.com/sebastianbergmann/phpunit/compare/9.6.10...9.6.11
 [9.6.10]: https://github.com/sebastianbergmann/phpunit/compare/9.6.9...9.6.10
 [9.6.9]: https://github.com/sebastianbergmann/phpunit/compare/9.6.8...9.6.9
