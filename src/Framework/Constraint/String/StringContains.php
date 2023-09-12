@@ -97,18 +97,18 @@ final class StringContains extends Constraint
 
         if ($this->ignoreCase) {
             /*
-             * We must use the multi byte safe version so we can accurately compare non latin upper characters with
+             * We must use the multibyte-safe version, so we can accurately compare non-latin uppercase characters with
              * their lowercase equivalents.
              */
             return mb_stripos($haystack, $this->needle, 0, 'UTF-8') !== false;
         }
 
         /*
-         * Use the non multi byte safe functions to see if the string is contained in $other.
+         * Use the non-multibyte safe functions to see if the string is contained in $other.
          *
-         * This function is very fast and we don't care about the character position in the string.
+         * This function is very fast, and we don't care about the character position in the string.
          *
-         * Additionally, we want this method to be binary safe so we can check if some binary data is in other binary
+         * Additionally, we want this method to be binary safe, so we can check if some binary data is in other binary
          * data.
          */
         return str_contains($haystack, $this->needle);
