@@ -660,6 +660,21 @@ final class TestRunner extends BaseTestRunner
         $this->printer->printResult($result);
 
         if (isset($codeCoverage)) {
+            if (isset($arguments['coveragePHP'])) {
+                $this->codeCoverageGenerationStart('PHP');
+
+                try {
+                    $writer = new PhpReport;
+                    $writer->process($codeCoverage, $arguments['coveragePHP']);
+
+                    $this->codeCoverageGenerationSucceeded();
+
+                    unset($writer);
+                } catch (CodeCoverageException $e) {
+                    $this->codeCoverageGenerationFailed($e);
+                }
+            }
+
             if (isset($arguments['coverageClover'])) {
                 $this->codeCoverageGenerationStart('Clover XML');
 
@@ -719,21 +734,6 @@ final class TestRunner extends BaseTestRunner
                     );
 
                     $writer->process($codeCoverage, $arguments['coverageHtml']);
-
-                    $this->codeCoverageGenerationSucceeded();
-
-                    unset($writer);
-                } catch (CodeCoverageException $e) {
-                    $this->codeCoverageGenerationFailed($e);
-                }
-            }
-
-            if (isset($arguments['coveragePHP'])) {
-                $this->codeCoverageGenerationStart('PHP');
-
-                try {
-                    $writer = new PhpReport;
-                    $writer->process($codeCoverage, $arguments['coveragePHP']);
 
                     $this->codeCoverageGenerationSucceeded();
 
