@@ -69,6 +69,7 @@ final class StringContains extends Constraint
             $haystackEncoding,
             $haystackLength,
         );
+
         $needleInformation = $this->toString();
 
         return $haystackInformation . $needleInformation;
