@@ -10,7 +10,10 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use function array_map;
+use function basename;
 use function explode;
+use function getcwd;
+use function is_file;
 use function is_numeric;
 use function sprintf;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -378,10 +381,18 @@ final class Builder
                 case '--generate-baseline':
                     $generateBaseline = $option[1];
 
+                    if (basename($generateBaseline) === $generateBaseline) {
+                        $generateBaseline = getcwd() . DIRECTORY_SEPARATOR . $generateBaseline;
+                    }
+
                     break;
 
                 case '--use-baseline':
                     $useBaseline = $option[1];
+
+                    if (!is_file($useBaseline) && basename($useBaseline) === $useBaseline) {
+                        $useBaseline = getcwd() . DIRECTORY_SEPARATOR . $useBaseline;
+                    }
 
                     break;
 
