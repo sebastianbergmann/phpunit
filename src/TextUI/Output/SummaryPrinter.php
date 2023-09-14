@@ -53,6 +53,8 @@ final class SummaryPrinter
                 ),
             );
 
+            $this->printNumberOfIssuesIgnoredByBaseline($result);
+
             return;
         }
 
@@ -114,6 +116,8 @@ final class SummaryPrinter
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);
         $this->printWithColor($color, '.');
+
+        $this->printNumberOfIssuesIgnoredByBaseline($result);
     }
 
     private function printCountString(int $count, string $name, string $color, bool $always = false): void
@@ -144,6 +148,22 @@ final class SummaryPrinter
 
         if ($lf) {
             $this->printer->print(PHP_EOL);
+        }
+    }
+
+    private function printNumberOfIssuesIgnoredByBaseline(TestResult $result): void
+    {
+        if ($result->hasIssuesIgnoredByBaseline()) {
+            $this->printer->print(
+                sprintf(
+                    '%s%d issue%s %s ignored by baseline.%s',
+                    PHP_EOL,
+                    $result->numberOfIssuesIgnoredByBaseline(),
+                    $result->numberOfIssuesIgnoredByBaseline() > 1 ? 's' : '',
+                    $result->numberOfIssuesIgnoredByBaseline() > 1 ? 'were' : 'was',
+                    PHP_EOL,
+                ),
+            );
         }
     }
 }

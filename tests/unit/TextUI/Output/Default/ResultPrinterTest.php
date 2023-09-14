@@ -344,6 +344,19 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
+            'successful test that triggers baseline-ignored issue' => [
+                __DIR__ . '/expectations/successful_test_with_baseline_ignored_issue.txt',
+                self::createTestResult(
+                    numberOfIssuesIgnoredByBaseline: 1,
+                ),
+            ],
+
+            'successful test that triggers baseline-ignored issues' => [
+                __DIR__ . '/expectations/successful_test_with_baseline_ignored_issues.txt',
+                self::createTestResult(
+                    numberOfIssuesIgnoredByBaseline: 2,
+                ),
+            ],
         ];
     }
 
@@ -428,7 +441,7 @@ final class ResultPrinterTest extends TestCase
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
+    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = [], int $numberOfIssuesIgnoredByBaseline = 0): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -452,6 +465,7 @@ final class ResultPrinterTest extends TestCase
             $phpDeprecations,
             $phpNotices,
             $phpWarnings,
+            $numberOfIssuesIgnoredByBaseline,
         );
     }
 
