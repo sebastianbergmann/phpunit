@@ -21,6 +21,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
  */
 interface Emitter
 {
+    public function exportObjects(): void;
+
     public function applicationStarted(): void;
 
     public function testRunnerStarted(): void;

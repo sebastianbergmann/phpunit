@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event;
 
+use function is_array;
+use function is_scalar;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
@@ -34,6 +36,7 @@ final class DispatchingEmitter implements Emitter
     private readonly Telemetry\System $system;
     private readonly Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
+    private bool $exportObjects = false;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
@@ -42,6 +45,11 @@ final class DispatchingEmitter implements Emitter
 
         $this->startSnapshot    = $system->snapshot();
         $this->previousSnapshot = $system->snapshot();
+    }
+
+    public function exportObjects(): void
+    {
+        $this->exportObjects = true;
     }
 
     /**
@@ -455,14 +463,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
-        if (!$this->hasSubscriberFor(Test\AssertionSucceeded::class)) {
-            return;
-        }
-
         $this->dispatcher->dispatch(
             new Test\AssertionSucceeded(
                 $this->telemetryInfo(),
-                (new Exporter)->export($value),
+                $this->export($value),
                 $constraint->toString(),
                 $constraint->count(),
                 $message,
@@ -476,14 +480,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
-        if (!$this->hasSubscriberFor(Test\AssertionFailed::class)) {
-            return;
-        }
-
         $this->dispatcher->dispatch(
             new Test\AssertionFailed(
                 $this->telemetryInfo(),
-                (new Exporter)->export($value),
+                $this->export($value),
                 $constraint->toString(),
                 $constraint->count(),
                 $message,
@@ -606,7 +606,7 @@ final class DispatchingEmitter implements Emitter
             new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
-                (new Exporter)->export($constructorArguments),
+                $this->export($constructorArguments),
             ),
         );
     }
@@ -1163,15 +1163,31 @@ final class DispatchingEmitter implements Emitter
         return $info;
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    private function hasSubscriberFor(string $className): bool
+    private function export(mixed $value): string
     {
-        if (!$this->dispatcher instanceof SubscribableDispatcher) {
+        if ($this->isScalarOrArrayOfScalars($value) || $this->exportObjects) {
+            return (new Exporter)->export($value);
+        }
+
+        return '{enable export of objects to see this value}';
+    }
+
+    private function isScalarOrArrayOfScalars(mixed $value): bool
+    {
+        if (is_scalar($value)) {
             return true;
         }
 
-        return $this->dispatcher->hasSubscriberFor($className);
+        if (!is_array($value)) {
+            return false;
+        }
+
+        foreach ($value as $_value) {
+            if (!$this->isScalarOrArrayOfScalars($_value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
