@@ -49,7 +49,7 @@ function __phpunit_run_isolated_test()
 
     $test = new {className}('{name}', unserialize('{data}'), '{dataName}');
     $test->setDependencyInput(unserialize('{dependencyInput}'));
-    $test->setInIsolation(TRUE);
+    $test->setInIsolation(true);
 
     ob_end_clean();
     $test->run($result);
