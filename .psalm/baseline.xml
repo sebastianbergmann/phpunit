@@ -526,6 +526,13 @@
       <code>trim($tmp[1])</code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Metadata/Parser/AttributeParser.php">
+    <DeprecatedClass>
+      <code>IgnoreClassForCodeCoverage::class</code>
+      <code>IgnoreFunctionForCodeCoverage::class</code>
+      <code>IgnoreMethodForCodeCoverage::class</code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Metadata/Version/Requirement.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[!empty($matches['operator']) ? $matches['operator'] : '>=']]></code>
