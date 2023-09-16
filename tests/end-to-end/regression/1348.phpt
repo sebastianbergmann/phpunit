@@ -1,7 +1,10 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/1348
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/5356
+--SKIPIF--
+<?php declare(strict_types=1);
+if (defined('STDOUT')) {
+    print 'skip: PHP < 8.3 required';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
