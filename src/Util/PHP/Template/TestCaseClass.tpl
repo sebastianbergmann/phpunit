@@ -48,6 +48,7 @@ function __phpunit_run_isolated_test()
     }
 
     $test = new {className}('{name}');
+
     $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(true);
