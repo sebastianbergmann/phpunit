@@ -70,13 +70,16 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    print serialize(
-      [
-        'testResult'    => $test->getResult(),
-        'numAssertions' => $test->getNumAssertions(),
-        'result'        => $result,
-        'output'        => $output
-      ]
+    file_put_contents(
+        '{processResultFile}',
+        serialize(
+            [
+                'testResult'    => $test->getResult(),
+                'numAssertions' => $test->getNumAssertions(),
+                'result'        => $result,
+                'output'        => $output
+            ]
+        )
     );
 }
 
