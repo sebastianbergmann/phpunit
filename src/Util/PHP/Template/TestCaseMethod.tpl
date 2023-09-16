@@ -62,6 +62,7 @@ function __phpunit_run_isolated_test()
     }
 
     ini_set('xdebug.scream', '0');
+
     @rewind(STDOUT); /* @ as not every STDOUT target stream is rewindable */
     if ($stdout = @stream_get_contents(STDOUT)) {
         $output = $stdout . $output;
