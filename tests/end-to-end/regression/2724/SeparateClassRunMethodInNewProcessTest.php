@@ -23,8 +23,6 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass(): void
     {
-        parent::setUpBeforeClass();
-
         if (\file_exists(self::PROCESS_ID_FILE_PATH)) {
             static::$masterPid = (int) \file_get_contents(self::PROCESS_ID_FILE_PATH);
         }
@@ -32,8 +30,6 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
 
     public static function tearDownAfterClass(): void
     {
-        parent::tearDownAfterClass();
-
         if (\file_exists(self::PROCESS_ID_FILE_PATH)) {
             \unlink(self::PROCESS_ID_FILE_PATH);
         }
