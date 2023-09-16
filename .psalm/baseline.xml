@@ -458,6 +458,16 @@
       <code>assert($metadata instanceof RequiresSetting)</code>
     </RedundantCondition>
   </file>
+  <file src="src/Metadata/Metadata.php">
+    <DeprecatedClass>
+      <code>IgnoreClassForCodeCoverage</code>
+      <code>IgnoreFunctionForCodeCoverage</code>
+      <code>IgnoreMethodForCodeCoverage</code>
+      <code>new IgnoreClassForCodeCoverage(self::CLASS_LEVEL, $className)</code>
+      <code>new IgnoreFunctionForCodeCoverage(self::CLASS_LEVEL, $functionName)</code>
+      <code>new IgnoreMethodForCodeCoverage(self::CLASS_LEVEL, $className, $methodName)</code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Metadata/MetadataCollection.php">
     <PropertyTypeCoercion>
       <code>$metadata</code>
