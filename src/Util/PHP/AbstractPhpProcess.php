@@ -280,11 +280,8 @@ abstract class AbstractPhpProcess
         );
 
         try {
-            if (str_starts_with($stdout, "#!/usr/bin/env php\n")) {
-                $stdout = substr($stdout, 19);
-            }
+            $childResult = unserialize($stdout);
 
-            $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
             restore_error_handler();
 
             if ($childResult === false) {
