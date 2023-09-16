@@ -35,7 +35,7 @@ unlink($traceFile);
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Started (PHPUnit\TestFixture\LogEventsText\Test, 1 test)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testOne)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Prepared (PHPUnit\TestFixture\LogEventsText\Test::testOne)
-[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Assertion Failed (Constraint: is identical to an object of class "stdClass", Value: stdClass Object #317 ())
+[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Assertion Failed (Constraint: is identical to an object of class "stdClass", Value: stdClass Object #%d ())
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Failed (PHPUnit\TestFixture\LogEventsText\Test::testOne)
                                                           Failed asserting that two variables reference the same object.
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Finished (PHPUnit\TestFixture\LogEventsText\Test::testOne)
