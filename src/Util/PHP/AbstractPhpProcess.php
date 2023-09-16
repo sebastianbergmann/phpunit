@@ -304,6 +304,7 @@ abstract class AbstractPhpProcess
             }
         } catch (ErrorException $e) {
             restore_error_handler();
+
             $childResult = false;
 
             $exception = new Exception(trim($stdout), 0, $e);
