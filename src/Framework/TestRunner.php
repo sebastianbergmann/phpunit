@@ -310,6 +310,7 @@ final class TestRunner
         $includePath             = "'." . $includePath . ".'";
         $offset                  = hrtime();
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
+        $processResultFile       = tempnam(sys_get_temp_dir(), 'phpunit_');
 
         $var = [
             'bootstrap'                      => $bootstrap,
@@ -331,6 +332,7 @@ final class TestRunner
             'offsetSeconds'                  => $offset[0],
             'offsetNanoseconds'              => $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
+            'processResultFile'              => $processResultFile,
         ];
 
         if (!$runEntireClass) {
@@ -340,7 +342,7 @@ final class TestRunner
         $template->setVar($var);
 
         $php = AbstractPhpProcess::factory();
-        $php->runTestJob($template->render(), $test);
+        $php->runTestJob($template->render(), $test, $processResultFile);
 
         @unlink($serializedConfiguration);
     }
