@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.13] - 2023-MM-DD
+
+### Changed
+
+* The child processes used for process isolation now use temporary files to communicate their result to the parent process
+
 ## [9.6.12] - 2023-09-12
 
 ### Changed
@@ -89,6 +95,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.13]: https://github.com/sebastianbergmann/phpunit/compare/9.6.12...9.6
 [9.6.12]: https://github.com/sebastianbergmann/phpunit/compare/9.6.11...9.6.12
 [9.6.11]: https://github.com/sebastianbergmann/phpunit/compare/9.6.10...9.6.11
 [9.6.10]: https://github.com/sebastianbergmann/phpunit/compare/9.6.9...9.6.10

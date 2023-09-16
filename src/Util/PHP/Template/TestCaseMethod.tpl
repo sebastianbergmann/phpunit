@@ -71,6 +71,7 @@ function __phpunit_run_isolated_test()
     }
 
     ini_set('xdebug.scream', '0');
+
     @rewind(STDOUT); /* @ as not every STDOUT target stream is rewindable */
     if ($stdout = @stream_get_contents(STDOUT)) {
         $output = $stdout . $output;
@@ -81,13 +82,16 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    print serialize(
-      [
-        'testResult'    => $test->getResult(),
-        'numAssertions' => $test->getNumAssertions(),
-        'result'        => $result,
-        'output'        => $output
-      ]
+    file_put_contents(
+        '{processResultFile}',
+        serialize(
+            [
+                'testResult'    => $test->getResult(),
+                'numAssertions' => $test->getNumAssertions(),
+                'result'        => $result,
+                'output'        => $output
+            ]
+        )
     );
 }
 
