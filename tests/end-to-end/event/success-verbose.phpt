@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a successful test (with telemetry information)
+The right events are emitted in the right order for a successful test with extended information
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {

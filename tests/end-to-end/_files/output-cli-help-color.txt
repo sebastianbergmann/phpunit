@@ -129,8 +129,8 @@
   [32m--testdox-text [36m<file>[0m           [0m Write test results in TestDox format (plain
                                    text) to file
   [32m--log-events-text [36m<file>[0m        [0m Stream events as plain text to file
-  [32m--log-events-verbose-text [36m<file>[0m[0m Stream events as plain text (with telemetry
-                                   information) to file
+  [32m--log-events-verbose-text [36m<file>[0m[0m Stream events as plain text with extended
+                                   information to file
   [32m--no-logging                    [0m Ignore logging configured in the XML
                                    configuration file
 

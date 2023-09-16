@@ -567,6 +567,8 @@ final class Application
                     true,
                 ),
             );
+
+            EventFacade::emitter()->exportObjects();
         }
 
         if ($configuration->hasLogfileJunit()) {

@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 10.4 release series are documented in this fi
 
 * [#5505](https://github.com/sebastianbergmann/phpunit/pull/5505): Improve the failure description of `StringContains`-based assertions when the strings are encoded differently 
 * [#5515](https://github.com/sebastianbergmann/phpunit/issues/5515): The `Test\AssertionSucceeded` and `Test\AssertionFailed` events are always emitted again
+* [#5515](https://github.com/sebastianbergmann/phpunit/issues/5515): `--log-events-verbose-text` enables the export of non-scalar values for the `Test\AssertionSucceeded` and `Test\AssertionFailed` events
 * The name of the top-level test suite that is created when a directory or file path is passed as an argument to the test runner is now `CLI Arguments`
 * Simplified the failure description for `assertInstanceOf()` and `assertNotInstanceOf()`
 * Simplified the failure description for `assertJson()`
