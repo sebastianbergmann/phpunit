@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_OS_FAMILY;
 use function realpath;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -114,21 +113,30 @@ final class SourceMapperTest extends TestCase
             ),
         ];
 
+        $fileHiddenOnUnix = $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . '.hidden' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php';
+
+        $expectedFiles = [
+            $fileHiddenOnUnix                                                                                                                                => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+        ];
+
+        if (PHP_OS_FAMILY !== 'Windows') {
+            unset($expectedFiles[$fileHiddenOnUnix]);
+        }
+
         yield 'file included using directory' => [
-            [
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-            ],
+            $expectedFiles,
             new Source(
                 FilterDirectoryCollection::fromArray(
                     [
@@ -155,20 +163,27 @@ final class SourceMapperTest extends TestCase
             ),
         ];
 
+        $expectedFiles = [
+            $fileHiddenOnUnix                                                                                                                                => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
+            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+        ];
+
+        if (PHP_OS_FAMILY !== 'Windows') {
+            unset($expectedFiles[$fileHiddenOnUnix]);
+        }
+
         yield 'file included using directory, but excluded using file' => [
-            [
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-            ],
+            $expectedFiles,
             new Source(
                 FilterDirectoryCollection::fromArray(
                     [
@@ -245,10 +260,6 @@ final class SourceMapperTest extends TestCase
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expected, Source $source): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
-            $this->markTestIncomplete('https://github.com/sebastianbergmann/phpunit/issues/5503');
-        }
-
-        $this->assertSame($expected, (new SourceMapper)->map($source));
+        $this->assertEquals($expected, (new SourceMapper)->map($source));
     }
 }
