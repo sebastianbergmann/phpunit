@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 10.3 release series are documented in this fi
 
 * The child processes used for process isolation now use temporary files to communicate their result to the parent process
 
+### Fixed
+
+* [#5493](https://github.com/sebastianbergmann/phpunit/issues/5493): Assertion failures during setup swallows test outcome
+
 ## [10.3.4] - 2023-09-12
 
 ### Changed
