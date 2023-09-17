@@ -673,6 +673,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (AssertionError|AssertionFailedError $e) {
             if (!$this->wasPrepared) {
                 $this->wasPrepared = true;
+
+                $emitter->testPreparationFailed(
+                    $this->valueObjectForEvents(),
+                );
             }
 
             $this->status = TestStatus::failure($e->getMessage());
