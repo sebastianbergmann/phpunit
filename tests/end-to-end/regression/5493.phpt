@@ -23,7 +23,7 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) PHPUnit\TestFixture\Issue5493\Issue5493Test::testOne
-Failed asserting that true is false.
+Failed asserting that false is true.
 
 %sIssue5493Test.php:19
 
