@@ -1,7 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/5493
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/5493
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -23,7 +21,7 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) PHPUnit\TestFixture\Issue5493\Issue5493Test::testOne
-Failed asserting that true is false.
+Failed asserting that false is true.
 
 %sIssue5493Test.php:19
 
