@@ -111,11 +111,4 @@ final class AbstractPhpProcessTest extends TestCase
 
         $this->assertEquals(['foo' => 'bar'], $this->phpProcess->getEnv());
     }
-
-    public function testTimeoutGetterAndSetter(): void
-    {
-        $this->phpProcess->setTimeout(30);
-
-        $this->assertEquals(30, $this->phpProcess->getTimeout());
-    }
 }

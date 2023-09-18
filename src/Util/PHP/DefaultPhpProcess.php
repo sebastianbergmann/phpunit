@@ -12,17 +12,13 @@ namespace PHPUnit\Util\PHP;
 use function array_merge;
 use function fclose;
 use function file_put_contents;
-use function fread;
 use function fwrite;
 use function is_array;
 use function is_resource;
 use function proc_close;
 use function proc_open;
-use function proc_terminate;
 use function rewind;
-use function sprintf;
 use function stream_get_contents;
-use function stream_select;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
@@ -121,77 +117,16 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
         $stderr = $stdout = '';
 
-        if ($this->timeout) {
-            unset($pipes[0]);
+        if (isset($pipes[1])) {
+            $stdout = stream_get_contents($pipes[1]);
 
-            while (true) {
-                $r = $pipes;
-                $w = null;
-                $e = null;
+            fclose($pipes[1]);
+        }
 
-                $n = @stream_select($r, $w, $e, $this->timeout);
+        if (isset($pipes[2])) {
+            $stderr = stream_get_contents($pipes[2]);
 
-                if ($n === false) {
-                    break;
-                }
-
-                if ($n === 0) {
-                    proc_terminate($process, 9);
-
-                    throw new PhpProcessException(
-                        sprintf(
-                            'Job execution aborted after %d seconds',
-                            $this->timeout,
-                        ),
-                    );
-                }
-
-                if ($n > 0) {
-                    foreach ($r as $pipe) {
-                        $pipeOffset = 0;
-
-                        foreach ($pipes as $i => $origPipe) {
-                            if ($pipe === $origPipe) {
-                                $pipeOffset = $i;
-
-                                break;
-                            }
-                        }
-
-                        if (!$pipeOffset) {
-                            break;
-                        }
-
-                        $line = fread($pipe, 8192);
-
-                        if ($line === '' || $line === false) {
-                            fclose($pipes[$pipeOffset]);
-
-                            unset($pipes[$pipeOffset]);
-                        } elseif ($pipeOffset === 1) {
-                            $stdout .= $line;
-                        } else {
-                            $stderr .= $line;
-                        }
-                    }
-
-                    if (empty($pipes)) {
-                        break;
-                    }
-                }
-            }
-        } else {
-            if (isset($pipes[1])) {
-                $stdout = stream_get_contents($pipes[1]);
-
-                fclose($pipes[1]);
-            }
-
-            if (isset($pipes[2])) {
-                $stderr = stream_get_contents($pipes[2]);
-
-                fclose($pipes[2]);
-            }
+            fclose($pipes[2]);
         }
 
         if (isset($handles[1])) {

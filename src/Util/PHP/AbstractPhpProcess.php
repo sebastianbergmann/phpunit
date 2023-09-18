@@ -50,8 +50,7 @@ abstract class AbstractPhpProcess
     /**
      * @psalm-var array<string, string>
      */
-    protected array $env   = [];
-    protected int $timeout = 0;
+    protected array $env = [];
 
     public static function factory(): self
     {
@@ -133,22 +132,6 @@ abstract class AbstractPhpProcess
     public function getEnv(): array
     {
         return $this->env;
-    }
-
-    /**
-     * Sets the amount of seconds to wait before timing out.
-     */
-    public function setTimeout(int $timeout): void
-    {
-        $this->timeout = $timeout;
-    }
-
-    /**
-     * Returns the amount of seconds to wait before timing out.
-     */
-    public function getTimeout(): int
-    {
-        return $this->timeout;
     }
 
     /**

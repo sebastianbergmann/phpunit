@@ -152,10 +152,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $this->phpUtil->setUseStderrRedirection(true);
 
-        if (ConfigurationRegistry::get()->enforceTimeLimit()) {
-            $this->phpUtil->setTimeout(ConfigurationRegistry::get()->timeoutForLargeTests());
-        }
-
         if ($this->shouldTestBeSkipped($sections, $settings)) {
             return;
         }
