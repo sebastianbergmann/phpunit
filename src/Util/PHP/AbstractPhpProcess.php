@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use const DIRECTORY_SEPARATOR;
 use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
@@ -54,7 +53,7 @@ abstract class AbstractPhpProcess
 
     public static function factory(): self
     {
-        if (DIRECTORY_SEPARATOR === '\\') {
+        if (PHP_OS_FAMILY === 'Windows') {
             return new WindowsPhpProcess;
         }
 
