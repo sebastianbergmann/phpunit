@@ -42,7 +42,7 @@ This test modified global state but was not expected to do so
 --- Global variables before the test
 +++ Global variables after the test
 %A
-+    'variable' => 'value'
++    'variable' => 'value',
 %A
 Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest, 1 test)

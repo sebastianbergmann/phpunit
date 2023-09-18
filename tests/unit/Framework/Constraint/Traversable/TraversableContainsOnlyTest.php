@@ -43,11 +43,11 @@ final class TraversableContainsOnlyTest extends TestCase
             [
                 false,
                 <<<'EOT'
-Failed asserting that Array &0 (
-    0 => 0
-    1 => '1'
-    2 => 2
-) contains only values of type "integer".
+Failed asserting that Array &0 [
+    0 => 0,
+    1 => '1',
+    2 => 2,
+] contains only values of type "integer".
 EOT,
                 'integer',
                 true,

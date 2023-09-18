@@ -58,14 +58,14 @@ EOT,
 
             [
                 <<<'EOT'
-is identical to Array &0 (
-    0 => 1
-    1 => 2
-    2 => 3
-    3 => 4
-    4 => 5
-    5 => 6
-)
+is identical to Array &0 [
+    0 => 1,
+    1 => 2,
+    2 => 3,
+    3 => 4,
+    4 => 5,
+    5 => 6,
+]
 EOT,
                 'Failed asserting that two arrays are identical.',
                 <<<'EOT'
@@ -73,15 +73,15 @@ EOT,
 --- Expected
 +++ Actual
 @@ @@
- Array &0 (
-     0 => 1
-     1 => 2
--    2 => 3
-+    2 => 33
-     3 => 4
-     4 => 5
-     5 => 6
- )
+ Array &0 [
+     0 => 1,
+     1 => 2,
+-    2 => 3,
++    2 => 33,
+     3 => 4,
+     4 => 5,
+     5 => 6,
+ ]
 
 EOT,
                 [1, 2, 3, 4, 5, 6],
@@ -90,17 +90,17 @@ EOT,
 
             [
                 <<<'EOT'
-is identical to Array &0 (
-    0 => Array &1 (
-        'A' => 'B'
-    )
-    1 => Array &2 (
-        'C' => Array &3 (
-            0 => 'D'
-            1 => 'E'
-        )
-    )
-)
+is identical to Array &0 [
+    0 => Array &1 [
+        'A' => 'B',
+    ],
+    1 => Array &2 [
+        'C' => Array &3 [
+            0 => 'D',
+            1 => 'E',
+        ],
+    ],
+]
 EOT,
                 'Failed asserting that two arrays are identical.',
                 <<<'EOT'
@@ -108,20 +108,20 @@ EOT,
 --- Expected
 +++ Actual
 @@ @@
- Array &0 (
-     0 => Array &1 (
--        'A' => 'B'
-+        'A' => 'C'
-     )
-     1 => Array &2 (
-         'C' => Array &3 (
--            0 => 'D'
-+            0 => 'C'
-             1 => 'E'
-+            2 => 'F'
-         )
-     )
- )
+ Array &0 [
+     0 => Array &1 [
+-        'A' => 'B',
++        'A' => 'C',
+     ],
+     1 => Array &2 [
+         'C' => Array &3 [
+-            0 => 'D',
++            0 => 'C',
+             1 => 'E',
++            2 => 'F',
+         ],
+     ],
+ ]
 
 EOT,
                 [
