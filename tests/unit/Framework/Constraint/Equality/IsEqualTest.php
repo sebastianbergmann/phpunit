@@ -27,9 +27,9 @@ final class IsEqualTest extends TestCase
             [
                 true,
                 <<<'EOT'
-is equal to Array &%d (
-    0 => 'value'
-)
+is equal to Array &%d [
+    0 => 'value',
+]
 EOT,
                 '',
                 '',
@@ -41,7 +41,7 @@ EOT,
                 true,
                 <<<'EOT'
 is equal to stdClass Object #%d (
-    'foo' => 'bar'
+    'foo' => 'bar',
 )
 EOT,
                 '',
@@ -143,9 +143,9 @@ EOT,
             [
                 false,
                 <<<'EOT'
-is equal to Array &%d (
-    0 => 'value'
-)
+is equal to Array &%d [
+    0 => 'value',
+]
 EOT,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
@@ -166,10 +166,10 @@ EOT,
             [
                 false,
                 <<<'EOT'
-is equal to Array &%d (
-    0 => 'value'
-    1 => 'another-value'
-)
+is equal to Array &%d [
+    0 => 'value',
+    1 => 'another-value',
+]
 EOT,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
@@ -193,7 +193,7 @@ EOT,
                 false,
                 <<<'EOT'
 is equal to stdClass Object #%d (
-    'foo' => 'bar'
+    'foo' => 'bar',
 )
 EOT,
                 'Failed asserting that two objects are equal.',

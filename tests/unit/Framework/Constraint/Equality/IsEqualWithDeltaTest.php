@@ -47,9 +47,9 @@ final class IsEqualWithDeltaTest extends TestCase
             [
                 true,
                 <<<'EOT'
-is equal to Array &%d (
-    0 => 1.0
-) with delta <0.000000>
+is equal to Array &%d [
+    0 => 1.0,
+] with delta <0.000000>
 EOT,
                 '',
                 '',
@@ -61,9 +61,9 @@ EOT,
             [
                 true,
                 <<<'EOT'
-is equal to Array &%d (
-    0 => 1.0
-) with delta <0.100000>
+is equal to Array &%d [
+    0 => 1.0,
+] with delta <0.100000>
 EOT,
                 '',
                 '',
@@ -76,7 +76,7 @@ EOT,
                 true,
                 <<<'EOT'
 is equal to stdClass Object #%d (
-    'property' => 1.0
+    'property' => 1.0,
 ) with delta <0.000000>
 EOT,
                 '',
@@ -90,7 +90,7 @@ EOT,
                 true,
                 <<<'EOT'
 is equal to stdClass Object #%d (
-    'property' => 1.0
+    'property' => 1.0,
 ) with delta <0.100000>
 EOT,
                 '',
@@ -113,9 +113,9 @@ EOT,
             [
                 false,
                 <<<'EOT'
-is equal to Array &%d (
-    0 => 1.0
-) with delta <0.000000>
+is equal to Array &%d [
+    0 => 1.0,
+] with delta <0.000000>
 EOT,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
@@ -138,7 +138,7 @@ EOT,
                 false,
                 <<<'EOT'
 is equal to stdClass Object #%d (
-    'property' => 1.0
+    'property' => 1.0,
 ) with delta <0.000000>
 EOT,
                 'Failed asserting that two objects are equal.',

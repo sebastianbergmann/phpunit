@@ -42,7 +42,7 @@ This test modified global state but was not expected to do so
 --- Global variables before the test
 +++ Global variables after the test
 %A
-+    'variable' => 'value'
++    'variable' => 'value',
 %A
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)
 This test did not perform any assertions
