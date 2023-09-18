@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test that fails because of an assertion method
+The right events are emitted in the right order for a test that fails because of an assertion failure in a precondition method
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = __DIR__ . '/_files/FailureTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/AssertionFailureInPreConditionTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -31,14 +31,17 @@ Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\FailureTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\Event\FailureTest::testFailure)
-Test Prepared (PHPUnit\TestFixture\Event\FailureTest::testFailure)
+Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
 Assertion Failed (Constraint: is true, Value: false)
-Test Failed (PHPUnit\TestFixture\Event\FailureTest::testFailure)
+Pre Condition Method Called (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition)
+Pre Condition Method Finished:
+- PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition
+Test Preparation Failed (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
+Test Failed (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
 Failed asserting that false is true.
-Test Finished (PHPUnit\TestFixture\Event\FailureTest::testFailure)
-Test Suite Finished (PHPUnit\TestFixture\Event\FailureTest, 1 test)
+Test Finished (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
+Test Suite Finished (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 1)
