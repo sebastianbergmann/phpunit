@@ -41,7 +41,6 @@ use SebastianBergmann\Environment\Runtime;
  */
 abstract class AbstractPhpProcess
 {
-    protected Runtime $runtime;
     protected bool $stderrRedirection = false;
     protected string $stdin           = '';
     protected string $arguments       = '';
@@ -58,11 +57,6 @@ abstract class AbstractPhpProcess
         }
 
         return new DefaultPhpProcess;
-    }
-
-    public function __construct()
-    {
-        $this->runtime = new Runtime;
     }
 
     /**
@@ -165,19 +159,21 @@ abstract class AbstractPhpProcess
      */
     public function getCommand(array $settings, string $file = null): string
     {
-        $command = $this->runtime->getBinary();
+        $runtime = new Runtime;
 
-        if ($this->runtime->hasPCOV()) {
+        $command = $runtime->getBinary();
+
+        if ($runtime->hasPCOV()) {
             $settings = array_merge(
                 $settings,
-                $this->runtime->getCurrentSettings(
+                $runtime->getCurrentSettings(
                     array_keys(ini_get_all('pcov')),
                 ),
             );
-        } elseif ($this->runtime->hasXdebug()) {
+        } elseif ($runtime->hasXdebug()) {
             $settings = array_merge(
                 $settings,
-                $this->runtime->getCurrentSettings(
+                $runtime->getCurrentSettings(
                     array_keys(ini_get_all('xdebug')),
                 ),
             );
