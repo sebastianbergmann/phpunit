@@ -19,4 +19,9 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 Incomplete (PHPUnit\TestFixture\TestRunnerStopping\Incomplete)
  [ ] One
+      ┐
+      ├ message
+      │
+      │ %s:%d
+      ┴
  [x] Two

@@ -18,4 +18,9 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 Risky (PHPUnit\TestFixture\TestRunnerStopping\Risky)
  [ ] One
+      ┐
+      ├ This test did not perform any assertions
+      │
+      │ %s:%d
+      ┴
  [x] Two

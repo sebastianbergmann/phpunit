@@ -20,7 +20,7 @@ Configuration: %s
 Time: %s, Memory: %s
 
 Issue5172 (PHPUnit\TestFixture\Issue5172)
- ✔ One
+ ? One
 
 There was 1 PHPUnit test runner deprecation:
 

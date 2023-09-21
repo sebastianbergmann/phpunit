@@ -18,5 +18,10 @@ require realpath($parentDirectory . '/../bootstrap.php');
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 Warning (PHPUnit\TestFixture\TestRunnerStopping\Warning)
- [x] One
+ [ ] One
+      ┐
+      ├ message
+      │
+      │ %s:%d
+      ┴
  [x] Two

@@ -19,4 +19,9 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 Skipped (PHPUnit\TestFixture\TestRunnerStopping\Skipped)
  [ ] One
+      ┐
+      ├ message
+      │
+      │ %s:%d
+      ┴
  [x] Two

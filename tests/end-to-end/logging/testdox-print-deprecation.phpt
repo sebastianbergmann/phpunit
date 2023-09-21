@@ -18,5 +18,10 @@ require realpath($parentDirectory . '/../bootstrap.php');
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 Deprecation (PHPUnit\TestFixture\TestRunnerStopping\Deprecation)
- [x] One
+ [ ] One
+      ┐
+      ├ message
+      │
+      │ %s:%d
+      ┴
  [x] Two

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
+use function array_key_exists;
 use function array_keys;
 use function array_merge;
 use function assert;
@@ -18,12 +19,16 @@ use function uksort;
 use function usort;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
@@ -31,12 +36,26 @@ use PHPUnit\Event\Test\MockObjectCreated;
 use PHPUnit\Event\Test\MockObjectForAbstractClassCreated;
 use PHPUnit\Event\Test\MockObjectForTraitCreated;
 use PHPUnit\Event\Test\MockObjectFromWsdlCreated;
+use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PartialMockObjectCreated;
 use PHPUnit\Event\Test\Passed;
+use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\TestProxyCreated;
 use PHPUnit\Event\Test\TestStubCreated;
+use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
+use PHPUnit\Event\TestRunner\ExecutionStarted as TestRunnerExecutionStarted;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
@@ -68,6 +87,47 @@ final class TestResultCollector
     public function __construct(Facade $facade)
     {
         $this->registerSubscribers($facade);
+    }
+
+    public function __invoke(Event $event): void
+    {
+        /** @var ?TestStatus $status */
+        $status = $this->getStatus($event);
+
+        if (!$status instanceof TestStatus) {
+            return;
+        }
+
+        /**
+         * @var ?HRTime $time
+         *
+         * @psalm-suppress UnsupportedPropertyReferenceUsage
+         */
+        $time = &$this->time;
+
+        if (!$time instanceof HRTime) {
+            $time = $event->telemetryInfo()->time();
+        }
+
+        /**
+         * @var TestStatus $currentStatus
+         *
+         * @psalm-suppress UnsupportedPropertyReferenceUsage
+         */
+        $currentStatus = &$this->status;
+
+        if (!$currentStatus instanceof TestStatus) {
+
+            $currentStatus = $status;
+
+            return;
+        }
+
+        if ($currentStatus->isMoreImportantThan($status)) {
+            return;
+        }
+
+        $currentStatus = $status;
     }
 
     /**
@@ -140,10 +200,9 @@ final class TestResultCollector
             return;
         }
 
-        $this->time        = $event->telemetryInfo()->time();
-        $this->status      = TestStatus::unknown();
         $this->throwable   = null;
         $this->testDoubles = [];
+        $this($event);
     }
 
     public function testErrored(Errored $event): void
@@ -152,8 +211,9 @@ final class TestResultCollector
             return;
         }
 
-        $this->status    = TestStatus::error($event->throwable()->message());
         $this->throwable = $event->throwable();
+
+        $this($event);
     }
 
     public function testFailed(Failed $event): void
@@ -162,8 +222,9 @@ final class TestResultCollector
             return;
         }
 
-        $this->status    = TestStatus::failure($event->throwable()->message());
         $this->throwable = $event->throwable();
+
+        $this($event);
     }
 
     public function testPassed(Passed $event): void
@@ -172,23 +233,24 @@ final class TestResultCollector
             return;
         }
 
-        $this->status = TestStatus::success();
+        $this($event);
     }
 
     public function testSkipped(Skipped $event): void
     {
-        $this->status = TestStatus::skipped($event->message());
+        $this($event);
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
-        $this->status    = TestStatus::incomplete($event->throwable()->message());
         $this->throwable = $event->throwable();
+
+        $this($event);
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
-        $this->status = TestStatus::risky($event->message());
+        $this($event);
     }
 
     public function testCreatedTestDouble(MockObjectCreated|MockObjectForAbstractClassCreated|MockObjectForTraitCreated|MockObjectFromWsdlCreated|PartialMockObjectCreated|TestProxyCreated|TestStubCreated $event): void
@@ -221,11 +283,13 @@ final class TestResultCollector
 
         assert($test instanceof TestMethod);
 
-        if (!isset($this->tests[$test->testDox()->prettifiedClassName()])) {
-            $this->tests[$test->testDox()->prettifiedClassName()] = [];
+        $prettifiedClassName = $test->testDox()->prettifiedClassName();
+
+        if (!array_key_exists($prettifiedClassName, $this->tests)) {
+            $this->tests[$prettifiedClassName] = [];
         }
 
-        $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
+        $this->tests[$prettifiedClassName][] = new TestDoxTestMethod(
             $test,
             $event->telemetryInfo()->time()->duration($this->time),
             $this->status,
@@ -239,6 +303,117 @@ final class TestResultCollector
         $this->testDoubles = [];
     }
 
+    public function testTriggeredWarning(WarningTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredNotice(NoticeTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredError(ErrorTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredDeprecation(DeprecationTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testRunnerTriggeredDeprecation(TestRunnerDeprecationTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function executionStarted(TestRunnerExecutionStarted $event): void
+    {
+        $this($event);
+    }
+
+    public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
+    {
+        $this($event);
+    }
+
+    public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testSuiteFinished(TestSuiteFinished $event): void
+    {
+        $this($event);
+    }
+
+    public function testSuiteSkipped(TestSuiteSkipped $event): void
+    {
+        $this($event);
+    }
+
+    public function testSuiteStarted(TestSuiteStarted $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredPhpunitWarning(PhpunitWarningTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredPhpunitError(PhpunitErrorTriggered $event): void
+    {
+        $this($event);
+    }
+
+    public function testTriggeredPhpunitDeprecation(PhpunitDeprecationTriggered $event): void
+    {
+        $this($event);
+    }
+
+    private function getStatus(Event $event): ?TestStatus
+    {
+        /** @var ConsideredRisky|DeprecationTriggered|Errored|ErrorTriggered|Failed|Finished|MarkedIncomplete|NoticeTriggered|Passed|PhpDeprecationTriggered|PhpNoticeTriggered|PhpunitDeprecationTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered|PhpWarningTriggered|Prepared|Skipped|TestRunnerDeprecationTriggered|TestRunnerExecutionStarted|TestSuiteFinished|TestSuiteStarted|WarningTriggered $event */
+        return match (true) {
+            $event instanceof ConsideredRisky => TestStatus::risky($event->message()),
+            $event instanceof DeprecationTriggered,
+            $event instanceof PhpDeprecationTriggered,
+            $event instanceof PhpunitDeprecationTriggered ,
+            $event instanceof TestRunnerDeprecationTriggered => TestStatus::deprecation($event->message()),
+            $event instanceof Errored                        => TestStatus::error($event->throwable()->message()),
+            $event instanceof ErrorTriggered,
+            $event instanceof PhpunitErrorTriggered => TestStatus::error($event->message()),
+            $event instanceof Failed                => TestStatus::failure($event->throwable()->message()),
+            $event instanceof MarkedIncomplete      => TestStatus::incomplete($event->throwable()->message()),
+            $event instanceof NoticeTriggered,
+            $event instanceof PhpNoticeTriggered => TestStatus::notice($event->message()),
+            $event instanceof Passed             => TestStatus::success(),
+            $event instanceof WarningTriggered,
+            $event instanceof PhpunitWarningTriggered,
+            $event instanceof PhpWarningTriggered => TestStatus::warning($event->message()),
+            $event instanceof Prepared            => TestStatus::unknown(),
+            $event instanceof Skipped             => TestStatus::skipped($event->message()),
+            default                               => null,
+        };
+    }
+
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -246,6 +421,8 @@ final class TestResultCollector
     private function registerSubscribers(Facade $facade): void
     {
         $facade->registerSubscribers(
+            new BeforeTestClassMethodErroredSubscriber($this),
+            new ExecutionStartedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestCreatedMockObjectForAbstractClassSubscriber($this),
             new TestCreatedMockObjectForTraitSubscriber($this),
@@ -260,7 +437,22 @@ final class TestResultCollector
             new TestMarkedIncompleteSubscriber($this),
             new TestPassedSubscriber($this),
             new TestPreparedSubscriber($this),
+            new TestRunnerTriggeredDeprecationSubscriber($this),
+            new TestRunnerTriggeredWarningSubscriber($this),
             new TestSkippedSubscriber($this),
+            new TestSuiteFinishedSubscriber($this),
+            new TestSuiteSkippedSubscriber($this),
+            new TestSuiteStartedSubscriber($this),
+            new TestTriggeredDeprecationSubscriber($this),
+            new TestTriggeredErrorSubscriber($this),
+            new TestTriggeredNoticeSubscriber($this),
+            new TestTriggeredPhpDeprecationSubscriber($this),
+            new TestTriggeredPhpNoticeSubscriber($this),
+            new TestTriggeredPhpunitDeprecationSubscriber($this),
+            new TestTriggeredPhpunitErrorSubscriber($this),
+            new TestTriggeredPhpunitWarningSubscriber($this),
+            new TestTriggeredPhpWarningSubscriber($this),
+            new TestTriggeredWarningSubscriber($this),
         );
     }
 }

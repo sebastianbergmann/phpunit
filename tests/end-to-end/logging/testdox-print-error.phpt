@@ -19,4 +19,9 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 Error (PHPUnit\TestFixture\TestRunnerStopping\Error)
  [ ] One
+      ┐
+      ├ message
+      │
+      │ %s:%d
+      ┴
  [x] Two

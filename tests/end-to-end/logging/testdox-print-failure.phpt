@@ -18,4 +18,9 @@ require realpath($parentDirectory . '/../bootstrap.php');
 --EXPECTF--
 Failure (PHPUnit\TestFixture\TestRunnerStopping\Failure)
  [ ] One
+      ┐
+      ├ Failed asserting that false is true.
+      │
+      │ %s:%d
+      ┴
  [x] Two

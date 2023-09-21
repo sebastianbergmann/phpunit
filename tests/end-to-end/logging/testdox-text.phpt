@@ -22,3 +22,4 @@ unlink($output);
 Bank Account (PHPUnit\TestFixture\BankAccount)
  [x] Balance is initially zero
  [x] Balance cannot become negative
+ [x] Balance cannot become negative
