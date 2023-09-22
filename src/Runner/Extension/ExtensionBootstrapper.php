@@ -65,10 +65,18 @@ final class ExtensionBootstrapper
 
         try {
             $instance = (new ReflectionClass($className))->newInstance();
+
+            assert($instance instanceof Extension);
+
+            $instance->bootstrap(
+                $this->configuration,
+                $this->facade,
+                ParameterCollection::fromArray($parameters),
+            );
         } catch (Throwable $t) {
             EventFacade::emitter()->testRunnerTriggeredWarning(
                 sprintf(
-                    'Cannot bootstrap extension because class %s cannot be instantiated: %s',
+                    'Bootstrapping of extension %s failed: %s',
                     $className,
                     $t->getMessage(),
                 ),
@@ -76,14 +84,6 @@ final class ExtensionBootstrapper
 
             return;
         }
-
-        assert($instance instanceof Extension);
-
-        $instance->bootstrap(
-            $this->configuration,
-            $this->facade,
-            ParameterCollection::fromArray($parameters),
-        );
 
         Event\Facade::emitter()->testRunnerBootstrappedExtension(
             $className,
