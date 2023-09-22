@@ -1,10 +1,10 @@
 --TEST--
-Test runner exits with error when configured extension class cannot be instantiated
+Test runner warning is triggered when an exception is triggered in an extension's bootstrap class' constructor
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/class-cannot-be-instantiated/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/_files/exception-in-extension-constructor/phpunit.xml';
 
 require __DIR__ . '/../../bootstrap.php';
 
