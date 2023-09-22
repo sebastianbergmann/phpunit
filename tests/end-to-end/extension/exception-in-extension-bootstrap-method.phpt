@@ -1,10 +1,10 @@
 --TEST--
-Test runner warning is triggered when an exception is triggered in an extension's bootstrap class' constructor
+Test runner warning is triggered when an exception is triggered in an extension's bootstrap method
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/exception-in-extension-constructor/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/_files/exception-in-extension-bootstrap-method/phpunit.xml';
 
 require __DIR__ . '/../../bootstrap.php';
 
