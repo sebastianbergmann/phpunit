@@ -109,9 +109,20 @@ final class DirectDispatcher implements SubscribableDispatcher
      */
     public function handleThrowable(Throwable $t): void
     {
-        if (!$this->isThrowableFromThirdPartySubscriber($t)) {
-            throw $t;
+        if ($this->isThrowableFromThirdPartySubscriber($t)) {
+            Facade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Exception in third-party event subscriber: %s%s%s',
+                    $t->getMessage(),
+                    PHP_EOL,
+                    $t->getTraceAsString(),
+                ),
+            );
+
+            return;
         }
+
+        throw $t;
     }
 
     private function isThrowableFromThirdPartySubscriber(Throwable $t): bool

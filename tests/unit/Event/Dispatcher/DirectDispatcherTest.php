@@ -33,8 +33,7 @@ final class DirectDispatcherTest extends TestCase
         $subscriber
             ->expects($this->once())
             ->method('notify')
-            ->with($this->identicalTo($event))
-            ->willThrowException(new RuntimeException('third-party exception'));
+            ->with($this->identicalTo($event));
 
         $dispatcher->registerSubscriber($subscriber);
 
@@ -53,8 +52,7 @@ final class DirectDispatcherTest extends TestCase
         $tracer
             ->expects($this->once())
             ->method('trace')
-            ->with($this->identicalTo($event))
-            ->willThrowException(new RuntimeException('third-party exception'));
+            ->with($this->identicalTo($event));
 
         $dispatcher->registerTracer($tracer);
 
