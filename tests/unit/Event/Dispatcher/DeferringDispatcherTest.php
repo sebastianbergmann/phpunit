@@ -13,7 +13,6 @@ use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\DummyEvent;
 use PHPUnit\TestFixture\DummySubscriber;
 
 #[CoversClass(DeferringDispatcher::class)]
@@ -62,15 +61,9 @@ final class DeferringDispatcherTest extends TestCase
             ->method('registerSubscriber')
             ->with($this->identicalTo($subscriber));
 
-        $subscribableDispatcher
-            ->method('hasSubscriberFor')
-            ->willReturn(true);
-
         $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
 
         $deferringDispatcher->registerSubscriber($subscriber);
-
-        $this->assertTrue($deferringDispatcher->hasSubscriberFor(DummyEvent::class));
     }
 
     public function testTracerCanBeRegistered(): void
@@ -84,14 +77,8 @@ final class DeferringDispatcherTest extends TestCase
             ->method('registerTracer')
             ->with($this->identicalTo($tracer));
 
-        $subscribableDispatcher
-            ->method('hasSubscriberFor')
-            ->willReturn(true);
-
         $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
 
         $deferringDispatcher->registerTracer($tracer);
-
-        $this->assertTrue($deferringDispatcher->hasSubscriberFor(DummyEvent::class));
     }
 }

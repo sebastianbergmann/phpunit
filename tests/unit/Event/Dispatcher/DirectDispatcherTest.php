@@ -38,8 +38,6 @@ final class DirectDispatcherTest extends TestCase
 
         $dispatcher->registerSubscriber($subscriber);
 
-        $this->assertTrue($dispatcher->hasSubscriberFor(DummyEvent::class));
-
         $dispatcher->dispatch($event);
     }
 
@@ -59,8 +57,6 @@ final class DirectDispatcherTest extends TestCase
             ->willThrowException(new RuntimeException('third-party exception'));
 
         $dispatcher->registerTracer($tracer);
-
-        $this->assertTrue($dispatcher->hasSubscriberFor(DummyEvent::class));
 
         $dispatcher->dispatch($event);
     }
