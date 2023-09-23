@@ -76,9 +76,11 @@ final class ExtensionBootstrapper
         } catch (Throwable $t) {
             EventFacade::emitter()->testRunnerTriggeredWarning(
                 sprintf(
-                    'Bootstrapping of extension %s failed: %s',
+                    'Bootstrapping of extension %s failed: %s%s%s',
                     $className,
                     $t->getMessage(),
+                    PHP_EOL,
+                    $t->getTraceAsString(),
                 ),
             );
 
