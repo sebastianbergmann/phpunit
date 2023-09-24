@@ -48,7 +48,7 @@ final class IsInstanceOf extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return sprintf(
             'is an instance of %s %s',
@@ -74,6 +74,6 @@ final class IsInstanceOf extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        return $this->valueToTypeStringFragment($other) . $this->toString();
+        return $this->valueToTypeStringFragment($other) . $this->toString(true);
     }
 }

@@ -67,7 +67,7 @@ final class TraversableContainsOnly extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return 'contains only values of type "' . $this->type . '"';
     }

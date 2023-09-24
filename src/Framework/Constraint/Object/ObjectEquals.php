@@ -33,7 +33,7 @@ final class ObjectEquals extends Constraint
         $this->method   = $method;
     }
 
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return 'two objects are equal';
     }
@@ -137,6 +137,6 @@ final class ObjectEquals extends Constraint
 
     protected function failureDescription(mixed $other): string
     {
-        return $this->toString();
+        return $this->toString(true);
     }
 }

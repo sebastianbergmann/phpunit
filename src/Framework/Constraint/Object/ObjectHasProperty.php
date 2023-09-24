@@ -29,7 +29,7 @@ final class ObjectHasProperty extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return sprintf(
             'has property "%s"',
@@ -66,7 +66,7 @@ final class ObjectHasProperty extends Constraint
             return sprintf(
                 'object of class "%s" %s',
                 $other::class,
-                $this->toString(),
+                $this->toString(true),
             );
         }
 
@@ -74,7 +74,7 @@ final class ObjectHasProperty extends Constraint
             '"%s" (%s) %s',
             $other,
             gettype($other),
-            $this->toString(),
+            $this->toString(true),
         );
     }
 }

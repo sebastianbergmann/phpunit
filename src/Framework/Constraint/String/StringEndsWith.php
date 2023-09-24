@@ -34,7 +34,7 @@ final class StringEndsWith extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return 'ends with "' . $this->suffix . '"';
     }

@@ -34,7 +34,7 @@ abstract class UnaryOperator extends Operator
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         $reduced = $this->reduce();
 

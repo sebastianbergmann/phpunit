@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use function array_key_exists;
 use function is_array;
 use ArrayAccess;
+use PHPUnit\Util\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -28,9 +29,9 @@ final class ArrayHasKey extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
-        return 'has the key ' . $this->exporter()->export($this->key);
+        return 'has the key ' . Exporter::export($this->key, $exportObjects);
     }
 
     /**
@@ -58,6 +59,6 @@ final class ArrayHasKey extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        return 'an array ' . $this->toString();
+        return 'an array ' . $this->toString(true);
     }
 }

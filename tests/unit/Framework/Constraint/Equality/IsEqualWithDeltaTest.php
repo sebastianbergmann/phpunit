@@ -188,7 +188,7 @@ EOT,
     {
         $constraint = new IsEqualWithDelta($expected, $delta);
 
-        $this->assertStringMatchesFormat($constraintAsString, $constraint->toString());
+        $this->assertStringMatchesFormat($constraintAsString, $constraint->toString(true));
     }
 
     public function testIsCountable(): void

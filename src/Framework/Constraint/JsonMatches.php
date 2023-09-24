@@ -31,7 +31,7 @@ final class JsonMatches extends Constraint
     /**
      * Returns a string representation of the object.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return sprintf(
             'matches JSON string "%s"',

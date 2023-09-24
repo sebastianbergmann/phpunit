@@ -17,7 +17,7 @@ final class IsFalse extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return 'is false';
     }

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use function is_array;
-use function is_scalar;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
@@ -25,7 +23,7 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -480,8 +478,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\AssertionSucceeded(
                 $this->telemetryInfo(),
-                $this->export($value),
-                $constraint->toString(),
+                Exporter::export($value, $this->exportObjects),
+                $constraint->toString($this->exportObjects),
                 $constraint->count(),
                 $message,
             ),
@@ -497,8 +495,8 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new Test\AssertionFailed(
                 $this->telemetryInfo(),
-                $this->export($value),
-                $constraint->toString(),
+                Exporter::export($value, $this->exportObjects),
+                $constraint->toString($this->exportObjects),
                 $constraint->count(),
                 $message,
             ),
@@ -620,7 +618,7 @@ final class DispatchingEmitter implements Emitter
             new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
-                $this->export($constructorArguments),
+                Exporter::export($constructorArguments, $this->exportObjects),
             ),
         );
     }
@@ -1175,33 +1173,5 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $current;
 
         return $info;
-    }
-
-    private function export(mixed $value): string
-    {
-        if ($this->isScalarOrArrayOfScalars($value) || $this->exportObjects) {
-            return (new Exporter)->export($value);
-        }
-
-        return '{enable export of objects to see this value}';
-    }
-
-    private function isScalarOrArrayOfScalars(mixed $value): bool
-    {
-        if (is_scalar($value)) {
-            return true;
-        }
-
-        if (!is_array($value)) {
-            return false;
-        }
-
-        foreach ($value as $_value) {
-            if (!$this->isScalarOrArrayOfScalars($_value)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

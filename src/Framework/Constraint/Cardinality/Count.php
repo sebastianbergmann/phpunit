@@ -33,7 +33,7 @@ class Count extends Constraint
         $this->expectedCount = $expected;
     }
 
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return sprintf(
             'count matches %d',

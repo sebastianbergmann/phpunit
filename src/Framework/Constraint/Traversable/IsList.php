@@ -20,7 +20,7 @@ final class IsList extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return 'is a list';
     }
@@ -46,6 +46,6 @@ final class IsList extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        return $this->valueToTypeStringFragment($other) . $this->toString();
+        return $this->valueToTypeStringFragment($other) . $this->toString(true);
     }
 }

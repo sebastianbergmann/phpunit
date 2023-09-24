@@ -14,17 +14,14 @@ use function sprintf;
 use function strtolower;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Constraint implements Countable, SelfDescribing
+abstract class Constraint implements Countable
 {
-    private ?Exporter $exporter = null;
-
     /**
      * Evaluates the constraint for parameter $other.
      *
@@ -64,13 +61,14 @@ abstract class Constraint implements Countable, SelfDescribing
         return 1;
     }
 
-    protected function exporter(): Exporter
-    {
-        if ($this->exporter === null) {
-            $this->exporter = new Exporter;
-        }
+    abstract public function toString(bool $exportObjects = false): string;
 
-        return $this->exporter;
+    /**
+     * @deprecated
+     */
+    protected function exporter(): \SebastianBergmann\Exporter\Exporter
+    {
+        return new \SebastianBergmann\Exporter\Exporter;
     }
 
     /**
@@ -134,7 +132,7 @@ abstract class Constraint implements Countable, SelfDescribing
      */
     protected function failureDescription(mixed $other): string
     {
-        return $this->exporter()->export($other) . ' ' . $this->toString();
+        return Exporter::export($other, true) . ' ' . $this->toString(true);
     }
 
     /**
@@ -174,7 +172,7 @@ abstract class Constraint implements Countable, SelfDescribing
             return '';
         }
 
-        return $this->exporter()->export($other) . ' ' . $string;
+        return Exporter::export($other, true) . ' ' . $string;
     }
 
     /**

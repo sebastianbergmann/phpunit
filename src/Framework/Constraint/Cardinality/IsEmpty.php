@@ -24,7 +24,7 @@ final class IsEmpty extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return 'is empty';
     }
@@ -60,7 +60,7 @@ final class IsEmpty extends Constraint
             '%s %s %s',
             str_starts_with($type, 'a') || str_starts_with($type, 'o') ? 'an' : 'a',
             $type,
-            $this->toString(),
+            $this->toString(true),
         );
     }
 }
