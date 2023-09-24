@@ -50,6 +50,11 @@ final class DispatchingEmitter implements Emitter
         $this->exportObjects = true;
     }
 
+    public function exportsObjects(): bool
+    {
+        return $this->exportObjects;
+    }
+
     /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException

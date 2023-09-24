@@ -82,7 +82,7 @@ final class Facade
     }
 
     /** @noinspection PhpUnused */
-    public function initForIsolation(HRTime $offset): CollectingDispatcher
+    public function initForIsolation(HRTime $offset, bool $exportObjects): CollectingDispatcher
     {
         $dispatcher = new CollectingDispatcher;
 
@@ -94,6 +94,10 @@ final class Facade
                 $this->garbageCollectorStatusProvider(),
             ),
         );
+
+        if ($exportObjects) {
+            $this->emitter->exportObjects();
+        }
 
         $this->sealed = true;
 

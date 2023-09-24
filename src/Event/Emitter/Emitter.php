@@ -23,6 +23,8 @@ interface Emitter
 {
     public function exportObjects(): void;
 
+    public function exportsObjects(): bool;
+
     public function applicationStarted(): void;
 
     public function testRunnerStarted(): void;
