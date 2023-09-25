@@ -319,6 +319,7 @@ EOT;
                     -2,
                 ),
             )[1];
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -326,5 +327,6 @@ EOT;
                 $e,
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 }

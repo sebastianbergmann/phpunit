@@ -939,6 +939,7 @@ final class Generator
 
             try {
                 return (new ReflectionClass($className))->newInstanceArgs($arguments);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new ReflectionException(
                     $e->getMessage(),
@@ -946,16 +947,19 @@ final class Generator
                     $e,
                 );
             }
+            // @codeCoverageIgnoreEnd
         }
 
         try {
             return (new ReflectionClass($className))->newInstanceWithoutConstructor();
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -976,6 +980,7 @@ final class Generator
 
                 try {
                     $proxyTarget = $class->newInstanceArgs($arguments);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new ReflectionException(
                         $e->getMessage(),
@@ -983,6 +988,7 @@ final class Generator
                         $e,
                     );
                 }
+                // @codeCoverageIgnoreEnd
             }
         }
 
@@ -998,6 +1004,7 @@ final class Generator
     {
         try {
             $class = new ReflectionClass($className);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -1005,6 +1012,7 @@ final class Generator
                 $e,
             );
         }
+        // @codeCoverageIgnoreEnd
 
         return $class;
     }
