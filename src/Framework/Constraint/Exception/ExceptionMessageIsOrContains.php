@@ -25,13 +25,13 @@ final class ExceptionMessageIsOrContains extends Constraint
         $this->expectedMessage = $expectedMessage;
     }
 
-    public function toString(bool $exportObjects = false): string
+    public function toString(): string
     {
         if ($this->expectedMessage === '') {
             return 'exception message is empty';
         }
 
-        return 'exception message contains ' . Exporter::export($this->expectedMessage, $exportObjects);
+        return 'exception message contains ' . Exporter::export($this->expectedMessage);
     }
 
     protected function matches(mixed $other): bool

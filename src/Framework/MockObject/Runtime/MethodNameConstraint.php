@@ -25,7 +25,7 @@ final class MethodNameConstraint extends Constraint
         $this->methodName = $methodName;
     }
 
-    public function toString(bool $exportObjects = false): string
+    public function toString(): string
     {
         return sprintf(
             'is "%s"',

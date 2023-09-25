@@ -14,13 +14,14 @@ use function sprintf;
 use function strtolower;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Constraint implements Countable
+abstract class Constraint implements Countable, SelfDescribing
 {
     /**
      * Evaluates the constraint for parameter $other.
@@ -60,8 +61,6 @@ abstract class Constraint implements Countable
     {
         return 1;
     }
-
-    abstract public function toString(bool $exportObjects = false): string;
 
     /**
      * @deprecated

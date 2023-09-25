@@ -19,7 +19,7 @@ final class IsNan extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(bool $exportObjects = false): string
+    public function toString(): string
     {
         return 'is nan';
     }

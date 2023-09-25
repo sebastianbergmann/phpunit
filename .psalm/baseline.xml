@@ -30,6 +30,12 @@
       <code>$message</code>
       <code>$message</code>
     </ArgumentTypeCoercion>
+    <TooManyArguments>
+      <code>toString</code>
+      <code>toString</code>
+      <code>toString</code>
+      <code>toString</code>
+    </TooManyArguments>
   </file>
   <file src="src/Event/Events/Test/HookMethod/AfterLastTestMethodFinished.php">
     <PropertyTypeCoercion>
@@ -168,6 +174,17 @@
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
   </file>
+  <file src="src/Framework/Constraint/Cardinality/IsEmpty.php">
+    <TooManyArguments>
+      <code>toString</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/Framework/Constraint/Constraint.php">
+    <TooManyArguments>
+      <code>toString</code>
+      <code>toString</code>
+    </TooManyArguments>
+  </file>
   <file src="src/Framework/Constraint/Exception/ExceptionMessageMatchesRegularExpression.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->regularExpression]]></code>
@@ -177,11 +194,18 @@
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
+    <TooManyArguments>
+      <code>toString</code>
+    </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Object/ObjectHasProperty.php">
     <MissingThrowsDocblock>
       <code>hasProperty</code>
     </MissingThrowsDocblock>
+    <TooManyArguments>
+      <code>toString</code>
+      <code>toString</code>
+    </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
     <PropertyTypeCoercion>
@@ -201,6 +225,11 @@
       <code><![CDATA[$this->pattern]]></code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Framework/Constraint/String/StringContains.php">
+    <TooManyArguments>
+      <code>toString</code>
+    </TooManyArguments>
+  </file>
   <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
     <ArgumentTypeCoercion>
       <code>$line</code>
@@ -209,10 +238,25 @@
             )]]></code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Framework/Constraint/Traversable/ArrayHasKey.php">
+    <TooManyArguments>
+      <code>toString</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/Framework/Constraint/Traversable/IsList.php">
+    <TooManyArguments>
+      <code>toString</code>
+    </TooManyArguments>
+  </file>
   <file src="src/Framework/Constraint/Traversable/TraversableContainsOnly.php">
     <ArgumentTypeCoercion>
       <code>$type</code>
     </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
+    <TooManyArguments>
+      <code>toString</code>
+    </TooManyArguments>
   </file>
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>

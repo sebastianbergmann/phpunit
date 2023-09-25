@@ -26,9 +26,9 @@ final class ExceptionMessageMatchesRegularExpression extends Constraint
         $this->regularExpression = $regularExpression;
     }
 
-    public function toString(bool $exportObjects = false): string
+    public function toString(): string
     {
-        return 'exception message matches ' . Exporter::export($this->regularExpression, $exportObjects);
+        return 'exception message matches ' . Exporter::export($this->regularExpression);
     }
 
     /**

@@ -29,9 +29,9 @@ final class ArrayHasKey extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(bool $exportObjects = false): string
+    public function toString(): string
     {
-        return 'has the key ' . Exporter::export($this->key, $exportObjects);
+        return 'has the key ' . Exporter::export($this->key);
     }
 
     /**

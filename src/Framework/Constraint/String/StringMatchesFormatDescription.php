@@ -31,7 +31,7 @@ final class StringMatchesFormatDescription extends Constraint
         $this->formatDescription = $formatDescription;
     }
 
-    public function toString(bool $exportObjects = false): string
+    public function toString(): string
     {
         return 'matches format description:' . PHP_EOL . $this->formatDescription;
     }
