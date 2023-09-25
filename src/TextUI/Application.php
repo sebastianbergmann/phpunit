@@ -250,54 +250,11 @@ final class Application
             EventFacade::emitter()->applicationFinished($shellExitCode);
 
             return $shellExitCode;
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             $this->exitWithCrashMessage($t);
         }
-    }
-
-    private function exitWithCrashMessage(Throwable $t): never
-    {
-        $message = $t->getMessage();
-
-        if (empty(trim($message))) {
-            $message = '(no message)';
-        }
-
-        printf(
-            '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s',
-            PHP_EOL,
-            PHP_EOL,
-            PHP_EOL,
-            PHP_EOL,
-            $message,
-        );
-
-        $first = true;
-
-        do {
-            printf(
-                '%s%s: %s:%d%s%s%s%s',
-                PHP_EOL,
-                $first ? 'Location' : 'Caused by',
-                $t->getFile(),
-                $t->getLine(),
-                PHP_EOL,
-                PHP_EOL,
-                $t->getTraceAsString(),
-                PHP_EOL,
-            );
-
-            $first = false;
-        } while ($t = $t->getPrevious());
-
-        exit(Result::CRASH);
-    }
-
-    private function exitWithErrorMessage(string $message): never
-    {
-        print Version::getVersionString() . PHP_EOL . PHP_EOL . $message . PHP_EOL;
-
-        exit(Result::EXCEPTION);
+        // @codeCoverageIgnoreEnd
     }
 
     private function execute(Command\Command $command): never
@@ -657,5 +614,53 @@ final class Application
         }
 
         return null;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function exitWithCrashMessage(Throwable $t): never
+    {
+        $message = $t->getMessage();
+
+        if (empty(trim($message))) {
+            $message = '(no message)';
+        }
+
+        printf(
+            '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s',
+            PHP_EOL,
+            PHP_EOL,
+            PHP_EOL,
+            PHP_EOL,
+            $message,
+        );
+
+        $first = true;
+
+        do {
+            printf(
+                '%s%s: %s:%d%s%s%s%s',
+                PHP_EOL,
+                $first ? 'Location' : 'Caused by',
+                $t->getFile(),
+                $t->getLine(),
+                PHP_EOL,
+                PHP_EOL,
+                $t->getTraceAsString(),
+                PHP_EOL,
+            );
+
+            $first = false;
+        } while ($t = $t->getPrevious());
+
+        exit(Result::CRASH);
+    }
+
+    private function exitWithErrorMessage(string $message): never
+    {
+        print Version::getVersionString() . PHP_EOL . PHP_EOL . $message . PHP_EOL;
+
+        exit(Result::EXCEPTION);
     }
 }
