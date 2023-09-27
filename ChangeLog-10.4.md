@@ -19,6 +19,7 @@ All notable changes of the PHPUnit 10.4 release series are documented in this fi
 * [#5515](https://github.com/sebastianbergmann/phpunit/issues/5515): The `Test\AssertionSucceeded` and `Test\AssertionFailed` events are always emitted again
 * [#5515](https://github.com/sebastianbergmann/phpunit/issues/5515): `--log-events-verbose-text` enables the export of non-scalar values for the `Test\AssertionSucceeded` and `Test\AssertionFailed` events
 * [#5524](https://github.com/sebastianbergmann/phpunit/issues/5524): Do not export data passed to test for PHPUnit\Event\Code\TestMethod value object by default
+* [#5526](https://github.com/sebastianbergmann/phpunit/issues/5526): Do not limit number of columns to 80 on non-interactive TTY
 * Exceptions thrown by third-party event subscribers are now reported as test runner warnings
 * The name of the top-level test suite that is created when a directory or file path is passed as an argument to the test runner is now `CLI Arguments`
 * Simplified the failure description for `assertInstanceOf()` and `assertNotInstanceOf()`
