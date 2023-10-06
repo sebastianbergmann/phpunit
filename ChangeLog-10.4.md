@@ -35,4 +35,4 @@ All notable changes of the PHPUnit 10.4 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::cliArgument()` and `PHPUnit\TextUI\Configuration\Configuration::hasCliArgument()`
 * `PHPUnit\Framework\Constraint\Constraint::exporter()`
 
-[10.4.0]: https://github.com/sebastianbergmann/phpunit/compare/10.3...main
+[10.4.0]: https://github.com/sebastianbergmann/phpunit/compare/10.3.5...10.4.0
