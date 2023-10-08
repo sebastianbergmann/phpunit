@@ -83,6 +83,10 @@ final class Generator
         '__clone'         => true,
         '__halt_compiler' => true,
     ];
+
+    /**
+     * @psalm-var array<non-empty-string, MockClass>
+     */
     private static array $cache = [];
 
     /**
