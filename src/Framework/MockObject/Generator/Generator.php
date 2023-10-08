@@ -391,6 +391,7 @@ final class Generator
 
         $key = md5(
             $type .
+            ($mockObject ? 'MockObject' : 'TestStub') .
             serialize($methods) .
             serialize($callOriginalClone) .
             serialize($cloneArguments) .
