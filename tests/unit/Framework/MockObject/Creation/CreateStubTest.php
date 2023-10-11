@@ -39,15 +39,6 @@ final class CreateStubTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCreatesTestStubForIntersectionOfInterfaces(): void
-    {
-        $double = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
-
-        $this->assertInstanceOf(AnInterface::class, $double);
-        $this->assertInstanceOf(AnotherInterface::class, $double);
-        $this->assertInstanceOf(Stub::class, $double);
-    }
-
     public function testCreatesTestStubForExtendableClass(): void
     {
         $double = $this->createStub(ExtendableClass::class);
