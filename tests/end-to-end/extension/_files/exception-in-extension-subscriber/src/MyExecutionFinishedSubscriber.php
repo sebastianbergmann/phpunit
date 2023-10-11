@@ -7,15 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Issue5219;
+namespace PHPUnit\TestFixture\Event\MyExtension;
 
-use PHPUnit\Event\Test\Prepared;
-use PHPUnit\Event\Test\PreparedSubscriber;
+use PHPUnit\Event\TestRunner\ExecutionFinished;
+use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber;
 use RuntimeException;
 
-final class TestPreparedSubscriber implements PreparedSubscriber
+final class MyExecutionFinishedSubscriber implements ExecutionFinishedSubscriber
 {
-    public function notify(Prepared $event): void
+    public function notify(ExecutionFinished $event): void
     {
         throw new RuntimeException('message');
     }

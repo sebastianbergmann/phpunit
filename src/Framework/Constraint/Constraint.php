@@ -15,16 +15,14 @@ use function strtolower;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract class Constraint implements Countable, SelfDescribing
 {
-    private ?Exporter $exporter = null;
-
     /**
      * Evaluates the constraint for parameter $other.
      *
@@ -64,13 +62,12 @@ abstract class Constraint implements Countable, SelfDescribing
         return 1;
     }
 
-    protected function exporter(): Exporter
+    /**
+     * @deprecated
+     */
+    protected function exporter(): \SebastianBergmann\Exporter\Exporter
     {
-        if ($this->exporter === null) {
-            $this->exporter = new Exporter;
-        }
-
-        return $this->exporter;
+        return new \SebastianBergmann\Exporter\Exporter;
     }
 
     /**
@@ -134,7 +131,7 @@ abstract class Constraint implements Countable, SelfDescribing
      */
     protected function failureDescription(mixed $other): string
     {
-        return $this->exporter()->export($other) . ' ' . $this->toString();
+        return Exporter::export($other, true) . ' ' . $this->toString(true);
     }
 
     /**
@@ -174,7 +171,7 @@ abstract class Constraint implements Countable, SelfDescribing
             return '';
         }
 
-        return $this->exporter()->export($other) . ' ' . $string;
+        return Exporter::export($other, true) . ' ' . $string;
     }
 
     /**

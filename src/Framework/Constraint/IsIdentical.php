@@ -14,6 +14,7 @@ use function is_object;
 use function is_string;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -66,8 +67,8 @@ final class IsIdentical extends Constraint
                 $f = new ComparisonFailure(
                     $this->value,
                     $other,
-                    $this->exporter()->export($this->value),
-                    $this->exporter()->export($other),
+                    Exporter::export($this->value, true),
+                    Exporter::export($other, true),
                 );
             }
 
@@ -80,14 +81,14 @@ final class IsIdentical extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         if (is_object($this->value)) {
             return 'is identical to an object of class "' .
                 $this->value::class . '"';
         }
 
-        return 'is identical to ' . $this->exporter()->export($this->value);
+        return 'is identical to ' . Exporter::export($this->value, $exportObjects);
     }
 
     /**

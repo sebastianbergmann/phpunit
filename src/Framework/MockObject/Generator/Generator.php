@@ -83,6 +83,10 @@ final class Generator
         '__clone'         => true,
         '__halt_compiler' => true,
     ];
+
+    /**
+     * @psalm-var array<non-empty-string, MockClass>
+     */
     private static array $cache = [];
 
     /**
@@ -391,6 +395,7 @@ final class Generator
 
         $key = md5(
             $type .
+            ($mockObject ? 'MockObject' : 'TestStub') .
             serialize($methods) .
             serialize($callOriginalClone) .
             serialize($cloneArguments) .
@@ -939,6 +944,7 @@ final class Generator
 
             try {
                 return (new ReflectionClass($className))->newInstanceArgs($arguments);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new ReflectionException(
                     $e->getMessage(),
@@ -946,16 +952,19 @@ final class Generator
                     $e,
                 );
             }
+            // @codeCoverageIgnoreEnd
         }
 
         try {
             return (new ReflectionClass($className))->newInstanceWithoutConstructor();
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -976,6 +985,7 @@ final class Generator
 
                 try {
                     $proxyTarget = $class->newInstanceArgs($arguments);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new ReflectionException(
                         $e->getMessage(),
@@ -983,6 +993,7 @@ final class Generator
                         $e,
                     );
                 }
+                // @codeCoverageIgnoreEnd
             }
         }
 
@@ -998,6 +1009,7 @@ final class Generator
     {
         try {
             $class = new ReflectionClass($className);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -1005,6 +1017,7 @@ final class Generator
                 $e,
             );
         }
+        // @codeCoverageIgnoreEnd
 
         return $class;
     }

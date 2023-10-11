@@ -199,12 +199,14 @@ final class MockBuilder
 
         try {
             $reflector = new ReflectionClass($this->type);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
+            // @codeCoverageIgnoreEnd
         }
 
         foreach ($methods as $method) {
@@ -241,12 +243,14 @@ final class MockBuilder
 
         try {
             $reflector = new ReflectionClass($this->type);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
                 $e,
             );
+            // @codeCoverageIgnoreEnd
         }
 
         foreach ($methods as $method) {

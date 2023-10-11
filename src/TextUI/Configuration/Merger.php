@@ -211,8 +211,6 @@ final class Merger
             $outputToStandardErrorStream = $xmlConfiguration->phpunit()->stderr();
         }
 
-        $maxNumberOfColumns = (new Console)->getNumberOfColumns();
-
         if ($cliConfiguration->hasColumns()) {
             $columns = $cliConfiguration->columns();
         } else {
@@ -220,7 +218,7 @@ final class Merger
         }
 
         if ($columns === 'max') {
-            $columns = $maxNumberOfColumns;
+            $columns = (new Console)->getNumberOfColumns();
         }
 
         if ($columns < 16) {
@@ -229,10 +227,6 @@ final class Merger
             EventFacade::emitter()->testRunnerTriggeredWarning(
                 'Less than 16 columns requested, number of columns set to 16',
             );
-        }
-
-        if ($columns > $maxNumberOfColumns) {
-            $columns = $maxNumberOfColumns;
         }
 
         assert(is_int($columns));

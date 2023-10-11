@@ -311,7 +311,7 @@ EOT,
     {
         $constraint = new IsEqualCanonicalizing($expected);
 
-        $this->assertStringMatchesFormat($constraintAsString, $constraint->toString());
+        $this->assertStringMatchesFormat($constraintAsString, $constraint->toString(true));
     }
 
     public function testIsCountable(): void

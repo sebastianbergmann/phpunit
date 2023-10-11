@@ -74,6 +74,6 @@ final class IsInstanceOf extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        return $this->valueToTypeStringFragment($other) . $this->toString();
+        return $this->valueToTypeStringFragment($other) . $this->toString(true);
     }
 }

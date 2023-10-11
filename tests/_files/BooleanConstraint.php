@@ -32,7 +32,7 @@ final class BooleanConstraint extends Constraint
         return $this->matches;
     }
 
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         if ($this->matches) {
             return 'true';

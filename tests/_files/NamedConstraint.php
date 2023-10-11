@@ -32,7 +32,7 @@ final class NamedConstraint extends Constraint
         return true;
     }
 
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return $this->name;
     }

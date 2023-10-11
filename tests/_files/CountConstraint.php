@@ -33,7 +33,7 @@ final class CountConstraint extends Constraint
         return true;
     }
 
-    public function toString(): string
+    public function toString(bool $exportObjects = false): string
     {
         return sprintf(
             'is accepted by %s',
