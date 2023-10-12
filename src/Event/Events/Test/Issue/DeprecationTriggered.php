@@ -41,13 +41,14 @@ final class DeprecationTriggered implements Event
     private readonly int $line;
     private readonly bool $suppressed;
     private readonly bool $ignoredByBaseline;
+    private readonly bool $ignoredByTest;
 
     /**
      * @psalm-param non-empty-string $message
      * @psalm-param non-empty-string $file
      * @psalm-param positive-int $line
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline)
+    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest)
     {
         $this->telemetryInfo     = $telemetryInfo;
         $this->test              = $test;
@@ -56,6 +57,7 @@ final class DeprecationTriggered implements Event
         $this->line              = $line;
         $this->suppressed        = $suppressed;
         $this->ignoredByBaseline = $ignoredByBaseline;
+        $this->ignoredByTest     = $ignoredByTest;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -102,6 +104,11 @@ final class DeprecationTriggered implements Event
         return $this->ignoredByBaseline;
     }
 
+    public function ignoredByTest(): bool
+    {
+        return $this->ignoredByTest;
+    }
+
     public function asString(): string
     {
         $message = $this->message;
@@ -112,7 +119,9 @@ final class DeprecationTriggered implements Event
 
         $status = '';
 
-        if ($this->ignoredByBaseline) {
+        if ($this->ignoredByTest) {
+            $status = 'Test-Ignored ';
+        } elseif ($this->ignoredByBaseline) {
             $status = 'Baseline-Ignored ';
         } elseif ($this->suppressed) {
             $status = 'Suppressed ';

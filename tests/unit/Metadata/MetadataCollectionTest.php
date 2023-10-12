@@ -283,6 +283,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isGroup());
     }
 
+    public function test_Can_be_filtered_for_IgnoreDeprecations(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnoreDeprecations();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnoreDeprecations());
+    }
+
     public function test_Can_be_filtered_for_IgnoreClassForCodeCoverage(): void
     {
         $collection = $this->collectionWithOneOfEach()->isIgnoreClassForCodeCoverage();
@@ -505,6 +513,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::excludeGlobalVariableFromBackupOnClass(''),
                 Metadata::excludeStaticPropertyFromBackupOnClass('', ''),
                 Metadata::groupOnClass(''),
+                Metadata::ignoreDeprecationsOnClass(),
                 Metadata::ignoreClassForCodeCoverage(''),
                 Metadata::ignoreMethodForCodeCoverage('', ''),
                 Metadata::ignoreFunctionForCodeCoverage(''),

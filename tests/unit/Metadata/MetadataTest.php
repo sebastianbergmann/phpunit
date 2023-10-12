@@ -33,6 +33,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(Group::class)]
+#[CoversClass(IgnoreDeprecations::class)]
 #[CoversClass(IgnoreClassForCodeCoverage::class)]
 #[CoversClass(IgnoreMethodForCodeCoverage::class)]
 #[CoversClass(IgnoreFunctionForCodeCoverage::class)]
@@ -84,6 +85,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -133,6 +135,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -182,6 +185,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -235,6 +239,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -288,6 +293,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -341,6 +347,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -394,6 +401,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -443,6 +451,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -492,6 +501,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -545,6 +555,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -598,6 +609,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -650,6 +662,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -701,6 +714,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -753,6 +767,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -805,6 +820,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -857,6 +873,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -909,6 +926,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -962,6 +980,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1016,6 +1035,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1068,6 +1088,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1120,6 +1141,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1173,6 +1195,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1226,6 +1249,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1280,6 +1304,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1334,6 +1359,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertTrue($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1365,6 +1391,106 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isMethodLevel());
     }
 
+    public function testCanBeIgnoreDeprecationsOnClass(): void
+    {
+        $metadata = Metadata::ignoreDeprecationsOnClass();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertTrue($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
+        $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
+        $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+    }
+
+    public function testCanBeIgnoreDeprecationsOnMethod(): void
+    {
+        $metadata = Metadata::ignoreDeprecationsOnMethod();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertTrue($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
+        $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
+        $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+    }
+
     public function testCanBeIgnoreClassForCodeCoverage(): void
     {
         $metadata = Metadata::ignoreClassForCodeCoverage('class');
@@ -1387,6 +1513,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertTrue($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1440,6 +1567,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertTrue($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1494,6 +1622,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertTrue($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1547,6 +1676,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertTrue($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1600,6 +1730,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1649,6 +1780,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1698,6 +1830,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1747,6 +1880,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1796,6 +1930,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1845,6 +1980,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1893,6 +2029,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1945,6 +2082,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -1998,6 +2136,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2052,6 +2191,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2106,6 +2246,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2159,6 +2300,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2212,6 +2354,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2265,6 +2408,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2318,6 +2462,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2371,6 +2516,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2429,6 +2575,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2488,6 +2635,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2542,6 +2690,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2606,6 +2755,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2662,6 +2812,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2726,6 +2877,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2787,6 +2939,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2846,6 +2999,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2900,6 +3054,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -2955,6 +3110,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3010,6 +3166,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3064,6 +3221,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3118,6 +3276,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3169,6 +3328,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3223,6 +3383,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3277,6 +3438,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3329,6 +3491,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3380,6 +3543,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());
@@ -3432,6 +3596,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnoreClassForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreMethodForCodeCoverage());
         $this->assertFalse($metadata->isIgnoreFunctionForCodeCoverage());

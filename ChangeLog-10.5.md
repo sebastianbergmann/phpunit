@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.0] - 2023-12-08
 
+### Added
+
+* [#5532](https://github.com/sebastianbergmann/phpunit/issues/5532): `#[IgnoreDeprecations]` attribute to ignore `E_(USER_)DEPRECATED` issues on test class and test method level
+
 [10.5.0]: https://github.com/sebastianbergmann/phpunit/compare/10.4...main

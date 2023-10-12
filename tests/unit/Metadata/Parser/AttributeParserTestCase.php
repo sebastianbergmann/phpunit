@@ -25,6 +25,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreCodeCoverageTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
@@ -153,6 +155,15 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertSame('medium', $metadata->asArray()[0]->groupName());
+    }
+
+    #[TestDox('Parses #[IgnoreDeprecations] attribute on class')]
+    public function test_parses_IgnoreDeprecations_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(IgnoreDeprecationsClassTest::class)->isIgnoreDeprecations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
     }
 
     #[TestDox('Parses #[IgnoreClassForCodeCoverage] attribute on class')]
@@ -649,6 +660,15 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertSame('another-group', $metadata->asArray()[0]->groupName());
+    }
+
+    #[TestDox('Parses #[IgnoreDeprecations] attribute on method')]
+    public function test_parses_IgnoreDeprecations_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(IgnoreDeprecationsMethodTest::class, 'testOne')->isIgnoreDeprecations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
     }
 
     #[TestDox('Parses #[PostCondition] attribute on method')]

@@ -50,13 +50,16 @@ final class ErrorHandler
             return false;
         }
 
+        $test = Event\Code\TestMethodBuilder::fromCallStack();
+
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
+        $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
 
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
                 Event\Facade::emitter()->testTriggeredPhpNotice(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -68,7 +71,7 @@ final class ErrorHandler
 
             case E_USER_NOTICE:
                 Event\Facade::emitter()->testTriggeredNotice(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -80,7 +83,7 @@ final class ErrorHandler
 
             case E_WARNING:
                 Event\Facade::emitter()->testTriggeredPhpWarning(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -92,7 +95,7 @@ final class ErrorHandler
 
             case E_USER_WARNING:
                 Event\Facade::emitter()->testTriggeredWarning(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -104,31 +107,33 @@ final class ErrorHandler
 
             case E_DEPRECATED:
                 Event\Facade::emitter()->testTriggeredPhpDeprecation(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
+                    $ignoredByTest,
                 );
 
                 break;
 
             case E_USER_DEPRECATED:
                 Event\Facade::emitter()->testTriggeredDeprecation(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
+                    $ignoredByTest,
                 );
 
                 break;
 
             case E_USER_ERROR:
                 Event\Facade::emitter()->testTriggeredError(
-                    Event\Code\TestMethodBuilder::fromCallStack(),
+                    $test,
                     $errorString,
                     $errorFile,
                     $errorLine,
