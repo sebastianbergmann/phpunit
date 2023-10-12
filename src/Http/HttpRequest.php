@@ -29,9 +29,9 @@ class HttpRequest extends AssertHttpResponse {
 
     public function __construct($domain, $options = [])
     {
-        $this->setCookies([]);
         $this->domain = $domain;
         $this->options = $options;
+        $this->setCookies([]);
     }
 
     /**
@@ -52,7 +52,7 @@ class HttpRequest extends AssertHttpResponse {
                 $this->options
             );
 
-            $this->response = $client->request($method, $this->domain.$uri, array_merge($data,[
+            $this->response = $client->request($method, $uri, array_merge($data,[
                 'cookies' => $jar
             ]));
 
