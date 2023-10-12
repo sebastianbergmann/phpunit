@@ -29,6 +29,8 @@
         "ext-mbstring": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/psr7": "^2.6",
         "myclabs/deep-copy": "^1.10.1",
         "phar-io/manifest": "^2.0.3",
         "phar-io/version": "^3.0.2",
