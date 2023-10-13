@@ -1104,7 +1104,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    protected function runTest(): mixed
+    final protected function runTest(): mixed
     {
         $testArguments = array_merge($this->data, $this->dependencyInput);
 
@@ -1136,7 +1136,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5214
      */
-    protected function iniSet(string $varName, string $newValue): void
+    final protected function iniSet(string $varName, string $newValue): void
     {
         $currentValue = ini_set($varName, $newValue);
 
@@ -1161,7 +1161,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5216
      */
-    protected function setLocale(mixed ...$arguments): void
+    final protected function setLocale(mixed ...$arguments): void
     {
         if (count($arguments) < 2) {
             throw new Exception;
@@ -1203,7 +1203,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      */
-    protected function createMock(string $originalClassName): MockObject
+    final protected function createMock(string $originalClassName): MockObject
     {
         $mock = (new MockGenerator)->testDouble(
             $originalClassName,
@@ -1229,7 +1229,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      */
-    protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
+    final protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
     {
         $mock = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces, true);
 
@@ -1253,7 +1253,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      */
-    protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
+    final protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
         $o = $this->createMock($originalClassName);
 
@@ -1278,7 +1278,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
      */
-    protected function createPartialMock(string $originalClassName, array $methods): MockObject
+    final protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
         $partialMock = $this->getMockBuilder($originalClassName)
             ->disableOriginalConstructor()
@@ -1310,7 +1310,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
-    protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
+    final protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
         $testProxy = $this->getMockBuilder($originalClassName)
             ->setConstructorArgs($constructorArguments)
@@ -1341,7 +1341,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
      */
-    protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
+    final protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
         $mockObject = (new MockGenerator)->mockObjectForAbstractClass(
             $originalClassName,
@@ -1371,7 +1371,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5242
      */
-    protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
+    final protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
         if ($originalClassName === '') {
             $fileName          = pathinfo(basename(parse_url($wsdlFile, PHP_URL_PATH)), PATHINFO_FILENAME);
@@ -1428,7 +1428,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
      */
-    protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
+    final protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
         $mockObject = (new MockGenerator)->mockObjectForTrait(
             $traitName,
@@ -1457,7 +1457,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5244
      */
-    protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
+    final protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
         return (new MockGenerator)->objectForTrait(
             $traitName,
@@ -2235,7 +2235,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      */
-    protected static function createStub(string $originalClassName): Stub
+    final protected static function createStub(string $originalClassName): Stub
     {
         $stub = (new MockGenerator)->testDouble(
             $originalClassName,
@@ -2259,7 +2259,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      */
-    protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
+    final protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
     {
         $stub = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces, false);
 
