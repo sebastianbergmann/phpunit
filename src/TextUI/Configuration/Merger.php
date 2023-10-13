@@ -669,23 +669,13 @@ final class Merger
             }
         }
 
-        if ($xmlConfiguration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-            foreach ($xmlConfiguration->codeCoverage()->directories() as $directory) {
-                $sourceIncludeDirectories[] = $directory;
-            }
-
-            $sourceIncludeFiles       = $xmlConfiguration->codeCoverage()->files();
-            $sourceExcludeDirectories = $xmlConfiguration->codeCoverage()->excludeDirectories();
-            $sourceExcludeFiles       = $xmlConfiguration->codeCoverage()->excludeFiles();
-        } else {
-            foreach ($xmlConfiguration->source()->includeDirectories() as $directory) {
-                $sourceIncludeDirectories[] = $directory;
-            }
-
-            $sourceIncludeFiles       = $xmlConfiguration->source()->includeFiles();
-            $sourceExcludeDirectories = $xmlConfiguration->source()->excludeDirectories();
-            $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
+        foreach ($xmlConfiguration->source()->includeDirectories() as $directory) {
+            $sourceIncludeDirectories[] = $directory;
         }
+
+        $sourceIncludeFiles       = $xmlConfiguration->source()->includeFiles();
+        $sourceExcludeDirectories = $xmlConfiguration->source()->excludeDirectories();
+        $sourceExcludeFiles       = $xmlConfiguration->source()->excludeFiles();
 
         $useBaseline      = null;
         $generateBaseline = null;

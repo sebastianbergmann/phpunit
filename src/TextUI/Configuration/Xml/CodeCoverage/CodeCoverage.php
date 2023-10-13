@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage;
 
-use function count;
-use PHPUnit\TextUI\Configuration\FileCollection;
-use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Cobertura;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Crap4j;
@@ -28,10 +25,6 @@ use PHPUnit\TextUI\XmlConfiguration\Exception;
  */
 final class CodeCoverage
 {
-    private readonly FilterDirectoryCollection $directories;
-    private readonly FileCollection $files;
-    private readonly FilterDirectoryCollection $excludeDirectories;
-    private readonly FileCollection $excludeFiles;
     private readonly bool $pathCoverage;
     private readonly bool $includeUncoveredFiles;
     private readonly bool $ignoreDeprecatedCodeUnits;
@@ -44,12 +37,8 @@ final class CodeCoverage
     private readonly ?Text $text;
     private readonly ?Xml $xml;
 
-    public function __construct(FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
-        $this->directories               = $directories;
-        $this->files                     = $files;
-        $this->excludeDirectories        = $excludeDirectories;
-        $this->excludeFiles              = $excludeFiles;
         $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
         $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
@@ -61,31 +50,6 @@ final class CodeCoverage
         $this->php                       = $php;
         $this->text                      = $text;
         $this->xml                       = $xml;
-    }
-
-    public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
-    {
-        return count($this->directories) > 0 || count($this->files) > 0;
-    }
-
-    public function directories(): FilterDirectoryCollection
-    {
-        return $this->directories;
-    }
-
-    public function files(): FileCollection
-    {
-        return $this->files;
-    }
-
-    public function excludeDirectories(): FilterDirectoryCollection
-    {
-        return $this->excludeDirectories;
-    }
-
-    public function excludeFiles(): FileCollection
-    {
-        return $this->excludeFiles;
     }
 
     public function pathCoverage(): bool

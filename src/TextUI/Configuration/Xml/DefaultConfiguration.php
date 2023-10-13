@@ -54,10 +54,6 @@ final class DefaultConfiguration extends Configuration
                 false,
             ),
             new CodeCoverage(
-                CodeCoverageFilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
-                CodeCoverageFilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
                 false,
                 true,
                 false,

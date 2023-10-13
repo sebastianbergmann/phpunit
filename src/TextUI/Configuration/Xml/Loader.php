@@ -445,10 +445,6 @@ final class Loader
         }
 
         return new CodeCoverage(
-            $this->readFilterDirectories($filename, $xpath, 'coverage/include/directory'),
-            $this->readFilterFiles($filename, $xpath, 'coverage/include/file'),
-            $this->readFilterDirectories($filename, $xpath, 'coverage/exclude/directory'),
-            $this->readFilterFiles($filename, $xpath, 'coverage/exclude/file'),
             $pathCoverage,
             $includeUncoveredFiles,
             $ignoreDeprecatedCodeUnits,
