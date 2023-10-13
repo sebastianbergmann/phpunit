@@ -1378,6 +1378,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'getMockFromWsdl() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         if ($originalClassName === '') {
             $fileName          = pathinfo(basename(parse_url($wsdlFile, PHP_URL_PATH)), PATHINFO_FILENAME);
             $originalClassName = preg_replace('/\W/', '', $fileName);
