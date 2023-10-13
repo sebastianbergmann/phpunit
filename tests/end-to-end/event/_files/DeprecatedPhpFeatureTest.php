@@ -9,15 +9,14 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
-use function defined;
 use PHPUnit\Framework\TestCase;
 
 final class DeprecatedPhpFeatureTest extends TestCase
 {
     public function testDeprecatedPhpFeature(): void
     {
-        defined(null);
-        @defined(null);
+        @$this->foo = 'bar';
+        $this->bar = 'foo';
 
         $this->assertTrue(true);
     }
