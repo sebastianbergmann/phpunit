@@ -566,7 +566,7 @@ abstract class AssertHttpResponse extends Assert {
      * Assert that the response JSON has the expected count of items at the given key.
      *
      * @param  int  $count
-     * @param  string|null  $key
+     * @param  Countable|iterable  $key
      * @return $this
      */
     public function assertJsonCount(int $count, $key = null)
@@ -621,21 +621,19 @@ abstract class AssertHttpResponse extends Assert {
     /**
      * Validate and return the decoded response JSON.
      *
-     * @return \Illuminate\Testing\AssertableJsonString
+     * @return self
      *
      * @throws \Throwable
      */
     public function decodeResponseJson()
     {
-        $testJson = json_decode($this->getContent());
-
-        $decodedResponse = $testJson->json();
+        $decodedResponse = json_decode($this->getContent());
 
         if (is_null($decodedResponse) || $decodedResponse === false) {
             $this->fail('Invalid JSON was returned from the route.');
         }
 
-        return $testJson;
+        return $this;
     }
 
     /**

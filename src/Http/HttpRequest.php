@@ -13,7 +13,6 @@ namespace PHPUnit\Http;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use Illuminate\Testing\TestResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -41,9 +40,9 @@ class HttpRequest extends AssertHttpResponse {
      * @param array $data
      * @param array $cookies
      * 
-     * @return TestResponse
+     * @return self
      */
-    private function invoke(string $method, string $uri, array $data = []): TestResponse
+    private function invoke(string $method, string $uri, array $data = []): self
     {
          $jar = $this->cookies;
 
@@ -59,12 +58,12 @@ class HttpRequest extends AssertHttpResponse {
             $this->statusCode = $this->response->getStatusCode();
             $this->headers = $this->response->getHeaders();
 
-            return new TestResponse($this);
+            return $this;
             
         } catch (\Throwable $e) {
 
             $this->statusCode = $e->getCode();
-            return new TestResponse($this);
+            return $this;
         }
     }
 
@@ -72,9 +71,9 @@ class HttpRequest extends AssertHttpResponse {
      * send GET request
      * @param string $uri
      * 
-     * @return TestResponse
+     * @return self
      */
-    public function get(string $uri): TestResponse
+    public function get(string $uri)
     {
         return $this->invoke("GET", $this->domain.$uri);
     }
@@ -84,9 +83,9 @@ class HttpRequest extends AssertHttpResponse {
      * @param string $uri
      * @param array $data
      * 
-     * @return TestResponse
+     * @return self
      */
-    public function post(string $uri, array $data, array $headers): TestResponse
+    public function post(string $uri, array $data, array $headers)
     {
         return $this->invoke("POST", $this->domain.$uri, [
             'body' => $data,
@@ -99,9 +98,9 @@ class HttpRequest extends AssertHttpResponse {
      * @param string $uri
      * @param array $data to send
      * 
-     * @return TestResponse
+     * @return self
      */
-    public function put(string $uri, array $data, array $headers): TestResponse
+    public function put(string $uri, array $data, array $headers)
     {
         return $this->invoke("PUT", $this->domain.$uri, [
             'body' => $data,
@@ -113,9 +112,9 @@ class HttpRequest extends AssertHttpResponse {
      * send DELETE request
      * @param string $uri
      * 
-     * @return TestResponse
+     * @return self
      */
-    public function delete(string $uri, array $headers): TestResponse
+    public function delete(string $uri, array $headers)
     {
         return $this->invoke("DELETE", $this->domain.$uri, [
             'headers' => $headers
@@ -126,9 +125,9 @@ class HttpRequest extends AssertHttpResponse {
      * send OPTION request
      * @param string $uri
      * 
-     * @return TestResponse
+     * @return self
      */
-    public function option(string $uri, array $headers): TestResponse
+    public function option(string $uri, array $headers)
     {
         return $this->invoke("OPTION", $this->domain.$uri, [
             'headers' => $headers
@@ -139,9 +138,9 @@ class HttpRequest extends AssertHttpResponse {
      * send PATCH request
      * @param string $uri
      * 
-     * @return TestResponse
+     * @return self
      */
-    public function patch(string $uri, array $headers): TestResponse
+    public function patch(string $uri, array $headers)
     {
         return $this->invoke("PATCH", $this->domain.$uri, [
             'headers' => $headers
