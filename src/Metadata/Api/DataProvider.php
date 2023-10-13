@@ -263,31 +263,4 @@ final class DataProvider
 
         return $data;
     }
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     *
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
-    private function valueObjectForTestMethodWithoutTestData(string $className, string $methodName): TestMethod
-    {
-        $location = Reflection::sourceLocationFor($className, $methodName);
-
-        return new TestMethod(
-            $className,
-            $methodName,
-            $location['file'],
-            $location['line'],
-            Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                $className,
-                $methodName,
-            ),
-            MetadataRegistry::parser()->forClassAndMethod(
-                $className,
-                $methodName,
-            ),
-            TestDataCollection::fromArray([]),
-        );
-    }
 }
