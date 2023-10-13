@@ -2132,7 +2132,7 @@ abstract class Assert
 
     final public static function equalTo(mixed $value): IsEqual
     {
-        return new IsEqual($value, 0.0, false, false);
+        return new IsEqual($value);
     }
 
     final public static function equalToCanonicalizing(mixed $value): IsEqualCanonicalizing
