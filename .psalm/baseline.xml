@@ -126,9 +126,6 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Test/TestData/TestDataCollection.php">
-    <ArgumentTypeCoercion>
-      <code>$data</code>
-    </ArgumentTypeCoercion>
     <PropertyTypeCoercion>
       <code>$data</code>
     </PropertyTypeCoercion>
@@ -382,11 +379,6 @@
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>getMethod</code>
-      <code>valueObjectForEvents</code>
-      <code>valueObjectForEvents</code>
-      <code>valueObjectForEvents</code>
-      <code>valueObjectForEvents</code>
-      <code>valueObjectForEvents</code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
       <code>$outputBufferingLevel</code>

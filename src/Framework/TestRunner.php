@@ -25,7 +25,6 @@ use function var_export;
 use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -61,7 +60,6 @@ final class TestRunner
      * @throws \PHPUnit\Runner\Exception
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws CodeCoverageException
-     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoDataSetFromDataProviderException
      * @throws UnintentionallyCoveredCodeException
      */
@@ -247,7 +245,6 @@ final class TestRunner
      * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
-     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
      * @throws StaticAnalysisCacheNotConfiguredException

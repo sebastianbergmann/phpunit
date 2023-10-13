@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Code;
 
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Logging\TestDox\NamePrettifier;
 
@@ -18,9 +17,6 @@ use PHPUnit\Logging\TestDox\NamePrettifier;
  */
 final class TestDoxBuilder
 {
-    /**
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
     public static function fromTestCase(TestCase $testCase): TestDox
     {
         $prettifier = new NamePrettifier;
