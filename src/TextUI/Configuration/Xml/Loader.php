@@ -753,16 +753,12 @@ final class Loader
 
         if ($document->documentElement->hasAttribute('requireCoverageMetadata')) {
             $requireCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'requireCoverageMetadata', false);
-        } elseif ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
-            $requireCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'forceCoversAnnotation', false);
         }
 
         $beStrictAboutCoverageMetadata = false;
 
         if ($document->documentElement->hasAttribute('beStrictAboutCoverageMetadata')) {
             $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoverageMetadata', false);
-        } elseif ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
-            $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoversAnnotation', false);
         }
 
         return new PHPUnit(

@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 * [#4600](https://github.com/sebastianbergmann/phpunit/issues/4600): Support for old cache configuration
 * [#4604](https://github.com/sebastianbergmann/phpunit/issues/4604): Support for `backupStaticAttributes` attribute in XML configuration file
+* [#4779](https://github.com/sebastianbergmann/phpunit/issues/4779): Support for `forceCoversAnnotation` and `beStrictAboutCoversAnnotation` attributes in XML configuration file
 * [#5100](https://github.com/sebastianbergmann/phpunit/issues/5100): Support for non-static data provider methods, non-public data provider methods, and data provider methods that declare parameters
 * [#5101](https://github.com/sebastianbergmann/phpunit/issues/5101): PHP 8.1 is no longer supported
 
