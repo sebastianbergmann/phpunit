@@ -6,13 +6,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 ### Writing Tests
 
-#### Assertions, Constraints, and Expectations
-
-| Issue                                                             | Description                                    | Since  | Replacement |
-|-------------------------------------------------------------------|------------------------------------------------|--------|-------------|
-| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormat()`     | 10.4.0 |             |
-| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormatFile()` | 10.4.0 |             |
-
 #### Test Double API
 
 | Issue                                                             | Description                                       | Since  | Replacement                                                                             |
@@ -83,7 +76,9 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 ### Writing Tests
 
-#### Miscellaneous
+#### Assertions, Constraints, and Expectations
 
-| Issue                                                             | Description                                                                                                                       | Since  | Replacement |
-|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------|-------------|
+| Issue                                                             | Description                                    | Since  | Replacement |
+|-------------------------------------------------------------------|------------------------------------------------|--------|-------------|
+| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormat()`     | 10.4.0 |             |
+| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormatFile()` | 10.4.0 |             |

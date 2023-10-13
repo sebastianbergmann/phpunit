@@ -9,6 +9,10 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5213](https://github.com/sebastianbergmann/phpunit/issues/5213): Make `TestCase` methods `protected` that should have been `protected` all along
 * [#5254](https://github.com/sebastianbergmann/phpunit/issues/5254): Make `TestCase` methods `final` that should have been `final` all along
 
+### Deprecated
+
+* [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472): `assertStringNotMatchesFormat()` and `assertStringNotMatchesFormatFile()` (these methods were already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
+
 ### Removed
 
 * [#4600](https://github.com/sebastianbergmann/phpunit/issues/4600): Support for old cache configuration

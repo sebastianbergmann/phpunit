@@ -36,6 +36,7 @@ use DateTimeZone;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Author;
 use PHPUnit\TestFixture\Book;
@@ -1224,6 +1225,7 @@ XML;
         $this->assertStringMatchesFormat('*%s*', '**');
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testAssertStringNotMatchesFormat(): void
     {
         $this->assertStringNotMatchesFormat('*%s*', '**');
@@ -1561,6 +1563,7 @@ XML;
         $this->assertStringMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "BAR\n");
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testAssertStringNotMatchesFormatFile(): void
     {
         $this->assertStringNotMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "BAR\n");
