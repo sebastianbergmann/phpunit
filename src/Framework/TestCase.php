@@ -1312,6 +1312,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'createTestProxy() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $testProxy = $this->getMockBuilder($originalClassName)
             ->setConstructorArgs($constructorArguments)
             ->enableProxyingToOriginalMethods()

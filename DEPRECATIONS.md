@@ -10,7 +10,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                                       | Since  | Replacement                                                                             |
 |-------------------------------------------------------------------|---------------------------------------------------|--------|-----------------------------------------------------------------------------------------|
-| [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240) | `TestCase::createTestProxy()`                     | 10.1.0 |                                                                                         |
 | [#5305](https://github.com/sebastianbergmann/phpunit/issues/5305) | `MockBuilder::getMockForAbstractClass()`          | 10.1.0 |                                                                                         |
 | [#5306](https://github.com/sebastianbergmann/phpunit/issues/5306) | `MockBuilder::getMockForTrait()`                  | 10.1.0 |                                                                                         |
 | [#5307](https://github.com/sebastianbergmann/phpunit/issues/5307) | `MockBuilder::disableProxyingToOriginalMethods()` | 10.1.0 |                                                                                         |
@@ -83,6 +82,7 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                           | Since  | Replacement |
 |-------------------------------------------------------------------|---------------------------------------|--------|-------------|
+| [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240) | `TestCase::createTestProxy()`         | 10.1.0 |             |
 | [#5241](https://github.com/sebastianbergmann/phpunit/issues/5241) | `TestCase::getMockForAbstractClass()` | 10.1.0 |             |
 | [#5242](https://github.com/sebastianbergmann/phpunit/issues/5242) | `TestCase::getMockFromWsdl()`         | 10.1.0 |             |
 | [#5243](https://github.com/sebastianbergmann/phpunit/issues/5243) | `TestCase::getMockForTrait()`         | 10.1.0 |             |
