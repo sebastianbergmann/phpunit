@@ -17,9 +17,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 <?xml version="1.0"?>
 <tests>
  <testCaseClass name="PHPUnit\TestFixture\DataProviderTest">
-  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#0" name="testAdd" groups="default" dataSet="#0"/>
-  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#1" name="testAdd" groups="default" dataSet="#1"/>
-  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#2" name="testAdd" groups="default" dataSet="#2"/>
-  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#3" name="testAdd" groups="default" dataSet="#3"/>
+  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#0" name="testAdd" groups="default"/>
+  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#1" name="testAdd" groups="default"/>
+  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#2" name="testAdd" groups="default"/>
+  <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#3" name="testAdd" groups="default"/>
  </testCaseClass>
 </tests>%A
