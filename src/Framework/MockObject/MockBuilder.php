@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use function array_merge;
 use function assert;
 use function trait_exists;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Generator\ClassAlreadyExistsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
@@ -235,6 +236,11 @@ final class MockBuilder
      */
     public function addMethods(array $methods): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::addMethods() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         if (empty($methods)) {
             $this->emptyMethodsArray = true;
 
