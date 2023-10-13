@@ -422,6 +422,13 @@ final class MockBuilder
      */
     public function enableProxyingToOriginalMethods(): self
     {
+        if (!$this->calledFromTestCase()) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->testCase->valueObjectForEvents(),
+                'MockBuilder::enableProxyingToOriginalMethods() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            );
+        }
+
         $this->callOriginalMethods = true;
 
         return $this;
@@ -436,6 +443,11 @@ final class MockBuilder
      */
     public function disableProxyingToOriginalMethods(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::disableProxyingToOriginalMethods() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->callOriginalMethods = false;
         $this->proxyTarget         = null;
 
@@ -451,6 +463,11 @@ final class MockBuilder
      */
     public function setProxyTarget(object $object): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::setProxyTarget() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->proxyTarget = $object;
 
         return $this;
