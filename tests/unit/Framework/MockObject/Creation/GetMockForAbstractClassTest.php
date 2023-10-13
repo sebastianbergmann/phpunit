@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -24,6 +25,7 @@ use ReflectionProperty;
 #[Medium]
 #[RequiresPhpExtension('soap')]
 #[TestDox('getMockForAbstractClass()')]
+#[IgnorePhpunitDeprecations]
 final class GetMockForAbstractClassTest extends TestCase
 {
     public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void

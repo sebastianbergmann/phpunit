@@ -1343,6 +1343,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $mockObject = (new MockGenerator)->mockObjectForAbstractClass(
             $originalClassName,
             $arguments,

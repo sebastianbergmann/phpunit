@@ -11,7 +11,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 | Issue                                                             | Description                                       | Since  | Replacement                                                                             |
 |-------------------------------------------------------------------|---------------------------------------------------|--------|-----------------------------------------------------------------------------------------|
 | [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240) | `TestCase::createTestProxy()`                     | 10.1.0 |                                                                                         |
-| [#5241](https://github.com/sebastianbergmann/phpunit/issues/5241) | `TestCase::getMockForAbstractClass()`             | 10.1.0 |                                                                                         |
 | [#5242](https://github.com/sebastianbergmann/phpunit/issues/5242) | `TestCase::getMockFromWsdl()`                     | 10.1.0 |                                                                                         |
 | [#5243](https://github.com/sebastianbergmann/phpunit/issues/5243) | `TestCase::getMockForTrait()`                     | 10.1.0 |                                                                                         |
 | [#5244](https://github.com/sebastianbergmann/phpunit/issues/5244) | `TestCase::getObjectForTrait()`                   | 10.1.0 |                                                                                         |
@@ -82,3 +81,9 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 |-------------------------------------------------------------------|------------------------------------------------|--------|-------------|
 | [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormat()`     | 10.4.0 |             |
 | [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormatFile()` | 10.4.0 |             |
+
+#### Test Double API
+
+| Issue                                                             | Description                                    | Since  | Replacement |
+|-------------------------------------------------------------------|------------------------------------------------|--------|-------------|
+| [#5241](https://github.com/sebastianbergmann/phpunit/issues/5241) | `TestCase::getMockForAbstractClass()`          | 10.1.0 |             |
