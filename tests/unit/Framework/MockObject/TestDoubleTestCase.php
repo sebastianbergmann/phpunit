@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
@@ -84,6 +85,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame($object, $double->doSomething($object));
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testCloningOfObjectsPassedAsArgumentCanBeEnabled(): void
     {
         $object = new stdClass;

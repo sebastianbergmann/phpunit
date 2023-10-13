@@ -382,6 +382,13 @@ final class MockBuilder
      */
     public function disableArgumentCloning(): self
     {
+        if (!$this->calledFromTestCase()) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->testCase->valueObjectForEvents(),
+                'MockBuilder::disableArgumentCloning() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            );
+        }
+
         $this->cloneArguments = false;
 
         return $this;
@@ -396,6 +403,11 @@ final class MockBuilder
      */
     public function enableArgumentCloning(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::enableArgumentCloning() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->cloneArguments = true;
 
         return $this;

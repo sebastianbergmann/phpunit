@@ -17,8 +17,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 | [#5307](https://github.com/sebastianbergmann/phpunit/issues/5307) | `MockBuilder::setProxyTarget()`                   | 10.1.0 |                                                                                         |
 | [#5309](https://github.com/sebastianbergmann/phpunit/issues/5309) | `MockBuilder::disableAutoload()`                  | 10.1.0 |                                                                                         |
 | [#5309](https://github.com/sebastianbergmann/phpunit/issues/5309) | `MockBuilder::enableAutoload()`                   | 10.1.0 |                                                                                         |
-| [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315) | `MockBuilder::disableArgumentCloning()`           | 10.1.0 |                                                                                         |
-| [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315) | `MockBuilder::enableArgumentCloning()`            | 10.1.0 |                                                                                         |
 | [#5421](https://github.com/sebastianbergmann/phpunit/issues/5421) | `MockBuilder::disableAutoReturnValueGeneration()` | 10.3.0 |                                                                                         |
 | [#5421](https://github.com/sebastianbergmann/phpunit/issues/5421) | `MockBuilder::enableAutoReturnValueGeneration()`  | 10.3.0 |                                                                                         |
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::onConsecutiveCalls()`                  | 10.3.0 | Use `$double->willReturn()` instead of `$double->will($this->onConsecutiveCalls())`     |
@@ -86,4 +84,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#5244](https://github.com/sebastianbergmann/phpunit/issues/5244) | `TestCase::getObjectForTrait()`              | 10.1.0 |             |
 | [#5308](https://github.com/sebastianbergmann/phpunit/issues/5308) | `MockBuilder::allowMockingUnknownTypes()`    | 10.1.0 |             |
 | [#5308](https://github.com/sebastianbergmann/phpunit/issues/5308) | `MockBuilder::disallowMockingUnknownTypes()` | 10.1.0 |             |
+| [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315) | `MockBuilder::disableArgumentCloning()`      | 10.1.0 |             |
+| [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315) | `MockBuilder::enableArgumentCloning()`       | 10.1.0 |             |
 | [#5320](https://github.com/sebastianbergmann/phpunit/issues/5320) | `MockBuilder::addMethods()`                  | 10.1.0 |             |
