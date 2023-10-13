@@ -18,7 +18,6 @@ use ArrayAccess;
 use Countable;
 use Generator;
 use PHPUnit\Event;
-use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -1618,13 +1617,10 @@ abstract class Assert
      */
     final public static function assertStringNotMatchesFormat(string $format, string $string, string $message = ''): void
     {
-        try {
-            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                Event\Code\TestMethodBuilder::fromCallStack(),
-                'assertStringNotMatchesFormat() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
-            );
-        } catch (NoTestCaseObjectOnCallStackException) {
-        }
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'assertStringNotMatchesFormat() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
 
         static::assertThat(
             $string,
@@ -1662,13 +1658,10 @@ abstract class Assert
      */
     final public static function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
     {
-        try {
-            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                Event\Code\TestMethodBuilder::fromCallStack(),
-                'assertStringNotMatchesFormatFile() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
-            );
-        } catch (NoTestCaseObjectOnCallStackException) {
-        }
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'assertStringNotMatchesFormatFile() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
 
         static::assertFileExists($formatFile, $message);
 

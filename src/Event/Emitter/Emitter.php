@@ -171,7 +171,7 @@ interface Emitter
 
     public function testSkipped(Code\Test $test, string $message): void;
 
-    public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void;
+    public function testTriggeredPhpunitDeprecation(?Code\Test $test, string $message): void;
 
     public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest): void;
 

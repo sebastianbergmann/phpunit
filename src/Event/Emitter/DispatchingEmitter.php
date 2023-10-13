@@ -12,7 +12,9 @@ namespace PHPUnit\Event;
 use function assert;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\DataProviderMethodCalled;
 use PHPUnit\Event\Test\DataProviderMethodFinished;
@@ -754,10 +756,15 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoTestCaseObjectOnCallStackException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void
+    public function testTriggeredPhpunitDeprecation(?Code\Test $test, string $message): void
     {
+        if ($test === null) {
+            $test = TestMethodBuilder::fromCallStack();
+        }
+
         if ($test->isTestMethod()) {
             assert($test instanceof TestMethod);
 
