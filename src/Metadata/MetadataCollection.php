@@ -301,6 +301,19 @@ final class MetadataCollection implements Countable, IteratorAggregate
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function isIgnorePhpunitDeprecations(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isIgnorePhpunitDeprecations(),
+            ),
+        );
+    }
+
+    /**
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5513
      */
     public function isIgnoreClassForCodeCoverage(): self

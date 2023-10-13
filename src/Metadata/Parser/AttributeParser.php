@@ -41,6 +41,7 @@ use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\IgnoreFunctionForCodeCoverage;
 use PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -175,6 +176,13 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof IgnoreDeprecations);
 
                     $result[] = Metadata::ignoreDeprecationsOnClass();
+
+                    break;
+
+                case IgnorePhpunitDeprecations::class:
+                    assert($attributeInstance instanceof IgnorePhpunitDeprecations);
+
+                    $result[] = Metadata::ignorePhpunitDeprecationsOnClass();
 
                     break;
 
@@ -494,6 +502,13 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof IgnoreDeprecations);
 
                     $result[] = Metadata::ignoreDeprecationsOnMethod();
+
+                    break;
+
+                case IgnorePhpunitDeprecations::class:
+                    assert($attributeInstance instanceof IgnorePhpunitDeprecations);
+
+                    $result[] = Metadata::ignorePhpunitDeprecationsOnMethod();
 
                     break;
 

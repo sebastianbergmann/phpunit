@@ -27,6 +27,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreCodeCoverageTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsClassTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
@@ -164,6 +166,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
+    }
+
+    #[TestDox('Parses #[IgnorePhpunitDeprecations] attribute on class')]
+    public function test_parses_IgnorePhpunitDeprecations_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(IgnorePhpunitDeprecationsClassTest::class)->isIgnorePhpunitDeprecations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnorePhpunitDeprecations());
     }
 
     #[TestDox('Parses #[IgnoreClassForCodeCoverage] attribute on class')]
@@ -669,6 +680,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
+    }
+
+    #[TestDox('Parses #[IgnorePhpunitDeprecations] attribute on method')]
+    public function test_parses_IgnorePhpunitDeprecations_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(IgnorePhpunitDeprecationsMethodTest::class, 'testOne')->isIgnorePhpunitDeprecations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnorePhpunitDeprecations());
     }
 
     #[TestDox('Parses #[PostCondition] attribute on method')]

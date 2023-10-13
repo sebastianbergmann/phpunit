@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Event;
 
+use function assert;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\DataProviderMethodCalled;
 use PHPUnit\Event\Test\DataProviderMethodFinished;
@@ -756,6 +758,14 @@ final class DispatchingEmitter implements Emitter
      */
     public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void
     {
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            if ($test->metadata()->isIgnorePhpunitDeprecations()->isNotEmpty()) {
+                return;
+            }
+        }
+
         $this->dispatcher->dispatch(
             new Test\PhpunitDeprecationTriggered(
                 $this->telemetryInfo(),

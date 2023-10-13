@@ -213,6 +213,22 @@ abstract class Metadata
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public static function ignorePhpunitDeprecationsOnClass(): IgnorePhpunitDeprecations
+    {
+        return new IgnorePhpunitDeprecations(self::CLASS_LEVEL);
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public static function ignorePhpunitDeprecationsOnMethod(): IgnorePhpunitDeprecations
+    {
+        return new IgnorePhpunitDeprecations(self::METHOD_LEVEL);
+    }
+
+    /**
      * @psalm-param class-string $className
      */
     public static function ignoreClassForCodeCoverage(string $className): IgnoreClassForCodeCoverage
@@ -629,6 +645,16 @@ abstract class Metadata
      * @psalm-assert-if-true IgnoreDeprecations $this
      */
     public function isIgnoreDeprecations(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true IgnorePhpunitDeprecations $this
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function isIgnorePhpunitDeprecations(): bool
     {
         return false;
     }

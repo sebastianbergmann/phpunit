@@ -30,6 +30,9 @@
       <code>$message</code>
       <code>$message</code>
     </ArgumentTypeCoercion>
+    <RedundantCondition>
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
     <TooManyArguments>
       <code>toString</code>
       <code>toString</code>
