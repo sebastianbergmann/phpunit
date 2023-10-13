@@ -1435,6 +1435,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'getMockForTrait() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $mockObject = (new MockGenerator)->mockObjectForTrait(
             $traitName,
             $arguments,

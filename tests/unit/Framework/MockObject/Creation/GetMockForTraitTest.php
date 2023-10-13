@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\UnknownTraitException;
@@ -21,6 +22,7 @@ use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 #[Group('test-doubles/mock-object')]
 #[Medium]
 #[TestDox('getMockForTrait()')]
+#[IgnorePhpunitDeprecations]
 final class GetMockForTraitTest extends TestCase
 {
     public function testCreatesMockObjectForTraitAndAllowsConfigurationOfAbstractMethods(): void
