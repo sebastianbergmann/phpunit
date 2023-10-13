@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_merge;
 use function assert;
+use function debug_backtrace;
 use function trait_exists;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -450,6 +451,11 @@ final class MockBuilder
      */
     public function allowMockingUnknownTypes(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::allowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->allowMockingUnknownTypes = true;
 
         return $this;
@@ -462,6 +468,13 @@ final class MockBuilder
      */
     public function disallowMockingUnknownTypes(): self
     {
+        if (!$this->calledFromTestCase()) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->testCase->valueObjectForEvents(),
+                'MockBuilder::disallowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            );
+        }
+
         $this->allowMockingUnknownTypes = false;
 
         return $this;
@@ -489,5 +502,12 @@ final class MockBuilder
         $this->returnValueGeneration = false;
 
         return $this;
+    }
+
+    private function calledFromTestCase(): bool
+    {
+        $caller = debug_backtrace(limit: 3)[2];
+
+        return isset($caller['class']) && $caller['class'] === TestCase::class;
     }
 }
