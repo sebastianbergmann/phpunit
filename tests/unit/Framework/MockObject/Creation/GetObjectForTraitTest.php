@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\UnknownTraitException;
@@ -20,6 +21,7 @@ use PHPUnit\TestFixture\MockObject\TraitWithConcreteMethod;
 #[Group('test-doubles/creation')]
 #[Medium]
 #[TestDox('getObjectForTrait()')]
+#[IgnorePhpunitDeprecations]
 final class GetObjectForTraitTest extends TestCase
 {
     public function testCreatesObjectForTrait(): void
