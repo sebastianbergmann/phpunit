@@ -382,6 +382,11 @@
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>getMethod</code>
+      <code>valueObjectForEvents</code>
+      <code>valueObjectForEvents</code>
+      <code>valueObjectForEvents</code>
+      <code>valueObjectForEvents</code>
+      <code>valueObjectForEvents</code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
       <code>$outputBufferingLevel</code>
