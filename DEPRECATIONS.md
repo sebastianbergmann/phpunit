@@ -87,4 +87,3 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                                                                                                                       | Since  | Replacement |
 |-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------|-------------|
-| [#5100](https://github.com/sebastianbergmann/phpunit/issues/5100) | Support for non-static data provider methods, non-public data provider methods, and data provider methods that declare parameters | 10.0.0 |             |
