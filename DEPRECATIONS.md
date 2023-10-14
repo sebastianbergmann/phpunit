@@ -22,7 +22,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 | Issue                                                             | Description                                                    | Since  | Replacement                                                        |
 |-------------------------------------------------------------------|----------------------------------------------------------------|--------|--------------------------------------------------------------------|
 | [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236) | `PHPUnit\Framework\Attributes\CodeCoverageIgnore()`            | 10.1.0 |                                                                    |
-| [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214) | `TestCase::iniSet()`                                           | 10.3.0 |                                                                    |
 | [#5216](https://github.com/sebastianbergmann/phpunit/issues/5216) | `TestCase::setLocale()`                                        | 10.3.0 |                                                                    |
 | [#5236](https://github.com/sebastianbergmann/phpunit/issues/5513) | `PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage()`    | 10.4.0 | Use `@codeCoverageIgnore` annotation in the class' doc-comment     |
 | [#5236](https://github.com/sebastianbergmann/phpunit/issues/5513) | `PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage()`   | 10.4.0 | Use `@codeCoverageIgnore` annotation in the method's doc-comment   |
@@ -87,3 +86,9 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#5320](https://github.com/sebastianbergmann/phpunit/issues/5320) | `MockBuilder::addMethods()`                       | 10.1.0 |             |
 | [#5421](https://github.com/sebastianbergmann/phpunit/issues/5421) | `MockBuilder::disableAutoReturnValueGeneration()` | 10.3.0 |             |
 | [#5421](https://github.com/sebastianbergmann/phpunit/issues/5421) | `MockBuilder::enableAutoReturnValueGeneration()`  | 10.3.0 |             |
+
+#### Miscellaneous
+
+| Issue                                                             | Description          | Since  | Replacement |
+|-------------------------------------------------------------------|----------------------|--------|-------------|
+| [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214) | `TestCase::iniSet()` | 10.3.0 |             |

@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ### Deprecated
 
+* [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214): `TestCase::iniSet()` (this method was already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 * [#5240](https://github.com/sebastianbergmann/phpunit/issues/5240): `TestCase::createTestProxy()` (this method was already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 * [#5241](https://github.com/sebastianbergmann/phpunit/issues/5241): `TestCase::getMockForAbstractClass()` (this method was already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 * [#5242](https://github.com/sebastianbergmann/phpunit/issues/5242): `TestCase::getMockFromWsdl()` (this method was already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)

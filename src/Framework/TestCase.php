@@ -1134,6 +1134,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function iniSet(string $varName, string $newValue): void
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'iniSet() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $currentValue = ini_set($varName, $newValue);
 
         if ($currentValue !== false) {
