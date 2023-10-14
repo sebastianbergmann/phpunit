@@ -130,6 +130,11 @@ final class MockBuilder
      */
     public function getMockForAbstractClass(): MockObject
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $object = $this->generator->mockObjectForAbstractClass(
             $this->type,
             $this->constructorArgs,
