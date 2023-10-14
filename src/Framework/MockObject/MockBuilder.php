@@ -364,6 +364,11 @@ final class MockBuilder
      */
     public function disableAutoload(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::disableAutoload() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->autoload = false;
 
         return $this;
@@ -378,6 +383,11 @@ final class MockBuilder
      */
     public function enableAutoload(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::enableAutoload() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->autoload = true;
 
         return $this;

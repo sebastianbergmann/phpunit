@@ -10,8 +10,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                                       | Since  | Replacement                                                                             |
 |-------------------------------------------------------------------|---------------------------------------------------|--------|-----------------------------------------------------------------------------------------|
-| [#5309](https://github.com/sebastianbergmann/phpunit/issues/5309) | `MockBuilder::disableAutoload()`                  | 10.1.0 |                                                                                         |
-| [#5309](https://github.com/sebastianbergmann/phpunit/issues/5309) | `MockBuilder::enableAutoload()`                   | 10.1.0 |                                                                                         |
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::onConsecutiveCalls()`                  | 10.3.0 | Use `$double->willReturn()` instead of `$double->will($this->onConsecutiveCalls())`     |
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::returnArgument()`                      | 10.3.0 | Use `$double->willReturnArgument()` instead of `$double->will($this->returnArgument())` |
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::returnCallback()`                      | 10.3.0 | Use `$double->willReturnCallback()` instead of `$double->will($this->returnCallback())` |
@@ -82,6 +80,8 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#5307](https://github.com/sebastianbergmann/phpunit/issues/5307) | `MockBuilder::setProxyTarget()`                   | 10.1.0 |             |
 | [#5308](https://github.com/sebastianbergmann/phpunit/issues/5308) | `MockBuilder::allowMockingUnknownTypes()`         | 10.1.0 |             |
 | [#5308](https://github.com/sebastianbergmann/phpunit/issues/5308) | `MockBuilder::disallowMockingUnknownTypes()`      | 10.1.0 |             |
+| [#5309](https://github.com/sebastianbergmann/phpunit/issues/5309) | `MockBuilder::disableAutoload()`                  | 10.1.0 |             |
+| [#5309](https://github.com/sebastianbergmann/phpunit/issues/5309) | `MockBuilder::enableAutoload()`                   | 10.1.0 |             |
 | [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315) | `MockBuilder::disableArgumentCloning()`           | 10.1.0 |             |
 | [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315) | `MockBuilder::enableArgumentCloning()`            | 10.1.0 |             |
 | [#5320](https://github.com/sebastianbergmann/phpunit/issues/5320) | `MockBuilder::addMethods()`                       | 10.1.0 |             |
