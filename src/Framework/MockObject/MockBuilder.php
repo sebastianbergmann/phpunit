@@ -166,6 +166,11 @@ final class MockBuilder
      */
     public function getMockForTrait(): MockObject
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::getMockForTrait() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         assert(trait_exists($this->type));
 
         $object = $this->generator->mockObjectForTrait(
