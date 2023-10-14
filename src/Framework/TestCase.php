@@ -1164,6 +1164,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function setLocale(mixed ...$arguments): void
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'setLocale() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         if (count($arguments) < 2) {
             throw new Exception;
         }
