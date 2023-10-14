@@ -228,31 +228,6 @@ abstract class Metadata
         return new IgnorePhpunitDeprecations(self::METHOD_LEVEL);
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function ignoreClassForCodeCoverage(string $className): IgnoreClassForCodeCoverage
-    {
-        return new IgnoreClassForCodeCoverage(self::CLASS_LEVEL, $className);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     */
-    public static function ignoreMethodForCodeCoverage(string $className, string $methodName): IgnoreMethodForCodeCoverage
-    {
-        return new IgnoreMethodForCodeCoverage(self::CLASS_LEVEL, $className, $methodName);
-    }
-
-    /**
-     * @psalm-param non-empty-string $functionName
-     */
-    public static function ignoreFunctionForCodeCoverage(string $functionName): IgnoreFunctionForCodeCoverage
-    {
-        return new IgnoreFunctionForCodeCoverage(self::CLASS_LEVEL, $functionName);
-    }
-
     public static function postCondition(): PostCondition
     {
         return new PostCondition(self::METHOD_LEVEL);
@@ -655,30 +630,6 @@ abstract class Metadata
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function isIgnorePhpunitDeprecations(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true IgnoreClassForCodeCoverage $this
-     */
-    public function isIgnoreClassForCodeCoverage(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true IgnoreMethodForCodeCoverage $this
-     */
-    public function isIgnoreMethodForCodeCoverage(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true IgnoreFunctionForCodeCoverage $this
-     */
-    public function isIgnoreFunctionForCodeCoverage(): bool
     {
         return false;
     }

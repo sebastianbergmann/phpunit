@@ -502,16 +502,6 @@
       <code>assert($metadata instanceof RequiresSetting)</code>
     </RedundantCondition>
   </file>
-  <file src="src/Metadata/Metadata.php">
-    <DeprecatedClass>
-      <code>IgnoreClassForCodeCoverage</code>
-      <code>IgnoreFunctionForCodeCoverage</code>
-      <code>IgnoreMethodForCodeCoverage</code>
-      <code>new IgnoreClassForCodeCoverage(self::CLASS_LEVEL, $className)</code>
-      <code>new IgnoreFunctionForCodeCoverage(self::CLASS_LEVEL, $functionName)</code>
-      <code>new IgnoreMethodForCodeCoverage(self::CLASS_LEVEL, $className, $methodName)</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Metadata/MetadataCollection.php">
     <PropertyTypeCoercion>
       <code>$metadata</code>
@@ -579,13 +569,6 @@
       <code>trim($tmp[0])</code>
       <code>trim($tmp[1])</code>
     </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Metadata/Parser/AttributeParser.php">
-    <DeprecatedClass>
-      <code>IgnoreClassForCodeCoverage::class</code>
-      <code>IgnoreFunctionForCodeCoverage::class</code>
-      <code>IgnoreMethodForCodeCoverage::class</code>
-    </DeprecatedClass>
   </file>
   <file src="src/Metadata/Version/Requirement.php">
     <ArgumentTypeCoercion>

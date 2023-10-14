@@ -78,8 +78,7 @@
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/Generator.php",
-            "tests/_files/NamespaceCoveredFunction.php",
-            "tests/end-to-end/code-coverage/ignore-function-using-attribute/src/CoveredFunction.php"
+            "tests/_files/NamespaceCoveredFunction.php"
         ]
     },
     "extra": {

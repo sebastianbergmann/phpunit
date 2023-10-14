@@ -15,7 +15,6 @@
         <testsuite name="end-to-end">
             <directory suffix=".phpt">tests/end-to-end/baseline</directory>
             <directory suffix=".phpt">tests/end-to-end/cli</directory>
-            <directory suffix=".phpt">tests/end-to-end/code-coverage</directory>
             <directory suffix=".phpt">tests/end-to-end/event</directory>
             <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
             <directory suffix=".phpt">tests/end-to-end/extension</directory>

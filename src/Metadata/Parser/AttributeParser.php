@@ -37,10 +37,7 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
-use PHPUnit\Framework\Attributes\IgnoreFunctionForCodeCoverage;
-use PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
@@ -165,13 +162,6 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case IgnoreClassForCodeCoverage::class:
-                    assert($attributeInstance instanceof IgnoreClassForCodeCoverage);
-
-                    $result[] = Metadata::ignoreClassForCodeCoverage($attributeInstance->className());
-
-                    break;
-
                 case IgnoreDeprecations::class:
                     assert($attributeInstance instanceof IgnoreDeprecations);
 
@@ -183,20 +173,6 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof IgnorePhpunitDeprecations);
 
                     $result[] = Metadata::ignorePhpunitDeprecationsOnClass();
-
-                    break;
-
-                case IgnoreMethodForCodeCoverage::class:
-                    assert($attributeInstance instanceof IgnoreMethodForCodeCoverage);
-
-                    $result[] = Metadata::ignoreMethodForCodeCoverage($attributeInstance->className(), $attributeInstance->methodName());
-
-                    break;
-
-                case IgnoreFunctionForCodeCoverage::class:
-                    assert($attributeInstance instanceof IgnoreFunctionForCodeCoverage);
-
-                    $result[] = Metadata::ignoreFunctionForCodeCoverage($attributeInstance->functionName());
 
                     break;
 

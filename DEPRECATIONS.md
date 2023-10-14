@@ -17,15 +17,6 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::returnValue()`                         | 10.3.0 | Use `$double->willReturn()` instead of `$double->will($this->returnValue())`            |
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::returnValueMap()`                      | 10.3.0 | Use `$double->willReturnMap()` instead of `$double->will($this->returnValueMap())`      |
 
-#### Miscellaneous
-
-| Issue                                                             | Description                                                    | Since  | Replacement                                                        |
-|-------------------------------------------------------------------|----------------------------------------------------------------|--------|--------------------------------------------------------------------|
-| [#5236](https://github.com/sebastianbergmann/phpunit/issues/5236) | `PHPUnit\Framework\Attributes\CodeCoverageIgnore()`            | 10.1.0 |                                                                    |
-| [#5236](https://github.com/sebastianbergmann/phpunit/issues/5513) | `PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage()`    | 10.4.0 | Use `@codeCoverageIgnore` annotation in the class' doc-comment     |
-| [#5236](https://github.com/sebastianbergmann/phpunit/issues/5513) | `PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage()`   | 10.4.0 | Use `@codeCoverageIgnore` annotation in the method's doc-comment   |
-| [#5236](https://github.com/sebastianbergmann/phpunit/issues/5513) | `PHPUnit\Framework\Attributes\IgnoreFunctionForCodeCoverage()` | 10.4.0 | Use `@codeCoverageIgnore` annotation in the function's doc-comment |
-
 ### Running Tests
 
 | Issue                                                             | Description                                                                                           | Since  | Replacement |
