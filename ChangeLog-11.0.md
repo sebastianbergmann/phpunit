@@ -26,6 +26,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5315](https://github.com/sebastianbergmann/phpunit/issues/5315): `MockBuilder::enableArgumentCloning()` and `MockBuilder::disableArgumentCloning()` (these methods were already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 * [#5320](https://github.com/sebastianbergmann/phpunit/issues/5320): `MockBuilder::addMethods()` (this method was already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 * [#5421](https://github.com/sebastianbergmann/phpunit/issues/5421): `MockBuilder::enableAutoReturnValueGeneration()` and `MockBuilder::disableAutoReturnValueGeneration()` (these methods were already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
+* [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423): `TestCase::returnValue()`, `TestCase::onConsecutiveCalls()`, `TestCase::returnValueMap()`, `TestCase::returnArgument()`, `TestCase::returnSelf()`, and `TestCase::returnCallback()` (these methods were already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 * [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472): `assertStringNotMatchesFormat()` and `assertStringNotMatchesFormatFile()` (these methods were already [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation) in PHPUnit 10)
 
 ### Removed

@@ -950,6 +950,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function returnValue(mixed $value): ReturnStub
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'returnValue() is deprecated and will be removed in PHPUnit 12. Use $double->willReturn() instead of $double->will($this->returnValue())',
+        );
+
         return new ReturnStub($value);
     }
 
@@ -959,6 +964,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function returnValueMap(array $valueMap): ReturnValueMapStub
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'returnValueMap() is deprecated and will be removed in PHPUnit 12. Use $double->willReturnMap() instead of $double->will($this->returnValueMap())',
+        );
+
         return new ReturnValueMapStub($valueMap);
     }
 
@@ -968,6 +978,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function returnArgument(int $argumentIndex): ReturnArgumentStub
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'returnArgument() is deprecated and will be removed in PHPUnit 12. Use $double->willReturnArgument() instead of $double->will($this->returnArgument())',
+        );
+
         return new ReturnArgumentStub($argumentIndex);
     }
 
@@ -977,6 +992,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function returnCallback(callable $callback): ReturnCallbackStub
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'returnCallback() is deprecated and will be removed in PHPUnit 12. Use $double->willReturnCallback() instead of $double->will($this->returnCallback())',
+        );
+
         return new ReturnCallbackStub($callback);
     }
 
@@ -986,6 +1006,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function returnSelf(): ReturnSelfStub
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'returnSelf() is deprecated and will be removed in PHPUnit 12. Use $double->willReturnSelf() instead of $double->will($this->returnSelf())',
+        );
+
         return new ReturnSelfStub;
     }
 
@@ -1001,6 +1026,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function onConsecutiveCalls(mixed ...$arguments): ConsecutiveCallsStub
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'onConsecutiveCalls() is deprecated and will be removed in PHPUnit 12. Use $double->willReturn() instead of $double->will($this->onConsecutiveCalls())',
+        );
+
         return new ConsecutiveCallsStub($arguments);
     }
 
