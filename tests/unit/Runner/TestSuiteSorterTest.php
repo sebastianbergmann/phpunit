@@ -140,14 +140,14 @@ final class TestSuiteSorterTest extends TestCase
     }
 
     /**
-     * A @dataprovider for basic execution reordering options based on MultiDependencyTest.
+     * A data provider for basic execution reordering options based on MultiDependencyTest.
      *
      * This class has the following relevant properties:
      *
-     * - it has five tests 'testOne' ... 'testFive'
-     * - 'testThree' @depends on both 'testOne' and 'testTwo'
-     * - 'testFour' @depends on 'MultiDependencyTest::testThree' to test FQN @depends
-     * - 'testFive' has no dependencies
+     * - it has five tests testOne, testTwo, testThree, testFour, testFive
+     * - testThree depends on testOne and testTwo
+     * - testFour depends on MultiDependencyTest::testThree
+     * - testFive has no dependencies
      */
     public static function commonSorterOptionsProvider(): array
     {
@@ -206,14 +206,14 @@ final class TestSuiteSorterTest extends TestCase
     }
 
     /**
-     * A @dataprovider for testing defects execution reordering options based on MultiDependencyTest.
+     * A data provider for testing defects execution reordering options based on MultiDependencyTest.
      *
      * This class has the following relevant properties:
      *
-     * - it has five tests 'testOne' ... 'testFive'
-     * - 'testThree' @depends on both 'testOne' and 'testTwo'
-     * - 'testFour' @depends on 'MultiDependencyTest::testThree' to test FQN @depends
-     * - 'testFive' has no dependencies
+     * - it has five tests testOne, testTwo, testThree, testFour, testFive
+     * - testThree depends on testOne and testTwo
+     * - testFour depends on MultiDependencyTest::testThree
+     * - testFive has no dependencies
      */
     public static function defectsSorterOptionsProvider(): array
     {
