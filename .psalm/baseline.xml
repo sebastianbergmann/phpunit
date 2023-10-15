@@ -469,6 +469,9 @@
     <PossiblyInvalidArgument>
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
+    <RedundantCast>
+      <code>(int) $matches[0][1]</code>
+    </RedundantCast>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition>
