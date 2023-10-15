@@ -18,12 +18,12 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class ExtensionLoadedFromPhar implements Event
+final readonly class ExtensionLoadedFromPhar implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly string $filename;
-    private readonly string $name;
-    private readonly string $version;
+    private Telemetry\Info $telemetryInfo;
+    private string $filename;
+    private string $name;
+    private string $version;
 
     public function __construct(Telemetry\Info $telemetryInfo, string $filename, string $name, string $version)
     {

@@ -17,16 +17,16 @@ use PHPUnit\Event\NoPreviousThrowableException;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Throwable
+final readonly class Throwable
 {
     /**
      * @psalm-var class-string
      */
-    private readonly string $className;
-    private readonly string $message;
-    private readonly string $description;
-    private readonly string $stackTrace;
-    private readonly ?Throwable $previous;
+    private string $className;
+    private string $message;
+    private string $description;
+    private string $stackTrace;
+    private ?Throwable $previous;
 
     /**
      * @psalm-param class-string $className

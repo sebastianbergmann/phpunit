@@ -14,10 +14,10 @@ namespace PHPUnit\TextUI\Configuration;
  *
  * @psalm-immutable
  */
-final class IniSetting
+final readonly class IniSetting
 {
-    private readonly string $name;
-    private readonly string $value;
+    private string $name;
+    private string $value;
 
     public function __construct(string $name, string $value)
     {

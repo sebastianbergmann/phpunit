@@ -14,10 +14,10 @@ use PHPUnit\Metadata\MetadataCollection;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ParserChain implements Parser
+final readonly class ParserChain implements Parser
 {
-    private readonly Parser $attributeReader;
-    private readonly Parser $annotationReader;
+    private Parser $attributeReader;
+    private Parser $annotationReader;
 
     public function __construct(Parser $attributeReader, Parser $annotationReader)
     {

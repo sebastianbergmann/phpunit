@@ -27,106 +27,106 @@ use PHPUnit\TestRunner\TestResult\Issues\Issue;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestResult
+final readonly class TestResult
 {
-    private readonly int $numberOfTests;
-    private readonly int $numberOfTestsRun;
-    private readonly int $numberOfAssertions;
+    private int $numberOfTests;
+    private int $numberOfTestsRun;
+    private int $numberOfAssertions;
 
     /**
      * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
      */
-    private readonly array $testErroredEvents;
+    private array $testErroredEvents;
 
     /**
      * @psalm-var list<Failed>
      */
-    private readonly array $testFailedEvents;
+    private array $testFailedEvents;
 
     /**
      * @psalm-var list<MarkedIncomplete>
      */
-    private readonly array $testMarkedIncompleteEvents;
+    private array $testMarkedIncompleteEvents;
 
     /**
      * @psalm-var list<TestSuiteSkipped>
      */
-    private readonly array $testSuiteSkippedEvents;
+    private array $testSuiteSkippedEvents;
 
     /**
      * @psalm-var list<TestSkipped>
      */
-    private readonly array $testSkippedEvents;
+    private array $testSkippedEvents;
 
     /**
      * @psalm-var array<string,list<ConsideredRisky>>
      */
-    private readonly array $testConsideredRiskyEvents;
+    private array $testConsideredRiskyEvents;
 
     /**
      * @psalm-var array<string,list<PhpunitDeprecationTriggered>>
      */
-    private readonly array $testTriggeredPhpunitDeprecationEvents;
+    private array $testTriggeredPhpunitDeprecationEvents;
 
     /**
      * @psalm-var array<string,list<PhpunitErrorTriggered>>
      */
-    private readonly array $testTriggeredPhpunitErrorEvents;
+    private array $testTriggeredPhpunitErrorEvents;
 
     /**
      * @psalm-var array<string,list<PhpunitWarningTriggered>>
      */
-    private readonly array $testTriggeredPhpunitWarningEvents;
+    private array $testTriggeredPhpunitWarningEvents;
 
     /**
      * @psalm-var list<TestRunnerDeprecationTriggered>
      */
-    private readonly array $testRunnerTriggeredDeprecationEvents;
+    private array $testRunnerTriggeredDeprecationEvents;
 
     /**
      * @psalm-var list<TestRunnerWarningTriggered>
      */
-    private readonly array $testRunnerTriggeredWarningEvents;
+    private array $testRunnerTriggeredWarningEvents;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $errors;
+    private array $errors;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $deprecations;
+    private array $deprecations;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $notices;
+    private array $notices;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $warnings;
+    private array $warnings;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $phpDeprecations;
+    private array $phpDeprecations;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $phpNotices;
+    private array $phpNotices;
 
     /**
      * @psalm-var list<Issue>
      */
-    private readonly array $phpWarnings;
+    private array $phpWarnings;
 
     /**
      * @psalm-var non-negative-int
      */
-    private readonly int $numberOfIssuesIgnoredByBaseline;
+    private int $numberOfIssuesIgnoredByBaseline;
 
     /**
      * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents

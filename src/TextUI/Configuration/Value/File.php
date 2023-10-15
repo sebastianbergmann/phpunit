@@ -14,12 +14,12 @@ namespace PHPUnit\TextUI\Configuration;
  *
  * @psalm-immutable
  */
-final class File
+final readonly class File
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $path;
+    private string $path;
 
     /**
      * @psalm-param non-empty-string $path

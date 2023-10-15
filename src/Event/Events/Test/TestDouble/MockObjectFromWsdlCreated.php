@@ -18,27 +18,27 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MockObjectFromWsdlCreated implements Event
+final readonly class MockObjectFromWsdlCreated implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly string $wsdlFile;
+    private Telemetry\Info $telemetryInfo;
+    private string $wsdlFile;
 
     /**
      * @psalm-var class-string
      */
-    private readonly string $originalClassName;
+    private string $originalClassName;
 
     /**
      * @psalm-var class-string
      */
-    private readonly string $mockClassName;
+    private string $mockClassName;
 
     /**
      * @psalm-var list<string>
      */
-    private readonly array $methods;
-    private readonly bool $callOriginalConstructor;
-    private readonly array $options;
+    private array $methods;
+    private bool $callOriginalConstructor;
+    private array $options;
 
     /**
      * @psalm-param class-string $originalClassName

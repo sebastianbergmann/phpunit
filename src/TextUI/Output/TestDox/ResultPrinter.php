@@ -30,10 +30,10 @@ use PHPUnit\Util\Color;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ResultPrinter
+final readonly class ResultPrinter
 {
-    private readonly Printer $printer;
-    private readonly bool $colors;
+    private Printer $printer;
+    private bool $colors;
 
     public function __construct(Printer $printer, bool $colors)
     {

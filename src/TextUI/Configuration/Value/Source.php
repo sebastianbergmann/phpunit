@@ -14,27 +14,27 @@ namespace PHPUnit\TextUI\Configuration;
  *
  * @psalm-immutable
  */
-final class Source
+final readonly class Source
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly ?string $baseline;
-    private readonly bool $ignoreBaseline;
-    private readonly FilterDirectoryCollection $includeDirectories;
-    private readonly FileCollection $includeFiles;
-    private readonly FilterDirectoryCollection $excludeDirectories;
-    private readonly FileCollection $excludeFiles;
-    private readonly bool $restrictDeprecations;
-    private readonly bool $restrictNotices;
-    private readonly bool $restrictWarnings;
-    private readonly bool $ignoreSuppressionOfDeprecations;
-    private readonly bool $ignoreSuppressionOfPhpDeprecations;
-    private readonly bool $ignoreSuppressionOfErrors;
-    private readonly bool $ignoreSuppressionOfNotices;
-    private readonly bool $ignoreSuppressionOfPhpNotices;
-    private readonly bool $ignoreSuppressionOfWarnings;
-    private readonly bool $ignoreSuppressionOfPhpWarnings;
+    private ?string $baseline;
+    private bool $ignoreBaseline;
+    private FilterDirectoryCollection $includeDirectories;
+    private FileCollection $includeFiles;
+    private FilterDirectoryCollection $excludeDirectories;
+    private FileCollection $excludeFiles;
+    private bool $restrictDeprecations;
+    private bool $restrictNotices;
+    private bool $restrictWarnings;
+    private bool $ignoreSuppressionOfDeprecations;
+    private bool $ignoreSuppressionOfPhpDeprecations;
+    private bool $ignoreSuppressionOfErrors;
+    private bool $ignoreSuppressionOfNotices;
+    private bool $ignoreSuppressionOfPhpNotices;
+    private bool $ignoreSuppressionOfWarnings;
+    private bool $ignoreSuppressionOfPhpWarnings;
 
     /**
      * @psalm-param non-empty-string $baseline

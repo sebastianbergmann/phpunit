@@ -16,19 +16,19 @@ use PHPUnit\Framework\MockObject\ConfigurableMethod;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MockClass implements MockType
+final readonly class MockClass implements MockType
 {
-    private readonly string $classCode;
+    private string $classCode;
 
     /**
      * @psalm-var class-string
      */
-    private readonly string $mockName;
+    private string $mockName;
 
     /**
      * @psalm-var list<ConfigurableMethod>
      */
-    private readonly array $configurableMethods;
+    private array $configurableMethods;
 
     /**
      * @psalm-param class-string $mockName

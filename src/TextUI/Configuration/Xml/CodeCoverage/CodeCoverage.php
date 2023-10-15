@@ -23,19 +23,19 @@ use PHPUnit\TextUI\XmlConfiguration\Exception;
  *
  * @psalm-immutable
  */
-final class CodeCoverage
+final readonly class CodeCoverage
 {
-    private readonly bool $pathCoverage;
-    private readonly bool $includeUncoveredFiles;
-    private readonly bool $ignoreDeprecatedCodeUnits;
-    private readonly bool $disableCodeCoverageIgnore;
-    private readonly ?Clover $clover;
-    private readonly ?Cobertura $cobertura;
-    private readonly ?Crap4j $crap4j;
-    private readonly ?Html $html;
-    private readonly ?Php $php;
-    private readonly ?Text $text;
-    private readonly ?Xml $xml;
+    private bool $pathCoverage;
+    private bool $includeUncoveredFiles;
+    private bool $ignoreDeprecatedCodeUnits;
+    private bool $disableCodeCoverageIgnore;
+    private ?Clover $clover;
+    private ?Cobertura $cobertura;
+    private ?Crap4j $crap4j;
+    private ?Html $html;
+    private ?Php $php;
+    private ?Text $text;
+    private ?Xml $xml;
 
     public function __construct(bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {

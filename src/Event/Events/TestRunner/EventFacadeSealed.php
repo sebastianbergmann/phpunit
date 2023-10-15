@@ -17,9 +17,9 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class EventFacadeSealed implements Event
+final readonly class EventFacadeSealed implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
+    private Telemetry\Info $telemetryInfo;
 
     public function __construct(Telemetry\Info $telemetryInfo)
     {

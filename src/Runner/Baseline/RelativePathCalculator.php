@@ -26,12 +26,12 @@ use function trim;
  *
  * @see Copied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
  */
-final class RelativePathCalculator
+final readonly class RelativePathCalculator
 {
     /**
      * @psalm-var non-empty-string $baselineDirectory
      */
-    private readonly string $baselineDirectory;
+    private string $baselineDirectory;
 
     /**
      * @psalm-param non-empty-string $baselineDirectory

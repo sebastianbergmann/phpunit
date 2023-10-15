@@ -14,13 +14,13 @@ use SebastianBergmann\Type\Type;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ConfigurableMethod
+final readonly class ConfigurableMethod
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $name;
-    private readonly Type $returnType;
+    private string $name;
+    private Type $returnType;
 
     /**
      * @psalm-param non-empty-string $name

@@ -19,17 +19,17 @@ use PHPUnit\Framework\TestStatus\TestStatus;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestResult
+final readonly class TestResult
 {
-    private readonly TestMethod $test;
-    private readonly Duration $duration;
-    private readonly TestStatus $status;
-    private readonly ?Throwable $throwable;
+    private TestMethod $test;
+    private Duration $duration;
+    private TestStatus $status;
+    private ?Throwable $throwable;
 
     /**
      * @psalm-var list<class-string|trait-string>
      */
-    private readonly array $testDoubles;
+    private array $testDoubles;
 
     /**
      * @psalm-param  list<class-string|trait-string> $testDoubles

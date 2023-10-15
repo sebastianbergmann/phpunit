@@ -22,10 +22,10 @@ use XMLWriter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ListTestsAsXmlCommand implements Command
+final readonly class ListTestsAsXmlCommand implements Command
 {
-    private readonly string $filename;
-    private readonly TestSuite $suite;
+    private string $filename;
+    private TestSuite $suite;
 
     public function __construct(string $filename, TestSuite $suite)
     {

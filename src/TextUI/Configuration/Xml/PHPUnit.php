@@ -14,63 +14,63 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  *
  * @psalm-immutable
  */
-final class PHPUnit
+final readonly class PHPUnit
 {
-    private readonly ?string $cacheDirectory;
-    private readonly bool $cacheResult;
-    private readonly int|string $columns;
-    private readonly string $colors;
-    private readonly bool $stderr;
-    private readonly bool $displayDetailsOnIncompleteTests;
-    private readonly bool $displayDetailsOnSkippedTests;
-    private readonly bool $displayDetailsOnTestsThatTriggerDeprecations;
-    private readonly bool $displayDetailsOnTestsThatTriggerErrors;
-    private readonly bool $displayDetailsOnTestsThatTriggerNotices;
-    private readonly bool $displayDetailsOnTestsThatTriggerWarnings;
-    private readonly bool $reverseDefectList;
-    private readonly bool $requireCoverageMetadata;
-    private readonly ?string $bootstrap;
-    private readonly bool $processIsolation;
-    private readonly bool $failOnDeprecation;
-    private readonly bool $failOnEmptyTestSuite;
-    private readonly bool $failOnIncomplete;
-    private readonly bool $failOnNotice;
-    private readonly bool $failOnRisky;
-    private readonly bool $failOnSkipped;
-    private readonly bool $failOnWarning;
-    private readonly bool $stopOnDefect;
-    private readonly bool $stopOnDeprecation;
-    private readonly bool $stopOnError;
-    private readonly bool $stopOnFailure;
-    private readonly bool $stopOnIncomplete;
-    private readonly bool $stopOnNotice;
-    private readonly bool $stopOnRisky;
-    private readonly bool $stopOnSkipped;
-    private readonly bool $stopOnWarning;
+    private ?string $cacheDirectory;
+    private bool $cacheResult;
+    private int|string $columns;
+    private string $colors;
+    private bool $stderr;
+    private bool $displayDetailsOnIncompleteTests;
+    private bool $displayDetailsOnSkippedTests;
+    private bool $displayDetailsOnTestsThatTriggerDeprecations;
+    private bool $displayDetailsOnTestsThatTriggerErrors;
+    private bool $displayDetailsOnTestsThatTriggerNotices;
+    private bool $displayDetailsOnTestsThatTriggerWarnings;
+    private bool $reverseDefectList;
+    private bool $requireCoverageMetadata;
+    private ?string $bootstrap;
+    private bool $processIsolation;
+    private bool $failOnDeprecation;
+    private bool $failOnEmptyTestSuite;
+    private bool $failOnIncomplete;
+    private bool $failOnNotice;
+    private bool $failOnRisky;
+    private bool $failOnSkipped;
+    private bool $failOnWarning;
+    private bool $stopOnDefect;
+    private bool $stopOnDeprecation;
+    private bool $stopOnError;
+    private bool $stopOnFailure;
+    private bool $stopOnIncomplete;
+    private bool $stopOnNotice;
+    private bool $stopOnRisky;
+    private bool $stopOnSkipped;
+    private bool $stopOnWarning;
 
     /**
      * @psalm-var ?non-empty-string
      */
-    private readonly ?string $extensionsDirectory;
-    private readonly bool $beStrictAboutChangesToGlobalState;
-    private readonly bool $beStrictAboutOutputDuringTests;
-    private readonly bool $beStrictAboutTestsThatDoNotTestAnything;
-    private readonly bool $beStrictAboutCoverageMetadata;
-    private readonly bool $enforceTimeLimit;
-    private readonly int $defaultTimeLimit;
-    private readonly int $timeoutForSmallTests;
-    private readonly int $timeoutForMediumTests;
-    private readonly int $timeoutForLargeTests;
-    private readonly ?string $defaultTestSuite;
-    private readonly int $executionOrder;
-    private readonly bool $resolveDependencies;
-    private readonly bool $defectsFirst;
-    private readonly bool $backupGlobals;
-    private readonly bool $backupStaticProperties;
-    private readonly bool $registerMockObjectsFromTestArgumentsRecursively;
-    private readonly bool $testdoxPrinter;
-    private readonly bool $controlGarbageCollector;
-    private readonly int $numberOfTestsBeforeGarbageCollection;
+    private ?string $extensionsDirectory;
+    private bool $beStrictAboutChangesToGlobalState;
+    private bool $beStrictAboutOutputDuringTests;
+    private bool $beStrictAboutTestsThatDoNotTestAnything;
+    private bool $beStrictAboutCoverageMetadata;
+    private bool $enforceTimeLimit;
+    private int $defaultTimeLimit;
+    private int $timeoutForSmallTests;
+    private int $timeoutForMediumTests;
+    private int $timeoutForLargeTests;
+    private ?string $defaultTestSuite;
+    private int $executionOrder;
+    private bool $resolveDependencies;
+    private bool $defectsFirst;
+    private bool $backupGlobals;
+    private bool $backupStaticProperties;
+    private bool $registerMockObjectsFromTestArgumentsRecursively;
+    private bool $testdoxPrinter;
+    private bool $controlGarbageCollector;
+    private int $numberOfTestsBeforeGarbageCollection;
 
     /**
      * @psalm-param ?non-empty-string $extensionsDirectory

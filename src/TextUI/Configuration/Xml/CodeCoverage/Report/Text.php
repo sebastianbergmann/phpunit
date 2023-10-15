@@ -16,11 +16,11 @@ use PHPUnit\TextUI\Configuration\File;
  *
  * @psalm-immutable
  */
-final class Text
+final readonly class Text
 {
-    private readonly File $target;
-    private readonly bool $showUncoveredFiles;
-    private readonly bool $showOnlySummary;
+    private File $target;
+    private bool $showUncoveredFiles;
+    private bool $showOnlySummary;
 
     public function __construct(File $target, bool $showUncoveredFiles, bool $showOnlySummary)
     {

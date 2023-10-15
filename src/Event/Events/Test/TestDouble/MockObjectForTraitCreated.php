@@ -18,14 +18,14 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MockObjectForTraitCreated implements Event
+final readonly class MockObjectForTraitCreated implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
+    private Telemetry\Info $telemetryInfo;
 
     /**
      * @psalm-var trait-string
      */
-    private readonly string $traitName;
+    private string $traitName;
 
     /**
      * @psalm-param trait-string $traitName

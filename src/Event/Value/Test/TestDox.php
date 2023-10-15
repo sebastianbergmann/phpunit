@@ -14,11 +14,11 @@ namespace PHPUnit\Event\Code;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class TestDox
+final readonly class TestDox
 {
-    private readonly string $prettifiedClassName;
-    private readonly string $prettifiedMethodName;
-    private readonly string $prettifiedAndColorizedMethodName;
+    private string $prettifiedClassName;
+    private string $prettifiedMethodName;
+    private string $prettifiedAndColorizedMethodName;
 
     public function __construct(string $prettifiedClassName, string $prettifiedMethodName, string $prettifiedAndColorizedMethodName)
     {

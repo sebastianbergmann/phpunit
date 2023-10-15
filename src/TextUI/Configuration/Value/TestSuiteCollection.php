@@ -20,12 +20,12 @@ use IteratorAggregate;
  *
  * @template-implements IteratorAggregate<int, TestSuite>
  */
-final class TestSuiteCollection implements Countable, IteratorAggregate
+final readonly class TestSuiteCollection implements Countable, IteratorAggregate
 {
     /**
      * @psalm-var list<TestSuite>
      */
-    private readonly array $testSuites;
+    private array $testSuites;
 
     /**
      * @psalm-param list<TestSuite> $testSuites

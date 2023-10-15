@@ -16,12 +16,12 @@ use function in_array;
  *
  * @psalm-immutable
  */
-final class VersionComparisonOperator
+final readonly class VersionComparisonOperator
 {
     /**
      * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
      */
-    private readonly string $operator;
+    private string $operator;
 
     /**
      * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator

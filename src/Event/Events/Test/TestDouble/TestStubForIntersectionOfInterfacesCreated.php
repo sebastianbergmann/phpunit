@@ -19,14 +19,14 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class TestStubForIntersectionOfInterfacesCreated implements Event
+final readonly class TestStubForIntersectionOfInterfacesCreated implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
+    private Telemetry\Info $telemetryInfo;
 
     /**
      * @psalm-var list<class-string>
      */
-    private readonly array $interfaces;
+    private array $interfaces;
 
     /**
      * @psalm-param list<class-string> $interfaces

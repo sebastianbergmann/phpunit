@@ -20,9 +20,9 @@ use RecursiveIteratorIterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ListTestsAsTextCommand implements Command
+final readonly class ListTestsAsTextCommand implements Command
 {
-    private readonly TestSuite $suite;
+    private TestSuite $suite;
 
     public function __construct(TestSuite $suite)
     {

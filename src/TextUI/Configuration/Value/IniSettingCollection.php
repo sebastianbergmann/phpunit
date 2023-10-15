@@ -20,12 +20,12 @@ use IteratorAggregate;
  *
  * @template-implements IteratorAggregate<int, IniSetting>
  */
-final class IniSettingCollection implements Countable, IteratorAggregate
+final readonly class IniSettingCollection implements Countable, IteratorAggregate
 {
     /**
      * @psalm-var list<IniSetting>
      */
-    private readonly array $iniSettings;
+    private array $iniSettings;
 
     /**
      * @psalm-param list<IniSetting> $iniSettings

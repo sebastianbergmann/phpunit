@@ -17,9 +17,9 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class TestWith
+final readonly class TestWith
 {
-    private readonly array $data;
+    private array $data;
 
     public function __construct(array $data)
     {

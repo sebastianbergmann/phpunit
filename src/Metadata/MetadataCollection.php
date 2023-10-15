@@ -22,12 +22,12 @@ use IteratorAggregate;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MetadataCollection implements Countable, IteratorAggregate
+final readonly class MetadataCollection implements Countable, IteratorAggregate
 {
     /**
      * @psalm-var list<Metadata>
      */
-    private readonly array $metadata;
+    private array $metadata;
 
     /**
      * @psalm-param list<Metadata> $metadata
