@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture\Issue5288;
+
 use PHPUnit\Framework\TestCase;
 
 final class Issue5288Test extends TestCase
