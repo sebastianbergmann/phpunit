@@ -18,10 +18,12 @@ final class TestWithTest extends TestCase
     #[TestWith([1, 2, 3])]
     public function testOne(): void
     {
+        $this->assertTrue(true);
     }
 
     #[TestWithJson('[1, 2, 3]')]
     public function testTwo(): void
     {
+        $this->assertTrue(true);
     }
 }
