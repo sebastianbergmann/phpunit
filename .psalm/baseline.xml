@@ -558,15 +558,10 @@
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
+      <code>$_className</code>
+      <code>$_className</code>
       <code>$function</code>
       <code>$function</code>
-      <code>$methodName</code>
       <code>$pieces[0]</code>
       <code>$pieces[0]</code>
       <code>$pieces[1]</code>
