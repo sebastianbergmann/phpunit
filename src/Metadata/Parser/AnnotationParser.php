@@ -15,11 +15,13 @@ use function explode;
 use function method_exists;
 use function preg_replace;
 use function rtrim;
+use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Metadata\Annotation\Parser\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\AnnotationsAreNotSupportedForInternalClassesException;
 use PHPUnit\Metadata\Metadata;
@@ -35,6 +37,16 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 final class AnnotationParser implements Parser
 {
+    /**
+     * @psalm-var array<string, true>
+     */
+    private static array $deprecationEmittedForClass = [];
+
+    /**
+     * @psalm-var array<string, true>
+     */
+    private static array $deprecationEmittedForMethod = [];
+
     /**
      * @psalm-param class-string $className
      *
@@ -153,6 +165,19 @@ final class AnnotationParser implements Parser
                 'class',
             ),
         );
+
+        if (!empty($result) &&
+            !isset(self::$deprecationEmittedForClass[$className]) &&
+            !str_starts_with($className, 'PHPUnit\TestFixture')) {
+            EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                sprintf(
+                    'Metadata found in doc-comment for class %s. Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.',
+                    $className,
+                ),
+            );
+
+            self::$deprecationEmittedForClass[$className] = true;
+        }
 
         return MetadataCollection::fromArray($result);
     }
@@ -367,6 +392,20 @@ final class AnnotationParser implements Parser
                     'method',
                 ),
             );
+        }
+
+        if (!empty($result) &&
+            !isset(self::$deprecationEmittedForMethod[$className . '::' . $methodName]) &&
+            !str_starts_with($className, 'PHPUnit\TestFixture')) {
+            EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                sprintf(
+                    'Metadata found in doc-comment for method %s::%s(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.',
+                    $className,
+                    $methodName,
+                ),
+            );
+
+            self::$deprecationEmittedForMethod[$className . '::' . $methodName] = true;
         }
 
         return MetadataCollection::fromArray($result);
