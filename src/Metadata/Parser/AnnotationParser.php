@@ -249,15 +249,15 @@ final class AnnotationParser implements Parser
                         }
 
                         if (str_contains($value, '::')) {
-                            [$className, $methodName] = explode('::', $value);
+                            [$_className, $_methodName] = explode('::', $value);
 
-                            if ($methodName === 'class') {
-                                $result[] = Metadata::dependsOnClass($className, $deepClone, $shallowClone);
+                            if ($_methodName === 'class') {
+                                $result[] = Metadata::dependsOnClass($_className, $deepClone, $shallowClone);
 
                                 continue;
                             }
 
-                            $result[] = Metadata::dependsOnMethod($className, $methodName, $deepClone, $shallowClone);
+                            $result[] = Metadata::dependsOnMethod($_className, $_methodName, $deepClone, $shallowClone);
 
                             continue;
                         }
