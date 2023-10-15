@@ -18,5 +18,6 @@ final class TestWithTest extends TestCase
      */
     public function testOne(): void
     {
+        $this->assertTrue(true);
     }
 }
