@@ -212,7 +212,7 @@ abstract class TestDoubleTestCase extends TestCase
     {
         $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
 
-        $this->assertFalse($double->method());
+        $this->assertFalse($double->doSomething());
     }
 
     #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
