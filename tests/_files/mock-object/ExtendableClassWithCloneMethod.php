@@ -21,7 +21,7 @@ class ExtendableClassWithCloneMethod
         throw new Exception(__METHOD__);
     }
 
-    public function method(): bool
+    public function doSomething(): bool
     {
         return true;
     }

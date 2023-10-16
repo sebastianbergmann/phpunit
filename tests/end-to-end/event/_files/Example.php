@@ -11,5 +11,5 @@ namespace PHPUnit\TestFixture\Event;
 
 interface Example
 {
-    public function method(): bool;
+    public function doSomething(): bool;
 }
