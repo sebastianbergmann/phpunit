@@ -43,6 +43,9 @@ use function trait_exists;
 use Exception;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Event\Code\TestMethodBuilder;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
@@ -738,6 +741,19 @@ final class Generator
 
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
+        }
+
+        if ($mockMethods->hasMethod('method') || (isset($class) && $class->hasMethod('method'))) {
+            $message = 'Doubling interfaces (or classes) that have a method named "method" is deprecated. Support for this will be removed in PHPUnit 12.';
+
+            try {
+                EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                    TestMethodBuilder::fromCallStack(),
+                    $message,
+                );
+            } catch (NoTestCaseObjectOnCallStackException) {
+                EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
+            }
         }
 
         if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
