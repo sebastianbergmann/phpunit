@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture\MockObject;
 
 trait TraitWithConcreteMethod
 {
-    public function method(): bool
+    public function doSomething(): bool
     {
         return true;
     }

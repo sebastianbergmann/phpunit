@@ -26,7 +26,7 @@ final class GetObjectForTraitTest extends TestCase
     {
         $object = $this->getObjectForTrait(TraitWithConcreteMethod::class);
 
-        $this->assertTrue($object->method());
+        $this->assertTrue($object->doSomething());
     }
 
     public function testCannotCreateObjectForTraitThatDoesNotExist(): void
