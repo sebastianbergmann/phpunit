@@ -204,7 +204,7 @@ final class ReturnValueGenerator
     private function testDoubleFor(string $type, string $className, string $methodName): Stub
     {
         try {
-            return (new Generator)->testDouble($type, false, [], [], '', false);
+            return (new Generator)->testDouble($type, false, false, [], [], '', false);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(

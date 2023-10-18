@@ -21,6 +21,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'Foo',
     true,
+    true,
     [],
     'MockFoo',
     true,
@@ -35,6 +36,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

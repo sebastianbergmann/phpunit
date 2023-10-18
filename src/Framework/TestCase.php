@@ -1244,6 +1244,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $mock = (new MockGenerator)->testDouble(
             $originalClassName,
             true,
+            true,
             callOriginalConstructor: false,
             callOriginalClone: false,
             cloneArguments: false,
@@ -1442,6 +1443,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $mockObject = (new MockGenerator)->testDouble(
             $originalClassName,
+            true,
             true,
             $methods,
             ['', $options],
@@ -2284,6 +2286,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $stub = (new MockGenerator)->testDouble(
             $originalClassName,
             true,
+            false,
             callOriginalConstructor: false,
             callOriginalClone: false,
             cloneArguments: false,

@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
-    'Foo', true, [], 'ProxyFoo', true, true, true, true
+    'Foo', true, true, [], 'ProxyFoo', true, true, true, true
 );
 
 print $mock->classCode();
@@ -29,6 +29,7 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
