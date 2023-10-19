@@ -14,7 +14,6 @@ use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
@@ -55,8 +54,7 @@ trait MockObjectApi
     {
         assert($this instanceof StubInternal);
 
-        if (!$matcher instanceof AnyInvokedCount &&
-            !$this->__phpunit_wasGeneratedAsMockObject()) {
+        if (!$this->__phpunit_wasGeneratedAsMockObject()) {
             $message = 'Configuring expectations on test doubles that were created as test stubs is deprecated. Support for this will be removed in PHPUnit 12.';
 
             try {
