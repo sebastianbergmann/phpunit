@@ -204,7 +204,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->fail();
     }
 
-    public function testMethodWithNeverReturnTypeDeclarationThrowsException(): void
+    final public function testMethodWithNeverReturnTypeDeclarationThrowsException(): void
     {
         $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
 
@@ -215,7 +215,7 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[TestDox('Original __clone() method is not called by default when test double object is cloned')]
-    public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
+    final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
     {
         $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
 
@@ -223,7 +223,7 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
-    public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
+    final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
     {
         $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
 
