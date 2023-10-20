@@ -208,26 +208,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->fail();
     }
 
-    #[TestDox('Original __clone() method is not called by default when test double object is cloned')]
-    public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
-    {
-        $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
-
-        $this->assertFalse($double->doSomething());
-    }
-
-    #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
-    public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
-    {
-        $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
-
-        clone $double;
-    }
-
-    public function testThrowsExceptionWhenMethodWithNeverReturnTypeDeclarationIsCalled(): void
+    final public function testMethodWithNeverReturnTypeDeclarationThrowsException(): void
     {
         $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
 
@@ -235,6 +216,25 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
 
         $double->m();
+    }
+
+    #[TestDox('Original __clone() method is not called by default when test double object is cloned')]
+    final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
+    {
+        $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
+
+        $this->assertFalse($double->doSomething());
+    }
+
+    #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
+    final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
+    {
+        $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
+
+        clone $double;
     }
 
     /**
