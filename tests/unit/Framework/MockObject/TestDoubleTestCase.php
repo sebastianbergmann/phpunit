@@ -204,6 +204,16 @@ abstract class TestDoubleTestCase extends TestCase
         $this->fail();
     }
 
+    public function testMethodWithNeverReturnTypeDeclarationThrowsException(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
+
+        $this->expectException(NeverReturningMethodException::class);
+        $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
+
+        $double->m();
+    }
+
     #[TestDox('Original __clone() method is not called by default when test double object is cloned')]
     public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
     {
@@ -221,16 +231,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
 
         clone $double;
-    }
-
-    public function testThrowsExceptionWhenMethodWithNeverReturnTypeDeclarationIsCalled(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
-
-        $this->expectException(NeverReturningMethodException::class);
-        $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
-
-        $double->m();
     }
 
     /**
