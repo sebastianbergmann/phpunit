@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
+use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
 
@@ -224,6 +225,16 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
 
         clone $double;
+    }
+
+    public function testThrowsExceptionWhenMethodWithNeverReturnTypeDeclarationIsCalled(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
+
+        $this->expectException(NeverReturningMethodException::class);
+        $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
+
+        $double->m();
     }
 
     /**
