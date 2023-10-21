@@ -45,7 +45,7 @@ final class ReturnValueGeneratorTest extends TestCase
         ];
     }
 
-    public function test_Generates_null_for_empty_string(): void
+    public function test_Generates_null_for_missing_return_type_declaration(): void
     {
         $this->assertNull($this->generate(''));
     }
