@@ -72,6 +72,10 @@ $config->setFinder($finder)
                 'yield_from',
             ],
         ],
+        'braces_position' => [
+            'anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
+            'anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end',
+        ],
         'cast_spaces' => true,
         'class_attributes_separation' => [
             'elements' => [
@@ -85,15 +89,11 @@ $config->setFinder($finder)
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
         'combine_nested_dirname' => true,
-        'compact_nullable_typehint' => true,
+        'compact_nullable_type_declaration' => true,
         'concat_space' => ['spacing' => 'one'],
         'constant_case' => true,
         'control_structure_braces' => true,
         'control_structure_continuation_position' => true,
-        'curly_braces_position' => [
-            'anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
-            'anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end',
-        ],
         'declare_equal_normalize' => ['space' => 'none'],
         'declare_parentheses' => true,
         'declare_strict_types' => true,
@@ -147,8 +147,8 @@ $config->setFinder($finder)
                 '@internal',
             ],
         ],
-        'native_function_type_declaration_casing' => true,
-        'new_with_braces' => [
+        'native_type_declaration_casing' => true,
+        'new_with_parentheses' => [
             'named_class' => false,
             'anonymous_class' => false,
         ],
@@ -185,8 +185,8 @@ $config->setFinder($finder)
         'no_trailing_whitespace' => true,
         'no_trailing_whitespace_in_comment' => true,
         'no_trailing_whitespace_in_string' => true,
+        'no_unneeded_braces' => true,
         'no_unneeded_control_parentheses' => true,
-        'no_unneeded_curly_braces' => true,
         'no_unneeded_final_method' => true,
         'no_unneeded_import_alias' => true,
         'no_unreachable_default_argument_value' => true,
