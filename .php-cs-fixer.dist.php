@@ -41,10 +41,6 @@ $config->setFinder($finder)
             ],
         ],
         'blank_line_after_namespace' => true,
-        'blank_lines_before_namespace' => [
-            'max_line_breaks' => 1,
-            'min_line_breaks' => 0,
-        ],
         'blank_line_before_statement' => [
             'statements' => [
                 'break',
@@ -72,9 +68,13 @@ $config->setFinder($finder)
                 'yield_from',
             ],
         ],
+        'blank_lines_before_namespace' => [
+            'max_line_breaks' => 1,
+            'min_line_breaks' => 0,
+        ],
         'braces_position' => [
-            'anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
             'anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end',
+            'anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
         ],
         'cast_spaces' => true,
         'class_attributes_separation' => [
@@ -149,8 +149,8 @@ $config->setFinder($finder)
         ],
         'native_type_declaration_casing' => true,
         'new_with_parentheses' => [
-            'named_class' => false,
             'anonymous_class' => false,
+            'named_class' => false,
         ],
         'no_alias_functions' => true,
         'no_alias_language_construct_call' => true,
