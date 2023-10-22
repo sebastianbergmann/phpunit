@@ -38,10 +38,6 @@ $config->setFinder($finder)
             ],
         ],
         'blank_line_after_namespace' => true,
-        'blank_lines_before_namespace' => [
-            'max_line_breaks' => 1,
-            'min_line_breaks' => 0,
-        ],
         'blank_line_before_statement' => [
             'statements' => [
                 'break',
@@ -69,6 +65,14 @@ $config->setFinder($finder)
                 'yield_from',
             ],
         ],
+        'blank_lines_before_namespace' => [
+            'max_line_breaks' => 1,
+            'min_line_breaks' => 0,
+        ],
+        'braces_position' => [
+            'anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end',
+            'anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
+        ],
         'cast_spaces' => true,
         'class_attributes_separation' => [
             'elements' => [
@@ -82,15 +86,11 @@ $config->setFinder($finder)
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
         'combine_nested_dirname' => true,
-        'compact_nullable_typehint' => true,
+        'compact_nullable_type_declaration' => true,
         'concat_space' => ['spacing' => 'one'],
         'constant_case' => true,
         'control_structure_braces' => true,
         'control_structure_continuation_position' => true,
-        'curly_braces_position' => [
-            'anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
-            'anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end',
-        ],
         'declare_equal_normalize' => ['space' => 'none'],
         'declare_parentheses' => true,
         'declare_strict_types' => true,
@@ -146,10 +146,10 @@ $config->setFinder($finder)
                 '@internal',
             ],
         ],
-        'native_function_type_declaration_casing' => true,
-        'new_with_braces' => [
-            'named_class' => false,
+        'native_type_declaration_casing' => true,
+        'new_with_parentheses' => [
             'anonymous_class' => false,
+            'named_class' => false,
         ],
         'no_alias_functions' => true,
         'no_alias_language_construct_call' => true,
@@ -184,8 +184,8 @@ $config->setFinder($finder)
         'no_trailing_whitespace' => true,
         'no_trailing_whitespace_in_comment' => true,
         'no_trailing_whitespace_in_string' => true,
+        'no_unneeded_braces' => true,
         'no_unneeded_control_parentheses' => true,
-        'no_unneeded_curly_braces' => true,
         'no_unneeded_final_method' => true,
         'no_unneeded_import_alias' => true,
         'no_unreachable_default_argument_value' => true,
