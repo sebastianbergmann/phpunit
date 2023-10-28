@@ -7,14 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestData;
-
-use PHPUnit\Event\Exception;
-use RuntimeException;
+namespace PHPUnit\Metadata;
 
 /**
+ * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MoreThanOneDataSetFromDataProviderException extends RuntimeException implements Exception
+final class IgnoreDeprecations extends Metadata
 {
+    /**
+     * @psalm-assert-if-true IgnoreDeprecations $this
+     */
+    public function isIgnoreDeprecations(): bool
+    {
+        return true;
+    }
 }

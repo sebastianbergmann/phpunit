@@ -16,13 +16,13 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class AssertionFailed implements Event
+final readonly class AssertionFailed implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly string $value;
-    private readonly string $constraint;
-    private readonly int $count;
-    private readonly string $message;
+    private Telemetry\Info $telemetryInfo;
+    private string $value;
+    private string $constraint;
+    private int $count;
+    private string $message;
 
     public function __construct(Telemetry\Info $telemetryInfo, string $value, string $constraint, int $count, string $message)
     {

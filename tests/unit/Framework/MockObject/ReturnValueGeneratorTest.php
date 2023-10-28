@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace unit\Framework\MockObject;
+namespace PHPUnit\Framework\MockObject;
 
 use function assert;
 use function interface_exists;
@@ -18,8 +18,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\MockObject\ReturnValueGenerator;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
@@ -47,7 +45,7 @@ final class ReturnValueGeneratorTest extends TestCase
         ];
     }
 
-    public function test_Generates_null_for_empty_string(): void
+    public function test_Generates_null_for_missing_return_type_declaration(): void
     {
         $this->assertNull($this->generate(''));
     }

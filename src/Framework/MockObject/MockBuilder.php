@@ -11,7 +11,9 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_merge;
 use function assert;
+use function debug_backtrace;
 use function trait_exists;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Generator\ClassAlreadyExistsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
@@ -94,6 +96,7 @@ final class MockBuilder
         $object = $this->generator->testDouble(
             $this->type,
             true,
+            true,
             !$this->emptyMethodsArray ? $this->methods : null,
             $this->constructorArgs,
             $this->mockClassName ?? '',
@@ -128,6 +131,11 @@ final class MockBuilder
      */
     public function getMockForAbstractClass(): MockObject
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $object = $this->generator->mockObjectForAbstractClass(
             $this->type,
             $this->constructorArgs,
@@ -159,6 +167,11 @@ final class MockBuilder
      */
     public function getMockForTrait(): MockObject
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::getMockForTrait() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         assert(trait_exists($this->type));
 
         $object = $this->generator->mockObjectForTrait(
@@ -235,6 +248,11 @@ final class MockBuilder
      */
     public function addMethods(array $methods): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::addMethods() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         if (empty($methods)) {
             $this->emptyMethodsArray = true;
 
@@ -347,6 +365,11 @@ final class MockBuilder
      */
     public function disableAutoload(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::disableAutoload() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->autoload = false;
 
         return $this;
@@ -361,6 +384,11 @@ final class MockBuilder
      */
     public function enableAutoload(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::enableAutoload() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->autoload = true;
 
         return $this;
@@ -375,6 +403,13 @@ final class MockBuilder
      */
     public function disableArgumentCloning(): self
     {
+        if (!$this->calledFromTestCase()) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->testCase->valueObjectForEvents(),
+                'MockBuilder::disableArgumentCloning() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            );
+        }
+
         $this->cloneArguments = false;
 
         return $this;
@@ -389,6 +424,11 @@ final class MockBuilder
      */
     public function enableArgumentCloning(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::enableArgumentCloning() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->cloneArguments = true;
 
         return $this;
@@ -403,6 +443,13 @@ final class MockBuilder
      */
     public function enableProxyingToOriginalMethods(): self
     {
+        if (!$this->calledFromTestCase()) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->testCase->valueObjectForEvents(),
+                'MockBuilder::enableProxyingToOriginalMethods() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            );
+        }
+
         $this->callOriginalMethods = true;
 
         return $this;
@@ -417,6 +464,11 @@ final class MockBuilder
      */
     public function disableProxyingToOriginalMethods(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::disableProxyingToOriginalMethods() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->callOriginalMethods = false;
         $this->proxyTarget         = null;
 
@@ -432,6 +484,11 @@ final class MockBuilder
      */
     public function setProxyTarget(object $object): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::setProxyTarget() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->proxyTarget = $object;
 
         return $this;
@@ -444,6 +501,11 @@ final class MockBuilder
      */
     public function allowMockingUnknownTypes(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::allowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->allowMockingUnknownTypes = true;
 
         return $this;
@@ -456,6 +518,13 @@ final class MockBuilder
      */
     public function disallowMockingUnknownTypes(): self
     {
+        if (!$this->calledFromTestCase()) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->testCase->valueObjectForEvents(),
+                'MockBuilder::disallowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            );
+        }
+
         $this->allowMockingUnknownTypes = false;
 
         return $this;
@@ -468,6 +537,11 @@ final class MockBuilder
      */
     public function enableAutoReturnValueGeneration(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::enableAutoReturnValueGeneration() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->returnValueGeneration = true;
 
         return $this;
@@ -480,8 +554,20 @@ final class MockBuilder
      */
     public function disableAutoReturnValueGeneration(): self
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->testCase->valueObjectForEvents(),
+            'MockBuilder::disableAutoReturnValueGeneration() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         $this->returnValueGeneration = false;
 
         return $this;
+    }
+
+    private function calledFromTestCase(): bool
+    {
+        $caller = debug_backtrace(limit: 3)[2];
+
+        return isset($caller['class']) && $caller['class'] === TestCase::class;
     }
 }

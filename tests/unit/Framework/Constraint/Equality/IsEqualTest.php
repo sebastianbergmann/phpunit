@@ -326,13 +326,6 @@ EOT,
         $this->assertStringMatchesFormat($constraintAsString, $constraint->toString(true));
     }
 
-    public function testCanBeRepresentedAsStringWhenDeltaIsUsed(): void
-    {
-        $constraint = new IsEqual(0.0, 0.1);
-
-        $this->assertSame('is equal to 0.0 with delta <0.100000>', $constraint->toString(true));
-    }
-
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsEqual(true)));

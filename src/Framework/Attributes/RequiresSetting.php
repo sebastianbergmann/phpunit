@@ -17,17 +17,17 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class RequiresSetting
+final readonly class RequiresSetting
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $setting;
+    private string $setting;
 
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $value;
+    private string $value;
 
     /**
      * @psalm-param non-empty-string $setting

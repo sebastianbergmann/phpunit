@@ -16,16 +16,16 @@ use PHPUnit\Util\VersionComparisonOperator;
  *
  * @psalm-immutable
  */
-final class TestDirectory
+final readonly class TestDirectory
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $path;
-    private readonly string $prefix;
-    private readonly string $suffix;
-    private readonly string $phpVersion;
-    private readonly VersionComparisonOperator $phpVersionOperator;
+    private string $path;
+    private string $prefix;
+    private string $suffix;
+    private string $phpVersion;
+    private VersionComparisonOperator $phpVersionOperator;
 
     /**
      * @psalm-param non-empty-string $path

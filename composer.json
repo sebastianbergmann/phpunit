@@ -22,7 +22,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -51,7 +51,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.1.0"
+            "php": "8.2.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
@@ -78,13 +78,12 @@
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/Generator.php",
-            "tests/_files/NamespaceCoveredFunction.php",
-            "tests/end-to-end/code-coverage/ignore-function-using-attribute/src/CoveredFunction.php"
+            "tests/_files/NamespaceCoveredFunction.php"
         ]
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "10.5-dev"
+            "dev-main": "11.0-dev"
         }
     }
 }

@@ -17,17 +17,17 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class ExcludeStaticPropertyFromBackup
+final readonly class ExcludeStaticPropertyFromBackup
 {
     /**
      * @psalm-var class-string
      */
-    private readonly string $className;
+    private string $className;
 
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $propertyName;
+    private string $propertyName;
 
     /**
      * @psalm-param class-string $className

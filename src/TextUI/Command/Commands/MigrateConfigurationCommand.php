@@ -17,9 +17,9 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MigrateConfigurationCommand implements Command
+final readonly class MigrateConfigurationCommand implements Command
 {
-    private readonly string $filename;
+    private string $filename;
 
     public function __construct(string $filename)
     {

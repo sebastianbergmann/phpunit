@@ -12,7 +12,9 @@ namespace PHPUnit\Framework\MockObject;
 use function call_user_func_array;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
@@ -22,6 +24,7 @@ use ReflectionProperty;
 
 #[Group('test-doubles')]
 #[Group('test-doubles/mock-object')]
+#[TestDox('Mock Object')]
 #[Medium]
 final class MockObjectTest extends TestDoubleTestCase
 {
@@ -414,6 +417,16 @@ EOT,
         }
 
         $this->fail();
+    }
+
+    #[IgnorePhpunitDeprecations]
+    public function testExpectationsCanBeConfiguredOnTestStubs(): void
+    {
+        $mock = $this->createStub(AnInterface::class);
+
+        $mock->expects($this->never())->method('doSomething');
+
+        $this->assertTrue(true);
     }
 
     /**

@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\TestCase;
 #[Medium]
 #[RequiresPhpExtension('soap')]
 #[TestDox('getMockFromWsdl()')]
+#[IgnorePhpunitDeprecations]
 final class GetMockFromWsdlTest extends TestCase
 {
     #[TestDox('Creates mock object from WSDL file')]

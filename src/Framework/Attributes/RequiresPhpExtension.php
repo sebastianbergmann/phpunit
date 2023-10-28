@@ -17,17 +17,17 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class RequiresPhpExtension
+final readonly class RequiresPhpExtension
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $extension;
+    private string $extension;
 
     /**
      * @psalm-var null|non-empty-string
      */
-    private readonly ?string $versionRequirement;
+    private ?string $versionRequirement;
 
     /**
      * @psalm-param non-empty-string $extension

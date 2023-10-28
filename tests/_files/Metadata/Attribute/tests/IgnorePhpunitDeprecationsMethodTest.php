@@ -7,16 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\IgnoreMethodUsingAttribute;
+namespace PHPUnit\TestFixture\Metadata\Attribute;
 
-use PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\TestCase;
 
-#[IgnoreMethodForCodeCoverage(CoveredClass::class, 'n')]
-final class IgnoreMethodForCodeCoverageTest extends TestCase
+final class IgnorePhpunitDeprecationsMethodTest extends TestCase
 {
+    #[IgnorePhpunitDeprecations]
     public function testOne(): void
     {
-        $this->assertTrue((new CoveredClass)->m());
     }
 }

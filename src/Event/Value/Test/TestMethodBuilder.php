@@ -15,7 +15,6 @@ use function is_numeric;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\DataFromTestDependency;
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -27,9 +26,6 @@ use PHPUnit\Util\Reflection;
  */
 final class TestMethodBuilder
 {
-    /**
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
     public static function fromTestCase(TestCase $testCase): TestMethod
     {
         $methodName = $testCase->name();
@@ -63,9 +59,6 @@ final class TestMethodBuilder
         throw new NoTestCaseObjectOnCallStackException;
     }
 
-    /**
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
     private static function dataFor(TestCase $testCase): TestDataCollection
     {
         $testData = [];

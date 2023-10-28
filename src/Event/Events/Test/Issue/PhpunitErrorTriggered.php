@@ -21,11 +21,11 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class PhpunitErrorTriggered implements Event
+final readonly class PhpunitErrorTriggered implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly Test $test;
-    private readonly string $message;
+    private Telemetry\Info $telemetryInfo;
+    private Test $test;
+    private string $message;
 
     public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message)
     {

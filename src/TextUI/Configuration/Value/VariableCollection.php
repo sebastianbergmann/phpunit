@@ -20,12 +20,12 @@ use IteratorAggregate;
  *
  * @template-implements IteratorAggregate<int, Variable>
  */
-final class VariableCollection implements Countable, IteratorAggregate
+final readonly class VariableCollection implements Countable, IteratorAggregate
 {
     /**
      * @psalm-var list<Variable>
      */
-    private readonly array $variables;
+    private array $variables;
 
     /**
      * @psalm-param list<Variable> $variables

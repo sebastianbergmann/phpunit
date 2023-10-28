@@ -17,9 +17,9 @@ use PHPUnit\Framework\MockObject\Invocation;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ReturnValueMap implements Stub
+final readonly class ReturnValueMap implements Stub
 {
-    private readonly array $valueMap;
+    private array $valueMap;
 
     public function __construct(array $valueMap)
     {

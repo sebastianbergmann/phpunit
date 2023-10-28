@@ -1617,6 +1617,11 @@ abstract class Assert
      */
     final public static function assertStringNotMatchesFormat(string $format, string $string, string $message = ''): void
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'assertStringNotMatchesFormat() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         static::assertThat(
             $string,
             new LogicalNot(
@@ -1653,6 +1658,11 @@ abstract class Assert
      */
     final public static function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'assertStringNotMatchesFormatFile() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+        );
+
         static::assertFileExists($formatFile, $message);
 
         static::assertThat(
@@ -2132,7 +2142,7 @@ abstract class Assert
 
     final public static function equalTo(mixed $value): IsEqual
     {
-        return new IsEqual($value, 0.0, false, false);
+        return new IsEqual($value);
     }
 
     final public static function equalToCanonicalizing(mixed $value): IsEqualCanonicalizing

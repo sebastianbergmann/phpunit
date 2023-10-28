@@ -43,9 +43,14 @@ use function trait_exists;
 use Exception;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Event\Code\TestMethodBuilder;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
+use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
+use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 use PHPUnit\Framework\MockObject\Method;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
@@ -103,7 +108,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject|Stub
+    public function testDouble(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -123,6 +128,7 @@ final class Generator
         $mock = $this->generate(
             $type,
             $mockObject,
+            $markAsMockObject,
             $methods,
             $mockClassName,
             $callOriginalClone,
@@ -210,7 +216,7 @@ final class Generator
 
         eval($template->render());
 
-        return $this->testDouble($intersectionName, $mockObject);
+        return $this->testDouble($intersectionName, $mockObject, $mockObject);
     }
 
     /**
@@ -253,6 +259,7 @@ final class Generator
 
             $mockObject = $this->testDouble(
                 $originalClassName,
+                true,
                 true,
                 $methods,
                 $arguments,
@@ -378,12 +385,13 @@ final class Generator
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/5476
      */
-    public function generate(string $type, bool $mockObject, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
+    public function generate(string $type, bool $mockObject, bool $markAsMockObject, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
     {
         if ($mockClassName !== '') {
             return $this->generateCodeForTestDoubleClass(
                 $type,
                 $mockObject,
+                $markAsMockObject,
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
@@ -396,6 +404,7 @@ final class Generator
         $key = md5(
             $type .
             ($mockObject ? 'MockObject' : 'TestStub') .
+            ($markAsMockObject ? 'MockObject' : 'TestStub') .
             serialize($methods) .
             serialize($callOriginalClone) .
             serialize($cloneArguments) .
@@ -406,6 +415,7 @@ final class Generator
             self::$cache[$key] = $this->generateCodeForTestDoubleClass(
                 $type,
                 $mockObject,
+                $markAsMockObject,
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
@@ -584,7 +594,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
+    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, bool $markAsMockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
         $classTemplate         = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces  = [];
@@ -730,7 +740,13 @@ final class Generator
 
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
-            $configurable[] = new ConfigurableMethod($mockMethod->methodName(), $mockMethod->returnType());
+
+            $configurable[] = new ConfigurableMethod(
+                $mockMethod->methodName(),
+                $mockMethod->defaultParameterValues(),
+                $mockMethod->numberOfParameters(),
+                $mockMethod->returnType(),
+            );
         }
 
         /** @psalm-var trait-string[] $traits */
@@ -738,6 +754,25 @@ final class Generator
 
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
+        }
+
+        if ($markAsMockObject) {
+            $traits[] = GeneratedAsMockObject::class;
+        } else {
+            $traits[] = GeneratedAsTestStub::class;
+        }
+
+        if ($mockMethods->hasMethod('method') || (isset($class) && $class->hasMethod('method'))) {
+            $message = 'Doubling interfaces (or classes) that have a method named "method" is deprecated. Support for this will be removed in PHPUnit 12.';
+
+            try {
+                EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                    TestMethodBuilder::fromCallStack(),
+                    $message,
+                );
+            } catch (NoTestCaseObjectOnCallStackException) {
+                EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
+            }
         }
 
         if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {

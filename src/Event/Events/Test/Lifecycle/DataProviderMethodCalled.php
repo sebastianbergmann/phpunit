@@ -19,11 +19,11 @@ use PHPUnit\Event\Telemetry\Info;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DataProviderMethodCalled implements Event
+final readonly class DataProviderMethodCalled implements Event
 {
-    private readonly Info $telemetryInfo;
-    private readonly ClassMethod $testMethod;
-    private readonly ClassMethod $dataProviderMethod;
+    private Info $telemetryInfo;
+    private ClassMethod $testMethod;
+    private ClassMethod $dataProviderMethod;
 
     public function __construct(Info $telemetryInfo, ClassMethod $testMethod, ClassMethod $dataProviderMethod)
     {

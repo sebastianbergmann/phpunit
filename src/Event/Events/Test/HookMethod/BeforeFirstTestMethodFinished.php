@@ -20,19 +20,19 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class BeforeFirstTestMethodFinished implements Event
+final readonly class BeforeFirstTestMethodFinished implements Event
 {
-    private readonly Telemetry\Info$telemetryInfo;
+    private Telemetry\Info$telemetryInfo;
 
     /**
      * @psalm-var class-string
      */
-    private readonly string $testClassName;
+    private string $testClassName;
 
     /**
      * @psalm-var list<Code\ClassMethod>
      */
-    private readonly array $calledMethods;
+    private array $calledMethods;
 
     /**
      * @psalm-param class-string $testClassName

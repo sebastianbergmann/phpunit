@@ -18,12 +18,12 @@ use IteratorAggregate;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestResultCollection implements IteratorAggregate
+final readonly class TestResultCollection implements IteratorAggregate
 {
     /**
      * @psalm-var list<TestResult>
      */
-    private readonly array $testResults;
+    private array $testResults;
 
     /**
      * @psalm-param list<TestResult> $testResults

@@ -10,10 +10,13 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
+use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
 
@@ -34,6 +37,7 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[TestDox('__toString() method returns empty string when return value generation is disabled and no return value is configured')]
+    #[IgnorePhpunitDeprecations]
     final public function testToStringMethodReturnsEmptyStringWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
@@ -43,6 +47,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame('', $double->__toString());
     }
 
+    #[IgnorePhpunitDeprecations]
     final public function testMethodDoesNotReturnValueWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
@@ -84,6 +89,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame($object, $double->doSomething($object));
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testCloningOfObjectsPassedAsArgumentCanBeEnabled(): void
     {
         $object = new stdClass;
@@ -134,6 +140,26 @@ abstract class TestDoubleTestCase extends TestCase
 
         $this->assertSame(2, $double->doSomethingElse(1));
         $this->assertSame(4, $double->doSomethingElse(3));
+    }
+
+    final public function testMethodWithDefaultParameterValuesCanBeConfiguredToReturnValuesBasedOnArgumentMapping(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->method('doSomething')->willReturnMap([[1, 2, 3], [4, 5, 6]]);
+
+        $this->assertSame(3, $double->doSomething(1, 2));
+        $this->assertSame(6, $double->doSomething(4, 5));
+    }
+
+    final public function testMethodWithDefaultParameterValuesCanBeConfiguredToReturnValuesBasedOnArgumentMappingThatOmitsDefaultValues(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->method('doSomething')->willReturnMap([[1, 2], [3, 4]]);
+
+        $this->assertSame(2, $double->doSomething(1));
+        $this->assertSame(4, $double->doSomething(3));
     }
 
     final public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void
@@ -203,16 +229,26 @@ abstract class TestDoubleTestCase extends TestCase
         $this->fail();
     }
 
+    final public function testMethodWithNeverReturnTypeDeclarationThrowsException(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
+
+        $this->expectException(NeverReturningMethodException::class);
+        $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
+
+        $double->m();
+    }
+
     #[TestDox('Original __clone() method is not called by default when test double object is cloned')]
-    public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
+    final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
     {
         $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
 
-        $this->assertFalse($double->method());
+        $this->assertFalse($double->doSomething());
     }
 
     #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
-    public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
+    final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
     {
         $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
 

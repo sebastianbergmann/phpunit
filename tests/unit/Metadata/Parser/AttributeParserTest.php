@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
-use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -34,9 +33,6 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
-use PHPUnit\Framework\Attributes\IgnoreFunctionForCodeCoverage;
-use PHPUnit\Framework\Attributes\IgnoreMethodForCodeCoverage;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -70,7 +66,6 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 #[CoversClass(BackupStaticProperties::class)]
 #[CoversClass(BeforeClass::class)]
 #[CoversClass(Before::class)]
-#[CoversClass(CodeCoverageIgnore::class)]
 #[CoversClass(CoversClass::class)]
 #[CoversClass(CoversFunction::class)]
 #[CoversClass(CoversNothing::class)]
@@ -89,9 +84,6 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(Group::class)]
-#[CoversClass(IgnoreClassForCodeCoverage::class)]
-#[CoversClass(IgnoreFunctionForCodeCoverage::class)]
-#[CoversClass(IgnoreMethodForCodeCoverage::class)]
 #[CoversClass(Large::class)]
 #[CoversClass(Medium::class)]
 #[CoversClass(PostCondition::class)]

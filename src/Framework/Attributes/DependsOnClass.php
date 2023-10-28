@@ -17,12 +17,12 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class DependsOnClass
+final readonly class DependsOnClass
 {
     /**
      * @psalm-var class-string
      */
-    private readonly string $className;
+    private string $className;
 
     /**
      * @psalm-param class-string $className

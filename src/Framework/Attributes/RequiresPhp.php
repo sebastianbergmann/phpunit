@@ -17,12 +17,12 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class RequiresPhp
+final readonly class RequiresPhp
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $versionRequirement;
+    private string $versionRequirement;
 
     /**
      * @psalm-param non-empty-string $versionRequirement

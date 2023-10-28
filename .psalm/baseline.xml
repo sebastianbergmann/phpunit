@@ -30,6 +30,9 @@
       <code>$message</code>
       <code>$message</code>
     </ArgumentTypeCoercion>
+    <RedundantCondition>
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
     <TooManyArguments>
       <code>toString</code>
       <code>toString</code>
@@ -123,9 +126,6 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Test/TestData/TestDataCollection.php">
-    <ArgumentTypeCoercion>
-      <code>$data</code>
-    </ArgumentTypeCoercion>
     <PropertyTypeCoercion>
       <code>$data</code>
     </PropertyTypeCoercion>
@@ -469,6 +469,9 @@
     <PossiblyInvalidArgument>
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
+    <RedundantCast>
+      <code>(int) $matches[0][1]</code>
+    </RedundantCast>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition>
@@ -501,16 +504,6 @@
       <code>assert($metadata instanceof RequiresPhpunit)</code>
       <code>assert($metadata instanceof RequiresSetting)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/Metadata/Metadata.php">
-    <DeprecatedClass>
-      <code>IgnoreClassForCodeCoverage</code>
-      <code>IgnoreFunctionForCodeCoverage</code>
-      <code>IgnoreMethodForCodeCoverage</code>
-      <code>new IgnoreClassForCodeCoverage(self::CLASS_LEVEL, $className)</code>
-      <code>new IgnoreFunctionForCodeCoverage(self::CLASS_LEVEL, $functionName)</code>
-      <code>new IgnoreMethodForCodeCoverage(self::CLASS_LEVEL, $className, $methodName)</code>
-    </DeprecatedClass>
   </file>
   <file src="src/Metadata/MetadataCollection.php">
     <PropertyTypeCoercion>
@@ -555,15 +548,10 @@
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
+      <code>$_className</code>
+      <code>$_className</code>
       <code>$function</code>
       <code>$function</code>
-      <code>$methodName</code>
       <code>$pieces[0]</code>
       <code>$pieces[0]</code>
       <code>$pieces[1]</code>
@@ -579,13 +567,6 @@
       <code>trim($tmp[0])</code>
       <code>trim($tmp[1])</code>
     </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Metadata/Parser/AttributeParser.php">
-    <DeprecatedClass>
-      <code>IgnoreClassForCodeCoverage::class</code>
-      <code>IgnoreFunctionForCodeCoverage::class</code>
-      <code>IgnoreMethodForCodeCoverage::class</code>
-    </DeprecatedClass>
   </file>
   <file src="src/Metadata/Version/Requirement.php">
     <ArgumentTypeCoercion>
@@ -763,10 +744,6 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
-    <DeprecatedMethod>
-      <code>hasCacheResultFile</code>
-      <code>hasCoverageCacheDirectory</code>
-    </DeprecatedMethod>
     <InvalidNullableReturnType>
       <code>bool</code>
       <code>string</code>
@@ -797,17 +774,6 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/Configuration/Merger.php">
-    <DeprecatedMethod>
-      <code>cacheDirectory</code>
-      <code>cacheResultFile</code>
-      <code>cacheResultFile</code>
-      <code>coverageCacheDirectory</code>
-      <code>coverageCacheDirectory</code>
-      <code>hasCacheDirectory</code>
-      <code>hasCacheResultFile</code>
-      <code>hasCacheResultFile</code>
-      <code>hasCoverageCacheDirectory</code>
-    </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>baseline</code>
       <code>detect</code>
@@ -888,11 +854,6 @@
       <code>$variables</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
-    <DeprecatedMethod>
-      <code>hasCacheDirectory</code>
-    </DeprecatedMethod>
-  </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$bootstrap->getAttribute('class')]]></code>
@@ -944,11 +905,6 @@
       <code>removeChild</code>
       <code>removeChild</code>
     </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHPUnit.php">
-    <DeprecatedMethod>
-      <code>hasCacheResultFile</code>
-    </DeprecatedMethod>
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset>

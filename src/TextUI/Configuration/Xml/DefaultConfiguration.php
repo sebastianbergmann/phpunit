@@ -54,11 +54,6 @@ final class DefaultConfiguration extends Configuration
                 false,
             ),
             new CodeCoverage(
-                null,
-                CodeCoverageFilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
-                CodeCoverageFilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
                 false,
                 true,
                 false,
@@ -97,7 +92,6 @@ final class DefaultConfiguration extends Configuration
             new PHPUnit(
                 null,
                 true,
-                null,
                 80,
                 \PHPUnit\TextUI\Configuration\Configuration::COLOR_DEFAULT,
                 false,

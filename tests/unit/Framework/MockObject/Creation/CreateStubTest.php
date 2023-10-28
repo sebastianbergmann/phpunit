@@ -11,14 +11,12 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
-use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
@@ -39,15 +37,6 @@ final class CreateStubTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCreatesTestStubForIntersectionOfInterfaces(): void
-    {
-        $double = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
-
-        $this->assertInstanceOf(AnInterface::class, $double);
-        $this->assertInstanceOf(AnotherInterface::class, $double);
-        $this->assertInstanceOf(Stub::class, $double);
-    }
-
     public function testCreatesTestStubForExtendableClass(): void
     {
         $double = $this->createStub(ExtendableClass::class);
@@ -63,7 +52,6 @@ final class CreateStubTest extends TestCase
         $this->createStub(FinalClass::class);
     }
 
-    #[RequiresPhp('8.2')]
     public function testCannotCreateTestStubForReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);

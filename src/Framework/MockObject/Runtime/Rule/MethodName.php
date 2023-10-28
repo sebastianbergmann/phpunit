@@ -18,9 +18,9 @@ use PHPUnit\Framework\MockObject\MethodNameConstraint;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MethodName
+final readonly class MethodName
 {
-    private readonly Constraint $constraint;
+    private Constraint $constraint;
 
     /**
      * @throws InvalidArgumentException

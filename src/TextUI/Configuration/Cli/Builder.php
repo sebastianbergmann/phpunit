@@ -31,12 +31,10 @@ final class Builder
         'cache-result',
         'do-not-cache-result',
         'cache-directory=',
-        'cache-result-file=',
         'check-version',
         'colors==',
         'columns=',
         'configuration=',
-        'coverage-cache=',
         'warm-coverage-cache',
         'coverage-filter=',
         'coverage-clover=',
@@ -151,12 +149,10 @@ final class Builder
         $bootstrap                         = null;
         $cacheDirectory                    = null;
         $cacheResult                       = null;
-        $cacheResultFile                   = null;
         $checkVersion                      = false;
         $colors                            = null;
         $columns                           = null;
         $configuration                     = null;
-        $coverageCacheDirectory            = null;
         $warmCoverageCache                 = false;
         $coverageFilter                    = null;
         $coverageClover                    = null;
@@ -268,11 +264,6 @@ final class Builder
 
                     break;
 
-                case '--cache-result-file':
-                    $cacheResultFile = $option[1];
-
-                    break;
-
                 case '--columns':
                     if (is_numeric($option[1])) {
                         $columns = (int) $option[1];
@@ -285,11 +276,6 @@ final class Builder
                 case 'c':
                 case '--configuration':
                     $configuration = $option[1];
-
-                    break;
-
-                case '--coverage-cache':
-                    $coverageCacheDirectory = $option[1];
 
                     break;
 
@@ -831,7 +817,6 @@ final class Builder
             $bootstrap,
             $cacheDirectory,
             $cacheResult,
-            $cacheResultFile,
             $checkVersion,
             $colors,
             $columns,
@@ -846,7 +831,6 @@ final class Builder
             $coverageTextShowOnlySummary,
             $coverageXml,
             $pathCoverage,
-            $coverageCacheDirectory,
             $warmCoverageCache,
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,

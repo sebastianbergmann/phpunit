@@ -7,14 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\IgnoreFunctionUsingAttribute;
+namespace PHPUnit\TestFixture\MockObject;
 
-function f(): bool
+interface InterfaceWithMethodThatHasDefaultParameterValues
 {
-    return g();
-}
-
-function g(): bool
-{
-    return true;
+    public function doSomething(int $a, int $b = 1): int;
 }

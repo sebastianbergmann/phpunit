@@ -7,16 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\IgnoreMethodUsingAttribute;
+namespace PHPUnit\Framework\MockObject;
 
-final class CoveredClass
+/**
+ * @internal This trait is not covered by the backward compatibility promise for PHPUnit
+ */
+trait GeneratedAsMockObject
 {
-    public function m(): bool
-    {
-        return $this->n();
-    }
-
-    private function n(): bool
+    public function __phpunit_wasGeneratedAsMockObject(): true
     {
         return true;
     }

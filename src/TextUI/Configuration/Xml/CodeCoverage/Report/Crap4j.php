@@ -16,10 +16,10 @@ use PHPUnit\TextUI\Configuration\File;
  *
  * @psalm-immutable
  */
-final class Crap4j
+final readonly class Crap4j
 {
-    private readonly File $target;
-    private readonly int $threshold;
+    private File $target;
+    private int $threshold;
 
     public function __construct(File $target, int $threshold)
     {

@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI\Command;
 use function file_put_contents;
 use function implode;
 use function sprintf;
-use function str_replace;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
@@ -23,10 +22,10 @@ use XMLWriter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ListTestsAsXmlCommand implements Command
+final readonly class ListTestsAsXmlCommand implements Command
 {
-    private readonly string $filename;
-    private readonly TestSuite $suite;
+    private string $filename;
+    private TestSuite $suite;
 
     public function __construct(string $filename, TestSuite $suite)
     {
@@ -63,21 +62,6 @@ final class ListTestsAsXmlCommand implements Command
                 $writer->writeAttribute('id', $test->valueObjectForEvents()->id());
                 $writer->writeAttribute('name', $test->name());
                 $writer->writeAttribute('groups', implode(',', $test->groups()));
-
-                /**
-                 * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5481
-                 */
-                if (!empty($test->dataSetAsString())) {
-                    $writer->writeAttribute(
-                        'dataSet',
-                        str_replace(
-                            ' with data set ',
-                            '',
-                            $test->dataSetAsString(),
-                        ),
-                    );
-                }
-
                 $writer->endElement();
 
                 continue;

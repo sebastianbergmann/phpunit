@@ -15,9 +15,9 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Exception implements Stub
+final readonly class Exception implements Stub
 {
-    private readonly Throwable $exception;
+    private Throwable $exception;
 
     public function __construct(Throwable $exception)
     {

@@ -202,29 +202,30 @@ abstract class Metadata
         return new Group(self::METHOD_LEVEL, $groupName);
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function ignoreClassForCodeCoverage(string $className): IgnoreClassForCodeCoverage
+    public static function ignoreDeprecationsOnClass(): IgnoreDeprecations
     {
-        return new IgnoreClassForCodeCoverage(self::CLASS_LEVEL, $className);
+        return new IgnoreDeprecations(self::CLASS_LEVEL);
+    }
+
+    public static function ignoreDeprecationsOnMethod(): IgnoreDeprecations
+    {
+        return new IgnoreDeprecations(self::METHOD_LEVEL);
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public static function ignoreMethodForCodeCoverage(string $className, string $methodName): IgnoreMethodForCodeCoverage
+    public static function ignorePhpunitDeprecationsOnClass(): IgnorePhpunitDeprecations
     {
-        return new IgnoreMethodForCodeCoverage(self::CLASS_LEVEL, $className, $methodName);
+        return new IgnorePhpunitDeprecations(self::CLASS_LEVEL);
     }
 
     /**
-     * @psalm-param non-empty-string $functionName
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public static function ignoreFunctionForCodeCoverage(string $functionName): IgnoreFunctionForCodeCoverage
+    public static function ignorePhpunitDeprecationsOnMethod(): IgnorePhpunitDeprecations
     {
-        return new IgnoreFunctionForCodeCoverage(self::CLASS_LEVEL, $functionName);
+        return new IgnorePhpunitDeprecations(self::METHOD_LEVEL);
     }
 
     public static function postCondition(): PostCondition
@@ -616,25 +617,19 @@ abstract class Metadata
     }
 
     /**
-     * @psalm-assert-if-true IgnoreClassForCodeCoverage $this
+     * @psalm-assert-if-true IgnoreDeprecations $this
      */
-    public function isIgnoreClassForCodeCoverage(): bool
+    public function isIgnoreDeprecations(): bool
     {
         return false;
     }
 
     /**
-     * @psalm-assert-if-true IgnoreMethodForCodeCoverage $this
+     * @psalm-assert-if-true IgnorePhpunitDeprecations $this
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function isIgnoreMethodForCodeCoverage(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true IgnoreFunctionForCodeCoverage $this
-     */
-    public function isIgnoreFunctionForCodeCoverage(): bool
+    public function isIgnorePhpunitDeprecations(): bool
     {
         return false;
     }

@@ -18,9 +18,9 @@ use PHPUnit\TextUI\Configuration\Registry;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ListGroupsCommand implements Command
+final readonly class ListGroupsCommand implements Command
 {
-    private readonly TestSuite $suite;
+    private TestSuite $suite;
 
     public function __construct(TestSuite $suite)
     {

@@ -14,118 +14,116 @@ namespace PHPUnit\TextUI\CliArguments;
  *
  * @psalm-immutable
  */
-final class Configuration
+final readonly class Configuration
 {
     /**
      * @psalm-var list<non-empty-string>
      */
-    private readonly array $arguments;
-    private readonly ?string $atLeastVersion;
-    private readonly ?bool $backupGlobals;
-    private readonly ?bool $backupStaticProperties;
-    private readonly ?bool $beStrictAboutChangesToGlobalState;
-    private readonly ?string $bootstrap;
-    private readonly ?string $cacheDirectory;
-    private readonly ?bool $cacheResult;
-    private readonly ?string $cacheResultFile;
-    private readonly bool $checkVersion;
-    private readonly ?string $colors;
-    private readonly null|int|string $columns;
-    private readonly ?string $configurationFile;
-    private readonly ?array $coverageFilter;
-    private readonly ?string $coverageClover;
-    private readonly ?string $coverageCobertura;
-    private readonly ?string $coverageCrap4J;
-    private readonly ?string $coverageHtml;
-    private readonly ?string $coveragePhp;
-    private readonly ?string $coverageText;
-    private readonly ?bool $coverageTextShowUncoveredFiles;
-    private readonly ?bool $coverageTextShowOnlySummary;
-    private readonly ?string $coverageXml;
-    private readonly ?bool $pathCoverage;
-    private readonly ?string $coverageCacheDirectory;
-    private readonly bool $warmCoverageCache;
-    private readonly ?int $defaultTimeLimit;
-    private readonly ?bool $disableCodeCoverageIgnore;
-    private readonly ?bool $disallowTestOutput;
-    private readonly ?bool $enforceTimeLimit;
-    private readonly ?array $excludeGroups;
-    private readonly ?int $executionOrder;
-    private readonly ?int $executionOrderDefects;
-    private readonly ?bool $failOnDeprecation;
-    private readonly ?bool $failOnEmptyTestSuite;
-    private readonly ?bool $failOnIncomplete;
-    private readonly ?bool $failOnNotice;
-    private readonly ?bool $failOnRisky;
-    private readonly ?bool $failOnSkipped;
-    private readonly ?bool $failOnWarning;
-    private readonly ?bool $stopOnDefect;
-    private readonly ?bool $stopOnDeprecation;
-    private readonly ?bool $stopOnError;
-    private readonly ?bool $stopOnFailure;
-    private readonly ?bool $stopOnIncomplete;
-    private readonly ?bool $stopOnNotice;
-    private readonly ?bool $stopOnRisky;
-    private readonly ?bool $stopOnSkipped;
-    private readonly ?bool $stopOnWarning;
-    private readonly ?string $filter;
-    private readonly ?string $generateBaseline;
-    private readonly ?string $useBaseline;
-    private readonly bool $ignoreBaseline;
-    private readonly bool $generateConfiguration;
-    private readonly bool $migrateConfiguration;
-    private readonly ?array $groups;
-    private readonly ?array $testsCovering;
-    private readonly ?array $testsUsing;
-    private readonly bool $help;
-    private readonly ?string $includePath;
-    private readonly ?array $iniSettings;
-    private readonly ?string $junitLogfile;
-    private readonly bool $listGroups;
-    private readonly bool $listSuites;
-    private readonly bool $listTests;
-    private readonly ?string $listTestsXml;
-    private readonly ?bool $noCoverage;
-    private readonly ?bool $noExtensions;
-    private readonly ?bool $noOutput;
-    private readonly ?bool $noProgress;
-    private readonly ?bool $noResults;
-    private readonly ?bool $noLogging;
-    private readonly ?bool $processIsolation;
-    private readonly ?int $randomOrderSeed;
-    private readonly ?bool $reportUselessTests;
-    private readonly ?bool $resolveDependencies;
-    private readonly ?bool $reverseList;
-    private readonly ?bool $stderr;
-    private readonly ?bool $strictCoverage;
-    private readonly ?string $teamcityLogfile;
-    private readonly ?bool $teamCityPrinter;
-    private readonly ?string $testdoxHtmlFile;
-    private readonly ?string $testdoxTextFile;
-    private readonly ?bool $testdoxPrinter;
+    private array $arguments;
+    private ?string $atLeastVersion;
+    private ?bool $backupGlobals;
+    private ?bool $backupStaticProperties;
+    private ?bool $beStrictAboutChangesToGlobalState;
+    private ?string $bootstrap;
+    private ?string $cacheDirectory;
+    private ?bool $cacheResult;
+    private bool $checkVersion;
+    private ?string $colors;
+    private null|int|string $columns;
+    private ?string $configurationFile;
+    private ?array $coverageFilter;
+    private ?string $coverageClover;
+    private ?string $coverageCobertura;
+    private ?string $coverageCrap4J;
+    private ?string $coverageHtml;
+    private ?string $coveragePhp;
+    private ?string $coverageText;
+    private ?bool $coverageTextShowUncoveredFiles;
+    private ?bool $coverageTextShowOnlySummary;
+    private ?string $coverageXml;
+    private ?bool $pathCoverage;
+    private bool $warmCoverageCache;
+    private ?int $defaultTimeLimit;
+    private ?bool $disableCodeCoverageIgnore;
+    private ?bool $disallowTestOutput;
+    private ?bool $enforceTimeLimit;
+    private ?array $excludeGroups;
+    private ?int $executionOrder;
+    private ?int $executionOrderDefects;
+    private ?bool $failOnDeprecation;
+    private ?bool $failOnEmptyTestSuite;
+    private ?bool $failOnIncomplete;
+    private ?bool $failOnNotice;
+    private ?bool $failOnRisky;
+    private ?bool $failOnSkipped;
+    private ?bool $failOnWarning;
+    private ?bool $stopOnDefect;
+    private ?bool $stopOnDeprecation;
+    private ?bool $stopOnError;
+    private ?bool $stopOnFailure;
+    private ?bool $stopOnIncomplete;
+    private ?bool $stopOnNotice;
+    private ?bool $stopOnRisky;
+    private ?bool $stopOnSkipped;
+    private ?bool $stopOnWarning;
+    private ?string $filter;
+    private ?string $generateBaseline;
+    private ?string $useBaseline;
+    private bool $ignoreBaseline;
+    private bool $generateConfiguration;
+    private bool $migrateConfiguration;
+    private ?array $groups;
+    private ?array $testsCovering;
+    private ?array $testsUsing;
+    private bool $help;
+    private ?string $includePath;
+    private ?array $iniSettings;
+    private ?string $junitLogfile;
+    private bool $listGroups;
+    private bool $listSuites;
+    private bool $listTests;
+    private ?string $listTestsXml;
+    private ?bool $noCoverage;
+    private ?bool $noExtensions;
+    private ?bool $noOutput;
+    private ?bool $noProgress;
+    private ?bool $noResults;
+    private ?bool $noLogging;
+    private ?bool $processIsolation;
+    private ?int $randomOrderSeed;
+    private ?bool $reportUselessTests;
+    private ?bool $resolveDependencies;
+    private ?bool $reverseList;
+    private ?bool $stderr;
+    private ?bool $strictCoverage;
+    private ?string $teamcityLogfile;
+    private ?bool $teamCityPrinter;
+    private ?string $testdoxHtmlFile;
+    private ?string $testdoxTextFile;
+    private ?bool $testdoxPrinter;
 
     /**
      * @psalm-var ?non-empty-list<non-empty-string>
      */
-    private readonly ?array $testSuffixes;
-    private readonly ?string $testSuite;
-    private readonly ?string $excludeTestSuite;
-    private readonly bool $useDefaultConfiguration;
-    private readonly ?bool $displayDetailsOnIncompleteTests;
-    private readonly ?bool $displayDetailsOnSkippedTests;
-    private readonly ?bool $displayDetailsOnTestsThatTriggerDeprecations;
-    private readonly ?bool $displayDetailsOnTestsThatTriggerErrors;
-    private readonly ?bool $displayDetailsOnTestsThatTriggerNotices;
-    private readonly ?bool $displayDetailsOnTestsThatTriggerWarnings;
-    private readonly bool $version;
-    private readonly ?string $logEventsText;
-    private readonly ?string $logEventsVerboseText;
+    private ?array $testSuffixes;
+    private ?string $testSuite;
+    private ?string $excludeTestSuite;
+    private bool $useDefaultConfiguration;
+    private ?bool $displayDetailsOnIncompleteTests;
+    private ?bool $displayDetailsOnSkippedTests;
+    private ?bool $displayDetailsOnTestsThatTriggerDeprecations;
+    private ?bool $displayDetailsOnTestsThatTriggerErrors;
+    private ?bool $displayDetailsOnTestsThatTriggerNotices;
+    private ?bool $displayDetailsOnTestsThatTriggerWarnings;
+    private bool $version;
+    private ?string $logEventsText;
+    private ?string $logEventsVerboseText;
 
     /**
      * @psalm-param list<non-empty-string> $arguments
      * @psalm-param ?non-empty-list<non-empty-string> $testSuffixes
      */
-    public function __construct(array $arguments, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configurationFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnDeprecation, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnNotice, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?bool $stopOnDefect, ?bool $stopOnDeprecation, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnNotice, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $filter, ?string $generateBaseline, ?string $useBaseline, bool $ignoreBaseline, bool $generateConfiguration, bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, bool $listGroups, bool $listSuites, bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, bool $useDefaultConfiguration, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerTeamCity, ?bool $printerTestDox)
+    public function __construct(array $arguments, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configurationFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnDeprecation, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnNotice, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?bool $stopOnDefect, ?bool $stopOnDeprecation, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnNotice, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $filter, ?string $generateBaseline, ?string $useBaseline, bool $ignoreBaseline, bool $generateConfiguration, bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, bool $listGroups, bool $listSuites, bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, bool $useDefaultConfiguration, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerTeamCity, ?bool $printerTestDox)
     {
         $this->arguments                                    = $arguments;
         $this->atLeastVersion                               = $atLeastVersion;
@@ -135,7 +133,6 @@ final class Configuration
         $this->bootstrap                                    = $bootstrap;
         $this->cacheDirectory                               = $cacheDirectory;
         $this->cacheResult                                  = $cacheResult;
-        $this->cacheResultFile                              = $cacheResultFile;
         $this->checkVersion                                 = $checkVersion;
         $this->colors                                       = $colors;
         $this->columns                                      = $columns;
@@ -151,7 +148,6 @@ final class Configuration
         $this->coverageTextShowOnlySummary                  = $coverageTextShowOnlySummary;
         $this->coverageXml                                  = $coverageXml;
         $this->pathCoverage                                 = $pathCoverage;
-        $this->coverageCacheDirectory                       = $coverageCacheDirectory;
         $this->warmCoverageCache                            = $warmCoverageCache;
         $this->defaultTimeLimit                             = $defaultTimeLimit;
         $this->disableCodeCoverageIgnore                    = $disableCodeCoverageIgnore;
@@ -372,30 +368,6 @@ final class Configuration
         }
 
         return $this->cacheResult;
-    }
-
-    /**
-     * @psalm-assert-if-true !null $this->cacheResultFile
-     *
-     * @deprecated
-     */
-    public function hasCacheResultFile(): bool
-    {
-        return $this->cacheResultFile !== null;
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @deprecated
-     */
-    public function cacheResultFile(): string
-    {
-        if (!$this->hasCacheResultFile()) {
-            throw new Exception;
-        }
-
-        return $this->cacheResultFile;
     }
 
     public function checkVersion(): bool
@@ -681,30 +653,6 @@ final class Configuration
         }
 
         return $this->pathCoverage;
-    }
-
-    /**
-     * @psalm-assert-if-true !null $this->coverageCacheDirectory
-     *
-     * @deprecated
-     */
-    public function hasCoverageCacheDirectory(): bool
-    {
-        return $this->coverageCacheDirectory !== null;
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @deprecated
-     */
-    public function coverageCacheDirectory(): string
-    {
-        if (!$this->hasCoverageCacheDirectory()) {
-            throw new Exception;
-        }
-
-        return $this->coverageCacheDirectory;
     }
 
     public function warmCoverageCache(): bool

@@ -169,17 +169,10 @@ final class LoaderTest extends TestCase
     {
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
-        $this->assertSame('/tmp/cache', $codeCoverage->cacheDirectory()->path());
-
         $this->assertTrue($codeCoverage->pathCoverage());
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
-
-        $this->assertFalse($codeCoverage->directories()->notEmpty());
-        $this->assertFalse($codeCoverage->files()->notEmpty());
-        $this->assertFalse($codeCoverage->excludeDirectories()->notEmpty());
-        $this->assertFalse($codeCoverage->excludeFiles()->notEmpty());
 
         $this->assertTrue($codeCoverage->hasClover());
         $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());

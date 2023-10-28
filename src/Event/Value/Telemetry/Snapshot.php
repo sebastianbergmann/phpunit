@@ -14,12 +14,12 @@ namespace PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Snapshot
+final readonly class Snapshot
 {
-    private readonly HRTime $time;
-    private readonly MemoryUsage $memoryUsage;
-    private readonly MemoryUsage $peakMemoryUsage;
-    private readonly GarbageCollectorStatus $garbageCollectorStatus;
+    private HRTime $time;
+    private MemoryUsage $memoryUsage;
+    private MemoryUsage $peakMemoryUsage;
+    private GarbageCollectorStatus $garbageCollectorStatus;
 
     public function __construct(HRTime $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage, GarbageCollectorStatus $garbageCollectorStatus)
     {

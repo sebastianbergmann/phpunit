@@ -18,10 +18,10 @@ use PHPUnit\Event\InvalidArgumentException;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Duration
+final readonly class Duration
 {
-    private readonly int $seconds;
-    private readonly int $nanoseconds;
+    private int $seconds;
+    private int $nanoseconds;
 
     /**
      * @throws InvalidArgumentException

@@ -24,7 +24,10 @@ use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
-use PHPUnit\TestFixture\Metadata\Attribute\IgnoreCodeCoverageTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsClassTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
@@ -155,35 +158,22 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('medium', $metadata->asArray()[0]->groupName());
     }
 
-    #[TestDox('Parses #[IgnoreClassForCodeCoverage] attribute on class')]
-    public function test_parses_IgnoreClassForCodeCoverage_attribute_on_class(): void
+    #[TestDox('Parses #[IgnoreDeprecations] attribute on class')]
+    public function test_parses_IgnoreDeprecations_attribute_on_class(): void
     {
-        $metadata = $this->parser()->forClass(IgnoreCodeCoverageTest::class)->isIgnoreClassForCodeCoverage();
+        $metadata = $this->parser()->forClass(IgnoreDeprecationsClassTest::class)->isIgnoreDeprecations();
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isIgnoreClassForCodeCoverage());
-        $this->assertSame('className', $metadata->asArray()[0]->className());
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
     }
 
-    #[TestDox('Parses #[IgnoreMethodForCodeCoverage] attribute on class')]
-    public function test_parses_IgnoreMethodForCodeCoverage_attribute_on_class(): void
+    #[TestDox('Parses #[IgnorePhpunitDeprecations] attribute on class')]
+    public function test_parses_IgnorePhpunitDeprecations_attribute_on_class(): void
     {
-        $metadata = $this->parser()->forClass(IgnoreCodeCoverageTest::class)->isIgnoreMethodForCodeCoverage();
+        $metadata = $this->parser()->forClass(IgnorePhpunitDeprecationsClassTest::class)->isIgnorePhpunitDeprecations();
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isIgnoreMethodForCodeCoverage());
-        $this->assertSame('ClassName', $metadata->asArray()[0]->className());
-        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
-    }
-
-    #[TestDox('Parses #[IgnoreFunctionForCodeCoverage] attribute on class')]
-    public function test_parses_IgnoreFunctionForCodeCoverage_attribute_on_class(): void
-    {
-        $metadata = $this->parser()->forClass(IgnoreCodeCoverageTest::class)->isIgnoreFunctionForCodeCoverage();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isIgnoreFunctionForCodeCoverage());
-        $this->assertSame('functionName', $metadata->asArray()[0]->functionName());
+        $this->assertTrue($metadata->asArray()[0]->isIgnorePhpunitDeprecations());
     }
 
     #[TestDox('Parses #[PreserveGlobalState] attribute on class')]
@@ -649,6 +639,24 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertSame('another-group', $metadata->asArray()[0]->groupName());
+    }
+
+    #[TestDox('Parses #[IgnoreDeprecations] attribute on method')]
+    public function test_parses_IgnoreDeprecations_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(IgnoreDeprecationsMethodTest::class, 'testOne')->isIgnoreDeprecations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
+    }
+
+    #[TestDox('Parses #[IgnorePhpunitDeprecations] attribute on method')]
+    public function test_parses_IgnorePhpunitDeprecations_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(IgnorePhpunitDeprecationsMethodTest::class, 'testOne')->isIgnorePhpunitDeprecations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnorePhpunitDeprecations());
     }
 
     #[TestDox('Parses #[PostCondition] attribute on method')]

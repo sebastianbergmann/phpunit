@@ -16,9 +16,9 @@ use PHPUnit\TextUI\Configuration\File;
  *
  * @psalm-immutable
  */
-final class Cobertura
+final readonly class Cobertura
 {
-    private readonly File $target;
+    private File $target;
 
     public function __construct(File $target)
     {

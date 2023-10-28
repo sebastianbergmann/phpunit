@@ -20,11 +20,11 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Skipped implements Event
+final readonly class Skipped implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly Code\Test $test;
-    private readonly string $message;
+    private Telemetry\Info $telemetryInfo;
+    private Code\Test $test;
+    private string $message;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $message)
     {

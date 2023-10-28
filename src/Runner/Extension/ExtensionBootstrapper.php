@@ -23,10 +23,10 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExtensionBootstrapper
+final readonly class ExtensionBootstrapper
 {
-    private readonly Configuration $configuration;
-    private readonly Facade $facade;
+    private Configuration $configuration;
+    private Facade $facade;
 
     public function __construct(Configuration $configuration, Facade $facade)
     {

@@ -14,17 +14,17 @@ namespace PHPUnit\Event\Code;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class ClassMethod
+final readonly class ClassMethod
 {
     /**
      * @psalm-var class-string
      */
-    private readonly string $className;
+    private string $className;
 
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $methodName;
+    private string $methodName;
 
     /**
      * @psalm-param class-string $className

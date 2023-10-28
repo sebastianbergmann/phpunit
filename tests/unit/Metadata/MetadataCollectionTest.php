@@ -34,9 +34,6 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(DependsOnMethod::class)]
 #[UsesClass(DoesNotPerformAssertions::class)]
 #[UsesClass(Group::class)]
-#[UsesClass(IgnoreClassForCodeCoverage::class)]
-#[UsesClass(IgnoreMethodForCodeCoverage::class)]
-#[UsesClass(IgnoreFunctionForCodeCoverage::class)]
 #[UsesClass(Metadata::class)]
 #[UsesClass(PostCondition::class)]
 #[UsesClass(PreCondition::class)]
@@ -283,28 +280,12 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isGroup());
     }
 
-    public function test_Can_be_filtered_for_IgnoreClassForCodeCoverage(): void
+    public function test_Can_be_filtered_for_IgnoreDeprecations(): void
     {
-        $collection = $this->collectionWithOneOfEach()->isIgnoreClassForCodeCoverage();
+        $collection = $this->collectionWithOneOfEach()->isIgnoreDeprecations();
 
         $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isIgnoreClassForCodeCoverage());
-    }
-
-    public function test_Can_be_filtered_for_IgnoreMethodForCodeCoverage(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isIgnoreMethodForCodeCoverage();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isIgnoreMethodForCodeCoverage());
-    }
-
-    public function test_Can_be_filtered_for_IgnoreFunctionForCodeCoverage(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isIgnoreFunctionForCodeCoverage();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isIgnoreFunctionForCodeCoverage());
+        $this->assertTrue($collection->asArray()[0]->isIgnoreDeprecations());
     }
 
     public function test_Can_be_filtered_for_PostCondition(): void
@@ -505,9 +486,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::excludeGlobalVariableFromBackupOnClass(''),
                 Metadata::excludeStaticPropertyFromBackupOnClass('', ''),
                 Metadata::groupOnClass(''),
-                Metadata::ignoreClassForCodeCoverage(''),
-                Metadata::ignoreMethodForCodeCoverage('', ''),
-                Metadata::ignoreFunctionForCodeCoverage(''),
+                Metadata::ignoreDeprecationsOnClass(),
                 Metadata::postCondition(),
                 Metadata::preCondition(),
                 Metadata::preserveGlobalStateOnClass(true),

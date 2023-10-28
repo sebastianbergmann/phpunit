@@ -16,7 +16,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\CoverageClassNothingTest;
 use PHPUnit\TestFixture\CoverageClassTest;
 use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
@@ -32,7 +31,6 @@ use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
-use PHPUnit\TestFixture\IgnoringCodeUnitsTest;
 use PHPUnit\TestFixture\InterfaceTargetTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAnnotationTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAttributeTest;
@@ -431,16 +429,5 @@ final class CodeCoverageTest extends TestCase
         $this->expectExceptionMessage('Function "::invalid_function" is not a valid target for code coverage');
 
         (new CodeCoverage)->linesToBeUsed(InvalidFunctionTargetTest::class, 'testOne');
-    }
-
-    public function testCanIgnoreCodeUnits(): void
-    {
-        $this->assertSame(
-            [
-                TEST_FILES_PATH . 'CoveredClass.php'    => array_merge(range(12, 27), range(37, 41)),
-                TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-            ],
-            (new CodeCoverage)->linesToBeIgnored(TestSuite::fromClassName(IgnoringCodeUnitsTest::class)),
-        );
     }
 }

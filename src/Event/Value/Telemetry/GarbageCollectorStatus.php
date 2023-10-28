@@ -16,20 +16,20 @@ use PHPUnit\Event\RuntimeException;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class GarbageCollectorStatus
+final readonly class GarbageCollectorStatus
 {
-    private readonly int $runs;
-    private readonly int $collected;
-    private readonly int $threshold;
-    private readonly int $roots;
-    private readonly ?float $applicationTime;
-    private readonly ?float $collectorTime;
-    private readonly ?float $destructorTime;
-    private readonly ?float $freeTime;
-    private readonly ?bool $running;
-    private readonly ?bool $protected;
-    private readonly ?bool $full;
-    private readonly ?int $bufferSize;
+    private int $runs;
+    private int $collected;
+    private int $threshold;
+    private int $roots;
+    private ?float $applicationTime;
+    private ?float $collectorTime;
+    private ?float $destructorTime;
+    private ?float $freeTime;
+    private ?bool $running;
+    private ?bool $protected;
+    private ?bool $full;
+    private ?int $bufferSize;
 
     public function __construct(int $runs, int $collected, int $threshold, int $roots, ?float $applicationTime, ?float $collectorTime, ?float $destructorTime, ?float $freeTime, ?bool $running, ?bool $protected, ?bool $full, ?int $bufferSize)
     {

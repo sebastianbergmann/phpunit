@@ -18,10 +18,10 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class BootstrapFinished implements Event
+final readonly class BootstrapFinished implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly string $filename;
+    private Telemetry\Info $telemetryInfo;
+    private string $filename;
 
     public function __construct(Telemetry\Info $telemetryInfo, string $filename)
     {

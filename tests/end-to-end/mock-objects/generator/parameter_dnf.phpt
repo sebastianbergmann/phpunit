@@ -1,10 +1,5 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator\Generator::generate('Foo', [], 'MockFoo', true, true)
---SKIPIF--
-<?php declare(strict_types=1);
-if (version_compare('8.2.0-dev', PHP_VERSION, '>')) {
-    print 'skip: PHP 8.2 is required.';
-}
 --FILE--
 <?php declare(strict_types=1);
 interface A
@@ -29,6 +24,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     Foo::class,
     true,
+    true,
     [],
     'MockFoo',
     true,
@@ -43,6 +39,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

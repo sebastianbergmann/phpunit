@@ -17,12 +17,12 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class TestWithJson
+final readonly class TestWithJson
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $json;
+    private string $json;
 
     /**
      * @psalm-param non-empty-string $json

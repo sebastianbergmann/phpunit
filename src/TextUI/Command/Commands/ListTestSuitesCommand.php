@@ -16,9 +16,9 @@ use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ListTestSuitesCommand implements Command
+final readonly class ListTestSuitesCommand implements Command
 {
-    private readonly TestSuiteCollection $suites;
+    private TestSuiteCollection $suites;
 
     public function __construct(TestSuiteCollection $suites)
     {

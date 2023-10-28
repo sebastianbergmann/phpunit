@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner\Filter;
 
 use function in_array;
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +53,7 @@ final class TestIdFilterIterator extends RecursiveFilterIterator
 
         try {
             return in_array($test->valueObjectForEvents()->id(), $this->testIds, true);
-        } catch (MoreThanOneDataSetFromDataProviderException|NoDataSetFromDataProviderException) {
+        } catch (NoDataSetFromDataProviderException) {
             return false;
         }
     }

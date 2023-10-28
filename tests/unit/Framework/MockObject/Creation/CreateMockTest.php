@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
-use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
@@ -53,7 +52,6 @@ final class CreateMockTest extends TestCase
         $this->createMock(FinalClass::class);
     }
 
-    #[RequiresPhp('8.2')]
     public function testCannotCreateMockObjectForReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);

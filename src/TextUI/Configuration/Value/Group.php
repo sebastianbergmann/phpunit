@@ -14,9 +14,9 @@ namespace PHPUnit\TextUI\Configuration;
  *
  * @psalm-immutable
  */
-final class Group
+final readonly class Group
 {
-    private readonly string $name;
+    private string $name;
 
     public function __construct(string $name)
     {

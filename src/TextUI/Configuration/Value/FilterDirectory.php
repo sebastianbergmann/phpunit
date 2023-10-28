@@ -14,14 +14,14 @@ namespace PHPUnit\TextUI\Configuration;
  *
  * @psalm-immutable
  */
-final class FilterDirectory
+final readonly class FilterDirectory
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $path;
-    private readonly string $prefix;
-    private readonly string $suffix;
+    private string $path;
+    private string $prefix;
+    private string $suffix;
 
     /**
      * @psalm-param non-empty-string $path

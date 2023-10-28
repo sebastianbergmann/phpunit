@@ -16,6 +16,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     C::class,
     true,
+    true,
     [],
     'MockC',
     true,
@@ -30,6 +31,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
+    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

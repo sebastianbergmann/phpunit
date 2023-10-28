@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function assert;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ use PHPUnit\TestFixture\MockObject\TestProxyFixture;
 #[Group('test-doubles/test-proxy')]
 #[Medium]
 #[TestDox('createTestProxy()')]
+#[IgnorePhpunitDeprecations]
 final class CreateTestProxyTest extends TestCase
 {
     public function testCreatesTestProxyForExtendableClass(): void

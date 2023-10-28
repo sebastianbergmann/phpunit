@@ -14,19 +14,19 @@ namespace PHPUnit\TextUI\Configuration;
  *
  * @psalm-immutable
  */
-final class Php
+final readonly class Php
 {
-    private readonly DirectoryCollection $includePaths;
-    private readonly IniSettingCollection $iniSettings;
-    private readonly ConstantCollection $constants;
-    private readonly VariableCollection $globalVariables;
-    private readonly VariableCollection $envVariables;
-    private readonly VariableCollection $postVariables;
-    private readonly VariableCollection $getVariables;
-    private readonly VariableCollection $cookieVariables;
-    private readonly VariableCollection $serverVariables;
-    private readonly VariableCollection $filesVariables;
-    private readonly VariableCollection $requestVariables;
+    private DirectoryCollection $includePaths;
+    private IniSettingCollection $iniSettings;
+    private ConstantCollection $constants;
+    private VariableCollection $globalVariables;
+    private VariableCollection $envVariables;
+    private VariableCollection $postVariables;
+    private VariableCollection $getVariables;
+    private VariableCollection $cookieVariables;
+    private VariableCollection $serverVariables;
+    private VariableCollection $filesVariables;
+    private VariableCollection $requestVariables;
 
     public function __construct(DirectoryCollection $includePaths, IniSettingCollection $iniSettings, ConstantCollection $constants, VariableCollection $globalVariables, VariableCollection $envVariables, VariableCollection $postVariables, VariableCollection $getVariables, VariableCollection $cookieVariables, VariableCollection $serverVariables, VariableCollection $filesVariables, VariableCollection $requestVariables)
     {

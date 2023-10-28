@@ -9,8 +9,12 @@
  */
 namespace PHPUnit\Event;
 
+use function assert;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\DataProviderMethodCalled;
 use PHPUnit\Event\Test\DataProviderMethodFinished;
@@ -752,10 +756,23 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoTestCaseObjectOnCallStackException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void
+    public function testTriggeredPhpunitDeprecation(?Code\Test $test, string $message): void
     {
+        if ($test === null) {
+            $test = TestMethodBuilder::fromCallStack();
+        }
+
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            if ($test->metadata()->isIgnorePhpunitDeprecations()->isNotEmpty()) {
+                return;
+            }
+        }
+
         $this->dispatcher->dispatch(
             new Test\PhpunitDeprecationTriggered(
                 $this->telemetryInfo(),
@@ -769,7 +786,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
+    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest): void
     {
         $this->dispatcher->dispatch(
             new Test\PhpDeprecationTriggered(
@@ -780,6 +797,7 @@ final class DispatchingEmitter implements Emitter
                 $line,
                 $suppressed,
                 $ignoredByBaseline,
+                $ignoredByTest,
             ),
         );
     }
@@ -788,7 +806,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
+    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest): void
     {
         $this->dispatcher->dispatch(
             new Test\DeprecationTriggered(
@@ -799,6 +817,7 @@ final class DispatchingEmitter implements Emitter
                 $line,
                 $suppressed,
                 $ignoredByBaseline,
+                $ignoredByTest,
             ),
         );
     }

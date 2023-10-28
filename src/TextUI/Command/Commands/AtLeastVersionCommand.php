@@ -15,9 +15,9 @@ use PHPUnit\Runner\Version;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AtLeastVersionCommand implements Command
+final readonly class AtLeastVersionCommand implements Command
 {
-    private readonly string $version;
+    private string $version;
 
     public function __construct(string $version)
     {

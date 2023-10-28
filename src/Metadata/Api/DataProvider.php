@@ -27,15 +27,11 @@ use function strlen;
 use function substr;
 use function trim;
 use PHPUnit\Event;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
-use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
-use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
@@ -117,11 +113,7 @@ final class DataProvider
                 $object = null;
 
                 if (!$method->isPublic()) {
-                    Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                        $this->valueObjectForTestMethodWithoutTestData(
-                            $className,
-                            $methodName,
-                        ),
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() is not public',
                             $_dataProvider->className(),
@@ -131,38 +123,26 @@ final class DataProvider
                 }
 
                 if (!$method->isStatic()) {
-                    Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                        $this->valueObjectForTestMethodWithoutTestData(
-                            $className,
-                            $methodName,
-                        ),
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() is not static',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
                     );
-
-                    $object = $class->newInstanceWithoutConstructor();
                 }
 
-                if ($method->getNumberOfParameters() === 0) {
-                    $data = $method->invoke($object);
-                } else {
-                    Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                        $this->valueObjectForTestMethodWithoutTestData(
-                            $className,
-                            $methodName,
-                        ),
+                if ($method->getNumberOfParameters() > 0) {
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() expects an argument',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
                     );
-
-                    $data = $method->invoke($object, $_dataProvider->methodName());
                 }
+
+                $data = $method->invoke($object);
             } catch (Throwable $e) {
                 Event\Facade::emitter()->dataProviderMethodFinished(
                     $testMethod,
@@ -249,7 +229,7 @@ final class DataProvider
             return null;
         }
 
-        $offset            = strlen($matches[0][0]) + $matches[0][1];
+        $offset            = strlen($matches[0][0]) + (int) $matches[0][1];
         $annotationContent = substr($docComment, $offset);
         $data              = [];
 
@@ -278,32 +258,5 @@ final class DataProvider
         }
 
         return $data;
-    }
-
-    /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     *
-     * @throws MoreThanOneDataSetFromDataProviderException
-     */
-    private function valueObjectForTestMethodWithoutTestData(string $className, string $methodName): TestMethod
-    {
-        $location = Reflection::sourceLocationFor($className, $methodName);
-
-        return new TestMethod(
-            $className,
-            $methodName,
-            $location['file'],
-            $location['line'],
-            Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                $className,
-                $methodName,
-            ),
-            MetadataRegistry::parser()->forClassAndMethod(
-                $className,
-                $methodName,
-            ),
-            TestDataCollection::fromArray([]),
-        );
     }
 }

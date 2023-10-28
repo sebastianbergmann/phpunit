@@ -16,13 +16,13 @@ use function sprintf;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Info
+final readonly class Info
 {
-    private readonly Snapshot $current;
-    private readonly Duration $durationSinceStart;
-    private readonly MemoryUsage $memorySinceStart;
-    private readonly Duration $durationSincePrevious;
-    private readonly MemoryUsage $memorySincePrevious;
+    private Snapshot $current;
+    private Duration $durationSinceStart;
+    private MemoryUsage $memorySinceStart;
+    private Duration $durationSincePrevious;
+    private MemoryUsage $memorySincePrevious;
 
     public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)
     {

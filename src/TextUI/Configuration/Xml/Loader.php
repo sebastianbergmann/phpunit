@@ -299,7 +299,6 @@ final class Loader
 
     private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage
     {
-        $cacheDirectory            = null;
         $pathCoverage              = false;
         $includeUncoveredFiles     = true;
         $ignoreDeprecatedCodeUnits = false;
@@ -308,14 +307,6 @@ final class Loader
         $element = $this->element($xpath, 'coverage');
 
         if ($element) {
-            $cacheDirectory = $this->getStringAttribute($element, 'cacheDirectory');
-
-            if ($cacheDirectory !== null) {
-                $cacheDirectory = new Directory(
-                    $this->toAbsolutePath($filename, $cacheDirectory),
-                );
-            }
-
             $pathCoverage = $this->getBooleanAttribute(
                 $element,
                 'pathCoverage',
@@ -454,11 +445,6 @@ final class Loader
         }
 
         return new CodeCoverage(
-            $cacheDirectory,
-            $this->readFilterDirectories($filename, $xpath, 'coverage/include/directory'),
-            $this->readFilterFiles($filename, $xpath, 'coverage/include/file'),
-            $this->readFilterDirectories($filename, $xpath, 'coverage/exclude/directory'),
-            $this->readFilterFiles($filename, $xpath, 'coverage/exclude/file'),
             $pathCoverage,
             $includeUncoveredFiles,
             $ignoreDeprecatedCodeUnits,
@@ -741,12 +727,6 @@ final class Loader
             $cacheDirectory = $this->toAbsolutePath($filename, $cacheDirectory);
         }
 
-        $cacheResultFile = $this->getStringAttribute($document->documentElement, 'cacheResultFile');
-
-        if ($cacheResultFile !== null) {
-            $cacheResultFile = $this->toAbsolutePath($filename, $cacheResultFile);
-        }
-
         $bootstrap = $this->getStringAttribute($document->documentElement, 'bootstrap');
 
         if ($bootstrap !== null) {
@@ -763,30 +743,23 @@ final class Loader
 
         if ($document->documentElement->hasAttribute('backupStaticProperties')) {
             $backupStaticProperties = $this->getBooleanAttribute($document->documentElement, 'backupStaticProperties', false);
-        } elseif ($document->documentElement->hasAttribute('backupStaticAttributes')) {
-            $backupStaticProperties = $this->getBooleanAttribute($document->documentElement, 'backupStaticAttributes', false);
         }
 
         $requireCoverageMetadata = false;
 
         if ($document->documentElement->hasAttribute('requireCoverageMetadata')) {
             $requireCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'requireCoverageMetadata', false);
-        } elseif ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
-            $requireCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'forceCoversAnnotation', false);
         }
 
         $beStrictAboutCoverageMetadata = false;
 
         if ($document->documentElement->hasAttribute('beStrictAboutCoverageMetadata')) {
             $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoverageMetadata', false);
-        } elseif ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
-            $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoversAnnotation', false);
         }
 
         return new PHPUnit(
             $cacheDirectory,
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
-            $cacheResultFile,
             $this->getColumns($document),
             $this->getColors($document),
             $this->getBooleanAttribute($document->documentElement, 'stderr', false),

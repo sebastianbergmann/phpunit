@@ -7,17 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\IgnoreClassUsingAttribute;
+namespace PHPUnit\TestFixture\Metadata\Attribute;
 
-final class CoveredClass
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
+use PHPUnit\Framework\TestCase;
+
+final class IgnoreDeprecationsMethodTest extends TestCase
 {
-    public function m(): bool
+    #[IgnoreDeprecations]
+    public function testOne(): void
     {
-        return $this->n();
-    }
-
-    private function n(): bool
-    {
-        return true;
     }
 }

@@ -27,7 +27,6 @@ use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\NoPreviousThrowableException;
-use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
@@ -132,7 +131,6 @@ abstract class AbstractPhpProcess
      *
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
-     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      */
     public function runTestJob(string $job, Test $test, string $processResultFile): void
@@ -226,7 +224,6 @@ abstract class AbstractPhpProcess
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
-     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      */
     private function processChildResult(Test $test, string $stdout, string $stderr): void

@@ -18,27 +18,27 @@ use PHPUnit\Runner\FileDoesNotExistException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Issue
+final readonly class Issue
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $file;
+    private string $file;
 
     /**
      * @psalm-var positive-int
      */
-    private readonly int $line;
+    private int $line;
 
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $hash;
+    private string $hash;
 
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $description;
+    private string $description;
 
     /**
      * @psalm-param non-empty-string $file

@@ -16,10 +16,10 @@ use PHPUnit\TextUI\Configuration\Configuration;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Configured implements Event
+final readonly class Configured implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly Configuration $configuration;
+    private Telemetry\Info $telemetryInfo;
+    private Configuration $configuration;
 
     public function __construct(Telemetry\Info $telemetryInfo, Configuration $configuration)
     {
