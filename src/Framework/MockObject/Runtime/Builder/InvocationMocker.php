@@ -13,8 +13,11 @@ use function array_flip;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
+use function array_pop;
+use function assert;
 use function count;
 use function is_string;
+use function range;
 use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -117,7 +120,45 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
     public function willReturnMap(array $valueMap): self
     {
-        $stub = new ReturnValueMap($valueMap);
+        $method = $this->configuredMethod();
+
+        assert($method instanceof ConfigurableMethod);
+
+        $numberOfParameters = $method->numberOfParameters();
+        $defaultValues      = $method->defaultParameterValues();
+        $hasDefaultValues   = !empty($defaultValues);
+
+        $_valueMap = [];
+
+        foreach ($valueMap as $mapping) {
+            $numberOfConfiguredParameters = count($mapping) - 1;
+
+            if ($numberOfConfiguredParameters === $numberOfParameters || !$hasDefaultValues) {
+                $_valueMap[] = $mapping;
+
+                continue;
+            }
+
+            $_mapping    = [];
+            $returnValue = array_pop($mapping);
+
+            foreach (range(0, $numberOfParameters - 1) as $i) {
+                if (isset($mapping[$i])) {
+                    $_mapping[] = $mapping[$i];
+
+                    continue;
+                }
+
+                if (isset($defaultValues[$i])) {
+                    $_mapping[] = $defaultValues[$i];
+                }
+            }
+
+            $_mapping[]  = $returnValue;
+            $_valueMap[] = $_mapping;
+        }
+
+        $stub = new ReturnValueMap($_valueMap);
 
         return $this->will($stub);
     }

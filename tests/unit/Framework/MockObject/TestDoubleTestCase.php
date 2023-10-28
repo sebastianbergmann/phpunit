@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
@@ -135,6 +136,26 @@ abstract class TestDoubleTestCase extends TestCase
 
         $this->assertSame(2, $double->doSomethingElse(1));
         $this->assertSame(4, $double->doSomethingElse(3));
+    }
+
+    final public function testMethodWithDefaultParameterValuesCanBeConfiguredToReturnValuesBasedOnArgumentMapping(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->method('doSomething')->willReturnMap([[1, 2, 3], [4, 5, 6]]);
+
+        $this->assertSame(3, $double->doSomething(1, 2));
+        $this->assertSame(6, $double->doSomething(4, 5));
+    }
+
+    final public function testMethodWithDefaultParameterValuesCanBeConfiguredToReturnValuesBasedOnArgumentMappingThatOmitsDefaultValues(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->method('doSomething')->willReturnMap([[1, 2], [3, 4]]);
+
+        $this->assertSame(2, $double->doSomething(1));
+        $this->assertSame(4, $double->doSomething(3));
     }
 
     final public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void
