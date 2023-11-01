@@ -64,10 +64,10 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 | Issue | Description                                                                                            | Since  | Replacement                                                                    |
 |-------|--------------------------------------------------------------------------------------------------------|--------|--------------------------------------------------------------------------------|
-|       | `PHPUnit\TextUI\Configuration\Configuration::excludeDirectories()`                                     | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->excludeDirectories()`   |
-|       | `PHPUnit\TextUI\Configuration\Configuration::excludeFiles()`                                           | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->excludeFiles()`         |
-|       | `PHPUnit\TextUI\Configuration\Configuration::includeDirectories()`                                     | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->includeDirectories()`   |
-|       | `PHPUnit\TextUI\Configuration\Configuration::includeFiles()`                                           | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->includeFiles()`         |
+|       | `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeDirectories()`                             | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->excludeDirectories()`   |
+|       | `PHPUnit\TextUI\Configuration\Configuration::coverageExcludeFiles()`                                   | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->excludeFiles()`         |
+|       | `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeDirectories()`                             | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->includeDirectories()`   |
+|       | `PHPUnit\TextUI\Configuration\Configuration::coverageIncludeFiles()`                                   | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->includeFiles()`         |
 |       | `PHPUnit\TextUI\Configuration\Configuration::loadPharExtensions()`                                     | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::noExtensions()`                   |
 |       | `PHPUnit\TextUI\Configuration\Configuration::hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()` | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->notEmpty()`             |
 |       | `PHPUnit\TextUI\Configuration\Configuration::restrictDeprecations()`                                   | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->restrictDeprecations()` |
