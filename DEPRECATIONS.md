@@ -1,26 +1,5 @@
 # Deprecations
 
-## Soft Deprecations
-
-This functionality is currently [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation):
-
-### Extending PHPUnit
-
-| Issue | Description                                                                                            | Since  | Replacement                                                                    |
-|-------|--------------------------------------------------------------------------------------------------------|--------|--------------------------------------------------------------------------------|
-|       | `PHPUnit\TextUI\Configuration\Configuration::excludeDirectories()`                                     | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->excludeDirectories()`   |
-|       | `PHPUnit\TextUI\Configuration\Configuration::excludeFiles()`                                           | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->excludeFiles()`         |
-|       | `PHPUnit\TextUI\Configuration\Configuration::includeDirectories()`                                     | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->includeDirectories()`   |
-|       | `PHPUnit\TextUI\Configuration\Configuration::includeFiles()`                                           | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->includeFiles()`         |
-|       | `PHPUnit\TextUI\Configuration\Configuration::loadPharExtensions()`                                     | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::noExtensions()`                   |
-|       | `PHPUnit\TextUI\Configuration\Configuration::hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()` | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->notEmpty()`             |
-|       | `PHPUnit\TextUI\Configuration\Configuration::restrictDeprecations()`                                   | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->restrictDeprecations()` |
-|       | `PHPUnit\TextUI\Configuration\Configuration::restrictNotices()`                                        | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->restrictNotices()`      |
-|       | `PHPUnit\TextUI\Configuration\Configuration::restrictWarnings()`                                       | 10.2.0 | `PHPUnit\TextUI\Configuration\Configuration::source()->restrictWarnings()`     |
-|       | `PHPUnit\TextUI\Configuration\Configuration::cliArgument()`                                            | 10.4.0 | `PHPUnit\TextUI\Configuration\Configuration::cliArguments()[0]`                |
-|       | `PHPUnit\TextUI\Configuration\Configuration::hasCliArgument()`                                         | 10.4.0 | `PHPUnit\TextUI\Configuration\Configuration::hasCliArguments()`                |
-|       | `PHPUnit\Framework\Constraint\Constraint::exporter()`                                                  | 10.4.0 |                                                                                |
-
 ## Hard Deprecations
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):

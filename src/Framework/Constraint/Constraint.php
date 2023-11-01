@@ -63,14 +63,6 @@ abstract class Constraint implements Countable, SelfDescribing
     }
 
     /**
-     * @deprecated
-     */
-    protected function exporter(): \SebastianBergmann\Exporter\Exporter
-    {
-        return new \SebastianBergmann\Exporter\Exporter;
-    }
-
-    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *

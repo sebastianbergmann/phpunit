@@ -268,32 +268,6 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !empty $this->cliArguments
-     *
-     * @deprecated Use hasCliArguments() instead
-     */
-    public function hasCliArgument(): bool
-    {
-        return !empty($this->cliArguments);
-    }
-
-    /**
-     * @throws NoCliArgumentException
-     *
-     * @return non-empty-string
-     *
-     * @deprecated Use cliArguments()[0] instead
-     */
-    public function cliArgument(): string
-    {
-        if (!$this->hasCliArguments()) {
-            throw new NoCliArgumentException;
-        }
-
-        return $this->cliArguments[0];
-    }
-
-    /**
      * @psalm-assert-if-true !null $this->configurationFile
      */
     public function hasConfigurationFile(): bool
@@ -381,70 +355,6 @@ final class Configuration
     public function source(): Source
     {
         return $this->source;
-    }
-
-    /**
-     * @deprecated Use source()->restrictDeprecations() instead
-     */
-    public function restrictDeprecations(): bool
-    {
-        return $this->source()->restrictDeprecations();
-    }
-
-    /**
-     * @deprecated Use source()->restrictNotices() instead
-     */
-    public function restrictNotices(): bool
-    {
-        return $this->source()->restrictNotices();
-    }
-
-    /**
-     * @deprecated Use source()->restrictWarnings() instead
-     */
-    public function restrictWarnings(): bool
-    {
-        return $this->source()->restrictWarnings();
-    }
-
-    /**
-     * @deprecated Use source()->notEmpty() instead
-     */
-    public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
-    {
-        return $this->source->notEmpty();
-    }
-
-    /**
-     * @deprecated Use source()->includeDirectories() instead
-     */
-    public function coverageIncludeDirectories(): FilterDirectoryCollection
-    {
-        return $this->source()->includeDirectories();
-    }
-
-    /**
-     * @deprecated Use source()->includeFiles() instead
-     */
-    public function coverageIncludeFiles(): FileCollection
-    {
-        return $this->source()->includeFiles();
-    }
-
-    /**
-     * @deprecated Use source()->excludeDirectories() instead
-     */
-    public function coverageExcludeDirectories(): FilterDirectoryCollection
-    {
-        return $this->source()->excludeDirectories();
-    }
-
-    /**
-     * @deprecated Use source()->excludeFiles() instead
-     */
-    public function coverageExcludeFiles(): FileCollection
-    {
-        return $this->source()->excludeFiles();
     }
 
     public function testResultCacheFile(): string
@@ -776,14 +686,6 @@ final class Configuration
     public function columns(): int
     {
         return $this->columns;
-    }
-
-    /**
-     * @deprecated Use noExtensions() instead
-     */
-    public function loadPharExtensions(): bool
-    {
-        return $this->noExtensions;
     }
 
     public function noExtensions(): bool
