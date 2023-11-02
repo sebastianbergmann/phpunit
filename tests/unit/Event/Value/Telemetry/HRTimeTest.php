@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 final class HRTimeTest extends TestCase
 {
     /**
-     * @return array<string, array<{0: int, 1: int, 2: int, 3: int>
+     * @return array<string, array{0: int, 1: int, 2: int, 3: int}>
      */
     public static function provideStartGreaterThanEnd(): array
     {
@@ -47,7 +47,7 @@ final class HRTimeTest extends TestCase
     }
 
     /**
-     * @return array<string, array<{0: int, 1: int, 2: int, 3: int, 4: Duration>
+     * @return array<string, array{0: int, 1: int, 2: int, 3: int, 4: Duration}>
      */
     public static function provideStartEndAndDuration(): array
     {
