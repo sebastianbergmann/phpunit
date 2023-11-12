@@ -14,6 +14,7 @@ labels: type/bug, version/9, version/10
 - Please keep the table shown below at the top of your issue.
 - Please include the output of "composer info | sort" if you installed PHPUnit using Composer.
 - Please post code as text (using proper markup). Do not post screenshots of code.
+- Please make sure that you have configured your PHP interpreter like so: `error_reporting=-1`, `log_errors_max_len=0`, `zend.assertions=1`, `assert.exception=1`.
 - Please remove this comment before submitting your issue.
 -->
 
