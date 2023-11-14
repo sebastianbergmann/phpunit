@@ -28,6 +28,7 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
@@ -176,9 +177,17 @@ final class JunitXmlLogger
      * @throws InvalidArgumentException
      * @throws NoDataSetFromDataProviderException
      */
-    public function testPrepared(Prepared $event): void
+    public function testPreparationStarted(PreparationStarted $event): void
     {
         $this->createTestCase($event);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
+     */
+    public function testPrepared(Prepared $event): void
+    {
         $this->prepared = true;
     }
 
@@ -273,6 +282,7 @@ final class JunitXmlLogger
         $facade->registerSubscribers(
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
+            new TestPreparationStartedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestErroredSubscriber($this),
@@ -408,7 +418,7 @@ final class JunitXmlLogger
      *
      * @psalm-assert !null $this->currentTestCase
      */
-    private function createTestCase(Errored|Failed|MarkedIncomplete|Prepared|Skipped $event): void
+    private function createTestCase(Errored|Failed|MarkedIncomplete|PreparationStarted|Prepared|Skipped $event): void
     {
         $testCase = $this->document->createElement('testcase');
 

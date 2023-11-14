@@ -631,6 +631,10 @@ final class Application
 
         $first = true;
 
+        if ($t->getPrevious()) {
+            $t = $t->getPrevious();
+        }
+
         do {
             printf(
                 '%s%s: %s:%d%s%s%s%s',
