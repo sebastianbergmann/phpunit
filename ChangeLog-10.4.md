@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.4 release series are documented in this fi
 
 ## [10.4.3] - 2023-MM-DD
 
+### Changed
+
+* `MockBuilder::disableAutoReturnValueGeneration()` and `MockBuilder::enableAutoReturnValueGeneration()` are no longer deprecated
+
 ### Fixed
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
