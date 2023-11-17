@@ -532,16 +532,9 @@ final class MockBuilder
 
     /**
      * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5421
      */
     public function enableAutoReturnValueGeneration(): self
     {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::enableAutoReturnValueGeneration() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
-        );
-
         $this->returnValueGeneration = true;
 
         return $this;
@@ -549,16 +542,9 @@ final class MockBuilder
 
     /**
      * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5421
      */
     public function disableAutoReturnValueGeneration(): self
     {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::disableAutoReturnValueGeneration() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
-        );
-
         $this->returnValueGeneration = false;
 
         return $this;
