@@ -16,6 +16,7 @@ use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use UnitEnum;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -62,8 +63,8 @@ final class IsIdentical extends Constraint
                 );
             }
 
-            // if both values are array, make sure a diff is generated
-            if (is_array($this->value) && is_array($other)) {
+            // if both values are array or enums, make sure a diff is generated
+            if ((is_array($this->value) && is_array($other)) || ($this->value instanceof UnitEnum && $other instanceof UnitEnum)) {
                 $f = new ComparisonFailure(
                     $this->value,
                     $other,
