@@ -600,6 +600,16 @@
     <MissingReturnType>
       <code>getObject</code>
     </MissingReturnType>
+    <MissingThrowsDocblock>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+    </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
@@ -673,6 +683,14 @@
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
+  <file src="src/Framework/MockObject/MockClass.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->mockName]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code>class-string</code>
+    </MoreSpecificReturnType>
+  </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <PossiblyFalseOperand>
       <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
@@ -696,6 +714,14 @@
     <MissingParamType>
       <code>$originalObject</code>
     </MissingParamType>
+  </file>
+  <file src="src/Framework/MockObject/MockTrait.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->mockName]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code>class-string</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Rule/InvocationOrder.php">
     <MissingReturnType>
@@ -941,9 +967,6 @@
             );]]></code>
       <code><![CDATA[throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');]]></code>
     </MissingThrowsDocblock>
-    <NoValue>
-      <code><![CDATA[$this->dataName]]></code>
-    </NoValue>
     <PossiblyNullPropertyAssignmentValue>
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>null</code>
