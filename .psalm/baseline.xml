@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.15.0@5c774aca4746caf3d239d9c8cadb9f882ca29352">
+<files psalm-version="5.16.0@2897ba636551a8cb61601cc26f6ccfbba6c36591">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -290,10 +290,26 @@
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>getMethod</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
+      <code>testDouble</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
+  </file>
+  <file src="src/Framework/MockObject/Generator/MockClass.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->mockName]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code>class-string</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Generator/MockMethod.php">
     <InvalidArgument>
@@ -315,6 +331,14 @@
     <PossiblyFalseOperand>
       <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
     </PossiblyFalseOperand>
+  </file>
+  <file src="src/Framework/MockObject/Generator/MockTrait.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->mockName]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code>class-string</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <DeprecatedMethod>
