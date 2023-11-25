@@ -277,6 +277,16 @@ abstract class Assert
     }
 
     /**
+     * Asserts that two variables are equal with explicit arguments ordering.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertExpectedEqualsActual(mixed $expected, mixed $actual, string $message = ''): void
+    {
+        self::assertEquals($expected, $actual, $message);
+    }
+
+    /**
      * Asserts that two variables are equal (canonicalizing).
      *
      * @throws ExpectationFailedException
@@ -289,6 +299,16 @@ abstract class Assert
     }
 
     /**
+     * Asserts that two variables are equal (canonicalizing) with explicit arguments ordering.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertExpectedEqualsActualCanonicalizing(mixed $expected, mixed $actual, string $message = ''): void
+    {
+        self::assertEqualsCanonicalizing($expected, $actual, $message);
+    }
+
+    /**
      * Asserts that two variables are equal (ignoring case).
      *
      * @throws ExpectationFailedException
@@ -298,6 +318,16 @@ abstract class Assert
         $constraint = new IsEqualIgnoringCase($expected);
 
         static::assertThat($actual, $constraint, $message);
+    }
+
+    /**
+     * Asserts that two variables are equal (ignoring case) with explicit arguments ordering.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertExpectedEqualsActualIgnoringCase(mixed $expected, mixed $actual, string $message = ''): void
+    {
+        self::assertEqualsIgnoringCase($expected, $actual, $message);
     }
 
     /**
