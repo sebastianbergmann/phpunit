@@ -154,6 +154,8 @@
 
         <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/tmp/phar/phpunit.xsd"/>
 
+        <copy file="${basedir}/composer.lock" tofile="${basedir}/build/tmp/phar/composer.lock"/>
+
         <exec executable="${basedir}/build/scripts/phar-manifest.php" failonerror="true">
             <arg path="${basedir}/build/tmp/phar/manifest.txt"/>
             <arg path="${basedir}/build/tmp/phar/sbom.xml"/>
