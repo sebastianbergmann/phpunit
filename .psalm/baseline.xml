@@ -89,9 +89,6 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
-    <InvalidArrayOffset>
-      <code><![CDATA[gc_status()['running']]]></code>
-    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Runtime/PHP.php">
     <ImpureFunctionCall>
@@ -107,18 +104,6 @@
     <ImpureMethodCall>
       <code>fromBytes</code>
     </ImpureMethodCall>
-  </file>
-  <file src="src/Event/Value/Telemetry/Php83GarbageCollectorStatusProvider.php">
-    <InvalidArrayOffset>
-      <code><![CDATA[$status['application_time']]]></code>
-      <code><![CDATA[$status['buffer_size']]]></code>
-      <code><![CDATA[$status['collector_time']]]></code>
-      <code><![CDATA[$status['destructor_time']]]></code>
-      <code><![CDATA[$status['free_time']]]></code>
-      <code><![CDATA[$status['full']]]></code>
-      <code><![CDATA[$status['protected']]]></code>
-      <code><![CDATA[$status['running']]]></code>
-    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Test/TestCollection.php">
     <PropertyTypeCoercion>
