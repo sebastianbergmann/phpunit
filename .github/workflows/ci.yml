@@ -51,7 +51,7 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: ./tools/composer update --no-interaction --no-ansi --no-progress
+        run: ./tools/composer install --no-interaction --no-ansi --no-progress
 
       - name: Run Psalm on public API
         run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
@@ -102,7 +102,7 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
         run: php ./phpunit --testsuite unit
@@ -153,7 +153,7 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
         run: php ./phpunit --testsuite end-to-end
@@ -180,7 +180,7 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Collect code coverage with PHPUnit
         run: ./phpunit --coverage-clover=coverage.xml
