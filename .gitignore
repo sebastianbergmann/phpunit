@@ -3,7 +3,6 @@
 
 # Composer
 /vendor
-/composer.lock
 
 # Apache Ant
 /.ant_targets

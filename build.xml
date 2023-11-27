@@ -7,7 +7,6 @@
         <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/tmp"/>
         <delete dir="${basedir}/vendor"/>
-        <delete file="${basedir}/composer.lock"/>
 
         <property name="clean.done" value="true"/>
     </target>
@@ -30,12 +29,12 @@
     </target>
 
     <target name="-dependencies-installed">
-        <available file="${basedir}/composer.lock" property="dependencies-installed"/>
+        <available type="dir" file="${basedir}/vendor" property="dependencies-installed"/>
     </target>
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
         <exec executable="${basedir}/tools/composer" taskname="composer">
-            <arg value="update"/>
+            <arg value="install"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
             <arg value="--no-ansi"/>
@@ -436,7 +435,6 @@
 
     <target name="build-phar-and-run-phar-specific-tests" depends="clean,phar-snapshot" description="Build PHAR and run the PHAR-specific tests with it">
         <delete dir="${basedir}/vendor"/>
-        <delete file="${basedir}/composer.lock"/>
 
         <antcall target="run-phar-specific-tests"/>
     </target>
