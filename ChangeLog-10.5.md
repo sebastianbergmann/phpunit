@@ -12,7 +12,6 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Changed
 
-* [#5578](https://github.com/sebastianbergmann/phpunit/issues/5578): Put `composer.lock` under version control
 * `MockBuilder::disableAutoReturnValueGeneration()` and `MockBuilder::enableAutoReturnValueGeneration()` are no longer deprecated
 
 ### Fixed
