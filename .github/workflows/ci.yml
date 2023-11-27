@@ -13,6 +13,26 @@ permissions:
   contents: read
 
 jobs:
+  dependency-validation:
+    name: Dependency Validation
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: none, iconv, json, phar, tokenizer
+          coverage: none
+          tools: none
+
+      - name: Run Composer
+        run: ./tools/composer validate --strict composer.json
+
   coding-guidelines:
     name: Coding Guidelines
 
