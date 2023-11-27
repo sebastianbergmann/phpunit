@@ -61,9 +61,11 @@ if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = false;
 }
 
-$options = getopt('', array('manifest', 'sbom'));
+$options = getopt('', array('composer-lock', 'manifest', 'sbom'));
 
-if (isset($options['manifest'])) {
+if (isset($options['composer-lock'])) {
+    $printComposerLock = true;
+} elseif (isset($options['manifest'])) {
     $printManifest = true;
 } elseif (isset($options['sbom'])) {
     $printSbom = true;
@@ -99,6 +101,12 @@ foreach ([___CLASSLIST___] as $file) {
 require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
 
 if ($execute) {
+    if (isset($printComposerLock)) {
+        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/composer.lock');
+
+        exit;
+    }
+
     if (isset($printManifest)) {
         print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
 
