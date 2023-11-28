@@ -30,7 +30,7 @@ jobs:
           coverage: none
           tools: none
 
-      - name: Run Composer
+      - name: Ensure that composer.json is valid
         run: ./tools/composer validate --strict composer.json
 
   coding-guidelines:
