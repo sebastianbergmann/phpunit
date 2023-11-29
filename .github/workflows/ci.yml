@@ -62,6 +62,9 @@ jobs:
   type-checker:
     name: Type Checker
 
+    needs:
+      - dependency-validation
+
     runs-on: ubuntu-latest
 
     steps:
@@ -87,6 +90,9 @@ jobs:
 
   unit-tests:
     name: Unit Tests
+
+    needs:
+      - dependency-validation
 
     runs-on: ${{ matrix.os }}
 
