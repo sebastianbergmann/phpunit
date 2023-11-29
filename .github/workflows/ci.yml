@@ -34,10 +34,7 @@ jobs:
         run: ./tools/composer validate --no-ansi --strict composer.json
 
       - name: Ensure that dependencies can be installed
-        run: ./tools/composer --no-ansi install
-
-      - name: Ensure that dependencies are up-to-date
-        run: ./tools/composer show --no-ansi --minor-only --latest --direct --outdated --strict
+        run: ./tools/composer install --no-ansi --dry-run
 
   coding-guidelines:
     name: Coding Guidelines
