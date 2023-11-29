@@ -34,7 +34,10 @@ jobs:
         run: ./tools/composer validate --strict composer.json
 
       - name: Ensure that dependencies can be installed
-        run: ./tools/composer install --dry-run
+        run: ./tools/composer install
+
+      - name: Ensure that dependencies are up-to-date
+        run: ./tools/composer show --minor-only --latest --direct --outdated --strict
 
   coding-guidelines:
     name: Coding Guidelines
