@@ -31,10 +31,13 @@ jobs:
           tools: none
 
       - name: Ensure that composer.json is valid
-        run: ./tools/composer validate --strict composer.json
+        run: ./tools/composer validate --no-ansi --strict composer.json
 
       - name: Ensure that dependencies can be installed
-        run: ./tools/composer install --dry-run
+        run: ./tools/composer --no-ansi install
+
+      - name: Ensure that dependencies are up-to-date
+        run: ./tools/composer show --no-ansi --minor-only --latest --direct --outdated --strict
 
   coding-guidelines:
     name: Coding Guidelines
@@ -58,6 +61,9 @@ jobs:
 
   type-checker:
     name: Type Checker
+
+    needs:
+      - dependency-validation
 
     runs-on: ubuntu-latest
 
@@ -84,6 +90,9 @@ jobs:
 
   unit-tests:
     name: Unit Tests
+
+    needs:
+      - dependency-validation
 
     runs-on: ${{ matrix.os }}
 
