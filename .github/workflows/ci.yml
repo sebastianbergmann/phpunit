@@ -37,7 +37,7 @@ jobs:
         run: ./tools/composer --no-ansi install
 
       - name: Ensure that dependencies are up-to-date
-        run: ./tools/composer show --no-ansi --minor-only --latest --direct --outdated --strict
+        run: ./tools/composer outdated --no-ansi --strict
 
   coding-guidelines:
     name: Coding Guidelines
