@@ -1,10 +1,5 @@
 --TEST--
 phpunit --configuration=__DIR__.'/../_files/controlled-garbage-collection'
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
@@ -33,7 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Runner Disabled Garbage Collection
 Test Runner Triggered Garbage Collection
-Test Suite Started (%s/phpunit.xml, 2 tests)
+Test Suite Started (%s%ephpunit.xml, 2 tests)
 Test Suite Started (default, 2 tests)
 Test Suite Started (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testOne)
@@ -50,7 +45,7 @@ Test Finished (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::test
 Test Runner Triggered Garbage Collection
 Test Suite Finished (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest, 2 tests)
 Test Suite Finished (default, 2 tests)
-Test Suite Finished (%s/phpunit.xml, 2 tests)
+Test Suite Finished (%s%ephpunit.xml, 2 tests)
 Test Runner Execution Finished
 Test Runner Triggered Garbage Collection
 Test Runner Enabled Garbage Collection

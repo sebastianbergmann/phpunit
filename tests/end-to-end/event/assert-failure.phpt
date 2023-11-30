@@ -9,10 +9,6 @@ if (ini_get('zend.assertions') != 1) {
 if (ini_get('assert.exception') != 1) {
     print 'skip: assert.exception=1 is required' . PHP_EOL;
 }
-
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);

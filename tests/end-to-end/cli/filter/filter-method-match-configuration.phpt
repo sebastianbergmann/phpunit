@@ -1,10 +1,5 @@
 --TEST--
 phpunit --filter testOne
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
@@ -34,7 +29,7 @@ Test Runner Started
 Test Suite Sorted
 Test Suite Filtered (1 test)
 Test Runner Execution Started (1 test)
-Test Suite Started (%s/tests/end-to-end/_files/groups/phpunit.xml, 1 test)
+Test Suite Started (%s%etests%eend-to-end%e_files%egroups%ephpunit.xml, 1 test)
 Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Groups\FooTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Groups\FooTest::testOne)
@@ -44,7 +39,7 @@ Test Passed (PHPUnit\TestFixture\Groups\FooTest::testOne)
 Test Finished (PHPUnit\TestFixture\Groups\FooTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Groups\FooTest, 1 test)
 Test Suite Finished (default, 1 test)
-Test Suite Finished (%s/tests/end-to-end/_files/groups/phpunit.xml, 1 test)
+Test Suite Finished (%s%etests%eend-to-end%e_files%egroups%ephpunit.xml, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

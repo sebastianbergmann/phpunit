@@ -5,10 +5,6 @@ The right events are emitted in the right order for a test that runs code which 
 if (!(PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2)) {
     print "skip: this test requires PHP 8.2\n";
 }
-
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --INI--
 error_reporting=-1
 --FILE--
