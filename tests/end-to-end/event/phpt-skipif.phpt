@@ -26,13 +26,13 @@ Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
-Test Suite Started (%s/phpt-skipif-location-hint-example.phpt, 1 test)
-Test Preparation Started (%s/phpt-skipif-location-hint-example.phpt)
-Test Prepared (%s/phpt-skipif-location-hint-example.phpt)
-Test Skipped (%s/phpt-skipif-location-hint-example.phpt)
+Test Suite Started (%s%ephpt-skipif-location-hint-example.phpt, 1 test)
+Test Preparation Started (%s%ephpt-skipif-location-hint-example.phpt)
+Test Prepared (%s%ephpt-skipif-location-hint-example.phpt)
+Test Skipped (%s%ephpt-skipif-location-hint-example.phpt)
 something terrible happened
-Test Finished (%s/phpt-skipif-location-hint-example.phpt)
-Test Suite Finished (%s/phpt-skipif-location-hint-example.phpt, 1 test)
+Test Finished (%s%ephpt-skipif-location-hint-example.phpt)
+Test Suite Finished (%s%ephpt-skipif-location-hint-example.phpt, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
