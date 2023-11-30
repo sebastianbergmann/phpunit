@@ -32,7 +32,8 @@ Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 message
-Test Passed (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+Any E_*_ERROR must abort execution
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Suite Finished (PHPUnit\TestFixture\Event\UserErrorTest, 1 test)
 Test Runner Execution Finished

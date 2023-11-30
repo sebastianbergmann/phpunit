@@ -27,6 +27,7 @@ use const E_WARNING;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
+use ErrorException;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Runner\Baseline\Baseline;
@@ -151,7 +152,7 @@ final class ErrorHandler
                     $suppressed,
                 );
 
-                break;
+                throw new ErrorException('Any E_*_ERROR must abort execution');
 
             default:
                 return false;
