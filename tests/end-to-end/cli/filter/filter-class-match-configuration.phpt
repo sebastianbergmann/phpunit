@@ -29,7 +29,7 @@ Test Runner Started
 Test Suite Sorted
 Test Suite Filtered (3 tests)
 Test Runner Execution Started (3 tests)
-Test Suite Started (%s/tests/end-to-end/_files/groups/phpunit.xml, 3 tests)
+Test Suite Started (%s%etests%eend-to-end%e_files%egroups%ephpunit.xml, 3 tests)
 Test Suite Started (default, 3 tests)
 Test Suite Started (PHPUnit\TestFixture\Groups\FooTest, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\Groups\FooTest::testOne)
@@ -49,7 +49,7 @@ Test Passed (PHPUnit\TestFixture\Groups\FooTest::testThree)
 Test Finished (PHPUnit\TestFixture\Groups\FooTest::testThree)
 Test Suite Finished (PHPUnit\TestFixture\Groups\FooTest, 3 tests)
 Test Suite Finished (default, 3 tests)
-Test Suite Finished (%s/tests/end-to-end/_files/groups/phpunit.xml, 3 tests)
+Test Suite Finished (%s%etests%eend-to-end%e_files%egroups%ephpunit.xml, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

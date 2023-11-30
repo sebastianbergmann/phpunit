@@ -1,5 +1,8 @@
 --TEST--
 The right events are emitted in the right order for a test that is considered risky because it timed out
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pcntl')) echo 'skip: Extension pcntl is required';
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
