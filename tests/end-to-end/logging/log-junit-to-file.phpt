@@ -1,10 +1,5 @@
 --TEST--
 phpunit --log-junit junit.xml _files/StatusTest.php
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --FILE--
 <?php declare(strict_types=1);
 $logfile = tempnam(sys_get_temp_dir(), __FILE__);
