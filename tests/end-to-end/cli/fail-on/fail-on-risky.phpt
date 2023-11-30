@@ -1,10 +1,5 @@
 --TEST--
 Test Runner exits with shell exit code indicating failure when all tests are successful but at least one test was considered risky
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);

@@ -1,14 +1,5 @@
 --TEST--
 The right events are emitted in the right order for a test that runs code which triggers E_DEPRECATED
---SKIPIF--
-<?php declare(strict_types=1);
-if (!(PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 1)) {
-    print "skip: this test requires PHP 8.1\n";
-}
-
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --INI--
 error_reporting=-1
 --FILE--

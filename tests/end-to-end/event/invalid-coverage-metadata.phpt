@@ -2,9 +2,6 @@
 The right events are emitted in the right order for a test that has invalid code coverage metadata
 --SKIPIF--
 <?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 if (!extension_loaded('pcov')) {
     print "skip: this test requires pcov\n";
 }
