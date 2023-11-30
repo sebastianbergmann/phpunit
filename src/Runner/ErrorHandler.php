@@ -9,8 +9,14 @@
  */
 namespace PHPUnit\Runner;
 
+use const E_COMPILE_ERROR;
+use const E_COMPILE_WARNING;
+use const E_CORE_ERROR;
+use const E_CORE_WARNING;
 use const E_DEPRECATED;
+use const E_ERROR;
 use const E_NOTICE;
+use const E_PARSE;
 use const E_STRICT;
 use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
@@ -30,9 +36,11 @@ use PHPUnit\Util\ExcludeList;
  */
 final class ErrorHandler
 {
-    private static ?self $instance = null;
-    private ?Baseline $baseline    = null;
-    private bool $enabled          = false;
+    private const UNHANDLEABLE_LEVELS         = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
+    private static ?self $instance            = null;
+    private ?Baseline $baseline               = null;
+    private bool $enabled                     = false;
+    private ?int $originalErrorReportingLevel = null;
 
     public static function instance(): self
     {
@@ -146,7 +154,7 @@ final class ErrorHandler
                 return false;
         }
 
-        return true;
+        return false;
     }
 
     public function enable(): void
@@ -164,6 +172,9 @@ final class ErrorHandler
         }
 
         $this->enabled = true;
+
+        $this->originalErrorReportingLevel = error_reporting();
+        error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
     }
 
     public function disable(): void
@@ -175,6 +186,9 @@ final class ErrorHandler
         restore_error_handler();
 
         $this->enabled = false;
+
+        error_reporting(error_reporting() | $this->originalErrorReportingLevel);
+        $this->originalErrorReportingLevel = null;
     }
 
     public function use(Baseline $baseline): void
