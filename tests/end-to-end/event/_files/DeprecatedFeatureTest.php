@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\Event;
 
 use const E_USER_DEPRECATED;
+use function error_get_last;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
@@ -21,5 +22,12 @@ final class DeprecatedFeatureTest extends TestCase
         @trigger_error('message', E_USER_DEPRECATED);
 
         $this->assertTrue(true);
+    }
+
+    public function testDeprecatedSuppressedErrorGetLast(): void
+    {
+        $this->assertNull(error_get_last());
+        @trigger_error('message', E_USER_DEPRECATED);
+        $this->assertIsArray(error_get_last());
     }
 }

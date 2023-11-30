@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use function error_get_last;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
@@ -19,5 +20,12 @@ final class SuppressedUserNoticeTest extends TestCase
         $this->assertTrue(true);
 
         @trigger_error('message', E_USER_NOTICE);
+    }
+
+    public function testSuppressedUserNoticeErrorGetLast(): void
+    {
+        $this->assertNull(error_get_last());
+        @trigger_error('message', E_USER_NOTICE);
+        $this->assertIsArray(error_get_last());
     }
 }

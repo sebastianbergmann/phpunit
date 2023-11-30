@@ -21,12 +21,12 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
+Test Suite Loaded (2 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 1 test)
+Test Runner Execution Started (2 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
@@ -36,7 +36,20 @@ message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
-Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
+Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
+Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Test Triggered Suppressed Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
+message
+Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
+    'type' => 16384,
+    'message' => 'message',
+    'file' => '%s%e_files%eDeprecatedFeatureTest.php',
+    'line' => %d,
+])
+Test Passed (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
+Test Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
+Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
