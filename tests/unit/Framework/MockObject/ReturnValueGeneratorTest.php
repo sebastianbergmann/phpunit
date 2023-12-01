@@ -18,9 +18,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\AnInterfaceForIssue5593;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
+use PHPUnit\TestFixture\MockObject\AnotherInterfaceForIssue5593;
 use PHPUnit\TestFixture\MockObject\YetAnotherInterface;
 use stdClass;
 
@@ -160,6 +163,22 @@ final class ReturnValueGeneratorTest extends TestCase
         $stubClassName = ($this->createStub(AnInterface::class))::class;
 
         $this->assertInstanceOf($stubClassName, $this->generate('static', $stubClassName));
+    }
+
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5593')]
+    public function test_Generates_new_instance_of_test_stub_for_static_when_used_recursively(): void
+    {
+        $a = $this->createStub(AnInterfaceForIssue5593::class);
+
+        $this->assertInstanceOf(AnInterfaceForIssue5593::class, $a);
+
+        $b = $a->doSomething();
+
+        $this->assertInstanceOf(AnotherInterfaceForIssue5593::class, $b);
+
+        $c = $b->doSomethingElse();
+
+        $this->assertInstanceOf(AnotherInterfaceForIssue5593::class, $c);
     }
 
     #[DataProvider('unionProvider')]
