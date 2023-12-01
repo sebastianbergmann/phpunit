@@ -178,7 +178,7 @@ final class ReturnValueGenerator
      *
      * @throws RuntimeException
      */
-    private function newInstanceOf(string $stubClassName, string $className, string $methodName): MockObject
+    private function newInstanceOf(string $stubClassName, string $className, string $methodName): Stub
     {
         try {
             return (new ReflectionClass($stubClassName))->newInstanceWithoutConstructor();

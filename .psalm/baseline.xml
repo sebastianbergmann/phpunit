@@ -363,7 +363,7 @@
       <code><![CDATA[(new ReflectionClass($stubClassName))->newInstanceWithoutConstructor()]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>MockObject</code>
+      <code>Stub</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Runtime/Rule/Parameters.php">
