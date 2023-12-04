@@ -20,18 +20,9 @@
         <available type="dir" file="${basedir}/vendor" property="dependencies-installed"/>
     </target>
 
-    <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
-        <copy file="${basedir}/composer.json" tofile="${basedir}/build/tmp/composer.json"/>
-        <copy file="${basedir}/composer.lock" tofile="${basedir}/build/tmp/composer.lock"/>
-
+    <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed" description="Install dependencies with Composer">
         <exec executable="${basedir}/tools/composer" taskname="composer">
-            <arg value="require"/>
-            <arg value="--no-update"/>
-            <arg value="phpunit/php-invoker:^2.0"/>
-        </exec>
-
-        <exec executable="${basedir}/tools/composer" taskname="composer">
-            <arg value="update"/>
+            <arg value="install"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
             <arg value="--no-ansi"/>
