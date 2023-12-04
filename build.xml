@@ -1,38 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="phpunit" default="setup" xmlns:if="ant:if" xmlns:unless="ant:unless">
-    <target name="setup" depends="clean,install-dependencies"/>
-    <target name="validate" depends="php-syntax-check,validate-composer-json"/>
+<project name="phpunit" default="setup">
+    <target name="setup" depends="install-dependencies"/>
 
-    <target name="clean" unless="clean.done" description="Cleanup build artifacts">
+    <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/tmp"/>
         <delete dir="${basedir}/vendor"/>
-
-        <property name="clean.done" value="true"/>
-    </target>
-
-    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
-        <mkdir dir="${basedir}/build/artifacts/logfiles"/>
-        <mkdir dir="${basedir}/build/tmp"/>
-
-        <property name="prepare.done" value="true"/>
-    </target>
-
-    <target name="validate-composer-json" depends="clean" unless="validate-composer-json.done" description="Validate composer.json">
-        <exec executable="${basedir}/tools/composer" failonerror="true" taskname="composer">
-            <arg value="validate"/>
-            <arg value="--strict"/>
-            <arg value="${basedir}/composer.json"/>
-        </exec>
-
-        <property name="validate-composer-json.done" value="true"/>
     </target>
 
     <target name="-dependencies-installed">
         <available type="dir" file="${basedir}/vendor" property="dependencies-installed"/>
     </target>
 
-    <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
+    <target name="install-dependencies" description="Install dependencies (and generate autoloader) with Composer">
         <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="install"/>
             <arg value="--no-interaction"/>
@@ -41,37 +21,24 @@
         </exec>
     </target>
 
-    <target name="check-dependencies" description="Performs check for outdated dependencies">
-        <exec executable="${basedir}/tools/composer" taskname="composer">
-            <arg value="show"/>
-            <arg value="--minor-only"/>
-            <arg value="--latest"/>
-            <arg value="--direct"/>
-            <arg value="--outdated"/>
-            <arg value="--strict"/>
+    <target name="update-tools">
+        <exec executable="${basedir}/tools/phive">
+            <arg value="--no-progress"/>
+            <arg value="self-update"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/phive">
+            <arg value="--no-progress"/>
+            <arg value="update"/>
         </exec>
     </target>
 
-    <target name="php-syntax-check" unless="php-syntax-check.done" description="Perform syntax check on PHP files">
-        <apply executable="php" failonerror="true" taskname="lint">
-            <arg value="-l"/>
-
-            <fileset dir="${basedir}/src">
-                <include name="**/*.php"/>
-                <modified/>
-            </fileset>
-
-            <fileset dir="${basedir}/tests">
-                <include name="**/*.php"/>
-                <modified/>
-            </fileset>
-        </apply>
-
-        <property name="php-syntax-check.done" value="true"/>
-    </target>
-
-    <target name="test" depends="validate,install-dependencies" description="Run tests">
-        <exec executable="${basedir}/phpunit" taskname="phpunit"/>
+    <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
+        <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
+        <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
+            <arg value="fix"/>
+            <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
+        </exec>
     </target>
 
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
@@ -445,25 +412,4 @@
             <arg value="--coverage-text" />
         </exec>
     </target>
-
-    <target name="update-tools">
-        <exec executable="${basedir}/tools/phive">
-            <arg value="--no-progress"/>
-            <arg value="self-update"/>
-        </exec>
-
-        <exec executable="${basedir}/tools/phive">
-            <arg value="--no-progress"/>
-            <arg value="update"/>
-        </exec>
-    </target>
-
-    <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
-        <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
-        <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
-            <arg value="fix"/>
-            <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
-        </exec>
-    </target>
 </project>
-
