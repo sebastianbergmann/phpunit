@@ -17,6 +17,26 @@
         </exec>
     </target>
 
+    <target name="update-tools">
+        <exec executable="${basedir}/tools/phive">
+            <arg value="--no-progress"/>
+            <arg value="self-update"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/phive">
+            <arg value="--no-progress"/>
+            <arg value="update"/>
+        </exec>
+    </target>
+
+    <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
+        <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
+        <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
+            <arg value="fix"/>
+            <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
+        </exec>
+    </target>
+
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
         <exec executable="gpg" failonerror="true">
             <arg value="--local-user"/>
@@ -381,25 +401,4 @@
             <arg value="tests/end-to-end/phar/phpunit.xml" />
         </exec>
     </target>
-
-    <target name="update-tools">
-        <exec executable="${basedir}/tools/phive">
-            <arg value="--no-progress"/>
-            <arg value="self-update"/>
-        </exec>
-
-        <exec executable="${basedir}/tools/phive">
-            <arg value="--no-progress"/>
-            <arg value="update"/>
-        </exec>
-    </target>
-
-    <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
-        <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
-        <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
-            <arg value="fix"/>
-            <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
-        </exec>
-    </target>
 </project>
-
