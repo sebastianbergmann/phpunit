@@ -8,7 +8,7 @@
         <delete dir="${basedir}/vendor"/>
     </target>
 
-    <target name="install-dependencies" description="Install dependencies with Composer">
+    <target name="install-dependencies" description="Install dependencies (and generate autoloader) with Composer">
         <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="install"/>
             <arg value="--no-interaction"/>
