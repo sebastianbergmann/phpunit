@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="phpunit" default="setup" xmlns:if="ant:if" xmlns:unless="ant:unless">
-    <target name="setup" depends="clean,install-dependencies"/>
+<project name="phpunit" default="install-dependencies">
+    <target name="setup" depends="install-dependencies"/>
 
-    <target name="clean" unless="clean.done" description="Cleanup build artifacts">
+    <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/tmp"/>
         <delete dir="${basedir}/vendor"/>
-
-        <property name="clean.done" value="true"/>
     </target>
 
-    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
-        <mkdir dir="${basedir}/build/tmp"/>
-
-        <property name="prepare.done" value="true"/>
-    </target>
-
-    <target name="-dependencies-installed">
-        <available type="dir" file="${basedir}/vendor" property="dependencies-installed"/>
-    </target>
-
-    <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed" description="Install dependencies with Composer">
+    <target name="install-dependencies" description="Install dependencies with Composer">
         <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="install"/>
             <arg value="--no-interaction"/>
