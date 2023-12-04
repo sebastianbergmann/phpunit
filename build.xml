@@ -12,7 +12,6 @@
     </target>
 
     <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
-        <mkdir dir="${basedir}/build/artifacts/logfiles"/>
         <mkdir dir="${basedir}/build/tmp"/>
 
         <property name="prepare.done" value="true"/>
