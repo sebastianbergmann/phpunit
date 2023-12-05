@@ -457,7 +457,6 @@
   <file src="src/Logging/TestDox/TestResult/TestResultCollector.php">
     <PossiblyNullArgument>
       <code><![CDATA[$this->status]]></code>
-      <code><![CDATA[$this->time]]></code>
     </PossiblyNullArgument>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
