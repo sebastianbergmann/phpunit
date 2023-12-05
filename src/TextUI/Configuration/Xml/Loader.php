@@ -26,6 +26,7 @@ use function substr;
 use function trim;
 use DOMDocument;
 use DOMElement;
+use DOMNode;
 use DOMXPath;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
@@ -500,6 +501,8 @@ final class Loader
         $files = [];
 
         foreach ($xpath->query($query) as $file) {
+            assert($file instanceof DOMNode);
+
             $filePath = $file->textContent;
 
             if ($filePath) {
@@ -516,10 +519,14 @@ final class Loader
         $exclude = [];
 
         foreach ($xpath->query('groups/include/group') as $group) {
+            assert($group instanceof DOMNode);
+
             $include[] = new Group($group->textContent);
         }
 
         foreach ($xpath->query('groups/exclude/group') as $group) {
+            assert($group instanceof DOMNode);
+
             $exclude[] = new Group($group->textContent);
         }
 
@@ -585,6 +592,8 @@ final class Loader
         $includePaths = [];
 
         foreach ($xpath->query('php/includePath') as $includePath) {
+            assert($includePath instanceof DOMNode);
+
             $path = $includePath->textContent;
 
             if ($path) {
