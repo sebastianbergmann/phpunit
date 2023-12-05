@@ -21,7 +21,6 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
-use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -44,7 +43,6 @@ final class TestResultCollector
      * @psalm-var array<string, list<TestDoxTestMethod>>
      */
     private array $tests          = [];
-    private ?HRTime $time         = null;
     private ?TestStatus $status   = null;
     private ?Throwable $throwable = null;
 
@@ -127,7 +125,6 @@ final class TestResultCollector
             return;
         }
 
-        $this->time      = $event->telemetryInfo()->time();
         $this->status    = TestStatus::unknown();
         $this->throwable = null;
     }
@@ -196,12 +193,10 @@ final class TestResultCollector
 
         $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
             $test,
-            $event->telemetryInfo()->time()->duration($this->time),
             $this->status,
             $this->throwable,
         );
 
-        $this->time      = null;
         $this->status    = null;
         $this->throwable = null;
     }

@@ -11,7 +11,6 @@ namespace PHPUnit\Logging\TestDox;
 
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
@@ -22,14 +21,12 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class TestResult
 {
     private readonly TestMethod $test;
-    private readonly Duration $duration;
     private readonly TestStatus $status;
     private readonly ?Throwable $throwable;
 
-    public function __construct(TestMethod $test, Duration $duration, TestStatus $status, ?Throwable $throwable)
+    public function __construct(TestMethod $test, TestStatus $status, ?Throwable $throwable)
     {
         $this->test      = $test;
-        $this->duration  = $duration;
         $this->status    = $status;
         $this->throwable = $throwable;
     }
@@ -37,11 +34,6 @@ final class TestResult
     public function test(): TestMethod
     {
         return $this->test;
-    }
-
-    public function duration(): Duration
-    {
-        return $this->duration;
     }
 
     public function status(): TestStatus
