@@ -44,6 +44,7 @@ use function trim;
 use function version_compare;
 use DOMDocument;
 use DOMElement;
+use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use LibXMLError;
@@ -346,6 +347,8 @@ final class Configuration
         ];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
+            assert($includePath instanceof DOMNode);
+
             $path = (string) $includePath->textContent;
 
             if ($path) {
@@ -1143,6 +1146,8 @@ final class Configuration
         $files = [];
 
         foreach ($this->xpath->query($query) as $file) {
+            assert($file instanceof DOMNode);
+
             $filePath = (string) $file->textContent;
 
             if ($filePath) {
@@ -1199,10 +1204,14 @@ final class Configuration
         ];
 
         foreach ($this->xpath->query($root . '/include/group') as $group) {
+            assert($group instanceof DOMNode);
+
             $groups['include'][] = (string) $group->textContent;
         }
 
         foreach ($this->xpath->query($root . '/exclude/group') as $group) {
+            assert($group instanceof DOMNode);
+
             $groups['exclude'][] = (string) $group->textContent;
         }
 
