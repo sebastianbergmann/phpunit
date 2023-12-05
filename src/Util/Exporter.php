@@ -20,16 +20,16 @@ final class Exporter
 {
     public static function export(mixed $value, bool $exportObjects = false): string
     {
-        if (self::isScalarOrArrayOfScalars($value) || $exportObjects) {
+        if (self::isScalarOrNullOrArrayOfScalars($value) || $exportObjects) {
             return (new \SebastianBergmann\Exporter\Exporter)->export($value);
         }
 
         return '{enable export of objects to see this value}';
     }
 
-    private static function isScalarOrArrayOfScalars(mixed &$value, Context $context = null): bool
+    private static function isScalarOrNullOrArrayOfScalars(mixed &$value, Context $context = null): bool
     {
-        if (is_scalar($value)) {
+        if (is_scalar($value) || $value === null) {
             return true;
         }
 
@@ -49,7 +49,7 @@ final class Exporter
         $context->add($value);
 
         foreach ($array as &$_value) {
-            if (!self::isScalarOrArrayOfScalars($_value, $context)) {
+            if (!self::isScalarOrNullOrArrayOfScalars($_value, $context)) {
                 return false;
             }
         }

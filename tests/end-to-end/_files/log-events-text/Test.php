@@ -14,8 +14,13 @@ use stdClass;
 
 final class Test extends TestCase
 {
-    public function testOne(): void
+    public function testExportObject(): void
     {
         $this->assertSame(new stdClass, new stdClass);
+    }
+
+    public function testExportNull(): void
+    {
+        $this->assertNull(null);
     }
 }
