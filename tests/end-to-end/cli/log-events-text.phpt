@@ -21,21 +21,26 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
+Test Suite Loaded (2 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (1 test)
-Test Suite Started (CLI Arguments, 1 test)
-Test Suite Started (PHPUnit\TestFixture\LogEventsText\Test, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testOne)
-Test Prepared (PHPUnit\TestFixture\LogEventsText\Test::testOne)
+Test Runner Execution Started (2 tests)
+Test Suite Started (CLI Arguments, 2 tests)
+Test Suite Started (PHPUnit\TestFixture\LogEventsText\Test, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testExportObject)
+Test Prepared (PHPUnit\TestFixture\LogEventsText\Test::testExportObject)
 Assertion Failed (Constraint: is identical to an object of class "stdClass", Value: {enable export of objects to see this value})
-Test Failed (PHPUnit\TestFixture\LogEventsText\Test::testOne)
+Test Failed (PHPUnit\TestFixture\LogEventsText\Test::testExportObject)
 Failed asserting that two variables reference the same object.
-Test Finished (PHPUnit\TestFixture\LogEventsText\Test::testOne)
-Test Suite Finished (PHPUnit\TestFixture\LogEventsText\Test, 1 test)
-Test Suite Finished (CLI Arguments, 1 test)
+Test Finished (PHPUnit\TestFixture\LogEventsText\Test::testExportObject)
+Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testExportNull)
+Test Prepared (PHPUnit\TestFixture\LogEventsText\Test::testExportNull)
+Assertion Succeeded (Constraint: is null, Value: null)
+Test Passed (PHPUnit\TestFixture\LogEventsText\Test::testExportNull)
+Test Finished (PHPUnit\TestFixture\LogEventsText\Test::testExportNull)
+Test Suite Finished (PHPUnit\TestFixture\LogEventsText\Test, 2 tests)
+Test Suite Finished (CLI Arguments, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 1)
