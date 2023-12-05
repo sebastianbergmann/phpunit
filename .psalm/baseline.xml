@@ -474,9 +474,6 @@
       <code><![CDATA[$this->status]]></code>
       <code><![CDATA[$this->time]]></code>
     </PossiblyNullArgument>
-    <PropertyTypeCoercion>
-      <code><![CDATA[$this->testDoubles]]></code>
-    </PropertyTypeCoercion>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>

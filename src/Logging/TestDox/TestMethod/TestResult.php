@@ -26,21 +26,12 @@ final class TestResult
     private readonly TestStatus $status;
     private readonly ?Throwable $throwable;
 
-    /**
-     * @psalm-var list<class-string|trait-string>
-     */
-    private readonly array $testDoubles;
-
-    /**
-     * @psalm-param  list<class-string|trait-string> $testDoubles
-     */
-    public function __construct(TestMethod $test, Duration $duration, TestStatus $status, ?Throwable $throwable, array $testDoubles)
+    public function __construct(TestMethod $test, Duration $duration, TestStatus $status, ?Throwable $throwable)
     {
-        $this->test        = $test;
-        $this->duration    = $duration;
-        $this->status      = $status;
-        $this->throwable   = $throwable;
-        $this->testDoubles = $testDoubles;
+        $this->test      = $test;
+        $this->duration  = $duration;
+        $this->status    = $status;
+        $this->throwable = $throwable;
     }
 
     public function test(): TestMethod
@@ -69,13 +60,5 @@ final class TestResult
     public function throwable(): ?Throwable
     {
         return $this->throwable;
-    }
-
-    /**
-     * @psalm-return list<class-string|trait-string>
-     */
-    public function testDoubles(): array
-    {
-        return $this->testDoubles;
     }
 }
