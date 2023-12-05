@@ -11,7 +11,6 @@ namespace PHPUnit\Logging\TestDox;
 
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
@@ -22,35 +21,19 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final readonly class TestResult
 {
     private TestMethod $test;
-    private Duration $duration;
     private TestStatus $status;
     private ?Throwable $throwable;
 
-    /**
-     * @psalm-var list<class-string|trait-string>
-     */
-    private array $testDoubles;
-
-    /**
-     * @psalm-param  list<class-string|trait-string> $testDoubles
-     */
-    public function __construct(TestMethod $test, Duration $duration, TestStatus $status, ?Throwable $throwable, array $testDoubles)
+    public function __construct(TestMethod $test, TestStatus $status, ?Throwable $throwable)
     {
-        $this->test        = $test;
-        $this->duration    = $duration;
-        $this->status      = $status;
-        $this->throwable   = $throwable;
-        $this->testDoubles = $testDoubles;
+        $this->test      = $test;
+        $this->status    = $status;
+        $this->throwable = $throwable;
     }
 
     public function test(): TestMethod
     {
         return $this->test;
-    }
-
-    public function duration(): Duration
-    {
-        return $this->duration;
     }
 
     public function status(): TestStatus
@@ -69,13 +52,5 @@ final readonly class TestResult
     public function throwable(): ?Throwable
     {
         return $this->throwable;
-    }
-
-    /**
-     * @psalm-return list<class-string|trait-string>
-     */
-    public function testDoubles(): array
-    {
-        return $this->testDoubles;
     }
 }

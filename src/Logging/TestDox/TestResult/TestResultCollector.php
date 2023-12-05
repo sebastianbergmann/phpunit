@@ -21,27 +21,18 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
-use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
-use PHPUnit\Event\Test\MockObjectCreated;
-use PHPUnit\Event\Test\MockObjectForAbstractClassCreated;
-use PHPUnit\Event\Test\MockObjectForTraitCreated;
-use PHPUnit\Event\Test\MockObjectFromWsdlCreated;
-use PHPUnit\Event\Test\PartialMockObjectCreated;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
-use PHPUnit\Event\Test\TestProxyCreated;
-use PHPUnit\Event\Test\TestStubCreated;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
 use ReflectionMethod;
-use SoapClient;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -52,14 +43,8 @@ final class TestResultCollector
      * @psalm-var array<string, list<TestDoxTestMethod>>
      */
     private array $tests          = [];
-    private ?HRTime $time         = null;
     private ?TestStatus $status   = null;
     private ?Throwable $throwable = null;
-
-    /**
-     * @psalm-var list<class-string|trait-string>
-     */
-    private array $testDoubles = [];
 
     /**
      * @throws EventFacadeIsSealedException
@@ -140,10 +125,8 @@ final class TestResultCollector
             return;
         }
 
-        $this->time        = $event->telemetryInfo()->time();
-        $this->status      = TestStatus::unknown();
-        $this->throwable   = null;
-        $this->testDoubles = [];
+        $this->status    = TestStatus::unknown();
+        $this->throwable = null;
     }
 
     public function testErrored(Errored $event): void
@@ -191,23 +174,6 @@ final class TestResultCollector
         $this->status = TestStatus::risky($event->message());
     }
 
-    public function testCreatedTestDouble(MockObjectCreated|MockObjectForAbstractClassCreated|MockObjectForTraitCreated|MockObjectFromWsdlCreated|PartialMockObjectCreated|TestProxyCreated|TestStubCreated $event): void
-    {
-        if ($event instanceof MockObjectForTraitCreated) {
-            $this->testDoubles[] = $event->traitName();
-
-            return;
-        }
-
-        if ($event instanceof MockObjectFromWsdlCreated) {
-            $this->testDoubles[] = SoapClient::class;
-
-            return;
-        }
-
-        $this->testDoubles[] = $event->className();
-    }
-
     /**
      * @throws InvalidArgumentException
      */
@@ -227,16 +193,12 @@ final class TestResultCollector
 
         $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
             $test,
-            $event->telemetryInfo()->time()->duration($this->time),
             $this->status,
             $this->throwable,
-            $this->testDoubles,
         );
 
-        $this->time        = null;
-        $this->status      = null;
-        $this->throwable   = null;
-        $this->testDoubles = [];
+        $this->status    = null;
+        $this->throwable = null;
     }
 
     /**
@@ -247,13 +209,6 @@ final class TestResultCollector
     {
         $facade->registerSubscribers(
             new TestConsideredRiskySubscriber($this),
-            new TestCreatedMockObjectForAbstractClassSubscriber($this),
-            new TestCreatedMockObjectForTraitSubscriber($this),
-            new TestCreatedMockObjectFromWsdlSubscriber($this),
-            new TestCreatedMockObjectSubscriber($this),
-            new TestCreatedPartialMockObjectSubscriber($this),
-            new TestCreatedTestProxySubscriber($this),
-            new TestCreatedTestStubSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
             new TestFinishedSubscriber($this),

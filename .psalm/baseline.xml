@@ -449,19 +449,16 @@
       <code>$value</code>
     </InvalidCast>
   </file>
-  <file src="src/Logging/TestDox/TestMethod/TestResultCollection.php">
+  <file src="src/Logging/TestDox/TestResult/TestResultCollection.php">
     <PropertyTypeCoercion>
       <code>$testResults</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Logging/TestDox/TestMethod/TestResultCollector.php">
+  <file src="src/Logging/TestDox/TestResult/TestResultCollector.php">
     <PossiblyNullArgument>
       <code><![CDATA[$this->status]]></code>
       <code><![CDATA[$this->time]]></code>
     </PossiblyNullArgument>
-    <PropertyTypeCoercion>
-      <code><![CDATA[$this->testDoubles]]></code>
-    </PropertyTypeCoercion>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
