@@ -84,6 +84,7 @@ final class JunitXmlLogger
     private ?DOMElement $currentTestCase = null;
     private ?HRTime $time                = null;
     private bool $prepared               = false;
+    private bool $preparationFailed      = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -186,7 +187,16 @@ final class JunitXmlLogger
      * @throws InvalidArgumentException
      * @throws NoDataSetFromDataProviderException
      */
-    public function testPrepared(Prepared $event): void
+    public function testPreparationFailed(): void
+    {
+        $this->preparationFailed = true;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
+     */
+    public function testPrepared(): void
     {
         $this->prepared = true;
     }
@@ -196,6 +206,10 @@ final class JunitXmlLogger
      */
     public function testFinished(Finished $event): void
     {
+        if ($this->preparationFailed) {
+            return;
+        }
+
         $this->handleFinish($event->telemetryInfo(), $event->numberOfAssertionsPerformed());
     }
 
@@ -283,6 +297,7 @@ final class JunitXmlLogger
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparationStartedSubscriber($this),
+            new TestPreparationFailedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestErroredSubscriber($this),
