@@ -21,20 +21,26 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Test Triggered PHPUnit Error (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsInvalidJson)
+The data provider specified for PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsInvalidJson is invalid
+The data set for the @testWith annotation cannot be parsed: State mismatch (invalid or malformed JSON)
+Test Triggered PHPUnit Error (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetCannotBeParsed)
+The data provider specified for PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetCannotBeParsed is invalid
+The data set for the @testWith annotation cannot be parsed.
 Test Suite Loaded (1 test)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testOne, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testOne#0)
-Test Prepared (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testOne#0)
+Test Suite Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
+Test Prepared (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
 Assertion Succeeded (Constraint: is true, Value: true)
-Test Passed (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testOne#0)
-Test Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testOne#0)
-Test Suite Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testOne, 1 test)
+Test Passed (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
+Test Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
+Test Suite Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson, 1 test)
 Test Suite Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)
