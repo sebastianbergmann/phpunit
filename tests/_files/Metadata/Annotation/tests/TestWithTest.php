@@ -16,7 +16,23 @@ final class TestWithTest extends TestCase
     /**
      * @testWith [1, 2, 3]
      */
-    public function testOne(): void
+    public function testDataSetIsValidJson(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @testWith [1, 2, 3}
+     */
+    public function testDataSetIsInvalidJson(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @testWith ...
+     */
+    public function testDataSetCannotBeParsed(): void
     {
         $this->assertTrue(true);
     }
