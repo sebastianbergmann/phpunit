@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_keys;
 use function class_exists;
 use function count;
 use function file_get_contents;
+use function in_array;
 use function interface_exists;
 use function is_bool;
 use ArrayAccess;
@@ -73,17 +75,25 @@ abstract class Assert
     private static int $count = 0;
 
     /**
-     * Asserts that two arrays are equal while ignoring a list of keys.
+     * Asserts that two arrays are equal while only considering a list of keys.
      *
-     * @psalm-param list<array-key> $keysToBeIgnored
+     * @psalm-param list<array-key> $keysToBeConsidered
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertArrayIsEqualToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    final public static function assertArrayIsEqualToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
     {
-        foreach ($keysToBeIgnored as $key) {
-            unset($expected[$key], $actual[$key]);
+        foreach (array_keys($expected) as $key) {
+            if (!in_array($key, $keysToBeConsidered, true)) {
+                unset($expected[$key]);
+            }
+        }
+
+        foreach (array_keys($actual) as $key) {
+            if (!in_array($key, $keysToBeConsidered, true)) {
+                unset($actual[$key]);
+            }
         }
 
         static::assertEquals($expected, $actual, $message);
@@ -97,7 +107,49 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertArrayIsIdenticalToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    final public static function assertArrayIsEqualToArrayIgnoringListOfKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    {
+        foreach ($keysToBeIgnored as $key) {
+            unset($expected[$key], $actual[$key]);
+        }
+
+        static::assertEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two arrays are identical while only considering a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeConsidered
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
+    {
+        foreach (array_keys($expected) as $key) {
+            if (!in_array($key, $keysToBeConsidered, true)) {
+                unset($expected[$key]);
+            }
+        }
+
+        foreach (array_keys($actual) as $key) {
+            if (!in_array($key, $keysToBeConsidered, true)) {
+                unset($actual[$key]);
+            }
+        }
+
+        static::assertSame($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two arrays are equal while ignoring a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeIgnored
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArrayIsIdenticalToArrayIgnoringListOfKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
     {
         foreach ($keysToBeIgnored as $key) {
             unset($expected[$key], $actual[$key]);

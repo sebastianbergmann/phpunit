@@ -69,26 +69,26 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Util\Xml\XmlException;
 use Throwable;
 
-if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayIgnoringKeys')) {
+if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayOnlyConsideringListOfKeys')) {
     /**
-     * Asserts that two arrays are equal while ignoring a list of keys.
+     * Asserts that two arrays are equal while only considering a list of keys.
      *
-     * @psalm-param list<array-key> $keysToBeIgnored
+     * @psalm-param list<array-key> $keysToBeConsidered
      *
      * @throws Exception
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertArrayIsEqualToArrayIgnoringKeys
+     * @see Assert::assertArrayIsEqualToArrayOnlyConsideringListOfKeys
      */
-    function assertArrayIsEqualToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    function assertArrayIsEqualToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
     {
-        Assert::assertArrayIsEqualToArrayIgnoringKeys(...func_get_args());
+        Assert::assertArrayIsEqualToArrayOnlyConsideringListOfKeys(...func_get_args());
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayIgnoringKeys')) {
+if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayIgnoringListOfKeys')) {
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
@@ -99,11 +99,49 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayIgnoringKey
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertArrayIsIdenticalToArrayIgnoringKeys
+     * @see Assert::assertArrayIsEqualToArrayIgnoringListOfKeys
      */
-    function assertArrayIsIdenticalToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    function assertArrayIsEqualToArrayIgnoringListOfKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
     {
-        Assert::assertArrayIsIdenticalToArrayIgnoringKeys(...func_get_args());
+        Assert::assertArrayIsEqualToArrayIgnoringListOfKeys(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys')) {
+    /**
+     * Asserts that two arrays are identical while only considering a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeConsidered
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys
+     */
+    function assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
+    {
+        Assert::assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayIgnoringListOfKeys')) {
+    /**
+     * Asserts that two arrays are equal while ignoring a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeIgnored
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayIsIdenticalToArrayIgnoringListOfKeys
+     */
+    function assertArrayIsIdenticalToArrayIgnoringListOfKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    {
+        Assert::assertArrayIsIdenticalToArrayIgnoringListOfKeys(...func_get_args());
     }
 }
 

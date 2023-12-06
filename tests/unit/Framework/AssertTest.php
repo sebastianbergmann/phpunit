@@ -143,28 +143,52 @@ final class AssertTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Book::class, $test2);
     }
 
-    public function testAssertArrayIsEqualToArrayIgnoringKeys(): void
+    public function testAssertArrayIsEqualToArrayOnlyConsideringListOfKeys(): void
     {
         $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
         $actual   = ['a' => 'b', 'b' => 'b', 0 => 1, 1 => 3];
 
-        $this->assertArrayIsEqualToArrayIgnoringKeys($expected, $actual, ['b', 1]);
+        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys($expected, $actual, ['a', 0]);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertArrayIsEqualToArrayIgnoringKeys($expected, $actual, ['b']);
+        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys($expected, $actual, ['b']);
     }
 
-    public function testAssertArrayIsIdenticalToArrayIgnoringKeys(): void
+    public function testAssertArrayIsEqualToArrayIgnoringListOfKeys(): void
     {
         $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
         $actual   = ['a' => 'b', 'b' => 'b', 0 => 1, 1 => 3];
 
-        $this->assertArrayIsIdenticalToArrayIgnoringKeys($expected, $actual, ['b', 1]);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($expected, $actual, ['b', 1]);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertArrayIsIdenticalToArrayIgnoringKeys($expected, $actual, ['b']);
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($expected, $actual, ['b']);
+    }
+
+    public function testAssertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(): void
+    {
+        $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
+        $actual   = ['a' => 'b', 'b' => 'b', 0 => 1, 1 => 3];
+
+        $this->assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys($expected, $actual, ['a', 0]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys($expected, $actual, ['b']);
+    }
+
+    public function testAssertArrayIsIdenticalToArrayIgnoringListOfKeys(): void
+    {
+        $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
+        $actual   = ['a' => 'b', 'b' => 'b', 0 => 1, 1 => 3];
+
+        $this->assertArrayIsIdenticalToArrayIgnoringListOfKeys($expected, $actual, ['b', 1]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsIdenticalToArrayIgnoringListOfKeys($expected, $actual, ['b']);
     }
 
     public function testAssertArrayHasIntegerKey(): void
