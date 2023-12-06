@@ -143,6 +143,30 @@ final class AssertTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Book::class, $test2);
     }
 
+    public function testAssertArrayIsEqualToArrayIgnoringKeys(): void
+    {
+        $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
+        $actual   = ['a' => 'b', 'b' => 'b', 0 => 1, 1 => 3];
+
+        $this->assertArrayIsEqualToArrayIgnoringKeys($expected, $actual, ['b', 1]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsEqualToArrayIgnoringKeys($expected, $actual, ['b']);
+    }
+
+    public function testAssertArrayIsIdenticalToArrayIgnoringKeys(): void
+    {
+        $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
+        $actual   = ['a' => 'b', 'b' => 'b', 0 => 1, 1 => 3];
+
+        $this->assertArrayIsIdenticalToArrayIgnoringKeys($expected, $actual, ['b', 1]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsIdenticalToArrayIgnoringKeys($expected, $actual, ['b']);
+    }
+
     public function testAssertArrayHasIntegerKey(): void
     {
         $this->assertArrayHasKey(0, ['foo']);

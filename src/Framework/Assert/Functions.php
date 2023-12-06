@@ -69,6 +69,44 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Util\Xml\XmlException;
 use Throwable;
 
+if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayIgnoringKeys')) {
+    /**
+     * Asserts that two arrays are equal while ignoring a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeIgnored
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayIsEqualToArrayIgnoringKeys
+     */
+    function assertArrayIsEqualToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    {
+        Assert::assertArrayIsEqualToArrayIgnoringKeys(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayIgnoringKeys')) {
+    /**
+     * Asserts that two arrays are equal while ignoring a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeIgnored
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayIsIdenticalToArrayIgnoringKeys
+     */
+    function assertArrayIsIdenticalToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    {
+        Assert::assertArrayIsIdenticalToArrayIgnoringKeys(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
     /**
      * Asserts that an array has a specified key.

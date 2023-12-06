@@ -73,6 +73,40 @@ abstract class Assert
     private static int $count = 0;
 
     /**
+     * Asserts that two arrays are equal while ignoring a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeIgnored
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArrayIsEqualToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    {
+        foreach ($keysToBeIgnored as $key) {
+            unset($expected[$key], $actual[$key]);
+        }
+
+        static::assertEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two arrays are equal while ignoring a list of keys.
+     *
+     * @psalm-param list<array-key> $keysToBeIgnored
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArrayIsIdenticalToArrayIgnoringKeys(array $expected, array $actual, array $keysToBeIgnored, string $message = ''): void
+    {
+        foreach ($keysToBeIgnored as $key) {
+            unset($expected[$key], $actual[$key]);
+        }
+
+        static::assertSame($expected, $actual, $message);
+    }
+
+    /**
      * Asserts that an array has a specified key.
      *
      * @throws Exception
