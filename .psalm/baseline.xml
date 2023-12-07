@@ -152,6 +152,15 @@
       <code>Assert::assertStringNotMatchesFormat(...func_get_args())</code>
       <code>Assert::assertStringNotMatchesFormatFile(...func_get_args())</code>
     </DeprecatedMethod>
+    <MissingThrowsDocblock>
+      <code>Assert::containsOnly(...func_get_args())</code>
+      <code>Assert::containsOnlyInstancesOf(...func_get_args())</code>
+      <code>Assert::isInstanceOf(...func_get_args())</code>
+      <code>Assert::isType(...func_get_args())</code>
+      <code>Assert::logicalAnd(...func_get_args())</code>
+      <code>Assert::stringEndsWith(...func_get_args())</code>
+      <code>Assert::stringStartsWith(...func_get_args())</code>
+    </MissingThrowsDocblock>
     <TooManyArguments>
       <code>Assert::anything(...func_get_args())</code>
       <code>Assert::directoryExists(...func_get_args())</code>
