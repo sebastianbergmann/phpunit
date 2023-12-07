@@ -350,6 +350,10 @@
             <arg path="${basedir}/build/tmp/phar-scoped" />
         </exec>
 
+        <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
+        </exec>
+
         <copy file="${basedir}/build/templates/binary-phar-autoload.php.in" tofile="${basedir}/build/tmp/binary-phar-autoload.php"/>
         <replace file="${basedir}/build/tmp/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
 
@@ -364,6 +368,10 @@
             <arg value="--template" />
             <arg path="${basedir}/build/tmp/binary-phar-autoload.php" />
             <arg path="${basedir}/build/tmp/phar-scoped" />
+        </exec>
+
+        <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
         </exec>
 
         <chmod file="${basedir}/build/artifacts/phpunit-${_version}.phar" perm="ugo+rx"/>
