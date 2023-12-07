@@ -1,0 +1,26 @@
+{
+    "name": "seld/phar-utils",
+    "description": "PHAR file format utilities, for when PHP phars you up",
+    "type": "library",
+    "keywords": ["phar"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3"
+    },
+    "authors": [
+        {
+            "name": "Jordi Boggiano",
+            "email": "j.boggiano@seld.be"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Seld\\PharUtils\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}
