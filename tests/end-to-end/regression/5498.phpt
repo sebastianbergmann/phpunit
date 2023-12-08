@@ -35,7 +35,6 @@ Before Test Method Finished:
 - PHPUnit\TestFixture\Issue5498\Test::parentBefore
 - PHPUnit\TestFixture\Issue5498\Test::before
 Test Prepared (PHPUnit\TestFixture\Issue5498\Test::testOne)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Issue5498\Test::testOne)
 After Test Method Called (PHPUnit\TestFixture\Issue5498\Test::after)
 After Test Method Called (PHPUnit\TestFixture\Issue5498\Test::parentAfter)

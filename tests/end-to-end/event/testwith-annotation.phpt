@@ -36,7 +36,6 @@ Test Suite Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest, 1 test
 Test Suite Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
 Test Prepared (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
 Test Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson#0)
 Test Suite Finished (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsValidJson, 1 test)

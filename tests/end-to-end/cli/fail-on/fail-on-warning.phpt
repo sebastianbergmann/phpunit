@@ -32,12 +32,10 @@ Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::te
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 Test Triggered Warning (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\WarningTest, 2 tests)

@@ -29,7 +29,6 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testOne)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Failed (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testOne)
 this should be treated as a failure
 Test Finished (PHPUnit\TestFixture\Event\CustomFailureInterfaceTest::testOne)

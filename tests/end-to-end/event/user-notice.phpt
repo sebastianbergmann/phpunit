@@ -29,7 +29,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\UserNoticeTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 message
 Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)

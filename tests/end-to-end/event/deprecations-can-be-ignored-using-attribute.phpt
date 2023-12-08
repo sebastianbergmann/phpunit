@@ -31,14 +31,12 @@ Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::test
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 2 tests)

@@ -34,7 +34,6 @@ Test Triggered PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotic
 Only variables should be assigned by reference
 Test Triggered Suppressed PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Only variables should be assigned by reference
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Finished (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Suite Finished (PHPUnit\TestFixture\Event\PhpNoticeTest, 1 test)

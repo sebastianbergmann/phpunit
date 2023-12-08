@@ -35,7 +35,6 @@ message
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest, 2 tests)

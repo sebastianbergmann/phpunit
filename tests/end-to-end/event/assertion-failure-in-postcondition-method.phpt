@@ -29,8 +29,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
-Assertion Succeeded (Constraint: is true, Value: true)
-Assertion Failed (Constraint: is true, Value: false)
 Post Condition Method Called (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::postCondition)
 Post Condition Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::postCondition

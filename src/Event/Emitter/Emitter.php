@@ -13,7 +13,6 @@ use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\TestSuite;
-use PHPUnit\Framework\Constraint;
 use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
@@ -21,10 +20,6 @@ use PHPUnit\TextUI\Configuration\Configuration;
  */
 interface Emitter
 {
-    public function exportObjects(): void;
-
-    public function exportsObjects(): bool;
-
     public function applicationStarted(): void;
 
     public function testRunnerStarted(): void;
@@ -108,10 +103,6 @@ interface Emitter
      * @psalm-param class-string $className
      */
     public function testRegisteredComparator(string $className): void;
-
-    public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void;
-
-    public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void;
 
     /**
      * @psalm-param class-string $className

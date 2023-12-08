@@ -33,13 +33,11 @@ Test Suite Started (default, 2 tests)
 Test Suite Started (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testOne)
 Test Prepared (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testOne)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testOne)
 Test Finished (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testOne)
 Test Runner Triggered Garbage Collection
 Test Preparation Started (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testTwo)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testTwo)
 Test Finished (PHPUnit\TestFixture\GarbageCollection\GarbageCollectionTest::testTwo)
 Test Runner Triggered Garbage Collection

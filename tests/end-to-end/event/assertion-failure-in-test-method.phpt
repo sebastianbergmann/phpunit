@@ -29,7 +29,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\FailureTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\FailureTest::testFailure)
 Test Prepared (PHPUnit\TestFixture\Event\FailureTest::testFailure)
-Assertion Failed (Constraint: is true, Value: false)
 Test Failed (PHPUnit\TestFixture\Event\FailureTest::testFailure)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Event\FailureTest::testFailure)

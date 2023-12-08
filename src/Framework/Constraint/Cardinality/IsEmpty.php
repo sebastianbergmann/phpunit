@@ -60,7 +60,7 @@ final class IsEmpty extends Constraint
             '%s %s %s',
             str_starts_with($type, 'a') || str_starts_with($type, 'o') ? 'an' : 'a',
             $type,
-            $this->toString(true),
+            $this->toString(),
         );
     }
 }

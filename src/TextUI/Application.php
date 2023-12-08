@@ -114,7 +114,6 @@ final class Application
             $extensionReplacesOutput                 = false;
             $extensionReplacesProgressOutput         = false;
             $extensionReplacesResultOutput           = false;
-            $extensionRequiresExportOfObjects        = false;
 
             if (!$configuration->noExtensions()) {
                 if ($configuration->hasPharExtensionDirectory()) {
@@ -128,11 +127,6 @@ final class Application
                 $extensionReplacesOutput                 = $bootstrappedExtensions['replacesOutput'];
                 $extensionReplacesProgressOutput         = $bootstrappedExtensions['replacesProgressOutput'];
                 $extensionReplacesResultOutput           = $bootstrappedExtensions['replacesResultOutput'];
-                $extensionRequiresExportOfObjects        = $bootstrappedExtensions['requiresExportOfObjects'];
-            }
-
-            if ($extensionRequiresExportOfObjects) {
-                EventFacade::emitter()->exportObjects();
             }
 
             CodeCoverage::instance()->init(
@@ -337,7 +331,7 @@ final class Application
     }
 
     /**
-     * @psalm-return array{requiresCodeCoverageCollection: bool, replacesOutput: bool, replacesProgressOutput: bool, replacesResultOutput: bool, requiresExportOfObjects: bool}
+     * @psalm-return array{requiresCodeCoverageCollection: bool, replacesOutput: bool, replacesProgressOutput: bool, replacesResultOutput: bool}
      */
     private function bootstrapExtensions(Configuration $configuration): array
     {
@@ -360,7 +354,6 @@ final class Application
             'replacesOutput'                 => $facade->replacesOutput(),
             'replacesProgressOutput'         => $facade->replacesProgressOutput(),
             'replacesResultOutput'           => $facade->replacesResultOutput(),
-            'requiresExportOfObjects'        => $facade->requiresExportOfObjects(),
         ];
     }
 
@@ -524,8 +517,6 @@ final class Application
                     true,
                 ),
             );
-
-            EventFacade::emitter()->exportObjects();
         }
 
         if ($configuration->hasLogfileJunit()) {

@@ -29,7 +29,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Triggered Suppressed Notice (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
