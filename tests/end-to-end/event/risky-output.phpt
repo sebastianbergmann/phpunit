@@ -30,7 +30,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Printed Unexpected Output
 *

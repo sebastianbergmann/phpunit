@@ -29,9 +29,7 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::testOne)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::testOne)
-Assertion Failed (Constraint: is true, Value: false)
 After Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::afterTest)
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::afterTest

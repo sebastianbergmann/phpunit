@@ -32,7 +32,6 @@ Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::tes
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 Test Triggered Notice (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 Test Runner Execution Aborted

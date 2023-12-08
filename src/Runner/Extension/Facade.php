@@ -24,7 +24,6 @@ final class Facade
     private bool $replacesProgressOutput         = false;
     private bool $replacesResultOutput           = false;
     private bool $requiresCodeCoverageCollection = false;
-    private bool $requiresExportOfObjects        = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -90,15 +89,5 @@ final class Facade
     public function requiresCodeCoverageCollection(): bool
     {
         return $this->requiresCodeCoverageCollection;
-    }
-
-    public function requireExportOfObjects(): void
-    {
-        $this->requiresExportOfObjects = true;
-    }
-
-    public function requiresExportOfObjects(): bool
-    {
-        return $this->requiresExportOfObjects;
     }
 }

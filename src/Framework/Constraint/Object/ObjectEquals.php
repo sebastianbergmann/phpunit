@@ -137,6 +137,6 @@ final class ObjectEquals extends Constraint
 
     protected function failureDescription(mixed $other): string
     {
-        return $this->toString(true);
+        return $this->toString();
     }
 }

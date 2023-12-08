@@ -41,7 +41,6 @@ Test Triggered Suppressed PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedP
 Creation of dynamic property PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::$foo is deprecated
 Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Creation of dynamic property PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::$bar is deprecated
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest, 1 test)

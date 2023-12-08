@@ -1874,27 +1874,7 @@ abstract class Assert
     {
         self::$count += count($constraint);
 
-        $hasFailed = true;
-
-        try {
-            $constraint->evaluate($value, $message);
-
-            $hasFailed = false;
-        } finally {
-            if ($hasFailed) {
-                Event\Facade::emitter()->testAssertionFailed(
-                    $value,
-                    $constraint,
-                    $message,
-                );
-            } else {
-                Event\Facade::emitter()->testAssertionSucceeded(
-                    $value,
-                    $constraint,
-                    $message,
-                );
-            }
-        }
+        $constraint->evaluate($value, $message);
     }
 
     /**

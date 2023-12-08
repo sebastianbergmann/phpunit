@@ -28,7 +28,6 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
-Assertion Failed (Constraint: is true, Value: false)
 Before Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest

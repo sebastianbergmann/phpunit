@@ -36,7 +36,6 @@ This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest, 2 tests)

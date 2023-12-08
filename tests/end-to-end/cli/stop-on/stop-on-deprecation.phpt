@@ -32,7 +32,6 @@ Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 message
-Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Runner Execution Aborted
