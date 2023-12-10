@@ -72,6 +72,30 @@ final class ColorTest extends TestCase
         ];
     }
 
+    public static function colorizeTextBoxProvider(): array
+    {
+        return [
+            'fitting text' => [
+                40,
+                "this is fine\n" .
+                "all lines fit nicely even the long\n" .
+                "ones",
+                Color::colorize('red', 'this is fine                      ') . "\n" .
+                Color::colorize('red', 'all lines fit nicely even the long') . "\n" .
+                Color::colorize('red', 'ones                              ')
+            ],
+            'oversized text' => [
+                20,
+                "this is also fine\n" .
+                "the very long lines do not stretch the whole textbox\n" .
+                "anymore",
+                Color::colorize('red', 'this is also fine   ') . "\n" .
+                Color::colorize('red', 'the very long lines do not stretch the whole textbox') . "\n" .
+                Color::colorize('red', 'anymore             ')
+            ]
+        ];
+    }
+
     public static function whitespacedStringProvider(): array
     {
         return [
@@ -117,6 +141,13 @@ final class ColorTest extends TestCase
     public function testColorizePath(?string $prevPath, string $path, bool $colorizeFilename, string $expected): void
     {
         $this->assertSame($expected, Color::colorizePath($path, $prevPath, $colorizeFilename));
+    }
+
+    #[TestDox('Colorize an autosizing text box')]
+    #[DataProvider('colorizeTextBoxProvider')]
+    public function testColorizeTextBox(int $columns, string $buffer, string $expected): void
+    {
+        $this->assertSame($expected, Color::colorizeTextBox('red', $buffer, $columns));
     }
 
     #[TestDox('dim($m) and colorize(\'dim\',$m) return different ANSI codes')]
