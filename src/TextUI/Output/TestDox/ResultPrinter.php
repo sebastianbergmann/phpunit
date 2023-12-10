@@ -33,11 +33,13 @@ final readonly class ResultPrinter
 {
     private Printer $printer;
     private bool $colors;
+    private int $columns;
 
-    public function __construct(Printer $printer, bool $colors)
+    public function __construct(Printer $printer, bool $colors, int $columns)
     {
         $this->printer = $printer;
         $this->colors  = $colors;
+        $this->columns = $columns;
     }
 
     /**
@@ -226,7 +228,7 @@ final readonly class ResultPrinter
         $diff    = implode(PHP_EOL, $diff);
 
         if (!empty($message)) {
-            $message = Color::colorizeTextBox($style, $message);
+            $message = Color::colorizeTextBox($style, $message, $this->columns);
         }
 
         return [

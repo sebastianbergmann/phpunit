@@ -99,7 +99,7 @@ final class Color
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
-    public static function colorizeTextBox(string $color, string $buffer): string
+    public static function colorizeTextBox(string $color, string $buffer, ?int $columns = 80): string
     {
         $lines   = preg_split('/\r\n|\r|\n/', $buffer);
         $padding = max(array_map('\strlen', $lines));
