@@ -9,12 +9,10 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
-#[CoversClass(Migrator::class)]
 final class MigratorTest extends TestCase
 {
     #[TestDox('Can migrate PHPUnit 9.2 configuration')]
