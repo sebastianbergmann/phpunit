@@ -13,16 +13,19 @@ use PHPUnit\Framework\TestCase;
 
 final class Issue5614Test extends TestCase
 {
-    public static function provideRecursiveArray(): iterable {
-        $array = [];
+    public static function provideRecursiveArray(): iterable
+    {
+        $array    = [];
         $array[0] = &$array;
+
         yield [$array];
     }
 
     /**
      * @dataProvider provideRecursiveArray
      */
-    public function testRecursiveArray(array $array): void {
+    public function testRecursiveArray(array $array): void
+    {
         $this->assertTrue(true);
     }
 }
