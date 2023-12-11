@@ -450,8 +450,7 @@ final class Merger
             $reverseDefectList = $xmlConfiguration->phpunit()->reverseDefectList();
         }
 
-        $requireCoverageMetadata                         = $xmlConfiguration->phpunit()->requireCoverageMetadata();
-        $registerMockObjectsFromTestArgumentsRecursively = $xmlConfiguration->phpunit()->registerMockObjectsFromTestArgumentsRecursively();
+        $requireCoverageMetadata = $xmlConfiguration->phpunit()->requireCoverageMetadata();
 
         if ($cliConfiguration->hasExecutionOrder()) {
             $executionOrder = $cliConfiguration->executionOrder();
@@ -782,7 +781,6 @@ final class Merger
             $displayDetailsOnTestsThatTriggerWarnings,
             $reverseDefectList,
             $requireCoverageMetadata,
-            $registerMockObjectsFromTestArgumentsRecursively,
             $noProgress,
             $noResults,
             $noOutput,

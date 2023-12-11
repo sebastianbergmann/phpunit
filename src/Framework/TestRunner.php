@@ -67,10 +67,6 @@ final class TestRunner
     {
         Assert::resetCount();
 
-        if ($this->configuration->registerMockObjectsFromTestArgumentsRecursively()) {
-            $test->registerMockObjectsFromTestArgumentsRecursively();
-        }
-
         $shouldCodeCoverageBeCollected = (new CodeCoverageMetadataApi)->shouldCodeCoverageBeCollectedFor(
             $test::class,
             $test->name(),

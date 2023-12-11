@@ -15,6 +15,7 @@
          printerFile="foo"
          printerClass="bar"
          backupStaticAttributes="true"
+         registerMockObjectsFromTestArgumentsRecursively="true"
          noInteraction="true"
          verbose="true">
 

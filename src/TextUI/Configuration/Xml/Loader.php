@@ -814,7 +814,6 @@ final class Loader
             $defectsFirst,
             $this->getBooleanAttribute($document->documentElement, 'backupGlobals', false),
             $backupStaticProperties,
-            $this->getBooleanAttribute($document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
             $this->getBooleanAttribute($document->documentElement, 'testdox', false),
             $this->getBooleanAttribute($document->documentElement, 'controlGarbageCollector', false),
             $this->getIntegerAttribute($document->documentElement, 'numberOfTestsBeforeGarbageCollection', 100),

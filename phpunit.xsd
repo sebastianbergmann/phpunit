@@ -207,7 +207,6 @@
         <xs:attribute name="testdox" type="xs:boolean" default="false"/>
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
-        <xs:attribute name="registerMockObjectsFromTestArgumentsRecursively" type="xs:boolean" default="false"/>
         <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>

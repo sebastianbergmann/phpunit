@@ -63,6 +63,10 @@ final class MigrationBuilder
         '10.0' => [
             MoveCoverageDirectoriesToSource::class,
         ],
+
+        '10.5' => [
+            RemoveRegisterMockObjectsFromTestArgumentsRecursivelyAttribute::class,
+        ],
     ];
 
     /**

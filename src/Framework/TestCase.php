@@ -86,7 +86,6 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\Cloner;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -103,7 +102,6 @@ use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
-use SebastianBergmann\RecursionContext\Context;
 use Throwable;
 
 /**
@@ -166,8 +164,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<MockObjectInternal>
      */
-    private array $mockObjects                                    = [];
-    private bool $registerMockObjectsFromTestArgumentsRecursively = false;
+    private array $mockObjects = [];
     private TestStatus $status;
     private int $numberOfAssertionsPerformed = 0;
     private mixed $testResult                = null;
@@ -402,14 +399,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function expectsOutput(): bool
     {
         return $this->hasExpectationOnOutput() || $this->outputRetrievedForAssertion;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function registerMockObjectsFromTestArgumentsRecursively(): void
-    {
-        $this->registerMockObjectsFromTestArgumentsRecursively = true;
     }
 
     /**
@@ -1133,8 +1122,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function runTest(): mixed
     {
         $testArguments = array_merge($this->data, $this->dependencyInput);
-
-        $this->registerMockObjectsFromTestArguments($testArguments);
 
         try {
             $testResult = $this->{$this->name}(...array_values($testArguments));
@@ -1872,32 +1859,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return !in_array($mock, $enumerator->enumerate($this->testResult), true);
-    }
-
-    private function registerMockObjectsFromTestArguments(array $testArguments, Context $context = new Context): void
-    {
-        if ($this->registerMockObjectsFromTestArgumentsRecursively) {
-            foreach ((new Enumerator)->enumerate($testArguments) as $object) {
-                if ($object instanceof MockObject) {
-                    $this->registerMockObject($object);
-                }
-            }
-        } else {
-            foreach ($testArguments as $testArgument) {
-                if ($testArgument instanceof MockObject) {
-                    $testArgument = Cloner::clone($testArgument);
-
-                    $this->registerMockObject($testArgument);
-                } elseif (is_array($testArgument) && !$context->contains($testArgument)) {
-                    $context->add($testArgument);
-
-                    $this->registerMockObjectsFromTestArguments(
-                        $testArgument,
-                        $context,
-                    );
-                }
-            }
-        }
     }
 
     private function unregisterCustomComparators(): void
