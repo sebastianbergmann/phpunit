@@ -409,6 +409,8 @@
       <code>mockObjectForAbstractClass</code>
       <code>mockObjectForTrait</code>
       <code>objectForTrait</code>
+      <code>registerMockObjectsFromTestArguments</code>
+      <code>registerMockObjectsFromTestArguments</code>
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>getMethod</code>
@@ -425,6 +427,10 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$test->output()]]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedMethod>
+      <code>registerMockObjectsFromTestArgumentsRecursively</code>
+      <code>registerMockObjectsFromTestArgumentsRecursively</code>
+    </DeprecatedMethod>
     <InvalidArgument>
       <code>$var</code>
     </InvalidArgument>
@@ -834,6 +840,7 @@
       <code>hasCacheResultFile</code>
       <code>hasCacheResultFile</code>
       <code>hasCoverageCacheDirectory</code>
+      <code>registerMockObjectsFromTestArgumentsRecursively</code>
     </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code>baseline</code>

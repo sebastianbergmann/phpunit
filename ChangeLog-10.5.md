@@ -4,6 +4,11 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.3] - 2023-MM-DD
 
+### Deprecated
+
+* `registerMockObjectsFromTestArgumentsRecursively` attribute on the `<phpunit>` element of the XML configuration file
+* `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
+
 ### Fixed
 
 * [#5614](https://github.com/sebastianbergmann/phpunit/issues/5614): Infinite recursion when data provider provides recursive array

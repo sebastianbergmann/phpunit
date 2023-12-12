@@ -74,6 +74,7 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 |       | `PHPUnit\TextUI\Configuration\Configuration::cliArgument()`                                            | 10.4.0 | `PHPUnit\TextUI\Configuration\Configuration::cliArguments()[0]`                |
 |       | `PHPUnit\TextUI\Configuration\Configuration::hasCliArgument()`                                         | 10.4.0 | `PHPUnit\TextUI\Configuration\Configuration::hasCliArguments()`                |
 |       | `PHPUnit\Framework\Constraint\Constraint::exporter()`                                                  | 10.4.0 |                                                                                |
+|       | `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`        | 10.5.3 |                                                                                |
 
 ## Hard Deprecations
 

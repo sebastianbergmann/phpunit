@@ -601,6 +601,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     *
+     * @deprecated
      */
     final public function registerMockObjectsFromTestArgumentsRecursively(): void
     {
@@ -1827,6 +1829,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return !in_array($mock, $enumerator->enumerate($this->testResult), true);
     }
 
+    /**
+     * @deprecated
+     */
     private function registerMockObjectsFromTestArguments(array $testArguments, Context $context = new Context): void
     {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {

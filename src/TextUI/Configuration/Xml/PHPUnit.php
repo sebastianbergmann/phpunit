@@ -453,6 +453,9 @@ final class PHPUnit
         return $this->backupStaticProperties;
     }
 
+    /**
+     * @deprecated
+     */
     public function registerMockObjectsFromTestArgumentsRecursively(): bool
     {
         return $this->registerMockObjectsFromTestArgumentsRecursively;

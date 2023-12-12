@@ -926,6 +926,9 @@ final class Configuration
         return $this->requireCoverageMetadata;
     }
 
+    /**
+     * @deprecated
+     */
     public function registerMockObjectsFromTestArgumentsRecursively(): bool
     {
         return $this->registerMockObjectsFromTestArgumentsRecursively;
