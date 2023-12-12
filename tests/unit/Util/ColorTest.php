@@ -78,18 +78,22 @@ final class ColorTest extends TestCase
             'fitting text' => [
                 40,
                 "this is fine\n" .
-                "all lines fit nicely even the long\n" .
-                'ones',
+                "\n" .
+                "all lines fit nicely even the extra long ones with inlined exceptions and var_dumps\n" .
+                'bottom text',
                 Color::colorize('red', 'this is fine                      ') . "\n" .
+                Color::colorize('red', '                                  ') . "\n" .
                 Color::colorize('red', 'all lines fit nicely even the long') . "\n" .
                 Color::colorize('red', 'ones                              '),
             ],
             'oversized text' => [
                 20,
                 "this is also fine\n" .
+                "\n" .
                 "the very long lines do not stretch the whole textbox\n" .
                 'anymore',
                 Color::colorize('red', 'this is also fine   ') . "\n" .
+                Color::colorize('red', '                    ') . "\n" .
                 Color::colorize('red', 'the very long lines do not stretch the whole textbox') . "\n" .
                 Color::colorize('red', 'anymore             '),
             ],
