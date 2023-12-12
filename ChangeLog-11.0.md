@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ## [11.0.0] - 2024-02-02
 
+### Added
+
+* [#5600](https://github.com/sebastianbergmann/phpunit/pull/5600): Assertions for comparing arrays while ignoring a specified list of keys
+
 ### Changed
 
 * [#5213](https://github.com/sebastianbergmann/phpunit/issues/5213): Make `TestCase` methods `protected` that should have been `protected` all along
