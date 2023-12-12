@@ -21,8 +21,14 @@ use PHPUnit\TextUI\Configuration\Configuration;
  */
 interface Emitter
 {
+    /**
+     * @deprecated
+     */
     public function exportObjects(): void;
 
+    /**
+     * @deprecated
+     */
     public function exportsObjects(): bool;
 
     public function applicationStarted(): void;
@@ -109,8 +115,14 @@ interface Emitter
      */
     public function testRegisteredComparator(string $className): void;
 
+    /**
+     * @deprecated
+     */
     public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void;
 
+    /**
+     * @deprecated
+     */
     public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void;
 
     /**

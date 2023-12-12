@@ -45,11 +45,17 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $system->snapshot();
     }
 
+    /**
+     * @deprecated
+     */
     public function exportObjects(): void
     {
         $this->exportObjects = true;
     }
 
+    /**
+     * @deprecated
+     */
     public function exportsObjects(): bool
     {
         return $this->exportObjects;
@@ -477,6 +483,8 @@ final class DispatchingEmitter implements Emitter
     /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
+     *
+     * @deprecated
      */
     public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
@@ -494,6 +502,8 @@ final class DispatchingEmitter implements Emitter
     /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
+     *
+     * @deprecated
      */
     public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void
     {

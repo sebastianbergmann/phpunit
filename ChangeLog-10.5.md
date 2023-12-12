@@ -6,6 +6,8 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Deprecated
 
+* `Test\AssertionFailed` and `Test\AssertionSucceeded` events
+* `PHPUnit\Runner\Extension\Facade::requireExportOfObjects()` and `PHPUnit\Runner\Extension\Facade::requiresExportOfObjects()`
 * `registerMockObjectsFromTestArgumentsRecursively` attribute on the `<phpunit>` element of the XML configuration file
 * `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
 

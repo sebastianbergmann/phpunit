@@ -30,12 +30,41 @@
       <code>$message</code>
       <code>$message</code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($constructorArguments, $this->exportObjects)]]></code>
+      <code><![CDATA[Exporter::export($value, $this->exportObjects)]]></code>
+      <code><![CDATA[Exporter::export($value, $this->exportObjects)]]></code>
+      <code><![CDATA[new Test\AssertionFailed(
+                $this->telemetryInfo(),
+                Exporter::export($value, $this->exportObjects),
+                $constraint->toString($this->exportObjects),
+                $constraint->count(),
+                $message,
+            )]]></code>
+      <code><![CDATA[new Test\AssertionSucceeded(
+                $this->telemetryInfo(),
+                Exporter::export($value, $this->exportObjects),
+                $constraint->toString($this->exportObjects),
+                $constraint->count(),
+                $message,
+            )]]></code>
+    </DeprecatedClass>
     <TooManyArguments>
       <code>toString</code>
       <code>toString</code>
       <code>toString</code>
       <code>toString</code>
     </TooManyArguments>
+  </file>
+  <file src="src/Event/Events/Test/Assertion/AssertionFailedSubscriber.php">
+    <DeprecatedClass>
+      <code>AssertionFailed</code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Event/Events/Test/Assertion/AssertionSucceededSubscriber.php">
+    <DeprecatedClass>
+      <code>AssertionSucceeded</code>
+    </DeprecatedClass>
   </file>
   <file src="src/Event/Events/Test/HookMethod/AfterLastTestMethodFinished.php">
     <PropertyTypeCoercion>
@@ -86,6 +115,13 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code>Test\AssertionFailed::class</code>
+      <code>Test\AssertionSucceeded::class</code>
+    </DeprecatedClass>
+    <DeprecatedMethod>
+      <code>exportObjects</code>
+    </DeprecatedMethod>
     <InvalidArrayOffset>
       <code><![CDATA[gc_status()['running']]]></code>
     </InvalidArrayOffset>
@@ -138,6 +174,16 @@
       <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
   </file>
+  <file src="src/Event/Value/Test/TestMethodBuilder.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($testCase->dependencyInput(), EventFacade::emitter()->exportsObjects())]]></code>
+      <code><![CDATA[Exporter::export($testCase->providedData(), EventFacade::emitter()->exportsObjects())]]></code>
+    </DeprecatedClass>
+    <DeprecatedMethod>
+      <code>exportsObjects</code>
+      <code>exportsObjects</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/Event/Value/TestSuite/TestSuiteBuilder.php">
     <ArgumentTypeCoercion>
       <code>$className</code>
@@ -146,6 +192,12 @@
       <code><![CDATA[$testSuite->name()]]></code>
       <code><![CDATA[$testSuite->name()]]></code>
     </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Framework/Assert.php">
+    <DeprecatedMethod>
+      <code>testAssertionFailed</code>
+      <code>testAssertionSucceeded</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedMethod>
@@ -183,21 +235,76 @@
       <code><![CDATA[$e->getCode()]]></code>
     </PossiblyInvalidArgument>
   </file>
+  <file src="src/Framework/Constraint/Cardinality/GreaterThan.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Framework/Constraint/Cardinality/IsEmpty.php">
     <TooManyArguments>
       <code>toString</code>
     </TooManyArguments>
   </file>
+  <file src="src/Framework/Constraint/Cardinality/LessThan.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Framework/Constraint/Constraint.php">
+    <DeprecatedClass>
+      <code>Exporter::export($other, true)</code>
+      <code>Exporter::export($other, true)</code>
+    </DeprecatedClass>
     <TooManyArguments>
       <code>toString</code>
       <code>toString</code>
     </TooManyArguments>
   </file>
+  <file src="src/Framework/Constraint/Equality/IsEqual.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Framework/Constraint/Equality/IsEqualCanonicalizing.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Framework/Constraint/Equality/IsEqualIgnoringCase.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Framework/Constraint/Equality/IsEqualWithDelta.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Framework/Constraint/Exception/ExceptionCode.php">
+    <DeprecatedClass>
+      <code>Exporter::export($other, true)</code>
+      <code><![CDATA[Exporter::export($this->expectedCode, true)]]></code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Framework/Constraint/Exception/ExceptionMessageIsOrContains.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->expectedMessage)]]></code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Framework/Constraint/Exception/ExceptionMessageMatchesRegularExpression.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->regularExpression]]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->regularExpression)]]></code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Framework/Constraint/IsIdentical.php">
+    <DeprecatedClass>
+      <code>Exporter::export($other, true)</code>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+      <code><![CDATA[Exporter::export($this->value, true)]]></code>
+    </DeprecatedClass>
   </file>
   <file src="src/Framework/Constraint/Object/ObjectEquals.php">
     <MissingThrowsDocblock>
@@ -235,6 +342,9 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Constraint/String/StringContains.php">
+    <DeprecatedClass>
+      <code>Exporter::export($other, true)</code>
+    </DeprecatedClass>
     <TooManyArguments>
       <code>toString</code>
     </TooManyArguments>
@@ -248,6 +358,9 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Constraint/Traversable/ArrayHasKey.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->key)]]></code>
+    </DeprecatedClass>
     <TooManyArguments>
       <code>toString</code>
     </TooManyArguments>
@@ -256,6 +369,11 @@
     <TooManyArguments>
       <code>toString</code>
     </TooManyArguments>
+  </file>
+  <file src="src/Framework/Constraint/Traversable/TraversableContains.php">
+    <DeprecatedClass>
+      <code><![CDATA[Exporter::export($this->value, $exportObjects)]]></code>
+    </DeprecatedClass>
   </file>
   <file src="src/Framework/Constraint/Traversable/TraversableContainsOnly.php">
     <ArgumentTypeCoercion>
@@ -428,6 +546,7 @@
       <code><![CDATA[$test->output()]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
+      <code>exportsObjects</code>
       <code>registerMockObjectsFromTestArgumentsRecursively</code>
       <code>registerMockObjectsFromTestArgumentsRecursively</code>
     </DeprecatedMethod>
@@ -751,6 +870,11 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$configuration->generateBaseline()]]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedMethod>
+      <code>exportObjects</code>
+      <code>exportObjects</code>
+      <code>requiresExportOfObjects</code>
+    </DeprecatedMethod>
     <InternalMethod>
       <code>nameAndVersion</code>
     </InternalMethod>
