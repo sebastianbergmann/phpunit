@@ -709,6 +709,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     *
      * @throws InvalidArgumentException
      * @throws NoTestCaseObjectOnCallStackException
      * @throws UnknownEventTypeException
@@ -737,6 +739,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -757,6 +763,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -777,6 +787,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -795,6 +809,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -814,6 +832,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -833,6 +855,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -852,6 +878,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -871,6 +901,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -886,6 +918,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param non-empty-string $message
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */

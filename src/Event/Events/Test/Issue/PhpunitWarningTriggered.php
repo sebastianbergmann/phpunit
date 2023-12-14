@@ -24,8 +24,15 @@ final readonly class PhpunitWarningTriggered implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Test $test;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $message;
 
+    /**
+     * @psalm-param non-empty-string $message
+     */
     public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
@@ -43,6 +50,9 @@ final readonly class PhpunitWarningTriggered implements Event
         return $this->test;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function message(): string
     {
         return $this->message;

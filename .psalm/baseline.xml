@@ -6,30 +6,6 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/Emitter/DispatchingEmitter.php">
-    <ArgumentTypeCoercion>
-      <code>$file</code>
-      <code>$file</code>
-      <code>$file</code>
-      <code>$file</code>
-      <code>$file</code>
-      <code>$file</code>
-      <code>$file</code>
-      <code>$line</code>
-      <code>$line</code>
-      <code>$line</code>
-      <code>$line</code>
-      <code>$line</code>
-      <code>$line</code>
-      <code>$line</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-    </ArgumentTypeCoercion>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
@@ -338,6 +314,7 @@
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>
+      <code><![CDATA[$e->getMessage()]]></code>
       <code>$mockClassName</code>
       <code>$originalClassName</code>
       <code><![CDATA[$this->expectedException]]></code>
@@ -364,6 +341,7 @@
   </file>
   <file src="src/Framework/TestRunner.php">
     <ArgumentTypeCoercion>
+      <code><![CDATA[$cce->getMessage()]]></code>
       <code><![CDATA[$test->output()]]></code>
     </ArgumentTypeCoercion>
     <InvalidArgument>
@@ -592,7 +570,28 @@
   <file src="src/Runner/ErrorHandler.php">
     <ArgumentTypeCoercion>
       <code>$errorFile</code>
+      <code>$errorFile</code>
+      <code>$errorFile</code>
+      <code>$errorFile</code>
+      <code>$errorFile</code>
+      <code>$errorFile</code>
+      <code>$errorFile</code>
+      <code>$errorFile</code>
       <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorLine</code>
+      <code>$errorString</code>
+      <code>$errorString</code>
+      <code>$errorString</code>
+      <code>$errorString</code>
+      <code>$errorString</code>
+      <code>$errorString</code>
+      <code>$errorString</code>
       <code>$errorString</code>
     </ArgumentTypeCoercion>
     <MissingThrowsDocblock>
@@ -626,6 +625,9 @@
     </MissingTemplateParam>
   </file>
   <file src="src/Runner/PhptTestCase.php">
+    <ArgumentTypeCoercion>
+      <code>$message</code>
+    </ArgumentTypeCoercion>
     <InternalClass>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
