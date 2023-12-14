@@ -177,30 +177,80 @@ interface Emitter
 
     public function testPassed(Code\Test $test): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     */
     public function testConsideredRisky(Code\Test $test, string $message): void;
 
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     */
     public function testSkipped(Code\Test $test, string $message): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     */
     public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredError(Code\Test $test, string $message, string $file, int $line, bool $suppressed): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
     public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     */
     public function testTriggeredPhpunitError(Code\Test $test, string $message): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     */
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void;
 
     /**
