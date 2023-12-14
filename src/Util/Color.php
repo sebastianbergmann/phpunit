@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_map;
+use function array_walk;
 use function count;
 use function explode;
 use function implode;
@@ -99,18 +100,21 @@ final class Color
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
-    public static function colorizeTextBox(string $color, string $buffer, ?int $columns = 80): string
+    public static function colorizeTextBox(string $color, string $buffer, ?int $columns = null): string
     {
-        $lines   = preg_split('/\r\n|\r|\n/', $buffer);
-        $padding = max(array_map('\strlen', $lines));
+        $lines       = preg_split('/\r\n|\r|\n/', $buffer);
+        $maxBoxWidth = max(array_map('\strlen', $lines));
 
-        $styledLines = [];
-
-        foreach ($lines as $line) {
-            $styledLines[] = self::colorize($color, str_pad($line, $padding));
+        if ($columns !== null) {
+            $maxBoxWidth = min($maxBoxWidth, $columns);
         }
 
-        return implode(PHP_EOL, $styledLines);
+        array_walk($lines, static function (string &$line) use ($color, $maxBoxWidth): void
+        {
+            $line = self::colorize($color, str_pad($line, $maxBoxWidth));
+        });
+
+        return implode(PHP_EOL, $lines);
     }
 
     public static function colorizePath(string $path, ?string $previousPath = null, bool $colorizeFilename = false): string

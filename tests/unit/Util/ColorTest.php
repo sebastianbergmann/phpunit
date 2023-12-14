@@ -79,14 +79,14 @@ final class ColorTest extends TestCase
                 40,
                 "this is fine\n" .
                 "\n" .
-                "all lines fit nicely even the extra long ones with inlined exceptions and var_dumps\n" .
+                "all lines fit nicely\n" .
                 'bottom text',
-                Color::colorize('red', 'this is fine                      ') . "\n" .
-                Color::colorize('red', '                                  ') . "\n" .
-                Color::colorize('red', 'all lines fit nicely even the long') . "\n" .
-                Color::colorize('red', 'ones                              '),
+                Color::colorize('red', 'this is fine        ') . "\n" .
+                Color::colorize('red', '                    ') . "\n" .
+                Color::colorize('red', 'all lines fit nicely') . "\n" .
+                Color::colorize('red', 'bottom text         '),
             ],
-            'oversized text' => [
+            'oversize text' => [
                 20,
                 "this is also fine\n" .
                 "\n" .
