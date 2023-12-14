@@ -77,24 +77,24 @@ final class ColorTest extends TestCase
         return [
             'fitting text' => [
                 40,
-                "this is fine\n" .
-                "\n" .
-                "all lines fit nicely\n" .
+                'this is fine' . PHP_EOL .
+                PHP_EOL .
+                'all lines fit nicely' . PHP_EOL .
                 'bottom text',
-                Color::colorize('red', 'this is fine        ') . "\n" .
-                Color::colorize('red', '                    ') . "\n" .
-                Color::colorize('red', 'all lines fit nicely') . "\n" .
+                Color::colorize('red', 'this is fine        ') . PHP_EOL .
+                Color::colorize('red', '                    ') . PHP_EOL .
+                Color::colorize('red', 'all lines fit nicely') . PHP_EOL .
                 Color::colorize('red', 'bottom text         '),
             ],
             'oversize text' => [
                 20,
-                "this is also fine\n" .
-                "\n" .
-                "the very long lines do not stretch the whole textbox\n" .
+                'this is also fine' . PHP_EOL .
+                PHP_EOL .
+                'the very long lines do not stretch the whole textbox' . PHP_EOL .
                 'anymore',
-                Color::colorize('red', 'this is also fine   ') . "\n" .
-                Color::colorize('red', '                    ') . "\n" .
-                Color::colorize('red', 'the very long lines do not stretch the whole textbox') . "\n" .
+                Color::colorize('red', 'this is also fine   ') . PHP_EOL .
+                Color::colorize('red', '                    ') . PHP_EOL .
+                Color::colorize('red', 'the very long lines do not stretch the whole textbox') . PHP_EOL .
                 Color::colorize('red', 'anymore             '),
             ],
         ];
