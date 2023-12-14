@@ -43,7 +43,7 @@ final class TestForDeprecatedFeatureTest extends TestCase
     #[IgnoreDeprecations]
     public function testFour(): void
     {
-        $this->expectUserDeprecationMessage('message');
+        $this->expectUserDeprecationMessageMatches('message');
 
         @trigger_error('something else', E_USER_DEPRECATED);
     }

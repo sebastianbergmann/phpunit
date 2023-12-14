@@ -1598,7 +1598,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $expectedDeprecationTriggered = false;
 
             foreach (DeprecationCollector::deprecations() as $deprecation) {
-                if (preg_match($deprecationExpectation, $deprecation) > 0) {
+                if (@preg_match($deprecationExpectation, $deprecation) > 0) {
                     $expectedDeprecationTriggered = true;
 
                     break;
