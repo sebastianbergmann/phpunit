@@ -36,7 +36,7 @@ Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Finished (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Assertion Succeeded (Constraint: is null, Value: null)
 Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [

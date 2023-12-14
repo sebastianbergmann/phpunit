@@ -43,7 +43,7 @@ Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Assertion Succeeded (Constraint: is null, Value: null)
 Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
@@ -56,7 +56,7 @@ Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLa
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Assertion Succeeded (Constraint: is null, Value: null)
 Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [

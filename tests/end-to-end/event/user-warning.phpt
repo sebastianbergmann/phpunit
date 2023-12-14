@@ -36,7 +36,7 @@ Test Passed (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Assertion Succeeded (Constraint: is null, Value: null)
 Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [

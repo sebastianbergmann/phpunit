@@ -49,7 +49,7 @@ Test Passed (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testEr
 Test Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerSet)
 Test Preparation Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
 Test Prepared (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
-Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Assertion Succeeded (Constraint: is null, Value: null)
 Test Passed (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
 Test Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
 Test Suite Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest, 4 tests)

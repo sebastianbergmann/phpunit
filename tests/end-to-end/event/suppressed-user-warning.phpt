@@ -36,7 +36,7 @@ Test Passed (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressed
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: {enable export of objects to see this value})
+Assertion Succeeded (Constraint: is null, Value: null)
 Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
