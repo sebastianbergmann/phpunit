@@ -45,7 +45,7 @@ final class TestForDeprecatedFeatureTest extends TestCase
     {
         $this->expectUserDeprecationMessage('message');
 
-        @trigger_error('something else', E_USER_DEPRECATED);
+        @trigger_error('another message', E_USER_DEPRECATED);
     }
 
     #[IgnoreDeprecations]
