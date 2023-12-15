@@ -1572,17 +1572,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         foreach ($this->expectedUserDeprecationMessage as $deprecationExpectation) {
             $this->numberOfAssertionsPerformed++;
 
-            $expectedDeprecationTriggered = false;
-
-            foreach (DeprecationCollector::deprecations() as $deprecation) {
-                if (in_array($deprecationExpectation, DeprecationCollector::deprecations(), true)) {
-                    $expectedDeprecationTriggered = true;
-
-                    break;
-                }
-            }
-
-            if (!$expectedDeprecationTriggered) {
+            if (!in_array($deprecationExpectation, DeprecationCollector::deprecations(), true)) {
                 throw new ExpectationFailedException(
                     sprintf(
                         'Expected deprecation with message "%s" was not triggered',
