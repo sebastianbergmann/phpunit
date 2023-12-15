@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class TestForDeprecatedFeatureTest extends TestCase
 {
     #[IgnoreDeprecations]
-    public function testOne(): void
+    public function testExpectationOnExactDeprecationMessageWorksWhenExpectedDeprecationIsTriggered(): void
     {
         $this->expectUserDeprecationMessage('message');
 
@@ -25,7 +25,23 @@ final class TestForDeprecatedFeatureTest extends TestCase
     }
 
     #[IgnoreDeprecations]
-    public function testTwo(): void
+    public function testExpectationsOnExactDeprecationMessagesWorkWhenExpectedDeprecationsAreTriggered(): void
+    {
+        $this->expectUserDeprecationMessage('message');
+        $this->expectUserDeprecationMessage('another message');
+
+        @trigger_error('message', E_USER_DEPRECATED);
+        @trigger_error('another message', E_USER_DEPRECATED);
+    }
+
+    #[IgnoreDeprecations]
+    public function testExpectationOnExactDeprecationMessageWorksWhenExpectedDeprecationIsNotTriggered(): void
+    {
+        $this->expectUserDeprecationMessage('message');
+    }
+
+    #[IgnoreDeprecations]
+    public function testExpectationOnExactDeprecationMessageWorksWhenUnexpectedDeprecationIsTriggered(): void
     {
         $this->expectUserDeprecationMessage('message');
 
@@ -33,7 +49,7 @@ final class TestForDeprecatedFeatureTest extends TestCase
     }
 
     #[IgnoreDeprecations]
-    public function testThree(): void
+    public function testExpectationOnDeprecationMessageMatchingRegularExpressionWorksWhenExpectedDeprecationIsTriggered(): void
     {
         $this->expectUserDeprecationMessageMatches('/message/');
 
@@ -41,9 +57,25 @@ final class TestForDeprecatedFeatureTest extends TestCase
     }
 
     #[IgnoreDeprecations]
-    public function testFour(): void
+    public function testExpectationsOnDeprecationMessagesMatchingRegularExpressionsWorkWhenExpectedDeprecationsAreTriggered(): void
     {
-        $this->expectUserDeprecationMessageMatches('message');
+        $this->expectUserDeprecationMessageMatches('/foo/');
+        $this->expectUserDeprecationMessageMatches('/bar/');
+
+        @trigger_error('...foo...', E_USER_DEPRECATED);
+        @trigger_error('...bar...', E_USER_DEPRECATED);
+    }
+
+    #[IgnoreDeprecations]
+    public function testExpectationOnDeprecationMessageMatchingRegularExpressionWorksWhenExpectedDeprecationIsNotTriggered(): void
+    {
+        $this->expectUserDeprecationMessageMatches('/message/');
+    }
+
+    #[IgnoreDeprecations]
+    public function testExpectationOnDeprecationMessageMatchingRegularExpressionWorksWhenUnepectedDeprecationIsTriggered(): void
+    {
+        $this->expectUserDeprecationMessageMatches('/message/');
 
         @trigger_error('something else', E_USER_DEPRECATED);
     }
