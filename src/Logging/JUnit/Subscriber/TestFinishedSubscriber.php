@@ -17,7 +17,7 @@ use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
+final readonly class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
     /**
      * @throws InvalidArgumentException

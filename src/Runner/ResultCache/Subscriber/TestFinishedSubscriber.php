@@ -16,7 +16,7 @@ use PHPUnit\Event\Test\FinishedSubscriber;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
+final readonly class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException

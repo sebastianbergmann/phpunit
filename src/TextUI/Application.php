@@ -77,7 +77,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Application
+final readonly class Application
 {
     public function run(array $argv): int
     {

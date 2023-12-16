@@ -73,7 +73,7 @@ use ReflectionMethod;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AttributeParser implements Parser
+final readonly class AttributeParser implements Parser
 {
     /**
      * @psalm-param class-string $className

@@ -16,9 +16,9 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Exception extends Constraint
+final readonly class Exception extends Constraint
 {
-    private readonly string $className;
+    private string $className;
 
     public function __construct(string $className)
     {

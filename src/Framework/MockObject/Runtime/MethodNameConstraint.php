@@ -16,9 +16,9 @@ use PHPUnit\Framework\Constraint\Constraint;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MethodNameConstraint extends Constraint
+final readonly class MethodNameConstraint extends Constraint
 {
-    private readonly string $methodName;
+    private string $methodName;
 
     public function __construct(string $methodName)
     {

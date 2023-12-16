@@ -21,7 +21,7 @@ use ReflectionMethod;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Reflection
+final readonly class Reflection
 {
     /**
      * @psalm-param class-string $className

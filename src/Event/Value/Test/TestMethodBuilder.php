@@ -23,7 +23,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestMethodBuilder
+final readonly class TestMethodBuilder
 {
     public static function fromTestCase(TestCase $testCase): TestMethod
     {

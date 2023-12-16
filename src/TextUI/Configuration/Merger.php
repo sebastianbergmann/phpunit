@@ -32,7 +32,7 @@ use SebastianBergmann\Invoker\Invoker;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Merger
+final readonly class Merger
 {
     /**
      * @throws \PHPUnit\TextUI\CliArguments\Exception

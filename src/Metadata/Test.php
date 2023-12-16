@@ -14,7 +14,7 @@ namespace PHPUnit\Metadata;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Test extends Metadata
+final readonly class Test extends Metadata
 {
     /**
      * @psalm-assert-if-true Test $this

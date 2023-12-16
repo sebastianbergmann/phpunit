@@ -27,7 +27,7 @@ use PHPUnit\Metadata\UsesFunction;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Groups
+final readonly class Groups
 {
     /**
      * @psalm-param class-string $className

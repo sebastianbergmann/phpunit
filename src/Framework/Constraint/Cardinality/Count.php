@@ -24,9 +24,9 @@ use Traversable;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-class Count extends Constraint
+readonly class Count extends Constraint
 {
-    private readonly int $expectedCount;
+    private int $expectedCount;
 
     public function __construct(int $expected)
     {

@@ -28,7 +28,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteBuilder
+final readonly class TestSuiteBuilder
 {
     /**
      * @throws \PHPUnit\Framework\Exception

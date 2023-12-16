@@ -15,7 +15,7 @@ use PHPUnit\Logging\TestDox\NamePrettifier;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestDoxBuilder
+final readonly class TestDoxBuilder
 {
     public static function fromTestCase(TestCase $testCase): TestDox
     {

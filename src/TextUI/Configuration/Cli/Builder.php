@@ -23,7 +23,7 @@ use SebastianBergmann\CliParser\Parser as CliParser;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Builder
+final readonly class Builder
 {
     private const LONG_OPTIONS = [
         'atleast-version=',

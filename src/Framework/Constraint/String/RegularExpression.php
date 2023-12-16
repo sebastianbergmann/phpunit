@@ -15,9 +15,9 @@ use function sprintf;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class RegularExpression extends Constraint
+final readonly class RegularExpression extends Constraint
 {
-    private readonly string $pattern;
+    private string $pattern;
 
     public function __construct(string $pattern)
     {

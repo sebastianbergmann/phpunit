@@ -17,9 +17,9 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class ArrayHasKey extends Constraint
+final readonly class ArrayHasKey extends Constraint
 {
-    private readonly int|string $key;
+    private int|string $key;
 
     public function __construct(int|string $key)
     {

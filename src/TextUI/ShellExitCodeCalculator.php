@@ -14,7 +14,7 @@ use PHPUnit\TestRunner\TestResult\TestResult;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ShellExitCodeCalculator
+final readonly class ShellExitCodeCalculator
 {
     private const SUCCESS_EXIT   = 0;
     private const FAILURE_EXIT   = 1;

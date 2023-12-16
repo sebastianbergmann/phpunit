@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\TestStatus;
  *
  * @psalm-immutable
  */
-final class Skipped extends Known
+final readonly class Skipped extends Known
 {
     /**
      * @psalm-assert-if-true Skipped $this

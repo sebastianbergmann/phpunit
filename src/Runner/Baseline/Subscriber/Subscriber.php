@@ -12,9 +12,9 @@ namespace PHPUnit\Runner\Baseline;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Subscriber
+abstract readonly class Subscriber
 {
-    private readonly Generator $generator;
+    private Generator $generator;
 
     public function __construct(Generator $generator)
     {

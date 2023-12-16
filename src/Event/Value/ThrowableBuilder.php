@@ -17,7 +17,7 @@ use PHPUnit\Util\ThrowableToStringMapper;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ThrowableBuilder
+final readonly class ThrowableBuilder
 {
     /**
      * @throws Exception

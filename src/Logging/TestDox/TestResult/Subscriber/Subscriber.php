@@ -12,9 +12,9 @@ namespace PHPUnit\Logging\TestDox;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Subscriber
+abstract readonly class Subscriber
 {
-    private readonly TestResultCollector $collector;
+    private TestResultCollector $collector;
 
     public function __construct(TestResultCollector $collector)
     {

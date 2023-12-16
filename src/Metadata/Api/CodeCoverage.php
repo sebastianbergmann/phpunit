@@ -32,7 +32,7 @@ use SebastianBergmann\CodeUnit\Mapper;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class CodeCoverage
+final readonly class CodeCoverage
 {
     /**
      * @psalm-param class-string $className

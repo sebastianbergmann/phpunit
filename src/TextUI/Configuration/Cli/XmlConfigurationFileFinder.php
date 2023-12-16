@@ -17,7 +17,7 @@ use function realpath;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class XmlConfigurationFileFinder
+final readonly class XmlConfigurationFileFinder
 {
     public function find(Configuration $configuration): false|string
     {

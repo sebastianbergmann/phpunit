@@ -18,13 +18,13 @@ use IteratorAggregate;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class TestDataCollection implements Countable, IteratorAggregate
+final readonly class TestDataCollection implements Countable, IteratorAggregate
 {
     /**
      * @psalm-var list<TestData>
      */
-    private readonly array $data;
-    private ?DataFromDataProvider $fromDataProvider = null;
+    private array $data;
+    private ?DataFromDataProvider $fromDataProvider;
 
     /**
      * @psalm-param list<TestData> $data
@@ -36,13 +36,20 @@ final class TestDataCollection implements Countable, IteratorAggregate
 
     private function __construct(TestData ...$data)
     {
+        $fromDataProvider = false;
+
         foreach ($data as $_data) {
             if ($_data->isFromDataProvider()) {
                 $this->fromDataProvider = $_data;
+                $fromDataProvider       = true;
             }
         }
 
         $this->data = $data;
+
+        if (!$fromDataProvider) {
+            $this->fromDataProvider = null;
+        }
     }
 
     /**

@@ -29,7 +29,7 @@ use SebastianBergmann\FileIterator\Facade;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteMapper
+final readonly class TestSuiteMapper
 {
     /**
      * @psalm-param non-empty-string $xmlConfigurationFile,

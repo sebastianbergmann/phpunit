@@ -22,9 +22,9 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class StringMatchesFormatDescription extends Constraint
+final readonly class StringMatchesFormatDescription extends Constraint
 {
-    private readonly string $formatDescription;
+    private string $formatDescription;
 
     public function __construct(string $formatDescription)
     {

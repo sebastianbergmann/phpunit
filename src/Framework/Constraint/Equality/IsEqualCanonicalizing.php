@@ -21,9 +21,9 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class IsEqualCanonicalizing extends Constraint
+final readonly class IsEqualCanonicalizing extends Constraint
 {
-    private readonly mixed $value;
+    private mixed $value;
 
     public function __construct(mixed $value)
     {

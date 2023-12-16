@@ -14,10 +14,10 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class TraversableContainsOnly extends Constraint
+final readonly class TraversableContainsOnly extends Constraint
 {
     private Constraint $constraint;
-    private readonly string $type;
+    private string $type;
 
     /**
      * @throws \PHPUnit\Framework\Exception

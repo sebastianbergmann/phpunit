@@ -14,7 +14,7 @@ namespace PHPUnit\Event\Code;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Phpt extends Test
+final readonly class Phpt extends Test
 {
     /**
      * @psalm-assert-if-true Phpt $this

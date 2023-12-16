@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\TestStatus;
  *
  * @psalm-immutable
  */
-final class Error extends Known
+final readonly class Error extends Known
 {
     /**
      * @psalm-assert-if-true Error $this

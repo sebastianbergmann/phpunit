@@ -24,7 +24,7 @@ use ReflectionClass;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestBuilder
+final readonly class TestBuilder
 {
     /**
      * @psalm-param non-empty-string $methodName

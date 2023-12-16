@@ -15,7 +15,7 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggeredSubscriber;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestTriggeredPhpunitDeprecationSubscriber extends Subscriber implements PhpunitDeprecationTriggeredSubscriber
+final readonly class TestTriggeredPhpunitDeprecationSubscriber extends Subscriber implements PhpunitDeprecationTriggeredSubscriber
 {
     public function notify(PhpunitDeprecationTriggered $event): void
     {

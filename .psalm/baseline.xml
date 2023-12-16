@@ -81,6 +81,9 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Test/TestData/TestDataCollection.php">
+    <PropertyNotSetInConstructor>
+      <code>$fromDataProvider</code>
+    </PropertyNotSetInConstructor>
     <PropertyTypeCoercion>
       <code>$data</code>
     </PropertyTypeCoercion>

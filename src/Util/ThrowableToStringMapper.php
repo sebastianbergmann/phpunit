@@ -18,7 +18,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ThrowableToStringMapper
+final readonly class ThrowableToStringMapper
 {
     public static function map(Throwable $t): string
     {

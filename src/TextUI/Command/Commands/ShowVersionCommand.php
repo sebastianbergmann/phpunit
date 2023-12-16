@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\Command;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ShowVersionCommand implements Command
+final readonly class ShowVersionCommand implements Command
 {
     public function execute(): Result
     {

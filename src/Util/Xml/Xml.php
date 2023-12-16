@@ -19,7 +19,7 @@ use function strlen;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Xml
+final readonly class Xml
 {
     /**
      * Escapes a string for the use in XML documents.

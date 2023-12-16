@@ -18,9 +18,9 @@ use PharIo\Version\VersionConstraint;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class ConstraintRequirement extends Requirement
+final readonly class ConstraintRequirement extends Requirement
 {
-    private readonly VersionConstraint $constraint;
+    private VersionConstraint $constraint;
 
     public function __construct(VersionConstraint $constraint)
     {

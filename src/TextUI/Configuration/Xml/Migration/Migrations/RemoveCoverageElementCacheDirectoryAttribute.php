@@ -15,7 +15,7 @@ use DOMElement;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RemoveCoverageElementCacheDirectoryAttribute implements Migration
+final readonly class RemoveCoverageElementCacheDirectoryAttribute implements Migration
 {
     public function migrate(DOMDocument $document): void
     {

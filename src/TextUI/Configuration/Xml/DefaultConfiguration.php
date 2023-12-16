@@ -29,7 +29,7 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
  *
  * @psalm-immutable
  */
-final class DefaultConfiguration extends Configuration
+final readonly class DefaultConfiguration extends Configuration
 {
     public static function create(): self
     {

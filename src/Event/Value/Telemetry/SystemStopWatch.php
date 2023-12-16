@@ -15,7 +15,7 @@ use PHPUnit\Event\InvalidArgumentException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class SystemStopWatch implements StopWatch
+final readonly class SystemStopWatch implements StopWatch
 {
     /**
      * @throws InvalidArgumentException

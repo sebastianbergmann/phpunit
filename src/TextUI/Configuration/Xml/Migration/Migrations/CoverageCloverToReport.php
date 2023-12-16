@@ -14,7 +14,7 @@ use DOMElement;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class CoverageCloverToReport extends LogToReportMigration
+final readonly class CoverageCloverToReport extends LogToReportMigration
 {
     protected function forType(): string
     {

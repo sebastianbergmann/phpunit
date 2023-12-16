@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\TestStatus;
  *
  * @psalm-immutable
  */
-final class Incomplete extends Known
+final readonly class Incomplete extends Known
 {
     /**
      * @psalm-assert-if-true Incomplete $this

@@ -14,7 +14,7 @@ namespace PHPUnit\Metadata;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class RunClassInSeparateProcess extends Metadata
+final readonly class RunClassInSeparateProcess extends Metadata
 {
     /**
      * @psalm-assert-if-true RunClassInSeparateProcess $this

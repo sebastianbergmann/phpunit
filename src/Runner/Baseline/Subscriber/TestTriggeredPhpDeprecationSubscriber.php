@@ -16,7 +16,7 @@ use PHPUnit\Runner\FileDoesNotExistException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestTriggeredPhpDeprecationSubscriber extends Subscriber implements PhpDeprecationTriggeredSubscriber
+final readonly class TestTriggeredPhpDeprecationSubscriber extends Subscriber implements PhpDeprecationTriggeredSubscriber
 {
     /**
      * @throws FileDoesNotExistException

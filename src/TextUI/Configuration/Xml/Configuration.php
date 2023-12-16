@@ -21,16 +21,16 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
  *
  * @psalm-immutable
  */
-abstract class Configuration
+abstract readonly class Configuration
 {
-    private readonly ExtensionBootstrapCollection $extensions;
-    private readonly Source $source;
-    private readonly CodeCoverage $codeCoverage;
-    private readonly Groups $groups;
-    private readonly Logging $logging;
-    private readonly Php $php;
-    private readonly PHPUnit $phpunit;
-    private readonly TestSuiteCollection $testSuite;
+    private ExtensionBootstrapCollection $extensions;
+    private Source $source;
+    private CodeCoverage $codeCoverage;
+    private Groups $groups;
+    private Logging $logging;
+    private Php $php;
+    private PHPUnit $phpunit;
+    private TestSuiteCollection $testSuite;
 
     public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {

@@ -21,10 +21,10 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
  *
  * @psalm-immutable
  */
-final class LoadedFromFileConfiguration extends Configuration
+final readonly class LoadedFromFileConfiguration extends Configuration
 {
-    private readonly string $filename;
-    private readonly ValidationResult $validationResult;
+    private string $filename;
+    private ValidationResult $validationResult;
 
     public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {

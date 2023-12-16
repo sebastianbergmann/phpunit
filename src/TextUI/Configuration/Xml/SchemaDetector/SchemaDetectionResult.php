@@ -16,7 +16,7 @@ use PHPUnit\Util\Xml\XmlException;
  *
  * @psalm-immutable
  */
-abstract class SchemaDetectionResult
+abstract readonly class SchemaDetectionResult
 {
     public function detected(): bool
     {

@@ -14,17 +14,17 @@ namespace PHPUnit\Metadata;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DataProvider extends Metadata
+final readonly class DataProvider extends Metadata
 {
     /**
      * @psalm-var class-string
      */
-    private readonly string $className;
+    private string $className;
 
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $methodName;
+    private string $methodName;
 
     /**
      * @psalm-param 0|1 $level

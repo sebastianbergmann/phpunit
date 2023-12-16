@@ -14,9 +14,9 @@ namespace PHPUnit\Framework\TestStatus;
  *
  * @psalm-immutable
  */
-abstract class TestStatus
+abstract readonly class TestStatus
 {
-    private readonly string $message;
+    private string $message;
 
     public static function from(int $status): self
     {

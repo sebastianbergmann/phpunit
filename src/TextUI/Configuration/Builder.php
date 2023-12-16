@@ -21,7 +21,7 @@ use PHPUnit\TextUI\XmlConfiguration\Loader;
  *
  * @codeCoverageIgnore
  */
-final class Builder
+final readonly class Builder
 {
     /**
      * @throws ConfigurationCannotBeBuiltException

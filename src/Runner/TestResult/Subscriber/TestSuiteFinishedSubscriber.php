@@ -16,7 +16,7 @@ use PHPUnit\Event\TestSuite\FinishedSubscriber;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteFinishedSubscriber extends Subscriber implements FinishedSubscriber
+final readonly class TestSuiteFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
     /**
      * @throws NoDataSetFromDataProviderException

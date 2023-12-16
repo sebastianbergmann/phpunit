@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\Output;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class NullPrinter implements Printer
+final readonly class NullPrinter implements Printer
 {
     public function print(string $buffer): void
     {

@@ -14,9 +14,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  *
  * @psalm-immutable
  */
-final class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
+final readonly class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
 {
-    private readonly string $version;
+    private string $version;
 
     public function __construct(string $version)
     {

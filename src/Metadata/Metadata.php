@@ -16,7 +16,7 @@ use PHPUnit\Metadata\Version\Requirement;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Metadata
+abstract readonly class Metadata
 {
     private const CLASS_LEVEL  = 0;
     private const METHOD_LEVEL = 1;
@@ -24,7 +24,7 @@ abstract class Metadata
     /**
      * @psalm-var 0|1
      */
-    private readonly int $level;
+    private int $level;
 
     public static function after(): After
     {

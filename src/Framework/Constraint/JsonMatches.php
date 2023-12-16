@@ -19,9 +19,9 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class JsonMatches extends Constraint
+final readonly class JsonMatches extends Constraint
 {
-    private readonly string $value;
+    private string $value;
 
     public function __construct(string $value)
     {

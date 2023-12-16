@@ -17,17 +17,17 @@ use PHPUnit\Framework\UnknownClassOrInterfaceException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class IsInstanceOf extends Constraint
+final readonly class IsInstanceOf extends Constraint
 {
     /**
      * @psalm-var class-string
      */
-    private readonly string $name;
+    private string $name;
 
     /**
      * @psalm-var 'class'|'interface'
      */
-    private readonly string $type;
+    private string $type;
 
     /**
      * @throws UnknownClassOrInterfaceException

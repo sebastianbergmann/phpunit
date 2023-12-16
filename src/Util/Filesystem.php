@@ -15,7 +15,7 @@ use function mkdir;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Filesystem
+final readonly class Filesystem
 {
     public static function createDirectory(string $directory): bool
     {

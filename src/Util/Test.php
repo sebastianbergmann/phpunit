@@ -16,7 +16,7 @@ use ReflectionMethod;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Test
+final readonly class Test
 {
     public static function isTestMethod(ReflectionMethod $method): bool
     {

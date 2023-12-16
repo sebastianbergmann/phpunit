@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\TestSize;
  *
  * @psalm-immutable
  */
-final class Medium extends Known
+final readonly class Medium extends Known
 {
     /**
      * @psalm-assert-if-true Medium $this

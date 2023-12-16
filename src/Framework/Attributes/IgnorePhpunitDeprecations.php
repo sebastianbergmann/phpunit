@@ -17,6 +17,6 @@ use Attribute;
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class IgnorePhpunitDeprecations
+final readonly class IgnorePhpunitDeprecations
 {
 }

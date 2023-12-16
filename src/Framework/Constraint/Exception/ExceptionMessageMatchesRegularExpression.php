@@ -17,9 +17,9 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExceptionMessageMatchesRegularExpression extends Constraint
+final readonly class ExceptionMessageMatchesRegularExpression extends Constraint
 {
-    private readonly string $regularExpression;
+    private string $regularExpression;
 
     public function __construct(string $regularExpression)
     {

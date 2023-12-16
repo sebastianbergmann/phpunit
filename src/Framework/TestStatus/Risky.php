@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\TestStatus;
  *
  * @psalm-immutable
  */
-final class Risky extends Known
+final readonly class Risky extends Known
 {
     /**
      * @psalm-assert-if-true Risky $this

@@ -14,12 +14,12 @@ namespace PHPUnit\Framework\Constraint;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Callback extends Constraint
+final readonly class Callback extends Constraint
 {
     /**
      * @psalm-var callable(CallbackInput $input): bool
      */
-    private readonly mixed $callback;
+    private mixed $callback;
 
     /**
      * @psalm-param callable(CallbackInput $input): bool $callback

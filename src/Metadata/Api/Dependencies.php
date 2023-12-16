@@ -18,7 +18,7 @@ use PHPUnit\Metadata\Parser\Registry;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Dependencies
+final readonly class Dependencies
 {
     /**
      * @psalm-param class-string $className

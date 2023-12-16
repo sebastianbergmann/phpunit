@@ -16,7 +16,7 @@ use DOMElement;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MoveAttributesFromRootToCoverage implements Migration
+final readonly class MoveAttributesFromRootToCoverage implements Migration
 {
     /**
      * @throws MigrationException

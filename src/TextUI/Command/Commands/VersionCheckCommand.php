@@ -19,7 +19,7 @@ use PHPUnit\Runner\Version;
  *
  * @codeCoverageIgnore
  */
-final class VersionCheckCommand implements Command
+final readonly class VersionCheckCommand implements Command
 {
     public function execute(): Result
     {

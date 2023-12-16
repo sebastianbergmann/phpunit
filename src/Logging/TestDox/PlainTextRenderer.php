@@ -14,7 +14,7 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PlainTextRenderer
+final readonly class PlainTextRenderer
 {
     /**
      * @psalm-param array<string, TestResultCollection> $tests

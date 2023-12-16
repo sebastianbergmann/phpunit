@@ -14,9 +14,9 @@ namespace PHPUnit\Metadata;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class TestWith extends Metadata
+final readonly class TestWith extends Metadata
 {
-    private readonly array $data;
+    private array $data;
 
     /**
      * @psalm-param 0|1 $level

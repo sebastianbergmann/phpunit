@@ -17,6 +17,6 @@ use Attribute;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-final class Medium
+final readonly class Medium
 {
 }

@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\TestStatus;
  *
  * @psalm-immutable
  */
-final class Deprecation extends Known
+final readonly class Deprecation extends Known
 {
     /**
      * @psalm-assert-if-true Deprecation $this

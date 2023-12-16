@@ -16,7 +16,7 @@ use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber as TestRunnerExecutionF
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExecutionFinishedSubscriber extends Subscriber implements TestRunnerExecutionFinishedSubscriber
+final readonly class ExecutionFinishedSubscriber extends Subscriber implements TestRunnerExecutionFinishedSubscriber
 {
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException

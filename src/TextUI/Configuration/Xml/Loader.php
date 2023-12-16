@@ -76,7 +76,7 @@ use SebastianBergmann\CodeCoverage\Report\Thresholds;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Loader
+final readonly class Loader
 {
     /**
      * @throws Exception

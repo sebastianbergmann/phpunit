@@ -15,9 +15,9 @@ use function strtr;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class StringEqualsStringIgnoringLineEndings extends Constraint
+final readonly class StringEqualsStringIgnoringLineEndings extends Constraint
 {
-    private readonly string $string;
+    private string $string;
 
     public function __construct(string $string)
     {

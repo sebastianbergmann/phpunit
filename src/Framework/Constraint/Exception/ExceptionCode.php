@@ -15,9 +15,9 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExceptionCode extends Constraint
+final readonly class ExceptionCode extends Constraint
 {
-    private readonly int|string $expectedCode;
+    private int|string $expectedCode;
 
     public function __construct(int|string $expected)
     {

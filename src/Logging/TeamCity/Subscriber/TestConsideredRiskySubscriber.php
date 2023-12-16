@@ -16,7 +16,7 @@ use PHPUnit\Event\Test\ConsideredRiskySubscriber;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
+final readonly class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
 {
     /**
      * @throws InvalidArgumentException

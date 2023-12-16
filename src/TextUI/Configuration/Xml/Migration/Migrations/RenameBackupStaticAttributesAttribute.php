@@ -16,7 +16,7 @@ use DOMElement;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RenameBackupStaticAttributesAttribute implements Migration
+final readonly class RenameBackupStaticAttributesAttribute implements Migration
 {
     public function migrate(DOMDocument $document): void
     {
