@@ -86,6 +86,7 @@ final class TestMethodTest extends TestCase
                     DataFromDataProvider::from(
                         $dataSetName,
                         'data',
+                        'data as string for result output',
                     ),
                 ],
             ),
@@ -99,6 +100,8 @@ final class TestMethodTest extends TestCase
 
         $this->assertSame($expected, $test->name());
         $this->assertSame('FooTest::testBar#9000', $test->id());
+        $this->assertSame('data', $test->testData()->dataFromDataProvider()->data());
+        $this->assertSame('data as string for result output', $test->testData()->dataFromDataProvider()->dataAsStringForResultOutput());
     }
 
     public function testNameReturnsNameWhenTestHasDataFromDataProviderAndDataSetNameIsString(): void
@@ -117,6 +120,7 @@ final class TestMethodTest extends TestCase
                     DataFromDataProvider::from(
                         $dataSetName,
                         'data',
+                        'data as string for result output',
                     ),
                 ],
             ),
@@ -130,5 +134,7 @@ final class TestMethodTest extends TestCase
 
         $this->assertSame($expected, $test->name());
         $this->assertSame('FooTest::testBar#bar-9000', $test->id());
+        $this->assertSame('data', $test->testData()->dataFromDataProvider()->data());
+        $this->assertSame('data as string for result output', $test->testData()->dataFromDataProvider()->dataAsStringForResultOutput());
     }
 }
