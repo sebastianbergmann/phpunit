@@ -515,7 +515,11 @@ final class ResultPrinter
         if ($test->isTestMethod()) {
             assert($test instanceof TestMethod);
 
-            return $test->nameWithClass();
+            if (!$test->testData()->hasDataFromDataProvider()) {
+                return $test->nameWithClass();
+            }
+
+            return $test->className() . '::' . $test->methodName() . $test->testData()->dataFromDataProvider()->dataAsStringForResultOutput();
         }
 
         return $test->name();

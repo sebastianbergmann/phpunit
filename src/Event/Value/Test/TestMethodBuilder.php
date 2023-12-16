@@ -80,6 +80,7 @@ final class TestMethodBuilder
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
                 Exporter::export($testCase->providedData(), EventFacade::emitter()->exportsObjects()),
+                $testCase->dataSetAsStringWithData(),
             );
         }
 
