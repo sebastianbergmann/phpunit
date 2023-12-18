@@ -168,9 +168,9 @@ final class ErrorHandler
 
         set_error_handler($this);
 
-        $this->enabled = true;
-
+        $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
+
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
     }
 
@@ -182,9 +182,9 @@ final class ErrorHandler
 
         restore_error_handler();
 
-        $this->enabled = false;
-
         error_reporting(error_reporting() | $this->originalErrorReportingLevel);
+
+        $this->enabled                     = false;
         $this->originalErrorReportingLevel = null;
     }
 
