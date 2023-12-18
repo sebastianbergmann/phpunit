@@ -33,14 +33,14 @@ Assertion Succeeded (Constraint: is true, Value: true)
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 message
 Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
-Any E_*_ERROR must abort execution
+E_USER_ERROR was triggered
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 message
 Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
-Any E_*_ERROR must abort execution
+E_USER_ERROR was triggered
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Suite Finished (PHPUnit\TestFixture\Event\UserErrorTest, 2 tests)
 Test Runner Execution Finished

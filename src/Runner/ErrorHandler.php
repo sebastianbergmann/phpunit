@@ -151,7 +151,7 @@ final class ErrorHandler
                     $suppressed,
                 );
 
-                throw new ErrorException('Any E_*_ERROR must abort execution');
+                throw new ErrorException('E_USER_ERROR was triggered');
 
             default:
                 return false;
