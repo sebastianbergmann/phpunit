@@ -6,6 +6,8 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Fixed
 
+* [#5592](https://github.com/sebastianbergmann/phpunit/issues/5592): Error Handler prevents `error_get_last()` usage in tests
+* [#5592](https://github.com/sebastianbergmann/phpunit/issues/5592): `E_USER_ERROR` does not abort test execution
 * [#5616](https://github.com/sebastianbergmann/phpunit/issues/5616): Values from data provider are not shown for failed test
 
 ## [10.5.3] - 2023-12-13
