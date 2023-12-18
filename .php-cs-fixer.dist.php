@@ -344,4 +344,10 @@ $config->setFinder($finder)
         'whitespace_after_comma_in_array' => true,
     ]);
 
+$branch = @trim((string) @shell_exec('git rev-parse --abbrev-ref HEAD'));
+
+if (!empty($branch)) {
+    $config->setCacheFile(__DIR__ . '/.php-cs-fixer.cache.' . $branch);
+}
+
 return $config;
