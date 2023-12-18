@@ -40,7 +40,7 @@ use PHPUnit\Util\ExcludeList;
 final class ErrorHandler
 {
     private const UNHANDLEABLE_LEVELS         = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
-    private const UNSUPPRESSEABLE_LEVELS      = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
+    private const INSUPPRESSIBLE_LEVELS       = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
     private static ?self $instance            = null;
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
@@ -56,7 +56,7 @@ final class ErrorHandler
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        $suppressed = (error_reporting() & ~self::UNSUPPRESSEABLE_LEVELS) === 0;
+        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
 
         if ($suppressed && (new ExcludeList)->isExcluded($errorFile)) {
             return false;
