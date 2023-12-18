@@ -23,14 +23,14 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Bootstrap Finished (%s%esrc/Foo.php)
-Test Suite Loaded (2 tests)
+Test Suite Loaded (4 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (2 tests)
-Test Suite Started (%s%ephpunit.xml, 2 tests)
-Test Suite Started (default, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest, 2 tests)
+Test Runner Execution Started (4 tests)
+Test Suite Started (%s%ephpunit.xml, 4 tests)
+Test Suite Started (default, 4 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest, 4 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodA)
 Test Prepared (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodA)
 Test Passed (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodA)
@@ -39,9 +39,17 @@ Test Preparation Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\Fo
 Test Prepared (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodB)
 Test Passed (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodB)
 Test Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testMethodB)
-Test Suite Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest, 2 tests)
-Test Suite Finished (default, 2 tests)
-Test Suite Finished (%s%ephpunit.xml, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerSet)
+Test Prepared (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerSet)
+Test Passed (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerSet)
+Test Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerSet)
+Test Preparation Started (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
+Test Prepared (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
+Test Passed (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
+Test Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest::testErrorHandlerIsNotSet)
+Test Suite Finished (PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled\FooTest, 4 tests)
+Test Suite Finished (default, 4 tests)
+Test Suite Finished (%s%ephpunit.xml, 4 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

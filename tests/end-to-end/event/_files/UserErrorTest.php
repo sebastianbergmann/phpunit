@@ -20,4 +20,10 @@ final class UserErrorTest extends TestCase
 
         trigger_error('message', E_USER_ERROR);
     }
+
+    public function testUserErrorMustAbortExecution(): void
+    {
+        trigger_error('message', E_USER_ERROR);
+        $this->assertTrue(false);
+    }
 }

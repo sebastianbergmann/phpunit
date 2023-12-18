@@ -21,19 +21,27 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
+Test Suite Loaded (2 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\UserErrorTest, 1 test)
+Test Runner Execution Started (2 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\UserErrorTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 message
-Test Passed (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+E_USER_ERROR was triggered
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
-Test Suite Finished (PHPUnit\TestFixture\Event\UserErrorTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+message
+Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+E_USER_ERROR was triggered
+Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Test Suite Finished (PHPUnit\TestFixture\Event\UserErrorTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 2)

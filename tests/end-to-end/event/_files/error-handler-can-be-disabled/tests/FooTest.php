@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled;
 
+use function restore_error_handler;
+use function set_error_handler;
 use function sys_get_temp_dir;
 use function tempnam;
 use Exception;
@@ -32,5 +34,27 @@ final class FooTest extends TestCase
     public function testMethodB(): void
     {
         $this->assertSame('Triggering', (new Foo)->methodB()['message']);
+    }
+
+    public function testErrorHandlerSet(): void
+    {
+        $this->assertIsCallable($this->getErrorHandler());
+    }
+
+    #[WithoutErrorHandler]
+    public function testErrorHandlerIsNotSet(): void
+    {
+        $this->assertNull($this->getErrorHandler());
+    }
+
+    /**
+     * @return null|callable
+     */
+    private function getErrorHandler()
+    {
+        $res = set_error_handler(static fn () => false);
+        restore_error_handler();
+
+        return $res;
     }
 }

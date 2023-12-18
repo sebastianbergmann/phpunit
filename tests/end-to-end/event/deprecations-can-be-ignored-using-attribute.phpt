@@ -21,12 +21,12 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (2 tests)
+Test Suite Loaded (4 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 2 tests)
+Test Runner Execution Started (4 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 4 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
@@ -39,7 +39,19 @@ Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::te
 message
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
-Test Suite Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+message
+Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+message
+Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+Test Suite Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 4 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

@@ -21,19 +21,25 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
+Test Suite Loaded (2 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\UserWarningTest, 1 test)
+Test Runner Execution Started (2 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\UserWarningTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 message
 Test Passed (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
-Test Suite Finished (PHPUnit\TestFixture\Event\UserWarningTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
+Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
+Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
+message
+Test Passed (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
+Test Finished (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
+Test Suite Finished (PHPUnit\TestFixture\Event\UserWarningTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
