@@ -129,7 +129,7 @@ final class TeamCityLogger
                 'php_qn://%s::\\%s::%s',
                 $test->file(),
                 $test->className(),
-                $test->methodName(),
+                $test->name(),
             );
         }
 
