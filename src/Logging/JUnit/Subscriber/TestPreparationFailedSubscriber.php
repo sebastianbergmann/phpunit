@@ -12,7 +12,6 @@ namespace PHPUnit\Logging\JUnit;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Test\PreparationFailed;
 use PHPUnit\Event\Test\PreparationFailedSubscriber;
-use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -21,7 +20,6 @@ final readonly class TestPreparationFailedSubscriber extends Subscriber implemen
 {
     /**
      * @throws InvalidArgumentException
-     * @throws NoDataSetFromDataProviderException
      */
     public function notify(PreparationFailed $event): void
     {
