@@ -33,7 +33,6 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
-use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
@@ -245,9 +244,6 @@ final class Collector
         $this->currentTestSuiteForTestClassFailed = false;
     }
 
-    /**
-     * @throws NoDataSetFromDataProviderException
-     */
     public function testSuiteFinished(TestSuiteFinished $event): void
     {
         if ($this->currentTestSuiteForTestClassFailed) {

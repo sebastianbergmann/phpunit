@@ -12,7 +12,6 @@ namespace PHPUnit\Event\Code;
 use function assert;
 use function is_int;
 use function sprintf;
-use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Metadata\MetadataCollection;
 
@@ -108,8 +107,6 @@ final class TestMethod extends Test
 
     /**
      * @psalm-return non-empty-string
-     *
-     * @throws NoDataSetFromDataProviderException
      */
     public function id(): string
     {
@@ -124,8 +121,6 @@ final class TestMethod extends Test
 
     /**
      * @psalm-return non-empty-string
-     *
-     * @throws NoDataSetFromDataProviderException
      */
     public function nameWithClass(): string
     {
@@ -134,8 +129,6 @@ final class TestMethod extends Test
 
     /**
      * @psalm-return non-empty-string
-     *
-     * @throws NoDataSetFromDataProviderException
      */
     public function name(): string
     {

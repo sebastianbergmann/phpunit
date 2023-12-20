@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.17.0@c620f6e80d0abfca532b00bda366062aaedf6e5d">
+<files psalm-version="5.18.0@b113f3ed0259fd6e212d87c3df80eec95a6abf19">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -149,6 +149,10 @@
       <code>hasDataFromDataProvider</code>
       <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
+    <MissingThrowsDocblock>
+      <code>dataFromDataProvider</code>
+      <code>dataFromDataProvider</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Test/TestMethodBuilder.php">
     <DeprecatedClass>
@@ -556,6 +560,9 @@
     <InvalidPropertyAssignmentValue>
       <code><![CDATA[$this->testSuiteTimes]]></code>
     </InvalidPropertyAssignmentValue>
+    <MissingThrowsDocblock>
+      <code>dataFromDataProvider</code>
+    </MissingThrowsDocblock>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
@@ -1126,6 +1133,9 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/Output/Default/ResultPrinter.php">
+    <MissingThrowsDocblock>
+      <code>dataFromDataProvider</code>
+    </MissingThrowsDocblock>
     <RedundantCondition>
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($test instanceof TestMethod)</code>
