@@ -444,12 +444,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-text-template.git",
-                "reference": "84320433da79144d104ea87582b1ca9dae22b7c8"
+                "reference": "a0ec81e1e313de7bf57ab35381db0d0ac19d3774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/84320433da79144d104ea87582b1ca9dae22b7c8",
-                "reference": "84320433da79144d104ea87582b1ca9dae22b7c8",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/a0ec81e1e313de7bf57ab35381db0d0ac19d3774",
+                "reference": "a0ec81e1e313de7bf57ab35381db0d0ac19d3774",
                 "shasum": ""
             },
             "require": {
@@ -497,7 +497,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-23T07:25:06+00:00"
+            "time": "2023-12-23T07:55:18+00:00"
         },
         {
             "name": "phpunit/php-timer",
