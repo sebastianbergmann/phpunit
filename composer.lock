@@ -67,25 +67,27 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.18.0",
+            "version": "v5.0.0rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1bcbb2179f97633e98bbbc87044ee2611c7d7999"
+                "reference": "255000ad4966539a12c3b045f839eb664d3377c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1bcbb2179f97633e98bbbc87044ee2611c7d7999",
-                "reference": "1bcbb2179f97633e98bbbc87044ee2611c7d7999",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/255000ad4966539a12c3b045f839eb664d3377c1",
+                "reference": "255000ad4966539a12c3b045f839eb664d3377c1",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
                 "ext-tokenizer": "*",
-                "php": ">=7.0"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "ircmaxell/php-yacc": "^0.0.7",
-                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0 || ^9.0"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
             },
             "bin": [
                 "bin/php-parse"
@@ -93,7 +95,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.9-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -117,9 +119,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.18.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.0.0rc1"
             },
-            "time": "2023-12-10T21:03:43+00:00"
+            "time": "2023-12-20T21:32:29+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -238,19 +240,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "7f753e90285e7a736b007ae4782158780a15ab1a"
+                "reference": "bf33b01e106afc7e33f7b8bec94c646fb6b4740f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7f753e90285e7a736b007ae4782158780a15ab1a",
-                "reference": "7f753e90285e7a736b007ae4782158780a15ab1a",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/bf33b01e106afc7e33f7b8bec94c646fb6b4740f",
+                "reference": "bf33b01e106afc7e33f7b8bec94c646fb6b4740f",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
                 "ext-xmlwriter": "*",
-                "nikic/php-parser": "^4.18 || ^5.0",
+                "nikic/php-parser": "^5.0",
                 "php": ">=8.2",
                 "phpunit/php-file-iterator": "^5.0",
                 "phpunit/php-text-template": "^4.0",
@@ -309,7 +311,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-22T11:53:48+00:00"
+            "time": "2023-12-23T09:17:17+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -817,16 +819,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/complexity.git",
-                "reference": "6332f061aee6fee891b8ebbf72352be16ce99eed"
+                "reference": "63e77ce6ba1224fdf729afa3a92f10585f80c1f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/complexity/zipball/6332f061aee6fee891b8ebbf72352be16ce99eed",
-                "reference": "6332f061aee6fee891b8ebbf72352be16ce99eed",
+                "url": "https://api.github.com/repos/sebastianbergmann/complexity/zipball/63e77ce6ba1224fdf729afa3a92f10585f80c1f5",
+                "reference": "63e77ce6ba1224fdf729afa3a92f10585f80c1f5",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^4.18 || ^5.0",
+                "nikic/php-parser": "^5.0",
                 "php": ">=8.2"
             },
             "require-dev": {
@@ -868,7 +870,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-22T13:56:10+00:00"
+            "time": "2023-12-23T09:08:23+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -1151,16 +1153,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/lines-of-code.git",
-                "reference": "a76b61f5eee70b17a290c64811366f44e0c3574f"
+                "reference": "ece115d7eefe6d4f4d253018ffc18c0a3ac9af9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/lines-of-code/zipball/a76b61f5eee70b17a290c64811366f44e0c3574f",
-                "reference": "a76b61f5eee70b17a290c64811366f44e0c3574f",
+                "url": "https://api.github.com/repos/sebastianbergmann/lines-of-code/zipball/ece115d7eefe6d4f4d253018ffc18c0a3ac9af9c",
+                "reference": "ece115d7eefe6d4f4d253018ffc18c0a3ac9af9c",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^4.18 || ^5.0",
+                "nikic/php-parser": "^5.0",
                 "php": ">=8.2"
             },
             "require-dev": {
@@ -1202,7 +1204,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-23T06:19:48+00:00"
+            "time": "2023-12-23T09:01:34+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
