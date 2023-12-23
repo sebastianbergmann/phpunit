@@ -28,7 +28,7 @@ use PHPUnit\TextUI\Configuration\SourceFilter;
 final readonly class Generator
 {
     private Baseline $baseline;
-    private readonly Source $source;
+    private Source $source;
 
     /**
      * @throws EventFacadeIsSealedException
