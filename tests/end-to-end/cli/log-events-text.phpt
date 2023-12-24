@@ -69,7 +69,7 @@ Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testExportReso
 Test Prepared (PHPUnit\TestFixture\LogEventsText\Test::testExportResource)
 Assertion Failed (Constraint: is identical to {enable export of objects to see this value}, Value: {enable export of objects to see this value})
 Test Failed (PHPUnit\TestFixture\LogEventsText\Test::testExportResource)
-Failed asserting that resource(%d) of type (stream) is identical to resource(%d) of type (stream).
+Failed asserting that two variables reference the same resource.
 Test Finished (PHPUnit\TestFixture\LogEventsText\Test::testExportResource)
 Test Suite Finished (PHPUnit\TestFixture\LogEventsText\Test, 7 tests)
 Test Suite Finished (CLI Arguments, 7 tests)
