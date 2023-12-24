@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function explode;
+use function gettype;
 use function is_array;
 use function is_object;
 use function is_string;
@@ -102,6 +104,10 @@ final class IsIdentical extends Constraint
     {
         if (is_object($this->value) && is_object($other)) {
             return 'two variables reference the same object';
+        }
+
+        if (explode(' ', gettype($this->value), 2)[0] === 'resource' && explode(' ', gettype($other), 2)[0] === 'resource') {
+            return 'two variables reference the same resource';
         }
 
         if (is_string($this->value) && is_string($other)) {
