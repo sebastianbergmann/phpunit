@@ -80,18 +80,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return new static($name);
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function fromClassName(string $className): static
-    {
-        assert(class_exists($className));
-
-        $class = new ReflectionClass($className);
-
-        return static::fromClassReflector($class);
-    }
-
     public static function fromClassReflector(ReflectionClass $class): static
     {
         $testSuite = new static($class->getName());
