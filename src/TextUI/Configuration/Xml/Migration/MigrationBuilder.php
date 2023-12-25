@@ -62,6 +62,7 @@ final class MigrationBuilder
 
         '10.0' => [
             MoveCoverageDirectoriesToSource::class,
+            RemoveEmptyCoverageTag::class,
         ],
     ];
 

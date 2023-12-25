@@ -6,7 +6,6 @@
          cacheDirectory=".phpunit.cache"
          requireCoverageMetadata="true">
 
-    <coverage/>
 
     <logging/>
 
