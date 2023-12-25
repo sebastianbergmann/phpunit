@@ -10,8 +10,6 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const PHP_VERSION;
-use function array_merge;
-use function array_unique;
 use function explode;
 use function in_array;
 use function is_dir;
@@ -60,7 +58,8 @@ final readonly class TestSuiteMapper
                     $exclude[] = $file->path();
                 }
 
-                $files = [];
+                $testSuite = TestSuiteObject::empty($configuredTestSuite->name());
+                $processed = [];
 
                 foreach ($configuredTestSuite->directories() as $directory) {
                     if (!str_contains($directory->path(), '*') && !is_dir($directory->path())) {
@@ -71,15 +70,22 @@ final readonly class TestSuiteMapper
                         continue;
                     }
 
-                    $files = array_merge(
-                        $files,
-                        (new Facade)->getFilesAsArray(
-                            $directory->path(),
-                            $directory->suffix(),
-                            $directory->prefix(),
-                            $exclude,
-                        ),
+                    $files = (new Facade)->getFilesAsArray(
+                        $directory->path(),
+                        $directory->suffix(),
+                        $directory->prefix(),
+                        $exclude,
                     );
+
+                    foreach ($files as $file) {
+                        if (isset($processed[$file])) {
+                            continue;
+                        }
+
+                        $processed[$file] = true;
+
+                        $testSuite->addTestFile($file);
+                    }
                 }
 
                 foreach ($configuredTestSuite->files() as $file) {
@@ -91,14 +97,16 @@ final readonly class TestSuiteMapper
                         continue;
                     }
 
-                    $files[] = $file->path();
+                    if (isset($processed[$file->path()])) {
+                        continue;
+                    }
+
+                    $processed[$file->path()] = true;
+
+                    $testSuite->addTestFile($file->path());
                 }
 
-                if (!empty($files)) {
-                    $testSuite = TestSuiteObject::empty($configuredTestSuite->name());
-
-                    $testSuite->addTestFiles(array_unique($files));
-
+                if (!empty($processed)) {
                     $result->addTest($testSuite);
                 }
             }
