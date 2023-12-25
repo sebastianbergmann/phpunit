@@ -38,31 +38,31 @@ final readonly class TestSuiteMapper
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException
      */
-    public function map(string $xmlConfigurationFile, TestSuiteCollection $configuration, string $filter, string $excludedTestSuites): TestSuiteObject
+    public function map(string $xmlConfigurationFile, TestSuiteCollection $configuredTestSuites, string $namesOfIncludedTestSuites, string $namesOfExcludedTestSuites): TestSuiteObject
     {
         try {
-            $filterAsArray         = $filter ? explode(',', $filter) : [];
-            $excludedFilterAsArray = $excludedTestSuites ? explode(',', $excludedTestSuites) : [];
-            $result                = TestSuiteObject::empty($xmlConfigurationFile);
+            $namesOfIncludedTestSuitesAsArray = $namesOfIncludedTestSuites ? explode(',', $namesOfIncludedTestSuites) : [];
+            $excludedTestSuitesAsArray        = $namesOfExcludedTestSuites ? explode(',', $namesOfExcludedTestSuites) : [];
+            $result                           = TestSuiteObject::empty($xmlConfigurationFile);
 
-            foreach ($configuration as $testSuiteConfiguration) {
-                if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
+            foreach ($configuredTestSuites as $configuredTestSuite) {
+                if (!empty($namesOfIncludedTestSuitesAsArray) && !in_array($configuredTestSuite->name(), $namesOfIncludedTestSuitesAsArray, true)) {
                     continue;
                 }
 
-                if (!empty($excludedFilterAsArray) && in_array($testSuiteConfiguration->name(), $excludedFilterAsArray, true)) {
+                if (!empty($excludedTestSuitesAsArray) && in_array($configuredTestSuite->name(), $excludedTestSuitesAsArray, true)) {
                     continue;
                 }
 
                 $exclude = [];
 
-                foreach ($testSuiteConfiguration->exclude()->asArray() as $file) {
+                foreach ($configuredTestSuite->exclude()->asArray() as $file) {
                     $exclude[] = $file->path();
                 }
 
                 $files = [];
 
-                foreach ($testSuiteConfiguration->directories() as $directory) {
+                foreach ($configuredTestSuite->directories() as $directory) {
                     if (!str_contains($directory->path(), '*') && !is_dir($directory->path())) {
                         throw new TestDirectoryNotFoundException($directory->path());
                     }
@@ -82,7 +82,7 @@ final readonly class TestSuiteMapper
                     );
                 }
 
-                foreach ($testSuiteConfiguration->files() as $file) {
+                foreach ($configuredTestSuite->files() as $file) {
                     if (!is_file($file->path())) {
                         throw new TestFileNotFoundException($file->path());
                     }
@@ -95,7 +95,7 @@ final readonly class TestSuiteMapper
                 }
 
                 if (!empty($files)) {
-                    $testSuite = TestSuiteObject::empty($testSuiteConfiguration->name());
+                    $testSuite = TestSuiteObject::empty($configuredTestSuite->name());
 
                     $testSuite->addTestFiles(array_unique($files));
 
