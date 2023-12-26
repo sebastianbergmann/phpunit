@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -23,24 +24,22 @@ class Issue2137Test extends TestCase
     }
 
     /**
-     * @dataProvider provideBrandService
-     *
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
+    #[DataProvider('provideBrandService')]
     public function testBrandService($provided, $expected): void
     {
         $this->assertSame($provided, $expected);
     }
 
     /**
-     * @dataProvider provideBrandService
-     *
      * @throws \Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    #[DataProvider('provideBrandService')]
     public function testSomethingElseInvalid($provided, $expected): void
     {
         $this->assertSame($provided, $expected);

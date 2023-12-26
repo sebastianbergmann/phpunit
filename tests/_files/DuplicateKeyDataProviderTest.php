@@ -9,20 +9,20 @@
  */
 namespace PHPUnit\TestFixture;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DuplicateKeyDataProviderTest extends TestCase
 {
-    public static function dataProvider()
+    public static function dataProvider(): Generator
     {
         yield 'foo' => ['foo'];
 
         yield 'foo' => ['bar'];
     }
 
-    /**
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
     public function test($arg): void
     {
     }

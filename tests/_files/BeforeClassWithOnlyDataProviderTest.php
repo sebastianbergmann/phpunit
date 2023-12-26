@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
 {
     public static $setUpBeforeClassWasCalled;
@@ -28,20 +30,17 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
         self::$beforeClassWasCalled = true;
     }
 
+    public static function dummyProvider(): array
+    {
+        return [[1]];
+    }
+
     public static function setUpBeforeClass(): void
     {
         self::$setUpBeforeClassWasCalled = true;
     }
 
-    public function dummyProvider()
-    {
-        return [[1]];
-    }
-
-    /**
-     * @dataProvider dummyProvider
-     * delete annotation to fail test case
-     */
+    #[DataProvider('dummyProvider')]
     public function testDummy(): void
     {
         $this->assertFalse(false);

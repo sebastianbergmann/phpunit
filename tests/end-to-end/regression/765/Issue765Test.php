@@ -10,6 +10,8 @@
 namespace PHPUnit\TestFixture;
 
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 class Issue765Test extends TestCase
@@ -24,11 +26,8 @@ class Issue765Test extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends testDependee
-     *
-     * @dataProvider dependentProvider
-     */
+    #[Depends('testDependee')]
+    #[DataProvider('dependentProvider')]
     public function testDependent($a): void
     {
         $this->assertTrue(true);

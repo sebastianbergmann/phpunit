@@ -18,9 +18,7 @@ final class InvalidDataProviderTest extends TestCase
         return [0];
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provider')]
     public function testOne(): void
     {
         $this->assertTrue(true);

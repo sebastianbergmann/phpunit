@@ -9,18 +9,17 @@
  */
 namespace PHPUnit\TestFixture\DataProviderIssue2859;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TestWithDataProviderTest extends TestCase
 {
-    public static function provide()
+    public static function provide(): array
     {
         return [[true]];
     }
 
-    /**
-     * @dataProvider provide
-     */
+    #[DataProvider('provide')]
     public function testFirst($x): void
     {
         $this->assertTrue(true);

@@ -18,9 +18,7 @@ final class EmptyDataProviderTest extends TestCase
         return [];
     }
 
-    /**
-     * @dataProvider providerMethod
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('providerMethod')]
     public function testCase(): void
     {
     }

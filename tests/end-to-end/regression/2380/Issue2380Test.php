@@ -10,21 +10,17 @@
 namespace PHPUnit\TestFixture;
 
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class Issue2380Test extends TestCase
 {
-    /**
-     * @return Generator
-     */
-    public static function generatorData()
+    public static function generatorData(): Generator
     {
         yield ['testing'];
     }
 
-    /**
-     * @dataProvider generatorData
-     */
+    #[DataProvider('generatorData')]
     public function testGeneratorProvider($data): void
     {
         $this->assertNotEmpty($data);
