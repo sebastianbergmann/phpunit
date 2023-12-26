@@ -359,11 +359,11 @@ final class LoaderTest extends TestCase
 
     public function testConfigurationForSingleTestSuiteCanBeLoaded(): void
     {
-        $testsuites = $this->configuration('configuration_testsuite.xml')->testSuite();
+        $testSuites = $this->configuration('configuration_testsuite.xml')->testSuite();
 
-        $this->assertCount(1, $testsuites);
+        $this->assertCount(1, $testSuites);
 
-        $first = $testsuites->asArray()[0];
+        $first = $testSuites->asArray()[0];
         $this->assertSame('first', $first->name());
         $this->assertCount(1, $first->directories());
         $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
@@ -377,11 +377,11 @@ final class LoaderTest extends TestCase
 
     public function testConfigurationForMultipleTestSuitesCanBeLoaded(): void
     {
-        $testsuites = $this->configuration('configuration_testsuites.xml')->testSuite();
+        $testSuites = $this->configuration('configuration_testsuites.xml')->testSuite();
 
-        $this->assertCount(2, $testsuites);
+        $this->assertCount(2, $testSuites);
 
-        $first = $testsuites->asArray()[0];
+        $first = $testSuites->asArray()[0];
         $this->assertSame('first', $first->name());
         $this->assertCount(1, $first->directories());
         $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
@@ -392,7 +392,7 @@ final class LoaderTest extends TestCase
         $this->assertCount(0, $first->files());
         $this->assertCount(0, $first->exclude());
 
-        $second = $testsuites->asArray()[1];
+        $second = $testSuites->asArray()[1];
         $this->assertSame('second', $second->name());
         $this->assertSame(TEST_FILES_PATH . 'tests/second', $second->directories()->asArray()[0]->path());
         $this->assertSame('test', $second->directories()->asArray()[0]->prefix());
