@@ -902,12 +902,27 @@ final readonly class Loader
                     $phpVersionOperator = new VersionComparisonOperator($directoryNode->getAttribute('phpVersionOperator'));
                 }
 
+                $groups = [];
+
+                if ($directoryNode->hasAttribute('groups')) {
+                    foreach (explode(',', $directoryNode->getAttribute('groups')) as $group) {
+                        $group = trim($group);
+
+                        if (empty($group)) {
+                            continue;
+                        }
+
+                        $groups[] = $group;
+                    }
+                }
+
                 $directories[] = new TestDirectory(
                     $this->toAbsolutePath($filename, $directory),
                     $prefix,
                     $suffix,
                     $phpVersion,
                     $phpVersionOperator,
+                    $groups,
                 );
             }
 
@@ -934,10 +949,25 @@ final readonly class Loader
                     $phpVersionOperator = new VersionComparisonOperator($fileNode->getAttribute('phpVersionOperator'));
                 }
 
+                $groups = [];
+
+                if ($fileNode->hasAttribute('groups')) {
+                    foreach (explode(',', $fileNode->getAttribute('groups')) as $group) {
+                        $group = trim($group);
+
+                        if (empty($group)) {
+                            continue;
+                        }
+
+                        $groups[] = $group;
+                    }
+                }
+
                 $files[] = new TestFile(
                     $this->toAbsolutePath($filename, $file),
                     $phpVersion,
                     $phpVersionOperator,
+                    $groups,
                 );
             }
 

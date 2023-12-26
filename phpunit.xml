@@ -19,6 +19,7 @@
             <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
             <directory suffix=".phpt">tests/end-to-end/extension</directory>
             <directory suffix=".phpt">tests/end-to-end/generic</directory>
+            <directory suffix=".phpt">tests/end-to-end/groups-from-configuration</directory>
             <directory suffix=".phpt">tests/end-to-end/logging</directory>
             <directory suffix=".phpt">tests/end-to-end/migration</directory>
             <directory suffix=".phpt">tests/end-to-end/mock-objects</directory>
@@ -28,6 +29,7 @@
 
             <exclude>tests/end-to-end/event/_files</exclude>
             <exclude>tests/end-to-end/execution-order/_files</exclude>
+            <exclude>tests/end-to-end/groups-from-configuration/_files</exclude>
             <exclude>tests/end-to-end/logging/_files</exclude>
             <exclude>tests/end-to-end/migration/_files</exclude>
             <exclude>tests/end-to-end/testdox/_files</exclude>

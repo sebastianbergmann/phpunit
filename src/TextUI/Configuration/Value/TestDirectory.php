@@ -28,15 +28,22 @@ final readonly class TestDirectory
     private VersionComparisonOperator $phpVersionOperator;
 
     /**
-     * @psalm-param non-empty-string $path
+     * @psalm-var list<non-empty-string>
      */
-    public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator)
+    private array $groups;
+
+    /**
+     * @psalm-param non-empty-string $path
+     * @psalm-param list<non-empty-string> $groups
+     */
+    public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator, array $groups)
     {
         $this->path               = $path;
         $this->prefix             = $prefix;
         $this->suffix             = $suffix;
         $this->phpVersion         = $phpVersion;
         $this->phpVersionOperator = $phpVersionOperator;
+        $this->groups             = $groups;
     }
 
     /**
@@ -65,5 +72,13 @@ final readonly class TestDirectory
     public function phpVersionOperator(): VersionComparisonOperator
     {
         return $this->phpVersionOperator;
+    }
+
+    /**
+     * @psalm-return list<non-empty-string>
+     */
+    public function groups(): array
+    {
+        return $this->groups;
     }
 }

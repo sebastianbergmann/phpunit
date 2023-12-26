@@ -259,6 +259,7 @@
                 <xs:attribute type="xs:string" name="prefix" default=""/>
                 <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
                 <xs:attributeGroup ref="phpVersionGroup"/>
+                <xs:attribute type="xs:string" name="groups"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -266,6 +267,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:anyURI">
                 <xs:attributeGroup ref="phpVersionGroup"/>
+                <xs:attribute type="xs:string" name="groups"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

@@ -77,6 +77,8 @@ final readonly class TestSuiteMapper
                         $exclude,
                     );
 
+                    $groups = $directory->groups();
+
                     foreach ($files as $file) {
                         if (isset($processed[$file])) {
                             continue;
@@ -84,7 +86,7 @@ final readonly class TestSuiteMapper
 
                         $processed[$file] = true;
 
-                        $testSuite->addTestFile($file);
+                        $testSuite->addTestFile($file, $groups);
                     }
                 }
 
@@ -103,7 +105,7 @@ final readonly class TestSuiteMapper
 
                     $processed[$file->path()] = true;
 
-                    $testSuite->addTestFile($file->path());
+                    $testSuite->addTestFile($file->path(), $file->groups());
                 }
 
                 if (!empty($processed)) {

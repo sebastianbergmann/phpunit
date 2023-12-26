@@ -18,17 +18,33 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 final readonly class TestFile
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $path;
     private string $phpVersion;
     private VersionComparisonOperator $phpVersionOperator;
 
-    public function __construct(string $path, string $phpVersion, VersionComparisonOperator $phpVersionOperator)
+    /**
+     * @psalm-var list<non-empty-string>
+     */
+    private array $groups;
+
+    /**
+     * @psalm-param non-empty-string $path
+     * @psalm-param list<non-empty-string> $groups
+     */
+    public function __construct(string $path, string $phpVersion, VersionComparisonOperator $phpVersionOperator, array $groups)
     {
         $this->path               = $path;
         $this->phpVersion         = $phpVersion;
         $this->phpVersionOperator = $phpVersionOperator;
+        $this->groups             = $groups;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function path(): string
     {
         return $this->path;
@@ -42,5 +58,13 @@ final readonly class TestFile
     public function phpVersionOperator(): VersionComparisonOperator
     {
         return $this->phpVersionOperator;
+    }
+
+    /**
+     * @psalm-return list<non-empty-string>
+     */
+    public function groups(): array
+    {
+        return $this->groups;
     }
 }

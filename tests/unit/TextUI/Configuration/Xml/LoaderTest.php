@@ -383,6 +383,7 @@ final class LoaderTest extends TestCase
         $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(0, $first->files());
         $this->assertCount(0, $first->exclude());
+        $this->assertSame(['foo'], $first->directories()->asArray()[0]->groups());
 
         $second = $testSuites->asArray()[1];
         $this->assertSame('second', $second->name());
@@ -397,6 +398,8 @@ final class LoaderTest extends TestCase
         $this->assertSame('!=', $second->files()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(1, $second->exclude());
         $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
+        $this->assertSame(['bar'], $second->directories()->asArray()[0]->groups());
+        $this->assertSame(['baz'], $second->files()->asArray()[0]->groups());
     }
 
     private function configuration(string $filename): LoadedFromFileConfiguration
