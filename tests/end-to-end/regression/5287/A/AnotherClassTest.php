@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Issue5278\A;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Issue5278\C\MyClassTest;
 
@@ -19,7 +20,7 @@ final class AnotherClassTest extends TestCase
         return [[MyClassTest::VALUE]];
     }
 
-    /** @dataProvider provide */
+    #[DataProvider('provide')]
     public function test(bool $value): void
     {
         $this->assertTrue($value);

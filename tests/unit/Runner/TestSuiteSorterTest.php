@@ -25,13 +25,9 @@ use ReflectionClass;
 #[Small]
 final class TestSuiteSorterTest extends TestCase
 {
-    /**
-     * Constants to improve clarity of @dataprovider.
-     */
-    private const IGNORE_DEPENDENCIES = false;
-
-    private const RESOLVE_DEPENDENCIES                = true;
-    private const MULTIDEPENDENCYTEST_EXECUTION_ORDER = [
+    private const IGNORE_DEPENDENCIES                   = false;
+    private const RESOLVE_DEPENDENCIES                  = true;
+    private const MULTI_DEPENDENCY_TEST_EXECUTION_ORDER = [
         MultiDependencyTest::class . '::testOne',
         MultiDependencyTest::class . '::testTwo',
         MultiDependencyTest::class . '::testThree',
@@ -484,7 +480,7 @@ final class TestSuiteSorterTest extends TestCase
 
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFAULT);
 
-        $this->assertSame(self::MULTIDEPENDENCYTEST_EXECUTION_ORDER, $sorter->getOriginalExecutionOrder());
+        $this->assertSame(self::MULTI_DEPENDENCY_TEST_EXECUTION_ORDER, $sorter->getOriginalExecutionOrder());
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
     }
 

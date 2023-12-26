@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Issue5288;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class Issue5288Test extends TestCase
@@ -18,9 +19,7 @@ final class Issue5288Test extends TestCase
         return [[true]];
     }
 
-    /**
-     * @dataProvider provider()
-     */
+    #[DataProvider('provider')]
     public function testOne(bool $value): void
     {
         $this->assertTrue($value);

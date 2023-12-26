@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class Issue1337Test extends TestCase
 {
-    public static function dataProvider()
+    public static function dataProvider(): array
     {
         return [
             'c:\\' => [true],
@@ -22,9 +23,7 @@ class Issue1337Test extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
     public function testProvider($a): void
     {
         $this->assertTrue($a);

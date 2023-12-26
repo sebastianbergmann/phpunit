@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Issue5614;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class Issue5614Test extends TestCase
@@ -21,9 +22,7 @@ final class Issue5614Test extends TestCase
         yield [$array];
     }
 
-    /**
-     * @dataProvider provideRecursiveArray
-     */
+    #[DataProvider('provideRecursiveArray')]
     public function testRecursiveArray(array $array): void
     {
         $this->assertTrue(true);

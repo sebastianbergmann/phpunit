@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 abstract class AbstractVariousIterableDataProviderTest
 {
     public static function asArrayProviderInParent()
@@ -44,20 +46,16 @@ abstract class AbstractVariousIterableDataProviderTest
 
     abstract public static function asTraversableProvider();
 
-    /**
-     * @dataProvider asArrayProvider
-     * @dataProvider asIteratorProvider
-     * @dataProvider asTraversableProvider
-     */
+    #[DataProvider('asArrayProvider')]
+    #[DataProvider('asIteratorProvider')]
+    #[DataProvider('asTraversableProvider')]
     public function testAbstract(): void
     {
     }
 
-    /**
-     * @dataProvider asArrayProviderInParent
-     * @dataProvider asIteratorProviderInParent
-     * @dataProvider asTraversableProviderInParent
-     */
+    #[DataProvider('asArrayProviderInParent')]
+    #[DataProvider('asIteratorProviderInParent')]
+    #[DataProvider('asTraversableProviderInParent')]
     public function testInParent(): void
     {
     }

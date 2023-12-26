@@ -9,19 +9,27 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataproviderExecutionOrderTest extends TestCase
+class DataProviderExecutionOrderTest extends TestCase
 {
+    public static function dataProviderAdditions(): array
+    {
+        return [
+            '1+2=3' => [1, 2, 3],
+            '2+1=3' => [2, 1, 3],
+            '1+1=3' => [1, 1, 3],
+        ];
+    }
+
     public function testFirstTestThatAlwaysWorks(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider dataproviderAdditions
-     */
-    public function testAddNumbersWithADataprovider(int $a, int $b, int $sum): void
+    #[DataProvider('dataProviderAdditions')]
+    public function testAddNumbersWithDataProvider(int $a, int $b, int $sum): void
     {
         $this->assertSame($sum, $a + $b);
     }
@@ -31,20 +39,9 @@ class DataproviderExecutionOrderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider dataproviderAdditions
-     */
-    public function testAddMoreNumbersWithADataprovider(int $a, int $b, int $sum): void
+    #[DataProvider('dataProviderAdditions')]
+    public function testAddMoreNumbersWithDataProvider(int $a, int $b, int $sum): void
     {
         $this->assertSame($sum, $a + $b);
-    }
-
-    public function dataproviderAdditions()
-    {
-        return [
-            '1+2=3' => [1, 2, 3],
-            '2+1=3' => [2, 1, 3],
-            '1+1=3' => [1, 1, 3],
-        ];
     }
 }
