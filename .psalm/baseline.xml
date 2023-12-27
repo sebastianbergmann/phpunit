@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.16.0@2897ba636551a8cb61601cc26f6ccfbba6c36591">
+<files psalm-version="5.18.0@b113f3ed0259fd6e212d87c3df80eec95a6abf19">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -1230,10 +1230,10 @@
     <UndefinedDocblockClass>
       <code><![CDATA[$this->prophet]]></code>
       <code><![CDATA[$this->prophet]]></code>
+      <code>Prophet</code>
       <code>\Prophecy\Exception\Doubler\ClassNotFoundException</code>
       <code>\Prophecy\Exception\Doubler\DoubleException</code>
       <code>\Prophecy\Exception\Doubler\InterfaceNotFoundException</code>
-      <code>\Prophecy\Prophet</code>
     </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
