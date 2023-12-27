@@ -22,7 +22,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(Before::class)]
 #[CoversClass(BeforeClass::class)]
 #[CoversClass(Covers::class)]
-#[CoversClass(\PHPUnit\Metadata\CoversClass::class)]
+#[CoversClass(CoversClass::class)]
 #[CoversClass(CoversDefaultClass::class)]
 #[CoversClass(CoversFunction::class)]
 #[CoversClass(CoversNothing::class)]
