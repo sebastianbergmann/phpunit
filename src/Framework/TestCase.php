@@ -20,7 +20,6 @@ use const PHP_EOL;
 use const PHP_URL_PATH;
 use function array_keys;
 use function array_merge;
-use function array_reverse;
 use function array_values;
 use function assert;
 use function basename;
@@ -29,7 +28,6 @@ use function class_exists;
 use function clearstatcache;
 use function count;
 use function defined;
-use function error_clear_last;
 use function explode;
 use function getcwd;
 use function implode;
@@ -51,10 +49,6 @@ use function parse_url;
 use function pathinfo;
 use function preg_match;
 use function preg_replace;
-use function restore_error_handler;
-use function restore_exception_handler;
-use function set_error_handler;
-use function set_exception_handler;
 use function setlocale;
 use function sprintf;
 use function str_contains;
@@ -131,24 +125,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private array $backupStaticPropertiesExcludeList = [];
     private ?Snapshot $snapshot                      = null;
-
-    /**
-     * @psalm-var list<callable>
-     */
-    private ?array $backupGlobalErrorHandlers = null;
-
-    /**
-     * @psalm-var list<callable>
-     */
-    private ?array $backupGlobalExceptionHandlers   = null;
-    private ?bool $runClassInSeparateProcess        = null;
-    private ?bool $runTestInSeparateProcess         = null;
-    private bool $preserveGlobalState               = false;
-    private bool $inIsolation                       = false;
-    private ?string $expectedException              = null;
-    private ?string $expectedExceptionMessage       = null;
-    private ?string $expectedExceptionMessageRegExp = null;
-    private null|int|string $expectedExceptionCode  = null;
+    private ?bool $runClassInSeparateProcess         = null;
+    private ?bool $runTestInSeparateProcess          = null;
+    private bool $preserveGlobalState                = false;
+    private bool $inIsolation                        = false;
+    private ?string $expectedException               = null;
+    private ?string $expectedExceptionMessage        = null;
+    private ?string $expectedExceptionMessageRegExp  = null;
+    private null|int|string $expectedExceptionCode   = null;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
@@ -437,16 +421,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $emitter = Event\Facade::emitter();
 
-        error_clear_last();
-        clearstatcache();
-
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents(),
         );
 
         $this->snapshotGlobalState();
-        $this->snapshotGlobalErrorExceptionHandlers();
         $this->startOutputBuffering();
+        clearstatcache();
 
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
         $hasMetRequirements                = false;
@@ -599,7 +580,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             chdir($currentWorkingDirectory);
         }
 
-        $this->restoreGlobalErrorExceptionHandlers();
         $this->restoreGlobalState();
         $this->unregisterCustomComparators();
         $this->cleanupIniSettings();
@@ -1812,116 +1792,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBufferingLevel  = ob_get_level();
 
         return true;
-    }
-
-    private function snapshotGlobalErrorExceptionHandlers(): void
-    {
-        $this->backupGlobalErrorHandlers     = $this->getActiveErrorHandlers();
-        $this->backupGlobalExceptionHandlers = $this->getActiveExceptionHandlers();
-    }
-
-    private function restoreGlobalErrorExceptionHandlers(): void
-    {
-        $activeErrorHandlers     = $this->getActiveErrorHandlers();
-        $activeExceptionHandlers = $this->getActiveExceptionHandlers();
-
-        $message = null;
-
-        if ($activeErrorHandlers !== $this->backupGlobalErrorHandlers) {
-            if (count($activeErrorHandlers) > count($this->backupGlobalErrorHandlers)) {
-                $message = 'Test code or tested code did not remove its own error handlers';
-            } else {
-                $message = 'Test code or tested code removed error handlers other than its own';
-            }
-
-            foreach ($activeErrorHandlers as $handler) {
-                restore_error_handler();
-            }
-
-            foreach ($this->backupGlobalErrorHandlers as $handler) {
-                set_error_handler($handler);
-            }
-        }
-
-        if ($activeExceptionHandlers !== $this->backupGlobalExceptionHandlers) {
-            if (count($activeExceptionHandlers) > count($this->backupGlobalExceptionHandlers)) {
-                $message = 'Test code or tested code did not remove its own exception handlers';
-            } else {
-                $message = 'Test code or tested code removed exception handlers other than its own';
-            }
-
-            foreach ($activeExceptionHandlers as $handler) {
-                restore_exception_handler();
-            }
-
-            foreach ($this->backupGlobalExceptionHandlers as $handler) {
-                set_exception_handler($handler);
-            }
-        }
-
-        $this->backupGlobalErrorHandlers     = null;
-        $this->backupGlobalExceptionHandlers = null;
-
-        if ($message !== null) {
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $message,
-            );
-
-            $this->status = TestStatus::risky($message);
-        }
-    }
-
-    /**
-     * @return list<callable>
-     */
-    private function getActiveErrorHandlers(): array
-    {
-        $res = [];
-
-        while (true) {
-            $previousHandler = set_error_handler(static fn () => false);
-            restore_error_handler();
-
-            if ($previousHandler === null) {
-                break;
-            }
-            $res[] = $previousHandler;
-            restore_error_handler();
-        }
-        $res = array_reverse($res);
-
-        foreach ($res as $handler) {
-            set_error_handler($handler);
-        }
-
-        return $res;
-    }
-
-    /**
-     * @return list<callable>
-     */
-    private function getActiveExceptionHandlers(): array
-    {
-        $res = [];
-
-        while (true) {
-            $previousHandler = set_exception_handler(static fn () => null);
-            restore_exception_handler();
-
-            if ($previousHandler === null) {
-                break;
-            }
-            $res[] = $previousHandler;
-            restore_exception_handler();
-        }
-        $res = array_reverse($res);
-
-        foreach ($res as $handler) {
-            set_exception_handler($handler);
-        }
-
-        return $res;
     }
 
     private function snapshotGlobalState(): void
