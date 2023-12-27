@@ -50,5 +50,11 @@ final class MoveCoverageDirectoriesToSource implements Migration
                 $source->appendChild($node);
             }
         }
+
+        if ($coverage->childElementCount !== 0) {
+            return;
+        }
+
+        $coverage->parentNode->removeChild($coverage);
     }
 }
