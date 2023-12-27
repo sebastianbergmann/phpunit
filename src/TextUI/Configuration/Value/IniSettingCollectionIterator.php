@@ -10,8 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use function count;
-use function iterator_count;
-use Countable;
 use Iterator;
 
 /**
@@ -19,7 +17,7 @@ use Iterator;
  *
  * @template-implements Iterator<int, IniSetting>
  */
-final class IniSettingCollectionIterator implements Countable, Iterator
+final class IniSettingCollectionIterator implements Iterator
 {
     /**
      * @psalm-var list<IniSetting>
@@ -30,11 +28,6 @@ final class IniSettingCollectionIterator implements Countable, Iterator
     public function __construct(IniSettingCollection $iniSettings)
     {
         $this->iniSettings = $iniSettings->asArray();
-    }
-
-    public function count(): int
-    {
-        return iterator_count($this);
     }
 
     public function rewind(): void

@@ -10,8 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use function count;
-use function iterator_count;
-use Countable;
 use Iterator;
 
 /**
@@ -19,7 +17,7 @@ use Iterator;
  *
  * @template-implements Iterator<int, Constant>
  */
-final class ConstantCollectionIterator implements Countable, Iterator
+final class ConstantCollectionIterator implements Iterator
 {
     /**
      * @psalm-var list<Constant>
@@ -30,11 +28,6 @@ final class ConstantCollectionIterator implements Countable, Iterator
     public function __construct(ConstantCollection $constants)
     {
         $this->constants = $constants->asArray();
-    }
-
-    public function count(): int
-    {
-        return iterator_count($this);
     }
 
     public function rewind(): void

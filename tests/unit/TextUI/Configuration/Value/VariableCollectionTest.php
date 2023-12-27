@@ -41,8 +41,6 @@ final class VariableCollectionTest extends TestCase
         $element  = $this->element();
         $elements = VariableCollection::fromArray([$element]);
 
-        $this->assertCount(1, $elements->getIterator());
-
         foreach ($elements as $index => $_Variable) {
             $this->assertSame(0, $index);
             $this->assertSame($element, $_Variable);

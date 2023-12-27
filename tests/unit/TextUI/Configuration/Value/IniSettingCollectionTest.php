@@ -41,8 +41,6 @@ final class IniSettingCollectionTest extends TestCase
         $element  = $this->element();
         $elements = IniSettingCollection::fromArray([$element]);
 
-        $this->assertCount(1, $elements->getIterator());
-
         foreach ($elements as $index => $_IniSetting) {
             $this->assertSame(0, $index);
             $this->assertSame($element, $_IniSetting);

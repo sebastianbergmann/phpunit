@@ -42,8 +42,6 @@ final class DirectoryCollectionTest extends TestCase
         $element  = $this->element();
         $elements = DirectoryCollection::fromArray([$element]);
 
-        $this->assertCount(1, $elements->getIterator());
-
         foreach ($elements as $index => $_constant) {
             $this->assertSame(0, $index);
             $this->assertSame($element, $_constant);

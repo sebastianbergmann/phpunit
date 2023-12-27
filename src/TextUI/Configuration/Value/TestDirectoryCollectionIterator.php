@@ -10,8 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use function count;
-use function iterator_count;
-use Countable;
 use Iterator;
 
 /**
@@ -19,7 +17,7 @@ use Iterator;
  *
  * @template-implements Iterator<int, TestDirectory>
  */
-final class TestDirectoryCollectionIterator implements Countable, Iterator
+final class TestDirectoryCollectionIterator implements Iterator
 {
     /**
      * @psalm-var list<TestDirectory>
@@ -30,11 +28,6 @@ final class TestDirectoryCollectionIterator implements Countable, Iterator
     public function __construct(TestDirectoryCollection $directories)
     {
         $this->directories = $directories->asArray();
-    }
-
-    public function count(): int
-    {
-        return iterator_count($this);
     }
 
     public function rewind(): void
