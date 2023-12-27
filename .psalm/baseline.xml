@@ -514,10 +514,6 @@
     <MissingThrowsDocblock>
       <code>getMethod</code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument>
-      <code><![CDATA[$this->backupGlobalErrorHandlers]]></code>
-      <code><![CDATA[$this->backupGlobalExceptionHandlers]]></code>
-    </PossiblyNullArgument>
     <PropertyNotSetInConstructor>
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>

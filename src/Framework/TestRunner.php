@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function defined;
+use function error_clear_last;
 use function extension_loaded;
 use function get_include_path;
 use function hrtime;
@@ -81,6 +82,8 @@ final class TestRunner
         $incomplete = false;
         $risky      = false;
         $skipped    = false;
+
+        error_clear_last();
 
         if ($this->shouldErrorHandlerBeUsed($test)) {
             ErrorHandler::instance()->enable();
