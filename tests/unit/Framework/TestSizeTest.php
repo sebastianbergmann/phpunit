@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Known::class)]
 #[CoversClass(Large::class)]
 #[CoversClass(Medium::class)]
-#[CoversClass(\PHPUnit\Framework\TestSize\Small::class)]
+#[CoversClass(Small::class)]
 #[CoversClass(TestSize::class)]
 #[CoversClass(Unknown::class)]
 #[Small]

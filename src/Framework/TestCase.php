@@ -1219,8 +1219,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      * @throws NoPreviousThrowableException
      */
     protected function createMock(string $originalClassName): MockObject
@@ -1247,7 +1247,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-param list<class-string> $interfaces
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObject\Exception
      */
     protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
     {
@@ -1271,8 +1271,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      * @throws NoPreviousThrowableException
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
@@ -1297,8 +1297,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
@@ -1327,8 +1327,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
@@ -1358,8 +1358,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
      */
@@ -1389,7 +1389,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Creates a mock object based on the given WSDL file.
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObject\Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5242
      */
@@ -1445,8 +1445,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param trait-string $traitName
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
      */
@@ -1475,7 +1475,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param trait-string $traitName
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObject\Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5244
      */
@@ -2370,8 +2370,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return Stub&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      * @throws NoPreviousThrowableException
      */
     protected static function createStub(string $originalClassName): Stub
@@ -2396,7 +2396,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-param list<class-string> $interfaces
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObject\Exception
      */
     protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
     {
@@ -2416,8 +2416,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-return Stub&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws MockObject\Exception
      * @throws NoPreviousThrowableException
      */
     final protected static function createConfiguredStub(string $originalClassName, array $configuration): Stub
