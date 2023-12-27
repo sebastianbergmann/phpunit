@@ -46,7 +46,7 @@ final class ThrowableTest extends TestCase
         $this->assertSame(Exception::class, $t->className());
         $this->assertSame('second message', $t->message());
         $this->assertSame("Exception: second message\n", $t->description());
-        $this->assertSame(Filter::getFilteredStacktrace($second), $t->stackTrace());
+        $this->assertSame(Filter::getFilteredStacktrace($second, false), $t->stackTrace());
         $this->assertTrue($t->hasPrevious());
 
         $previous = $t->previous();
@@ -54,7 +54,7 @@ final class ThrowableTest extends TestCase
         $this->assertSame(Exception::class, $previous->className());
         $this->assertSame('first message', $previous->message());
         $this->assertSame("Exception: first message\n", $previous->description());
-        $this->assertSame(Filter::getFilteredStacktrace($first), $t->stackTrace());
+        $this->assertSame(Filter::getFilteredStacktrace($first), $previous->stackTrace());
 
         $this->assertStringMatchesFormat(
             <<<'EOD'
