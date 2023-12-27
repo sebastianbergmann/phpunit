@@ -593,10 +593,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Runs the tests and collects their result in a TestResult.
      *
-     * @throws \PHPUnit\Framework\CodeCoverageException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CodeCoverageException
      * @throws Warning
      */
     public function run(TestResult $result = null): TestResult

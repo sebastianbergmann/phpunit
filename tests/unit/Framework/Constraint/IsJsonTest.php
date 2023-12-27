@@ -30,8 +30,8 @@ final class IsJsonTest extends ConstraintTestCase
      *
      * @dataProvider evaluateDataprovider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testEvaluate($expected, $jsonOther): void
     {

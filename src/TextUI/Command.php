@@ -689,7 +689,7 @@ class Command
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws XmlConfiguration\Exception
      */
     private function handleListSuites(bool $exit): int
     {

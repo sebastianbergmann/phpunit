@@ -51,9 +51,9 @@ final class JsonTest extends TestCase
      *
      * @dataProvider prettifyProvider
      *
-     * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
      */
     public function testPrettify($actual, $expected): void
     {

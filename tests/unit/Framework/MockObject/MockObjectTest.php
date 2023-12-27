@@ -1024,7 +1024,7 @@ EOF
     {
         $mock = $this->getMockBuilder(ClassWithStaticMethod::class)->getMock();
 
-        $this->expectException(\PHPUnit\Framework\MockObject\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
 
         $mock->staticMethod();
     }
@@ -1056,7 +1056,7 @@ EOF
 
     public function testStringableClassDoesNotThrow(): void
     {
-        /** @var PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
+        /** @var MockObject|StringableClass $mock */
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
         $this->assertIsString((string) $mock);
@@ -1064,7 +1064,7 @@ EOF
 
     public function testStringableClassCanBeMocked(): void
     {
-        /** @var PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
+        /** @var MockObject|StringableClass $mock */
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
         $mock->method('__toString')->willReturn('foo');
@@ -1128,7 +1128,7 @@ EOF
 
     public function testDisableAutomaticReturnValueGenerationWithToString(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
+        /** @var MockObject|StringableClass $mock */
         $mock = $this->getMockBuilder(StringableClass::class)
             ->disableAutoReturnValueGeneration()
             ->getMock();
@@ -1294,7 +1294,7 @@ EOF
     {
         $stub = $this->createStub(InterfaceWithMethodReturningIntersection::class);
 
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $stub->method();
     }
