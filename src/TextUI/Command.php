@@ -187,7 +187,7 @@ class Command
     private $versionStringPrinted = false;
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public static function main(bool $exit = true): int
     {
@@ -1265,7 +1265,7 @@ class Command
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     private function handleListSuites(bool $exit): int
     {

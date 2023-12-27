@@ -289,7 +289,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $snapshot;
 
     /**
-     * @var \Prophecy\Prophet
+     * @var Prophet
      */
     private $prophet;
 

@@ -78,8 +78,8 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function verify(): void
     {

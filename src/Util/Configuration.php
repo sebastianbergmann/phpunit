@@ -982,7 +982,7 @@ final class Configuration
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
