@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class Issue5574Test extends TestCase
 {
-    public function testOne(): void
+    public function testThrownWrappedThrowablesOutputsCorrectStackTraceForEach(): void
     {
         $innerException = new \Error('Inner Exception');
         $outerException = new \Exception('My exception', 0, $innerException);
