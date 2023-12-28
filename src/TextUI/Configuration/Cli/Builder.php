@@ -57,6 +57,7 @@ final readonly class Builder
         'enforce-time-limit',
         'exclude-group=',
         'filter=',
+        'exclude-filter=',
         'generate-baseline=',
         'use-baseline=',
         'ignore-baseline',
@@ -196,6 +197,7 @@ final readonly class Builder
         $stopOnSkipped                     = null;
         $stopOnWarning                     = null;
         $filter                            = null;
+        $excludeFilter                     = null;
         $generateBaseline                  = null;
         $useBaseline                       = null;
         $ignoreBaseline                    = false;
@@ -352,6 +354,11 @@ final readonly class Builder
 
                 case '--filter':
                     $filter = $option[1];
+
+                    break;
+
+                case '--exclude-filter':
+                    $excludeFilter = $option[1];
 
                     break;
 
@@ -875,6 +882,7 @@ final readonly class Builder
             $stopOnSkipped,
             $stopOnWarning,
             $filter,
+            $excludeFilter,
             $generateBaseline,
             $useBaseline,
             $ignoreBaseline,

@@ -12,8 +12,6 @@ namespace PHPUnit\Runner\Filter;
 use function end;
 use function implode;
 use function preg_match;
-use function sprintf;
-use function str_replace;
 use Exception;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
@@ -25,11 +23,11 @@ use RecursiveIterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class NameFilterIterator extends RecursiveFilterIterator
+abstract class NameFilterIterator extends RecursiveFilterIterator
 {
-    private ?string $filter = null;
-    private ?int $filterMin = null;
-    private ?int $filterMax = null;
+    protected ?string $filter = null;
+    protected ?int $filterMin = null;
+    protected ?int $filterMax = null;
 
     /**
      * @psalm-param RecursiveIterator<int, Test> $iterator
@@ -40,7 +38,6 @@ final class NameFilterIterator extends RecursiveFilterIterator
     public function __construct(RecursiveIterator $iterator, string $filter)
     {
         parent::__construct($iterator);
-
         $this->setFilter($filter);
     }
 
@@ -60,66 +57,21 @@ final class NameFilterIterator extends RecursiveFilterIterator
             $name = $tmp[1];
         }
 
-        $accepted = @preg_match($this->filter, $name, $matches);
+        if (null === $this->filter) {
+            return false;
+        }
+
+        $accepted = @preg_match($this->filter, $name, $matches) === 1;
 
         if ($accepted && isset($this->filterMax)) {
             $set      = end($matches);
             $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
         }
 
-        return (bool) $accepted;
+        return $accepted;
     }
 
-    /**
-     * @throws Exception
-     */
-    private function setFilter(string $filter): void
-    {
-        if (@preg_match($filter, '') === false) {
-            // Handles:
-            //  * testAssertEqualsSucceeds#4
-            //  * testAssertEqualsSucceeds#4-8
-            if (preg_match('/^(.*?)#(\d+)(?:-(\d+))?$/', $filter, $matches)) {
-                if (isset($matches[3]) && $matches[2] < $matches[3]) {
-                    $filter = sprintf(
-                        '%s.*with data set #(\d+)$',
-                        $matches[1],
-                    );
-
-                    $this->filterMin = (int) $matches[2];
-                    $this->filterMax = (int) $matches[3];
-                } else {
-                    $filter = sprintf(
-                        '%s.*with data set #%s$',
-                        $matches[1],
-                        $matches[2],
-                    );
-                }
-            } // Handles:
-            //  * testDetermineJsonError@JSON_ERROR_NONE
-            //  * testDetermineJsonError@JSON.*
-            elseif (preg_match('/^(.*?)@(.+)$/', $filter, $matches)) {
-                $filter = sprintf(
-                    '%s.*with data set "%s"$',
-                    $matches[1],
-                    $matches[2],
-                );
-            }
-
-            // Escape delimiters in regular expression. Do NOT use preg_quote,
-            // to keep magic characters.
-            $filter = sprintf(
-                '/%s/i',
-                str_replace(
-                    '/',
-                    '\\/',
-                    $filter,
-                ),
-            );
-        }
-
-        $this->filter = $filter;
-    }
+    abstract protected function setFilter(string $filter): void;
 
     /**
      * @psalm-return array{0: string, 1: string}

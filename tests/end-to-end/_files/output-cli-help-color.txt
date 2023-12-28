@@ -35,6 +35,8 @@
   [32m--list-tests                    [0m List available tests
   [32m--list-tests-xml [36m<file>[0m         [0m List available tests in XML format
   [32m--filter [36m<pattern>[0m              [0m Filter which tests to run
+  [32m--exclude-filter [36m<pattern>[0m      [0m Exclude tests for the specified filter
+                                   pattern
   [32m--test-suffix [36m<suffixes>[0m        [0m Only search for test in files with specified
                                    suffix(es). Default: Test.php,.phpt
 

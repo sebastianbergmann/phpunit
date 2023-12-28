@@ -14,6 +14,7 @@ use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -61,10 +62,23 @@ final class Factory
     public function addNameFilter(string $name): void
     {
         $this->filters[] = [
-            new ReflectionClass(NameFilterIterator::class), $name,
+            new ReflectionClass(IncludeNameFilterIterator::class), $name,
         ];
     }
 
+    /**
+     * @psalm-param non-empty-string $name
+     */
+    public function addExcludeNameFilter(string $name): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(ExcludeNameFilterIterator::class), $name,
+        ];
+    }
+
+    /**
+     * @throws ReflectionException
+     */
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {

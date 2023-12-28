@@ -27,6 +27,7 @@ use ReflectionMethod;
 final readonly class TestSuiteBuilder
 {
     /**
+     * @throws ReflectionException
      * @throws RuntimeException
      */
     public static function from(FrameworkTestSuite $testSuite): TestSuite
@@ -104,6 +105,8 @@ final readonly class TestSuiteBuilder
 
     /**
      * @psalm-param list<Test> $tests
+     *
+     * @throws ReflectionException
      */
     private static function process(FrameworkTestSuite $testSuite, &$tests): void
     {

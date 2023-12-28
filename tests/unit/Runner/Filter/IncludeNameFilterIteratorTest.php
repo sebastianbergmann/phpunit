@@ -9,32 +9,42 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\BankAccountTest;
 
-#[CoversClass(NameFilterIterator::class)]
+#[CoversClass(IncludeNameFilterIterator::class)]
 #[Small]
-final class NameFilterIteratorTest extends TestCase
+final class IncludeNameFilterIteratorTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testCaseSensitiveMatch(): void
     {
         $this->assertTrue($this->createFilter('BankAccountTest')->accept());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testCaseInsensitiveMatch(): void
     {
         $this->assertTrue($this->createFilter('bankaccounttest')->accept());
     }
 
-    private function createFilter(string $filter): NameFilterIterator
+    /**
+     * @throws Exception
+     */
+    private function createFilter(string $filter): IncludeNameFilterIterator
     {
         $suite = TestSuite::empty('test suite name');
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
 
-        $iterator = new NameFilterIterator($suite->getIterator(), $filter);
+        $iterator = new IncludeNameFilterIterator($suite->getIterator(), $filter);
 
         $iterator->rewind();
 

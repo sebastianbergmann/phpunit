@@ -581,6 +581,12 @@ final readonly class Merger
             $filter = $cliConfiguration->filter();
         }
 
+        $excludeFilter = null;
+
+        if ($cliConfiguration->hasExcludeFilter()) {
+            $excludeFilter = $cliConfiguration->excludeFilter();
+        }
+
         if ($cliConfiguration->hasGroups()) {
             $groups = $cliConfiguration->groups();
         } else {
@@ -798,6 +804,7 @@ final readonly class Merger
             $testsCovering,
             $testsUsing,
             $filter,
+            $excludeFilter,
             $groups,
             $excludeGroups,
             $randomOrderSeed,

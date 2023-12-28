@@ -621,17 +621,23 @@
       <code><![CDATA[$this->groupTests]]></code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Runner/Filter/NameFilterIterator.php">
+  <file src="src/Runner/Filter/IncludeNameFilterIterator.php">
     <ArgumentTypeCoercion>
       <code>$filter</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Runner/Filter/ExcludeNameFilterIterator.php">
+    <ArgumentTypeCoercion>
+      <code>$filter</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Runner/Filter/NameFilterIterator.php">
+    <ArgumentTypeCoercion>
       <code><![CDATA[$this->filter]]></code>
     </ArgumentTypeCoercion>
     <MissingTemplateParam>
       <code>NameFilterIterator</code>
     </MissingTemplateParam>
-    <PossiblyNullArgument>
-      <code><![CDATA[$this->filter]]></code>
-    </PossiblyNullArgument>
   </file>
   <file src="src/Runner/Filter/TestIdFilterIterator.php">
     <MissingTemplateParam>
@@ -671,6 +677,9 @@
     </UnresolvableInclude>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
+    <MissingThrowsDocblock>
+      <code>$suite</code>
+    </MissingThrowsDocblock>
     <ArgumentTypeCoercion>
       <code>$tests</code>
       <code><![CDATA[$this->randomize($suite->tests())]]></code>
@@ -951,6 +960,7 @@
   <file src="src/TextUI/TestSuiteFilterProcessor.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$configuration->excludeGroups()]]></code>
+      <code><![CDATA[$configuration->excludeFilter()]]></code>
       <code><![CDATA[$configuration->filter()]]></code>
       <code><![CDATA[$configuration->groups()]]></code>
     </ArgumentTypeCoercion>

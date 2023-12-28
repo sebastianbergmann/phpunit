@@ -23,6 +23,7 @@ use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
+use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
@@ -32,6 +33,7 @@ final readonly class TestSuiteBuilder
 {
     /**
      * @throws \PHPUnit\Framework\Exception
+     * @throws ReflectionException
      * @throws RuntimeException
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException

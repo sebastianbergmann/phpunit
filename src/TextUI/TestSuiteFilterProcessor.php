@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
+use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -31,12 +32,14 @@ final readonly class TestSuiteFilterProcessor
     /**
      * @throws Event\RuntimeException
      * @throws FilterNotConfiguredException
+     * @throws ReflectionException
      */
     public function process(Configuration $configuration, TestSuite $suite): void
     {
         if (!$configuration->hasFilter() &&
             !$configuration->hasGroups() &&
             !$configuration->hasExcludeGroups() &&
+            !$configuration->hasExcludeFilter() &&
             !$configuration->hasTestsCovering() &&
             !$configuration->hasTestsUsing()) {
             return;
@@ -69,6 +72,12 @@ final readonly class TestSuiteFilterProcessor
                     static fn (string $name): string => '__phpunit_uses_' . $name,
                     $configuration->testsUsing(),
                 ),
+            );
+        }
+
+        if ($configuration->hasExcludeFilter()) {
+            $this->filterFactory->addExcludeNameFilter(
+                $configuration->excludeFilter(),
             );
         }
 

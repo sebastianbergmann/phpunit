@@ -59,6 +59,10 @@ final readonly class ListGroupsCommand implements Command
             $buffer .= 'The --filter and --list-groups options cannot be combined, --filter is ignored' . PHP_EOL;
         }
 
+        if ($configuration->hasExcludeFilter()) {
+            $buffer .= 'The --exclude-filter and --list-groups options cannot be combined, --exclude-filter is ignored' . PHP_EOL;
+        }
+
         if ($configuration->hasGroups()) {
             $buffer .= 'The --group and --list-groups options cannot be combined, --group is ignored' . PHP_EOL;
         }
