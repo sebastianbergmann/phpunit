@@ -228,7 +228,8 @@ final readonly class ResultPrinter
         $diff    = implode(PHP_EOL, $diff);
 
         if (!empty($message)) {
-            $message = Color::colorizeTextBox($style, $message, $this->columns);
+            // Testdox output has a left-margin of 5; keep right-margin to prevent terminal scrolling
+            $message = Color::colorizeTextBox($style, $message, $this->columns - 7);
         }
 
         return [
