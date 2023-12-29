@@ -76,7 +76,7 @@ final class ColorTest extends TestCase
     {
         return [
             'fitting text' => [
-                40,
+                40,     // simulate 40 char wide terminal
                 'this is fine' . PHP_EOL .
                 PHP_EOL .
                 'all lines fit nicely' . PHP_EOL .
@@ -87,7 +87,7 @@ final class ColorTest extends TestCase
                 Color::colorize('red', 'bottom text         '),
             ],
             'oversize text' => [
-                20,
+                20,     // simulate 20 char wide terminal
                 'this is also fine' . PHP_EOL .
                 PHP_EOL .
                 'the very long lines do not stretch the whole textbox' . PHP_EOL .
