@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.6] - 202Y-MM-DD
+
+### Fixed
+
+* [#5518](https://github.com/sebastianbergmann/phpunit/issues/5518): Details about deprecations, notices, and warnings are not displayed when the TestDox result printer is used
+
 ## [10.5.5] - 2023-12-27
 
 ### Fixed
@@ -62,6 +68,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.6]: https://github.com/sebastianbergmann/phpunit/compare/10.5.5...10.5
 [10.5.5]: https://github.com/sebastianbergmann/phpunit/compare/10.5.4...10.5.5
 [10.5.4]: https://github.com/sebastianbergmann/phpunit/compare/10.5.3...10.5.4
 [10.5.3]: https://github.com/sebastianbergmann/phpunit/compare/10.5.2...10.5.3
