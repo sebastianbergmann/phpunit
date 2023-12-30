@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -96,6 +97,13 @@ final class ColorTest extends TestCase
                 Color::colorize('red', '                    ') . PHP_EOL .
                 Color::colorize('red', 'the very long lines do not stretch the whole textbox') . PHP_EOL .
                 Color::colorize('red', 'anymore             '),
+            ],
+            'default terminal width cap' => [
+                80,     // simulate (default) 80 char wide terminal
+                str_repeat('.123456789', 8) . PHP_EOL .
+                'this is a shorter line',
+                Color::colorize('red', str_repeat('.123456789', 8)) . PHP_EOL .
+                Color::colorize('red', 'this is a shorter line                                                          '),
             ],
         ];
     }
