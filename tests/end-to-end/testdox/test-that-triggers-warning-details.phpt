@@ -21,7 +21,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Warning (PHPUnit\TestFixture\TestDox\Warning)
- ✔ Warning
+ ⚠ Warning
 
 1 test triggered 1 warning:
 

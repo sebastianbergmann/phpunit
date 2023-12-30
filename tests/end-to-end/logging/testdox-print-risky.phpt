@@ -17,5 +17,5 @@ require realpath($parentDirectory . '/../bootstrap.php');
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 Risky (PHPUnit\TestFixture\TestRunnerStopping\Risky)
- [ ] One
+ [x] One
  [x] Two

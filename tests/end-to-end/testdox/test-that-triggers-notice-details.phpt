@@ -21,7 +21,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Notice (PHPUnit\TestFixture\TestDox\Notice)
- ✔ Notice
+ ⚠ Notice
 
 1 test triggered 1 notice:
 

@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Fixed
 
+* [#5488](https://github.com/sebastianbergmann/phpunit/issues/5488): Details about tests that are considered risky are not displayed when the TestDox result printer is used
 * [#5518](https://github.com/sebastianbergmann/phpunit/issues/5518): Details about deprecations, notices, and warnings are not displayed when the TestDox result printer is used
 
 ## [10.5.5] - 2023-12-27
