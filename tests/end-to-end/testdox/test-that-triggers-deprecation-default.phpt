@@ -20,7 +20,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Deprecation (PHPUnit\TestFixture\TestDox\Deprecation)
- ✔ Deprecation
+ ⚠ Deprecation
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.

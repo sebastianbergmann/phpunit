@@ -7,30 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\TestStatus;
+namespace PHPUnit\Logging\TestDox;
+
+use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggeredSubscriber;
 
 /**
- * @psalm-immutable
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Warning extends Known
+final readonly class TestTriggeredPhpNoticeSubscriber extends Subscriber implements PhpNoticeTriggeredSubscriber
 {
-    /**
-     * @psalm-assert-if-true Warning $this
-     */
-    public function isWarning(): bool
+    public function notify(PhpNoticeTriggered $event): void
     {
-        return true;
-    }
-
-    public function asInt(): int
-    {
-        return 6;
-    }
-
-    public function asString(): string
-    {
-        return 'warning';
+        $this->collector()->testTriggeredPhpNotice($event);
     }
 }

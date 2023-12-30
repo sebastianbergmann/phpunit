@@ -20,7 +20,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Notice (PHPUnit\TestFixture\TestDox\Notice)
- ✔ Notice
+ ⚠ Notice
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Notices: 1.

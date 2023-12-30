@@ -20,7 +20,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Warning (PHPUnit\TestFixture\TestDox\Warning)
- ✔ Warning
+ ⚠ Warning
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.

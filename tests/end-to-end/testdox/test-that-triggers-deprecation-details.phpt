@@ -21,7 +21,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Deprecation (PHPUnit\TestFixture\TestDox\Deprecation)
- ✔ Deprecation
+ ⚠ Deprecation
 
 1 test triggered 1 deprecation:
 

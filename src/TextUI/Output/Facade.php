@@ -196,7 +196,7 @@ final class Facade
                 true,
                 false,
                 false,
-                false,
+                true,
                 false,
                 false,
                 $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
