@@ -632,9 +632,12 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$this->filter]]></code>
-    </ArgumentTypeCoercion>
+      <ArgumentTypeCoercion>
+          <code><![CDATA[$this->filter]]></code>
+      </ArgumentTypeCoercion>
+    <PropertyNotSetInConstructor>
+      <code>$filter</code>
+    </PropertyNotSetInConstructor>
     <MissingTemplateParam>
       <code>NameFilterIterator</code>
     </MissingTemplateParam>

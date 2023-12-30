@@ -13,7 +13,6 @@ use function end;
 use function implode;
 use function preg_match;
 use Exception;
-use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -25,7 +24,7 @@ use RecursiveIterator;
  */
 abstract class NameFilterIterator extends RecursiveFilterIterator
 {
-    protected ?string $filter = null;
+    protected string $filter;
     protected ?int $filterMin = null;
     protected ?int $filterMax = null;
 
@@ -41,6 +40,9 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
         $this->setFilter($filter);
     }
 
+    /**
+     * @throws Exception
+     */
     public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();
@@ -49,17 +51,8 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = $this->describe($test);
-
-        if ($tmp[0] !== '') {
-            $name = implode('::', $tmp);
-        } else {
-            $name = $tmp[1];
-        }
-
-        if (null === $this->filter) {
-            return false;
-        }
+        $tmp  = $this->describe($test);
+        $name = implode('::', $tmp);
 
         $accepted = @preg_match($this->filter, $name, $matches) === 1;
 
@@ -75,17 +68,15 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
 
     /**
      * @psalm-return array{0: string, 1: string}
+     *
+     * @throws Exception
      */
     private function describe(Test $test): array
     {
-        if ($test instanceof TestCase) {
-            return [$test::class, $test->nameWithDataSet()];
+        if (!($test instanceof TestCase)) {
+            throw new Exception('You have to extend TestCase class.');
         }
 
-        if ($test instanceof SelfDescribing) {
-            return ['', $test->toString()];
-        }
-
-        return ['', $test::class];
+        return [$test::class, $test->nameWithDataSet()];
     }
 }

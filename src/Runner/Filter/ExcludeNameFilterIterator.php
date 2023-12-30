@@ -21,14 +21,16 @@ class ExcludeNameFilterIterator extends NameFilterIterator
      */
     protected function setFilter(string $filter): void
     {
-        $filter = sprintf(
-            '/^(?:(?!%s).)*/i',
-            str_replace(
-                '/',
-                '\\/',
-                $filter,
-            ),
-        );
+        if (@preg_match($filter, '') === false) {
+            $filter = sprintf(
+                '/^(?:(?!%s).)*/i',
+                str_replace(
+                    '/',
+                    '\\/',
+                    $filter,
+                ),
+            );
+        }
 
         $this->filter = $filter;
     }
