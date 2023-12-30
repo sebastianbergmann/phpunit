@@ -199,11 +199,11 @@ final class Facade
                 false,
                 false,
                 false,
-                false,
-                false,
-                false,
-                false,
-                false,
+                $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
+                $configuration->displayDetailsOnTestsThatTriggerErrors(),
+                $configuration->displayDetailsOnTestsThatTriggerNotices(),
+                $configuration->displayDetailsOnTestsThatTriggerWarnings(),
+                $configuration->reverseDefectList(),
             );
         }
 
