@@ -72,7 +72,7 @@ final readonly class ListGroupsCommand implements Command
         }
 
         if ($configuration->includeTestSuite() !== '') {
-            $buffer .= 'The --testsuite and --list-groups options cannot be combined, --exclude-group is ignored' . PHP_EOL;
+            $buffer .= 'The --testsuite and --list-groups options cannot be combined, --testsuite is ignored' . PHP_EOL;
         }
 
         if (!empty($buffer)) {
