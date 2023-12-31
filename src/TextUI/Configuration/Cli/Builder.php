@@ -15,6 +15,7 @@ use function explode;
 use function getcwd;
 use function is_file;
 use function is_numeric;
+use function realpath;
 use function sprintf;
 use PHPUnit\Runner\TestSuiteSorter;
 use SebastianBergmann\CliParser\Exception as CliParserException;
@@ -789,12 +790,34 @@ final readonly class Builder
                     break;
 
                 case '--log-events-text':
-                    $logEventsText = $option[1];
+                    $path = realpath($option[1]);
+
+                    if (!$path) {
+                        throw new Exception(
+                            sprintf(
+                                'The path "%s" specified for the --log-events-text option could not be resolved',
+                                $option[1],
+                            ),
+                        );
+                    }
+
+                    $logEventsText = $path;
 
                     break;
 
                 case '--log-events-verbose-text':
-                    $logEventsVerboseText = $option[1];
+                    $path = realpath($option[1]);
+
+                    if (!$path) {
+                        throw new Exception(
+                            sprintf(
+                                'The path "%s" specified for the --log-events-verbose-text option could not be resolved',
+                                $option[1],
+                            ),
+                        );
+                    }
+
+                    $logEventsVerboseText = $path;
 
                     break;
             }
