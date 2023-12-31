@@ -16,4 +16,4 @@ require __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-The path "/tmp/invalid-directory/invalid.file" specified for the --log-events-text option could not be resolved
+The path "%s" specified for the --log-events-text option could not be resolved
