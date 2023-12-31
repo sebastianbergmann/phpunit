@@ -15,6 +15,7 @@ use function explode;
 use function getcwd;
 use function is_file;
 use function is_numeric;
+use function realpath;
 use function sprintf;
 use PHPUnit\Runner\TestSuiteSorter;
 use SebastianBergmann\CliParser\Exception as CliParserException;
@@ -803,12 +804,24 @@ final class Builder
                     break;
 
                 case '--log-events-text':
-                    $logEventsText = $option[1];
+                    $path     = $option[1];
+                    $realPath = realpath($path);
+
+                    if (!$realPath) {
+                        throw new Exception("Specified path: {$path} can't be resolved");
+                    }
+                    $logEventsText = $realPath;
 
                     break;
 
                 case '--log-events-verbose-text':
-                    $logEventsVerboseText = $option[1];
+                    $path     = $option[1];
+                    $realPath = realpath($path);
+
+                    if (!$realPath) {
+                        throw new Exception("Specified path: {$path} can't be resolved");
+                    }
+                    $logEventsVerboseText = $realPath;
 
                     break;
             }
