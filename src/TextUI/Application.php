@@ -72,7 +72,6 @@ use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
-use ReflectionException;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -324,9 +323,6 @@ final readonly class Application
         }
     }
 
-    /**
-     * @throws ReflectionException
-     */
     private function buildTestSuite(Configuration $configuration): TestSuite
     {
         try {

@@ -14,7 +14,6 @@ use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -76,14 +75,16 @@ final class Factory
         ];
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {
             [$class, $arguments] = $filter;
-            $iterator            = $class->newInstance($iterator, $arguments, $suite);
+
+            try {
+                $iterator = $class->newInstance($iterator, $arguments, $suite);
+            } catch (\ReflectionException) {
+                continue;
+            }
         }
 
         assert($iterator instanceof FilterIterator);

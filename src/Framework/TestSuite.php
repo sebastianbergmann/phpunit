@@ -44,7 +44,6 @@ use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
@@ -262,8 +261,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Counts the number of test cases that will be run by this test.
-     *
-     * @throws ReflectionException
      */
     public function count(): int
     {
@@ -313,7 +310,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws Event\RuntimeException
      * @throws Exception
      * @throws NoPreviousThrowableException
-     * @throws ReflectionException
      * @throws UnintentionallyCoveredCodeException
      */
     public function run(): void
@@ -378,8 +374,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Returns an iterator for this test suite.
-     *
-     * @throws ReflectionException
      */
     public function getIterator(): Iterator
     {
@@ -392,9 +386,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $iterator;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function injectFilter(Factory $filter): void
     {
         $this->iteratorFilter = $filter;
@@ -539,9 +530,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return true;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
     {
         $reflector = new ReflectionClass($this->name);
@@ -651,9 +639,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return true;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
     {
         if (!$this->isForTestClass()) {
