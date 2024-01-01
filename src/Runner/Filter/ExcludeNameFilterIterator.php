@@ -14,7 +14,10 @@ use function sprintf;
 use function str_replace;
 use Exception;
 
-class ExcludeNameFilterIterator extends NameFilterIterator
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class ExcludeNameFilterIterator extends NameFilterIterator
 {
     /**
      * @throws Exception

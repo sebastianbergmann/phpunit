@@ -13,6 +13,9 @@ use function preg_match;
 use function sprintf;
 use function str_replace;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class IncludeNameFilterIterator extends NameFilterIterator
 {
     protected function setFilter(string $filter): void
