@@ -10,9 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use function end;
-use function implode;
 use function preg_match;
-use Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -24,25 +22,36 @@ use RecursiveIterator;
  */
 abstract class NameFilterIterator extends RecursiveFilterIterator
 {
-    protected string $filter;
-    protected ?int $filterMin = null;
-    protected ?int $filterMax = null;
+    /**
+     * @psalm-var non-empty-string
+     */
+    private string $regularExpression;
+
+    /**
+     * @psalm-var ?int
+     */
+    private ?int $dataSetMinimum;
+
+    /**
+     * @psalm-var ?int
+     */
+    private ?int $dataSetMaximum;
 
     /**
      * @psalm-param RecursiveIterator<int, Test> $iterator
      * @psalm-param non-empty-string $filter
-     *
-     * @throws Exception
      */
     public function __construct(RecursiveIterator $iterator, string $filter)
     {
         parent::__construct($iterator);
-        $this->setFilter($filter);
+
+        $preparedFilter = $this->prepareFilter($filter);
+
+        $this->regularExpression = $preparedFilter['regularExpression'];
+        $this->dataSetMinimum    = $preparedFilter['dataSetMinimum'];
+        $this->dataSetMaximum    = $preparedFilter['dataSetMaximum'];
     }
 
-    /**
-     * @throws Exception
-     */
     public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();
@@ -51,32 +60,26 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp  = $this->describe($test);
-        $name = implode('::', $tmp);
+        if (!$test instanceof TestCase) {
+            return false;
+        }
 
-        $accepted = @preg_match($this->filter, $name, $matches) === 1;
+        $name = $test::class . '::' . $test->nameWithDataSet();
 
-        if ($accepted && isset($this->filterMax)) {
+        $accepted = @preg_match($this->regularExpression, $name, $matches) === 1;
+
+        if ($accepted && isset($this->dataSetMaximum)) {
             $set      = end($matches);
-            $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
+            $accepted = $set >= $this->dataSetMinimum && $set <= $this->dataSetMaximum;
         }
 
         return $accepted;
     }
 
-    abstract protected function setFilter(string $filter): void;
-
     /**
-     * @psalm-return array{0: string, 1: string}
+     * @psalm-param non-empty-string $filter
      *
-     * @throws Exception
+     * @psalm-return array{regularExpression: non-empty-string, dataSetMinimum: ?int, dataSetMaximum: ?int}
      */
-    private function describe(Test $test): array
-    {
-        if (!($test instanceof TestCase)) {
-            throw new Exception('You have to extend TestCase class.');
-        }
-
-        return [$test::class, $test->nameWithDataSet()];
-    }
+    abstract protected function prepareFilter(string $filter): array;
 }

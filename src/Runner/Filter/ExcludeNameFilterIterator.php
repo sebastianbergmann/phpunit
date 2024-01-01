@@ -12,7 +12,6 @@ namespace PHPUnit\Runner\Filter;
 use function preg_match;
 use function sprintf;
 use function str_replace;
-use Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -20,9 +19,11 @@ use Exception;
 final class ExcludeNameFilterIterator extends NameFilterIterator
 {
     /**
-     * @throws Exception
+     * @psalm-param non-empty-string $filter
+     *
+     * @psalm-return array{regularExpression: non-empty-string, dataSetMinimum: ?int, dataSetMaximum: ?int}
      */
-    protected function setFilter(string $filter): void
+    protected function prepareFilter(string $filter): array
     {
         if (@preg_match($filter, '') === false) {
             $filter = sprintf(
@@ -35,6 +36,10 @@ final class ExcludeNameFilterIterator extends NameFilterIterator
             );
         }
 
-        $this->filter = $filter;
+        return [
+            'regularExpression' => $filter,
+            'dataSetMinimum'    => null,
+            'dataSetMaximum'    => null,
+        ];
     }
 }

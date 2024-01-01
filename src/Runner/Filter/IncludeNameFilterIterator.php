@@ -18,8 +18,16 @@ use function str_replace;
  */
 final class IncludeNameFilterIterator extends NameFilterIterator
 {
-    protected function setFilter(string $filter): void
+    /**
+     * @psalm-param non-empty-string $filter
+     *
+     * @psalm-return array{regularExpression: non-empty-string, dataSetMinimum: ?int, dataSetMaximum: ?int}
+     */
+    protected function prepareFilter(string $filter): array
     {
+        $dataSetMinimum = null;
+        $dataSetMaximum = null;
+
         if (@preg_match($filter, '') === false) {
             // Handles:
             //  * testAssertEqualsSucceeds#4
@@ -31,8 +39,8 @@ final class IncludeNameFilterIterator extends NameFilterIterator
                         $matches[1],
                     );
 
-                    $this->filterMin = (int) $matches[2];
-                    $this->filterMax = (int) $matches[3];
+                    $dataSetMinimum = (int) $matches[2];
+                    $dataSetMaximum = (int) $matches[3];
                 } else {
                     $filter = sprintf(
                         '%s.*with data set #%s$',
@@ -63,6 +71,10 @@ final class IncludeNameFilterIterator extends NameFilterIterator
             );
         }
 
-        $this->filter = $filter;
+        return [
+            'regularExpression' => $filter,
+            'dataSetMinimum'    => $dataSetMinimum,
+            'dataSetMaximum'    => $dataSetMaximum,
+        ];
     }
 }
