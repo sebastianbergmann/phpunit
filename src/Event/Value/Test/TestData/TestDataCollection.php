@@ -36,20 +36,16 @@ final readonly class TestDataCollection implements Countable, IteratorAggregate
 
     private function __construct(TestData ...$data)
     {
-        $fromDataProvider = false;
+        $fromDataProvider = null;
 
         foreach ($data as $_data) {
             if ($_data->isFromDataProvider()) {
-                $this->fromDataProvider = $_data;
-                $fromDataProvider       = true;
+                $fromDataProvider = $_data;
             }
         }
 
-        $this->data = $data;
-
-        if (!$fromDataProvider) {
-            $this->fromDataProvider = null;
-        }
+        $this->data             = $data;
+        $this->fromDataProvider = $fromDataProvider;
     }
 
     /**
