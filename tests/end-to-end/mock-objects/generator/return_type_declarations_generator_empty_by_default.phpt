@@ -1,5 +1,9 @@
 --TEST--
 Iterable return types should return empty array by default
+--SKIPIF--
+<?php if(str_contains((string)ini_get('xdebug.mode'), 'develop')) {
+print 'skip: xdebug.mode=develop is enabled';
+}
 --FILE--
 <?php declare(strict_types=1);
 interface Foo
