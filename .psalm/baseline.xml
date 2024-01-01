@@ -617,9 +617,6 @@
     <MissingTemplateParam>
       <code>GroupFilterIterator</code>
     </MissingTemplateParam>
-    <PropertyTypeCoercion>
-      <code><![CDATA[$this->groupTests]]></code>
-    </PropertyTypeCoercion>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <MissingTemplateParam>
