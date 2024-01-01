@@ -58,7 +58,7 @@ final class Factory
     /**
      * @psalm-param non-empty-string $name
      */
-    public function addNameFilter(string $name): void
+    public function addIncludeNameFilter(string $name): void
     {
         $this->filters[] = [
             new ReflectionClass(IncludeNameFilterIterator::class), $name,

@@ -80,7 +80,7 @@ final readonly class TestSuiteFilterProcessor
         }
 
         if ($configuration->hasFilter()) {
-            $this->filterFactory->addNameFilter(
+            $this->filterFactory->addIncludeNameFilter(
                 $configuration->filter(),
             );
         }
