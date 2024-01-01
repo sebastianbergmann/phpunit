@@ -94,6 +94,16 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     die(1);
 }
 
+if (str_contains((string)ini_get('xdebug.mode'), 'develop')) {
+    fwrite(
+        STDERR,
+        'PHPUnit requires the Xdebug \'develop\' mode to be disabled as it changes the output of var_dump().' . PHP_EOL . PHP_EOL .
+        'You can learn about this configuration setting at https://xdebug.org/docs/develop' . PHP_EOL
+    );
+
+    die(1);
+}
+
 require PHPUNIT_COMPOSER_INSTALL;
 
 exit((new PHPUnit\TextUI\Application)->run($_SERVER['argv']));
