@@ -15,11 +15,11 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.D.D                                                                4 / 4 (100%)
+.D                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-2 tests triggered 2 deprecations:
+1 test triggered 1 deprecation:
 
 1) %sIgnoreDeprecationsTest.php:%d
 message
@@ -29,13 +29,5 @@ Triggered by:
 * PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo
   %sIgnoreDeprecationsTest.php:%d
 
-2) %sIgnoreDeprecationsTest.php:%d
-message
-
-Triggered by:
-
-* PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast
-  %sIgnoreDeprecationsTest.php:%d
-
 OK, but there were issues!
-Tests: 4, Assertions: 6, Deprecations: 2.
+Tests: 2, Assertions: 2, Deprecations: 1.

@@ -21,12 +21,12 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (2 tests)
+Test Suite Loaded (1 test)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\Event\UserNoticeTest, 2 tests)
+Test Runner Execution Started (1 test)
+Test Suite Started (PHPUnit\TestFixture\Event\UserNoticeTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Assertion Succeeded (Constraint: is true, Value: true)
@@ -34,20 +34,7 @@ Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 message
 Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Finished (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
-Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-message
-Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
-    'type' => 1024,
-    'message' => 'message',
-    'file' => '%s%e_files%eUserNoticeTest.php',
-    'line' => %d,
-])
-Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-Test Finished (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-Test Suite Finished (PHPUnit\TestFixture\Event\UserNoticeTest, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\Event\UserNoticeTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
