@@ -21,12 +21,12 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (2 tests)
+Test Suite Loaded (1 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\Event\UserWarningTest, 2 tests)
+Test Runner Execution Started (1 tests)
+Test Suite Started (PHPUnit\TestFixture\Event\UserWarningTest, 1 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Assertion Succeeded (Constraint: is true, Value: true)
@@ -34,20 +34,7 @@ Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarni
 message
 Test Passed (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
-Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
-Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
-Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
-message
-Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
-    'type' => 512,
-    'message' => 'message',
-    'file' => '%s%e_files%eUserWarningTest.php',
-    'line' => %d,
-])
-Test Passed (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
-Test Finished (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
-Test Suite Finished (PHPUnit\TestFixture\Event\UserWarningTest, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\Event\UserWarningTest, 1 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
