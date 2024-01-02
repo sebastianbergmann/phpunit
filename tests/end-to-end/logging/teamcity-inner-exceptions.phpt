@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 ##teamcity[testStarted name='testNestedExceptions' locationHint='php_qn://%s%etests%e_files%eExceptionStackTest.php::\PHPUnit\TestFixture\ExceptionStackTest::testNestedExceptions' flowId='%d']
 
-##teamcity[testFailed name='testNestedExceptions' message='Exception: One' details='%s%etests%e_files%eExceptionStackTest.php:34|n|nCaused by|nInvalidArgumentException: Two|n|n%s%etests%e_files%eExceptionStackTest.php:33|n|nCaused by|nException: Three|n|n%s%etests%e_files%eExceptionStackTest.php:33|n' duration='%d' flowId='%d']
+##teamcity[testFailed name='testNestedExceptions' message='Exception: One' details='%s%etests%e_files%eExceptionStackTest.php:35|n|nCaused by|nInvalidArgumentException: Two|n|n%s%etests%e_files%eExceptionStackTest.php:34|n|nCaused by|nException: Three|n|n%s%etests%e_files%eExceptionStackTest.php:33|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testNestedExceptions' duration='%d' flowId='%d']
 
