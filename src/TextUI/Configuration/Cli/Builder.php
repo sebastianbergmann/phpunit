@@ -17,6 +17,7 @@ use function is_file;
 use function is_numeric;
 use function realpath;
 use function sprintf;
+use function str_starts_with;
 use PHPUnit\Runner\TestSuiteSorter;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
@@ -804,29 +805,37 @@ final class Builder
                     break;
 
                 case '--log-events-text':
-                    $logEventsText = realpath($option[1]);
+                    if (str_starts_with($option[1], 'php://') || str_starts_with($option[1], 'socket://')) {
+                        $logEventsText = $option[1];
+                    } else {
+                        $logEventsText = realpath($option[1]);
 
-                    if (!$logEventsText) {
-                        throw new Exception(
-                            sprintf(
-                                'The path "%s" specified for the --log-events-text option could not be resolved',
-                                $option[1],
-                            ),
-                        );
+                        if (!$logEventsText) {
+                            throw new Exception(
+                                sprintf(
+                                    'The path "%s" specified for the --log-events-text option could not be resolved',
+                                    $option[1],
+                                ),
+                            );
+                        }
                     }
 
                     break;
 
                 case '--log-events-verbose-text':
-                    $logEventsVerboseText = realpath($option[1]);
+                    if (str_starts_with($option[1], 'php://') || str_starts_with($option[1], 'socket://')) {
+                        $logEventsVerboseText = $option[1];
+                    } else {
+                        $logEventsVerboseText = realpath($option[1]);
 
-                    if (!$logEventsVerboseText) {
-                        throw new Exception(
-                            sprintf(
-                                'The path "%s" specified for the --log-events-verbose-text option could not be resolved',
-                                $option[1],
-                            ),
-                        );
+                        if (!$logEventsVerboseText) {
+                            throw new Exception(
+                                sprintf(
+                                    'The path "%s" specified for the --log-events-verbose-text option could not be resolved',
+                                    $option[1],
+                                ),
+                            );
+                        }
                     }
 
                     break;
