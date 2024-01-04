@@ -28,6 +28,7 @@ Selection:
   --exclude-group <name>           Exclude tests from the specified group(s)
   --covers <name>                  Only run tests that intend to cover <name>
   --uses <name>                    Only run tests that intend to use <name>
+  --list-test-files                List available test files
   --list-tests                     List available tests
   --list-tests-xml <file>          List available tests in XML format
   --filter <pattern>               Filter which tests to run

@@ -32,6 +32,7 @@
   [32m--exclude-group [36m<name>[0m          [0m Exclude tests from the specified group(s)
   [32m--covers [36m<name>[0m                 [0m Only run tests that intend to cover <name>
   [32m--uses [36m<name>[0m                   [0m Only run tests that intend to use <name>
+  [32m--list-test-files               [0m List available test files
   [32m--list-tests                    [0m List available tests
   [32m--list-tests-xml [36m<file>[0m         [0m List available tests in XML format
   [32m--filter [36m<pattern>[0m              [0m Filter which tests to run
