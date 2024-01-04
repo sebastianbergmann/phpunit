@@ -52,6 +52,7 @@ use PHPUnit\TextUI\CliArguments\XmlConfigurationFileFinder;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
+use PHPUnit\TextUI\Command\ListTestFilesCommand;
 use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
 use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
@@ -416,6 +417,10 @@ final readonly class Application
                     $testSuite,
                 ),
             );
+        }
+
+        if ($cliConfiguration->listTestFiles()) {
+            $this->execute(new ListTestFilesCommand($testSuite));
         }
     }
 
