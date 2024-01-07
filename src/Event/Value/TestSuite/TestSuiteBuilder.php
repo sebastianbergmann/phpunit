@@ -107,7 +107,7 @@ final class TestSuiteBuilder
      */
     private static function process(FrameworkTestSuite $testSuite, &$tests): void
     {
-        foreach ($testSuite->tests() as $test) {
+        foreach ($testSuite->getIterator() as $test) {
             if ($test instanceof FrameworkTestSuite) {
                 self::process($test, $tests);
 
