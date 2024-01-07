@@ -120,6 +120,9 @@
   [32m--testdox                       [0m Replace default result output with TestDox
                                    format
 
+  [32m--debug                         [0m Replace default progress and result output
+                                   with debugging information
+
 [33mLogging:[0m
 
   [32m--log-junit [36m<file>[0m              [0m Write test results in JUnit XML format to

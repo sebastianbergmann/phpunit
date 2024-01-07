@@ -830,6 +830,7 @@ final readonly class Merger
             $xmlConfiguration->phpunit()->controlGarbageCollector(),
             $xmlConfiguration->phpunit()->numberOfTestsBeforeGarbageCollection(),
             $generateBaseline,
+            $cliConfiguration->debug(),
         );
     }
 }

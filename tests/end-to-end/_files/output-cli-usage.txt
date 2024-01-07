@@ -92,6 +92,8 @@ Reporting:
   --teamcity                       Replace default progress and result output with TeamCity format
   --testdox                        Replace default result output with TestDox format
 
+  --debug                          Replace default progress and result output with debugging information
+
 Logging:
 
   --log-junit <file>               Write test results in JUnit XML format to file
