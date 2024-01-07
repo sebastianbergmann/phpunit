@@ -67,17 +67,7 @@ final readonly class Loader
         $internal  = libxml_use_internal_errors(true);
         $message   = '';
         $reporting = error_reporting(0);
-
-        // Required for XInclude
-        if ($filename !== null) {
-            $document->documentURI = $filename;
-        }
-
-        $loaded = $document->loadXML($actual);
-
-        if ($filename !== null) {
-            $document->xinclude();
-        }
+        $loaded    = $document->loadXML($actual);
 
         foreach (libxml_get_errors() as $error) {
             $message .= "\n" . $error->message;
