@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
+use PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables;
 use ReflectionProperty;
 
 #[Group('test-doubles')]
@@ -416,6 +417,19 @@ EOT,
         }
 
         $this->fail();
+    }
+
+    public function testWillReturnCallbackWithVariadicVariables(): void
+    {
+        $mock = $this->createMock(MethodWIthVariadicVariables::class);
+        $mock->expects($this->once())->method('testVariadic')
+            ->withAnyParameters()
+            ->willReturnCallback(static fn ($string, ...$arguments) => [$string, ...$arguments]);
+
+        $testData = ['foo', 'bar', 'biz' => 'kuz'];
+        $actual   = $mock->testVariadic(...$testData);
+
+        $this->assertSame($testData, $actual);
     }
 
     /**
