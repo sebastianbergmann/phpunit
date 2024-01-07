@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 * [#5518](https://github.com/sebastianbergmann/phpunit/issues/5518): Details about deprecations, notices, and warnings are not displayed when the TestDox result printer is used
 * [#5633](https://github.com/sebastianbergmann/phpunit/pull/5633): `--log-events-text` and `--log-events-verbose-text` CLI options do not handle absolute and relative paths
 * [#5634](https://github.com/sebastianbergmann/phpunit/pull/5634): Exceptions in the destructor of a test double are ignored
+* [#5641](https://github.com/sebastianbergmann/phpunit/issues/5641): The `TestSuite` value object returned by `TestSuite\Filtered::testSuite()` contains all tests instead of only the filtered tests
 
 ## [10.5.5] - 2023-12-27
 
