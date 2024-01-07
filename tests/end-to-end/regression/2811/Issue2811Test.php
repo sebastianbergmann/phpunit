@@ -13,6 +13,6 @@ class Issue2811Test extends PHPUnit\Framework\TestCase
     {
         $this->expectExceptionMessage('hello');
 
-        throw new \Exception('hello');
+        throw new Exception('hello');
     }
 }
