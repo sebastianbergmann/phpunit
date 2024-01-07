@@ -34,10 +34,10 @@ final class TestSuiteBuilderTest extends TestCase
         $this->assertCount(3, $testSuite->tests());
     }
 
-    public function testBuildCountWithFilter()
+    public function testBuildCountWithFilter(): void
     {
-        $testSuite = $this->testSuiteFromXmlConfiguration();
-        $filterFactory = new Factory();
+        $testSuite     = $this->testSuiteFromXmlConfiguration();
+        $filterFactory = new Factory;
         $filterFactory->addNameFilter('one');
         $testSuite->injectFilter($filterFactory);
         $testSuite = TestSuiteBuilder::from($testSuite);
