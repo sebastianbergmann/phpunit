@@ -124,8 +124,11 @@ final class Help
             ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
             ['spacer' => ''],
 
-            ['arg' => '--teamcity', 'desc' => 'Replace default progress and result output with TeamCity format'],
-            ['arg' => '--testdox', 'desc' => 'Replace default result output with TestDox format'],
+            ['arg'    => '--teamcity', 'desc' => 'Replace default progress and result output with TeamCity format'],
+            ['arg'    => '--testdox', 'desc' => 'Replace default result output with TestDox format'],
+            ['spacer' => ''],
+
+            ['arg' => '--debug', 'desc' => 'Replace default progress and result output with debugging information'],
         ],
 
         'Logging' => [

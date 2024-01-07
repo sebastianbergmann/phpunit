@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.6] - 202Y-MM-DD
 
+### Added
+
+* Added the `--debug` CLI option as an alias for `--no-output --log-events-text php://stdout`
+
 ### Fixed
 
 * [#5488](https://github.com/sebastianbergmann/phpunit/issues/5488): Details about tests that are considered risky are not displayed when the TestDox result printer is used

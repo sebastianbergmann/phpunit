@@ -154,12 +154,21 @@ final class Application
                 $extensionReplacesResultOutput,
             );
 
-            if (!$extensionReplacesOutput) {
+            if (!$configuration->debug() && !$extensionReplacesOutput) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
 
                 $printer->print(PHP_EOL);
+            }
+
+            if ($configuration->debug()) {
+                EventFacade::instance()->registerTracer(
+                    new EventLogger(
+                        'php://stdout',
+                        false,
+                    ),
+                );
             }
 
             $this->registerLogfileWriters($configuration);

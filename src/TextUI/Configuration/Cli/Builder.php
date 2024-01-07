@@ -123,6 +123,7 @@ final class Builder
         'log-events-text=',
         'log-events-verbose-text=',
         'version',
+        'debug',
     ];
     private const SHORT_OPTIONS = 'd:c:h';
 
@@ -241,6 +242,7 @@ final class Builder
         $logEventsVerboseText              = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
+        $debug                             = false;
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
@@ -830,6 +832,11 @@ final class Builder
                     }
 
                     break;
+
+                case '--debug':
+                    $debug = true;
+
+                    break;
             }
         }
 
@@ -939,6 +946,7 @@ final class Builder
             $logEventsVerboseText,
             $printerTeamCity,
             $printerTestDox,
+            $debug,
         );
     }
 }
