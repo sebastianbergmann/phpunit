@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\TextUI\CliArguments\Builder as CliArgumentsBuilder;
 use PHPUnit\TextUI\Configuration\Merger as ConfigurationMerger;
 use PHPUnit\TextUI\XmlConfiguration\Loader as XmlConfigurationLoader;
@@ -29,7 +30,21 @@ final class TestSuiteBuilderTest extends TestCase
         $this->assertTrue($testSuite->isWithName());
         $this->assertStringEndsWith('phpunit.xml', $testSuite->name());
         $this->assertSame(3, $testSuite->count());
+        $this->assertSame(3, $testSuite->tests()->count());
         $this->assertCount(3, $testSuite->tests());
+    }
+
+    public function testBuildCountWithFilter(): void
+    {
+        $testSuite     = $this->testSuiteFromXmlConfiguration();
+        $filterFactory = new Factory;
+        $filterFactory->addIncludeNameFilter('one');
+        $testSuite->injectFilter($filterFactory);
+        $testSuite = TestSuiteBuilder::from($testSuite);
+
+        $this->assertSame(1, $testSuite->count());
+        $this->assertSame(1, $testSuite->tests()->count());
+        $this->assertCount(1, $testSuite->tests());
     }
 
     public function test_Builds_TestSuite_value_object_for_test_case_class(): void
