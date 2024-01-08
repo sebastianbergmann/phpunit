@@ -325,6 +325,7 @@
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
+            <arg value="--tolerant" />
             <arg value="--phar" />
             <arg value="--hash" />
             <arg value="SHA-512" />
@@ -344,6 +345,7 @@
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
+            <arg value="--tolerant" />
             <arg value="--nolower" />
             <arg value="--phar" />
             <arg value="--hash" />
