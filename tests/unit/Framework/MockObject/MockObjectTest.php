@@ -38,6 +38,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningFalse;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersection;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningNull;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningTrue;
+use PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables;
 use PHPUnit\TestFixture\PartialMockTestClass;
 use PHPUnit\TestFixture\SomeClass;
 use PHPUnit\TestFixture\StringableClass;
@@ -1209,6 +1210,19 @@ EOF
         $stub = $this->createStub(ClassWithStaticReturnTypes::class);
 
         $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsStatic());
+    }
+
+    public function testWillReturnCallbackWithVariadicVariables(): void
+    {
+        $mock = $this->createMock(MethodWIthVariadicVariables::class);
+        $mock->expects($this->once())->method('testVariadic')
+            ->withAnyParameters()
+            ->willReturnCallback(static fn ($string, ...$arguments) => [$string, ...$arguments]);
+
+        $testData = ['foo', 'bar', 'biz' => true];
+        $actual   = $mock->testVariadic(...$testData);
+
+        $this->assertSame($testData, $actual);
     }
 
     /**
