@@ -316,7 +316,7 @@ EOT;
             }
 
             if ($parameter->isVariadic()) {
-                $name = '...' . $name;
+                continue;
             }
 
             if ($parameter->isPassedByReference()) {
