@@ -35,16 +35,29 @@ class MockFoo extends ClassWithMethodWithVariadicArguments implements PHPUnit\Fr
 
     public function methodWithVariadicArguments($a, ...$parameters)
     {
-        $__phpunit_arguments = [$a, ...$parameters];
+        $definedVariables = get_defined_vars();
+        $namedVariadicParameters = [];
+        foreach ($definedVariables as $name => $value) {
+            $reflectionParam = new ReflectionParameter([__CLASS__, __FUNCTION__], $name);
+            if ($reflectionParam->isVariadic()) {
+                foreach ($value as $key => $namedValue) {
+                    if (is_string($key)) {
+                        $namedVariadicParameters[$key] = $namedValue;
+                    }
+                }
+            }
+        }
+        $__phpunit_arguments = [$a];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 2) {
+        if ($__phpunit_count > 1) {
             $__phpunit_arguments_tmp = func_get_args();
 
-            for ($__phpunit_i = 2; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+            for ($__phpunit_i = 1; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
                 $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
+        $__phpunit_arguments = array_merge($__phpunit_arguments, $namedVariadicParameters);
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
