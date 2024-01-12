@@ -19,7 +19,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class LogicalNot extends UnaryOperator
+final class LogicalNot extends UnaryOperator
 {
     public static function negate(string $string): string
     {
