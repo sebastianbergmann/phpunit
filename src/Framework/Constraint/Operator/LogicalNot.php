@@ -55,10 +55,10 @@ final class LogicalNot extends UnaryOperator
             preg_match('/(\'[\w\W]*\')([\w\W]*)(\'[\w\W]*\')/i', $string, $matches);
         }
 
-        $positives = array_map(static function (string $s)
-        {
-            return '/\\b' . preg_quote($s, '/') . '/';
-        }, $positives);
+        $positives = array_map(
+            static fn (string $s) => '/\\b' . preg_quote($s, '/') . '/',
+            $positives,
+        );
 
         if (count($matches) > 0) {
             $nonInput = $matches[2];
