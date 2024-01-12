@@ -21,7 +21,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Constraint implements Countable, SelfDescribing
+abstract readonly class Constraint implements Countable, SelfDescribing
 {
     /**
      * Evaluates the constraint for parameter $other.

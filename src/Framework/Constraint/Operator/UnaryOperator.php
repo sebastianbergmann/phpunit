@@ -14,7 +14,7 @@ use function count;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class UnaryOperator extends Operator
+abstract readonly class UnaryOperator extends Operator
 {
     private Constraint $constraint;
 
