@@ -51,6 +51,10 @@ final readonly class LogicalNot extends UnaryOperator
 
         preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
 
+        if (count($matches) === 0) {
+            preg_match('/(\'[\w\W]*\')([\w\W]*)(\'[\w\W]*\')/i', $string, $matches);
+        }
+
         $positives = array_map(
             static fn (string $s) => '/\\b' . preg_quote($s, '/') . '/',
             $positives,
@@ -100,6 +104,8 @@ final readonly class LogicalNot extends UnaryOperator
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
      *
      * @throws ExpectationFailedException
      */
