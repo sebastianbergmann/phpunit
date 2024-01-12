@@ -35,18 +35,19 @@ class MockFoo extends ClassWithMethodWithNullableTypehintedVariadicArguments imp
 
     public function methodWithNullableTypehintedVariadicArguments($a, ?string ...$parameters)
     {
-        $definedVariables = get_defined_vars();
-        $namedVariadicParameters = [];
-        foreach ($definedVariables as $name => $value) {
-            $reflectionParam = new ReflectionParameter([__CLASS__, __FUNCTION__], $name);
-            if ($reflectionParam->isVariadic()) {
-                foreach ($value as $key => $namedValue) {
-                    if (is_string($key)) {
-                        $namedVariadicParameters[$key] = $namedValue;
+        $__phpunit_definedVariables        = get_defined_vars();
+        $__phpunit_namedVariadicParameters = [];
+
+        foreach ($__phpunit_definedVariables as $__phpunit_definedVariableName => $__phpunit_definedVariableValue) {
+            if ((new ReflectionParameter([__CLASS__, __FUNCTION__], $__phpunit_definedVariableName))->isVariadic()) {
+                foreach ($__phpunit_definedVariableValue as $__phpunit_key => $__phpunit_namedValue) {
+                    if (is_string($__phpunit_key)) {
+                        $__phpunit_namedVariadicParameters[$__phpunit_key] = $__phpunit_namedValue;
                     }
                 }
             }
         }
+
         $__phpunit_arguments = [$a];
         $__phpunit_count     = func_num_args();
 
@@ -57,7 +58,8 @@ class MockFoo extends ClassWithMethodWithNullableTypehintedVariadicArguments imp
                 $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
-        $__phpunit_arguments = array_merge($__phpunit_arguments, $namedVariadicParameters);
+
+        $__phpunit_arguments = array_merge($__phpunit_arguments, $__phpunit_namedVariadicParameters);
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
