@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5605](https://github.com/sebastianbergmann/phpunit/pull/5605): `expectUserDeprecationMessage()` and `expectUserDeprecationMessageMatches()` for expecting `E_USER_DEPRECATED` issues
 * [#5620](https://github.com/sebastianbergmann/phpunit/issues/5620): Implement `group` attribute on `<directory>` and `<file>` elements (children of `<testsuite>`) to add all tests found in a directory or file to a specified group
 * [#5629](https://github.com/sebastianbergmann/phpunit/pull/5629): `--exclude-filter` CLI option for excluding tests from execution
+* [#5642](https://github.com/sebastianbergmann/phpunit/pull/5642): `--list-test-files` CLI option to print the list of test files
 
 ### Changed
 
