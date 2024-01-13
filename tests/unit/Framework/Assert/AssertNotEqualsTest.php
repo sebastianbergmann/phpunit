@@ -13,7 +13,7 @@ use Exception;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\LogicalNot;
 
-class AssertNotEqualsTest extends TestCase
+final class AssertNotEqualsTest extends TestCase
 {
     public function testConfusingMessagesForLogicalNot(): void
     {
