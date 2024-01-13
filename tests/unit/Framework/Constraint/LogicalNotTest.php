@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
+
 /**
  * @small
  */
@@ -70,5 +73,20 @@ final class LogicalNotTest extends UnaryOperatorTestCase
     public function testNegate(string $input, string $expected): void
     {
         $this->assertSame($expected, LogicalNot::negate($input));
+    }
+
+    /**
+     * @testdox LogicalNot(IsEqual('test contains something')) is handled correctly
+     *
+     * @ticket https://github.com/sebastianbergmann/phpunit/issues/5516
+     */
+    public function testForNotEqualsWithStringThatContainsContains(): void
+    {
+        $constraint = new LogicalNot(new IsEqual('test contains something'));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("Failed asserting that 'test contains something' is not equal to 'test contains something'.");
+
+        Assert::assertThat('test contains something', $constraint);
     }
 }
