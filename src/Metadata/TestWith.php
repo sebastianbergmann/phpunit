@@ -49,6 +49,14 @@ final readonly class TestWith extends Metadata
     }
 
     /**
+     * @psalm-assert-if-true !null $this->name
+     */
+    public function hasName(): bool
+    {
+        return $this->name !== null;
+    }
+
+    /**
      * @psalm-return ?non-empty-string
      */
     public function name(): ?string

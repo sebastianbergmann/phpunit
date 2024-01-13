@@ -863,6 +863,7 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestWith());
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertFalse($metadata->asArray()[0]->hasName());
         $this->assertNull($metadata->asArray()[0]->name());
     }
 
@@ -874,6 +875,7 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestWith());
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertTrue($metadata->asArray()[0]->hasName());
         $this->assertSame('Name1', $metadata->asArray()[0]->name());
     }
 
@@ -885,6 +887,7 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestWith());
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertFalse($metadata->asArray()[0]->hasName());
         $this->assertNull($metadata->asArray()[0]->name());
     }
 
@@ -896,6 +899,7 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestWith());
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertTrue($metadata->asArray()[0]->hasName());
         $this->assertSame('Name2', $metadata->asArray()[0]->name());
     }
 
