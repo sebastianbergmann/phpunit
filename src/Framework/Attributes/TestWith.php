@@ -20,8 +20,15 @@ use Attribute;
 final readonly class TestWith
 {
     private array $data;
+
+    /**
+     * @psalm-var ?non-empty-string
+     */
     private ?string $name;
 
+    /**
+     * @psalm-param ?non-empty-string $name
+     */
     public function __construct(array $data, ?string $name = null)
     {
         $this->data = $data;
@@ -33,6 +40,9 @@ final readonly class TestWith
         return $this->data;
     }
 
+    /**
+     * @psalm-return ?non-empty-string
+     */
     public function name(): ?string
     {
         return $this->name;

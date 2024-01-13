@@ -404,6 +404,9 @@ abstract readonly class Metadata
         return new TestDox(self::METHOD_LEVEL, $text);
     }
 
+    /**
+     * @psalm-param ?non-empty-string $name
+     */
     public static function testWith(array $data, ?string $name = null): TestWith
     {
         return new TestWith(self::METHOD_LEVEL, $data, $name);

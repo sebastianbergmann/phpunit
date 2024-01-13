@@ -17,10 +17,15 @@ namespace PHPUnit\Metadata;
 final readonly class TestWith extends Metadata
 {
     private array $data;
+
+    /**
+     * @psalm-var ?non-empty-string
+     */
     private ?string $name;
 
     /**
      * @psalm-param 0|1 $level
+     * @psalm-param ?non-empty-string $name
      */
     protected function __construct(int $level, array $data, ?string $name = null)
     {
@@ -43,6 +48,9 @@ final readonly class TestWith extends Metadata
         return $this->data;
     }
 
+    /**
+     * @psalm-return ?non-empty-string
+     */
     public function name(): ?string
     {
         return $this->name;
