@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ### Added
 
+* [#4964](https://github.com/sebastianbergmann/phpunit/pull/4964): Enable named data sets with the `#[TestWith*]` attributes
 * [#5225](https://github.com/sebastianbergmann/phpunit/pull/5225): Allow providing named arguments from a data provider
 * [#5600](https://github.com/sebastianbergmann/phpunit/pull/5600): Assertions for comparing arrays while ignoring a specified list of keys
 * [#5605](https://github.com/sebastianbergmann/phpunit/pull/5605): `expectUserDeprecationMessage()` and `expectUserDeprecationMessageMatches()` for expecting `E_USER_DEPRECATED` issues
