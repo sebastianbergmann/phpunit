@@ -18,7 +18,8 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class FilterTest extends TestCase
 {
-    public function testUnwrapThrowableUsesPreviousValues(): void {
+    public function testUnwrapThrowableUsesPreviousValues(): void
+    {
         $first  = new Exception('first', 123, null);
         $second = new Exception('second', 345, $first);
 
