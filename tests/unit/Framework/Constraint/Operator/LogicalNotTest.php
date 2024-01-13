@@ -9,9 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -126,5 +129,17 @@ final class LogicalNotTest extends TestCase
         );
 
         $this->assertCount(2, $constraint);
+    }
+
+    #[TestDox('LogicalNot(IsEqual(\'test contains something\')) is handled correctly')]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5516')]
+    public function testForNotEqualsWithStringThatContainsContains(): void
+    {
+        $constraint = new LogicalNot(new IsEqual('test contains something'));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("Failed asserting that 'test contains something' is not equal to 'test contains something'.");
+
+        Assert::assertThat('test contains something', $constraint);
     }
 }

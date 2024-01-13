@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5455](https://github.com/sebastianbergmann/phpunit/issues/5455): `willReturnCallback()` does not pass unknown named variadic arguments to callback
 * [#5488](https://github.com/sebastianbergmann/phpunit/issues/5488): Details about tests that are considered risky are not displayed when the TestDox result printer is used
+* [#5516](https://github.com/sebastianbergmann/phpunit/issues/5516): Assertions that use the `LogicalNot` constraint (`assertNotEquals()`, `assertStringNotContainsString()`, ...) can generate confusing failure messages
 * [#5518](https://github.com/sebastianbergmann/phpunit/issues/5518): Details about deprecations, notices, and warnings are not displayed when the TestDox result printer is used
 * [#5633](https://github.com/sebastianbergmann/phpunit/pull/5633): `--log-events-text` and `--log-events-verbose-text` CLI options do not handle absolute and relative paths
 * [#5634](https://github.com/sebastianbergmann/phpunit/pull/5634): Exceptions in the destructor of a test double are ignored
