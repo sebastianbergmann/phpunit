@@ -38,31 +38,6 @@ if (version_compare('8.1.0', PHP_VERSION, '>')) {
     die(1);
 }
 
-$requiredExtensions = ['ctype', 'dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'];
-
-$unavailableExtensions = array_filter(
-    $requiredExtensions,
-    static function ($extension) {
-        return !extension_loaded($extension);
-    }
-);
-
-if ([] !== $unavailableExtensions) {
-    fwrite(
-        STDERR,
-        sprintf(
-            'PHPUnit requires the "%s" extensions, but the "%s" %s not available.' . PHP_EOL,
-            implode('", "', $requiredExtensions),
-            implode('", "', $unavailableExtensions),
-            count($unavailableExtensions) === 1 ? 'extension is' : 'extensions are'
-        )
-    );
-
-    die(1);
-}
-
-unset($requiredExtensions, $unavailableExtensions);
-
 if (!ini_get('date.timezone')) {
     ini_set('date.timezone', 'UTC');
 }
@@ -95,5 +70,35 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
 }
 
 require PHPUNIT_COMPOSER_INSTALL;
+
+$requiredExtensions = ['dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'];
+
+$unavailableExtensions = array_filter(
+    $requiredExtensions,
+    static function ($extension) {
+        return !extension_loaded($extension);
+    }
+);
+
+// Workaround for https://github.com/sebastianbergmann/phpunit/issues/5662
+if (!function_exists('ctype_alnum')) {
+    $unavailableExtensions[] = 'ctype';
+}
+
+if ([] !== $unavailableExtensions) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'PHPUnit requires the "%s" extensions, but the "%s" %s not available.' . PHP_EOL,
+            implode('", "', $requiredExtensions),
+            implode('", "', $unavailableExtensions),
+            count($unavailableExtensions) === 1 ? 'extension is' : 'extensions are'
+        )
+    );
+
+    die(1);
+}
+
+unset($requiredExtensions, $unavailableExtensions);
 
 exit((new PHPUnit\TextUI\Application)->run($_SERVER['argv']));
