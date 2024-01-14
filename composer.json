@@ -23,10 +23,12 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
+        "ext-ctype": "*",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
+        "ext-tokenizer": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
         "myclabs/deep-copy": "^1.10.1",
