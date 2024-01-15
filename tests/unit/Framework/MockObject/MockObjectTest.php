@@ -443,7 +443,7 @@ EOT,
         $this->assertSame($testData, $actual);
     }
 
-    final public function testExpectationsAreClonedWhenTestDoubleIsCloned(): void
+    public function testExpectationsAreClonedWhenTestDoubleIsCloned(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
