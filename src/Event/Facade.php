@@ -262,7 +262,9 @@ final class Facade
     private function garbageCollectorStatusProvider(): Telemetry\GarbageCollectorStatusProvider
     {
         if (!isset(gc_status()['running'])) {
+            // @codeCoverageIgnoreStart
             return new Php81GarbageCollectorStatusProvider;
+            // @codeCoverageIgnoreEnd
         }
 
         return new Php83GarbageCollectorStatusProvider;
