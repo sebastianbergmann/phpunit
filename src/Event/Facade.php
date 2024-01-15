@@ -81,7 +81,11 @@ final class Facade
         $this->deferredDispatcher()->registerTracer($tracer);
     }
 
-    /** @noinspection PhpUnused */
+    /**
+     * @codeCoverageIgnore
+     *
+     * @noinspection PhpUnused
+     */
     public function initForIsolation(HRTime $offset, bool $exportObjects): CollectingDispatcher
     {
         $dispatcher = new CollectingDispatcher;
