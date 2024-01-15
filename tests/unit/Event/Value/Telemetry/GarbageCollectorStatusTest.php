@@ -88,6 +88,34 @@ final class GarbageCollectorStatusTest extends TestCase
         $this->assertFalse($this->withoutDetails()->hasExtendedInformation());
     }
 
+    public function testMayNotHaveApplicationTime(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->applicationTime();
+    }
+
+    public function testMayNotHaveCollectorTime(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->collectorTime();
+    }
+
+    public function testMayNotHaveDestructorTime(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->destructorTime();
+    }
+
+    public function testMayNotHaveFreeTime(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->withoutDetails()->freeTime();
+    }
+
     public function testMayNotHaveRunning(): void
     {
         $this->expectException(RuntimeException::class);
