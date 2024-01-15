@@ -20,6 +20,7 @@ final class DataProviderDependencyResultTest extends TestCase
         return [
             [0, 2],
             [1, 1],
+            ['b' => 2, 'a' => 0],
         ];
     }
 
