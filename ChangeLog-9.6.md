@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 ### Fixed
 
 * [#5516](https://github.com/sebastianbergmann/phpunit/issues/5516): Assertions that use the `LogicalNot` constraint (`assertNotEquals()`, `assertStringNotContainsString()`, ...) can generate confusing failure messages
+* [#5666](https://github.com/sebastianbergmann/phpunit/issues/5666): `--no-extensions` CLI option does not work
 
 ## [9.6.15] - 2023-12-01
 
