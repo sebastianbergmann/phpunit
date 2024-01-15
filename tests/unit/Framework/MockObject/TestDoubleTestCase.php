@@ -254,7 +254,7 @@ abstract class TestDoubleTestCase extends TestCase
         clone $double;
     }
 
-    final public function testInvocationExpectationsCloningWhenTestDoubleObjectIsCloned(): void
+    final public function testExpectationsAreClonedWhenTestDoubleIsCloned(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
