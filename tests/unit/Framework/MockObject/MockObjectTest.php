@@ -432,6 +432,23 @@ EOT,
         $this->assertSame($testData, $actual);
     }
 
+    final public function testExpectationsAreClonedWhenTestDoubleIsCloned(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomething');
+
+        $clone = clone $double;
+
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(1);
+        $clone->expects($this->once())->method('doSomethingElse')->willReturn(2);
+
+        $this->assertFalse($double->doSomething());
+        $this->assertFalse($clone->doSomething());
+        $this->assertSame(1, $double->doSomethingElse(0));
+        $this->assertSame(2, $clone->doSomethingElse(0));
+    }
+
     /**
      * @psalm-param class-string $type
      */
