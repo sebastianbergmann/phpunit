@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
-use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
@@ -16,7 +16,7 @@ if (!defined('STDOUT')) {
 
 {iniSettings}
 ini_set('display_errors', 'stderr');
-set_include_path('{include_path}');
+set_include_path(unserialize('{include_path}'));
 
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
@@ -48,20 +48,31 @@ function __phpunit_run_isolated_test()
         CodeCoverage::instance()->ignoreLines({linesToBeIgnored});
     }
 
-    $test = new {className}('{name}');
-
-    $test->setData('{dataName}', unserialize('{data}'));
-    $test->setDependencyInput(unserialize('{dependencyInput}'));
-    $test->setInIsolation(true);
-
-    ob_end_clean();
-
-    $test->run();
-
     $output = '';
 
-    if (!$test->expectsOutput()) {
-        $output = $test->output();
+    $tests = unserialize('{testData}');
+    foreach ($tests as &$test) {
+        $className = $test['className'];
+        $methodName = $test['methodName'];
+        $dataName = unserialize($test['dataName']);
+        $data = unserialize($test['data']);
+        $dependencyInput = unserialize($test['dependencyInput']);
+
+        $test = new $className($methodName);
+
+        assert($test instanceof TestCase);
+
+        $test->setData($dataName, $data);
+        $test->setDependencyInput($dependencyInput);
+        $test->setInIsolation(true);
+
+        @ob_end_clean();
+
+        $test->run();
+
+        if (!$test->expectsOutput()) {
+            $output .= $test->output();
+        }
     }
 
     ini_set('xdebug.scream', '0');
@@ -79,9 +90,10 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    file_put_contents(
-        '{processResultFile}',
-        serialize(
+    $fileContents = '';
+
+    foreach ($tests as $test) {
+        $fileContents .= serialize(
             [
                 'testResult'    => $test->result(),
                 'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
@@ -90,7 +102,12 @@ function __phpunit_run_isolated_test()
                 'events'        => $dispatcher->flush(),
                 'passedTests'   => PassedTests::instance()
             ]
-        )
+        );
+    }
+
+    file_put_contents(
+        '{processResultFile}',
+        $fileContents,
     );
 }
 

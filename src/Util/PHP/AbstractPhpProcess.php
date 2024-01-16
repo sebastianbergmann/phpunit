@@ -32,6 +32,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use SebastianBergmann\Environment\Runtime;
@@ -147,8 +148,10 @@ abstract class AbstractPhpProcess
             @unlink($processResultFile);
         }
 
+        $tests = $test instanceof TestSuite ? $test->tests() : [$test];
+
         $this->processChildResult(
-            $test,
+            $tests,
             $processResult,
             $_result['stderr'],
         );
@@ -224,22 +227,26 @@ abstract class AbstractPhpProcess
     }
 
     /**
+     * @psalm-param array<Test> $tests
+     *
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      */
-    private function processChildResult(Test $test, string $stdout, string $stderr): void
+    private function processChildResult(array $tests, string $stdout, string $stderr): void
     {
         if (!empty($stderr)) {
             $exception = new Exception(trim($stderr));
 
-            assert($test instanceof TestCase);
+            foreach ($tests as $test) {
+                assert($test instanceof TestCase);
 
-            Facade::emitter()->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
+                Facade::emitter()->testErrored(
+                    TestMethodBuilder::fromTestCase($test),
+                    ThrowableBuilder::from($exception),
+                );
+            }
 
             return;
         }
@@ -262,17 +269,19 @@ abstract class AbstractPhpProcess
             if ($childResult === false) {
                 $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
 
-                assert($test instanceof TestCase);
+                foreach ($tests as $test) {
+                    assert($test instanceof TestCase);
 
-                Facade::emitter()->testErrored(
-                    TestMethodBuilder::fromTestCase($test),
-                    ThrowableBuilder::from($exception),
-                );
+                    Facade::emitter()->testErrored(
+                        TestMethodBuilder::fromTestCase($test),
+                        ThrowableBuilder::from($exception),
+                    );
 
-                Facade::emitter()->testFinished(
-                    TestMethodBuilder::fromTestCase($test),
-                    0,
-                );
+                    Facade::emitter()->testFinished(
+                        TestMethodBuilder::fromTestCase($test),
+                        0,
+                    );
+                }
             }
         } catch (ErrorException $e) {
             restore_error_handler();
@@ -281,12 +290,14 @@ abstract class AbstractPhpProcess
 
             $exception = new Exception(trim($stdout), 0, $e);
 
-            assert($test instanceof TestCase);
+            foreach ($tests as $test) {
+                assert($test instanceof TestCase);
 
-            Facade::emitter()->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
+                Facade::emitter()->testErrored(
+                    TestMethodBuilder::fromTestCase($test),
+                    ThrowableBuilder::from($exception),
+                );
+            }
         }
 
         if ($childResult !== false) {
@@ -297,10 +308,12 @@ abstract class AbstractPhpProcess
             Facade::instance()->forward($childResult['events']);
             PassedTests::instance()->import($childResult['passedTests']);
 
-            assert($test instanceof TestCase);
+            foreach ($tests as $test) {
+                assert($test instanceof TestCase);
 
-            $test->setResult($childResult['testResult']);
-            $test->addToAssertionCount($childResult['numAssertions']);
+                $test->setResult($childResult['testResult']);
+                $test->addToAssertionCount($childResult['numAssertions']);
+            }
 
             if (CodeCoverage::instance()->isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
                 CodeCoverage::instance()->codeCoverage()->merge(
