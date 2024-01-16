@@ -16,7 +16,7 @@ if (!defined('STDOUT')) {
 
 {iniSettings}
 ini_set('display_errors', 'stderr');
-set_include_path('{include_path}');
+set_include_path(unserialize('{include_path}'));
 
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
@@ -50,7 +50,7 @@ function __phpunit_run_isolated_test()
 
     $test = new {className}('{methodName}');
 
-    $test->setData('{dataName}', unserialize('{data}'));
+    $test->setData(unserialize('{dataName}'), unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(true);
 

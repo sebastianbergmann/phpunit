@@ -29,21 +29,25 @@ use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
+use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionMethod;
+use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
 
@@ -68,9 +72,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * @psalm-var list<Test>
      */
-    private array $tests             = [];
-    private ?array $providedTests    = null;
-    private ?Factory $iteratorFilter = null;
+    private array $tests                     = [];
+    private ?array $providedTests            = null;
+    private ?Factory $iteratorFilter         = null;
+    private ?bool $runClassInSeparateProcess = null;
 
     /**
      * @psalm-param non-empty-string $name
@@ -132,6 +137,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $class->getName(),
                 ),
             );
+        }
+
+        if ($testSuite->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($class->getName())) {
+            $testSuite->setRunClassInSeparateProcess(true);
         }
 
         return $testSuite;
@@ -309,11 +318,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws CodeCoverageException
      * @throws Event\RuntimeException
      * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
+     * @throws ProcessIsolationException
+     * @throws RunnerException
+     * @throws StaticAnalysisCacheNotConfiguredException
      * @throws UnintentionallyCoveredCodeException
+     * @throws UtilException
      */
     public function run(): void
     {
@@ -330,14 +345,22 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        foreach ($this as $test) {
-            if (TestResultFacade::shouldStop()) {
-                $emitter->testRunnerExecutionAborted();
+        if ($this->shouldRunInSeparateProcess()) {
+            (new TestRunner)->runInSeparateProcess($this, false);
+        } else {
+            foreach ($this as $test) {
+                if (TestResultFacade::shouldStop()) {
+                    $emitter->testRunnerExecutionAborted();
 
-                break;
+                    break;
+                }
+
+                if ($test instanceof self && $test->shouldRunInSeparateProcess()) {
+                    (new TestRunner)->runInSeparateProcess($test, false);
+                } else {
+                    $test->run();
+                }
             }
-
-            $test->run();
         }
 
         $this->invokeMethodsAfterLastTest($emitter);
@@ -462,9 +485,18 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return class_exists($this->name, false) && is_subclass_of($this->name, TestCase::class);
     }
 
+    public function shouldRunInSeparateProcess(): bool
+    {
+        if ($this->runClassInSeparateProcess) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @throws \PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException
      * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
@@ -678,5 +710,20 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 ...$methodsCalledAfterLastTest,
             );
         }
+    }
+
+    private function setRunClassInSeparateProcess(bool $runClassInSeparateProcess): void
+    {
+        if ($this->runClassInSeparateProcess === null) {
+            $this->runClassInSeparateProcess = $runClassInSeparateProcess;
+        }
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
+    {
+        return MetadataRegistry::parser()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
     }
 }
