@@ -1,5 +1,10 @@
 --TEST--
 phpunit --filter testOne#0 --list-tests-xml php://stdout ../../_files/list-tests
+--SKIPIF--
+<?php declare(strict_types=1);
+if (version_compare('8.3.0', PHP_VERSION, '>')) {
+    print 'skip: PHP < 8.3 required';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
