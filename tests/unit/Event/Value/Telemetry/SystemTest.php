@@ -24,7 +24,7 @@ final class SystemTest extends TestCase
 
         $clock = new class($time) implements StopWatch
         {
-            private readonly \PHPUnit\Event\Telemetry\HRTime $time;
+            private readonly HRTime $time;
 
             public function __construct(HRTime $time)
             {
