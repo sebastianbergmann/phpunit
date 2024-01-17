@@ -2240,9 +2240,9 @@ abstract class Assert
      *
      * @param DOMDocument|string $actualXml
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws Xml\Exception
      */
     public static function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
     {
@@ -2264,9 +2264,9 @@ abstract class Assert
      *
      * @param DOMDocument|string $actualXml
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws Xml\Exception
      */
     public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
     {
@@ -2289,9 +2289,9 @@ abstract class Assert
      * @param DOMDocument|string $expectedXml
      * @param DOMDocument|string $actualXml
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws Xml\Exception
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {
@@ -2320,9 +2320,9 @@ abstract class Assert
      * @param DOMDocument|string $expectedXml
      * @param DOMDocument|string $actualXml
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws Xml\Exception
      */
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {

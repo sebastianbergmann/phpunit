@@ -162,7 +162,7 @@ final class ConstraintTest extends ConstraintTestCase
         $this->assertFalse($constraint->exposedMatches('whatever'));
         $this->assertFalse($constraint->exposedMatches(null));
         $this->assertFalse($constraint->exposedMatches(true));
-        $this->assertFalse($constraint->exposedMatches(new StdClass));
+        $this->assertFalse($constraint->exposedMatches(new stdClass));
     }
 
     public function testFailThrowsExpectationFailureExceptionWithDefaultMessage(): void
