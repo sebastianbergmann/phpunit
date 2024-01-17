@@ -19,6 +19,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5213](https://github.com/sebastianbergmann/phpunit/issues/5213): Make `TestCase` methods `protected` that should have been `protected` all along
 * [#5254](https://github.com/sebastianbergmann/phpunit/issues/5254): Make `TestCase` methods `final` that should have been `final` all along
 * [#5619](https://github.com/sebastianbergmann/phpunit/pull/5619): Check and restore error/exception global handlers
+* `small`, `medium`, and `large` can no longer be used as group names with the `#[Group]` attribute
 
 ### Deprecated
 

@@ -12,7 +12,11 @@ namespace PHPUnit\Metadata\Parser;
 use const JSON_THROW_ON_ERROR;
 use function assert;
 use function json_decode;
+use function sprintf;
 use function str_starts_with;
+use function strtolower;
+use function trim;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BackupGlobals;
@@ -148,7 +152,9 @@ final readonly class AttributeParser implements Parser
                 case Group::class:
                     assert($attributeInstance instanceof Group);
 
-                    $result[] = Metadata::groupOnClass($attributeInstance->name());
+                    if (!$this->isSizeGroup($attributeInstance->name(), $className)) {
+                        $result[] = Metadata::groupOnClass($attributeInstance->name());
+                    }
 
                     break;
 
@@ -470,7 +476,9 @@ final readonly class AttributeParser implements Parser
                 case Group::class:
                     assert($attributeInstance instanceof Group);
 
-                    $result[] = Metadata::groupOnMethod($attributeInstance->name());
+                    if (!$this->isSizeGroup($attributeInstance->name(), $className, $methodName)) {
+                        $result[] = Metadata::groupOnMethod($attributeInstance->name());
+                    }
 
                     break;
 
@@ -647,5 +655,32 @@ final readonly class AttributeParser implements Parser
         return $this->forClass($className)->mergeWith(
             $this->forMethod($className, $methodName),
         );
+    }
+
+    /**
+     * @param non-empty-string  $groupName
+     * @param class-string      $testClassName
+     * @param ?non-empty-string $testMethodName
+     */
+    private function isSizeGroup(string $groupName, string $testClassName, ?string $testMethodName = null): bool
+    {
+        $_groupName = strtolower(trim($groupName));
+
+        if ($_groupName !== 'small' && $_groupName !== 'medium' && $_groupName !== 'large') {
+            return false;
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredWarning(
+            sprintf(
+                'Group name "%s" is not allowed for %s %s%s%s',
+                $_groupName,
+                $testMethodName !== null ? 'method' : 'class',
+                $testClassName,
+                $testMethodName !== null ? '::' : '',
+                $testMethodName !== null ? $testMethodName : '',
+            ),
+        );
+
+        return true;
     }
 }
