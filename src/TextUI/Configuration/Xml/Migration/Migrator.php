@@ -31,7 +31,7 @@ final class Migrator
         if (!$origin->detected()) {
             throw new Exception(
                 sprintf(
-                    '"%s" is not a valid PHPUnit XML configuration file that can be migrated',
+                    '%s does not validate against any know schema',
                     $filename,
                 ),
             );
