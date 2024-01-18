@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation source="https://phpunit.de/documentation.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 9.5 may be structured.
+            This Schema file defines the rules by which the XML configuration file of PHPUnit 10.1 may be structured.
         </xs:documentation>
         <xs:appinfo source="https://phpunit.de/documentation.html"/>
     </xs:annotation>
@@ -11,18 +11,41 @@
             <xs:documentation>Root Element</xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:complexType name="coverageType">
+    <xs:complexType name="sourceType">
         <xs:all>
             <xs:element name="include" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
-                    <xs:group ref="pathGroup"/>
+                    <xs:group ref="sourcePathGroup"/>
                 </xs:complexType>
             </xs:element>
             <xs:element name="exclude" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
-                    <xs:group ref="pathGroup"/>
+                    <xs:group ref="sourcePathGroup"/>
                 </xs:complexType>
             </xs:element>
+        </xs:all>
+        <xs:attribute name="restrictDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="restrictNotices" type="xs:boolean" default="false"/>
+        <xs:attribute name="restrictWarnings" type="xs:boolean" default="false"/>
+    </xs:complexType>
+    <xs:group name="sourcePathGroup">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="directory" type="sourceDirectoryType"/>
+                <xs:element name="file" type="xs:anyURI"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="sourceDirectoryType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="prefix" default=""/>
+                <xs:attribute type="xs:string" name="suffix" default=".php"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="coverageType">
+        <xs:all>
             <xs:element name="report" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                     <xs:group ref="coverageReportGroup"/>
@@ -32,7 +55,6 @@
         <xs:attribute name="cacheDirectory" type="xs:anyURI"/>
         <xs:attribute name="pathCoverage" type="xs:boolean" default="false"/>
         <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
-        <xs:attribute name="processUncoveredFiles" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreDeprecatedCodeUnits" type="xs:boolean" default="false"/>
         <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
     </xs:complexType>
@@ -57,62 +79,19 @@
     </xs:complexType>
     <xs:complexType name="extensionsType">
         <xs:sequence>
-            <xs:element name="extension" type="objectType" maxOccurs="unbounded"/>
+            <xs:element name="bootstrap" type="bootstrapType" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="listenersType">
+    <xs:complexType name="bootstrapType">
         <xs:sequence>
-            <xs:element name="listener" type="objectType" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="objectType">
-        <xs:sequence>
-            <xs:element name="arguments" minOccurs="0">
-                <xs:complexType>
-                    <xs:group ref="argumentsGroup"/>
-                </xs:complexType>
-            </xs:element>
+            <xs:element name="parameter" type="parameterType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="class" type="xs:string" use="required"/>
-        <xs:attribute name="file" type="xs:anyURI"/>
     </xs:complexType>
-    <xs:complexType name="arrayType">
-        <xs:sequence>
-            <xs:element name="element" type="argumentType" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
+    <xs:complexType name="parameterType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required"/>
     </xs:complexType>
-    <xs:complexType name="argumentType">
-        <xs:group ref="argumentChoice"/>
-        <xs:attribute name="key" use="required"/>
-    </xs:complexType>
-    <xs:group name="argumentsGroup">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="array" type="arrayType" />
-                <xs:element name="integer" type="xs:integer" />
-                <xs:element name="string" type="xs:string" />
-                <xs:element name="double" type="xs:double" />
-                <xs:element name="null" />
-                <xs:element name="object" type="objectType" />
-                <xs:element name="file" type="xs:anyURI" />
-                <xs:element name="directory" type="xs:anyURI" />
-                <xs:element name="boolean" type="xs:boolean" />
-            </xs:choice>
-        </xs:sequence>
-    </xs:group>
-    <xs:group name="argumentChoice">
-        <xs:choice>
-            <xs:element name="array" type="arrayType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="integer" type="xs:integer" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="string" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="double" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="null" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="object" type="objectType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="file" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="directory" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="boolean" type="xs:boolean" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:choice>
-    </xs:group>
     <xs:simpleType name="columnsType">
         <xs:union>
             <xs:simpleType>
@@ -125,23 +104,6 @@
             </xs:simpleType>
         </xs:union>
     </xs:simpleType>
-    <xs:group name="pathGroup">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="directory" type="directoryFilterType"/>
-                <xs:element name="file" type="fileFilterType"/>
-            </xs:choice>
-        </xs:sequence>
-    </xs:group>
-    <xs:complexType name="directoryFilterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="prefix" default=""/>
-                <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
-                <xs:attributeGroup ref="phpVersionGroup"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
     <xs:simpleType name="executionOrderType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="default"/>
@@ -164,17 +126,6 @@
             <xs:enumeration value="size"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="fileFilterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:anyURI">
-                <xs:attributeGroup ref="phpVersionGroup"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:attributeGroup name="phpVersionGroup">
-        <xs:attribute name="phpVersion" type="xs:string" default="5.3.0"/>
-        <xs:attribute name="phpVersionOperator" type="xs:string" default="&gt;="/>
-    </xs:attributeGroup>
     <xs:complexType name="phpType">
         <xs:sequence>
             <xs:choice maxOccurs="unbounded">
@@ -207,47 +158,42 @@
     </xs:complexType>
     <xs:attributeGroup name="configAttributeGroup">
         <xs:attribute name="backupGlobals" type="xs:boolean" default="false"/>
-        <xs:attribute name="backupStaticAttributes" type="xs:boolean" default="false"/>
+        <xs:attribute name="backupStaticProperties" type="xs:boolean" default="false"/>
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
+        <xs:attribute name="cacheDirectory" type="xs:anyURI"/>
         <xs:attribute name="cacheResult" type="xs:boolean" default="true"/>
         <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
-        <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="false"/>
-        <xs:attribute name="convertErrorsToExceptions" type="xs:boolean" default="true"/>
-        <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
-        <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
-        <xs:attribute name="forceCoversAnnotation" type="xs:boolean" default="false"/>
-        <xs:attribute name="printerClass" type="xs:string" default="PHPUnit\TextUI\DefaultResultPrinter"/>
-        <xs:attribute name="printerFile" type="xs:anyURI"/>
+        <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnDefect" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnWarning" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
-        <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnNotice" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnRisky" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnSkipped" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnWarning" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnDefect" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnNotice" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnWarning" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutChangesToGlobalState" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
-        <xs:attribute name="beStrictAboutResourceUsageDuringSmallTests" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="true"/>
         <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
-        <xs:attribute name="beStrictAboutCoversAnnotation" type="xs:boolean" default="false"/>
+        <xs:attribute name="beStrictAboutCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="defaultTimeLimit" type="xs:integer" default="0"/>
         <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
         <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
         <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
         <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
-        <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit\Runner\StandardTestSuiteLoader"/>
-        <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
         <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
-        <xs:attribute name="verbose" type="xs:boolean" default="false"/>
         <xs:attribute name="testdox" type="xs:boolean" default="false"/>
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
@@ -255,17 +201,21 @@
         <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
-        <xs:attribute name="noInteraction" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnIncompleteTests" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnSkippedTests" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnTestsThatTriggerDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
     </xs:attributeGroup>
     <xs:group name="configGroup">
         <xs:all>
             <xs:element ref="testSuiteFacet" minOccurs="0"/>
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
-            <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
+            <xs:element name="source" type="sourceType" minOccurs="0"/>
             <xs:element name="coverage" type="coverageType" minOccurs="0"/>
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
-            <xs:element name="listeners" type="listenersType" minOccurs="0"/>
             <xs:element name="php" type="phpType" minOccurs="0"/>
         </xs:all>
     </xs:group>
@@ -280,12 +230,40 @@
     <xs:complexType name="testSuiteType">
         <xs:sequence>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:group ref="pathGroup"/>
+                <xs:group ref="testSuitePathGroup"/>
                 <xs:element name="exclude" type="xs:string"/>
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
+    <xs:group name="testSuitePathGroup">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="directory" type="testSuiteDirectoryType"/>
+                <xs:element name="file" type="testSuiteFileType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="testSuiteDirectoryType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="prefix" default=""/>
+                <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
+                <xs:attributeGroup ref="phpVersionGroup"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="testSuiteFileType">
+        <xs:simpleContent>
+            <xs:extension base="xs:anyURI">
+                <xs:attributeGroup ref="phpVersionGroup"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:attributeGroup name="phpVersionGroup">
+        <xs:attribute name="phpVersion" type="xs:string" default="5.3.0"/>
+        <xs:attribute name="phpVersionOperator" type="xs:string" default="&gt;="/>
+    </xs:attributeGroup>
     <xs:group name="coverageReportGroup">
         <xs:all>
             <xs:element name="clover" type="logToFileType" minOccurs="0"/>
@@ -303,8 +281,6 @@
             <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxText" type="logToFileType" minOccurs="0" />
-            <xs:element name="testdoxXml" type="logToFileType" minOccurs="0" />
-            <xs:element name="text" type="logToFileType" minOccurs="0"/>
         </xs:all>
     </xs:group>
     <xs:complexType name="logToFileType">
@@ -321,6 +297,12 @@
         <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
         <xs:attribute name="lowUpperBound" type="xs:integer" default="50"/>
         <xs:attribute name="highLowerBound" type="xs:integer" default="90"/>
+        <xs:attribute name="colorSuccessLow" type="xs:string" default="#dff0d8"/>
+        <xs:attribute name="colorSuccessMedium" type="xs:string" default="#c3e3b5"/>
+        <xs:attribute name="colorSuccessHigh" type="xs:string" default="#99cb84"/>
+        <xs:attribute name="colorWarning" type="xs:string" default="#fcf8e3"/>
+        <xs:attribute name="colorDanger" type="xs:string" default="#f2dede"/>
+        <xs:attribute name="customCssFile" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="coverageReportTextType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
