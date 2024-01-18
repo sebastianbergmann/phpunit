@@ -22,11 +22,18 @@ final class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
     private $version;
 
     /**
-     * @psalm-param non-empty-string $version
+     * @psalm-var list<non-empty-string>
      */
-    public function __construct(string $version)
+    private $tried;
+
+    /**
+     * @psalm-param non-empty-string $version
+     * @psalm-param list<non-empty-string> $tried
+     */
+    public function __construct(string $version, array $tried)
     {
         $this->version = $version;
+        $this->tried   = $tried;
     }
 
     /**
@@ -43,5 +50,13 @@ final class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
     public function version(): string
     {
         return $this->version;
+    }
+
+    /**
+     * @psalm-return list<non-empty-string>
+     */
+    public function tried(): array
+    {
+        return $this->tried;
     }
 }
