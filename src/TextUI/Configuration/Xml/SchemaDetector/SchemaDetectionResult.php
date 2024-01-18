@@ -18,6 +18,9 @@ use PHPUnit\Util\Xml\XmlException;
  */
 abstract class SchemaDetectionResult
 {
+    /**
+     * @psalm-assert-if-true SuccessfulSchemaDetectionResult $this
+     */
     public function detected(): bool
     {
         return false;
