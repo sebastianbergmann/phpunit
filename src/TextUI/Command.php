@@ -840,7 +840,16 @@ class Command
     {
         $this->printVersionString();
 
-        if (!(new SchemaDetector)->detect($filename)->detected()) {
+        $result = (new SchemaDetector)->detect($filename);
+
+        if (!$result->detected()) {
+            print $filename . ' does not validate against any know schema.' . PHP_EOL;
+
+            exit(TestRunner::EXCEPTION_EXIT);
+        }
+
+        /** @psalm-suppress MissingThrowsDocblock */
+        if ($result->version() === Version::series()) {
             print $filename . ' does not need to be migrated.' . PHP_EOL;
 
             exit(TestRunner::EXCEPTION_EXIT);
