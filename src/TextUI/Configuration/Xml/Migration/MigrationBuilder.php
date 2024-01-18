@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function array_key_exists;
-use function sprintf;
 use function version_compare;
 
 /**

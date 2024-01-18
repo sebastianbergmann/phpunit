@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function sprintf;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
@@ -30,21 +29,11 @@ final readonly class Migrator
         $origin = (new SchemaDetector)->detect($filename);
 
         if (!$origin->detected()) {
-            throw new Exception(
-                sprintf(
-                    '%s does not validate against any know schema',
-                    $filename,
-                ),
-            );
+            throw new Exception('The file does not validate against any know schema');
         }
 
         if ($origin->version() === Version::series()) {
-            throw new Exception(
-                sprintf(
-                    '%s does not need to be migrated',
-                    $filename,
-                ),
-            );
+            throw new Exception('The file does not need to be migrated');
         }
 
         $configurationDocument = (new XmlLoader)->loadFile($filename);

@@ -14,8 +14,8 @@ require_once __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Created backup:   %sphpunit.xml.bak
-Migration failed: %s does not validate against any know schema
+Migration of %s failed:
+The file does not validate against any know schema
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(sys_get_temp_dir() . '/phpunit.xml');
