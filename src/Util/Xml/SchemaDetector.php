@@ -28,16 +28,12 @@ final class SchemaDetector
 
         $schemaFinder = new SchemaFinder;
 
-        $tried = [];
-
         foreach ($schemaFinder->available() as $candidate) {
             $schema = (new SchemaFinder)->find($candidate);
 
             if (!(new Validator)->validate($document, $schema)->hasValidationErrors()) {
-                return new SuccessfulSchemaDetectionResult($candidate, $tried);
+                return new SuccessfulSchemaDetectionResult($candidate);
             }
-
-            $tried[] = $candidate;
         }
 
         return new FailedSchemaDetectionResult;
