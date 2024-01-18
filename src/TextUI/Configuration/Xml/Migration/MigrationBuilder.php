@@ -74,15 +74,6 @@ final readonly class MigrationBuilder
      */
     public function build(string $fromVersion): array
     {
-        if (!array_key_exists($fromVersion, self::AVAILABLE_MIGRATIONS)) {
-            throw new MigrationBuilderException(
-                sprintf(
-                    'Migration from schema version %s is not supported',
-                    $fromVersion,
-                ),
-            );
-        }
-
         $stack = [new UpdateSchemaLocation];
 
         foreach (self::AVAILABLE_MIGRATIONS as $version => $migrations) {
