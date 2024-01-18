@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.18.0@b113f3ed0259fd6e212d87c3df80eec95a6abf19">
+<files psalm-version="5.19.1@b9583493b08eb36259c0f6b746a787c4c9b3ac45">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code>notify</code>
@@ -1121,6 +1121,14 @@
     <DeprecatedMethod>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/SchemaFinder.php">
+    <LessSpecificReturnStatement>
+      <code>$result</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code><![CDATA[non-empty-list<non-empty-string>]]></code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset>

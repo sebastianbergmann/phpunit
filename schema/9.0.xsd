@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation source="https://phpunit.de/documentation.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 8.5 may be structured.
+            This Schema file defines the rules by which the XML configuration file of PHPUnit 9.0 may be structured.
         </xs:documentation>
         <xs:appinfo source="https://phpunit.de/documentation.html"/>
     </xs:annotation>
@@ -137,9 +137,7 @@
                     <xs:enumeration value="coverage-crap4j"/>
                     <xs:enumeration value="coverage-xml"/>
                     <xs:enumeration value="coverage-php"/>
-                    <xs:enumeration value="json"/>
                     <xs:enumeration value="plain"/>
-                    <xs:enumeration value="tap"/>
                     <xs:enumeration value="teamcity"/>
                     <xs:enumeration value="junit"/>
                     <xs:enumeration value="testdox-html"/>
@@ -149,8 +147,8 @@
             </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="target" type="xs:anyURI"/>
-        <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="50"/>
-        <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="90"/>
+        <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="35"/>
+        <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="70"/>
         <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
         <xs:attribute name="showOnlySummary" type="xs:boolean" default="false"/>
         <xs:attribute name="threshold" type="xs:nonNegativeInteger" default="30"/>
@@ -165,7 +163,7 @@
     </xs:group>
     <xs:complexType name="directoryFilterType">
         <xs:simpleContent>
-            <xs:extension base="xs:string">
+            <xs:extension base="xs:anyURI">
                 <xs:attribute type="xs:string" name="prefix" default=""/>
                 <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
                 <xs:attributeGroup ref="phpVersionGroup"/>
@@ -244,7 +242,7 @@
         <xs:attribute name="cacheTokens" type="xs:boolean" default="false"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
-        <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="false"/>
+        <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertErrorsToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
@@ -282,7 +280,7 @@
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
         <xs:attribute name="registerMockObjectsFromTestArgumentsRecursively" type="xs:boolean" default="false"/>
-        <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
+        <xs:attribute name="extensionsDirectory" type="xs:string"/>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
         <xs:attribute name="noInteraction" type="xs:boolean" default="false"/>
@@ -309,10 +307,8 @@
     </xs:complexType>
     <xs:complexType name="testSuiteType">
         <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:group ref="pathGroup"/>
-                <xs:element name="exclude" type="xs:string"/>
-            </xs:choice>
+            <xs:group ref="pathGroup"/>
+            <xs:element name="exclude" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
