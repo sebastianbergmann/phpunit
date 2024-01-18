@@ -843,7 +843,7 @@ class Command
         $result = (new SchemaDetector)->detect($filename);
 
         if (!$result->detected()) {
-            print $filename . ' does not validate against any know schema.' . PHP_EOL;
+            print $filename . ' does not validate against any known schema.' . PHP_EOL;
 
             exit(TestRunner::EXCEPTION_EXIT);
         }

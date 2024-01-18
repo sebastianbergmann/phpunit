@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-%sphpunit.xml does not validate against any know schema.
+%sphpunit.xml does not validate against any known schema.
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(sys_get_temp_dir() . '/phpunit.xml');
