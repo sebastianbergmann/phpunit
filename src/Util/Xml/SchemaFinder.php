@@ -9,9 +9,12 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function assert;
 use function defined;
 use function is_file;
+use function rsort;
 use function sprintf;
+use DirectoryIterator;
 use PHPUnit\Runner\Version;
 
 /**
@@ -19,6 +22,30 @@ use PHPUnit\Runner\Version;
  */
 final class SchemaFinder
 {
+    /**
+     * @psalm-return non-empty-list<non-empty-string>
+     */
+    public function available(): array
+    {
+        $result = [Version::series()];
+
+        foreach ((new DirectoryIterator($this->path() . 'schema')) as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+
+            $version = $file->getBasename('.xsd');
+
+            assert(!empty($version));
+
+            $result[] = $version;
+        }
+
+        rsort($result);
+
+        return $result;
+    }
+
     /**
      * @throws Exception
      */

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function count;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
@@ -19,12 +20,20 @@ use PHPUnit\Runner\Version;
  */
 final class SchemaFinderTest extends TestCase
 {
-    public function testFindsExistingSchemaForComposerInstallation(): void
+    public function testListsAvailableSchemas(): void
+    {
+        $schemas = (new SchemaFinder)->available();
+
+        $this->assertSame((new Version)->series(), $schemas[0]);
+        $this->assertSame('8.5', $schemas[count($schemas) - 1]);
+    }
+
+    public function testFindsExistingSchema(): void
     {
         $this->assertFileExists((new SchemaFinder)->find((new Version)->series()));
     }
 
-    public function testDoesNotFindNonExistentSchemaForComposerInstallation(): void
+    public function testDoesNotFindNonExistentSchema(): void
     {
         $this->expectException(Exception::class);
 
