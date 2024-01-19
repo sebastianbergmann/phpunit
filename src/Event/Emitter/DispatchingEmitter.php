@@ -317,6 +317,19 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testRequirementsChecked(Code\Test $test): void {
+        $this->dispatcher->dispatch(
+            new Test\RequirementsChecked(
+                $this->telemetryInfo(),
+                $test,
+            ),
+        );
+    }
+
+    /**
      * @psalm-param class-string $testClassName
      *
      * @throws InvalidArgumentException

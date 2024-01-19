@@ -455,6 +455,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         try {
             $this->checkRequirements();
+
+            $emitter->testRequirementsChecked(
+                $this->valueObjectForEvents(),
+            );
+
             $hasMetRequirements = true;
 
             if ($this->inIsolation) {

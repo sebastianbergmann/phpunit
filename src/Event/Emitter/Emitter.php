@@ -62,6 +62,8 @@ interface Emitter
 
     public function testPreparationFailed(Code\Test $test): void;
 
+    public function testRequirementsChecked(Code\Test $test): void;
+
     /**
      * @psalm-param class-string $testClassName
      */

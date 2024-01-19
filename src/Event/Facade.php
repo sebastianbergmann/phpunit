@@ -210,6 +210,7 @@ final class Facade
             Test\PrintedUnexpectedOutput::class,
             Test\Skipped::class,
             Test\WarningTriggered::class,
+            Test\RequirementsChecked::class,
 
             Test\MockObjectCreated::class,
             Test\MockObjectForAbstractClassCreated::class,
