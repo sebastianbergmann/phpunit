@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
 use function count;
+use function defined;
 use function explode;
 use function max;
 use function preg_replace_callback;
@@ -149,7 +150,7 @@ final class Help
      */
     private function elements(): array
     {
-        return [
+        $elements = [
             'Usage' => [
                 ['text' => 'phpunit [options] UnitTest [UnitTest.php]'],
                 ['text' => 'phpunit [options] <directory>'],
@@ -250,13 +251,23 @@ final class Help
                 ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
                 ['arg' => '--cache-result-file=<file>', 'desc' => 'Specify result cache path and filename'],
             ],
-
-            'Miscellaneous Options' => [
-                ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
-                ['arg' => '--version', 'desc' => 'Prints the version and exits'],
-                ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than min and exits'],
-                ['arg' => '--check-version', 'desc' => 'Check whether PHPUnit is the latest version'],
-            ],
         ];
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $elements['PHAR Options'] = [
+                ['arg' => '--manifest', 'desc' => 'Print Software Bill of Materials (SBOM) in plain-text format'],
+                ['arg' => '--sbom', 'desc' => 'Print Software Bill of Materials (SBOM) in CycloneDX XML format'],
+                ['arg' => '--composer-lock', 'desc' => 'Print composer.lock file used to build the PHAR'],
+            ];
+        }
+
+        $elements['Miscellaneous Options'] = [
+            ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
+            ['arg' => '--version', 'desc' => 'Prints the version and exits'],
+            ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than min and exits'],
+            ['arg' => '--check-version', 'desc' => 'Check whether PHPUnit is the latest version'],
+        ];
+
+        return $elements;
     }
 }
