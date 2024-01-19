@@ -28,24 +28,28 @@ Test Suite Sorted
 Test Runner Execution Started (4 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 4 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 message
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
+Test Requirements Checked (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 message
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+Test Requirements Checked (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 message
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+Test Requirements Checked (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 message

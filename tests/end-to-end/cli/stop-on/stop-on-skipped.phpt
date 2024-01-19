@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 Test Skipped (PHPUnit\TestFixture\TestRunnerStopping\SkippedTest::testOne)
 message

@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\FailureTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\FailureTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\FailureTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\FailureTest::testOne)
 Test Failed (PHPUnit\TestFixture\TestRunnerStopping\FailureTest::testOne)
 Failed asserting that false is true.

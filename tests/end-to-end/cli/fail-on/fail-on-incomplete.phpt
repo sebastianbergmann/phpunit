@@ -29,11 +29,13 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 Test Marked Incomplete (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 message
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\IncompleteTest::testTwo)

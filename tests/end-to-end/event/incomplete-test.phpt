@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\IncompleteTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
+Test Requirements Checked (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
 Test Prepared (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
 Test Marked Incomplete (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
 message

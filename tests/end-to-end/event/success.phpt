@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\SuccessTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+Test Requirements Checked (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 Test Prepared (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 Test Passed (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 Test Finished (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)

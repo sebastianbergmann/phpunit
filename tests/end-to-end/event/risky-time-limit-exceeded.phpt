@@ -32,6 +32,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseTimeLimitExceededTest::testOne)
 This test was aborted after 1 second

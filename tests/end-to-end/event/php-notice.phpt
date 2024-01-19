@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\PhpNoticeTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
+Test Requirements Checked (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Prepared (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Triggered PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Only variables should be assigned by reference

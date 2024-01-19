@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 message

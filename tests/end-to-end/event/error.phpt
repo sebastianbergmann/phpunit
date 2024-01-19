@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ErrorTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\ErrorTest::testError)
+Test Requirements Checked (PHPUnit\TestFixture\Event\ErrorTest::testError)
 Test Prepared (PHPUnit\TestFixture\Event\ErrorTest::testError)
 Test Errored (PHPUnit\TestFixture\Event\ErrorTest::testError)
 message

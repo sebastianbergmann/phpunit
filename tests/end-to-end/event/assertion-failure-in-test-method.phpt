@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\FailureTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\FailureTest::testFailure)
+Test Requirements Checked (PHPUnit\TestFixture\Event\FailureTest::testFailure)
 Test Prepared (PHPUnit\TestFixture\Event\FailureTest::testFailure)
 Test Failed (PHPUnit\TestFixture\Event\FailureTest::testFailure)
 Failed asserting that false is true.

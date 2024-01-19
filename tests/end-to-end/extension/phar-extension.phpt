@@ -32,6 +32,7 @@ Test Suite Started (%s%etests%eend-to-end%e_files%ephar-extension%ephpunit.xml, 
 Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\MyExtension\Test, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
 Test Passed (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)
 Test Finished (PHPUnit\TestFixture\Event\MyExtension\Test::testOne)

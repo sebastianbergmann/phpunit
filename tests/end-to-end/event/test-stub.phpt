@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\StubTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\StubTest::testSuccess)
+Test Requirements Checked (PHPUnit\TestFixture\Event\StubTest::testSuccess)
 Test Prepared (PHPUnit\TestFixture\Event\StubTest::testSuccess)
 Test Stub Created (PHPUnit\TestFixture\Event\Example)
 Test Passed (PHPUnit\TestFixture\Event\StubTest::testSuccess)

@@ -28,12 +28,14 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
+Test Requirements Checked (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
+Test Requirements Checked (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 message

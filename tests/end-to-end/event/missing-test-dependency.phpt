@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\MissingDependencyTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Test Failed (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Failed asserting that false is true.

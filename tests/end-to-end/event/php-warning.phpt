@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\PhpWarningTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
+Test Requirements Checked (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Prepared (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Undefined variable $b

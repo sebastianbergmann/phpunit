@@ -31,6 +31,7 @@ Before First Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::
 Before First Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp
@@ -47,6 +48,7 @@ After Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
+Test Requirements Checked (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp

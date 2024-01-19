@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\FatalTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\FatalTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Call to undefined function PHPUnit\TestFixture\Event\doesNotExist()

@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\UserErrorTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+Test Requirements Checked (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 message
@@ -35,6 +36,7 @@ Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 E_USER_ERROR was triggered
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Test Requirements Checked (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 message

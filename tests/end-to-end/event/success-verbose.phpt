@@ -28,6 +28,7 @@ unlink($traceFile);
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Execution Started (1 test)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Started (PHPUnit\TestFixture\Event\SuccessTest, 1 test)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Preparation Started (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Requirements Checked (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Prepared (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Passed (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Finished (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)

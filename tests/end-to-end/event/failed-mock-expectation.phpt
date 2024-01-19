@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\FailedExpectationTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)
 Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)
 Test Failed (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)

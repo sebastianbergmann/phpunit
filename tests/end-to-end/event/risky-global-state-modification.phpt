@@ -30,6 +30,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)

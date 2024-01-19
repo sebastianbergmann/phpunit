@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\CustomComparatorTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\CustomComparatorTest::testWithCustomComparator)
+Test Requirements Checked (PHPUnit\TestFixture\Event\CustomComparatorTest::testWithCustomComparator)
 Test Prepared (PHPUnit\TestFixture\Event\CustomComparatorTest::testWithCustomComparator)
 Comparator Registered (PHPUnit\TestFixture\Event\CustomComparator)
 Test Passed (PHPUnit\TestFixture\Event\CustomComparatorTest::testWithCustomComparator)

@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
 Post Condition Method Called (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::postCondition)
 Post Condition Method Finished:

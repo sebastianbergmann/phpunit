@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\WarningTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 Test Triggered Warning (PHPUnit\TestFixture\TestRunnerStopping\WarningTest::testOne)
 message

@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\PhpunitWarningTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
+Test Requirements Checked (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 Test Prepared (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 Test Triggered PHPUnit Warning (PHPUnit\TestFixture\Event\PhpunitWarningTest::testPhpunitWarning)
 message

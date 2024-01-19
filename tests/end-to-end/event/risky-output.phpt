@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Printed Unexpected Output

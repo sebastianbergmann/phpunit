@@ -28,6 +28,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\MockTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\MockTest::testSuccess)
+Test Requirements Checked (PHPUnit\TestFixture\Event\MockTest::testSuccess)
 Test Prepared (PHPUnit\TestFixture\Event\MockTest::testSuccess)
 Mock Object Created (PHPUnit\TestFixture\Event\Example)
 Test Passed (PHPUnit\TestFixture\Event\MockTest::testSuccess)

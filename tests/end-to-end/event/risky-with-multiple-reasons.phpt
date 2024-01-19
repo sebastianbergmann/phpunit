@@ -30,6 +30,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyWithMultipleReasonsTest::testOne)

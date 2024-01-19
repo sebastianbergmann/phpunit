@@ -29,6 +29,7 @@ Test Runner Execution Started (1 test)
 Test Suite Started (CLI Arguments, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue5498\Test, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Issue5498\Test::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\Issue5498\Test::testOne)
 Before Test Method Called (PHPUnit\TestFixture\Issue5498\Test::parentBefore)
 Before Test Method Called (PHPUnit\TestFixture\Issue5498\Test::before)
 Before Test Method Finished:

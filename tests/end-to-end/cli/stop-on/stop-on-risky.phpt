@@ -29,6 +29,7 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
+Test Requirements Checked (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\TestRunnerStopping\RiskyTest::testOne)

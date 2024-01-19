@@ -37,6 +37,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertTest::testAssert)
+Test Requirements Checked (PHPUnit\TestFixture\Event\AssertTest::testAssert)
 Test Prepared (PHPUnit\TestFixture\Event\AssertTest::testAssert)
 Test Failed (PHPUnit\TestFixture\Event\AssertTest::testAssert)
 assert(false)

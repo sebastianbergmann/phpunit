@@ -34,6 +34,7 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testTwo)
+Test Requirements Checked (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testTwo)
 Test Passed (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testTwo)
