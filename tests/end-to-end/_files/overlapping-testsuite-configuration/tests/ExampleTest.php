@@ -7,20 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\DataProviderIssue2859;
+namespace PHPUnit\TestFixture\OverlappingTestSuiteConfiguration;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class TestWithDataProviderTest extends TestCase
+final class ExampleTest extends TestCase
 {
-    public static function provide(): array
-    {
-        return [[true]];
-    }
-
-    #[DataProvider('provide')]
-    public function testFirst($x): void
+    public function testOne(): void
     {
         $this->assertTrue(true);
     }

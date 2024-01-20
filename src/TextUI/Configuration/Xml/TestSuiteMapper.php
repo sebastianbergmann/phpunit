@@ -14,8 +14,10 @@ use function explode;
 use function in_array;
 use function is_dir;
 use function is_file;
+use function sprintf;
 use function str_contains;
 use function version_compare;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
@@ -42,6 +44,7 @@ final readonly class TestSuiteMapper
             $namesOfIncludedTestSuitesAsArray = $namesOfIncludedTestSuites ? explode(',', $namesOfIncludedTestSuites) : [];
             $excludedTestSuitesAsArray        = $namesOfExcludedTestSuites ? explode(',', $namesOfExcludedTestSuites) : [];
             $result                           = TestSuiteObject::empty($xmlConfigurationFile);
+            $processed                        = [];
 
             foreach ($configuredTestSuites as $configuredTestSuite) {
                 if (!empty($namesOfIncludedTestSuitesAsArray) && !in_array($configuredTestSuite->name(), $namesOfIncludedTestSuitesAsArray, true)) {
@@ -52,14 +55,15 @@ final readonly class TestSuiteMapper
                     continue;
                 }
 
-                $exclude = [];
+                $testSuiteName = $configuredTestSuite->name();
+                $exclude       = [];
 
                 foreach ($configuredTestSuite->exclude()->asArray() as $file) {
                     $exclude[] = $file->path();
                 }
 
                 $testSuite = TestSuiteObject::empty($configuredTestSuite->name());
-                $processed = [];
+                $empty     = true;
 
                 foreach ($configuredTestSuite->directories() as $directory) {
                     if (!str_contains($directory->path(), '*') && !is_dir($directory->path())) {
@@ -81,10 +85,20 @@ final readonly class TestSuiteMapper
 
                     foreach ($files as $file) {
                         if (isset($processed[$file])) {
+                            EventFacade::emitter()->testRunnerTriggeredWarning(
+                                sprintf(
+                                    'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
+                                    $file,
+                                    $testSuiteName,
+                                    $processed[$file],
+                                ),
+                            );
+
                             continue;
                         }
 
-                        $processed[$file] = true;
+                        $processed[$file] = $testSuiteName;
+                        $empty            = false;
 
                         $testSuite->addTestFile($file, $groups);
                     }
@@ -100,15 +114,25 @@ final readonly class TestSuiteMapper
                     }
 
                     if (isset($processed[$file->path()])) {
+                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                            sprintf(
+                                'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
+                                $file->path(),
+                                $testSuiteName,
+                                $processed[$file->path()],
+                            ),
+                        );
+
                         continue;
                     }
 
-                    $processed[$file->path()] = true;
+                    $processed[$file->path()] = $testSuiteName;
+                    $empty                    = false;
 
                     $testSuite->addTestFile($file->path(), $file->groups());
                 }
 
-                if (!empty($processed)) {
+                if (!$empty) {
                     $result->addTest($testSuite);
                 }
             }

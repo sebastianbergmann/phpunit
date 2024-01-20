@@ -21,6 +21,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5619](https://github.com/sebastianbergmann/phpunit/pull/5619): Check and restore error/exception global handlers
 * The format of the XML document generated using the `--list-tests-xml` CLI option has been changed
 * `small`, `medium`, and `large` can no longer be used as group names with the `#[Group]` attribute
+* A test can no longer be part of multiple test suites that are configured in the XML configuration file
 
 ### Deprecated
 
