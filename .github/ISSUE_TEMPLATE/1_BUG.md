@@ -1,11 +1,11 @@
 ---
-name: 🐞 Bug Report for PHPUnit 9 and PHPUnit 10
-about: Something is broken in PHPUnit 9 and in PHPUnit 10?
-labels: type/bug, version/9, version/10
+name: 🐞 Bug Report
+about: Something is broken?
+labels: type/bug
 ---
 
 <!--
-- Please do not report an issue for a version of PHPUnit that is no longer supported. A list of currently supported versions of PHPUnit is available at https://phpunit.de/supported-versions.html.
+- Please do not report a bug for a version of PHPUnit that is no longer in Bugfix Support. A list of currently supported versions of PHPUnit is available at https://phpunit.de/supported-versions.html.
 - Please do not report an issue if you are using a version of PHP that is not supported by the version of PHPUnit you are using. A list that shows which version of PHP is supported by which version of PHPUnit is available at https://phpunit.de/supported-versions.html.
 - Please do not report an issue if you are not using PHPUnit directly, but rather a third-party wrapper around it.
 - Please do not report an issue if you are using a third-party extension such as alternative output printers.
