@@ -19,6 +19,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5213](https://github.com/sebastianbergmann/phpunit/issues/5213): Make `TestCase` methods `protected` that should have been `protected` all along
 * [#5254](https://github.com/sebastianbergmann/phpunit/issues/5254): Make `TestCase` methods `final` that should have been `final` all along
 * [#5619](https://github.com/sebastianbergmann/phpunit/pull/5619): Check and restore error/exception global handlers
+* PHPUnit's test runner now always registers its error handler, overwriting custom error handlers already registered in the test suite's bootstrap script, for instance
 * The format of the XML document generated using the `--list-tests-xml` CLI option has been changed
 * `small`, `medium`, and `large` can no longer be used as group names with the `#[Group]` attribute
 * A test can no longer be part of multiple test suites that are configured in the XML configuration file
