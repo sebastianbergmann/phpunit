@@ -166,13 +166,7 @@ final class ErrorHandler
             return;
         }
 
-        $oldErrorHandler = set_error_handler($this);
-
-        if ($oldErrorHandler !== null) {
-            restore_error_handler();
-
-            return;
-        }
+        set_error_handler($this);
 
         $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
