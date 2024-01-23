@@ -9,14 +9,16 @@
  */
 namespace PHPUnit\TestFixture;
 
+use function set_error_handler;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class Issue5595Test extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
-        set_error_handler(function (): bool {
+        set_error_handler(static function (): bool
+        {
             return true;
         });
     }
