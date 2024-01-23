@@ -209,11 +209,16 @@ final class ExcludeList
             self::$directories[] = $directory;
         }
 
-        // Hide process isolation workaround on Windows.
+        /**
+         * Hide process isolation workaround on Windows:
+         * tempnam() prefix is limited to first 3 characters.
+         *
+         * @see https://php.net/manual/en/function.tempnam.php
+         */
         if (PHP_OS_FAMILY === 'Windows') {
-            // tempnam() prefix is limited to first 3 chars.
-            // @see https://php.net/manual/en/function.tempnam.php
+            // @codeCoverageIgnoreStart
             self::$directories[] = sys_get_temp_dir() . '\\PHP';
+            // @codeCoverageIgnoreEnd
         }
 
         self::$initialized = true;
