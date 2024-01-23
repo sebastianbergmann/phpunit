@@ -66,7 +66,7 @@ function __phpunit_run_isolated_test()
 
     ini_set('xdebug.scream', '0');
 
-    set_error_handler('__phpunit_error_handler');
+    set_error_handler(static fn() => false);
 
     // Not every STDOUT target stream is rewindable
     @rewind(STDOUT);
