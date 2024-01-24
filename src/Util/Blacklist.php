@@ -34,6 +34,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
+use SebastianBergmann\ObjectReflector\ObjectReflector;
 use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Timer\Timer;
@@ -110,6 +111,9 @@ final class Blacklist
 
         // sebastian/object-enumerator
         Enumerator::class => 1,
+
+        // sebastian/object-reflector
+        ObjectReflector::class => 1,
 
         // sebastian/recursion-context
         Context::class => 1,
