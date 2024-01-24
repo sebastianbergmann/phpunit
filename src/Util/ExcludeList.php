@@ -40,6 +40,7 @@ use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\LinesOfCode\Counter;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
+use SebastianBergmann\ObjectReflector\ObjectReflector;
 use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Template\Template;
@@ -128,6 +129,9 @@ final class ExcludeList
 
         // sebastian/object-enumerator
         Enumerator::class => 1,
+
+        // sebastian/object-reflector
+        ObjectReflector::class => 1,
 
         // sebastian/recursion-context
         Context::class => 1,
