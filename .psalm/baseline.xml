@@ -355,9 +355,6 @@
       <code>$backupGlobalsExcludeList</code>
       <code>$groups</code>
     </PropertyTypeCoercion>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[!$context->contains($testArgument)]]></code>
-    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/TestRunner.php">
     <ArgumentTypeCoercion>
