@@ -217,8 +217,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $failure = new PhptAssertionFailedError(
                     $e->getMessage(),
                     0,
-                    $trace[0]['file'],
-                    $trace[0]['line'],
+                    (string) $trace[0]['file'],
+                    (int) $trace[0]['line'],
                     $trace,
                     $comparisonFailure ? $diff : '',
                 );

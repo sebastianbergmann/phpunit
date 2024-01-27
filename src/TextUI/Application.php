@@ -332,7 +332,7 @@ final class Application
 
     private function loadXmlConfiguration(false|string $configurationFile): XmlConfiguration
     {
-        if (!$configurationFile) {
+        if ($configurationFile === false) {
             return DefaultConfiguration::create();
         }
 
@@ -387,7 +387,7 @@ final class Application
         }
 
         if ($cliConfiguration->migrateConfiguration()) {
-            if (!$configurationFile) {
+            if ($configurationFile === false) {
                 $this->exitWithErrorMessage('No configuration file found to migrate');
             }
 
