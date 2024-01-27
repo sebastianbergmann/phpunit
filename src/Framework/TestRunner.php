@@ -439,7 +439,7 @@ final class TestRunner
     {
         $path = tempnam(sys_get_temp_dir(), 'phpunit_');
 
-        if (!$path) {
+        if ($path === false) {
             throw new ProcessIsolationException;
         }
 
