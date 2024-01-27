@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.19.1@b9583493b08eb36259c0f6b746a787c4c9b3ac45">
+<files psalm-version="5.20.0@3f284e96c9d9be6fe6b15c79416e1d1903dcfef4">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -202,6 +202,9 @@
     <RedundantCondition>
       <code><![CDATA[assert($step['object'] instanceof TestCase)]]></code>
     </RedundantCondition>
+    <RiskyTruthyFalsyComparison>
+      <code>$hint = self::detectLocationHint($message)</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedClass>
@@ -533,9 +536,16 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/ExecutionOrderDependency.php">
+    <PossiblyNullArgument>
+      <code>$target</code>
+      <code>$target</code>
+    </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
       <code>$parts[1]</code>
     </PossiblyUndefinedArrayOffset>
+    <RiskyTruthyFalsyComparison>
+      <code>empty($methodName)</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType>
@@ -613,6 +623,10 @@
     <PossiblyNullArgument>
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
+    <RiskyTruthyFalsyComparison>
+      <code>!$parameterStart</code>
+      <code>empty($methods)</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion>
@@ -1182,9 +1196,19 @@
     <PossiblyInvalidArgument>
       <code><![CDATA[$sections['FILEEOF']]]></code>
     </PossiblyInvalidArgument>
+    <PossiblyNullArgument>
+      <code><![CDATA[$trace[0]['file']]]></code>
+      <code><![CDATA[$trace[0]['file']]]></code>
+      <code><![CDATA[$trace[0]['line']]]></code>
+      <code><![CDATA[$trace[0]['line']]]></code>
+    </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
       <code>$setting[1]</code>
     </PossiblyUndefinedArrayOffset>
+    <RiskyTruthyFalsyComparison>
+      <code>$sectionName</code>
+      <code>$sectionName</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Runner/StandardTestSuiteLoader.php">
     <DeprecatedInterface>
@@ -1217,6 +1241,9 @@
     <MoreSpecificReturnType>
       <code>non-empty-string</code>
     </MoreSpecificReturnType>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[strpos(self::id(), '-')]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/TextUI/CliArguments/Builder.php">
     <ArgumentTypeCoercion>
@@ -1296,6 +1323,7 @@
       <code>null|Printer|string</code>
     </MoreSpecificReturnType>
     <PossiblyNullArgument>
+      <code><![CDATA[$_SERVER['argv']]]></code>
       <code>$suite</code>
       <code>$suite</code>
       <code>$suite</code>
@@ -1307,6 +1335,10 @@
     <RedundantCondition>
       <code><![CDATA[assert(isset($arguments) && $arguments instanceof Configuration)]]></code>
     </RedundantCondition>
+    <RiskyTruthyFalsyComparison>
+      <code>$loaderFile</code>
+      <code>$printerFile</code>
+    </RiskyTruthyFalsyComparison>
     <UnsafeInstantiation>
       <code>new static</code>
     </UnsafeInstantiation>
@@ -1389,6 +1421,10 @@
       <code>stop</code>
       <code>stop</code>
     </MissingThrowsDocblock>
+    <PossiblyNullArgument>
+      <code><![CDATA[$arguments['enforceTimeLimit']]]></code>
+      <code>$cacheLocation</code>
+    </PossiblyNullArgument>
     <PossiblyNullPropertyAssignmentValue>
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
@@ -1405,6 +1441,11 @@
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->printer !== null]]></code>
     </RedundantConditionGivenDocblockType>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()]]></code>
+      <code><![CDATA[$codeCoverageConfiguration->includeUncoveredFiles()]]></code>
+      <code><![CDATA[$codeCoverageConfiguration->processUncoveredFiles()]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollectionIterator.php">
     <PropertyNotSetInConstructor>
@@ -1473,6 +1514,11 @@
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
     </RedundantConditionGivenDocblockType>
+    <RiskyTruthyFalsyComparison>
+      <code>!$verbatim</code>
+      <code>$includePathFile</code>
+      <code><![CDATA[$this->getBoolean($document->documentElement->getAttribute('colors'), false)]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/TextUI/XmlConfiguration/Logging/Logging.php">
     <MissingThrowsDocblock>
@@ -1643,6 +1689,11 @@
     <RedundantCast>
       <code><![CDATA[(string) $matches['value'][$i]]]></code>
     </RedundantCast>
+    <RiskyTruthyFalsyComparison>
+      <code>!preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)</code>
+      <code><![CDATA[empty($requires[$matches['name']])]]></code>
+      <code><![CDATA[preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument>
@@ -1668,6 +1719,11 @@
                 ),
             );]]></code>
     </MissingThrowsDocblock>
+  </file>
+  <file src="src/Util/FileLoader.php">
+    <RiskyTruthyFalsyComparison>
+      <code>!$includePathFilename</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/Filter.php">
     <MissingParamType>
@@ -1718,6 +1774,9 @@
     <PropertyNotSetInConstructor>
       <code>$currentTestCase</code>
     </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code>empty($testOutput)</code>
+    </RiskyTruthyFalsyComparison>
     <UndefinedInterfaceMethod>
       <code>getName</code>
       <code>getName</code>
@@ -1751,6 +1810,9 @@
       <code>TeamCity</code>
       <code>TeamCity</code>
     </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$this->flowId]]></code>
+    </RiskyTruthyFalsyComparison>
     <UndefinedInterfaceMethod>
       <code>getName</code>
       <code>getName</code>
@@ -1786,6 +1848,11 @@
     <PossiblyNullReference>
       <code>merge</code>
     </PossiblyNullReference>
+    <RiskyTruthyFalsyComparison>
+      <code>!$file</code>
+      <code>!$file</code>
+      <code>$file</code>
+    </RiskyTruthyFalsyComparison>
     <UndefinedInterfaceMethod>
       <code>addToAssertionCount</code>
       <code>setResult</code>
@@ -1801,6 +1868,9 @@
     <RedundantCondition>
       <code>$_SERVER</code>
     </RedundantCondition>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit'))]]></code>
+    </RiskyTruthyFalsyComparison>
     <TypeDoesNotContainNull>
       <code>[]</code>
     </TypeDoesNotContainNull>
@@ -1814,6 +1884,10 @@
     <PropertyNotSetInConstructor>
       <code>$stream</code>
     </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$this->stream]]></code>
+      <code><![CDATA[$this->stream]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/Reflection.php">
     <ArgumentTypeCoercion>
@@ -1837,6 +1911,10 @@
       <code>requirements</code>
       <code>requirements</code>
     </MissingThrowsDocblock>
+    <RiskyTruthyFalsyComparison>
+      <code>$classShortcut</code>
+      <code>$hint</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <DeprecatedInterface>
@@ -1858,6 +1936,9 @@
       <code><![CDATA[$prefix['start']]]></code>
       <code><![CDATA[$prefix['trace']]]></code>
     </PossiblyInvalidArrayOffset>
+    <PossiblyNullArgument>
+      <code>$style</code>
+    </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[self::STATUS_STYLES[$result['status']]['message']]]></code>
     </PossiblyUndefinedArrayOffset>
@@ -1865,6 +1946,12 @@
       <code>CliTestDoxPrinter</code>
       <code>CliTestDoxPrinter</code>
     </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code>$diff</code>
+      <code>$diff</code>
+      <code>$message</code>
+      <code>$message</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
     <DeprecatedInterface>
@@ -1894,6 +1981,9 @@
     <RedundantConditionGivenDocblockType>
       <code>is_string($value)</code>
     </RedundantConditionGivenDocblockType>
+    <RiskyTruthyFalsyComparison>
+      <code>empty($className)</code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/ResultPrinter.php">
     <DeprecatedInterface>
