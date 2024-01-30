@@ -248,9 +248,10 @@ jobs:
         run: cat build/artifacts/phpunit-snapshot.phar | grep -q PHPUnit\\\\DeepCopy\\\\Exception\\\\CloneException || (echo "phpunit-snapshot.phar is not scoped." && false)
 
       - name: Upload PHAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: phpunit-snapshot-phar
+          overwrite: true
           path: ./build/artifacts/phpunit-snapshot.phar
           retention-days: 7
 
@@ -298,7 +299,7 @@ jobs:
           java-version: 11
 
       - name: Download PHAR
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/
