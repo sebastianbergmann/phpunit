@@ -22,7 +22,6 @@ final class Facade
     private static ?self $instance = null;
     private Emitter $emitter;
     private ?TypeMap $typeMap                         = null;
-    private ?Emitter $suspended                       = null;
     private ?DeferringDispatcher $deferringDispatcher = null;
     private bool $sealed                              = false;
 
@@ -110,10 +109,6 @@ final class Facade
 
     public function forward(EventCollection $events): void
     {
-        if ($this->suspended !== null) {
-            return;
-        }
-
         $dispatcher = $this->deferredDispatcher();
 
         foreach ($events as $event) {
