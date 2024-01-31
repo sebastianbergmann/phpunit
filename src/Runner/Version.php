@@ -51,6 +51,11 @@ final class Version
         return implode('.', array_slice(explode('.', $version), 0, 2));
     }
 
+    public static function majorVersionNumber(): int
+    {
+        return (int) explode('.', self::series())[0];
+    }
+
     public static function getVersionString(): string
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
