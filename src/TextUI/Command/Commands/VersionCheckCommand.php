@@ -24,10 +24,14 @@ final readonly class VersionCheckCommand implements Command
     public function execute(): Result
     {
         $latestVersion           = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
-        $latestCompatibleVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit-' . Version::majorVersionNumber());
+        $latestCompatibleVersion = @file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit-' . Version::majorVersionNumber());
 
         $notLatest           = version_compare($latestVersion, Version::id(), '>');
-        $notLatestCompatible = version_compare($latestCompatibleVersion, Version::id(), '>');
+        $notLatestCompatible = false;
+
+        if ($latestCompatibleVersion !== false) {
+            $notLatestCompatible = version_compare($latestCompatibleVersion, Version::id(), '>');
+        }
 
         if (!$notLatest && !$notLatestCompatible) {
             return Result::from(
