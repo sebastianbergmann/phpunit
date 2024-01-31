@@ -56,6 +56,6 @@ final readonly class VersionCheckCommand implements Command
             );
         }
 
-        return Result::from($buffer);
+        return Result::from($buffer, Result::FAILURE);
     }
 }
