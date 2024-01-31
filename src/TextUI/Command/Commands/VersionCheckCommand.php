@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Command;
 
-use function explode;
 use function file_get_contents;
 use function sprintf;
 use function version_compare;
@@ -25,7 +24,7 @@ final class VersionCheckCommand implements Command
     public function execute(): Result
     {
         $latestVersion           = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
-        $latestCompatibleVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit-' . explode('.', Version::series())[0]);
+        $latestCompatibleVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit-' . Version::majorVersionNumber());
 
         $notLatest           = version_compare($latestVersion, Version::id(), '>');
         $notLatestCompatible = version_compare($latestCompatibleVersion, Version::id(), '>');
