@@ -288,7 +288,7 @@ final class Help
             ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
             ['arg' => '--version', 'desc' => 'Prints the version and exits'],
             ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than <min> and exits'],
-            ['arg' => '--check-version', 'desc' => 'Check whether PHPUnit is the latest version and exits'],
+            ['arg' => '--check-version', 'desc' => 'Checks whether PHPUnit is the latest version and exits'],
         ];
 
         return $elements;

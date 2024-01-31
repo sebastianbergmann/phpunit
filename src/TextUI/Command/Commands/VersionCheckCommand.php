@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use function explode;
 use function file_get_contents;
 use function sprintf;
 use function version_compare;
@@ -23,21 +24,35 @@ final class VersionCheckCommand implements Command
 {
     public function execute(): Result
     {
-        $latestVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
-        $isOutdated    = version_compare($latestVersion, Version::id(), '>');
+        $latestVersion           = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
+        $latestCompatibleVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit-' . explode('.', Version::series())[0]);
 
-        if ($isOutdated) {
+        $notLatest           = version_compare($latestVersion, Version::id(), '>');
+        $notLatestCompatible = version_compare($latestCompatibleVersion, Version::id(), '>');
+
+        if (!$notLatest && !$notLatestCompatible) {
             return Result::from(
-                sprintf(
-                    'You are not using the latest version of PHPUnit.' . PHP_EOL .
-                    'The latest version is PHPUnit %s.' . PHP_EOL,
-                    $latestVersion,
-                ),
+                'You are using the latest version of PHPUnit.' . PHP_EOL,
             );
         }
 
-        return Result::from(
-            'You are using the latest version of PHPUnit.' . PHP_EOL,
-        );
+        $buffer = 'You are not using the latest version of PHPUnit.' . PHP_EOL;
+
+        if ($notLatestCompatible) {
+            $buffer .= sprintf(
+                'The latest version compatible with PHPUnit %s is PHPUnit %s.' . PHP_EOL,
+                Version::id(),
+                $latestCompatibleVersion,
+            );
+        }
+
+        if ($notLatest) {
+            $buffer .= sprintf(
+                'The latest version is PHPUnit %s.' . PHP_EOL,
+                $latestVersion,
+            );
+        }
+
+        return Result::from($buffer);
     }
 }
