@@ -16,6 +16,7 @@ use function array_keys;
 use function assert;
 use function class_exists;
 use function copy;
+use function explode;
 use function extension_loaded;
 use function fgets;
 use function file_get_contents;
@@ -614,7 +615,7 @@ class Command
             printf(
                 'The latest version compatible with PHPUnit %s is PHPUnit %s.' . PHP_EOL,
                 Version::id(),
-                $latestCompatibleVersion
+                $latestCompatibleVersion,
             );
         }
 
