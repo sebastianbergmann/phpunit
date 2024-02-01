@@ -22,7 +22,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * The format of the XML document generated using the `--list-tests-xml` CLI option has been changed
 * `small`, `medium`, and `large` can no longer be used as group names with the `#[Group]` attribute
 * A test can no longer be part of multiple test suites that are configured in the XML configuration file
-* `--check-version` now exists with a shell exit code that indicates failure when the version is not the latest version
+* `--check-version` now exits with a shell exit code that indicates failure when the version is not the latest version
 
 ### Deprecated
 
