@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
-use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
@@ -53,12 +52,13 @@ final class CreateMockTest extends TestCase
         $this->createMock(FinalClass::class);
     }
 
-    #[RequiresPhp('8.2')]
-    public function testCannotCreateMockObjectForReadonlyClass(): void
+    #[RequiresPhp('>=8.2')]
+    public function testCreatesMockObjectForReadonlyClass(): void
     {
-        $this->expectException(ClassIsReadonlyException::class);
+        $double = $this->createMock(ReadonlyClass::class);
 
-        $this->createMock(ReadonlyClass::class);
+        $this->assertInstanceOf(ReadonlyClass::class, $double);
+        $this->assertInstanceOf(Stub::class, $double);
     }
 
     public function testCannotCreateMockObjectForEnumeration(): void

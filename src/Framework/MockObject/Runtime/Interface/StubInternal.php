@@ -14,6 +14,8 @@ namespace PHPUnit\Framework\MockObject;
  */
 interface StubInternal extends Stub
 {
+    public function __phpunit_initStubInternalState(): void;
+
     public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void;
 
     public function __phpunit_getInvocationHandler(): InvocationHandler;
