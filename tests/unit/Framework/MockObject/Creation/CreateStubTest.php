@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
+use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
@@ -64,5 +65,12 @@ final class CreateStubTest extends TestCase
         $this->expectException(ClassIsEnumerationException::class);
 
         $this->createStub(Enumeration::class);
+    }
+
+    public function testCannotCreateTestStubForUnknownType(): void
+    {
+        $this->expectException(UnknownTypeException::class);
+
+        $this->createStub('this\does\not\exist');
     }
 }
