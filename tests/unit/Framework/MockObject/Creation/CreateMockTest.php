@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
+use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
@@ -66,5 +67,12 @@ final class CreateMockTest extends TestCase
         $this->expectException(ClassIsEnumerationException::class);
 
         $this->createMock(Enumeration::class);
+    }
+
+    public function testCannotCreateMockObjectForUnknownType(): void
+    {
+        $this->expectException(UnknownTypeException::class);
+
+        $this->createMock('this\does\not\exist');
     }
 }

@@ -11,6 +11,10 @@ namespace PHPUnit\TestFixture\MockObject;
 
 class ExtendableClass
 {
+    public function __destruct()
+    {
+    }
+
     public function doSomething(): bool
     {
         return $this->doSomethingElse();
@@ -19,5 +23,13 @@ class ExtendableClass
     public function doSomethingElse(): bool
     {
         return false;
+    }
+
+    final public function finalMethod(): void
+    {
+    }
+
+    private function privateMethod(): void
+    {
     }
 }
