@@ -23,9 +23,9 @@ use UnitEnum;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsIdentical extends Constraint
+final class IsIdentical extends Constraint
 {
-    private mixed $value;
+    private readonly mixed $value;
 
     public function __construct(mixed $value)
     {

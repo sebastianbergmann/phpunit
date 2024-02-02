@@ -17,7 +17,7 @@ use function sprintf;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsJson extends Constraint
+final class IsJson extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

@@ -16,9 +16,9 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract readonly class TraversableContains extends Constraint
+abstract class TraversableContains extends Constraint
 {
-    private mixed $value;
+    private readonly mixed $value;
 
     public function __construct(mixed $value)
     {

@@ -19,10 +19,10 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsEqualWithDelta extends Constraint
+final class IsEqualWithDelta extends Constraint
 {
-    private mixed $value;
-    private float $delta;
+    private readonly mixed $value;
+    private readonly float $delta;
 
     public function __construct(mixed $value, float $delta)
     {

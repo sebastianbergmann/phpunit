@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsTrue extends Constraint
+final class IsTrue extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

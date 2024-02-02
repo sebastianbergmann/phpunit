@@ -15,9 +15,9 @@ use PHPUnit\Framework\EmptyStringException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class StringStartsWith extends Constraint
+final class StringStartsWith extends Constraint
 {
-    private string $prefix;
+    private readonly string $prefix;
 
     /**
      * @throws EmptyStringException

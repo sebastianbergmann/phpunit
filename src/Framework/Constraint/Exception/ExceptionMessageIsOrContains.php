@@ -16,9 +16,9 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ExceptionMessageIsOrContains extends Constraint
+final class ExceptionMessageIsOrContains extends Constraint
 {
-    private string $expectedMessage;
+    private readonly string $expectedMessage;
 
     public function __construct(string $expectedMessage)
     {

@@ -14,7 +14,7 @@ use SplObjectStorage;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TraversableContainsIdentical extends TraversableContains
+final class TraversableContainsIdentical extends TraversableContains
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the

@@ -15,7 +15,7 @@ use PHPUnit\Framework\Exception;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class SameSize extends Count
+final class SameSize extends Count
 {
     /**
      * @psalm-param Countable|iterable $expected

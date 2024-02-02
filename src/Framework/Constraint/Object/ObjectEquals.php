@@ -22,10 +22,10 @@ use ReflectionObject;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ObjectEquals extends Constraint
+final class ObjectEquals extends Constraint
 {
-    private object $expected;
-    private string $method;
+    private readonly object $expected;
+    private readonly string $method;
 
     public function __construct(object $object, string $method = 'equals')
     {

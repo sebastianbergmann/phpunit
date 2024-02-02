@@ -14,7 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsAnything extends Constraint
+final class IsAnything extends Constraint
 {
     /**
      * Evaluates the constraint for parameter $other.

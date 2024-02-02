@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.0.1] - 2024-02-02
+
+### Fixed
+
+* [#5690](https://github.com/sebastianbergmann/phpunit/issues/5690): Backward Compatibility break in `PHPUnit\Framework\Constraint\Constraint`
+
 ## [11.0.0] - 2024-02-02
 
 ### Added
@@ -74,4 +80,5 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
 * `PHPUnit\Framework\Constraint\Constraint::exporter()`
 
+[11.0.1]: https://github.com/sebastianbergmann/phpunit/compare/11.0.0...11.0.1
 [11.0.0]: https://github.com/sebastianbergmann/phpunit/compare/10.5...11.0.0
