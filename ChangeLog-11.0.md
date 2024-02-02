@@ -74,4 +74,4 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
 * `PHPUnit\Framework\Constraint\Constraint::exporter()`
 
-[11.0.0]: https://github.com/sebastianbergmann/phpunit/compare/10.5...main
+[11.0.0]: https://github.com/sebastianbergmann/phpunit/compare/10.5...11.0.0
