@@ -17,9 +17,9 @@ use ReflectionObject;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ObjectHasProperty extends Constraint
+final class ObjectHasProperty extends Constraint
 {
-    private string $propertyName;
+    private readonly string $propertyName;
 
     public function __construct(string $propertyName)
     {

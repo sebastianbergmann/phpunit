@@ -26,7 +26,7 @@ use PHPUnit\Framework\UnknownTypeException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsType extends Constraint
+final class IsType extends Constraint
 {
     /**
      * @var string
@@ -119,7 +119,7 @@ final readonly class IsType extends Constraint
     /**
      * @psalm-var 'array'|'boolean'|'bool'|'double'|'float'|'integer'|'int'|'null'|'numeric'|'object'|'real'|'resource'|'resource (closed)'|'string'|'scalar'|'callable'|'iterable'
      */
-    private string $type;
+    private readonly string $type;
 
     /**
      * @psalm-param 'array'|'boolean'|'bool'|'double'|'float'|'integer'|'int'|'null'|'numeric'|'object'|'real'|'resource'|'resource (closed)'|'string'|'scalar'|'callable'|'iterable' $type

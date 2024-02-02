@@ -19,7 +19,7 @@ use EmptyIterator;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsEmpty extends Constraint
+final class IsEmpty extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

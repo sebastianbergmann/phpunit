@@ -16,7 +16,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class LogicalXor extends BinaryOperator
+final class LogicalXor extends BinaryOperator
 {
     public static function fromConstraints(mixed ...$constraints): self
     {

@@ -22,11 +22,11 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class StringContains extends Constraint
+final class StringContains extends Constraint
 {
-    private string $needle;
-    private bool $ignoreCase;
-    private bool $ignoreLineEndings;
+    private readonly string $needle;
+    private readonly bool $ignoreCase;
+    private readonly bool $ignoreLineEndings;
 
     public function __construct(string $needle, bool $ignoreCase = false, bool $ignoreLineEndings = false)
     {
