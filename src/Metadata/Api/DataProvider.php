@@ -236,7 +236,7 @@ final class DataProvider
     {
         $docComment = (new ReflectionMethod($className, $methodName))->getDocComment();
 
-        if (!$docComment) {
+        if ($docComment === false) {
             return null;
         }
 

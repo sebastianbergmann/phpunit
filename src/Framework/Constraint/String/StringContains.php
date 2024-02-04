@@ -127,7 +127,7 @@ final class StringContains extends Constraint
 
         $detectedEncoding = mb_detect_encoding($other, null, true);
 
-        if (!$detectedEncoding) {
+        if ($detectedEncoding === false) {
             return 'Encoding detection failed';
         }
 

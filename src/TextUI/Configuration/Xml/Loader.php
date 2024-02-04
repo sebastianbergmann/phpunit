@@ -474,7 +474,7 @@ final class Loader
         );
     }
 
-    private function getBoolean(string $value, bool|string $default): bool|string
+    private function getBoolean(string $value, bool $default): bool
     {
         if (strtolower($value) === 'false') {
             return false;
@@ -485,6 +485,19 @@ final class Loader
         }
 
         return $default;
+    }
+
+    private function getValue(string $value): bool|string
+    {
+        if (strtolower($value) === 'false') {
+            return false;
+        }
+
+        if (strtolower($value) === 'true') {
+            return true;
+        }
+
+        return $value;
     }
 
     private function readFilterDirectories(string $filename, DOMXPath $xpath, string $query): FilterDirectoryCollection
@@ -556,7 +569,7 @@ final class Loader
             return $default;
         }
 
-        return (bool) $this->getBoolean(
+        return $this->getBoolean(
             $element->getAttribute($attribute),
             false,
         );
@@ -635,7 +648,7 @@ final class Loader
 
             $constants[] = new Constant(
                 $const->getAttribute('name'),
-                $this->getBoolean($value, $value),
+                $this->getValue($value),
             );
         }
 
@@ -660,7 +673,7 @@ final class Loader
                 $verbatim = false;
 
                 if ($var->hasAttribute('force')) {
-                    $force = (bool) $this->getBoolean($var->getAttribute('force'), false);
+                    $force = $this->getBoolean($var->getAttribute('force'), false);
                 }
 
                 if ($var->hasAttribute('verbatim')) {
@@ -668,7 +681,7 @@ final class Loader
                 }
 
                 if (!$verbatim) {
-                    $value = $this->getBoolean($value, $value);
+                    $value = $this->getValue($value);
                 }
 
                 $variables[$array][] = new Variable($name, $value, $force);

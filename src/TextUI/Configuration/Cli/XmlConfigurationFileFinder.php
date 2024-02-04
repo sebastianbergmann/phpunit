@@ -27,7 +27,7 @@ final class XmlConfigurationFileFinder
             if (is_dir($configuration->configurationFile())) {
                 $candidate = $this->configurationFileInDirectory($configuration->configurationFile());
 
-                if ($candidate) {
+                if ($candidate !== false) {
                     return $candidate;
                 }
 
@@ -40,7 +40,7 @@ final class XmlConfigurationFileFinder
         if ($useDefaultConfiguration) {
             $candidate = $this->configurationFileInDirectory(getcwd());
 
-            if ($candidate) {
+            if ($candidate !== false) {
                 return $candidate;
             }
         }
