@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.10] - 2024-MM-DD
+
+### Fixed
+
+* [#5692](https://github.com/sebastianbergmann/phpunit/issues/5692): `--log-events-text` and `--log-events-verbose-text` require the destination file to exit
+
 ## [10.5.9] - 2024-01-22
 
 ### Fixed
@@ -97,6 +103,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.10]: https://github.com/sebastianbergmann/phpunit/compare/10.5.9...10.5
 [10.5.9]: https://github.com/sebastianbergmann/phpunit/compare/10.5.8...10.5.9
 [10.5.8]: https://github.com/sebastianbergmann/phpunit/compare/10.5.7...10.5.8
 [10.5.7]: https://github.com/sebastianbergmann/phpunit/compare/10.5.6...10.5.7
