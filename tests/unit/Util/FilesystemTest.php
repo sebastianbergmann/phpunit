@@ -17,11 +17,12 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class FilesystemTest extends TestCase
 {
-    public function testCanResolvePathOrStream(): void
+    public function testCanResolveStreamOrFile(): void
     {
-        $this->assertSame('php://stdout', Filesystem::resolvePathOrStream('php://stdout'));
-        $this->assertSame('socket://hostname:port', Filesystem::resolvePathOrStream('socket://hostname:port'));
-        $this->assertSame(__FILE__, Filesystem::resolvePathOrStream(__FILE__));
-        $this->assertFalse(Filesystem::resolvePathOrStream(__DIR__ . '/does-not-exist'));
+        $this->assertSame('php://stdout', Filesystem::resolveStreamOrFile('php://stdout'));
+        $this->assertSame('socket://hostname:port', Filesystem::resolveStreamOrFile('socket://hostname:port'));
+        $this->assertSame(__FILE__, Filesystem::resolveStreamOrFile(__FILE__));
+        $this->assertSame(__DIR__ . '/does-not-exist', Filesystem::resolveStreamOrFile(__DIR__ . '/does-not-exist'));
+        $this->assertFalse(Filesystem::resolveStreamOrFile(__DIR__ . '/does-not-exist/does-not-exist'));
     }
 }

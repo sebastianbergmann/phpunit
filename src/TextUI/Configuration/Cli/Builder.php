@@ -806,7 +806,7 @@ final readonly class Builder
                     break;
 
                 case '--log-events-text':
-                    $logEventsText = Filesystem::resolvePathOrStream($option[1]);
+                    $logEventsText = Filesystem::resolveStreamOrFile($option[1]);
 
                     if ($logEventsText === false) {
                         throw new Exception(
@@ -820,7 +820,7 @@ final readonly class Builder
                     break;
 
                 case '--log-events-verbose-text':
-                    $logEventsVerboseText = Filesystem::resolvePathOrStream($option[1]);
+                    $logEventsVerboseText = Filesystem::resolveStreamOrFile($option[1]);
 
                     if ($logEventsVerboseText === false) {
                         throw new Exception(
