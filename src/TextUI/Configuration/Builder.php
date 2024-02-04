@@ -33,7 +33,7 @@ final class Builder
             $configurationFile = (new XmlConfigurationFileFinder)->find($cliConfiguration);
             $xmlConfiguration  = DefaultConfiguration::create();
 
-            if ($configurationFile !== false) {
+            if ($configurationFile) {
                 $xmlConfiguration = (new Loader)->load($configurationFile);
             }
 
