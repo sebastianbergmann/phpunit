@@ -806,9 +806,9 @@ final class Builder
                     break;
 
                 case '--log-events-text':
-                    $logEventsText = realpath($option[1]);
+                    $path = realpath($option[1]);
 
-                    if (!$logEventsText) {
+                    if (!$path) {
                         throw new Exception(
                             sprintf(
                                 'The path "%s" specified for the --log-events-text option could not be resolved',
@@ -817,12 +817,14 @@ final class Builder
                         );
                     }
 
+                    $logEventsText = $path;
+
                     break;
 
                 case '--log-events-verbose-text':
-                    $logEventsVerboseText = realpath($option[1]);
+                    $path = realpath($option[1]);
 
-                    if (!$logEventsVerboseText) {
+                    if (!$path) {
                         throw new Exception(
                             sprintf(
                                 'The path "%s" specified for the --log-events-verbose-text option could not be resolved',
@@ -830,6 +832,8 @@ final class Builder
                             ),
                         );
                     }
+
+                    $logEventsVerboseText = $path;
 
                     break;
 
