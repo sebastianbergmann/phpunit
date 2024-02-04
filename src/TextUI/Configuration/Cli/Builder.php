@@ -810,7 +810,7 @@ final class Builder
                     $realPath = realpath($path);
 
                     if (!$realPath) {
-                        throw new Exception("The path {$path} specified for the --log-events-text option could not be resolved");
+                        throw new Exception("Specified path: {$path} can't be resolved");
                     }
                     $logEventsText = $realPath;
 
@@ -821,7 +821,7 @@ final class Builder
                     $realPath = realpath($path);
 
                     if (!$realPath) {
-                        throw new Exception("The path {$path} specified for the --log-events-verbose-text option could not be resolved");
+                        throw new Exception("Specified path: {$path} can't be resolved");
                     }
                     $logEventsVerboseText = $realPath;
 

@@ -1,8 +1,8 @@
 --TEST--
-Test fail with invalid path
+phpunit --no-output --log-events-verbose-text logfile.txt
 --FILE--
 <?php declare(strict_types=1);
-$traceFile = sys_get_temp_dir() . '/invalid-directory/invalid.file';
+$traceFile = 'dasdasdasdasd/dasdasdsa.log';
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
@@ -14,7 +14,11 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/log-events-text';
 require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
---EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
 
-The path /tmp/invalid-directory/invalid.file specified for the --log-events-verbose-text option could not be resolved
+print file_get_contents($traceFile);
+
+unlink($traceFile);
+--EXPECTF--
+PHPUnit 10.5.3 by Sebastian Bergmann and contributors.
+
+Specified path: dasdasdasdasd/dasdasdsa.log can't be resolved

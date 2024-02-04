@@ -1,8 +1,8 @@
 --TEST--
-Test fail with invalid path
+phpunit --no-output --log-events-text logfile.txt
 --FILE--
 <?php declare(strict_types=1);
-$traceFile = sys_get_temp_dir() . '/invalid-directory/invalid.file';
+$traceFile = 'dasdasdasdasd/dasdasdsa.log';
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
@@ -19,6 +19,6 @@ print file_get_contents($traceFile);
 
 unlink($traceFile);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit 10.5.3 by Sebastian Bergmann and contributors.
 
-The path /tmp/invalid-directory/invalid.file specified for the --log-events-text option could not be resolved
+Specified path: dasdasdasdasd/dasdasdsa.log can't be resolved
