@@ -58,6 +58,7 @@ use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
+use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 
 #[CoversClass(AttributeParser::class)]
 #[CoversClass(AfterClass::class)]
@@ -80,6 +81,7 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 #[CoversClass(Depends::class)]
 #[CoversClass(DependsUsingDeepClone::class)]
 #[CoversClass(DependsUsingShallowClone::class)]
+#[CoversClass(DisableReturnValueGenerationForTestDoubles::class)]
 #[CoversClass(DoesNotPerformAssertions::class)]
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]

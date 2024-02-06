@@ -142,6 +142,11 @@ abstract readonly class Metadata
         return new DependsOnMethod(self::METHOD_LEVEL, $className, $methodName, $deepClone, $shallowClone);
     }
 
+    public static function disableReturnValueGenerationForTestDoubles(): DisableReturnValueGenerationForTestDoubles
+    {
+        return new DisableReturnValueGenerationForTestDoubles(self::CLASS_LEVEL);
+    }
+
     public static function doesNotPerformAssertionsOnClass(): DoesNotPerformAssertions
     {
         return new DoesNotPerformAssertions(self::CLASS_LEVEL);
@@ -583,6 +588,14 @@ abstract readonly class Metadata
      * @psalm-assert-if-true DependsOnMethod $this
      */
     public function isDependsOnMethod(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true DisableReturnValueGenerationForTestDoubles $this
+     */
+    public function isDisableReturnValueGenerationForTestDoubles(): bool
     {
         return false;
     }
