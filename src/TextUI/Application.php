@@ -215,7 +215,7 @@ final readonly class Application
 
             $result = TestResultFacade::result();
 
-            if (!$extensionReplacesResultOutput) {
+            if (!$extensionReplacesResultOutput && !$configuration->debug()) {
                 OutputFacade::printResult($result, $testDoxResult, $duration);
             }
 
