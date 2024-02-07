@@ -68,17 +68,6 @@ final class TestUsingMocks extends TestCase
         self::assertSame('hello mock!', $mock->sayHello());
     }
 
-    public function testWillSayHelloThroughCreateTestProxy(): void
-    {
-        $mock = $this->createTestProxy(HelloWorldClass::class, []);
-
-        $mock
-            ->method('sayHello')
-            ->willReturn('hello mock!');
-
-        self::assertSame('hello mock!', $mock->sayHello());
-    }
-
     public function testWillSayHelloThroughGetMockBuilder(): void
     {
         $mock = $this
