@@ -74,22 +74,6 @@ final class MockBuilderTest extends TestCase
     }
 
     #[IgnorePhpunitDeprecations]
-    #[TestDox('allowMockingUnknownTypes() can be used to allow mocking of unknown types')]
-    public function testCreatesMockObjectForUnknownType(): void
-    {
-        $type = 'Type_' . substr(md5((string) mt_rand()), 0, 8);
-
-        assert(!class_exists($type) && !interface_exists($type) && !trait_exists($type));
-
-        $double = $this->getMockBuilder($type)
-            ->allowMockingUnknownTypes()
-            ->getMock();
-
-        $this->assertInstanceOf($type, $double);
-        $this->assertInstanceOf(MockObject::class, $double);
-    }
-
-    #[IgnorePhpunitDeprecations]
     public function testDefaultBehaviourCanBeConfiguredExplicitly(): void
     {
         $double = $this->getMockBuilder(ExtendableClass::class)
@@ -97,7 +81,6 @@ final class MockBuilderTest extends TestCase
             ->enableOriginalClone()
             ->enableAutoload()
             ->enableArgumentCloning()
-            ->allowMockingUnknownTypes()
             ->enableAutoReturnValueGeneration()
             ->getMock();
 

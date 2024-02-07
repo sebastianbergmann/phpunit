@@ -15,7 +15,6 @@ use function assert;
 use function debug_backtrace;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
-use PHPUnit\Framework\MockObject\Generator\CannotUseAddMethodsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
@@ -39,33 +38,28 @@ final class MockBuilder
     private readonly TestCase $testCase;
 
     /**
-     * @var class-string|trait-string
+     * @psalm-var class-string|trait-string
      */
     private readonly string $type;
 
     /**
-     * @var list<non-empty-string>
+     * @psalm-var list<non-empty-string>
      */
     private array $methods          = [];
     private bool $emptyMethodsArray = false;
 
     /**
-     * @var ?class-string
+     * @psalm-var ?class-string
      */
-    private ?string $mockClassName = null;
-
-    /**
-     * @var array<mixed>
-     */
-    private array $constructorArgs         = [];
-    private bool $originalConstructor      = true;
-    private bool $originalClone            = true;
-    private bool $autoload                 = true;
-    private bool $cloneArguments           = false;
-    private bool $callOriginalMethods      = false;
-    private ?object $proxyTarget           = null;
-    private bool $allowMockingUnknownTypes = true;
-    private bool $returnValueGeneration    = true;
+    private ?string $mockClassName      = null;
+    private array $constructorArgs      = [];
+    private bool $originalConstructor   = true;
+    private bool $originalClone         = true;
+    private bool $autoload              = true;
+    private bool $cloneArguments        = false;
+    private bool $callOriginalMethods   = false;
+    private ?object $proxyTarget        = null;
+    private bool $returnValueGeneration = true;
     private readonly Generator $generator;
 
     /**
@@ -109,7 +103,7 @@ final class MockBuilder
             $this->cloneArguments,
             $this->callOriginalMethods,
             $this->proxyTarget,
-            $this->allowMockingUnknownTypes,
+            false,
             $this->returnValueGeneration,
         );
 
@@ -316,42 +310,6 @@ final class MockBuilder
         );
 
         $this->cloneArguments = true;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5308
-     */
-    public function allowMockingUnknownTypes(): self
-    {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::allowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $this->allowMockingUnknownTypes = true;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5308
-     */
-    public function disallowMockingUnknownTypes(): self
-    {
-        if (!$this->calledFromTestCase()) {
-            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-                $this->testCase->valueObjectForEvents(),
-                'MockBuilder::disallowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12 without replacement.',
-            );
-        }
-
-        $this->allowMockingUnknownTypes = false;
 
         return $this;
     }
