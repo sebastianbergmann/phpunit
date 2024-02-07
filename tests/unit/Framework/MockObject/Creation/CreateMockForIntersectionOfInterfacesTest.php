@@ -35,6 +35,14 @@ final class CreateMockForIntersectionOfInterfacesTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
+    public function testReturnValueGenerationIsEnabledByDefault(): void
+    {
+        $double = $this->createMockForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
+
+        $this->assertFalse($double->doSomething());
+        $this->assertNull($double->doSomethingElse());
+    }
+
     public function testCannotCreateMockObjectForIntersectionOfInterfacesWhenLessThanTwoInterfacesAreSpecified(): void
     {
         $this->expectException(GeneratorRuntimeException::class);

@@ -43,7 +43,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $mock->expects($this->never())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            AnInterface::class . '::doSomething() was not expected to be called.',
+            AnInterface::class . '::doSomething(): bool was not expected to be called.',
             $mock,
             'doSomething',
         );
@@ -101,7 +101,7 @@ EOT,
         $mock->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            AnInterface::class . '::doSomething() was not expected to be called more than once.',
+            AnInterface::class . '::doSomething(): bool was not expected to be called more than once.',
             $mock,
             'doSomething',
         );
@@ -235,7 +235,7 @@ EOT,
         $mock->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            AnInterface::class . '::doSomething() was not expected to be called more than 2 times.',
+            AnInterface::class . '::doSomething(): bool was not expected to be called more than 2 times.',
             $mock,
             'doSomething',
         );

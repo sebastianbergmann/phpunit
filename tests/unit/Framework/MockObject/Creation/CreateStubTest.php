@@ -46,6 +46,13 @@ final class CreateStubTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
+    public function testReturnValueGenerationIsEnabledByDefault(): void
+    {
+        $double = $this->createStub(AnInterface::class);
+
+        $this->assertFalse($double->doSomething());
+    }
+
     public function testCannotCreateTestStubForFinalClass(): void
     {
         $this->expectException(ClassIsFinalException::class);

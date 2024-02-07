@@ -35,6 +35,14 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
+    public function testReturnValueGenerationIsEnabledByDefault(): void
+    {
+        $double = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
+
+        $this->assertFalse($double->doSomething());
+        $this->assertNull($double->doSomethingElse());
+    }
+
     public function testCannotCreateTestStubForIntersectionOfInterfacesWhenLessThanTwoInterfacesAreSpecified(): void
     {
         $this->expectException(GeneratorRuntimeException::class);
