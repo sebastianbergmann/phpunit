@@ -15,15 +15,12 @@ use const LC_CTYPE;
 use const LC_MONETARY;
 use const LC_NUMERIC;
 use const LC_TIME;
-use const PATHINFO_FILENAME;
 use const PHP_EOL;
-use const PHP_URL_PATH;
 use function array_keys;
 use function array_merge;
 use function array_reverse;
 use function array_values;
 use function assert;
-use function basename;
 use function chdir;
 use function class_exists;
 use function clearstatcache;
@@ -47,10 +44,7 @@ use function ob_get_clean;
 use function ob_get_contents;
 use function ob_get_level;
 use function ob_start;
-use function parse_url;
-use function pathinfo;
 use function preg_match;
-use function preg_replace;
 use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
@@ -1476,67 +1470,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         return $testProxy;
-    }
-
-    /**
-     * Creates a mock object based on the given WSDL file.
-     *
-     * @param list<string> $methods
-     * @param list<mixed>  $options
-     *
-     * @throws MockObjectException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5242
-     */
-    final protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'getMockFromWsdl() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        if ($originalClassName === '') {
-            $fileName          = pathinfo(basename(parse_url($wsdlFile, PHP_URL_PATH)), PATHINFO_FILENAME);
-            $originalClassName = preg_replace('/\W/', '', $fileName);
-        }
-
-        if (!class_exists($originalClassName)) {
-            eval(
-                (new MockGenerator)->generateClassFromWsdl(
-                    $wsdlFile,
-                    $originalClassName,
-                    $methods,
-                    $options,
-                )
-            );
-        }
-
-        $mockObject = (new MockGenerator)->testDouble(
-            $originalClassName,
-            true,
-            true,
-            $methods,
-            ['', $options],
-            $mockClassName,
-            $callOriginalConstructor,
-            false,
-            false,
-        );
-
-        Event\Facade::emitter()->testCreatedMockObjectFromWsdl(
-            $wsdlFile,
-            $originalClassName,
-            $mockClassName,
-            $methods,
-            $callOriginalConstructor,
-            $options,
-        );
-
-        assert($mockObject instanceof MockObject);
-
-        $this->registerMockObject($mockObject);
-
-        return $mockObject;
     }
 
     protected function transformException(Throwable $t): Throwable
