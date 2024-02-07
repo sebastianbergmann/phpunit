@@ -73,7 +73,7 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithStaticReturnTypes', 'returnsStatic', $__phpunit_arguments, 'static', $this, true
+                'ClassWithStaticReturnTypes', 'returnsStatic', $__phpunit_arguments, 'static', $this
             )
         );
 
@@ -110,7 +110,7 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithStaticReturnTypes', 'returnsStaticOrNull', $__phpunit_arguments, '?static', $this, true
+                'ClassWithStaticReturnTypes', 'returnsStaticOrNull', $__phpunit_arguments, '?static', $this
             )
         );
 
@@ -147,7 +147,7 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithStaticReturnTypes', 'returnsUnionWithStatic', $__phpunit_arguments, 'static|stdClass', $this, true
+                'ClassWithStaticReturnTypes', 'returnsUnionWithStatic', $__phpunit_arguments, 'static|stdClass', $this
             )
         );
 

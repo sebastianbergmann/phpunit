@@ -69,7 +69,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, '', $this, true
+                'Foo', 'bar', $__phpunit_arguments, '', $this
             )
         );
 

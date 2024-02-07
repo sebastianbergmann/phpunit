@@ -63,7 +63,7 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObjectInternal, Foo
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'null', $this, true
+                'Foo', 'bar', $__phpunit_arguments, 'null', $this
             )
         );
 

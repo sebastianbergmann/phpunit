@@ -54,7 +54,7 @@ class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWi
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this, true
+                'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this
             )
         );
 

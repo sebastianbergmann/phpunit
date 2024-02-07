@@ -67,7 +67,7 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Bar', 'foo', $__phpunit_arguments, 'string', $this, true
+                'Bar', 'foo', $__phpunit_arguments, 'string', $this
             )
         );
 

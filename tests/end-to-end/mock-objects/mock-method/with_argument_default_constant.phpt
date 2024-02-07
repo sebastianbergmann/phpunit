@@ -56,7 +56,7 @@ private function bar($a = 1, $b = 2, $c = 3, $d = 4)
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, '', $this, false
+                'Foo', 'bar', $__phpunit_arguments, '', $this
             )
         );
 

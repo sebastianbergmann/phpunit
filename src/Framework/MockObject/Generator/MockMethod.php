@@ -16,7 +16,6 @@ use function is_object;
 use function is_string;
 use function preg_match;
 use function preg_replace;
-use function sprintf;
 use function strlen;
 use function strpos;
 use function substr;
@@ -47,13 +46,11 @@ final class MockMethod
      * @var non-empty-string
      */
     private readonly string $methodName;
-    private readonly bool $cloneArguments;
     private readonly string $modifier;
     private readonly string $argumentsForDeclaration;
     private readonly string $argumentsForCall;
     private readonly Type $returnType;
     private readonly string $reference;
-    private readonly bool $callOriginalMethod;
     private readonly bool $static;
     private readonly ?string $deprecation;
 
@@ -71,7 +68,7 @@ final class MockMethod
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
+    public static function fromReflection(ReflectionMethod $method): self
     {
         if ($method->isPrivate()) {
             $modifier = 'private';
@@ -103,7 +100,6 @@ final class MockMethod
         return new self(
             $method->getDeclaringClass()->getName(),
             $method->getName(),
-            $cloneArguments,
             $modifier,
             self::methodParametersForDeclaration($method),
             self::methodParametersForCall($method),
@@ -111,7 +107,6 @@ final class MockMethod
             count($method->getParameters()),
             (new ReflectionMapper)->fromReturnType($method),
             $reference,
-            $callOriginalMethod,
             $method->isStatic(),
             $deprecation,
         );
@@ -121,12 +116,11 @@ final class MockMethod
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public static function fromName(string $className, string $methodName, bool $cloneArguments): self
+    public static function fromName(string $className, string $methodName): self
     {
         return new self(
             $className,
             $methodName,
-            $cloneArguments,
             'public',
             '',
             '',
@@ -134,7 +128,6 @@ final class MockMethod
             0,
             new UnknownType,
             '',
-            false,
             false,
             null,
         );
@@ -146,11 +139,10 @@ final class MockMethod
      * @param array<int, mixed> $defaultParameterValues
      * @param non-negative-int  $numberOfParameters
      */
-    private function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, array $defaultParameterValues, int $numberOfParameters, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation)
+    private function __construct(string $className, string $methodName, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, array $defaultParameterValues, int $numberOfParameters, Type $returnType, string $reference, bool $static, ?string $deprecation)
     {
         $this->className               = $className;
         $this->methodName              = $methodName;
-        $this->cloneArguments          = $cloneArguments;
         $this->modifier                = $modifier;
         $this->argumentsForDeclaration = $argumentsForDeclaration;
         $this->argumentsForCall        = $argumentsForCall;
@@ -158,7 +150,6 @@ final class MockMethod
         $this->numberOfParameters      = $numberOfParameters;
         $this->returnType              = $returnType;
         $this->reference               = $reference;
-        $this->callOriginalMethod      = $callOriginalMethod;
         $this->static                  = $static;
         $this->deprecation             = $deprecation;
     }
@@ -179,10 +170,7 @@ final class MockMethod
         if ($this->static) {
             $templateFile = 'doubled_static_method.tpl';
         } else {
-            $templateFile = sprintf(
-                '%s_method.tpl',
-                $this->callOriginalMethod ? 'proxied' : 'doubled',
-            );
+            $templateFile = 'doubled_method.tpl';
         }
 
         $deprecation  = $this->deprecation;
@@ -222,7 +210,6 @@ EOT;
                 'method_name'        => $this->methodName,
                 'modifier'           => $this->modifier,
                 'reference'          => $this->reference,
-                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
                 'deprecation'        => $deprecation,
                 'return_result'      => $returnResult,
             ],

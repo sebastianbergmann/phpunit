@@ -65,7 +65,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObjectInternal
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'C', 'm', $__phpunit_arguments, 'C', $this, true
+                'C', 'm', $__phpunit_arguments, 'C', $this
             )
         );
 

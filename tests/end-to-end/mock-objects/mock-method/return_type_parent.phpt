@@ -55,7 +55,7 @@ public function bar(): Baz
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'Baz', $this, false
+                'Foo', 'bar', $__phpunit_arguments, 'Baz', $this
             )
         );
 
