@@ -79,8 +79,6 @@ final class MockBuilderTest extends TestCase
         $double = $this->getMockBuilder(ExtendableClass::class)
             ->enableOriginalConstructor()
             ->enableOriginalClone()
-            ->enableAutoload()
-            ->enableArgumentCloning()
             ->enableAutoReturnValueGeneration()
             ->getMock();
 
