@@ -118,33 +118,9 @@ interface Emitter
     public function testCreatedMockObjectForIntersectionOfInterfaces(array $interfaces): void;
 
     /**
-     * @param trait-string $traitName
-     */
-    public function testCreatedMockObjectForTrait(string $traitName): void;
-
-    /**
-     * @param class-string $className
-     */
-    public function testCreatedMockObjectForAbstractClass(string $className): void;
-
-    /**
-     * @param class-string $originalClassName
-     * @param class-string $mockClassName
-     * @param list<string> $methods
-     * @param list<mixed>  $options
-     */
-    public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void;
-
-    /**
      * @param class-string $className
      */
     public function testCreatedPartialMockObject(string $className, string ...$methodNames): void;
-
-    /**
-     * @param class-string $className
-     * @param list<mixed>  $constructorArguments
-     */
-    public function testCreatedTestProxy(string $className, array $constructorArguments): void;
 
     /**
      * @param class-string $className
