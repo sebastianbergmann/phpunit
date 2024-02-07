@@ -9,13 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function assert;
-use function class_exists;
-use function interface_exists;
 use function md5;
 use function mt_rand;
-use function substr;
-use function trait_exists;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
