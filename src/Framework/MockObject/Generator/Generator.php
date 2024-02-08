@@ -108,7 +108,7 @@ final class Generator
         $this->ensureValidMethods($methods);
         $this->ensureNameForTestDoubleClassIsAvailable($mockClassName);
 
-        $mock = $this->generate(
+        $testDoubleClass = $this->generate(
             $type,
             $mockObject,
             $methods,
@@ -116,22 +116,22 @@ final class Generator
             $callOriginalClone,
         );
 
-        $object = $this->getObject(
-            $mock,
+        $testDoubleObject = $this->getObject(
+            $testDoubleClass,
             $callOriginalConstructor,
             $arguments,
             $returnValueGeneration,
         );
 
-        assert($object instanceof $type);
+        assert($testDoubleObject instanceof $type);
 
         if ($mockObject) {
-            assert($object instanceof MockObject);
+            assert($testDoubleObject instanceof MockObject);
         } else {
-            assert($object instanceof Stub);
+            assert($testDoubleObject instanceof Stub);
         }
 
-        return $object;
+        return $testDoubleObject;
     }
 
     /**
