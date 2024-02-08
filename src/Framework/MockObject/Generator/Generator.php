@@ -289,7 +289,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function getObject(MockClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 
