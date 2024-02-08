@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function call_user_func_array;
 use function func_get_args;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
@@ -23,7 +24,7 @@ trait Method
 {
     abstract public function __phpunit_getInvocationHandler(): InvocationHandler;
 
-    public function method(): InvocationMocker
+    public function method(Constraint|string $constraint): InvocationMocker
     {
         $expects = $this->__phpunit_getInvocationHandler()->expects(new AnyInvokedCount);
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
 
 /**
@@ -16,5 +17,5 @@ use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
  */
 interface Stub
 {
-    public function method(): InvocationStubber;
+    public function method(Constraint|string $constraint): InvocationStubber;
 }
