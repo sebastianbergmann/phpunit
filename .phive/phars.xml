@@ -4,5 +4,5 @@
   <phar name="php-cs-fixer" version="^3.0" installed="3.49.0" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="psalm" version="^5.0" installed="5.21.1" location="./tools/psalm" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.18" installed="0.18.11" location="./tools/php-scoper" copy="true"/>
-  <phar name="composer" version="^2.0.3" installed="2.6.6" location="./tools/composer" copy="true"/>
+  <phar name="composer" version="^2.0.3" installed="2.7.0" location="./tools/composer" copy="true"/>
 </phive>
