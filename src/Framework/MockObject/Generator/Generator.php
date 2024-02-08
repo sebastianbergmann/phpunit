@@ -397,7 +397,8 @@ final class Generator
                 $isReadonly = true;
             }
 
-            if ($class->hasMethod('method')) {
+            if ($class->hasMethod('method') ||
+                ($explicitMethods !== null && in_array('method', $explicitMethods, true))) {
                 throw new MethodNamedMethodException;
             }
 
@@ -484,10 +485,6 @@ final class Generator
                     );
                 }
             }
-        }
-
-        if ($mockMethods->hasMethod('method')) {
-            throw new MethodNamedMethodException;
         }
 
         $mockedMethods = '';

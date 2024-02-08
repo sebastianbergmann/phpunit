@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Generator;
 
-use function array_key_exists;
 use function array_values;
 use function strtolower;
 
@@ -38,10 +37,5 @@ final class MockMethodSet
     public function asArray(): array
     {
         return array_values($this->methods);
-    }
-
-    public function hasMethod(string $methodName): bool
-    {
-        return array_key_exists(strtolower($methodName), $this->methods);
     }
 }
