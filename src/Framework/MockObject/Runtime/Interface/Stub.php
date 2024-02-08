@@ -12,10 +12,9 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
 
 /**
- * @method InvocationStubber method($constraint)
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface Stub
 {
+    public function method(): InvocationStubber;
 }
