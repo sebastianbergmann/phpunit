@@ -84,7 +84,6 @@ final class MockBuilder
         $object = $this->generator->testDouble(
             $this->type,
             true,
-            true,
             !$this->emptyMethodsArray ? $this->methods : null,
             $this->constructorArgs,
             $this->mockClassName ?? '',

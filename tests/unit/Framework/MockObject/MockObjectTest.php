@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 use function call_user_func_array;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -418,16 +417,6 @@ EOT,
         }
 
         $this->fail();
-    }
-
-    #[IgnorePhpunitDeprecations]
-    public function testExpectationsCanBeConfiguredOnTestStubs(): void
-    {
-        $mock = $this->createStub(AnInterface::class);
-
-        $mock->expects($this->never())->method('doSomething');
-
-        $this->assertTrue(true);
     }
 
     public function testWillReturnCallbackWithVariadicVariables(): void

@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
-$mock = $generator->generate(InterfaceWithConstructor::class, true, true);
+$mock = $generator->generate(InterfaceWithConstructor::class, true);
 
 print $mock->classCode();
 --EXPECTF--
@@ -20,7 +20,6 @@ class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWi
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

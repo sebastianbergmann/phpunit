@@ -24,7 +24,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'ClassWithStaticReturnTypes',
     true,
-    true,
     [],
     'MockClassWithStaticReturnTypes',
     true,
@@ -39,7 +38,6 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

@@ -16,7 +16,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'ClassWithMethodWithTypehintedVariadicArguments',
     true,
-    true,
     [],
     'MockFoo',
     true,
@@ -31,7 +30,6 @@ class MockFoo extends ClassWithMethodWithTypehintedVariadicArguments implements 
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
