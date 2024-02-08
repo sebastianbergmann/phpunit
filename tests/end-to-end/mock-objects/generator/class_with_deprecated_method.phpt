@@ -34,7 +34,6 @@ class MockFoo extends ClassWithDeprecatedMethod implements PHPUnit\Framework\Moc
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function deprecatedMethod()

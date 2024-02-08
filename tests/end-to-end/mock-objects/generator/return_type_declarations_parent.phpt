@@ -35,7 +35,6 @@ class MockBar extends Bar implements PHPUnit\Framework\MockObject\MockObjectInte
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function baz(): Foo

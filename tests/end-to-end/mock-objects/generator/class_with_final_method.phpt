@@ -30,6 +30,5 @@ class MockFoo extends ClassWithFinalMethod implements PHPUnit\Framework\MockObje
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 }

@@ -44,7 +44,6 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function a(int $i = %d, int $j = 17, string $v = '%s', string $z = '#'): string

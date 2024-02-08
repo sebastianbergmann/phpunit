@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -33,5 +37,10 @@ trait StubApi
     public function __phpunit_unsetInvocationMocker(): void
     {
         $this->__phpunit_state()->unsetInvocationHandler();
+    }
+
+    public function method(Constraint|string $constraint): InvocationMocker
+    {
+        return $this->__phpunit_getInvocationHandler()->expects(new AnyInvokedCount)->method($constraint);
     }
 }

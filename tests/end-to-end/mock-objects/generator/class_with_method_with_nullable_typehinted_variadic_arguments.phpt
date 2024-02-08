@@ -30,7 +30,6 @@ class MockFoo extends ClassWithMethodWithNullableTypehintedVariadicArguments imp
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function methodWithNullableTypehintedVariadicArguments($a, ?string ...$parameters)

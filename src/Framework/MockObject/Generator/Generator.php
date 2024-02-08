@@ -512,12 +512,6 @@ final class Generator
             $traits[] = MockObjectApi::class;
         }
 
-        if ($mockMethods->hasMethod('method') || (isset($class) && $class->hasMethod('method'))) {
-            throw new MethodNamedMethodException;
-        }
-
-        $traits[] = Method::class;
-
         if ($isPhp82 && $isReadonly) {
             // @codeCoverageIgnoreStart
             $traits[] = ErrorCloneMethod::class;

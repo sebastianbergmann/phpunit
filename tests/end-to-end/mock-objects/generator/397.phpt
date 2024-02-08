@@ -30,7 +30,6 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function m(?C $other): C
