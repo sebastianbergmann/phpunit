@@ -1836,7 +1836,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($activeErrorHandlers !== $this->backupGlobalErrorHandlers) {
             if (count($activeErrorHandlers) > count($this->backupGlobalErrorHandlers)) {
-                $message = 'Test code or tested code did not remove its own error handlers';
+                if (!$this->inIsolation) {
+                    $message = 'Test code or tested code did not remove its own error handlers';
+                }
             } else {
                 $message = 'Test code or tested code removed error handlers other than its own';
             }
@@ -1850,9 +1852,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
+        if ($message !== null) {
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                $message,
+            );
+
+            $this->status = TestStatus::risky($message);
+        }
+
+        $message = null;
+
         if ($activeExceptionHandlers !== $this->backupGlobalExceptionHandlers) {
             if (count($activeExceptionHandlers) > count($this->backupGlobalExceptionHandlers)) {
-                $message = 'Test code or tested code did not remove its own exception handlers';
+                if (!$this->inIsolation) {
+                    $message = 'Test code or tested code did not remove its own exception handlers';
+                }
             } else {
                 $message = 'Test code or tested code removed exception handlers other than its own';
             }
