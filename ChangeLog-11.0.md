@@ -4,9 +4,13 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ## [11.0.3] - 2024-MM-DD
 
+### Changed
+
+* Tests that do not unregister their error handlers or exception handlers are no longer considered risky when they are run in an isolated process
+
 ### Fixed
 
-* When a test (or the code called from it) does not remove its own error handlers and its own exception handlers then only the latter was reported
+* When a test (or the code called from it) does not unregister its own error handlers and its own exception handlers then only the latter was reported
 * Resource usage information is printed when the `--debug` CLI option is used
 
 ## [11.0.2] - 2024-04-04
