@@ -1850,6 +1850,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
+        if ($message !== null) {
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                $message,
+            );
+
+            $this->status = TestStatus::risky($message);
+        }
+
+        $message = null;
+
         if ($activeExceptionHandlers !== $this->backupGlobalExceptionHandlers) {
             if (count($activeExceptionHandlers) > count($this->backupGlobalExceptionHandlers)) {
                 $message = 'Test code or tested code did not remove its own exception handlers';

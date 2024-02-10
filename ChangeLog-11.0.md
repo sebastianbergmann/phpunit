@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ### Fixed
 
+* When a test (or the code called from it) does not remove its own error handlers and its own exception handlers then only the latter was reported
 * Resource usage information is printed when the `--debug` CLI option is used
 
 ## [11.0.2] - 2024-04-04
