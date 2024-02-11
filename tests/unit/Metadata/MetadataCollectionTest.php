@@ -32,6 +32,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(DataProvider::class)]
 #[UsesClass(DependsOnClass::class)]
 #[UsesClass(DependsOnMethod::class)]
+#[UsesClass(DisableReturnValueGenerationForTestDoubles::class)]
 #[UsesClass(DoesNotPerformAssertions::class)]
 #[UsesClass(Group::class)]
 #[UsesClass(Metadata::class)]
@@ -246,6 +247,14 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isDependsOnMethod());
+    }
+
+    public function test_Can_be_filtered_for_DisableReturnValueGenerationForTestDoubles(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isDisableReturnValueGenerationForTestDoubles();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isDisableReturnValueGenerationForTestDoubles());
     }
 
     public function test_Can_be_filtered_for_DoesNotPerformAssertions(): void
@@ -482,6 +491,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::dataProvider('', ''),
                 Metadata::dependsOnClass('', false, false),
                 Metadata::dependsOnMethod('', '', false, false),
+                Metadata::disableReturnValueGenerationForTestDoubles(),
                 Metadata::doesNotPerformAssertionsOnClass(),
                 Metadata::excludeGlobalVariableFromBackupOnClass(''),
                 Metadata::excludeStaticPropertyFromBackupOnClass('', ''),

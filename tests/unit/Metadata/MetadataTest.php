@@ -29,6 +29,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(DataProvider::class)]
 #[CoversClass(DependsOnClass::class)]
 #[CoversClass(DependsOnMethod::class)]
+#[CoversClass(DisableReturnValueGenerationForTestDoubles::class)]
 #[CoversClass(DoesNotPerformAssertions::class)]
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
@@ -78,6 +79,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -125,6 +127,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -172,6 +175,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -223,6 +227,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -274,6 +279,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -325,6 +331,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -376,6 +383,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -423,6 +431,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -470,6 +479,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -521,6 +531,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -572,6 +583,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -622,6 +634,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -671,6 +684,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -721,6 +735,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -771,6 +786,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -821,6 +837,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -871,6 +888,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertTrue($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -922,6 +940,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertTrue($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -956,6 +975,54 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->shallowClone());
     }
 
+    public function testCanBeDisableReturnValueGenerationForTestDoubles(): void
+    {
+        $metadata = Metadata::disableReturnValueGenerationForTestDoubles();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertTrue($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+    }
+
     public function testCanBeDoesNotPerformAssertionsOnClass(): void
     {
         $metadata = Metadata::doesNotPerformAssertionsOnClass();
@@ -974,6 +1041,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertTrue($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1024,6 +1092,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertTrue($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1074,6 +1143,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertTrue($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1125,6 +1195,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertTrue($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1176,6 +1247,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
@@ -1228,6 +1300,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
@@ -1280,6 +1353,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1331,6 +1405,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1378,6 +1453,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1425,6 +1501,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1476,6 +1553,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1523,6 +1601,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1570,6 +1649,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1617,6 +1697,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1664,6 +1745,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1711,6 +1793,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1757,6 +1840,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1807,6 +1891,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1858,6 +1943,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1910,6 +1996,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -1962,6 +2049,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2013,6 +2101,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2064,6 +2153,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2115,6 +2205,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2166,6 +2257,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2217,6 +2309,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2273,6 +2366,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2330,6 +2424,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2382,6 +2477,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2444,6 +2540,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2498,6 +2595,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2560,6 +2658,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2619,6 +2718,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2676,6 +2776,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2728,6 +2829,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2781,6 +2883,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2834,6 +2937,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2886,6 +2990,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2938,6 +3043,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -2987,6 +3093,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -3039,6 +3146,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -3091,6 +3199,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -3141,6 +3250,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -3190,6 +3300,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
@@ -3240,6 +3351,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
         $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());

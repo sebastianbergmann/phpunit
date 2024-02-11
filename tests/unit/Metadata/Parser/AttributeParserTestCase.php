@@ -21,6 +21,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DisableReturnValueGenerationForTestDoublesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
@@ -96,6 +97,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
+    }
+
+    #[TestDox('Parses #[DisableReturnValueGenerationForTestDoubles] attribute on class')]
+    public function test_parses_DisableReturnValueGenerationForTestDoubles_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(DisableReturnValueGenerationForTestDoublesTest::class)->isDisableReturnValueGenerationForTestDoubles();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isDisableReturnValueGenerationForTestDoubles());
     }
 
     #[TestDox('Parses #[DoesNotPerformAssertions] attribute on class')]

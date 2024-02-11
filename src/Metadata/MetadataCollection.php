@@ -270,6 +270,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isDisableReturnValueGenerationForTestDoubles(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isDisableReturnValueGenerationForTestDoubles(),
+            ),
+        );
+    }
+
     public function isDoesNotPerformAssertions(): self
     {
         return new self(

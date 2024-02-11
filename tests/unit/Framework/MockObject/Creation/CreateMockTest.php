@@ -46,6 +46,13 @@ final class CreateMockTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
+    public function testReturnValueGenerationIsEnabledByDefault(): void
+    {
+        $double = $this->createMock(AnInterface::class);
+
+        $this->assertFalse($double->doSomething());
+    }
+
     public function testCannotCreateMockObjectForFinalClass(): void
     {
         $this->expectException(ClassIsFinalException::class);
