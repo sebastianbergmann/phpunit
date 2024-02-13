@@ -55,7 +55,7 @@ trait MockObjectApi
         assert($this instanceof StubInternal);
 
         if (!$this->__phpunit_wasGeneratedAsMockObject()) {
-            $message = 'Configuring expectations on test doubles that were created as test stubs is deprecated. Support for this will be removed in PHPUnit 12.';
+            $message = 'Expectations configured on test doubles that are created as test stubs are no longer verified since PHPUnit 10. Test doubles that are created as test stubs will no longer have the expects() method in PHPUnit 12. Update your test code to use createMock() instead of createStub(), for example.';
 
             try {
                 $test = TestMethodBuilder::fromCallStack();
