@@ -95,7 +95,7 @@ final class MockBuilder
         );
 
         assert($object instanceof $this->type);
-        assert($object instanceof MockObject);
+        assert($object instanceof MockObjectInternal);
 
         $this->testCase->registerMockObject($object);
 
