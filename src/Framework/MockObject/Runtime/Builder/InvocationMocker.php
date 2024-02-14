@@ -99,7 +99,9 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
             $stub = $value instanceof Stub ? $value : new ReturnStub($value);
 
-            return $this->will($stub);
+            $this->matcher->setStub($stub);
+
+            return $this;
         }
 
         $values = array_merge([$value], $nextValues);
@@ -108,14 +110,18 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
         $stub = new ConsecutiveCalls($values);
 
-        return $this->will($stub);
+        $this->matcher->setStub($stub);
+
+        return $this;
     }
 
     public function willReturnReference(mixed &$reference): self
     {
         $stub = new ReturnReference($reference);
 
-        return $this->will($stub);
+        $this->matcher->setStub($stub);
+
+        return $this;
     }
 
     public function willReturnMap(array $valueMap): self
@@ -158,44 +164,44 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             $_valueMap[] = $_mapping;
         }
 
-        $stub = new ReturnValueMap($_valueMap);
+        $this->matcher->setStub(new ReturnValueMap($_valueMap));
 
-        return $this->will($stub);
+        return $this;
     }
 
     public function willReturnArgument(int $argumentIndex): self
     {
-        $stub = new ReturnArgument($argumentIndex);
+        $this->matcher->setStub(new ReturnArgument($argumentIndex));
 
-        return $this->will($stub);
+        return $this;
     }
 
     public function willReturnCallback(callable $callback): self
     {
-        $stub = new ReturnCallback($callback);
+        $this->matcher->setStub(new ReturnCallback($callback));
 
-        return $this->will($stub);
+        return $this;
     }
 
     public function willReturnSelf(): self
     {
-        $stub = new ReturnSelf;
+        $this->matcher->setStub(new ReturnSelf);
 
-        return $this->will($stub);
+        return $this;
     }
 
     public function willReturnOnConsecutiveCalls(mixed ...$values): self
     {
-        $stub = new ConsecutiveCalls($values);
+        $this->matcher->setStub(new ConsecutiveCalls($values));
 
-        return $this->will($stub);
+        return $this;
     }
 
     public function willThrowException(Throwable $exception): self
     {
-        $stub = new Exception($exception);
+        $this->matcher->setStub(new Exception($exception));
 
-        return $this->will($stub);
+        return $this;
     }
 
     /**
