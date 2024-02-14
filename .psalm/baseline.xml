@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.20.0@3f284e96c9d9be6fe6b15c79416e1d1903dcfef4">
+<files psalm-version="5.22.0@fe2c67ec89f358940f90db05efd2d663388b45a6">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
       <code><![CDATA[$expectedElement->childNodes->item($i)]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedClass>
-      <code>ClassHasAttribute</code>
-      <code>ClassHasStaticAttribute</code>
-      <code>ObjectHasAttribute</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
+      <code><![CDATA[ClassHasAttribute]]></code>
+      <code><![CDATA[ClassHasStaticAttribute]]></code>
+      <code><![CDATA[ObjectHasAttribute]]></code>
+      <code><![CDATA[new ClassHasAttribute($attributeName)]]></code>
+      <code><![CDATA[new ClassHasAttribute($attributeName)]]></code>
+      <code><![CDATA[new ClassHasAttribute($attributeName)]]></code>
+      <code><![CDATA[new ClassHasStaticAttribute($attributeName)]]></code>
+      <code><![CDATA[new ClassHasStaticAttribute($attributeName)]]></code>
+      <code><![CDATA[new ClassHasStaticAttribute($attributeName)]]></code>
+      <code><![CDATA[new ObjectHasAttribute($attributeName)]]></code>
+      <code><![CDATA[new ObjectHasAttribute($attributeName)]]></code>
+      <code><![CDATA[new ObjectHasAttribute($attributeName)]]></code>
     </DeprecatedClass>
     <DeprecatedMethod>
-      <code>Xml::import($actualElement)</code>
-      <code>Xml::import($expectedElement)</code>
-      <code>Xml::removeCharacterDataNodes($actualElement)</code>
-      <code>Xml::removeCharacterDataNodes($expectedElement)</code>
+      <code><![CDATA[Xml::import($actualElement)]]></code>
+      <code><![CDATA[Xml::import($expectedElement)]]></code>
+      <code><![CDATA[Xml::removeCharacterDataNodes($actualElement)]]></code>
+      <code><![CDATA[Xml::removeCharacterDataNodes($expectedElement)]]></code>
       <code><![CDATA[static::assertEqualXMLStructure(
                 $expectedElement->childNodes->item($i),
                 $actualElement->childNodes->item($i),
@@ -38,365 +38,365 @@
       <code><![CDATA[!$expected instanceof Countable && !is_iterable($expected)]]></code>
       <code><![CDATA[!$haystack instanceof Countable && !is_iterable($haystack)]]></code>
       <code><![CDATA[!$haystack instanceof Countable && !is_iterable($haystack)]]></code>
-      <code>is_int($key) || is_string($key)</code>
-      <code>is_int($key) || is_string($key)</code>
-      <code>is_object($object)</code>
-      <code>is_object($object)</code>
-      <code>is_string($key)</code>
-      <code>is_string($key)</code>
+      <code><![CDATA[is_int($key) || is_string($key)]]></code>
+      <code><![CDATA[is_int($key) || is_string($key)]]></code>
+      <code><![CDATA[is_object($object)]]></code>
+      <code><![CDATA[is_object($object)]]></code>
+      <code><![CDATA[is_string($key)]]></code>
+      <code><![CDATA[is_string($key)]]></code>
     </DocblockTypeContradiction>
     <MissingParamType>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$attributeName</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$prefix</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$attributeName]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$prefix]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>loadFile</code>
-      <code>loadFile</code>
-      <code>loadFile</code>
-      <code>loadFile</code>
-      <code>new IsType($type)</code>
-      <code>new IsType(IsType::TYPE_ARRAY)</code>
-      <code>new IsType(IsType::TYPE_ARRAY)</code>
-      <code>new IsType(IsType::TYPE_BOOL)</code>
-      <code>new IsType(IsType::TYPE_BOOL)</code>
-      <code>new IsType(IsType::TYPE_CALLABLE)</code>
-      <code>new IsType(IsType::TYPE_CALLABLE)</code>
-      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_FLOAT)</code>
-      <code>new IsType(IsType::TYPE_FLOAT)</code>
-      <code>new IsType(IsType::TYPE_INT)</code>
-      <code>new IsType(IsType::TYPE_INT)</code>
-      <code>new IsType(IsType::TYPE_ITERABLE)</code>
-      <code>new IsType(IsType::TYPE_ITERABLE)</code>
-      <code>new IsType(IsType::TYPE_NUMERIC)</code>
-      <code>new IsType(IsType::TYPE_NUMERIC)</code>
-      <code>new IsType(IsType::TYPE_OBJECT)</code>
-      <code>new IsType(IsType::TYPE_OBJECT)</code>
-      <code>new IsType(IsType::TYPE_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_SCALAR)</code>
-      <code>new IsType(IsType::TYPE_SCALAR)</code>
-      <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new TraversableContainsOnly(
+      <code><![CDATA[loadFile]]></code>
+      <code><![CDATA[loadFile]]></code>
+      <code><![CDATA[loadFile]]></code>
+      <code><![CDATA[loadFile]]></code>
+      <code><![CDATA[new IsType($type)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_ARRAY)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_ARRAY)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_BOOL)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_BOOL)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_CALLABLE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_CALLABLE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_CLOSED_RESOURCE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_CLOSED_RESOURCE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_FLOAT)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_FLOAT)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_INT)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_INT)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_ITERABLE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_ITERABLE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_NUMERIC)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_NUMERIC)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_OBJECT)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_OBJECT)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_RESOURCE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_RESOURCE)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_SCALAR)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_SCALAR)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_STRING)]]></code>
+      <code><![CDATA[new IsType(IsType::TYPE_STRING)]]></code>
+      <code><![CDATA[new TraversableContainsOnly(
                     $type,
                     $isNativeType,
-                )</code>
-      <code>new TraversableContainsOnly(
+                )]]></code>
+      <code><![CDATA[new TraversableContainsOnly(
                 $className,
                 false,
-            )</code>
-      <code>new TraversableContainsOnly(
+            )]]></code>
+      <code><![CDATA[new TraversableContainsOnly(
                 $type,
                 $isNativeType,
-            )</code>
-      <code>new TraversableContainsOnly($className, false)</code>
-      <code>new TraversableContainsOnly($type)</code>
-      <code>static::assertThat(
+            )]]></code>
+      <code><![CDATA[new TraversableContainsOnly($className, false)]]></code>
+      <code><![CDATA[new TraversableContainsOnly($type)]]></code>
+      <code><![CDATA[static::assertThat(
             $actual,
             static::objectEquals($expected, $method),
             $message,
-        )</code>
-      <code>static::assertThat(
+        )]]></code>
+      <code><![CDATA[static::assertThat(
             $object,
             new LogicalNot(
                 new ObjectHasProperty($propertyName),
             ),
             $message,
-        )</code>
-      <code>static::assertThat(
+        )]]></code>
+      <code><![CDATA[static::assertThat(
             $object,
             new ObjectHasProperty($propertyName),
             $message,
-        )</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
+        )]]></code>
+      <code><![CDATA[static::assertThat($haystack, $constraint, $message)]]></code>
+      <code><![CDATA[static::assertThat($haystack, $constraint, $message)]]></code>
+      <code><![CDATA[static::assertThat($haystack, $constraint, $message)]]></code>
+      <code><![CDATA[static::assertThat($haystack, $constraint, $message)]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
-      <code>$expected</code>
-      <code>$expected</code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
     </PossiblyInvalidArgument>
     <RedundantCondition>
       <code><![CDATA[assert($step['object'] instanceof TestCase)]]></code>
     </RedundantCondition>
     <RiskyTruthyFalsyComparison>
-      <code>$hint = self::detectLocationHint($message)</code>
+      <code><![CDATA[$hint = self::detectLocationHint($message)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedClass>
-      <code>ClassHasAttribute</code>
-      <code>ClassHasStaticAttribute</code>
-      <code>InvokedAtIndexMatcher</code>
-      <code>ObjectHasAttribute</code>
-      <code>new InvokedAtIndexMatcher($index)</code>
+      <code><![CDATA[ClassHasAttribute]]></code>
+      <code><![CDATA[ClassHasStaticAttribute]]></code>
+      <code><![CDATA[InvokedAtIndexMatcher]]></code>
+      <code><![CDATA[ObjectHasAttribute]]></code>
+      <code><![CDATA[new InvokedAtIndexMatcher($index)]]></code>
     </DeprecatedClass>
     <DeprecatedMethod>
-      <code>Assert::assertClassHasAttribute(...func_get_args())</code>
-      <code>Assert::assertClassHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::assertClassNotHasAttribute(...func_get_args())</code>
-      <code>Assert::assertClassNotHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::assertDirectoryNotExists(...func_get_args())</code>
-      <code>Assert::assertDirectoryNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertDirectoryNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertEqualXMLStructure(...func_get_args())</code>
-      <code>Assert::assertFileNotExists(...func_get_args())</code>
-      <code>Assert::assertFileNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertFileNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertNotRegExp(...func_get_args())</code>
-      <code>Assert::assertObjectHasAttribute(...func_get_args())</code>
-      <code>Assert::assertObjectNotHasAttribute(...func_get_args())</code>
-      <code>Assert::assertRegExp(...func_get_args())</code>
-      <code>Assert::classHasAttribute(...func_get_args())</code>
-      <code>Assert::classHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::objectHasAttribute(...func_get_args())</code>
+      <code><![CDATA[Assert::assertClassHasAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertClassHasStaticAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertClassNotHasAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertClassNotHasStaticAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertDirectoryNotExists(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertDirectoryNotIsReadable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertDirectoryNotIsWritable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertEqualXMLStructure(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertFileNotExists(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertFileNotIsReadable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertFileNotIsWritable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertNotIsReadable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertNotIsWritable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertNotRegExp(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertObjectHasAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertObjectNotHasAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::assertRegExp(...func_get_args())]]></code>
+      <code><![CDATA[Assert::classHasAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::classHasStaticAttribute(...func_get_args())]]></code>
+      <code><![CDATA[Assert::objectHasAttribute(...func_get_args())]]></code>
     </DeprecatedMethod>
     <MissingParamType>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$attributeName</code>
-      <code>$callback</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$key</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$prefix</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$actual]]></code>
+      <code><![CDATA[$attributeName]]></code>
+      <code><![CDATA[$callback]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$condition]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$expected]]></code>
+      <code><![CDATA[$key]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$needle]]></code>
+      <code><![CDATA[$prefix]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>Assert::logicalAnd(...func_get_args())</code>
+      <code><![CDATA[Assert::logicalAnd(...func_get_args())]]></code>
     </MissingThrowsDocblock>
     <TooManyArguments>
-      <code>Assert::anything(...func_get_args())</code>
-      <code>Assert::directoryExists(...func_get_args())</code>
-      <code>Assert::fileExists(...func_get_args())</code>
-      <code>Assert::isEmpty(...func_get_args())</code>
-      <code>Assert::isFalse(...func_get_args())</code>
-      <code>Assert::isFinite(...func_get_args())</code>
-      <code>Assert::isInfinite(...func_get_args())</code>
-      <code>Assert::isJson(...func_get_args())</code>
-      <code>Assert::isNan(...func_get_args())</code>
-      <code>Assert::isNull(...func_get_args())</code>
-      <code>Assert::isReadable(...func_get_args())</code>
-      <code>Assert::isTrue(...func_get_args())</code>
-      <code>Assert::isWritable(...func_get_args())</code>
+      <code><![CDATA[Assert::anything(...func_get_args())]]></code>
+      <code><![CDATA[Assert::directoryExists(...func_get_args())]]></code>
+      <code><![CDATA[Assert::fileExists(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isEmpty(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isFalse(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isFinite(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isInfinite(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isJson(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isNan(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isNull(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isReadable(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isTrue(...func_get_args())]]></code>
+      <code><![CDATA[Assert::isWritable(...func_get_args())]]></code>
     </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
     <MissingParamType>
-      <code>$other</code>
+      <code><![CDATA[$other]]></code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>getCountOf</code>
+      <code><![CDATA[getCountOf]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Cardinality/SameSize.php">
     <MissingThrowsDocblock>
-      <code>getCountOf</code>
+      <code><![CDATA[getCountOf]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Constraint.php">
     <MissingParamType>
-      <code>$other</code>
+      <code><![CDATA[$other]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqual.php">
     <MissingParamType>
-      <code>$other</code>
-      <code>$value</code>
+      <code><![CDATA[$other]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqualCanonicalizing.php">
     <MissingParamType>
-      <code>$other</code>
-      <code>$value</code>
+      <code><![CDATA[$other]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqualIgnoringCase.php">
     <MissingParamType>
-      <code>$other</code>
-      <code>$value</code>
+      <code><![CDATA[$other]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqualWithDelta.php">
     <MissingParamType>
-      <code>$other</code>
-      <code>$value</code>
+      <code><![CDATA[$other]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Exception/Exception.php">
     <MissingThrowsDocblock>
-      <code>Filter::getFilteredStacktrace($other)</code>
+      <code><![CDATA[Filter::getFilteredStacktrace($other)]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Exception/ExceptionCode.php">
     <MoreSpecificImplementedParamType>
-      <code>$other</code>
+      <code><![CDATA[$other]]></code>
     </MoreSpecificImplementedParamType>
   </file>
   <file src="src/Framework/Constraint/Exception/ExceptionMessage.php">
     <MoreSpecificImplementedParamType>
-      <code>$other</code>
+      <code><![CDATA[$other]]></code>
     </MoreSpecificImplementedParamType>
     <RedundantCast>
       <code><![CDATA[(string) $other->getMessage()]]></code>
@@ -404,18 +404,18 @@
   </file>
   <file src="src/Framework/Constraint/Exception/ExceptionMessageRegularExpression.php">
     <MoreSpecificImplementedParamType>
-      <code>$other</code>
+      <code><![CDATA[$other]]></code>
     </MoreSpecificImplementedParamType>
   </file>
   <file src="src/Framework/Constraint/IsAnything.php">
     <MissingParamType>
-      <code>$other</code>
+      <code><![CDATA[$other]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/IsIdentical.php">
     <MissingParamType>
-      <code>$other</code>
-      <code>$value</code>
+      <code><![CDATA[$other]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasAttribute.php">
@@ -429,7 +429,7 @@
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
     <DeprecatedClass>
-      <code>ClassHasAttribute</code>
+      <code><![CDATA[ClassHasAttribute]]></code>
     </DeprecatedClass>
     <MissingThrowsDocblock>
       <code><![CDATA[throw new Exception(
@@ -441,36 +441,36 @@
   </file>
   <file src="src/Framework/Constraint/Object/ObjectEquals.php">
     <MissingThrowsDocblock>
-      <code>getMethod</code>
+      <code><![CDATA[getMethod]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Object/ObjectHasAttribute.php">
     <DeprecatedClass>
-      <code>ClassHasAttribute</code>
+      <code><![CDATA[ClassHasAttribute]]></code>
     </DeprecatedClass>
     <MissingThrowsDocblock>
-      <code>hasProperty</code>
+      <code><![CDATA[hasProperty]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Object/ObjectHasProperty.php">
     <MissingThrowsDocblock>
-      <code>hasProperty</code>
+      <code><![CDATA[hasProperty]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
     <UnsafeInstantiation>
-      <code>new static</code>
+      <code><![CDATA[new static]]></code>
     </UnsafeInstantiation>
   </file>
   <file src="src/Framework/Constraint/Operator/LogicalNot.php">
     <MissingThrowsDocblock>
-      <code>evaluate</code>
-      <code>evaluate</code>
+      <code><![CDATA[evaluate]]></code>
+      <code><![CDATA[evaluate]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Operator/Operator.php">
     <MissingParamType>
-      <code>$constraint</code>
+      <code><![CDATA[$constraint]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/String/RegularExpression.php">
@@ -480,7 +480,7 @@
   </file>
   <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
     <ArgumentTypeCoercion>
-      <code>$line</code>
+      <code><![CDATA[$line]]></code>
     </ArgumentTypeCoercion>
     <MissingThrowsDocblock>
       <code><![CDATA[new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"))]]></code>
@@ -493,10 +493,10 @@
   </file>
   <file src="src/Framework/Constraint/Traversable/TraversableContains.php">
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>value</code>
+      <code><![CDATA[value]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
@@ -506,30 +506,30 @@
   </file>
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>
-      <code>$className</code>
+      <code><![CDATA[$className]]></code>
     </ArgumentTypeCoercion>
     <PropertyNotSetInConstructor>
-      <code>DataProviderTestSuite</code>
-      <code>DataProviderTestSuite</code>
+      <code><![CDATA[DataProviderTestSuite]]></code>
+      <code><![CDATA[DataProviderTestSuite]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType>
-      <code>$code</code>
-      <code>$message</code>
+      <code><![CDATA[$code]]></code>
+      <code><![CDATA[$message]]></code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>Filter::getFilteredStacktrace($this)</code>
+      <code><![CDATA[Filter::getFilteredStacktrace($this)]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Exception/ExpectationFailedException.php">
     <PossiblyNullPropertyAssignmentValue>
-      <code>$comparisonFailure</code>
+      <code><![CDATA[$comparisonFailure]]></code>
     </PossiblyNullPropertyAssignmentValue>
   </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock>
-      <code>Filter::getFilteredStacktrace($this)</code>
+      <code><![CDATA[Filter::getFilteredStacktrace($this)]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$t->getPrevious()]]></code>
@@ -537,54 +537,54 @@
   </file>
   <file src="src/Framework/ExecutionOrderDependency.php">
     <PossiblyNullArgument>
-      <code>$target</code>
-      <code>$target</code>
+      <code><![CDATA[$target]]></code>
+      <code><![CDATA[$target]]></code>
     </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
-      <code>$parts[1]</code>
+      <code><![CDATA[$parts[1]]]></code>
     </PossiblyUndefinedArrayOffset>
     <RiskyTruthyFalsyComparison>
-      <code>empty($methodName)</code>
+      <code><![CDATA[empty($methodName)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType>
-      <code>id</code>
+      <code><![CDATA[id]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
     <DeprecatedClass>
-      <code>new Rule\ConsecutiveParameters($arguments)</code>
+      <code><![CDATA[new Rule\ConsecutiveParameters($arguments)]]></code>
     </DeprecatedClass>
     <MissingParamType>
-      <code>$id</code>
-      <code>$id</code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$id]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationStubber.php">
     <MissingParamType>
-      <code>$nextValues</code>
-      <code>$value</code>
+      <code><![CDATA[$nextValues]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Builder/ParametersMatch.php">
     <MissingParamType>
-      <code>$arguments</code>
+      <code><![CDATA[$arguments]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/ConfigurableMethod.php">
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion>
-      <code>$arguments</code>
-      <code>$arguments</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$interfaceName</code>
-      <code>$methods</code>
+      <code><![CDATA[$arguments]]></code>
+      <code><![CDATA[$arguments]]></code>
+      <code><![CDATA[$className]]></code>
+      <code><![CDATA[$className]]></code>
+      <code><![CDATA[$interfaceName]]></code>
+      <code><![CDATA[$methods]]></code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction>
       <code><![CDATA[!is_array($methods) && null !== $methods]]></code>
@@ -605,43 +605,43 @@
       <code><![CDATA[MockObject&RealInstanceType]]></code>
     </InvalidReturnType>
     <MissingParamType>
-      <code>$type</code>
+      <code><![CDATA[$type]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>getObject</code>
+      <code><![CDATA[getObject]]></code>
     </MissingReturnType>
     <MissingThrowsDocblock>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$client->__getFunctions()]]></code>
     </PossiblyNullArgument>
     <RiskyTruthyFalsyComparison>
-      <code>!$parameterStart</code>
-      <code>empty($methods)</code>
+      <code><![CDATA[!$parameterStart]]></code>
+      <code><![CDATA[empty($methods)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion>
-      <code>$types</code>
+      <code><![CDATA[$types]]></code>
     </ArgumentTypeCoercion>
     <MissingThrowsDocblock>
-      <code>throw $t;</code>
+      <code><![CDATA[throw $t;]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
     <PropertyNotSetInConstructor>
-      <code>$deferredError</code>
+      <code><![CDATA[$deferredError]]></code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->deferredError]]></code>
@@ -655,12 +655,12 @@
       <code><![CDATA[$this->parametersRule === null]]></code>
     </DocblockTypeContradiction>
     <MissingReturnType>
-      <code>invoked</code>
+      <code><![CDATA[invoked]]></code>
     </MissingReturnType>
     <PropertyNotSetInConstructor>
-      <code>$methodNameRule</code>
-      <code>$parametersRule</code>
-      <code>$stub</code>
+      <code><![CDATA[$methodNameRule]]></code>
+      <code><![CDATA[$parametersRule]]></code>
+      <code><![CDATA[$stub]]></code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->invocationRule !== null]]></code>
@@ -681,12 +681,12 @@
       <code><![CDATA[$this->type]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod>
-      <code>setMethods</code>
+      <code><![CDATA[setMethods]]></code>
     </DeprecatedMethod>
     <InvalidReturnStatement>
-      <code>$object</code>
-      <code>$object</code>
-      <code>$object</code>
+      <code><![CDATA[$object]]></code>
+      <code><![CDATA[$object]]></code>
+      <code><![CDATA[$object]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
       <code><![CDATA[MockObject&MockedType]]></code>
@@ -694,7 +694,7 @@
       <code><![CDATA[MockObject&MockedType]]></code>
     </InvalidReturnType>
     <PossiblyInvalidPropertyAssignmentValue>
-      <code>$type</code>
+      <code><![CDATA[$type]]></code>
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockClass.php">
@@ -702,7 +702,7 @@
       <code><![CDATA[$this->mockName]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>class-string</code>
+      <code><![CDATA[class-string]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
@@ -721,12 +721,12 @@
                     -2,
                 ),
             )[1]]]></code>
-      <code>(string) var_export($defaultValue, true)</code>
+      <code><![CDATA[(string) var_export($defaultValue, true)]]></code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/MockObject.php">
     <MissingParamType>
-      <code>$originalObject</code>
+      <code><![CDATA[$originalObject]]></code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/MockTrait.php">
@@ -734,13 +734,13 @@
       <code><![CDATA[$this->mockName]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>class-string</code>
+      <code><![CDATA[class-string]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Rule/InvocationOrder.php">
     <MissingReturnType>
-      <code>invoked</code>
-      <code>invokedDo</code>
+      <code><![CDATA[invoked]]></code>
+      <code><![CDATA[invokedDo]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
@@ -748,11 +748,11 @@
       <code><![CDATA[$this->invocation === null]]></code>
     </DocblockTypeContradiction>
     <PossiblyNullPropertyAssignmentValue>
-      <code>null</code>
+      <code><![CDATA[null]]></code>
     </PossiblyNullPropertyAssignmentValue>
     <PropertyNotSetInConstructor>
-      <code>$invocation</code>
-      <code>$parameterVerificationResult</code>
+      <code><![CDATA[$invocation]]></code>
+      <code><![CDATA[$parameterVerificationResult]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCastGivenDocblockType>
       <code><![CDATA[(bool) $this->parameterVerificationResult]]></code>
@@ -763,69 +763,69 @@
   </file>
   <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnArgument.php">
     <MissingParamType>
-      <code>$argumentIndex</code>
+      <code><![CDATA[$argumentIndex]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
     <MissingParamType>
-      <code>$callback</code>
+      <code><![CDATA[$callback]]></code>
     </MissingParamType>
     <MissingPropertyType>
-      <code>$callback</code>
+      <code><![CDATA[$callback]]></code>
     </MissingPropertyType>
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnReference.php">
     <MissingParamType>
-      <code>$reference</code>
+      <code><![CDATA[$reference]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnSelf.php">
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnStub.php">
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnValueMap.php">
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/Stub.php">
     <MissingReturnType>
-      <code>invoke</code>
+      <code><![CDATA[invoke]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType>
-      <code>$data</code>
+      <code><![CDATA[$data]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>buildTestWithoutData</code>
+      <code><![CDATA[buildTestWithoutData]]></code>
     </MissingReturnType>
     <MissingThrowsDocblock>
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>Filter::getFilteredStacktrace($t)</code>
+      <code><![CDATA[Filter::getFilteredStacktrace($t)]]></code>
+      <code><![CDATA[Filter::getFilteredStacktrace($t)]]></code>
       <code><![CDATA[new DataProviderTestSuite(
             $className . '::' . $methodName,
         )]]></code>
@@ -837,11 +837,11 @@
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedClass>
-      <code>InvokedAtIndexMatcher</code>
-      <code>new InvokedAtIndexMatcher($index)</code>
+      <code><![CDATA[InvokedAtIndexMatcher]]></code>
+      <code><![CDATA[new InvokedAtIndexMatcher($index)]]></code>
     </DeprecatedClass>
     <DeprecatedMethod>
-      <code>setMethods</code>
+      <code><![CDATA[setMethods]]></code>
     </DeprecatedMethod>
     <DeprecatedProperty>
       <code><![CDATA[$this->backupGlobalsBlacklist]]></code>
@@ -854,115 +854,115 @@
       <code><![CDATA[$this->prophet === null]]></code>
     </DocblockTypeContradiction>
     <InvalidArgument>
-      <code>$header</code>
+      <code><![CDATA[$header]]></code>
     </InvalidArgument>
     <InvalidReturnStatement>
-      <code>$mockObject</code>
-      <code>get_class($mock)</code>
+      <code><![CDATA[$mockObject]]></code>
+      <code><![CDATA[get_class($mock)]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
       <code><![CDATA[MockObject&RealInstanceType]]></code>
       <code><![CDATA[class-string<MockObject&RealInstanceType>]]></code>
     </InvalidReturnType>
     <MissingParamType>
-      <code>$args</code>
-      <code>$args</code>
-      <code>$callback</code>
-      <code>$result</code>
-      <code>$value</code>
+      <code><![CDATA[$args]]></code>
+      <code><![CDATA[$args]]></code>
+      <code><![CDATA[$callback]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>getResult</code>
-      <code>runTest</code>
+      <code><![CDATA[getResult]]></code>
+      <code><![CDATA[runTest]]></code>
     </MissingReturnType>
     <MissingThrowsDocblock>
       <code><![CDATA[TestUtil::getMissingRequirements(
             static::class,
             $this->name,
         )]]></code>
-      <code>cacheDirectory</code>
-      <code>endTest</code>
-      <code>endTest</code>
-      <code>endTest</code>
-      <code>generateClassFromWsdl</code>
-      <code>generateClassFromWsdl</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getMockForTrait</code>
-      <code>getObjectForTrait</code>
-      <code>getObjectForTrait</code>
-      <code>getObjectForTrait</code>
-      <code>new Differ($header)</code>
+      <code><![CDATA[cacheDirectory]]></code>
+      <code><![CDATA[endTest]]></code>
+      <code><![CDATA[endTest]]></code>
+      <code><![CDATA[endTest]]></code>
+      <code><![CDATA[generateClassFromWsdl]]></code>
+      <code><![CDATA[generateClassFromWsdl]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMock]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForAbstractClass]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getMockForTrait]]></code>
+      <code><![CDATA[getObjectForTrait]]></code>
+      <code><![CDATA[getObjectForTrait]]></code>
+      <code><![CDATA[getObjectForTrait]]></code>
+      <code><![CDATA[new Differ($header)]]></code>
       <code><![CDATA[new Template(
                     __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl',
                 )]]></code>
@@ -982,48 +982,48 @@
       <code><![CDATA[throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue>
-      <code>$beStrictAboutChangesToGlobalState</code>
-      <code>null</code>
-      <code>null</code>
+      <code><![CDATA[$beStrictAboutChangesToGlobalState]]></code>
+      <code><![CDATA[null]]></code>
+      <code><![CDATA[null]]></code>
     </PossiblyNullPropertyAssignmentValue>
     <PropertyNotSetInConstructor>
-      <code>$mockObjectGenerator</code>
-      <code>$outputBufferingLevel</code>
-      <code>$prophet</code>
-      <code>$result</code>
+      <code><![CDATA[$mockObjectGenerator]]></code>
+      <code><![CDATA[$outputBufferingLevel]]></code>
+      <code><![CDATA[$prophet]]></code>
+      <code><![CDATA[$result]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCondition>
-      <code>$this instanceof PhptTestCase</code>
+      <code><![CDATA[$this instanceof PhptTestCase]]></code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->prophet !== null]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedClass>
-      <code>$e</code>
-      <code>ObjectProphecy</code>
-      <code>PredictionException</code>
-      <code>PredictionException</code>
-      <code>Prophet</code>
-      <code>Prophet</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[ObjectProphecy]]></code>
+      <code><![CDATA[PredictionException]]></code>
+      <code><![CDATA[PredictionException]]></code>
+      <code><![CDATA[Prophet]]></code>
+      <code><![CDATA[Prophet]]></code>
     </UndefinedClass>
     <UndefinedDocblockClass>
       <code><![CDATA[$this->prophet]]></code>
       <code><![CDATA[$this->prophet]]></code>
-      <code>Prophet</code>
-      <code>\Prophecy\Exception\Doubler\ClassNotFoundException</code>
-      <code>\Prophecy\Exception\Doubler\DoubleException</code>
-      <code>\Prophecy\Exception\Doubler\InterfaceNotFoundException</code>
+      <code><![CDATA[Prophet]]></code>
+      <code><![CDATA[\Prophecy\Exception\Doubler\ClassNotFoundException]]></code>
+      <code><![CDATA[\Prophecy\Exception\Doubler\DoubleException]]></code>
+      <code><![CDATA[\Prophecy\Exception\Doubler\InterfaceNotFoundException]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
     <ArgumentTypeCoercion>
-      <code>$test</code>
+      <code><![CDATA[$test]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface>
-      <code>TestListener</code>
-      <code>TestListener</code>
-      <code>TestListener[]</code>
-      <code>private $listeners = [];</code>
+      <code><![CDATA[TestListener]]></code>
+      <code><![CDATA[TestListener]]></code>
+      <code><![CDATA[TestListener[]]]></code>
+      <code><![CDATA[private $listeners = [];]]></code>
     </DeprecatedInterface>
     <DeprecatedProperty>
       <code><![CDATA[$this->listeners]]></code>
@@ -1042,10 +1042,10 @@
       <code><![CDATA[[$test, 'runBare']]]></code>
     </InvalidArgument>
     <MissingConstructor>
-      <code>$codeCoverage</code>
+      <code><![CDATA[$codeCoverage]]></code>
     </MissingConstructor>
     <MissingThrowsDocblock>
-      <code>stop</code>
+      <code><![CDATA[stop]]></code>
       <code><![CDATA[throw new Exception(
                         $e->getMessage(),
                         $e->getCode(),
@@ -1058,53 +1058,53 @@
                 );]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
-      <code>$linesToBeCovered</code>
+      <code><![CDATA[$linesToBeCovered]]></code>
     </PossiblyInvalidArgument>
     <PossiblyUndefinedVariable>
-      <code>$_timeout</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$isAnyCoverageRequired</code>
+      <code><![CDATA[$_timeout]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$isAnyCoverageRequired]]></code>
     </PossiblyUndefinedVariable>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->codeCoverage !== null]]></code>
       <code><![CDATA[$this->codeCoverage !== null]]></code>
     </RedundantConditionGivenDocblockType>
     <UndefinedInterfaceMethod>
-      <code>addToAssertionCount</code>
-      <code>addToAssertionCount</code>
-      <code>doesNotPerformAssertions</code>
-      <code>doesNotPerformAssertions</code>
-      <code>doesNotPerformAssertions</code>
-      <code>getActualOutput</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getNumAssertions</code>
-      <code>getNumAssertions</code>
-      <code>getNumAssertions</code>
-      <code>getNumAssertions</code>
-      <code>hasOutput</code>
-      <code>runBare</code>
+      <code><![CDATA[addToAssertionCount]]></code>
+      <code><![CDATA[addToAssertionCount]]></code>
+      <code><![CDATA[doesNotPerformAssertions]]></code>
+      <code><![CDATA[doesNotPerformAssertions]]></code>
+      <code><![CDATA[doesNotPerformAssertions]]></code>
+      <code><![CDATA[getActualOutput]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getNumAssertions]]></code>
+      <code><![CDATA[getNumAssertions]]></code>
+      <code><![CDATA[getNumAssertions]]></code>
+      <code><![CDATA[getNumAssertions]]></code>
+      <code><![CDATA[hasOutput]]></code>
+      <code><![CDATA[runBare]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion>
-      <code>$className</code>
-      <code>$className</code>
+      <code><![CDATA[$className]]></code>
+      <code><![CDATA[$className]]></code>
       <code><![CDATA[TestUtil::getDependencies($class->getName(), $methodName)]]></code>
       <code><![CDATA[TestUtil::getDependencies($class->getName(), $methodName)]]></code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction>
       <code><![CDATA[!is_string($theClass) && !$theClass instanceof ReflectionClass]]></code>
-      <code>is_string($testClass)</code>
+      <code><![CDATA[is_string($testClass)]]></code>
       <code><![CDATA[null === $this->backupGlobals]]></code>
       <code><![CDATA[null === $this->backupStaticAttributes]]></code>
       <code><![CDATA[null === $this->beStrictAboutChangesToGlobalState]]></code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock>
-      <code>FileLoader::checkAndLoad($filename)</code>
-      <code>new PhptTestCase($filename)</code>
+      <code><![CDATA[FileLoader::checkAndLoad($filename)]]></code>
+      <code><![CDATA[new PhptTestCase($filename)]]></code>
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
@@ -1112,19 +1112,19 @@
             );]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
-      <code>$backupGlobals</code>
-      <code>$backupStaticAttributes</code>
-      <code>$beStrictAboutChangesToGlobalState</code>
-      <code>$iteratorFilter</code>
+      <code><![CDATA[$backupGlobals]]></code>
+      <code><![CDATA[$backupStaticAttributes]]></code>
+      <code><![CDATA[$beStrictAboutChangesToGlobalState]]></code>
+      <code><![CDATA[$iteratorFilter]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCastGivenDocblockType>
-      <code>(string) $key</code>
+      <code><![CDATA[(string) $key]]></code>
     </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$this->iteratorFilter !== null]]></code>
-      <code>is_bool($backupGlobals)</code>
-      <code>is_bool($backupStaticAttributes)</code>
-      <code>is_bool($beStrictAboutChangesToGlobalState)</code>
+      <code><![CDATA[is_bool($backupGlobals)]]></code>
+      <code><![CDATA[is_bool($backupStaticAttributes)]]></code>
+      <code><![CDATA[is_bool($beStrictAboutChangesToGlobalState)]]></code>
       <code><![CDATA[null === $this->backupGlobals && is_bool($backupGlobals)]]></code>
       <code><![CDATA[null === $this->backupStaticAttributes && is_bool($backupStaticAttributes)]]></code>
       <code><![CDATA[null === $this->beStrictAboutChangesToGlobalState && is_bool($beStrictAboutChangesToGlobalState)]]></code>
@@ -1132,10 +1132,10 @@
   </file>
   <file src="src/Runner/BaseTestRunner.php">
     <DeprecatedClass>
-      <code>new StandardTestSuiteLoader</code>
+      <code><![CDATA[new StandardTestSuiteLoader]]></code>
     </DeprecatedClass>
     <DeprecatedInterface>
-      <code>TestSuiteLoader</code>
+      <code><![CDATA[TestSuiteLoader]]></code>
     </DeprecatedInterface>
   </file>
   <file src="src/Runner/Extension/ExtensionHandler.php">
@@ -1143,15 +1143,15 @@
       <code><![CDATA[$extensionConfiguration->arguments()]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface>
-      <code>TestListener</code>
+      <code><![CDATA[TestListener]]></code>
     </DeprecatedInterface>
   </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingReturnType>
-      <code>doAccept</code>
+      <code><![CDATA[doAccept]]></code>
     </MissingReturnType>
     <MissingTemplateParam>
-      <code>GroupFilterIterator</code>
+      <code><![CDATA[GroupFilterIterator]]></code>
     </MissingTemplateParam>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
@@ -1159,11 +1159,11 @@
       <code><![CDATA[$this->filter]]></code>
     </ArgumentTypeCoercion>
     <MissingTemplateParam>
-      <code>NameFilterIterator</code>
+      <code><![CDATA[NameFilterIterator]]></code>
     </MissingTemplateParam>
     <PropertyNotSetInConstructor>
-      <code>$filterMax</code>
-      <code>$filterMin</code>
+      <code><![CDATA[$filterMax]]></code>
+      <code><![CDATA[$filterMin]]></code>
     </PropertyNotSetInConstructor>
     <RedundantPropertyInitializationCheck>
       <code><![CDATA[$accepted && isset($this->filterMax)]]></code>
@@ -1171,27 +1171,27 @@
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface>
-      <code>TestListenerAdapter</code>
+      <code><![CDATA[TestListenerAdapter]]></code>
     </DeprecatedInterface>
     <MissingConstructor>
-      <code>$lastTestWasNotSuccessful</code>
+      <code><![CDATA[$lastTestWasNotSuccessful]]></code>
     </MissingConstructor>
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass>
-      <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
-      <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
+      <code><![CDATA[RawCodeCoverageData::fromXdebugWithoutPathCoverage([])]]></code>
+      <code><![CDATA[RawCodeCoverageData::fromXdebugWithoutPathCoverage([])]]></code>
     </InternalClass>
     <InternalMethod>
-      <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
-      <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
+      <code><![CDATA[RawCodeCoverageData::fromXdebugWithoutPathCoverage([])]]></code>
+      <code><![CDATA[RawCodeCoverageData::fromXdebugWithoutPathCoverage([])]]></code>
     </InternalMethod>
     <MissingThrowsDocblock>
-      <code>cacheDirectory</code>
+      <code><![CDATA[cacheDirectory]]></code>
       <code><![CDATA[new Template(
             __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl',
         )]]></code>
-      <code>stop</code>
+      <code><![CDATA[stop]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
       <code><![CDATA[$sections['FILEEOF']]]></code>
@@ -1203,29 +1203,29 @@
       <code><![CDATA[$trace[0]['line']]]></code>
     </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
-      <code>$setting[1]</code>
+      <code><![CDATA[$setting[1]]]></code>
     </PossiblyUndefinedArrayOffset>
     <RiskyTruthyFalsyComparison>
-      <code>$sectionName</code>
-      <code>$sectionName</code>
+      <code><![CDATA[$sectionName]]></code>
+      <code><![CDATA[$sectionName]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Runner/StandardTestSuiteLoader.php">
     <DeprecatedInterface>
-      <code>StandardTestSuiteLoader</code>
+      <code><![CDATA[StandardTestSuiteLoader]]></code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code>FileLoader::checkAndLoad($suiteClassFile)</code>
+      <code><![CDATA[FileLoader::checkAndLoad($suiteClassFile)]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <MissingClosureParamType>
-      <code>$left</code>
-      <code>$left</code>
-      <code>$left</code>
-      <code>$right</code>
-      <code>$right</code>
-      <code>$right</code>
+      <code><![CDATA[$left]]></code>
+      <code><![CDATA[$left]]></code>
+      <code><![CDATA[$left]]></code>
+      <code><![CDATA[$right]]></code>
+      <code><![CDATA[$right]]></code>
+      <code><![CDATA[$right]]></code>
     </MissingClosureParamType>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[$order === self::ORDER_DURATION && $this->cache !== null]]></code>
@@ -1239,7 +1239,7 @@
       <code><![CDATA[implode('.', array_slice(explode('.', $version), 0, 2))]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code>non-empty-string</code>
+      <code><![CDATA[non-empty-string]]></code>
     </MoreSpecificReturnType>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[strpos(self::id(), '-')]]></code>
@@ -1247,11 +1247,11 @@
   </file>
   <file src="src/TextUI/CliArguments/Builder.php">
     <ArgumentTypeCoercion>
-      <code>$parameters</code>
-      <code>array_merge(self::LONG_OPTIONS, $additionalLongOptions)</code>
+      <code><![CDATA[$parameters]]></code>
+      <code><![CDATA[array_merge(self::LONG_OPTIONS, $additionalLongOptions)]]></code>
     </ArgumentTypeCoercion>
     <InvalidArgument>
-      <code>$unrecognizedOptions</code>
+      <code><![CDATA[$unrecognizedOptions]]></code>
     </InvalidArgument>
     <MissingThrowsDocblock>
       <code><![CDATA[throw new Exception(
@@ -1263,50 +1263,50 @@
   </file>
   <file src="src/TextUI/CliArguments/Configuration.php">
     <MissingReturnType>
-      <code>columns</code>
+      <code><![CDATA[columns]]></code>
     </MissingReturnType>
   </file>
   <file src="src/TextUI/Command.php">
     <ArgumentTypeCoercion>
-      <code>$printerClass</code>
+      <code><![CDATA[$printerClass]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedClass>
-      <code>StandardTestSuiteLoader::class</code>
+      <code><![CDATA[StandardTestSuiteLoader::class]]></code>
     </DeprecatedClass>
     <DeprecatedInterface>
-      <code>?TestSuiteLoader</code>
+      <code><![CDATA[?TestSuiteLoader]]></code>
     </DeprecatedInterface>
     <DeprecatedMethod>
-      <code>handleLoader</code>
-      <code>handleLoader</code>
-      <code>hasTestSuiteLoaderClass</code>
-      <code>hasTestSuiteLoaderFile</code>
-      <code>testSuiteLoaderClass</code>
-      <code>testSuiteLoaderFile</code>
+      <code><![CDATA[handleLoader]]></code>
+      <code><![CDATA[handleLoader]]></code>
+      <code><![CDATA[hasTestSuiteLoaderClass]]></code>
+      <code><![CDATA[hasTestSuiteLoaderFile]]></code>
+      <code><![CDATA[testSuiteLoaderClass]]></code>
+      <code><![CDATA[testSuiteLoaderFile]]></code>
     </DeprecatedMethod>
     <LessSpecificReturnStatement>
       <code><![CDATA[$class->newInstance($outputStream)]]></code>
     </LessSpecificReturnStatement>
     <MissingThrowsDocblock>
-      <code>argument</code>
-      <code>argument</code>
-      <code>atLeastVersion</code>
-      <code>bootstrap</code>
-      <code>cacheDirectory</code>
-      <code>defaultTestSuite</code>
-      <code>detect</code>
-      <code>extensionsDirectory</code>
-      <code>getTest</code>
-      <code>handleListSuites</code>
-      <code>handleListSuites</code>
-      <code>handleListTests</code>
-      <code>handleListTestsXml</code>
-      <code>includePath</code>
-      <code>iniSettings</code>
-      <code>mapToLegacyArray</code>
-      <code>printerClass</code>
-      <code>stop</code>
-      <code>testSuiteLoaderClass</code>
+      <code><![CDATA[argument]]></code>
+      <code><![CDATA[argument]]></code>
+      <code><![CDATA[atLeastVersion]]></code>
+      <code><![CDATA[bootstrap]]></code>
+      <code><![CDATA[cacheDirectory]]></code>
+      <code><![CDATA[defaultTestSuite]]></code>
+      <code><![CDATA[detect]]></code>
+      <code><![CDATA[extensionsDirectory]]></code>
+      <code><![CDATA[getTest]]></code>
+      <code><![CDATA[handleListSuites]]></code>
+      <code><![CDATA[handleListSuites]]></code>
+      <code><![CDATA[handleListTests]]></code>
+      <code><![CDATA[handleListTestsXml]]></code>
+      <code><![CDATA[includePath]]></code>
+      <code><![CDATA[iniSettings]]></code>
+      <code><![CDATA[mapToLegacyArray]]></code>
+      <code><![CDATA[printerClass]]></code>
+      <code><![CDATA[stop]]></code>
+      <code><![CDATA[testSuiteLoaderClass]]></code>
       <code><![CDATA[throw new ReflectionException(
                     $e->getMessage(),
                     $e->getCode(),
@@ -1317,17 +1317,17 @@
                 $e->getCode(),
                 $e,
             );]]></code>
-      <code>unrecognizedOrderBy</code>
+      <code><![CDATA[unrecognizedOrderBy]]></code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType>
-      <code>null|Printer|string</code>
+      <code><![CDATA[null|Printer|string]]></code>
     </MoreSpecificReturnType>
     <PossiblyNullArgument>
       <code><![CDATA[$_SERVER['argv']]]></code>
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
+      <code><![CDATA[$suite]]></code>
+      <code><![CDATA[$suite]]></code>
+      <code><![CDATA[$suite]]></code>
+      <code><![CDATA[$suite]]></code>
     </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[$_SERVER['argv']]]></code>
@@ -1336,24 +1336,24 @@
       <code><![CDATA[assert(isset($arguments) && $arguments instanceof Configuration)]]></code>
     </RedundantCondition>
     <RiskyTruthyFalsyComparison>
-      <code>$loaderFile</code>
-      <code>$printerFile</code>
+      <code><![CDATA[$loaderFile]]></code>
+      <code><![CDATA[$printerFile]]></code>
     </RiskyTruthyFalsyComparison>
     <UnsafeInstantiation>
-      <code>new static</code>
+      <code><![CDATA[new static]]></code>
     </UnsafeInstantiation>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">
     <DeprecatedInterface>
-      <code>DefaultResultPrinter</code>
+      <code><![CDATA[DefaultResultPrinter]]></code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code>parent::__construct($out)</code>
-      <code>stop</code>
+      <code><![CDATA[parent::__construct($out)]]></code>
+      <code><![CDATA[stop]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
-      <code>$maxColumn</code>
-      <code>$numTestsWidth</code>
+      <code><![CDATA[$maxColumn]]></code>
+      <code><![CDATA[$numTestsWidth]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/Help.php">
@@ -1364,37 +1364,37 @@
   </file>
   <file src="src/TextUI/TestRunner.php">
     <DeprecatedClass>
-      <code>new StandardTestSuiteLoader</code>
-      <code>new XdebugFilterScriptGenerator</code>
+      <code><![CDATA[new StandardTestSuiteLoader]]></code>
+      <code><![CDATA[new XdebugFilterScriptGenerator]]></code>
     </DeprecatedClass>
     <DeprecatedInterface>
-      <code>TestSuiteLoader</code>
-      <code>TestSuiteLoader</code>
-      <code>TestSuiteLoader</code>
+      <code><![CDATA[TestSuiteLoader]]></code>
+      <code><![CDATA[TestSuiteLoader]]></code>
+      <code><![CDATA[TestSuiteLoader]]></code>
     </DeprecatedInterface>
     <DeprecatedMethod>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>createTestListenerInstance</code>
-      <code>flushListeners</code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[addListener]]></code>
+      <code><![CDATA[createTestListenerInstance]]></code>
+      <code><![CDATA[flushListeners]]></code>
     </DeprecatedMethod>
     <DocblockTypeContradiction>
       <code><![CDATA[$this->loader === null]]></code>
       <code><![CDATA[$this->printer === null]]></code>
     </DocblockTypeContradiction>
     <InvalidArgument>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
     </InvalidArgument>
     <InvalidStringClass>
       <code><![CDATA[new $class(
@@ -1407,33 +1407,33 @@
         )]]></code>
     </InvalidStringClass>
     <MissingThrowsDocblock>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>detect</code>
+      <code><![CDATA[addFilter]]></code>
+      <code><![CDATA[addFilter]]></code>
+      <code><![CDATA[addFilter]]></code>
+      <code><![CDATA[addFilter]]></code>
+      <code><![CDATA[addFilter]]></code>
+      <code><![CDATA[detect]]></code>
       <code><![CDATA[new Printer($arguments['coverageText'])]]></code>
-      <code>reorderTestsInSuite</code>
-      <code>run</code>
-      <code>run</code>
-      <code>run</code>
-      <code>stop</code>
-      <code>stop</code>
+      <code><![CDATA[reorderTestsInSuite]]></code>
+      <code><![CDATA[run]]></code>
+      <code><![CDATA[run]]></code>
+      <code><![CDATA[run]]></code>
+      <code><![CDATA[stop]]></code>
+      <code><![CDATA[stop]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$arguments['enforceTimeLimit']]]></code>
-      <code>$cacheLocation</code>
+      <code><![CDATA[$cacheLocation]]></code>
     </PossiblyNullArgument>
     <PossiblyNullPropertyAssignmentValue>
-      <code>$loader</code>
+      <code><![CDATA[$loader]]></code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[$_SERVER['PHP_SELF']]]></code>
       <code><![CDATA[$arguments['enforceTimeLimit']]]></code>
     </PossiblyUndefinedArrayOffset>
     <PropertyNotSetInConstructor>
-      <code>$printer</code>
+      <code><![CDATA[$printer]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCondition>
       <code><![CDATA[assert($this->printer instanceof CliTestDoxPrinter)]]></code>
@@ -1449,27 +1449,27 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/FileCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/Group/GroupCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/Loader.php">
     <DeprecatedMethod>
-      <code>legacyCodeCoverage</code>
+      <code><![CDATA[legacyCodeCoverage]]></code>
     </DeprecatedMethod>
     <RedundantCast>
       <code><![CDATA[(string) $argument->textContent]]></code>
@@ -1511,12 +1511,12 @@
       <code><![CDATA[(string) $var->getAttribute('value')]]></code>
     </RedundantCast>
     <RedundantConditionGivenDocblockType>
-      <code>assert($directoryNode instanceof DOMElement)</code>
-      <code>assert($fileNode instanceof DOMElement)</code>
+      <code><![CDATA[assert($directoryNode instanceof DOMElement)]]></code>
+      <code><![CDATA[assert($fileNode instanceof DOMElement)]]></code>
     </RedundantConditionGivenDocblockType>
     <RiskyTruthyFalsyComparison>
-      <code>!$verbatim</code>
-      <code>$includePathFile</code>
+      <code><![CDATA[!$verbatim]]></code>
+      <code><![CDATA[$includePathFile]]></code>
       <code><![CDATA[$this->getBoolean($document->documentElement->getAttribute('colors'), false)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
@@ -1530,87 +1530,57 @@
       <code><![CDATA[throw new Exception('Logger "Text" is not configured');]]></code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCloverToReport.php">
-    <PossiblyNullReference>
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCrap4jToReport.php">
-    <PossiblyNullReference>
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageHtmlToReport.php">
-    <PossiblyNullReference>
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoveragePhpToReport.php">
-    <PossiblyNullReference>
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageTextToReport.php">
-    <PossiblyNullReference>
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageXmlToReport.php">
-    <PossiblyNullReference>
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
   <file src="src/TextUI/XmlConfiguration/Migration/Migrations/LogToReportMigration.php">
     <PossiblyNullReference>
-      <code>removeChild</code>
+      <code><![CDATA[removeChild]]></code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/XmlConfiguration/Migration/Migrations/RemoveEmptyFilter.php">
     <PossiblyNullReference>
-      <code>removeChild</code>
-      <code>removeChild</code>
+      <code><![CDATA[removeChild]]></code>
+      <code><![CDATA[removeChild]]></code>
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Constant.php">
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>value</code>
+      <code><![CDATA[value]]></code>
     </MissingReturnType>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/ConstantCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/IniSettingCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Variable.php">
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>value</code>
+      <code><![CDATA[value]]></code>
     </MissingReturnType>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/VariableCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/ExtensionCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/PHPUnit.php">
     <DeprecatedMethod>
-      <code>hasTestSuiteLoaderClass</code>
-      <code>hasTestSuiteLoaderFile</code>
+      <code><![CDATA[hasTestSuiteLoaderClass]]></code>
+      <code><![CDATA[hasTestSuiteLoaderFile]]></code>
     </DeprecatedMethod>
     <DeprecatedProperty>
       <code><![CDATA[$this->testSuiteLoaderClass]]></code>
@@ -1621,10 +1591,10 @@
       <code><![CDATA[$this->testSuiteLoaderFile]]></code>
     </DeprecatedProperty>
     <MissingParamType>
-      <code>$columns</code>
+      <code><![CDATA[$columns]]></code>
     </MissingParamType>
     <MissingReturnType>
-      <code>columns</code>
+      <code><![CDATA[columns]]></code>
     </MissingReturnType>
     <RedundantCastGivenDocblockType>
       <code><![CDATA[(string) $this->bootstrap]]></code>
@@ -1639,17 +1609,17 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestFileCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestSuiteCollectionIterator.php">
     <PropertyNotSetInConstructor>
-      <code>$position</code>
+      <code><![CDATA[$position]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
@@ -1684,30 +1654,30 @@
      * >]]></code>
     </InvalidReturnType>
     <MissingThrowsDocblock>
-      <code>throw new SkippedTestError;</code>
+      <code><![CDATA[throw new SkippedTestError;]]></code>
     </MissingThrowsDocblock>
     <RedundantCast>
       <code><![CDATA[(string) $matches['value'][$i]]]></code>
     </RedundantCast>
     <RiskyTruthyFalsyComparison>
-      <code>!preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)</code>
+      <code><![CDATA[!preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)]]></code>
       <code><![CDATA[empty($requires[$matches['name']])]]></code>
       <code><![CDATA[preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument>
-      <code>static function ($errorNumber, $errorString)
+      <code><![CDATA[static function ($errorNumber, $errorString)
             {
                 if ($errorNumber === E_WARNING) {
                     return;
                 }
 
                 return false;
-            }</code>
+            }]]></code>
     </InvalidArgument>
     <MissingReturnType>
-      <code>invokeIgnoringWarnings</code>
+      <code><![CDATA[invokeIgnoringWarnings]]></code>
     </MissingReturnType>
   </file>
   <file src="src/Util/ExcludeList.php">
@@ -1722,22 +1692,22 @@
   </file>
   <file src="src/Util/FileLoader.php">
     <RiskyTruthyFalsyComparison>
-      <code>!$includePathFilename</code>
+      <code><![CDATA[!$includePathFilename]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/Filter.php">
     <MissingParamType>
-      <code>$prefix</code>
+      <code><![CDATA[$prefix]]></code>
     </MissingParamType>
   </file>
   <file src="src/Util/GlobalState.php">
     <MissingParamType>
-      <code>$variable</code>
+      <code><![CDATA[$variable]]></code>
     </MissingParamType>
   </file>
   <file src="src/Util/Json.php">
     <MissingParamType>
-      <code>$json</code>
+      <code><![CDATA[$json]]></code>
     </MissingParamType>
   </file>
   <file src="src/Util/Log/JUnit.php">
@@ -1745,7 +1715,7 @@
       <code><![CDATA[$suite->getName()]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface>
-      <code>JUnit</code>
+      <code><![CDATA[JUnit]]></code>
     </DeprecatedInterface>
     <DocblockTypeContradiction>
       <code><![CDATA[$this->currentTestCase === null]]></code>
@@ -1755,8 +1725,8 @@
       <code><![CDATA[$this->testSuiteTimes]]></code>
     </InvalidPropertyAssignmentValue>
     <MissingThrowsDocblock>
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>parent::__construct($out)</code>
+      <code><![CDATA[Filter::getFilteredStacktrace($t)]]></code>
+      <code><![CDATA[parent::__construct($out)]]></code>
       <code><![CDATA[throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
@@ -1769,35 +1739,35 @@
             );]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue>
-      <code>null</code>
+      <code><![CDATA[null]]></code>
     </PossiblyNullPropertyAssignmentValue>
     <PropertyNotSetInConstructor>
-      <code>$currentTestCase</code>
+      <code><![CDATA[$currentTestCase]]></code>
     </PropertyNotSetInConstructor>
     <RiskyTruthyFalsyComparison>
-      <code>empty($testOutput)</code>
+      <code><![CDATA[empty($testOutput)]]></code>
     </RiskyTruthyFalsyComparison>
     <UndefinedInterfaceMethod>
-      <code>getName</code>
-      <code>getName</code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/Log/TeamCity.php">
     <ArgumentTypeCoercion>
-      <code>$className</code>
+      <code><![CDATA[$className]]></code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface>
-      <code>TeamCity</code>
+      <code><![CDATA[TeamCity]]></code>
     </DeprecatedInterface>
     <DocblockTypeContradiction>
-      <code>$actualString === null</code>
-      <code>$expectedString === null</code>
+      <code><![CDATA[$actualString === null]]></code>
+      <code><![CDATA[$expectedString === null]]></code>
     </DocblockTypeContradiction>
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
     <MissingThrowsDocblock>
-      <code>Filter::getFilteredStacktrace($t)</code>
+      <code><![CDATA[Filter::getFilteredStacktrace($t)]]></code>
       <code><![CDATA[throw new Exception(
                 $e->getMessage(),
                 $e->getCode(),
@@ -1805,21 +1775,21 @@
             );]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
-      <code>$flowId</code>
-      <code>$startedTestName</code>
-      <code>TeamCity</code>
-      <code>TeamCity</code>
+      <code><![CDATA[$flowId]]></code>
+      <code><![CDATA[$startedTestName]]></code>
+      <code><![CDATA[TeamCity]]></code>
+      <code><![CDATA[TeamCity]]></code>
     </PropertyNotSetInConstructor>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$this->flowId]]></code>
     </RiskyTruthyFalsyComparison>
     <UndefinedInterfaceMethod>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
@@ -1828,16 +1798,16 @@
       <code><![CDATA[$this->getException($warnings[0])]]></code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement>
-      <code>$exception</code>
+      <code><![CDATA[$exception]]></code>
     </LessSpecificReturnStatement>
     <MissingClosureParamType>
-      <code>$errfile</code>
-      <code>$errline</code>
-      <code>$errno</code>
-      <code>$errstr</code>
+      <code><![CDATA[$errfile]]></code>
+      <code><![CDATA[$errline]]></code>
+      <code><![CDATA[$errno]]></code>
+      <code><![CDATA[$errstr]]></code>
     </MissingClosureParamType>
     <MoreSpecificReturnType>
-      <code>Exception</code>
+      <code><![CDATA[Exception]]></code>
     </MoreSpecificReturnType>
     <PossiblyFalseOperand>
       <code><![CDATA[strrpos($key, "\0")]]></code>
@@ -1846,43 +1816,43 @@
       <code><![CDATA[$childResult->getCodeCoverage()]]></code>
     </PossiblyNullArgument>
     <PossiblyNullReference>
-      <code>merge</code>
+      <code><![CDATA[merge]]></code>
     </PossiblyNullReference>
     <RiskyTruthyFalsyComparison>
-      <code>!$file</code>
-      <code>!$file</code>
-      <code>$file</code>
+      <code><![CDATA[!$file]]></code>
+      <code><![CDATA[!$file]]></code>
+      <code><![CDATA[$file]]></code>
     </RiskyTruthyFalsyComparison>
     <UndefinedInterfaceMethod>
-      <code>addToAssertionCount</code>
-      <code>setResult</code>
+      <code><![CDATA[addToAssertionCount]]></code>
+      <code><![CDATA[setResult]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction>
-      <code>is_array($envVar)</code>
+      <code><![CDATA[is_array($envVar)]]></code>
     </DocblockTypeContradiction>
     <PropertyNotSetInConstructor>
-      <code>$tempFile</code>
+      <code><![CDATA[$tempFile]]></code>
     </PropertyNotSetInConstructor>
     <RedundantCondition>
-      <code>$_SERVER</code>
+      <code><![CDATA[$_SERVER]]></code>
     </RedundantCondition>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit'))]]></code>
     </RiskyTruthyFalsyComparison>
     <TypeDoesNotContainNull>
-      <code>[]</code>
+      <code><![CDATA[[]]]></code>
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Util/PHP/WindowsPhpProcess.php">
     <PropertyNotSetInConstructor>
-      <code>WindowsPhpProcess</code>
+      <code><![CDATA[WindowsPhpProcess]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/Printer.php">
     <PropertyNotSetInConstructor>
-      <code>$stream</code>
+      <code><![CDATA[$stream]]></code>
     </PropertyNotSetInConstructor>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$this->stream]]></code>
@@ -1891,42 +1861,42 @@
   </file>
   <file src="src/Util/Reflection.php">
     <ArgumentTypeCoercion>
-      <code>$filter</code>
+      <code><![CDATA[$filter]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/RegularExpression.php">
     <ArgumentTypeCoercion>
-      <code>$pattern</code>
+      <code><![CDATA[$pattern]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/Test.php">
     <MissingReturnType>
-      <code>sanitizeVersionNumber</code>
+      <code><![CDATA[sanitizeVersionNumber]]></code>
     </MissingReturnType>
     <MissingThrowsDocblock>
-      <code>forClassName</code>
-      <code>forMethod</code>
-      <code>forMethod</code>
-      <code>getName</code>
-      <code>requirements</code>
-      <code>requirements</code>
+      <code><![CDATA[forClassName]]></code>
+      <code><![CDATA[forMethod]]></code>
+      <code><![CDATA[forMethod]]></code>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[requirements]]></code>
+      <code><![CDATA[requirements]]></code>
     </MissingThrowsDocblock>
     <RiskyTruthyFalsyComparison>
-      <code>$classShortcut</code>
-      <code>$hint</code>
+      <code><![CDATA[$classShortcut]]></code>
+      <code><![CDATA[$hint]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <DeprecatedInterface>
-      <code>CliTestDoxPrinter</code>
+      <code><![CDATA[CliTestDoxPrinter]]></code>
     </DeprecatedInterface>
     <InvalidArrayOffset>
-      <code>self::SPINNER_ICONS[$id]</code>
-      <code>self::SPINNER_ICONS[$id]</code>
+      <code><![CDATA[self::SPINNER_ICONS[$id]]]></code>
+      <code><![CDATA[self::SPINNER_ICONS[$id]]]></code>
     </InvalidArrayOffset>
     <MissingThrowsDocblock>
-      <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
-      <code>stop</code>
+      <code><![CDATA[\PHPUnit\Util\Filter::getFilteredStacktrace($t)]]></code>
+      <code><![CDATA[stop]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArrayOffset>
       <code><![CDATA[$prefix['default']]]></code>
@@ -1937,36 +1907,36 @@
       <code><![CDATA[$prefix['trace']]]></code>
     </PossiblyInvalidArrayOffset>
     <PossiblyNullArgument>
-      <code>$style</code>
+      <code><![CDATA[$style]]></code>
     </PossiblyNullArgument>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[self::STATUS_STYLES[$result['status']]['message']]]></code>
     </PossiblyUndefinedArrayOffset>
     <PropertyNotSetInConstructor>
-      <code>CliTestDoxPrinter</code>
-      <code>CliTestDoxPrinter</code>
+      <code><![CDATA[CliTestDoxPrinter]]></code>
+      <code><![CDATA[CliTestDoxPrinter]]></code>
     </PropertyNotSetInConstructor>
     <RiskyTruthyFalsyComparison>
-      <code>$diff</code>
-      <code>$diff</code>
-      <code>$message</code>
-      <code>$message</code>
+      <code><![CDATA[$diff]]></code>
+      <code><![CDATA[$diff]]></code>
+      <code><![CDATA[$message]]></code>
+      <code><![CDATA[$message]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
     <DeprecatedInterface>
-      <code>HtmlResultPrinter</code>
+      <code><![CDATA[HtmlResultPrinter]]></code>
     </DeprecatedInterface>
     <PossiblyNullArgument>
       <code><![CDATA[$this->currentTestClassPrettified]]></code>
     </PossiblyNullArgument>
     <PropertyNotSetInConstructor>
-      <code>HtmlResultPrinter</code>
+      <code><![CDATA[HtmlResultPrinter]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/NamePrettifier.php">
     <InvalidCast>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </InvalidCast>
     <MissingThrowsDocblock>
       <code><![CDATA[throw new UtilException(
@@ -1976,55 +1946,55 @@
             );]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument>
-      <code>preg_replace($variables, $providedData, $annotation)</code>
+      <code><![CDATA[preg_replace($variables, $providedData, $annotation)]]></code>
     </PossiblyInvalidArgument>
     <RedundantConditionGivenDocblockType>
-      <code>is_string($value)</code>
+      <code><![CDATA[is_string($value)]]></code>
     </RedundantConditionGivenDocblockType>
     <RiskyTruthyFalsyComparison>
-      <code>empty($className)</code>
+      <code><![CDATA[empty($className)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/ResultPrinter.php">
     <DeprecatedInterface>
-      <code>ResultPrinter</code>
+      <code><![CDATA[ResultPrinter]]></code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code>parent::__construct($out)</code>
+      <code><![CDATA[parent::__construct($out)]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
-      <code>$testStatus</code>
+      <code><![CDATA[$testStatus]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
     <DeprecatedInterface>
-      <code>TestDoxPrinter</code>
+      <code><![CDATA[TestDoxPrinter]]></code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
+      <code><![CDATA[\PHPUnit\Util\Filter::getFilteredStacktrace($t)]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
-      <code>TestDoxPrinter</code>
-      <code>TestDoxPrinter</code>
+      <code><![CDATA[TestDoxPrinter]]></code>
+      <code><![CDATA[TestDoxPrinter]]></code>
     </PropertyNotSetInConstructor>
     <UndefinedInterfaceMethod>
-      <code>getName</code>
+      <code><![CDATA[getName]]></code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/TestDox/TextResultPrinter.php">
     <DeprecatedInterface>
-      <code>TextResultPrinter</code>
+      <code><![CDATA[TextResultPrinter]]></code>
     </DeprecatedInterface>
     <PropertyNotSetInConstructor>
-      <code>TextResultPrinter</code>
+      <code><![CDATA[TextResultPrinter]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/XmlResultPrinter.php">
     <DeprecatedInterface>
-      <code>XmlResultPrinter</code>
+      <code><![CDATA[XmlResultPrinter]]></code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code>parent::__construct($out)</code>
+      <code><![CDATA[parent::__construct($out)]]></code>
       <code><![CDATA[throw new Exception(
                     $e->getMessage(),
                     $e->getCode(),
@@ -2039,21 +2009,21 @@
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock>
-      <code>ensureOperatorIsValid</code>
+      <code><![CDATA[ensureOperatorIsValid]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/Xml.php">
     <ArgumentTypeCoercion>
-      <code>$item</code>
+      <code><![CDATA[$item]]></code>
     </ArgumentTypeCoercion>
     <InvalidStringClass>
-      <code>new $className</code>
+      <code><![CDATA[new $className]]></code>
     </InvalidStringClass>
     <LessSpecificReturnStatement>
       <code><![CDATA[(new DOMDocument)->importNode($element, true)]]></code>
     </LessSpecificReturnStatement>
     <MissingReturnType>
-      <code>xmlToVariable</code>
+      <code><![CDATA[xmlToVariable]]></code>
     </MissingReturnType>
     <MissingThrowsDocblock>
       <code><![CDATA[throw new Exception(
@@ -2063,7 +2033,7 @@
                         );]]></code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType>
-      <code>DOMElement</code>
+      <code><![CDATA[DOMElement]]></code>
     </MoreSpecificReturnType>
     <RedundantCast>
       <code><![CDATA[(string) $entry->getAttribute('key')]]></code>
