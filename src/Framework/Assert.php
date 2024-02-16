@@ -1705,7 +1705,7 @@ abstract class Assert
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             null,
-            'assertStringNotMatchesFormat() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'assertStringNotMatchesFormat() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         static::assertThat(
@@ -1746,7 +1746,7 @@ abstract class Assert
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             null,
-            'assertStringNotMatchesFormatFile() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'assertStringNotMatchesFormatFile() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         static::assertFileExists($formatFile, $message);
