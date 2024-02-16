@@ -35,8 +35,15 @@ final readonly class ListTestsAsTextCommand implements Command
 
         $buffer .= 'Available test(s):' . PHP_EOL;
 
+        $configuration = Registry::get();
+        $configuredGroups = $configuration->groups();
+
         foreach (new RecursiveIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
+                if (!$this->testContainsConfiguredGroups($test, $configuredGroups)) {
+                    continue;
+                }
+
                 $name = sprintf(
                     '%s::%s',
                     $test::class,
@@ -67,10 +74,6 @@ final readonly class ListTestsAsTextCommand implements Command
             $buffer .= 'The --filter and --list-tests options cannot be combined, --filter is ignored' . PHP_EOL;
         }
 
-        if ($configuration->hasGroups()) {
-            $buffer .= 'The --group and --list-tests options cannot be combined, --group is ignored' . PHP_EOL;
-        }
-
         if ($configuration->hasExcludeGroups()) {
             $buffer .= 'The --exclude-group and --list-tests options cannot be combined, --exclude-group is ignored' . PHP_EOL;
         }
@@ -80,5 +83,26 @@ final readonly class ListTestsAsTextCommand implements Command
         }
 
         return $buffer;
+    }
+
+    private function testContainsConfiguredGroups(TestCase $test, array $configuredGroups): bool
+    {
+        if ($configuredGroups === []) {
+            return true;
+        }
+
+        $testGroups = $test->groups();
+
+        if ($testGroups === []) {
+            return false;
+        }
+
+        foreach ($configuredGroups as $group) {
+            if (!in_array($group, $testGroups, true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
