@@ -1208,7 +1208,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'iniSet() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'iniSet() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         $currentValue = ini_set($varName, $newValue);
@@ -1238,7 +1238,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'setLocale() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'setLocale() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         if (count($arguments) < 2) {
@@ -1405,7 +1405,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'createTestProxy() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'createTestProxy() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         $testProxy = $this->getMockBuilder($originalClassName)
@@ -1441,7 +1441,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         $mockObject = (new MockGenerator)->mockObjectForAbstractClass(
@@ -1476,7 +1476,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'getMockFromWsdl() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'getMockFromWsdl() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         if ($originalClassName === '') {
@@ -1539,7 +1539,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'getMockForTrait() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'getMockForTrait() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         $mockObject = (new MockGenerator)->mockObjectForTrait(
@@ -1573,7 +1573,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
-            'getObjectForTrait() is deprecated and will be removed in PHPUnit 12. No replacement is/will be provided.',
+            'getObjectForTrait() is deprecated and will be removed in PHPUnit 12 without replacement.',
         );
 
         return (new MockGenerator)->objectForTrait(
