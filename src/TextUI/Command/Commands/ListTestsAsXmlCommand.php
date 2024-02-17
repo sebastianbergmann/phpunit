@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use function file_put_contents;
+use function in_array;
 use function ksort;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
@@ -50,8 +51,9 @@ final readonly class ListTestsAsXmlCommand implements Command
         $currentTestClass = null;
         $groups           = [];
 
-        $configuration = Registry::get();
+        $configuration    = Registry::get();
         $configuredGroups = [];
+
         if ($configuration->hasGroups()) {
             $configuredGroups = $configuration->groups();
         }

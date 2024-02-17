@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use function in_array;
 use function sprintf;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
@@ -35,8 +36,9 @@ final readonly class ListTestsAsTextCommand implements Command
 
         $buffer .= 'Available test(s):' . PHP_EOL;
 
-        $configuration = Registry::get();
+        $configuration    = Registry::get();
         $configuredGroups = [];
+
         if ($configuration->hasGroups()) {
             $configuredGroups = $configuration->groups();
         }
