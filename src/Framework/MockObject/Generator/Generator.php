@@ -763,7 +763,7 @@ final class Generator
         }
 
         if ($mockMethods->hasMethod('method') || (isset($class) && $class->hasMethod('method'))) {
-            $message = 'Doubling interfaces (or classes) that have a method named "method" is deprecated and will be removed in PHPUnit 12 without replacement.';
+            $message = 'Doubling interfaces (or classes) that have a method named "method" is deprecated. Support for this will be removed in PHPUnit 12.';
 
             try {
                 EventFacade::emitter()->testTriggeredPhpunitDeprecation(
