@@ -104,12 +104,15 @@ final readonly class Application
                 $this->loadBootstrapScript($configuration->bootstrap());
             }
 
-            $this->executeCommandsThatRequireCompleteConfiguration($configuration, $cliConfiguration);
+            $this->executeCommandsThatDoNotRequireTheTestSuite($configuration, $cliConfiguration);
 
             $testSuite = $this->buildTestSuite($configuration);
 
-            $this->executeCommandsThatRequireCliConfigurationAndTestSuite($cliConfiguration, $testSuite);
-            $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
+            $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
+
+            if ($testSuite->isEmpty() && !$configuration->hasCliArguments() && $configuration->testSuite()->isEmpty()) {
+                $this->execute(new ShowHelpCommand(Result::FAILURE));
+            }
 
             $pharExtensions                          = null;
             $extensionRequiresCodeCoverageCollection = false;
@@ -400,7 +403,18 @@ final readonly class Application
         }
     }
 
-    private function executeCommandsThatRequireCliConfigurationAndTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
+    private function executeCommandsThatDoNotRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration): void
+    {
+        if ($cliConfiguration->listSuites()) {
+            $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
+        }
+
+        if ($cliConfiguration->warmCoverageCache()) {
+            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
+        }
+    }
+
+    private function executeCommandsThatRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
         if ($cliConfiguration->listGroups()) {
             $this->execute(new ListGroupsCommand($testSuite));
@@ -421,24 +435,6 @@ final readonly class Application
 
         if ($cliConfiguration->listTestFiles()) {
             $this->execute(new ListTestFilesCommand($testSuite));
-        }
-    }
-
-    private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration): void
-    {
-        if ($cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
-        }
-
-        if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
-        }
-    }
-
-    private function executeHelpCommandWhenThereIsNothingElseToDo(Configuration $configuration, TestSuite $testSuite): void
-    {
-        if ($testSuite->isEmpty() && !$configuration->hasCliArguments() && $configuration->testSuite()->isEmpty()) {
-            $this->execute(new ShowHelpCommand(Result::FAILURE));
         }
     }
 
