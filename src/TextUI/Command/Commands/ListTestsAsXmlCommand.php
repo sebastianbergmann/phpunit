@@ -51,7 +51,10 @@ final readonly class ListTestsAsXmlCommand implements Command
         $groups           = [];
 
         $configuration = Registry::get();
-        $configuredGroups = $configuration->groups();
+        $configuredGroups = [];
+        if ($configuration->hasGroups()) {
+            $configuredGroups = $configuration->groups();
+        }
 
         foreach (new RecursiveIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
@@ -88,6 +91,10 @@ final readonly class ListTestsAsXmlCommand implements Command
             }
 
             if ($test instanceof PhptTestCase) {
+                if ($configuredGroups !== []) {
+                    continue;
+                }
+
                 if ($currentTestClass !== null) {
                     $writer->endElement();
 

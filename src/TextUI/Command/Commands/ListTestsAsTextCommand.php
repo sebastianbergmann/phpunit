@@ -36,7 +36,10 @@ final readonly class ListTestsAsTextCommand implements Command
         $buffer .= 'Available test(s):' . PHP_EOL;
 
         $configuration = Registry::get();
-        $configuredGroups = $configuration->groups();
+        $configuredGroups = [];
+        if ($configuration->hasGroups()) {
+            $configuredGroups = $configuration->groups();
+        }
 
         foreach (new RecursiveIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
@@ -50,6 +53,10 @@ final readonly class ListTestsAsTextCommand implements Command
                     str_replace(' with data set ', '', $test->nameWithDataSet()),
                 );
             } elseif ($test instanceof PhptTestCase) {
+                if ($configuredGroups !== []) {
+                    continue;
+                }
+
                 $name = $test->getName();
             } else {
                 continue;
