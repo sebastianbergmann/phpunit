@@ -16,6 +16,7 @@ use function sprintf;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
 use PHPUnit\TextUI\Configuration\Registry;
 use RecursiveIteratorIterator;
 use XMLWriter;
@@ -51,11 +52,12 @@ final readonly class ListTestsAsXmlCommand implements Command
         $currentTestClass = null;
         $groups           = [];
 
-        $configuration    = Registry::get();
-        $configuredGroups = [];
+        $configuration = Registry::get();
 
-        if ($configuration->hasGroups()) {
+        try {
             $configuredGroups = $configuration->groups();
+        } catch (FilterNotConfiguredException $e) {
+            $configuredGroups = [];
         }
 
         foreach (new RecursiveIteratorIterator($this->suite) as $test) {

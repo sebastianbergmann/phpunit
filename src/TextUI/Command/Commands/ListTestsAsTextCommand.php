@@ -15,6 +15,7 @@ use function str_replace;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
 use PHPUnit\TextUI\Configuration\Registry;
 use RecursiveIteratorIterator;
 
@@ -36,11 +37,12 @@ final readonly class ListTestsAsTextCommand implements Command
 
         $buffer .= 'Available test(s):' . PHP_EOL;
 
-        $configuration    = Registry::get();
-        $configuredGroups = [];
+        $configuration = Registry::get();
 
-        if ($configuration->hasGroups()) {
+        try {
             $configuredGroups = $configuration->groups();
+        } catch (FilterNotConfiguredException $e) {
+            $configuredGroups = [];
         }
 
         foreach (new RecursiveIteratorIterator($this->suite) as $test) {
