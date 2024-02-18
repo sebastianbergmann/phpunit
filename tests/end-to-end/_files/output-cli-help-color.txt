@@ -70,6 +70,8 @@
   [32m--stop-on-skipped               [0m Stop after first skipped test
   [32m--stop-on-incomplete            [0m Stop after first incomplete test
 
+  [32m--fail-on-empty-test-suite      [0m Signal failure using shell exit code when no
+                                   tests were run
   [32m--fail-on-warning               [0m Signal failure using shell exit code when a
                                    warning was triggered
   [32m--fail-on-risky                 [0m Signal failure using shell exit code when a
