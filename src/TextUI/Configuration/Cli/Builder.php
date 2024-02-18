@@ -16,6 +16,7 @@ use function getcwd;
 use function is_file;
 use function is_numeric;
 use function sprintf;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CliParser\Exception as CliParserException;
@@ -126,6 +127,11 @@ final class Builder
         'debug',
     ];
     private const SHORT_OPTIONS = 'd:c:h';
+
+    /**
+     * @psalm-var array<string, non-negative-int>
+     */
+    private array $processed = [];
 
     /**
      * @throws Exception
@@ -838,6 +844,8 @@ final class Builder
 
                     break;
             }
+
+            $this->markProcessed($option[0]);
         }
 
         if (empty($iniSettings)) {
@@ -948,5 +956,28 @@ final class Builder
             $printerTestDox,
             $debug,
         );
+    }
+
+    /**
+     * @psalm-param non-empty-string $option
+     */
+    private function markProcessed(string $option): void
+    {
+        if (!isset($this->processed[$option])) {
+            $this->processed[$option] = 1;
+
+            return;
+        }
+
+        $this->processed[$option]++;
+
+        if ($this->processed[$option] === 2) {
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Option %s cannot be used more than once',
+                    $option,
+                ),
+            );
+        }
     }
 }
