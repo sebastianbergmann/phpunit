@@ -5,7 +5,11 @@ phpunit --group small,medium,large ../../_files/size-groups/SizeGroupsTest.php
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--group';
-$_SERVER['argv'][] = 'small,medium,large';
+$_SERVER['argv'][] = 'small';
+$_SERVER['argv'][] = '--group';
+$_SERVER['argv'][] = 'medium';
+$_SERVER['argv'][] = '--group';
+$_SERVER['argv'][] = 'large';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/size-groups/SizeGroupsTest.php';
 
 require_once __DIR__ . '/../../../bootstrap.php';

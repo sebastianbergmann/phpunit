@@ -10,7 +10,9 @@ $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = '--exclude-group';
-$_SERVER['argv'][] = 'one,two';
+$_SERVER['argv'][] = 'one';
+$_SERVER['argv'][] = '--exclude-group';
+$_SERVER['argv'][] = 'two';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/groups/tests/FooTest.php';
 
 require_once __DIR__ . '/../../../bootstrap.php';

@@ -11,9 +11,7 @@ $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/groups';
 $_SERVER['argv'][] = '--exclude-group';
-$_SERVER['argv'][] = 'one';
-$_SERVER['argv'][] = '--exclude-group';
-$_SERVER['argv'][] = 'two';
+$_SERVER['argv'][] = 'one,two';
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
@@ -24,6 +22,7 @@ print file_get_contents($traceFile);
 unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
+Test Runner Triggered Warning (Using comma-separated values with --exclude-group is deprecated and will no longer work in PHPUnit 12)
 Test Runner Configured
 Test Suite Loaded (3 tests)
 Event Facade Sealed
@@ -43,4 +42,4 @@ Test Suite Finished (default, 1 test)
 Test Suite Finished (%s%etests%eend-to-end%e_files%egroups%ephpunit.xml, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)

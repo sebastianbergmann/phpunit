@@ -43,6 +43,12 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#5423](https://github.com/sebastianbergmann/phpunit/issues/5423) | `TestCase::returnValueMap()`                                                   | 10.3.0 | Use `$double->willReturnMap()` instead of `$double->will($this->returnValueMap())`      |
 | [#5535](https://github.com/sebastianbergmann/phpunit/issues/5525) | Configuring expectations using `expects()` on test stubs                       | 11.0.0 | Create a mock object when you need to configure expectations on a test double           |
 
+### Running Tests
+
+| Issue                                                             | Description                                                                                                                           | Since  | Replacement                                                             |
+|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------------------------------------------------------------|
+| [#5709](https://github.com/sebastianbergmann/phpunit/issues/5709) | Support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options | 11.1.0 | Use `--group foo --group bar` instead of `--group foo,bar`, for example |
+
 #### Miscellaneous
 
 | Issue                                                             | Description              | Since  | Replacement            |

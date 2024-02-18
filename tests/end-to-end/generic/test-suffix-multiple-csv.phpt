@@ -5,9 +5,7 @@ phpunit --test-suffix .test.php,.my.php ../../_files/
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--test-suffix';
-$_SERVER['argv'][] = '.test.php';
-$_SERVER['argv'][] = '--test-suffix';
-$_SERVER['argv'][] = '.my.php';
+$_SERVER['argv'][] = '.test.php,.my.php';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/';
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -21,4 +19,9 @@ Runtime: %s
 
 Time: %s, Memory: %s
 
-OK (5 tests, 5 assertions)
+There was 1 PHPUnit test runner warning:
+
+1) Using comma-separated values with --test-suffix is deprecated and will no longer work in PHPUnit 12
+
+WARNINGS!
+Tests: 5, Assertions: 5, Warnings: 1.
