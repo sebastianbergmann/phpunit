@@ -56,6 +56,7 @@ Execution:
   --stop-on-skipped                Stop after first skipped test
   --stop-on-incomplete             Stop after first incomplete test
 
+  --fail-on-empty-test-suite       Signal failure using shell exit code when no tests were run
   --fail-on-warning                Signal failure using shell exit code when a warning was triggered
   --fail-on-risky                  Signal failure using shell exit code when a test was considered risky
   --fail-on-deprecation            Signal failure using shell exit code when a deprecation was triggered
