@@ -1,10 +1,5 @@
 --TEST--
 The right events are emitted in the right order for a test that runs code which triggers E_DEPRECATED
---SKIPIF--
-<?php declare(strict_types=1);
-if (!(PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2)) {
-    print "skip: this test requires PHP 8.2\n";
-}
 --INI--
 error_reporting=-1
 --FILE--
@@ -37,10 +32,10 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
-Test Triggered Suppressed PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
-Creation of dynamic property PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::$foo is deprecated
 Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
-Creation of dynamic property PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::$bar is deprecated
+strlen(): Passing null to parameter #1 ($string) of type string is deprecated
+Test Triggered Suppressed PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
+strlen(): Passing null to parameter #1 ($string) of type string is deprecated
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest, 1 test)

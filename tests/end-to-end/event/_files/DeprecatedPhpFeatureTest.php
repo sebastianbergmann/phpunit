@@ -9,14 +9,15 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use function strlen;
 use PHPUnit\Framework\TestCase;
 
 final class DeprecatedPhpFeatureTest extends TestCase
 {
     public function testDeprecatedPhpFeature(): void
     {
-        @$this->foo = 'bar';
-        $this->bar = 'foo';
+        strlen(null);
+        @strlen(null);
 
         $this->assertTrue(true);
     }
