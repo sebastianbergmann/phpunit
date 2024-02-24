@@ -10,10 +10,13 @@
 namespace PHPUnit\Metadata\Parser;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(CachingParser::class)]
 #[Small]
+#[Group('metadata')]
+#[Group('metadata/annotations')]
 final class CachedAnnotationParserTest extends AnnotationParserTestCase
 {
     protected function parser(): Parser

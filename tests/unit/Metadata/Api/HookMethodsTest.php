@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\TestWithHookMethodsTest;
@@ -17,6 +18,7 @@ use PHPUnit\TestFixture\TestWithoutHookMethodsTest;
 
 #[CoversClass(HookMethods::class)]
 #[Small]
+#[Group('metadata')]
 final class HookMethodsTest extends TestCase
 {
     public function testReturnsDefaultHookMethodsForClassThatDoesNotExist(): void
