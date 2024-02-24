@@ -11,11 +11,13 @@ namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Requirements::class)]
 #[Small]
+#[Group('metadata')]
 final class RequirementsTest extends TestCase
 {
     public static function missingRequirementsProvider(): array

@@ -118,6 +118,8 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 #[CoversClass(UsesFunction::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[Small]
+#[Group('metadata')]
+#[Group('metadata/attributes')]
 final class AttributeParserTest extends AttributeParserTestCase
 {
     protected function parser(): Parser

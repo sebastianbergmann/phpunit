@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,7 @@ use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
 #[CoversClass(DataProvider::class)]
 #[Small]
+#[Group('metadata')]
 final class DataProviderTest extends TestCase
 {
     /**
