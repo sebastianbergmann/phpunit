@@ -152,7 +152,7 @@ final class InvocationMockerTest extends TestCase
 
     public function testWillReturnAllowsMatchersForMultipleMethodsWithDifferentReturnTypes(): void
     {
-        /** @var ClassWithAllPossibleReturnTypes|\PHPUnit\Framework\MockObject\MockObject $mock */
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $mock */
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
@@ -201,7 +201,7 @@ final class InvocationMockerTest extends TestCase
      */
     public function testWillReturnFailsWhenTryingToReturnValueFromVoidMethod(): void
     {
-        /** @var ClassWithAllPossibleReturnTypes|\PHPUnit\Framework\MockObject\MockObject $out */
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $out */
         $out    = $this->createMock(ClassWithAllPossibleReturnTypes::class);
         $method = $out->method('methodWithVoidReturnTypeDeclaration');
 
