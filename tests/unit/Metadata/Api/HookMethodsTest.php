@@ -80,34 +80,28 @@ final class HookMethodsTest extends TestCase
         $this->assertSame(
             [
                 'beforeClass' => [
-                    'beforeFirstTestWithAnnotation',
-                    'beforeFirstTestWithAttribute',
+                    'beforeFirstTest',
                     'setUpBeforeClass',
                 ],
                 'before' => [
-                    'beforeEachTestWithAnnotation',
-                    'beforeEachTestWithAttribute',
+                    'beforeEachTest',
                     'setUp',
                 ],
                 'preCondition' => [
-                    'preConditionsWithAnnotation',
-                    'preConditionsWithAttribute',
+                    'preConditions',
                     'assertPreConditions',
                 ],
                 'postCondition' => [
                     'assertPostConditions',
-                    'postConditionsWithAttribute',
-                    'postConditionsWithAnnotation',
+                    'postConditions',
                 ],
                 'after' => [
                     'tearDown',
-                    'afterEachTestWithAttribute',
-                    'afterEachTestWithAnnotation',
+                    'afterEachTest',
                 ],
                 'afterClass' => [
                     'tearDownAfterClass',
-                    'afterLastTestWithAttribute',
-                    'afterLastTestWithAnnotation',
+                    'afterLastTest',
                 ],
             ],
             (new HookMethods)->hookMethods(TestWithHookMethodsTest::class),

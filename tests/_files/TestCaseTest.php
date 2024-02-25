@@ -23,18 +23,7 @@ final class TestCaseTest extends TestCase
     {
     }
 
-    /**
-     * @test
-     */
     public function three(): void
-    {
-    }
-
-    public function four(): void
-    {
-    }
-
-    private function five(): void
     {
     }
 }
