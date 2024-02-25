@@ -27,10 +27,7 @@ final class Registry
     private static function build(): Parser
     {
         return new CachingParser(
-            new ParserChain(
-                new AttributeParser,
-                new AnnotationParser,
-            ),
+            new AttributeParser,
         );
     }
 }
