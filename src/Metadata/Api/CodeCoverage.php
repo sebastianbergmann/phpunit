@@ -113,11 +113,8 @@ final class CodeCoverage
         $metadataForClass  = Registry::parser()->forClass($className);
         $metadataForMethod = Registry::parser()->forMethod($className, $methodName);
 
-        if ($metadataForMethod->isCoversNothing()->isNotEmpty()) {
-            return false;
-        }
-
-        if ($metadataForClass->isCoversNothing()->isNotEmpty()) {
+        if ($metadataForClass->isCoversNothing()->isNotEmpty() ||
+            $metadataForMethod->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 
