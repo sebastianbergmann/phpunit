@@ -25,9 +25,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(BackupStaticProperties::class)]
 #[UsesClass(Before::class)]
 #[UsesClass(BeforeClass::class)]
-#[UsesClass(Covers::class)]
 #[UsesClass(CoversClass::class)]
-#[UsesClass(CoversDefaultClass::class)]
 #[UsesClass(CoversFunction::class)]
 #[UsesClass(CoversMethod::class)]
 #[UsesClass(CoversNothing::class)]
@@ -55,9 +53,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(Test::class)]
 #[UsesClass(TestDox::class)]
 #[UsesClass(TestWith::class)]
-#[UsesClass(Uses::class)]
 #[UsesClass(UsesClass::class)]
-#[UsesClass(UsesDefaultClass::class)]
 #[UsesClass(UsesFunction::class)]
 #[Small]
 #[Group('metadata')]
@@ -117,8 +113,8 @@ final class MetadataCollectionTest extends TestCase
     {
         $collection = MetadataCollection::fromArray(
             [
-                Metadata::coversOnClass(''),
-                Metadata::coversOnMethod(''),
+                Metadata::groupOnClass('foo'),
+                Metadata::groupOnMethod('bar'),
             ],
         );
 
@@ -179,28 +175,12 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isBefore());
     }
 
-    public function test_Can_be_filtered_for_Covers(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isCovers();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isCovers());
-    }
-
     public function test_Can_be_filtered_for_CoversClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversClass();
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isCoversClass());
-    }
-
-    public function test_Can_be_filtered_for_CoversDefaultClass(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isCoversDefaultClass();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isCoversDefaultClass());
     }
 
     public function test_Can_be_filtered_for_CoversTrait(): void
@@ -460,28 +440,12 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isTestWith());
     }
 
-    public function test_Can_be_filtered_for_Uses(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isUses();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isUses());
-    }
-
     public function test_Can_be_filtered_for_UsesClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesClass();
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isUsesClass());
-    }
-
-    public function test_Can_be_filtered_for_UsesDefaultClass(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isUsesDefaultClass();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isUsesDefaultClass());
     }
 
     public function test_Can_be_filtered_for_UsesTrait(): void
@@ -526,9 +490,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::backupStaticPropertiesOnClass(true),
                 Metadata::beforeClass(),
                 Metadata::before(),
-                Metadata::coversOnClass(''),
                 Metadata::coversClass(''),
-                Metadata::coversDefaultClass(''),
                 Metadata::coversTrait(''),
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
@@ -570,9 +532,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::testDoxOnClass(''),
                 Metadata::test(),
                 Metadata::testWith([]),
-                Metadata::usesOnClass(''),
                 Metadata::usesClass(''),
-                Metadata::usesDefaultClass(''),
                 Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
