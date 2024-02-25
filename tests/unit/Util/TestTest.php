@@ -26,6 +26,7 @@ final class TestTest extends TestCase
             [true, new ReflectionMethod(TestCaseTest::class, 'testOne')],
             [true, new ReflectionMethod(TestCaseTest::class, 'two')],
             [false, new ReflectionMethod(TestCaseTest::class, 'three')],
+            [false, new ReflectionMethod(TestCaseTest::class, 'four')],
         ];
     }
 

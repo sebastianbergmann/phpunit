@@ -26,4 +26,8 @@ final class TestCaseTest extends TestCase
     public function three(): void
     {
     }
+
+    private function four(): void
+    {
+    }
 }
