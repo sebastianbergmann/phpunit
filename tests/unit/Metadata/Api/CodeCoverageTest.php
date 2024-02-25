@@ -32,6 +32,7 @@ use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
+use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
 use PHPUnit\TestFixture\InterfaceTargetTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAnnotationTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAttributeTest;
@@ -383,6 +384,22 @@ final class CodeCoverageTest extends TestCase
         $this->expectExceptionMessage('Trying to @cover interface "\Throwable".');
 
         (new CodeCoverage)->linesToBeCovered(InterfaceTargetTest::class, 'testOne');
+    }
+
+    public function testRejectsInterfaceAsCoversClassTargetWithAttribute(): void
+    {
+        $this->expectException(CodeCoverageException::class);
+        $this->expectExceptionMessage('Interface "Throwable" is not a valid target for code coverage');
+
+        (new CodeCoverage)->linesToBeCovered(InterfaceAsTargetWithAttributeTest::class, 'testOne');
+    }
+
+    public function testRejectsInterfaceAsUsesClassTargetWithAttribute(): void
+    {
+        $this->expectException(CodeCoverageException::class);
+        $this->expectExceptionMessage('Interface "Throwable" is not a valid target for code coverage');
+
+        (new CodeCoverage)->linesToBeUsed(InterfaceAsTargetWithAttributeTest::class, 'testOne');
     }
 
     public function testRejectsInvalidCoversClassTargetWithAttribute(): void
