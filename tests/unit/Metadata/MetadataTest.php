@@ -34,7 +34,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(DoesNotPerformAssertions::class)]
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
-#[CoversClass(Group::class)]
+#[CoversClass(\PHPUnit\Metadata\Group::class)]
 #[CoversClass(IgnoreDeprecations::class)]
 #[CoversClass(Metadata::class)]
 #[CoversClass(PostCondition::class)]

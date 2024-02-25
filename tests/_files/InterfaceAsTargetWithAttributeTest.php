@@ -10,13 +10,15 @@
 namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
-#[CoversClass(NoLogNoCc::class)]
-final class NoLogNoCcTest extends TestCase
+#[CoversClass(Throwable::class)]
+#[UsesClass(Throwable::class)]
+final class InterfaceAsTargetWithAttributeTest extends TestCase
 {
-    public function testSuccess(): void
+    public function testOne(): void
     {
-        $this->assertTrue((new NoLogNoCc)->getTrue());
     }
 }

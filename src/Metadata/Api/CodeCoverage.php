@@ -81,7 +81,11 @@ final readonly class CodeCoverage
                     );
                 } catch (InvalidCodeUnitException $e) {
                     if ($metadata->isCoversClass()) {
-                        $type = 'Class';
+                        if (interface_exists($metadata->className())) {
+                            $type = 'Interface';
+                        } else {
+                            $type = 'Class';
+                        }
                     } else {
                         $type = 'Function';
                     }
@@ -175,7 +179,11 @@ final readonly class CodeCoverage
                     );
                 } catch (InvalidCodeUnitException $e) {
                     if ($metadata->isUsesClass()) {
-                        $type = 'Class';
+                        if (interface_exists($metadata->className())) {
+                            $type = 'Interface';
+                        } else {
+                            $type = 'Class';
+                        }
                     } else {
                         $type = 'Function';
                     }
