@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers PHPUnit\TestFixture\NoLogNoCc
- */
+#[CoversClass(NoLogNoCc::class)]
 final class NoLogNoCcTest extends TestCase
 {
     public function testSuccess(): void

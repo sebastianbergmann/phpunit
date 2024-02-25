@@ -24,6 +24,6 @@ unlink($logfile);
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHPUnit\TestFixture\NoLogNoCcTest" file="%sNoLogNoCcTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="%f">
-    <testcase name="testSuccess" file="%sNoLogNoCcTest.php" line="19" class="PHPUnit\TestFixture\NoLogNoCcTest" classname="PHPUnit.TestFixture.NoLogNoCcTest" assertions="1" time="%f"/>
+    <testcase name="testSuccess" file="%sNoLogNoCcTest.php" line="18" class="PHPUnit\TestFixture\NoLogNoCcTest" classname="PHPUnit.TestFixture.NoLogNoCcTest" assertions="1" time="%f"/>
   </testsuite>
 </testsuites>

@@ -9,26 +9,22 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\TestFixture\CoveredClass
- *
- * @uses \PHPUnit\TestFixture\CoveredClass
- *
- * @group the-group
- *
- * @ticket the-ticket
- *
- * @small
- */
+#[CoversClass(CoveredClass::class)]
+#[UsesClass(CoveredClass::class)]
+#[Group('the-group')]
+#[Ticket('the-ticket')]
+#[Small]
 final class SmallGroupAnnotationsTest extends TestCase
 {
-    /**
-     * @group another-group
-     *
-     * @ticket another-ticket
-     */
+    #[Group('another-group')]
+    #[Ticket('another-ticket')]
     public function testOne(): void
     {
     }
