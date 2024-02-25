@@ -10,10 +10,13 @@
 namespace PHPUnit\Metadata\Parser;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(AnnotationParser::class)]
 #[Small]
+#[Group('metadata')]
+#[Group('metadata/annotations')]
 final class AnnotationParserTest extends AnnotationParserTestCase
 {
     protected function parser(): Parser

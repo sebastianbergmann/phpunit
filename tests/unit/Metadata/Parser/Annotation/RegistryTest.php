@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Annotation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,8 @@ use ThisClassDoesNotExist;
 #[CoversClass(Registry::class)]
 #[UsesClass(DocBlock::class)]
 #[Small]
+#[Group('metadata')]
+#[Group('metadata/annotations')]
 final class RegistryTest extends TestCase
 {
     public function testRegistryLookupWithExistingClassAnnotation(): void

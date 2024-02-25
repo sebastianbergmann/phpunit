@@ -11,11 +11,13 @@ namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Requirements::class)]
 #[Small]
+#[Group('metadata')]
 final class RequirementsTest extends TestCase
 {
     public static function missingRequirementsProvider(): array
@@ -29,25 +31,25 @@ final class RequirementsTest extends TestCase
                 'PHP extension testExt is required.',
             ]],
             ['testAlwaysSkip',     [
-                'PHPUnit >= 1111111 is required.',
+                'PHPUnit 1111111 is required.',
             ]],
             ['testAlwaysSkip2',    [
-                'PHP >= 9999999 is required.',
+                'PHP 9999999 is required.',
             ]],
             ['testAlwaysSkip3',    [
                 'Operating system DOESNOTEXIST is required.',
             ]],
             ['testAllPossibleRequirements', [
-                'PHP >= 99-dev is required.',
-                'PHP extension testExtOne is required.',
-                'PHP extension testExt2 is required.',
-                'PHP extension testExtThree >= 2.0 is required.',
-                'PHPUnit >= 99-dev is required.',
+                'PHP 99-dev is required.',
+                'PHPUnit 99-dev is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Function testFuncOne() is required.',
                 'Function testFunc2() is required.',
                 'Method DoesNotExist::doesNotExist() is required.',
+                'PHP extension testExtOne is required.',
+                'PHP extension testExt2 is required.',
+                'PHP extension testExtThree 2.0 is required.',
                 'Setting "not_a_setting" is required to be "Off".',
             ]],
             ['testPHPVersionOperatorLessThan', [

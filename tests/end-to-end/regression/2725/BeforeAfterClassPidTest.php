@@ -10,26 +10,23 @@
 namespace PHPUnit\TestFixture\Issue2725;
 
 use function getmypid;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @runClassInSeparateProcess
- */
+#[RunClassInSeparateProcess]
 class BeforeAfterClassPidTest extends TestCase
 {
     public const PID_VARIABLE = 'current_pid';
 
-    /**
-     * @beforeClass
-     */
+    #[BeforeClass]
     public static function showPidBefore(): void
     {
         $GLOBALS[static::PID_VARIABLE] = getmypid();
     }
 
-    /**
-     * @afterClass
-     */
+    #[AfterClass]
     public static function showPidAfter(): void
     {
         if ($GLOBALS[static::PID_VARIABLE] - getmypid() !== 0) {

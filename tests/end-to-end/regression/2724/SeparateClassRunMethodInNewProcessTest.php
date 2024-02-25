@@ -14,11 +14,10 @@ use function file_exists;
 use function file_get_contents;
 use function getmypid;
 use function unlink;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @runClassInSeparateProcess
- */
+#[RunClassInSeparateProcess]
 final class SeparateClassRunMethodInNewProcessTest extends TestCase
 {
     public const PROCESS_ID_FILE_PATH      = __DIR__ . '/parent_process_id.txt';

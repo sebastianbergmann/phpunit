@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class Issue1149Test extends TestCase
@@ -19,9 +20,7 @@ class Issue1149Test extends TestCase
         print '1';
     }
 
-    /**
-     * @runInSeparateProcess
-     */
+    #[RunInSeparateProcess]
     public function testTwo(): void
     {
         $this->assertTrue(true);

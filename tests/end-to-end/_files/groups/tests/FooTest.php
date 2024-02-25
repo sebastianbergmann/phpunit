@@ -9,21 +9,18 @@
  */
 namespace PHPUnit\TestFixture\Groups;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 final class FooTest extends TestCase
 {
-    /**
-     * @group one
-     */
+    #[Group('one')]
     public function testOne(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @group two
-     */
+    #[Group('two')]
     public function testTwo(): void
     {
         $this->assertTrue(true);

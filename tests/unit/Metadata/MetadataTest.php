@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
@@ -59,6 +60,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(UsesFunction::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[Small]
+#[Group('metadata')]
 final class MetadataTest extends TestCase
 {
     public function testCanBeAfter(): void

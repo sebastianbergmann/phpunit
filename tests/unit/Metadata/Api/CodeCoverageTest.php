@@ -13,6 +13,7 @@ use function array_merge;
 use function range;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
@@ -45,6 +46,7 @@ use PHPUnit\TestFixture\Test3194;
 
 #[CoversClass(CodeCoverage::class)]
 #[Small]
+#[Group('metadata')]
 final class CodeCoverageTest extends TestCase
 {
     public static function linesToBeCoveredProvider(): array
@@ -188,7 +190,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
+                    TEST_FILES_PATH . '3194.php' => array_merge(range(15, 21), range(23, 31)),
                 ],
                 Test3194::class,
                 'testOne',

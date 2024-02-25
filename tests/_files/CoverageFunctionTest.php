@@ -9,15 +9,14 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\TestCase;
 
+#[CoversFunction('globalFunction')]
+#[UsesFunction('globalFunction')]
 class CoverageFunctionTest extends TestCase
 {
-    /**
-     * @covers ::globalFunction
-     *
-     * @uses ::globalFunction
-     */
     public function testSomething(): void
     {
         globalFunction();

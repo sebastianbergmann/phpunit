@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @preserveGlobalState enabled
- */
+#[PreserveGlobalState(true)]
 class Issue797Test extends TestCase
 {
     public function testBootstrapPhpIsExecutedInIsolation(): void

@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @requires extension I_DO_NOT_EXIST
- */
+#[RequiresPhpExtension('I_DO_NOT_EXIST')]
 class Issue1374Test extends TestCase
 {
     protected function setUp(): void

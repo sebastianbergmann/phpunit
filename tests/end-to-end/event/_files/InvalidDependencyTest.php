@@ -9,21 +9,19 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsOnClass;
 use PHPUnit\Framework\TestCase;
 
 final class InvalidDependencyTest extends TestCase
 {
-    /**
-     * @depends doesNotExist
-     */
+    #[Depends('doesNotExist')]
     public function testOne(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends DoesNotExist::class
-     */
+    #[DependsOnClass('DoesNotExist')]
     public function testTwo(): void
     {
         $this->assertTrue(true);
