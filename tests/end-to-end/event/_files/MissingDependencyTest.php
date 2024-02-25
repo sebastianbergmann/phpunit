@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 final class MissingDependencyTest extends TestCase
@@ -18,9 +19,7 @@ final class MissingDependencyTest extends TestCase
         $this->assertTrue(false);
     }
 
-    /**
-     * @depends testOne
-     */
+    #[Depends('testOne')]
     public function testTwo(): void
     {
         $this->assertTrue(true);

@@ -10,11 +10,11 @@
 namespace PHPUnit\TestFixture;
 
 use function defined;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @preserveGlobalState enabled
- */
+#[PreserveGlobalState(true)]
 class Issue2158Test extends TestCase
 {
     /**
@@ -29,9 +29,8 @@ class Issue2158Test extends TestCase
     /**
      * Constant defined previously in main process constant should be available and
      * no errors should be yielded by reload of included files.
-     *
-     * @runInSeparateProcess
      */
+    #[RunInSeparateProcess]
     public function testSomethingElse(): void
     {
         $this->assertTrue(defined('TEST_CONSTANT'));

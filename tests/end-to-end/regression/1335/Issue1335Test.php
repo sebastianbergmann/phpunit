@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @runTestsInSeparateProcesses
- *
- * @preserveGlobalState enabled
- */
+#[RunTestsInSeparateProcesses]
+#[PreserveGlobalState(true)]
 class Issue1335Test extends TestCase
 {
     public function testGlobalString(): void

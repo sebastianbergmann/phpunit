@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\TestCase;
 
 class DependencyFailureTest extends TestCase
@@ -18,47 +20,32 @@ class DependencyFailureTest extends TestCase
         $this->assertTrue(false);
     }
 
-    /**
-     * @depends testOne
-     */
+    #[Depends('testOne')]
     public function testTwo(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends !clone testTwo
-     */
+    #[Depends('testTwo')]
     public function testThree(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends clone testOne
-     */
+    #[DependsUsingShallowClone('testOne')]
     public function testFour(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * This test has been added to check the printed warnings for the user
-     * when a dependency simply doesn't exist.
-     *
-     * @depends doesNotExist
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/3517
-     */
-    public function testHandlesDependsAnnotationForNonexistentTests(): void
+    #[Depends('doesNotExist')]
+    public function testHandlesDependencyOnTestMethodThatDoesNotExist(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends
-     */
-    public function testHandlesDependsAnnotationWithNoMethodSpecified(): void
+    #[Depends('')]
+    public function testHandlesDependencyOnTestMethodWithEmptyName(): void
     {
         $this->assertTrue(true);
     }

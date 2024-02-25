@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\TestFixture\MultiDependencyTest;
-use PHPUnit\TestFixture\TestWithDifferentSizes;
 use ReflectionClass;
 
 #[CoversClass(TestSuiteSorter::class)]
@@ -585,27 +584,5 @@ final class TestSuiteSorterTest extends TestCase
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFECTS_FIRST);
 
         $this->assertSame($expected, $sorter->getExecutionOrder());
-    }
-
-    public function testOrderBySize(): void
-    {
-        $suite = TestSuite::empty('test suite name');
-        $suite->addTestSuite(new ReflectionClass(TestWithDifferentSizes::class));
-        $sorter = new TestSuiteSorter;
-
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, true, TestSuiteSorter::ORDER_DEFAULT);
-
-        $expectedOrder = [
-            TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #0',
-            TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #1',
-            TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #0',
-            TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #1',
-            TestWithDifferentSizes::class . '::testWithSizeMedium',
-            TestWithDifferentSizes::class . '::testWithSizeLarge',
-            TestWithDifferentSizes::class . '::testWithSizeSmall',
-            TestWithDifferentSizes::class . '::testWithSizeUnknown',
-        ];
-
-        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
     }
 }

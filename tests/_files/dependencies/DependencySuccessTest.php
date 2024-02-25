@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsExternal;
 use PHPUnit\Framework\TestCase;
 
 class DependencySuccessTest extends TestCase
@@ -18,17 +20,13 @@ class DependencySuccessTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends testOne
-     */
+    #[Depends('testOne')]
     public function testTwo(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @depends PHPUnit\TestFixture\DependencySuccessTest::testTwo
-     */
+    #[DependsExternal(self::class, 'testTwo')]
     public function testThree(): void
     {
         $this->assertTrue(true);

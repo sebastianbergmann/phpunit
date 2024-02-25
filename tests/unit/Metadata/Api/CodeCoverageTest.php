@@ -190,7 +190,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
+                    TEST_FILES_PATH . '3194.php' => array_merge(range(15, 21), range(23, 31)),
                 ],
                 Test3194::class,
                 'testOne',
