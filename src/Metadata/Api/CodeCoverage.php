@@ -311,6 +311,5 @@ final class CodeCoverage
                 $e,
             );
         }
-
     }
 }
