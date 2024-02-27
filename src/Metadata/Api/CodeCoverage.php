@@ -242,6 +242,5 @@ final readonly class CodeCoverage
                 $e,
             );
         }
-
     }
 }
