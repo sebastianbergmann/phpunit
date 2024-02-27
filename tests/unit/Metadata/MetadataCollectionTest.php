@@ -29,6 +29,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(CoversClass::class)]
 #[UsesClass(CoversDefaultClass::class)]
 #[UsesClass(CoversFunction::class)]
+#[UsesClass(CoversMethod::class)]
 #[UsesClass(CoversNothing::class)]
 #[UsesClass(DataProvider::class)]
 #[UsesClass(DependsOnClass::class)]
@@ -208,6 +209,14 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isCoversFunction());
+    }
+
+    public function test_Can_be_filtered_for_CoversMethod(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversMethod();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversMethod());
     }
 
     public function test_Can_be_filtered_for_CoversNothing(): void
@@ -467,6 +476,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesFunction());
     }
 
+    public function test_Can_be_filtered_for_UsesMethod(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesMethod();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesMethod());
+    }
+
     public function test_Can_be_filtered_for_WithoutErrorHandler(): void
     {
         $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
@@ -489,6 +506,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversClass(''),
                 Metadata::coversDefaultClass(''),
                 Metadata::coversFunction(''),
+                Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
                 Metadata::dataProvider('', ''),
                 Metadata::dependsOnClass('', false, false),
@@ -530,6 +548,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesClass(''),
                 Metadata::usesDefaultClass(''),
                 Metadata::usesFunction(''),
+                Metadata::usesMethod('', ''),
                 Metadata::withoutErrorHandler(),
             ],
         );

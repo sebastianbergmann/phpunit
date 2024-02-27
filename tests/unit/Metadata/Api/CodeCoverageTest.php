@@ -24,6 +24,7 @@ use PHPUnit\TestFixture\CoverageCoversOverridesCoversNothingTest;
 use PHPUnit\TestFixture\CoverageFunctionParenthesesTest;
 use PHPUnit\TestFixture\CoverageFunctionParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageFunctionTest;
+use PHPUnit\TestFixture\CoverageMethodAnnotationTest;
 use PHPUnit\TestFixture\CoverageMethodNothingCoversMethod;
 use PHPUnit\TestFixture\CoverageMethodNothingTest;
 use PHPUnit\TestFixture\CoverageMethodOneLineAnnotationTest;
@@ -72,6 +73,14 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
                 ],
                 CoverageMethodTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
+                CoverageMethodAnnotationTest::class,
                 'testSomething',
             ],
 
@@ -221,6 +230,14 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
                 ],
                 CoverageMethodTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
+                CoverageMethodAnnotationTest::class,
                 'testSomething',
             ],
 

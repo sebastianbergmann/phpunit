@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
@@ -57,6 +58,7 @@ use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
+use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 
@@ -69,6 +71,7 @@ use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 #[CoversClass(Before::class)]
 #[CoversClass(CoversClass::class)]
 #[CoversClass(CoversFunction::class)]
+#[CoversClass(CoversMethod::class)]
 #[CoversClass(CoversNothing::class)]
 #[CoversClass(DataProviderExternal::class)]
 #[CoversClass(DataProvider::class)]
@@ -110,6 +113,7 @@ use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 #[CoversClass(Ticket::class)]
 #[CoversClass(UsesClass::class)]
 #[CoversClass(UsesFunction::class)]
+#[CoversClass(UsesMethod::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[Small]
 #[Group('metadata')]

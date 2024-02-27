@@ -75,6 +75,15 @@ abstract readonly class Metadata
     }
 
     /**
+     * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
+     */
+    public static function coversMethod(string $className, string $methodName): CoversMethod
+    {
+        return new CoversMethod(self::CLASS_LEVEL, $className, $methodName);
+    }
+
+    /**
      * @psalm-param non-empty-string $functionName
      */
     public static function coversFunction(string $functionName): CoversFunction
@@ -434,6 +443,15 @@ abstract readonly class Metadata
     }
 
     /**
+     * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
+     */
+    public static function usesMethod(string $className, string $methodName): UsesMethod
+    {
+        return new UsesMethod(self::CLASS_LEVEL, $className, $methodName);
+    }
+
+    /**
      * @psalm-param non-empty-string $target
      */
     public static function usesOnClass(string $target): Uses
@@ -556,6 +574,14 @@ abstract readonly class Metadata
      * @psalm-assert-if-true CoversFunction $this
      */
     public function isCoversFunction(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true CoversMethod $this
+     */
+    public function isCoversMethod(): bool
     {
         return false;
     }
@@ -814,6 +840,14 @@ abstract readonly class Metadata
      * @psalm-assert-if-true UsesFunction $this
      */
     public function isUsesFunction(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true UsesMethod $this
+     */
+    public function isUsesMethod(): bool
     {
         return false;
     }

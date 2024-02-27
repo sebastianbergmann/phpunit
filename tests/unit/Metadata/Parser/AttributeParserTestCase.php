@@ -90,6 +90,17 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
+    #[TestDox('Parses #[CoversMethod] attribute on class')]
+    public function test_parses_CoversMethod_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversTest::class)->isCoversMethod();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversMethod());
+        $this->assertSame(Example::class, $metadata->asArray()[0]->className());
+        $this->assertSame('method', $metadata->asArray()[0]->methodName());
+    }
+
     #[TestDox('Parses #[CoversNothing] attribute on class')]
     public function test_parses_CoversNothing_attribute_on_class(): void
     {
@@ -372,6 +383,17 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isUsesFunction());
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
+    }
+
+    #[TestDox('Parses #[UsesMethod] attribute on class')]
+    public function test_parses_UsesMethod_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesTest::class)->isUsesMethod();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesMethod());
+        $this->assertSame(Example::class, $metadata->asArray()[0]->className());
+        $this->assertSame('method', $metadata->asArray()[0]->methodName());
     }
 
     #[TestDox('Parses #[After] attribute on class')]
