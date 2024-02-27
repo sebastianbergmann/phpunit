@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.22.0@fe2c67ec89f358940f90db05efd2d663388b45a6">
+<files psalm-version="5.22.2@d768d914152dbbf3486c36398802f74e80cfde48">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code><![CDATA[notify]]></code>
@@ -610,8 +610,10 @@
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
     <RedundantCondition>
-      <code><![CDATA[$metadata instanceof CoversFunction]]></code>
-      <code><![CDATA[$metadata instanceof UsesFunction]]></code>
+      <code><![CDATA[$metadata instanceof Covers]]></code>
+      <code><![CDATA[$metadata instanceof Uses]]></code>
+      <code><![CDATA[$metadata->isCovers()]]></code>
+      <code><![CDATA[$metadata->isUses()]]></code>
       <code><![CDATA[assert($metadata instanceof Covers)]]></code>
       <code><![CDATA[assert($metadata instanceof Uses)]]></code>
     </RedundantCondition>

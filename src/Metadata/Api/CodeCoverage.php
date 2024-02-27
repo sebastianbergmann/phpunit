@@ -33,6 +33,7 @@ use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
 use RecursiveIteratorIterator;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
+use SebastianBergmann\CodeUnit\Exception as CodeUnitException;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
 
@@ -79,34 +80,14 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if (!$metadata->isCoversClass() && !$metadata->isCoversFunction() && !$metadata->isCovers()) {
+                continue;
+            }
+
+            assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction || $metadata instanceof Covers);
+
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
-                assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
-
-                try {
-                    $codeUnits = $codeUnits->mergeWith(
-                        $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper()),
-                    );
-                } catch (InvalidCodeUnitException $e) {
-                    if ($metadata->isCoversClass()) {
-                        if (interface_exists($metadata->className())) {
-                            $type = 'Interface';
-                        } else {
-                            $type = 'Class';
-                        }
-                    } else {
-                        $type = 'Function';
-                    }
-
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            '%s "%s" is not a valid target for code coverage',
-                            $type,
-                            $metadata->asStringForCodeUnitMapper(),
-                        ),
-                        $e->getCode(),
-                        $e,
-                    );
-                }
+                $codeUnits = $codeUnits->mergeWith($this->mapToCodeUnits($metadata));
             } elseif ($metadata->isCovers()) {
                 assert($metadata instanceof Covers);
 
@@ -177,34 +158,14 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if (!$metadata->isUsesClass() && !$metadata->isUsesFunction() && !$metadata->isUses()) {
+                continue;
+            }
+
+            assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction || $metadata instanceof Uses);
+
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
-                assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
-
-                try {
-                    $codeUnits = $codeUnits->mergeWith(
-                        $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper()),
-                    );
-                } catch (InvalidCodeUnitException $e) {
-                    if ($metadata->isUsesClass()) {
-                        if (interface_exists($metadata->className())) {
-                            $type = 'Interface';
-                        } else {
-                            $type = 'Class';
-                        }
-                    } else {
-                        $type = 'Function';
-                    }
-
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            '%s "%s" is not a valid target for code coverage',
-                            $type,
-                            $metadata->asStringForCodeUnitMapper(),
-                        ),
-                        $e->getCode(),
-                        $e,
-                    );
-                }
+                $codeUnits = $codeUnits->mergeWith($this->mapToCodeUnits($metadata));
             } elseif ($metadata->isUses()) {
                 assert($metadata instanceof Uses);
 
@@ -318,5 +279,38 @@ final class CodeCoverage
         }
 
         return $codeUnits;
+    }
+
+    /**
+     * @throws InvalidCoversTargetException
+     */
+    private function mapToCodeUnits(CoversClass|CoversFunction|UsesClass|UsesFunction $metadata): CodeUnitCollection
+    {
+        $mapper = new Mapper;
+
+        try {
+            return $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper());
+        } catch (CodeUnitException $e) {
+            if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
+                if (interface_exists($metadata->className())) {
+                    $type = 'Interface';
+                } else {
+                    $type = 'Class';
+                }
+            } else {
+                $type = 'Function';
+            }
+
+            throw new InvalidCoversTargetException(
+                sprintf(
+                    '%s "%s" is not a valid target for code coverage',
+                    $type,
+                    $metadata->asStringForCodeUnitMapper(),
+                ),
+                $e->getCode(),
+                $e,
+            );
+        }
+
     }
 }
