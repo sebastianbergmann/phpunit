@@ -213,13 +213,12 @@ final class CodeCoverageTest extends TestCase
      * @param class-string $className
      */
     #[DataProvider('linesToBeUsedProvider')]
-    public function testLinesToBeUsedCanBeDetermined(array|false $expected, string $className, string $methodName): void
+    public function testLinesToBeUsedCanBeDetermined(array|false $expected, string $className): void
     {
         $this->assertEqualsCanonicalizing(
             $expected,
             (new CodeCoverage)->linesToBeUsed(
                 $className,
-                $methodName,
             ),
         );
     }
@@ -258,7 +257,7 @@ final class CodeCoverageTest extends TestCase
         $this->expectException(CodeCoverageException::class);
         $this->expectExceptionMessage('Interface "Throwable" is not a valid target for code coverage');
 
-        (new CodeCoverage)->linesToBeUsed(InterfaceAsTargetWithAttributeTest::class, 'testOne');
+        (new CodeCoverage)->linesToBeUsed(InterfaceAsTargetWithAttributeTest::class);
     }
 
     public function testRejectsInvalidCoversClassTargetWithAttribute(): void
@@ -274,7 +273,7 @@ final class CodeCoverageTest extends TestCase
         $this->expectException(CodeCoverageException::class);
         $this->expectExceptionMessage('"InvalidClass" is not a valid target for code coverage');
 
-        (new CodeCoverage)->linesToBeUsed(InvalidClassTargetWithAttributeTest::class, 'testOne');
+        (new CodeCoverage)->linesToBeUsed(InvalidClassTargetWithAttributeTest::class);
     }
 
     public function testRejectsInvalidCoversFunctionTarget(): void
@@ -290,6 +289,6 @@ final class CodeCoverageTest extends TestCase
         $this->expectException(CodeCoverageException::class);
         $this->expectExceptionMessage('::invalid_function is not a valid target for code coverage');
 
-        (new CodeCoverage)->linesToBeUsed(InvalidFunctionTargetTest::class, 'testOne');
+        (new CodeCoverage)->linesToBeUsed(InvalidFunctionTargetTest::class);
     }
 }
