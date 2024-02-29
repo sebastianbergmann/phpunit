@@ -9,11 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
-use function array_keys;
 use function class_exists;
 use function count;
 use function file_get_contents;
-use function in_array;
 use function interface_exists;
 use function is_bool;
 use ArrayAccess;
@@ -84,19 +82,23 @@ abstract class Assert
      */
     final public static function assertArrayIsEqualToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
     {
-        foreach (array_keys($expected) as $key) {
-            if (!in_array($key, $keysToBeConsidered, true)) {
-                unset($expected[$key]);
+        $filteredExpected = [];
+
+        foreach ($keysToBeConsidered as $key) {
+            if (isset($expected[$key])) {
+                $filteredExpected[$key] = $expected[$key];
             }
         }
 
-        foreach (array_keys($actual) as $key) {
-            if (!in_array($key, $keysToBeConsidered, true)) {
-                unset($actual[$key]);
+        $filteredActual = [];
+
+        foreach ($keysToBeConsidered as $key) {
+            if (isset($actual[$key])) {
+                $filteredActual[$key] = $actual[$key];
             }
         }
 
-        static::assertEquals($expected, $actual, $message);
+        static::assertEquals($filteredExpected, $filteredActual, $message);
     }
 
     /**
@@ -126,19 +128,23 @@ abstract class Assert
      */
     final public static function assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
     {
-        foreach (array_keys($expected) as $key) {
-            if (!in_array($key, $keysToBeConsidered, true)) {
-                unset($expected[$key]);
+        $filteredExpected = [];
+
+        foreach ($keysToBeConsidered as $key) {
+            if (isset($expected[$key])) {
+                $filteredExpected[$key] = $expected[$key];
             }
         }
 
-        foreach (array_keys($actual) as $key) {
-            if (!in_array($key, $keysToBeConsidered, true)) {
-                unset($actual[$key]);
+        $filteredActual = [];
+
+        foreach ($keysToBeConsidered as $key) {
+            if (isset($actual[$key])) {
+                $filteredActual[$key] = $actual[$key];
             }
         }
 
-        static::assertSame($expected, $actual, $message);
+        static::assertSame($filteredExpected, $filteredActual, $message);
     }
 
     /**
