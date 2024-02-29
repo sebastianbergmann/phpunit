@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 * [#5704](https://github.com/sebastianbergmann/phpunit/issues/5704#issuecomment-1951105254): No warning when CLI options are used multiple times
 * [#5707](https://github.com/sebastianbergmann/phpunit/issues/5707): `--fail-on-empty-test-suite` CLI option is not documented in `--help` output
+* [#5716](https://github.com/sebastianbergmann/phpunit/pull/5716): Better respect PHP native array key handling for `assertArrayIs*ToArrayOnlyConsideringListOfKeys()`
 
 ## [11.0.3] - 2024-02-10
 
