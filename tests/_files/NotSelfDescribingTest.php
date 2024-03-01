@@ -24,7 +24,7 @@ class NotSelfDescribingTest implements Test
         return 0;
     }
 
-    public function run(TestResult $result = null): TestResult
+    public function run(?TestResult $result = null): TestResult
     {
         return new TestResult;
     }

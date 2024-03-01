@@ -78,7 +78,7 @@ final class JsonMatches extends Constraint
      *
      * @psalm-return never-return
      */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
+    protected function fail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
     {
         if ($comparisonFailure === null) {
             [$error, $recodedOther] = Json::canonicalize($other);

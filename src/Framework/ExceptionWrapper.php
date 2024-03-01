@@ -114,7 +114,7 @@ final class ExceptionWrapper extends Exception
      *
      * Approach works both for var_dump() and var_export() and print_r().
      */
-    private function originalException(Throwable $exceptionToStore = null): ?Throwable
+    private function originalException(?Throwable $exceptionToStore = null): ?Throwable
     {
         // drop once PHP 7.3 support is removed
         if (PHP_VERSION_ID < 70400) {

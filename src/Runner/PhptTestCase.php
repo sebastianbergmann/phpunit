@@ -85,7 +85,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      *
      * @throws Exception
      */
-    public function __construct(string $filename, AbstractPhpProcess $phpUtil = null)
+    public function __construct(string $filename, ?AbstractPhpProcess $phpUtil = null)
     {
         if (!is_file($filename)) {
             throw new Exception(
@@ -116,7 +116,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(?TestResult $result = null): TestResult
     {
         if ($result === null) {
             $result = new TestResult;

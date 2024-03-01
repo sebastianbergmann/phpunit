@@ -43,7 +43,7 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::reduce();
             }
 
-            final protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
+            final protected function fail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
             {
                 parent::fail($other, $description, $comparisonFailure);
             }
@@ -83,7 +83,7 @@ final class ConstraintTest extends ConstraintTestCase
                 return $this->exporter();
             }
 
-            final public function exposedFail($other, $description, ComparisonFailure $comparisonFailure = null): void
+            final public function exposedFail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
             {
                 $this->fail($other, $description, $comparisonFailure);
             }

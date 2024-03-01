@@ -599,7 +599,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws CodeCoverageException
      * @throws Warning
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(?TestResult $result = null): TestResult
     {
         if ($result === null) {
             $result = $this->createResult();

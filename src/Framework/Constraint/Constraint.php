@@ -101,7 +101,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @psalm-return never-return
      */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
+    protected function fail($other, $description, ?ComparisonFailure $comparisonFailure = null): void
     {
         $failureDescription = sprintf(
             'Failed asserting that %s.',
