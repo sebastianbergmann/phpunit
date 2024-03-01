@@ -118,7 +118,7 @@ final class TestRunner extends BaseTestRunner
      */
     private $extensions = [];
 
-    public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
+    public function __construct(?TestSuiteLoader $loader = null, ?CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
             $filter = new CodeCoverageFilter;

@@ -35,7 +35,7 @@ final class Getopt
     /**
      * @throws Exception
      */
-    public static function parse(array $args, string $short_options, array $long_options = null): array
+    public static function parse(array $args, string $short_options, ?array $long_options = null): array
     {
         if (empty($args)) {
             return [[], []];

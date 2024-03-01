@@ -105,7 +105,7 @@ final class ExceptionWrapper extends Exception
      * which can be quite big, from being garbage-collected, thus blocking memory until shutdown.
      * Approach works both for var_dump() and var_export() and print_r().
      */
-    private function originalException(Throwable $exceptionToStore = null): ?Throwable
+    private function originalException(?Throwable $exceptionToStore = null): ?Throwable
     {
         static $originalExceptions;
 

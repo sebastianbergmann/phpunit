@@ -27,7 +27,7 @@ class DoubleTestCase implements Test
         return 2;
     }
 
-    public function run(TestResult $result = null): TestResult
+    public function run(?TestResult $result = null): TestResult
     {
         $result->startTest($this);
 
