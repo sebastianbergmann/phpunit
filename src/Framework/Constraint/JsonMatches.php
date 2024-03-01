@@ -68,7 +68,7 @@ final class JsonMatches extends Constraint
      * @throws ExpectationFailedException
      * @throws InvalidJsonException
      */
-    protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): never
+    protected function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
     {
         if ($comparisonFailure === null) {
             [$error, $recodedOther] = Json::canonicalize($other);
