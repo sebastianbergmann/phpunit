@@ -157,7 +157,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the command based into the configurations.
      */
-    public function getCommand(array $settings, string $file = null): string
+    public function getCommand(array $settings, ?string $file = null): string
     {
         $runtime = new Runtime;
 
