@@ -15,6 +15,7 @@ use function is_resource;
 use function preg_replace;
 use function sprintf;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
@@ -126,7 +127,7 @@ EOF
     {
         try {
             Assert::isType('diverse');
-        } catch (\PHPUnit\Framework\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals(
                 <<<EOF
 PHPUnit\Framework\Exception: Type specified for PHPUnit\Framework\Constraint\IsType <diverse> is not a valid type.

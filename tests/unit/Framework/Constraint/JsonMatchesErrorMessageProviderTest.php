@@ -15,7 +15,9 @@ use const JSON_ERROR_NONE;
 use const JSON_ERROR_STATE_MISMATCH;
 use const JSON_ERROR_SYNTAX;
 use const JSON_ERROR_UTF8;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @small
@@ -66,8 +68,8 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
     /**
      * @dataProvider translateTypeToPrefixDataprovider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testTranslateTypeToPrefix($expected, $type): void
     {
@@ -82,8 +84,8 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
      *
      * @dataProvider determineJsonErrorDataprovider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testDetermineJsonError($expected, $error, $prefix): void
     {

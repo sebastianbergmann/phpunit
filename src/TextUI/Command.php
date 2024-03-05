@@ -61,6 +61,7 @@ use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -737,7 +738,7 @@ class Command
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function handleListTests(TestSuite $suite, bool $exit): int
     {
@@ -764,7 +765,7 @@ class Command
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function handleListTestsXml(TestSuite $suite, string $target, bool $exit): int
     {

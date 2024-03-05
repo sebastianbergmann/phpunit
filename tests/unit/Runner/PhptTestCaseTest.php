@@ -15,6 +15,7 @@ use function strtr;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
@@ -75,7 +76,7 @@ EOF;
     private $testCase;
 
     /**
-     * @var AbstractPhpProcess|\PHPUnit\Framework\MockObject\MockObject
+     * @var AbstractPhpProcess|MockObject
      */
     private $phpProcess;
 

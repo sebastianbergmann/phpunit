@@ -1009,10 +1009,10 @@
     <UndefinedDocblockClass>
       <code><![CDATA[$this->prophet]]></code>
       <code><![CDATA[$this->prophet]]></code>
+      <code><![CDATA[ClassNotFoundException]]></code>
+      <code><![CDATA[DoubleException]]></code>
+      <code><![CDATA[InterfaceNotFoundException]]></code>
       <code><![CDATA[Prophet]]></code>
-      <code><![CDATA[\Prophecy\Exception\Doubler\ClassNotFoundException]]></code>
-      <code><![CDATA[\Prophecy\Exception\Doubler\DoubleException]]></code>
-      <code><![CDATA[\Prophecy\Exception\Doubler\InterfaceNotFoundException]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
@@ -1895,7 +1895,7 @@
       <code><![CDATA[self::SPINNER_ICONS[$id]]]></code>
     </InvalidArrayOffset>
     <MissingThrowsDocblock>
-      <code><![CDATA[\PHPUnit\Util\Filter::getFilteredStacktrace($t)]]></code>
+      <code><![CDATA[Filter::getFilteredStacktrace($t)]]></code>
       <code><![CDATA[stop]]></code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArrayOffset>
@@ -1971,7 +1971,7 @@
       <code><![CDATA[TestDoxPrinter]]></code>
     </DeprecatedInterface>
     <MissingThrowsDocblock>
-      <code><![CDATA[\PHPUnit\Util\Filter::getFilteredStacktrace($t)]]></code>
+      <code><![CDATA[Filter::getFilteredStacktrace($t)]]></code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor>
       <code><![CDATA[TestDoxPrinter]]></code>

@@ -15,9 +15,11 @@ use function is_iterable;
 use function sprintf;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidParameterGroupException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -37,7 +39,7 @@ final class ConsecutiveParameters implements ParametersRule
     private $invocations = [];
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public function __construct(array $parameterGroups)
     {
@@ -68,8 +70,8 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function apply(BaseInvocation $invocation): void
     {
@@ -80,8 +82,8 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function verify(): void
     {
@@ -95,8 +97,8 @@ final class ConsecutiveParameters implements ParametersRule
      *
      * @param int $callIndex
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
     {

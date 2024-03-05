@@ -10,7 +10,9 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @small
@@ -22,8 +24,8 @@ final class JsonTest extends TestCase
      *
      * @dataProvider canonicalizeProvider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testCanonicalize($actual, $expected, $expectError): void
     {
@@ -51,9 +53,9 @@ final class JsonTest extends TestCase
      *
      * @dataProvider prettifyProvider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testPrettify($actual, $expected): void
     {

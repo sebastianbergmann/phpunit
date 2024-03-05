@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_diff;
 use function array_merge;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -111,11 +113,11 @@ final class MockBuilder
     /**
      * Creates a mock object using a fluent interface.
      *
-     * @throws \PHPUnit\Framework\InvalidArgumentException
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
+     * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
@@ -151,7 +153,7 @@ final class MockBuilder
      *
      * @psalm-return MockObject&MockedType
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
      */
@@ -178,7 +180,7 @@ final class MockBuilder
      *
      * @psalm-return MockObject&MockedType
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
      */

@@ -17,15 +17,19 @@ use function method_exists;
 use function preg_split;
 use function trim;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\DefaultResultPrinter;
+use PHPUnit\Util\Filter;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Throwable;
 
 /**
@@ -82,7 +86,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      * @param null|resource|string $out
      * @param int|string           $numberOfColumns
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
@@ -107,7 +111,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function endTest(Test $test, float $time): void
     {
@@ -127,7 +131,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addError(Test $test, Throwable $t, float $time): void
     {
@@ -135,7 +139,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -143,7 +147,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -151,7 +155,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
@@ -159,7 +163,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
@@ -167,7 +171,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
@@ -185,7 +189,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
@@ -339,7 +343,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatThrowable(Throwable $t, ?int $status = null): string
     {
-        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        $message = trim(TestFailure::exceptionToString($t));
 
         if ($message) {
             $message .= PHP_EOL . PHP_EOL . $this->formatStacktrace($t);
@@ -352,7 +356,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatStacktrace(Throwable $t): string
     {
-        return \PHPUnit\Util\Filter::getFilteredStacktrace($t);
+        return Filter::getFilteredStacktrace($t);
     }
 
     protected function formatTestResultMessage(Throwable $t, array $result, string $prefix = '│'): string

@@ -9,12 +9,14 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Companion Cube
  *
  * @ticket t123456
  */
-class NumericGroupAnnotationTest extends \PHPUnit\Framework\TestCase
+class NumericGroupAnnotationTest extends TestCase
 {
     /**
      * @testdox Empty test for @ticket numeric annotation values

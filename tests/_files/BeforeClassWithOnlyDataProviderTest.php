@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\TestFixture;
 
-class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class BeforeClassWithOnlyDataProviderTest extends TestCase
 {
     public static $setUpBeforeClassWasCalled;
 

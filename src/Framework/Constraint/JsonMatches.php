@@ -11,9 +11,11 @@ namespace PHPUnit\Framework\Constraint;
 
 use function json_decode;
 use function sprintf;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Json;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -72,9 +74,9 @@ final class JsonMatches extends Constraint
      * @param mixed  $other       evaluated value or object
      * @param string $description Additional information about the test
      *
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @psalm-return never-return
      */

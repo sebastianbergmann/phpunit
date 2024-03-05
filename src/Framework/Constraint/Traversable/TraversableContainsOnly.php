@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Traversable;
 
 /**
@@ -28,7 +30,7 @@ final class TraversableContainsOnly extends Constraint
     private $type;
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public function __construct(string $type, bool $isNativeType = true)
     {
@@ -55,8 +57,8 @@ final class TraversableContainsOnly extends Constraint
      *
      * @param mixed|Traversable $other
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
