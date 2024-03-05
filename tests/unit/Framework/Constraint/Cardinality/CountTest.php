@@ -16,6 +16,7 @@ use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\GeneratorNotSupportedException;
 use PHPUnit\Framework\TestCase;
@@ -205,7 +206,7 @@ final class CountTest extends TestCase
     {
         $constraint = new Count(0);
 
-        $this->expectException(\PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
 
         $constraint->evaluate(new ExceptionThrowingIteratorAggregate);
     }

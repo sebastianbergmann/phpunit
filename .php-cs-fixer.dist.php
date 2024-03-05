@@ -103,7 +103,7 @@ $config->setFinder($finder)
         'explicit_string_variable' => true,
         'fopen_flag_order' => true,
         'full_opening_tag' => true,
-        'fully_qualified_strict_types' => true,
+        'fully_qualified_strict_types' => ['import_symbols' => true],
         'function_declaration' => true,
         'function_to_constant' => true,
         'get_class_to_class_keyword' => true,

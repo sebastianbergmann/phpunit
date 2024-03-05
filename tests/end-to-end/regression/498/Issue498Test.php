@@ -12,6 +12,7 @@ namespace PHPUnit\TestFixture;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class Issue498Test extends TestCase
@@ -29,7 +30,7 @@ class Issue498Test extends TestCase
         throw new Exception("Can't create the data");
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     #[DataProvider('shouldBeTrueDataProvider')]
     #[Group('falseOnly')]
     public function shouldBeTrue($testData): void
@@ -37,7 +38,7 @@ class Issue498Test extends TestCase
         $this->assertTrue(true);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     #[DataProvider('shouldBeFalseDataProvider')]
     #[Group('trueOnly')]
     public function shouldBeFalse($testData): void

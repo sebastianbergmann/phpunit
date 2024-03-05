@@ -14,6 +14,10 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\RequiresPhp;
+use PHPUnit\Metadata\RequiresPhpExtension;
+use PHPUnit\Metadata\RequiresPhpunit;
+use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
@@ -238,7 +242,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhp());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhp);
+        assert($requirement instanceof RequiresPhp);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -270,7 +274,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpunit());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpunit);
+        assert($requirement instanceof RequiresPhpunit);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -290,7 +294,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresSetting());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresSetting);
+        assert($requirement instanceof RequiresSetting);
 
         $this->assertSame('setting', $requirement->setting());
         $this->assertSame('value', $requirement->value());
@@ -739,7 +743,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhp());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhp);
+        assert($requirement instanceof RequiresPhp);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -759,7 +763,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpExtension());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpExtension);
+        assert($requirement instanceof RequiresPhpExtension);
 
         $this->assertSame('bar', $requirement->extension());
         $this->assertTrue($requirement->hasVersionRequirement());
@@ -778,7 +782,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpExtension());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpExtension);
+        assert($requirement instanceof RequiresPhpExtension);
 
         $this->assertSame('baz', $requirement->extension());
         $this->assertTrue($requirement->hasVersionRequirement());
@@ -801,7 +805,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpunit());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpunit);
+        assert($requirement instanceof RequiresPhpunit);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -821,7 +825,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertTrue($requirement->isRequiresSetting());
 
-        assert($requirement instanceof \PHPUnit\Metadata\RequiresSetting);
+        assert($requirement instanceof RequiresSetting);
 
         $this->assertSame('another-setting', $requirement->setting());
         $this->assertSame('another-value', $requirement->value());
