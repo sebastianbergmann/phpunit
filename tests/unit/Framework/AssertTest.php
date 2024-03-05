@@ -37,6 +37,7 @@ use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
 use PHPUnit\TestFixture\Struct;
 use PHPUnit\Util\Xml;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use SplObjectStorage;
 use stdClass;
 
@@ -258,8 +259,8 @@ final class AssertTest extends TestCase
     /**
      * @dataProvider equalProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertEqualsSucceeds($a, $b): void
     {
@@ -269,8 +270,8 @@ final class AssertTest extends TestCase
     /**
      * @dataProvider notEqualProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertEqualsFails($a, $b): void
     {
@@ -282,8 +283,8 @@ final class AssertTest extends TestCase
     /**
      * @dataProvider notEqualProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertNotEqualsSucceeds($a, $b): void
     {
@@ -295,8 +296,8 @@ final class AssertTest extends TestCase
      *
      * @dataProvider equalProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertNotEqualsFails($a, $b): void
     {
@@ -310,8 +311,8 @@ final class AssertTest extends TestCase
      *
      * @dataProvider sameProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertSameSucceeds($a, $b): void
     {
@@ -323,8 +324,8 @@ final class AssertTest extends TestCase
      *
      * @dataProvider notSameProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertSameFails($a, $b): void
     {
@@ -338,8 +339,8 @@ final class AssertTest extends TestCase
      *
      * @dataProvider notSameProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertNotSameSucceeds($a, $b): void
     {
@@ -351,8 +352,8 @@ final class AssertTest extends TestCase
      *
      * @dataProvider sameProvider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertNotSameFails($a, $b): void
     {
@@ -1741,8 +1742,8 @@ XML;
     /**
      * @dataProvider validInvalidJsonDataprovider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual): void
     {
@@ -1765,8 +1766,8 @@ XML;
      *
      * @dataProvider validInvalidJsonDataprovider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual): void
     {

@@ -13,6 +13,7 @@ use function is_array;
 use function is_string;
 use function sprintf;
 use function strpos;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use SplObjectStorage;
 
 /**
@@ -34,7 +35,7 @@ final class TraversableContainsEqual extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function toString(): string
     {
@@ -75,7 +76,7 @@ final class TraversableContainsEqual extends Constraint
      *
      * @param mixed $other evaluated value or object
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function failureDescription($other): string
     {

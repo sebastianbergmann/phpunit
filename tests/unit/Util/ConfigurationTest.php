@@ -23,11 +23,13 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 /**
@@ -628,9 +630,9 @@ final class ConfigurationTest extends TestCase
     /**
      * Asserts that the values in $actualConfiguration equal $expectedConfiguration.
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     protected function assertConfigurationEquals(Configuration $expectedConfiguration, Configuration $actualConfiguration): void
     {

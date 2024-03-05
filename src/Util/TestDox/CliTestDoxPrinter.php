@@ -23,10 +23,14 @@ use function strpos;
 use function trim;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
+use PHPUnit\Util\Filter;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use SebastianBergmann\Timer\RuntimeException;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -113,7 +117,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     private $nonSuccessfulTestResults = [];
 
     /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
+     * @throws RuntimeException
      */
     public function printResult(TestResult $result): void
     {
@@ -125,7 +129,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
+     * @throws RuntimeException
      */
     protected function printHeader(TestResult $result): void
     {
@@ -142,7 +146,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
@@ -154,7 +158,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function formatTestName(Test $test): string
     {
@@ -201,7 +205,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function formatThrowable(Throwable $t, ?int $status = null): string
     {
-        return trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        return trim(TestFailure::exceptionToString($t));
     }
 
     protected function colorizeMessageAndDiff(string $style, string $buffer): array
@@ -240,7 +244,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function formatStacktrace(Throwable $t): string
     {
-        $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
+        $trace = Filter::getFilteredStacktrace($t);
 
         if (!$this->colors) {
             return $trace;

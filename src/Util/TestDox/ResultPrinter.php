@@ -12,6 +12,7 @@ namespace PHPUnit\Util\TestDox;
 use function get_class;
 use function in_array;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestListener;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Printer;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Throwable;
 
 /**
@@ -100,7 +102,7 @@ abstract class ResultPrinter extends Printer implements TestListener
     /**
      * @param resource $out
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public function __construct($out = null, array $groups = [], array $excludeGroups = [])
     {
@@ -219,7 +221,7 @@ abstract class ResultPrinter extends Printer implements TestListener
     /**
      * A test started.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function startTest(Test $test): void
     {

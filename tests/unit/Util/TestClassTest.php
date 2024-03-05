@@ -36,6 +36,7 @@ use CoveragePublicTest;
 use CoverageTwoDefaultClassAnnotations;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
@@ -63,6 +64,7 @@ use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 use PHPUnit\Util\Annotation\DocBlock;
 use ReflectionClass;
 use ReflectionMethod;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @small
@@ -79,8 +81,8 @@ final class TestClassTest extends TestCase
      *
      * @dataProvider requirementsProvider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      * @throws Warning
      */
     public function testGetRequirements($test, $result): void
@@ -524,9 +526,9 @@ final class TestClassTest extends TestCase
      *
      * @dataProvider requirementsWithVersionConstraintsProvider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      * @throws Warning
      */
     public function testGetRequirementsWithVersionConstraints($test, array $result): void
@@ -717,8 +719,8 @@ final class TestClassTest extends TestCase
      *
      * @dataProvider missingRequirementsProvider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      * @throws Warning
      */
     public function testGetMissingRequirements($test, $result): void
@@ -1192,9 +1194,9 @@ final class TestClassTest extends TestCase
     /**
      * @dataProvider getLinesToBeCoveredProvider
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws CodeCoverageException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testGetLinesToBeCovered($test, $expected): void
     {

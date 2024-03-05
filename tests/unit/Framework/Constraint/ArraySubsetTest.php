@@ -13,6 +13,7 @@ use function sprintf;
 use ArrayObject;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\ArrayAccessible;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Traversable;
 
 /**
@@ -56,8 +57,8 @@ final class ArraySubsetTest extends ConstraintTestCase
      * @param array|Traversable $other
      * @param bool              $strict
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @dataProvider evaluateDataProvider
      */

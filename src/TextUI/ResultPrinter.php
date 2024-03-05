@@ -39,6 +39,7 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\Environment\Console;
+use SebastianBergmann\Timer\RuntimeException;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -165,7 +166,7 @@ class ResultPrinter extends Printer implements TestListener
     }
 
     /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
+     * @throws RuntimeException
      */
     public function printResult(TestResult $result): void
     {
@@ -395,7 +396,7 @@ class ResultPrinter extends Printer implements TestListener
     }
 
     /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
+     * @throws RuntimeException
      */
     protected function printHeader(TestResult $result): void
     {

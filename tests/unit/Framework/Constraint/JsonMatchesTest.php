@@ -11,9 +11,12 @@ namespace PHPUnit\Framework\Constraint;
 
 use function json_encode;
 use function sprintf;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Json;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @small
@@ -56,8 +59,8 @@ final class JsonMatchesTest extends ConstraintTestCase
     /**
      * @dataProvider evaluateDataprovider
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue): void
     {
@@ -69,10 +72,10 @@ final class JsonMatchesTest extends ConstraintTestCase
     /**
      * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
      *
-     * @throws \PHPUnit\Framework\AssertionFailedError
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws AssertionFailedError
+     * @throws Exception
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue): void
     {

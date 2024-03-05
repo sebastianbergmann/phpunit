@@ -15,6 +15,7 @@ use function method_exists;
 use function microtime;
 use Countable;
 use Exception;
+use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractMockTestClass;
 use PHPUnit\TestFixture\AbstractTrait;
@@ -63,14 +64,14 @@ final class GeneratorTest extends TestCase
 
     public function testGetMockThrowsExceptionWithInvalidClassArgumentType(): void
     {
-        $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->generator->getMock(false);
     }
 
     public function testGetMockThrowsExceptionWithInvalidMethods(): void
     {
-        $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->generator->getMock(stdClass::class, false);
     }

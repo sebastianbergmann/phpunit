@@ -11,6 +11,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function sprintf;
+use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
@@ -158,7 +159,7 @@ final class InvocationMockerTest extends TestCase
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
-        $invocationMocker = $mock->method(new \PHPUnit\Framework\Constraint\IsAnything);
+        $invocationMocker = $mock->method(new IsAnything);
         $invocationMocker->willReturn(true, 1);
 
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());

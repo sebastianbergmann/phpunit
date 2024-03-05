@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use function array_diff;
 use function array_merge;
 use function sprintf;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -140,7 +141,7 @@ final class MockBuilder
     /**
      * Creates a mock object for an abstract class using a fluent interface.
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws RuntimeException
      *
      * @psalm-return MockObject&MockedType
@@ -166,7 +167,7 @@ final class MockBuilder
     /**
      * Creates a mock object for a trait using a fluent interface.
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws RuntimeException
      *
      * @psalm-return MockObject&MockedType

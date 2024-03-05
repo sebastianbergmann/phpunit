@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+
 /**
  * Constraint that asserts that the value it is evaluated for is greater
  * than a given value.
@@ -31,7 +33,7 @@ final class GreaterThan extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function toString(): string
     {

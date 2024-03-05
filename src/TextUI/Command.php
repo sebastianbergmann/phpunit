@@ -64,6 +64,7 @@ use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Throwable;
 
 /**
@@ -1316,7 +1317,7 @@ class Command
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function handleListTests(TestSuite $suite, bool $exit): int
     {
@@ -1343,7 +1344,7 @@ class Command
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function handleListTestsXml(TestSuite $suite, string $target, bool $exit): int
     {
