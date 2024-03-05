@@ -254,6 +254,9 @@ final class LoaderTest extends TestCase
 
         $this->assertTrue($logging->hasTestDoxText());
         $this->assertSame(TEST_FILES_PATH . 'testdox.txt', $logging->testDoxText()->target()->path());
+
+        $this->assertTrue($logging->hasXml());
+        $this->assertSame(TEST_FILES_PATH . 'phpunit.xml', $logging->xml()->target()->path());
     }
 
     public function testPHPConfigurationIsReadCorrectly(): void

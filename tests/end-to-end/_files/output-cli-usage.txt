@@ -98,6 +98,7 @@ Reporting:
 
 Logging:
 
+  --log-xml <file>                 Write test results in PHPUnit XML format to file
   --log-junit <file>               Write test results in JUnit XML format to file
   --log-teamcity <file>            Write test results in TeamCity format to file
   --testdox-html <file>            Write test results in TestDox format (HTML) to file

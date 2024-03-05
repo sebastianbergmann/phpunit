@@ -27,6 +27,7 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
+use PHPUnit\Logging\Xml\XmlLogger;
 use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
 use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
@@ -528,6 +529,13 @@ final readonly class Application
                     $configuration->logEventsVerboseText(),
                     true,
                 ),
+            );
+        }
+
+        if ($configuration->hasLogfileXml()) {
+            new XmlLogger(
+                OutputFacade::printerFor($configuration->logfileXml()),
+                EventFacade::instance(),
             );
         }
 

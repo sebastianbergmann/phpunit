@@ -288,6 +288,7 @@
     </xs:group>
     <xs:group name="loggingGroup">
         <xs:all>
+            <xs:element name="xml" type="logToFileType" minOccurs="0" />
             <xs:element name="junit" type="logToFileType" minOccurs="0" />
             <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />

@@ -24,13 +24,15 @@ final readonly class Logging
     private ?TeamCity $teamCity;
     private ?TestDoxHtml $testDoxHtml;
     private ?TestDoxText $testDoxText;
+    private ?Xml $xml;
 
-    public function __construct(?Junit $junit, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
+    public function __construct(?Junit $junit, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?Xml $xml)
     {
         $this->junit       = $junit;
         $this->teamCity    = $teamCity;
         $this->testDoxHtml = $testDoxHtml;
         $this->testDoxText = $testDoxText;
+        $this->xml         = $xml;
     }
 
     public function hasJunit(): bool
@@ -99,5 +101,22 @@ final readonly class Logging
         }
 
         return $this->testDoxText;
+    }
+
+    public function hasXml(): bool
+    {
+        return $this->xml !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function xml(): Xml
+    {
+        if ($this->xml === null) {
+            throw new Exception('Logger "XML" is not configured');
+        }
+
+        return $this->xml;
     }
 }

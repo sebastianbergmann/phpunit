@@ -254,6 +254,7 @@ final class Help
             ],
 
             'Logging' => [
+                ['arg' => '--log-xml <file>', 'desc' => 'Write test results in PHPUnit XML format to file'],
                 ['arg' => '--log-junit <file>', 'desc' => 'Write test results in JUnit XML format to file'],
                 ['arg' => '--log-teamcity <file>', 'desc' => 'Write test results in TeamCity format to file'],
                 ['arg' => '--testdox-html <file>', 'desc' => 'Write test results in TestDox format (HTML) to file'],

@@ -492,6 +492,7 @@ final readonly class Merger
         $logfileJunit                = null;
         $logfileTestdoxHtml          = null;
         $logfileTestdoxText          = null;
+        $logfileXml                  = null;
         $loggingFromXmlConfiguration = true;
 
         if ($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging()) {
@@ -520,6 +521,12 @@ final readonly class Merger
             $logfileTestdoxText = $cliConfiguration->testdoxTextFile();
         } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxText()) {
             $logfileTestdoxText = $xmlConfiguration->logging()->testDoxText()->target()->path();
+        }
+
+        if ($cliConfiguration->hasXmlLogfile()) {
+            $logfileXml = $cliConfiguration->xmlLogfile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasXml()) {
+            $logfileXml = $xmlConfiguration->logging()->xml()->target()->path();
         }
 
         $logEventsText = null;
@@ -798,6 +805,7 @@ final readonly class Merger
             $logfileJunit,
             $logfileTestdoxHtml,
             $logfileTestdoxText,
+            $logfileXml,
             $logEventsText,
             $logEventsVerboseText,
             $teamCityOutput,
