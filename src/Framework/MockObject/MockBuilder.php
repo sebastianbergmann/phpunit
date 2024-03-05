@@ -14,6 +14,7 @@ use function assert;
 use function debug_backtrace;
 use function trait_exists;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Generator\ClassAlreadyExistsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
@@ -123,7 +124,7 @@ final class MockBuilder
      *
      * @psalm-return MockObject&MockedType
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
      *
@@ -159,7 +160,7 @@ final class MockBuilder
      *
      * @psalm-return MockObject&MockedType
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
      *

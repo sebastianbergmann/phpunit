@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -60,7 +61,7 @@ final class ExceptionMessageMatchesRegularExpressionTest extends TestCase
     {
         $constraint = new ExceptionMessageMatchesRegularExpression('invalid regular expression');
 
-        $this->expectException(\PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid expected exception message regular expression given: invalid regular expression');
 
         $constraint->evaluate('abcd');

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class InvalidDataProviderTest extends TestCase
@@ -18,7 +19,7 @@ final class InvalidDataProviderTest extends TestCase
         return [0];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('provider')]
+    #[DataProvider('provider')]
     public function testOne(): void
     {
         $this->assertTrue(true);
