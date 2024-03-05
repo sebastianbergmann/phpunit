@@ -37,6 +37,7 @@ use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
+use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
@@ -59,8 +60,8 @@ final class TestRunner
 
     /**
      * @throws \PHPUnit\Runner\Exception
-     * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws CodeCoverageException
+     * @throws InvalidArgumentException
      * @throws MoreThanOneDataSetFromDataProviderException
      * @throws UnintentionallyCoveredCodeException
      */

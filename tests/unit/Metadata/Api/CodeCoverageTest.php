@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -362,7 +363,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
     }
 
-    #[\PHPUnit\Framework\Attributes\TestDox('Rejects more than one @coversDefaultClass annotation')]
+    #[TestDox('Rejects more than one @coversDefaultClass annotation')]
     public function testRejectsMoreThanOneCoversDefaultClassAnnotation(): void
     {
         $this->expectException(CodeCoverageException::class);
@@ -371,7 +372,7 @@ final class CodeCoverageTest extends TestCase
         (new CodeCoverage)->linesToBeCovered(MoreThanOneCoversDefaultClassAnnotationTest::class, 'testOne');
     }
 
-    #[\PHPUnit\Framework\Attributes\TestDox('More than one @usesDefaultClass annotation')]
+    #[TestDox('More than one @usesDefaultClass annotation')]
     public function testRejectsMoreThanOneUsesDefaultClassAnnotation(): void
     {
         $this->expectException(CodeCoverageException::class);
