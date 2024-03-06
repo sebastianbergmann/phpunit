@@ -4,11 +4,21 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 
 ## [9.6.17] - 2024-02-23
 
+### Changed
+
+* Improve output of `--check-version` CLI option
+* Improve description of `--check-version` CLI option
+* Show help for `--manifest`, `--sbom`, and `--composer-lock` when the PHAR is used
+
 ### Fixed
 
 * [#5712](https://github.com/sebastianbergmann/phpunit/issues/5712): Update dependencies for PHAR distribution of PHPUnit 9.6
 
 ## [9.6.16] - 2024-01-19
+
+### Changed
+
+* Make PHAR build reproducible (the only remaining differences were in the timestamps for the files in the PHAR)
 
 ### Fixed
 
