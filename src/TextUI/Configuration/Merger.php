@@ -333,6 +333,14 @@ final readonly class Merger
             $coverageTextShowOnlySummary    = $xmlConfiguration->codeCoverage()->text()->showOnlySummary();
         }
 
+        if ($cliConfiguration->hasCoverageTextShowUncoveredFiles()) {
+            $coverageTextShowUncoveredFiles = $cliConfiguration->coverageTextShowUncoveredFiles();
+        }
+
+        if ($cliConfiguration->hasCoverageTextShowOnlySummary()) {
+            $coverageTextShowOnlySummary = $cliConfiguration->coverageTextShowOnlySummary();
+        }
+
         if ($cliConfiguration->hasCoverageText()) {
             $coverageText = $cliConfiguration->coverageText();
         } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasText()) {
