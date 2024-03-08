@@ -28,5 +28,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
    <test id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testOne"/>
   </group>
  </groups>
-</testSuite>
-Wrote list of tests that would have been run to php://stdout
+</testSuite>%A
