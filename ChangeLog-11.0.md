@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ### Fixed
 
+* [#5652](https://github.com/sebastianbergmann/phpunit/issues/5652): `HRTime::duration()` throws `InvalidArgumentException`
 * `--exclude-filter` CLI option does not work
 
 ## [11.0.4] - 2024-02-29
