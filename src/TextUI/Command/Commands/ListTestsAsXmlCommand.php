@@ -21,9 +21,15 @@ use XMLWriter;
  */
 final readonly class ListTestsAsXmlCommand implements Command
 {
+    /**
+     * @psalm-var list<TestCase|PhptTestCase>
+     */
     private array $tests;
     private string $filename;
 
+    /**
+     * @psalm-param list<TestCase|PhptTestCase> $tests
+     */
     public function __construct(array $tests, string $filename)
     {
         $this->tests    = $tests;
@@ -76,17 +82,15 @@ final readonly class ListTestsAsXmlCommand implements Command
                 continue;
             }
 
-            if ($test instanceof PhptTestCase) {
-                if ($currentTestClass !== null) {
-                    $writer->endElement();
-
-                    $currentTestClass = null;
-                }
-
-                $writer->startElement('phpt');
-                $writer->writeAttribute('file', $test->getName());
+            if ($currentTestClass !== null) {
                 $writer->endElement();
+
+                $currentTestClass = null;
             }
+
+            $writer->startElement('phpt');
+            $writer->writeAttribute('file', $test->getName());
+            $writer->endElement();
         }
 
         if ($currentTestClass !== null) {

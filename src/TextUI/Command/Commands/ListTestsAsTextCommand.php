@@ -19,8 +19,14 @@ use PHPUnit\Runner\PhptTestCase;
  */
 final readonly class ListTestsAsTextCommand implements Command
 {
+    /**
+     * @psalm-var list<TestCase|PhptTestCase>
+     */
     private array $tests;
 
+    /**
+     * @psalm-param list<TestCase|PhptTestCase> $tests
+     */
     public function __construct(array $tests)
     {
         $this->tests = $tests;
@@ -37,10 +43,8 @@ final readonly class ListTestsAsTextCommand implements Command
                     $test::class,
                     str_replace(' with data set ', '', $test->nameWithDataSet()),
                 );
-            } elseif ($test instanceof PhptTestCase) {
-                $name = $test->getName();
             } else {
-                continue;
+                $name = $test->getName();
             }
 
             $buffer .= sprintf(
