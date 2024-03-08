@@ -714,6 +714,8 @@
       <code><![CDATA[logEventsVerboseText]]></code>
       <code><![CDATA[logfileJunit]]></code>
       <code><![CDATA[logfileTeamcity]]></code>
+      <code><![CDATA[process]]></code>
+      <code><![CDATA[process]]></code>
     </MissingThrowsDocblock>
     <UnresolvableInclude>
       <code><![CDATA[include_once $filename]]></code>

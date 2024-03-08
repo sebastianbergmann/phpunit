@@ -20,6 +20,7 @@ use function unlink;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
@@ -38,6 +39,7 @@ use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
+use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCache;
@@ -421,14 +423,24 @@ final readonly class Application
         }
 
         if ($cliConfiguration->listTests()) {
-            $this->execute(new ListTestsAsTextCommand($testSuite));
+            $this->execute(
+                new ListTestsAsTextCommand(
+                    $this->filteredTests(
+                        $configuration,
+                        $testSuite,
+                    ),
+                ),
+            );
         }
 
         if ($cliConfiguration->hasListTestsXml()) {
             $this->execute(
                 new ListTestsAsXmlCommand(
+                    $this->filteredTests(
+                        $configuration,
+                        $testSuite,
+                    ),
                     $cliConfiguration->listTestsXml(),
-                    $testSuite,
                 ),
             );
         }
@@ -662,5 +674,15 @@ final readonly class Application
         print Version::getVersionString() . PHP_EOL . PHP_EOL . $message . PHP_EOL;
 
         exit(Result::EXCEPTION);
+    }
+
+    /**
+     * @psalm-return list<TestCase|PhptTestCase>
+     */
+    private function filteredTests(Configuration $configuration, TestSuite $suite): array
+    {
+        (new TestSuiteFilterProcessor)->process($configuration, $suite);
+
+        return $suite->collect();
     }
 }

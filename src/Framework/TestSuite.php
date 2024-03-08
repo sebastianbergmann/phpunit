@@ -306,6 +306,28 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @psalm-return list<TestCase|PhptTestCase>
+     */
+    public function collect(): array
+    {
+        $tests = [];
+
+        foreach ($this as $test) {
+            if ($test instanceof self) {
+                $tests = array_merge($tests, $test->collect());
+
+                continue;
+            }
+
+            assert($test instanceof TestCase || $test instanceof PhptTestCase);
+
+            $tests[] = $test;
+        }
+
+        return $tests;
+    }
+
+    /**
      * @throws CodeCoverageException
      * @throws Event\RuntimeException
      * @throws Exception
