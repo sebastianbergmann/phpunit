@@ -22,7 +22,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
    <testMethod id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testOne" name="testOne"/>
    <testMethod id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testTwo" name="testTwo"/>
   </testClass>
-  <phpt file="%stests/end-to-end/_files/listing-tests-and-groups/example.phpt"/>
+  <phpt file="%sexample.phpt"/>
  </tests>
  <groups>
   <group name="one">
