@@ -25,7 +25,7 @@ use ReflectionException;
  */
 final readonly class ListTestFilesCommand implements Command
 {
-    private readonly TestSuite $suite;
+    private TestSuite $suite;
 
     public function __construct(TestSuite $suite)
     {
