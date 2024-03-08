@@ -17,3 +17,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Available test(s):
  - PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testTwo
+ - %stests/end-to-end/_files/listing-tests-and-groups/example.phpt
