@@ -419,7 +419,14 @@ final readonly class Application
     private function executeCommandsThatRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
         if ($cliConfiguration->listGroups()) {
-            $this->execute(new ListGroupsCommand($testSuite));
+            $this->execute(
+                new ListGroupsCommand(
+                    $this->filteredTests(
+                        $configuration,
+                        $testSuite,
+                    ),
+                ),
+            );
         }
 
         if ($cliConfiguration->listTests()) {
