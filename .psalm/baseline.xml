@@ -110,6 +110,7 @@
   <file src="src/Event/Value/Telemetry/HRTime.php">
     <ImpureMethodCall>
       <code><![CDATA[fromSecondsAndNanoseconds]]></code>
+      <code><![CDATA[fromSecondsAndNanoseconds]]></code>
     </ImpureMethodCall>
   </file>
   <file src="src/Event/Value/Telemetry/MemoryUsage.php">

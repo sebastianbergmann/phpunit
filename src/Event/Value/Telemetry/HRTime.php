@@ -56,9 +56,6 @@ final class HRTime
         return $this->nanoseconds;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function duration(self $start): Duration
     {
         $seconds     = $this->seconds - $start->seconds();
@@ -71,7 +68,7 @@ final class HRTime
         }
 
         if ($seconds < 0) {
-            throw new InvalidArgumentException('Start needs to be smaller.');
+            return Duration::fromSecondsAndNanoseconds(0, 0);
         }
 
         return Duration::fromSecondsAndNanoseconds(
