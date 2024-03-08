@@ -446,7 +446,14 @@ final readonly class Application
         }
 
         if ($cliConfiguration->listTestFiles()) {
-            $this->execute(new ListTestFilesCommand($testSuite));
+            $this->execute(
+                new ListTestFilesCommand(
+                    $this->filteredTests(
+                        $configuration,
+                        $testSuite,
+                    ),
+                ),
+            );
         }
     }
 

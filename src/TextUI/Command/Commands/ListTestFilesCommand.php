@@ -9,14 +9,12 @@
  */
 namespace PHPUnit\TextUI\Command;
 
-use function array_intersect;
 use function array_unique;
+use function assert;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\Configuration\Registry;
-use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionException;
 
@@ -25,11 +23,17 @@ use ReflectionException;
  */
 final readonly class ListTestFilesCommand implements Command
 {
-    private TestSuite $suite;
+    /**
+     * @psalm-var list<TestCase|PhptTestCase>
+     */
+    private array $tests;
 
-    public function __construct(TestSuite $suite)
+    /**
+     * @psalm-param list<TestCase|PhptTestCase> $tests
+     */
+    public function __construct(array $tests)
     {
-        $this->suite = $suite;
+        $this->tests = $tests;
     }
 
     /**
@@ -43,30 +47,18 @@ final readonly class ListTestFilesCommand implements Command
 
         $results = [];
 
-        foreach (new RecursiveIteratorIterator($this->suite) as $test) {
+        foreach ($this->tests as $test) {
             if ($test instanceof TestCase) {
                 $name = (new ReflectionClass($test))->getFileName();
 
-                // @codeCoverageIgnoreStart
-                if ($name === false) {
-                    continue;
-                }
-                // @codeCoverageIgnoreEnd
+                assert($name !== false);
 
-                if ($configuration->hasGroups() && empty(array_intersect($configuration->groups(), $test->groups()))) {
-                    continue;
-                }
+                $results[] = $name;
 
-                if ($configuration->hasExcludeGroups() && !empty(array_intersect($configuration->excludeGroups(), $test->groups()))) {
-                    continue;
-                }
-            } elseif ($test instanceof PhptTestCase) {
-                $name = $test->getName();
-            } else {
                 continue;
             }
 
-            $results[] = $name;
+            $results[] = $test->getName();
         }
 
         foreach (array_unique($results) as $result) {
