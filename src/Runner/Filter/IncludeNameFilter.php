@@ -13,40 +13,33 @@ use function end;
 use function preg_match;
 use function sprintf;
 use function str_replace;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\PhptTestCase;
-use RecursiveFilterIterator;
-use RecursiveIterator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class NameFilterIterator extends RecursiveFilterIterator
+final readonly class IncludeNameFilter
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $regularExpression;
+    private string $regularExpression;
 
     /**
      * @psalm-var ?int
      */
-    private readonly ?int $dataSetMinimum;
+    private ?int $dataSetMinimum;
 
     /**
      * @psalm-var ?int
      */
-    private readonly ?int $dataSetMaximum;
+    private ?int $dataSetMaximum;
 
     /**
-     * @psalm-param RecursiveIterator<int, Test> $iterator
      * @psalm-param non-empty-string $filter
      */
-    public function __construct(RecursiveIterator $iterator, string $filter)
+    public function __construct(string $filter)
     {
-        parent::__construct($iterator);
-
         $preparedFilter = $this->prepareFilter($filter);
 
         $this->regularExpression = $preparedFilter['regularExpression'];
@@ -54,18 +47,8 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
         $this->dataSetMaximum    = $preparedFilter['dataSetMaximum'];
     }
 
-    public function accept(): bool
+    public function filter(TestCase $test): bool
     {
-        $test = $this->getInnerIterator()->current();
-
-        if ($test instanceof TestSuite) {
-            return true;
-        }
-
-        if ($test instanceof PhptTestCase) {
-            return false;
-        }
-
         $name = $test::class . '::' . $test->nameWithDataSet();
 
         $accepted = @preg_match($this->regularExpression, $name, $matches) === 1;
@@ -75,10 +58,8 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             $accepted = $set >= $this->dataSetMinimum && $set <= $this->dataSetMaximum;
         }
 
-        return $this->doAccept($accepted);
+        return $accepted;
     }
-
-    abstract protected function doAccept(bool $result): bool;
 
     /**
      * @psalm-param non-empty-string $filter

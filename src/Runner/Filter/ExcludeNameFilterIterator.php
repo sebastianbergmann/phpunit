@@ -9,13 +9,42 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\PhptTestCase;
+use RecursiveFilterIterator;
+use RecursiveIterator;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExcludeNameFilterIterator extends NameFilterIterator
+final class ExcludeNameFilterIterator extends RecursiveFilterIterator
 {
-    protected function doAccept(bool $result): bool
+    private IncludeNameFilter $includeNameFilter;
+
+    /**
+     * @psalm-param RecursiveIterator<int, Test> $iterator
+     * @psalm-param non-empty-string $filter
+     */
+    public function __construct(RecursiveIterator $iterator, string $filter)
     {
-        return !$result;
+        parent::__construct($iterator);
+
+        $this->includeNameFilter = new IncludeNameFilter($filter);
+    }
+
+    public function accept(): bool
+    {
+        $test = $this->getInnerIterator()->current();
+
+        if ($test instanceof TestSuite) {
+            return true;
+        }
+
+        if ($test instanceof PhptTestCase) {
+            return false;
+        }
+
+        return !$this->includeNameFilter->filter($test);
     }
 }
