@@ -112,6 +112,13 @@
       <code><![CDATA[fromSecondsAndNanoseconds]]></code>
       <code><![CDATA[fromSecondsAndNanoseconds]]></code>
     </ImpureMethodCall>
+    <MissingThrowsDocblock>
+      <code><![CDATA[Duration::fromSecondsAndNanoseconds(
+            $seconds,
+            $nanoseconds,
+        )]]></code>
+      <code><![CDATA[Duration::fromSecondsAndNanoseconds(0, 0)]]></code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Telemetry/MemoryUsage.php">
     <ImpureMethodCall>
