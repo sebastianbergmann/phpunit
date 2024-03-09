@@ -9,6 +9,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\TestFixture\CodeCoverage;
 
 final class Method
@@ -18,13 +19,13 @@ final class Method
         return $this->internalMethod();
     }
 
-    public function unusedPublicMethod(): string
-    {
-        return 'never returned';
-    }
-
     private function internalMethod(): string
     {
         return 'Hello, World!';
+    }
+
+    public function unusedPublicMethod(): string
+    {
+        return 'never returned';
     }
 }

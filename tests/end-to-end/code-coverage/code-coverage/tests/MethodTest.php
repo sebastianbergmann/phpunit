@@ -9,12 +9,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\TestFixture\CodeCoverage;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Method::class)]
+#[CoversClass(\PHPUnit\TestFixture\CodeCoverage\Method::class)]
 final class MethodTest extends TestCase
 {
     public function testMethod(): void
