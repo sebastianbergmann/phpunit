@@ -38,12 +38,13 @@ final class TestDoxBuilder
      */
     public static function fromClassNameAndMethodName(string $className, string $methodName): TestDox
     {
-        $prettifier = new NamePrettifier;
+        $prettifier   = new NamePrettifier;
+        $prettyMethod = $prettifier->prettifyTestMethodName($methodName);
 
         return new TestDox(
             $prettifier->prettifyTestClassName($className),
-            $prettifier->prettifyTestMethodName($methodName),
-            $prettifier->prettifyTestMethodName($methodName),
+            $prettyMethod,
+            $prettyMethod,
         );
     }
 }
