@@ -1,7 +1,14 @@
 <?php
 
 declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\TestFixture\CodeCoverage;
 
 /*
@@ -14,9 +21,10 @@ namespace PHPUnit\TestFixture\CodeCoverage;
  */
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
-#[CoversClass(\PHPUnit\TestFixture\CodeCoverage\FullyTestedClass::class)]
-class FullyTestedClassTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(FullyTestedClass::class)]
+class FullyTestedClassTest extends TestCase
 {
     public function testMethod(): void
     {
