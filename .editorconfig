@@ -12,3 +12,6 @@ indent_size = 2
 
 [tests/_files/*_result_cache.txt]
 insert_final_newline = false
+
+[*.phpt]
+trim_trailing_whitespace = false
