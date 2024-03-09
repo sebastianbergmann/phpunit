@@ -37,10 +37,10 @@ WARNINGS!
 Tests: 1, Assertions: 1, Warnings: 1.
 
 
-Code Coverage Report:  
+Code Coverage Report:
   %s
-                       
- Summary:              
+
+ Summary:
   Classes:  0.00% (0/1)
   Methods:  0.00% (0/1)
   Lines:    0.00% (0/1)
