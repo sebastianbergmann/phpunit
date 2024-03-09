@@ -29,15 +29,15 @@ Time: %s, Memory: %s MB
 OK (3 tests, 3 assertions)
 
 
-Code Coverage Report:%w  
+Code Coverage Report:
   %s
-%w
-%wSummary:%w
-%wClasses: 50.00% (1/2)%w
-%wMethods: 75.00% (3/4)%w
-%wLines:   66.67% (4/6)%w
-%w
-%wPHPUnit\TestFixture\CodeCoverage\FullyTestedClass%w
-%wMethods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-%wPHPUnit\TestFixture\CodeCoverage\Method
-%wMethods:  66.67% ( 2/ 3)   Lines:  66.67% (  2/  3)
+
+ Summary:
+  Classes: 50.00% (1/2)
+  Methods: 50.00% (2/4)
+  Lines:   50.00% (3/6)
+
+PHPUnit\TestFixture\CodeCoverage\FullyTestedClass
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+PHPUnit\TestFixture\CodeCoverage\Method
+  Methods:  33.33% ( 1/ 3)   Lines:  33.33% (  1/  3)
