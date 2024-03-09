@@ -173,6 +173,8 @@ final class TestRunner
                         $test->valueObjectForEvents(),
                         $cce->getMessage(),
                     );
+
+                    $append = false;
                 }
             }
 
