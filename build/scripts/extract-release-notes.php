@@ -44,4 +44,11 @@ if ($buffer === '') {
     exit(1);
 }
 
-print $buffer . PHP_EOL;
+printf(
+    '%s%s---%s[How to install or update PHPUnit](https://docs.phpunit.de/en/%s/installation.html)%s',
+    $buffer,
+    PHP_EOL,
+    PHP_EOL,
+    $versionSeries,
+    PHP_EOL,
+);
