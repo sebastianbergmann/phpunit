@@ -23,8 +23,8 @@ final readonly class TestDoxBuilder
 
         return new TestDox(
             $prettifier->prettifyTestClassName($testCase::class),
-            $prettifier->prettifyTestCase($testCase, false),
-            $prettifier->prettifyTestCase($testCase, true),
+            static fn () => $prettifier->prettifyTestCase($testCase, false),
+            static fn () => $prettifier->prettifyTestCase($testCase, true),
         );
     }
 
@@ -40,8 +40,8 @@ final readonly class TestDoxBuilder
 
         return new TestDox(
             $prettifier->prettifyTestClassName($className),
-            $prettifiedMethodName,
-            $prettifiedMethodName,
+            static fn () => $prettifiedMethodName,
+            static fn () => $prettifiedMethodName,
         );
     }
 }
