@@ -30,10 +30,10 @@ Time: %s, Memory: %s MB
 OK (1 test, 1 assertion)
 
 
-Code Coverage Report:   
+Code Coverage Report:
   %s
-                        
- Summary:               
+
+ Summary:
   Classes: 100.00% (1/1)
   Methods: 100.00% (1/1)
   Lines:   100.00% (1/1)
