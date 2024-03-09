@@ -1,0 +1,39 @@
+# https://docs.github.com/en/actions
+
+on:
+  push:
+    tags:
+      - "**"
+
+name: Release
+
+jobs:
+  release:
+    name: Release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: none
+          extensions: none
+          tools: none
+
+      - name: Determine tag
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Parse changelog
+        run: build/scripts/extract-release-notes.php ${{ env.RELEASE_TAG }} > release-notes.md
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: release-notes.md
+          tag: ${{ env.RELEASE_TAG }}
+          token: ${{ secrets.GITHUB_TOKEN }}
