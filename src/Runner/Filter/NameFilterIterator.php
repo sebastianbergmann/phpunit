@@ -28,15 +28,7 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
      * @psalm-var non-empty-string
      */
     private readonly string $regularExpression;
-
-    /**
-     * @psalm-var ?int
-     */
     private readonly ?int $dataSetMinimum;
-
-    /**
-     * @psalm-var ?int
-     */
     private readonly ?int $dataSetMaximum;
 
     /**
