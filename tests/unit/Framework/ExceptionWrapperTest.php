@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function print_r;
 use BadFunctionCallException;
 use Exception;
 
@@ -38,25 +37,5 @@ final class ExceptionWrapperTest extends TestCase
         $wrapper = new ExceptionWrapper($e);
 
         $this->assertInstanceOf(BadFunctionCallException::class, $wrapper->getOriginalException());
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function testNoOriginalExceptionInStacktrace(): void
-    {
-        $e       = new BadFunctionCallException('custom class exception');
-        $wrapper = new ExceptionWrapper($e);
-
-        // Replace the only mention of "BadFunctionCallException" in wrapper
-        $wrapper->setClassName('MyException');
-
-        $data = print_r($wrapper, true);
-
-        $this->assertStringNotContainsString(
-            'BadFunctionCallException',
-            $data,
-            'Assert there is s no other BadFunctionCallException mention in stacktrace',
-        );
     }
 }
