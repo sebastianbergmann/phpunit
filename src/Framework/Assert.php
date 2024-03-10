@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_combine;
+use function array_intersect_key;
 use function class_exists;
 use function count;
 use function file_get_contents;
@@ -128,23 +130,11 @@ abstract class Assert
      */
     final public static function assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys(array $expected, array $actual, array $keysToBeConsidered, string $message = ''): void
     {
-        $filteredExpected = [];
+        $keysToBeConsidered = array_combine($keysToBeConsidered, $keysToBeConsidered);
+        $expected           = array_intersect_key($expected, $keysToBeConsidered);
+        $actual             = array_intersect_key($actual, $keysToBeConsidered);
 
-        foreach ($keysToBeConsidered as $key) {
-            if (isset($expected[$key])) {
-                $filteredExpected[$key] = $expected[$key];
-            }
-        }
-
-        $filteredActual = [];
-
-        foreach ($keysToBeConsidered as $key) {
-            if (isset($actual[$key])) {
-                $filteredActual[$key] = $actual[$key];
-            }
-        }
-
-        static::assertSame($filteredExpected, $filteredActual, $message);
+        static::assertSame($expected, $actual, $message);
     }
 
     /**
