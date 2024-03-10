@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.22.2@d768d914152dbbf3486c36398802f74e80cfde48">
+<files psalm-version="5.23.0@005e3184fb6de4350a873b9b8c4dc3cede9db762">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code><![CDATA[notify]]></code>
@@ -59,6 +59,9 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
+    <InvalidArrayOffset>
+      <code><![CDATA[gc_status()['running']]]></code>
+    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Runtime/PHP.php">
     <ImpureFunctionCall>
@@ -82,6 +85,18 @@
     <ImpureMethodCall>
       <code><![CDATA[fromBytes]]></code>
     </ImpureMethodCall>
+  </file>
+  <file src="src/Event/Value/Telemetry/Php83GarbageCollectorStatusProvider.php">
+    <InvalidArrayOffset>
+      <code><![CDATA[$status['application_time']]]></code>
+      <code><![CDATA[$status['buffer_size']]]></code>
+      <code><![CDATA[$status['collector_time']]]></code>
+      <code><![CDATA[$status['destructor_time']]]></code>
+      <code><![CDATA[$status['free_time']]]></code>
+      <code><![CDATA[$status['full']]]></code>
+      <code><![CDATA[$status['protected']]]></code>
+      <code><![CDATA[$status['running']]]></code>
+    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Test/TestCollection.php">
     <PropertyTypeCoercion>
@@ -527,7 +542,6 @@
      * >]]></code>
     </InvalidReturnType>
     <RiskyTruthyFalsyComparison>
-      <code><![CDATA[empty($requires[$matches['name']])]]></code>
       <code><![CDATA[preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
