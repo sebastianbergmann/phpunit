@@ -31,7 +31,7 @@ jobs:
       - name: Determine tag
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: Parse changelog
+      - name: Parse ChangeLog
         run: build/scripts/extract-release-notes.php ${{ env.RELEASE_TAG }} > release-notes.md
 
       - name: Create release
