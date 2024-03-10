@@ -5,6 +5,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 ## [11.0.6] - 2024-MM-DD
 
 * [#5351](https://github.com/sebastianbergmann/phpunit/issues/5351): Incorrect code coverage metadata does not prevent code coverage data from being collected
+* [#5729](https://github.com/sebastianbergmann/phpunit/pull/5729): `assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys()` does not correctly handle array order
 
 ## [11.0.5] - 2024-03-09
 
