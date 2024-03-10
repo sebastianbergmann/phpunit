@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.22.2@d768d914152dbbf3486c36398802f74e80cfde48">
+<files psalm-version="5.23.0@005e3184fb6de4350a873b9b8c4dc3cede9db762">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$actualElement->childNodes->item($i)]]></code>
@@ -1661,7 +1661,6 @@
     </RedundantCast>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[!preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)]]></code>
-      <code><![CDATA[empty($requires[$matches['name']])]]></code>
       <code><![CDATA[preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
@@ -1919,8 +1918,6 @@
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$diff]]></code>
       <code><![CDATA[$diff]]></code>
-      <code><![CDATA[$message]]></code>
-      <code><![CDATA[$message]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
