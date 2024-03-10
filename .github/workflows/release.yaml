@@ -13,6 +13,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +31,7 @@ jobs:
       - name: Determine tag
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: Parse changelog
+      - name: Parse ChangeLog
         run: build/scripts/extract-release-notes.php ${{ env.RELEASE_TAG }} > release-notes.md
 
       - name: Create release
