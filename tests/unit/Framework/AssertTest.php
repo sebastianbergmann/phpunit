@@ -243,6 +243,30 @@ final class AssertTest extends TestCase
         $this->assertArrayIsIdenticalToArrayIgnoringListOfKeys($expected, $actual, ['1']);
     }
 
+    public function testAssertArrayIsEqualButNotIdenticalToArrayOnlyConsideringListOfKeys(): void
+    {
+        $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
+        $actual   = [0 => 1, 1 => 3, 'a' => 'b', 'b' => 'b'];
+
+        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys($expected, $actual, ['a', 0]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys($expected, $actual, ['a', 0]);
+    }
+
+    public function testAssertArrayIsEqualButNotIdenticalToArrayIgnoringListOfKeys(): void
+    {
+        $expected = ['a' => 'b', 'b' => 'c', 0 => 1, 1 => 2];
+        $actual   = [0 => 1, 1 => 3, 'a' => 'b', 'b' => 'b'];
+
+        $this->assertArrayIsEqualToArrayIgnoringListOfKeys($expected, $actual, ['b', 1]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsIdenticalToArrayIgnoringListOfKeys($expected, $actual, ['b', 1]);
+    }
+
     public function testAssertArrayHasIntegerKey(): void
     {
         $this->assertArrayHasKey(0, ['foo']);
