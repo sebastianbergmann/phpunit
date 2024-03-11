@@ -37,6 +37,7 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          bodyFile: release-notes.md
-          tag: ${{ env.RELEASE_TAG }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.RELEASE_TAG }}
+          name: PHPUnit ${{ env.RELEASE_TAG }}
+          bodyFile: release-notes.md
