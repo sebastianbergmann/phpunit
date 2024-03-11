@@ -17,14 +17,22 @@ use PHPUnit\Logging\TestDox\NamePrettifier;
  */
 final readonly class TestDoxBuilder
 {
-    public static function fromTestCase(TestCase $testCase): TestDox
+    public static function fromTestCase(TestCase $testCase, bool $colorize): TestDox
     {
         $prettifier = new NamePrettifier;
 
+        $prettyTestCase = $prettifier->prettifyTestCase($testCase, false);
+
+        if ($colorize) {
+            $prettyTestCaseColorized = $prettifier->prettifyTestCase($testCase, true);
+        } else {
+            $prettyTestCaseColorized = $prettyTestCase;
+        }
+
         return new TestDox(
             $prettifier->prettifyTestClassName($testCase::class),
-            $prettifier->prettifyTestCase($testCase, false),
-            $prettifier->prettifyTestCase($testCase, true),
+            $prettyTestCase,
+            $prettyTestCaseColorized,
         );
     }
 
@@ -34,8 +42,7 @@ final readonly class TestDoxBuilder
      */
     public static function fromClassNameAndMethodName(string $className, string $methodName): TestDox
     {
-        $prettifier = new NamePrettifier;
-
+        $prettifier           = new NamePrettifier;
         $prettifiedMethodName = $prettifier->prettifyTestMethodName($methodName);
 
         return new TestDox(

@@ -17,6 +17,7 @@ use PHPUnit\Event\TestData\DataFromTestDependency;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Reflection;
 use SebastianBergmann\Exporter\Exporter;
 
@@ -32,13 +33,14 @@ final readonly class TestMethodBuilder
         assert(!empty($methodName));
 
         $location = Reflection::sourceLocationFor($testCase::class, $methodName);
+        $colors   = Registry::get()->colors();
 
         return new TestMethod(
             $testCase::class,
             $methodName,
             $location['file'],
             $location['line'],
-            TestDoxBuilder::fromTestCase($testCase),
+            TestDoxBuilder::fromTestCase($testCase, $colors),
             MetadataRegistry::parser()->forClassAndMethod($testCase::class, $methodName),
             self::dataFor($testCase),
         );
