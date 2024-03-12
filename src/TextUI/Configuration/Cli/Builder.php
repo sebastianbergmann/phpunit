@@ -368,6 +368,8 @@ final class Builder
                         }
                     }
 
+                    $optionAllowedMultipleTimes = true;
+
                     break;
 
                 case 'h':
