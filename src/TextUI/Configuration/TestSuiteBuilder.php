@@ -91,18 +91,18 @@ final class TestSuiteBuilder
      */
     private function testSuiteFromPath(string $path, array $suffixes, ?TestSuite $suite = null): TestSuite
     {
+        if (str_ends_with($path, '.phpt') && is_file($path)) {
+            $suite = $suite ?: TestSuite::empty($path);
+            $suite->addTestFile($path);
+
+            return $suite;
+        }
+
         if (is_dir($path)) {
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
             $suite = $suite ?: TestSuite::empty('CLI Arguments');
             $suite->addTestFiles($files);
-
-            return $suite;
-        }
-
-        if (is_file($path) && str_ends_with($path, '.phpt')) {
-            $suite = $suite ?: TestSuite::empty($path);
-            $suite->addTestFile($path);
 
             return $suite;
         }
