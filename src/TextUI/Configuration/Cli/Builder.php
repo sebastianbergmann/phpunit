@@ -251,6 +251,8 @@ final class Builder
         $debug                             = false;
 
         foreach ($options[0] as $option) {
+            $optionAllowedMultipleTimes = false;
+
             switch ($option[0]) {
                 case '--colors':
                     $colors = $option[1] ?: \PHPUnit\TextUI\Configuration\Configuration::COLOR_AUTO;
@@ -363,6 +365,8 @@ final class Builder
                             $iniSettings[$tmp[0]] = '1';
                         }
                     }
+
+                    $optionAllowedMultipleTimes = true;
 
                     break;
 
@@ -845,7 +849,9 @@ final class Builder
                     break;
             }
 
-            $this->markProcessed($option[0]);
+            if (!$optionAllowedMultipleTimes) {
+                $this->markProcessed($option[0]);
+            }
         }
 
         if (empty($iniSettings)) {

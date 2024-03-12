@@ -17,6 +17,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Fixed
 
 * [#5351](https://github.com/sebastianbergmann/phpunit/issues/5351): Incorrect code coverage metadata does not prevent code coverage data from being collected
+* [#5746](https://github.com/sebastianbergmann/phpunit/issues/5746): Using `-d` CLI option multiple times triggers warning
 
 ## [10.5.12] - 2024-03-09
 
