@@ -88,11 +88,13 @@ final class ExecutionOrderDependency implements Stringable
         );
 
         foreach ($additional as $dependency) {
-            if (in_array($dependency->getTarget(), $existingTargets, true)) {
+            $additionalTarget = $dependency->getTarget();
+
+            if (in_array($additionalTarget, $existingTargets, true)) {
                 continue;
             }
 
-            $existingTargets[] = $dependency->getTarget();
+            $existingTargets[] = $additionalTarget;
             $existing[]        = $dependency;
         }
 
