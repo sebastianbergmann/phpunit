@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
-use function is_file;
 use function is_readable;
 use function printf;
 use function realpath;
@@ -532,9 +531,7 @@ final readonly class Application
     private function registerLogfileWriters(Configuration $configuration): void
     {
         if ($configuration->hasLogEventsText()) {
-            if (is_file($configuration->logEventsText())) {
-                unlink($configuration->logEventsText());
-            }
+            @unlink($configuration->logEventsText());
 
             EventFacade::instance()->registerTracer(
                 new EventLogger(
@@ -545,9 +542,7 @@ final readonly class Application
         }
 
         if ($configuration->hasLogEventsVerboseText()) {
-            if (is_file($configuration->logEventsVerboseText())) {
-                unlink($configuration->logEventsVerboseText());
-            }
+            @unlink($configuration->logEventsVerboseText());
 
             EventFacade::instance()->registerTracer(
                 new EventLogger(

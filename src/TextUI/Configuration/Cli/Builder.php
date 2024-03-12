@@ -408,7 +408,7 @@ final class Builder
                 case '--use-baseline':
                     $useBaseline = $option[1];
 
-                    if (!is_file($useBaseline) && basename($useBaseline) === $useBaseline) {
+                    if (basename($useBaseline) === $useBaseline && !is_file($useBaseline)) {
                         $useBaseline = getcwd() . DIRECTORY_SEPARATOR . $useBaseline;
                     }
 
