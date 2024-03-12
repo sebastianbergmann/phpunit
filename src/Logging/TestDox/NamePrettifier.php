@@ -27,7 +27,6 @@ use function is_numeric;
 use function is_object;
 use function is_scalar;
 use function method_exists;
-use function ord;
 use function preg_quote;
 use function preg_replace;
 use function range;
@@ -145,9 +144,7 @@ final class NamePrettifier
         $wasNumeric = false;
 
         foreach (range(0, strlen($name) - 1) as $i) {
-            $ord = ord($name[$i]);
-
-            if ($i > 0 && $ord >= 65 && $ord <= 90) {
+            if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
                 $buffer .= ' ' . strtolower($name[$i]);
             } else {
                 $isNumeric = is_numeric($name[$i]);
