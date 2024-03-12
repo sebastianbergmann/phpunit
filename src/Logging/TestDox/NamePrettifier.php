@@ -145,7 +145,9 @@ final class NamePrettifier
         $wasNumeric = false;
 
         foreach (range(0, strlen($name) - 1) as $i) {
-            if ($i > 0 && ord($name[$i]) >= 65 && ord($name[$i]) <= 90) {
+            $ord = ord($name[$i]);
+
+            if ($i > 0 && $ord >= 65 && $ord <= 90) {
                 $buffer .= ' ' . strtolower($name[$i]);
             } else {
                 $isNumeric = is_numeric($name[$i]);
