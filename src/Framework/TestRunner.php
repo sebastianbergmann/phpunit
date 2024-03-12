@@ -420,12 +420,13 @@ final class TestRunner
     private function runTestWithTimeout(TestCase $test): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
+        $testSize = $test->size();
 
-        if ($test->size()->isSmall()) {
+        if ($testSize->isSmall()) {
             $_timeout = $this->configuration->timeoutForSmallTests();
-        } elseif ($test->size()->isMedium()) {
+        } elseif ($testSize->isMedium()) {
             $_timeout = $this->configuration->timeoutForMediumTests();
-        } elseif ($test->size()->isLarge()) {
+        } elseif ($testSize->isLarge()) {
             $_timeout = $this->configuration->timeoutForLargeTests();
         }
 
