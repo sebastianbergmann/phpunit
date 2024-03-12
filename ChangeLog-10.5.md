@@ -4,6 +4,18 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.13] - 2024-MM-DD
 
+### Changed
+
+* [#5727](https://github.com/sebastianbergmann/phpunit/pull/5727): Prevent duplicate call of `NamePrettifier::prettifyTestMethodName()`
+* [#5739](https://github.com/sebastianbergmann/phpunit/pull/5739): Micro-optimize `NamePrettifier::prettifyTestMethodName()`
+* [#5740](https://github.com/sebastianbergmann/phpunit/pull/5740): Micro-optimize `TestRunner::runTestWithTimeout()`
+* [#5741](https://github.com/sebastianbergmann/phpunit/pull/5741): Save call to `Telemetry\System::snapshot()`
+* [#5742](https://github.com/sebastianbergmann/phpunit/pull/5742): Prevent file IO when not strictly necessary
+* [#5743](https://github.com/sebastianbergmann/phpunit/pull/5743): Prevent unnecessary `ExecutionOrderDependency::getTarget()` call
+* [#5744](https://github.com/sebastianbergmann/phpunit/pull/5744): Simplify `NamePrettifier::prettifyTestMethodName()`
+
+### Fixed
+
 * [#5351](https://github.com/sebastianbergmann/phpunit/issues/5351): Incorrect code coverage metadata does not prevent code coverage data from being collected
 
 ## [10.5.12] - 2024-03-09
