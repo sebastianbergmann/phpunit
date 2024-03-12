@@ -44,7 +44,7 @@ final class DispatchingEmitter implements Emitter
         $this->system     = $system;
 
         $this->startSnapshot    = $system->snapshot();
-        $this->previousSnapshot = $system->snapshot();
+        $this->previousSnapshot = $this->startSnapshot;
     }
 
     /**
