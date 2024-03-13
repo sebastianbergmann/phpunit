@@ -63,7 +63,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(29, 46),
+                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(12, 27), range(29, 46)),
                 ],
                 CoverageClassTest::class,
                 'testSomething',
@@ -220,7 +220,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(29, 46),
+                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(12, 27), range(29, 46)),
                 ],
                 CoverageClassTest::class,
                 'testSomething',

@@ -27,6 +27,8 @@ use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
+use ReflectionClass;
+use ReflectionException;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\Exception as CodeUnitException;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
@@ -220,9 +222,39 @@ final readonly class CodeCoverage
     private function mapToCodeUnits(CoversClass|CoversFunction|CoversMethod|UsesClass|UsesFunction|UsesMethod $metadata): CodeUnitCollection
     {
         $mapper = new Mapper;
+        $names  = [$metadata->asStringForCodeUnitMapper()];
+
+        if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
+            try {
+                $reflector = new ReflectionClass($metadata->asStringForCodeUnitMapper());
+            } catch (ReflectionException $e) {
+                throw new InvalidCoversTargetException(
+                    sprintf(
+                        'Class "%s" is not a valid target for code coverage',
+                        $metadata->asStringForCodeUnitMapper(),
+                    ),
+                    $e->getCode(),
+                    $e,
+                );
+            }
+
+            while ($reflector = $reflector->getParentClass()) {
+                if (!$reflector->isUserDefined()) {
+                    break;
+                }
+
+                $names[] = $reflector->getName();
+            }
+        }
+
+        $codeUnits = CodeUnitCollection::fromList();
 
         try {
-            return $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper());
+            foreach ($names as $name) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($name),
+                );
+            }
         } catch (CodeUnitException $e) {
             if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
                 if (interface_exists($metadata->className())) {
@@ -244,5 +276,7 @@ final readonly class CodeCoverage
                 $e,
             );
         }
+
+        return $codeUnits;
     }
 }
