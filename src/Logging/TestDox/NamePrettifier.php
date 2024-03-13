@@ -111,10 +111,8 @@ final class NamePrettifier
     // NOTE: this method is on a hot path and very performance sensitive. change with care.
     public function prettifyTestMethodName(string $name): string
     {
-        $buffer = '';
-
         if ($name === '') {
-            return $buffer;
+            return '';
         }
 
         $string = (string) preg_replace('#\d+$#', '', $name, -1, $count);
@@ -132,7 +130,7 @@ final class NamePrettifier
         }
 
         if ($name === '') {
-            return $buffer;
+            return '';
         }
 
         $name[0] = strtoupper($name[0]);
@@ -144,6 +142,7 @@ final class NamePrettifier
 
         $wasNumeric = false;
 
+        $buffer = '';
         foreach (range(0, strlen($name) - 1) as $i) {
             if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
                 $buffer .= ' ' . strtolower($name[$i]);
