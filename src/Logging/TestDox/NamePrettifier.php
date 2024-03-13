@@ -23,7 +23,6 @@ use function in_array;
 use function is_bool;
 use function is_float;
 use function is_int;
-use function is_numeric;
 use function is_object;
 use function is_scalar;
 use function method_exists;
@@ -147,7 +146,7 @@ final class NamePrettifier
             if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
                 $buffer .= ' ' . strtolower($name[$i]);
             } else {
-                $isNumeric = is_numeric($name[$i]);
+                $isNumeric = $name[$i] >= '0' && $name[$i] <= '9';
 
                 if (!$wasNumeric && $isNumeric) {
                     $buffer .= ' ';
