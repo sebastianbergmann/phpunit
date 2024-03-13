@@ -108,6 +108,7 @@ final class NamePrettifier
         return $result;
     }
 
+    // NOTE: this method is on a hot path and very performance sensitive. change with care.
     public function prettifyTestMethodName(string $name): string
     {
         $buffer = '';
@@ -136,8 +137,9 @@ final class NamePrettifier
 
         $name[0] = strtoupper($name[0]);
 
-        if (str_contains($name, '_')) {
-            return trim(str_replace('_', ' ', $name));
+        $noUnderscore = str_replace('_', ' ', $name);
+        if ($noUnderscore !== $name) {
+            return trim($noUnderscore);
         }
 
         $wasNumeric = false;
