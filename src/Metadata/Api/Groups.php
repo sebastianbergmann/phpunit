@@ -31,7 +31,7 @@ use PHPUnit\Metadata\UsesFunction;
 final class Groups
 {
     /**
-     * @var array<string, list<string>>
+     * @var array<string, array<string>>
      */
     private static array $groupCache = [];
 
@@ -39,7 +39,7 @@ final class Groups
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
-     * @psalm-return list<string>
+     * @psalm-return array<string>
      */
     public function groups(string $className, string $methodName, bool $includeVirtual = true): array
     {
