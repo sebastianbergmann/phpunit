@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
-/**
- * @covers \Throwable
- */
+#[CoversClass(Throwable::class)]
 final class InterfaceTargetTest extends TestCase
 {
     public function testOne(): void

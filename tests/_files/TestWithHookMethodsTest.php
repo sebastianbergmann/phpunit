@@ -20,74 +20,32 @@ use PHPUnit\Framework\TestCase;
 final class TestWithHookMethodsTest extends TestCase
 {
     #[BeforeClass]
-    public static function beforeFirstTestWithAttribute(): void
+    public static function beforeFirstTest(): void
     {
     }
 
     #[AfterClass]
-    public static function afterLastTestWithAttribute(): void
-    {
-    }
-
-    /**
-     * @beforeClass
-     */
-    public static function beforeFirstTestWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @afterClass
-     */
-    public static function afterLastTestWithAnnotation(): void
+    public static function afterLastTest(): void
     {
     }
 
     #[Before]
-    protected function beforeEachTestWithAttribute(): void
+    protected function beforeEachTest(): void
     {
     }
 
     #[After]
-    protected function afterEachTestWithAttribute(): void
+    protected function afterEachTest(): void
     {
     }
 
     #[PreCondition]
-    protected function preConditionsWithAttribute(): void
+    protected function preConditions(): void
     {
     }
 
     #[PostCondition]
-    protected function postConditionsWithAttribute(): void
-    {
-    }
-
-    /**
-     * @before
-     */
-    protected function beforeEachTestWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @after
-     */
-    protected function afterEachTestWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @preCondition
-     */
-    protected function preConditionsWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @postCondition
-     */
-    protected function postConditionsWithAnnotation(): void
+    protected function postConditions(): void
     {
     }
 }

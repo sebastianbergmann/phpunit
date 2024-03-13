@@ -157,7 +157,6 @@ final class TestRunner
 
                     $linesToBeUsed = (new CodeCoverageMetadataApi)->linesToBeUsed(
                         $test::class,
-                        $test->name(),
                     );
                 } catch (InvalidCoversTargetException $cce) {
                     Event\Facade::emitter()->testTriggeredPhpunitWarning(
@@ -348,10 +347,6 @@ final class TestRunner
     private function hasCoverageMetadata(string $className, string $methodName): bool
     {
         $metadata = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
-
-        if ($metadata->isCovers()->isNotEmpty()) {
-            return true;
-        }
 
         if ($metadata->isCoversClass()->isNotEmpty()) {
             return true;
