@@ -247,14 +247,20 @@ final readonly class CodeCoverage
             }
         }
 
-        $codeUnits = CodeUnitCollection::fromList();
-
         try {
+            if (count($names) === 1) {
+                return $mapper->stringToCodeUnits($names[0]);
+            }
+
+            $codeUnits = CodeUnitCollection::fromList();
+
             foreach ($names as $name) {
                 $codeUnits = $codeUnits->mergeWith(
                     $mapper->stringToCodeUnits($name),
                 );
             }
+
+            return $codeUnits;
         } catch (CodeUnitException $e) {
             if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
                 if (interface_exists($metadata->className())) {
@@ -276,7 +282,5 @@ final readonly class CodeCoverage
                 $e,
             );
         }
-
-        return $codeUnits;
     }
 }
