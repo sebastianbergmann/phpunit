@@ -19,7 +19,6 @@ use function class_exists;
 use function explode;
 use function gettype;
 use function implode;
-use function in_array;
 use function is_bool;
 use function is_float;
 use function is_int;
@@ -54,7 +53,7 @@ use SebastianBergmann\Exporter\Exporter;
 final class NamePrettifier
 {
     /**
-     * @psalm-var list<string>
+     * @psalm-var array<string, int>
      */
     private static array $strings = [];
 
@@ -117,10 +116,10 @@ final class NamePrettifier
 
         $string = (string) preg_replace('#\d+$#', '', $name, -1, $count);
 
-        if (in_array($string, self::$strings, true)) {
+        if (array_key_exists($string, self::$strings)) {
             $name = $string;
         } elseif ($count === 0) {
-            self::$strings[] = $string;
+            self::$strings[$string] = 1;
         }
 
         if (str_starts_with($name, 'test_')) {
@@ -136,6 +135,7 @@ final class NamePrettifier
         $name[0] = strtoupper($name[0]);
 
         $noUnderscore = str_replace('_', ' ', $name);
+
         if ($noUnderscore !== $name) {
             return trim($noUnderscore);
         }
@@ -143,6 +143,7 @@ final class NamePrettifier
         $wasNumeric = false;
 
         $buffer = '';
+
         foreach (range(0, strlen($name) - 1) as $i) {
             if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
                 $buffer .= ' ' . strtolower($name[$i]);
