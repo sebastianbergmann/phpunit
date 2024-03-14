@@ -455,7 +455,7 @@ final class CodeCoverageTest extends TestCase
     public function testRejectsInvalidCoversFunctionTarget(): void
     {
         $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Function "::invalid_function" is not a valid target for code coverage');
+        $this->expectExceptionMessage('::invalid_function is not a valid target for code coverage');
 
         (new CodeCoverage)->linesToBeCovered(InvalidFunctionTargetTest::class, 'testOne');
     }
@@ -463,7 +463,7 @@ final class CodeCoverageTest extends TestCase
     public function testRejectsInvalidUsesFunctionTarget(): void
     {
         $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Function "::invalid_function" is not a valid target for code coverage');
+        $this->expectExceptionMessage('::invalid_function is not a valid target for code coverage');
 
         (new CodeCoverage)->linesToBeUsed(InvalidFunctionTargetTest::class, 'testOne');
     }

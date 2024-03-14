@@ -449,6 +449,12 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$names]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code><![CDATA[non-empty-list<non-empty-string>]]></code>
+    </MoreSpecificReturnType>
     <RedundantCondition>
       <code><![CDATA[$metadata instanceof Covers]]></code>
       <code><![CDATA[$metadata instanceof Uses]]></code>

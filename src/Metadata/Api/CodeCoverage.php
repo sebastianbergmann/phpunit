@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use function assert;
+use function class_exists;
 use function count;
 use function interface_exists;
 use function sprintf;
@@ -28,7 +29,6 @@ use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
 use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\Exception as CodeUnitException;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
@@ -37,8 +37,13 @@ use SebastianBergmann\CodeUnit\Mapper;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class CodeCoverage
+final class CodeCoverage
 {
+    /**
+     * @psalm-var array<class-string, non-empty-list<class-string>>
+     */
+    private array $withParents = [];
+
     /**
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
@@ -222,30 +227,7 @@ final readonly class CodeCoverage
     private function mapToCodeUnits(CoversClass|CoversFunction|CoversMethod|UsesClass|UsesFunction|UsesMethod $metadata): CodeUnitCollection
     {
         $mapper = new Mapper;
-        $names  = [$metadata->asStringForCodeUnitMapper()];
-
-        if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
-            try {
-                $reflector = new ReflectionClass($metadata->asStringForCodeUnitMapper());
-            } catch (ReflectionException $e) {
-                throw new InvalidCoversTargetException(
-                    sprintf(
-                        'Class "%s" is not a valid target for code coverage',
-                        $metadata->asStringForCodeUnitMapper(),
-                    ),
-                    $e->getCode(),
-                    $e,
-                );
-            }
-
-            while ($reflector = $reflector->getParentClass()) {
-                if (!$reflector->isUserDefined()) {
-                    break;
-                }
-
-                $names[] = $reflector->getName();
-            }
-        }
+        $names  = $this->names($metadata);
 
         try {
             if (count($names) === 1) {
@@ -262,25 +244,65 @@ final readonly class CodeCoverage
 
             return $codeUnits;
         } catch (CodeUnitException $e) {
-            if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
-                if (interface_exists($metadata->className())) {
-                    $type = 'Interface';
-                } else {
-                    $type = 'Class';
-                }
-            } else {
-                $type = 'Function';
-            }
-
             throw new InvalidCoversTargetException(
                 sprintf(
-                    '%s "%s" is not a valid target for code coverage',
-                    $type,
+                    '%s is not a valid target for code coverage',
                     $metadata->asStringForCodeUnitMapper(),
                 ),
                 $e->getCode(),
                 $e,
             );
         }
+    }
+
+    /**
+     * @psalm-return non-empty-list<non-empty-string>
+     *
+     * @throws InvalidCoversTargetException
+     */
+    private function names(CoversClass|CoversFunction|CoversMethod|UsesClass|UsesFunction|UsesMethod $metadata): array
+    {
+        $name  = $metadata->asStringForCodeUnitMapper();
+        $names = [$name];
+
+        if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
+            if (isset($this->withParents[$name])) {
+                return $this->withParents[$name];
+            }
+
+            if (interface_exists($name)) {
+                throw new InvalidCoversTargetException(
+                    sprintf(
+                        'Interface "%s" is not a valid target for code coverage',
+                        $name,
+                    ),
+                );
+            }
+
+            if (!class_exists($name)) {
+                throw new InvalidCoversTargetException(
+                    sprintf(
+                        'Class "%s" is not a valid target for code coverage',
+                        $name,
+                    ),
+                );
+            }
+
+            assert(class_exists($names[0]));
+
+            $reflector = new ReflectionClass($name);
+
+            while ($reflector = $reflector->getParentClass()) {
+                if (!$reflector->isUserDefined()) {
+                    break;
+                }
+
+                $names[] = $reflector->getName();
+            }
+
+            $this->withParents[$name] = $names;
+        }
+
+        return $names;
     }
 }
