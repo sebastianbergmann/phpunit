@@ -33,6 +33,7 @@ final class NamePrettifierTest extends TestCase
 
     public function testTestNameIsConvertedToASentence(): void
     {
+        $this->assertEquals('', (new NamePrettifier)->prettifyTestMethodName(''));
         $this->assertEquals('This is a test', (new NamePrettifier)->prettifyTestMethodName('testThisIsATest'));
         $this->assertEquals('This is a test', (new NamePrettifier)->prettifyTestMethodName('testThisIsATest2'));
         $this->assertEquals('This is a test', (new NamePrettifier)->prettifyTestMethodName('this_is_a_test'));
