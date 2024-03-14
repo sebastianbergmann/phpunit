@@ -28,7 +28,7 @@ use PHPUnit\Metadata\UsesFunction;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Groups
+final class Groups
 {
     /**
      * @var array<string, array<int, string>>
