@@ -27,7 +27,7 @@ use function is_scalar;
 use function method_exists;
 use function preg_quote;
 use function preg_replace;
-use function range;
+use function rtrim;
 use function sprintf;
 use function str_contains;
 use function str_ends_with;
@@ -115,6 +115,7 @@ final class NamePrettifier
         }
 
         $string = rtrim($name, '0123456789');
+
         if (array_key_exists($string, self::$strings)) {
             $name = $string;
         } elseif ($string === $name) {
@@ -143,7 +144,9 @@ final class NamePrettifier
 
         $buffer = '';
 
-        foreach (range(0, strlen($name) - 1) as $i) {
+        $len = strlen($name);
+
+        for ($i = 0; $i < $len; $i++) {
             if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
                 $buffer .= ' ' . strtolower($name[$i]);
             } else {
