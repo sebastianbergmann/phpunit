@@ -114,11 +114,10 @@ final class NamePrettifier
             return '';
         }
 
-        $string = (string) preg_replace('#\d+$#', '', $name, -1, $count);
-
+        $string = rtrim($name, '0123456789');
         if (array_key_exists($string, self::$strings)) {
             $name = $string;
-        } elseif ($count === 0) {
+        } elseif ($string === $name) {
             self::$strings[$string] = 1;
         }
 
