@@ -475,13 +475,6 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Groups.php">
-    <LessSpecificReturnStatement>
-      <code><![CDATA[array_unique($groups)]]></code>
-      <code><![CDATA[array_unique($groups)]]></code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType>
-      <code><![CDATA[list<string>]]></code>
-    </MoreSpecificReturnType>
     <RedundantCondition>
       <code><![CDATA[$metadata instanceof CoversFunction]]></code>
       <code><![CDATA[$metadata instanceof UsesFunction]]></code>

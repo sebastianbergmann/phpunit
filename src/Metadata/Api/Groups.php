@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use function array_flip;
+use function array_key_exists;
 use function array_unique;
 use function assert;
 use function strtolower;
@@ -27,16 +28,27 @@ use PHPUnit\Metadata\UsesFunction;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Groups
+final class Groups
 {
+    /**
+     * @var array<string, array<int, string>>
+     */
+    private static array $groupCache = [];
+
     /**
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
-     * @psalm-return list<string>
+     * @psalm-return array<int, string>
      */
     public function groups(string $className, string $methodName, bool $includeVirtual = true): array
     {
+        $key = $className . '::' . $methodName . '::' . $includeVirtual;
+
+        if (array_key_exists($key, self::$groupCache)) {
+            return self::$groupCache[$key];
+        }
+
         $groups = [];
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName)->isGroup() as $group) {
@@ -50,7 +62,7 @@ final readonly class Groups
         }
 
         if (!$includeVirtual) {
-            return array_unique($groups);
+            return self::$groupCache[$key] = array_unique($groups);
         }
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
@@ -85,7 +97,7 @@ final readonly class Groups
             }
         }
 
-        return array_unique($groups);
+        return self::$groupCache[$key] = array_unique($groups);
     }
 
     /**
