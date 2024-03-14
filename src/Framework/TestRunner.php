@@ -66,7 +66,9 @@ final class TestRunner
     {
         Assert::resetCount();
 
-        $shouldCodeCoverageBeCollected = (new CodeCoverageMetadataApi)->shouldCodeCoverageBeCollectedFor(
+        $codeCoverageMetadataApi = new CodeCoverageMetadataApi;
+
+        $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor(
             $test::class,
             $test->name(),
         );
@@ -150,12 +152,12 @@ final class TestRunner
 
             if ($append) {
                 try {
-                    $linesToBeCovered = (new CodeCoverageMetadataApi)->linesToBeCovered(
+                    $linesToBeCovered = $codeCoverageMetadataApi->linesToBeCovered(
                         $test::class,
                         $test->name(),
                     );
 
-                    $linesToBeUsed = (new CodeCoverageMetadataApi)->linesToBeUsed(
+                    $linesToBeUsed = $codeCoverageMetadataApi->linesToBeUsed(
                         $test::class,
                         $test->name(),
                     );
