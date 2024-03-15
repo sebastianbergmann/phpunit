@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 * [#5747](https://github.com/sebastianbergmann/phpunit/pull/5747): Cache result of `Groups::groups()`
 * [#5748](https://github.com/sebastianbergmann/phpunit/pull/5748): Improve performance of `NamePrettifier::prettifyTestMethodName()`
+* [#5750](https://github.com/sebastianbergmann/phpunit/pull/5750): Micro-optimize `NamePrettifier::prettifyTestMethodName()` once again
 
 ## [11.0.6] - 2024-03-12
 
