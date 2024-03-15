@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\TestRunner\TestResult\PassedTests;
 use const PHP_EOL;
 use function assert;
 use function class_exists;
@@ -249,6 +250,86 @@ final class TestRunner
      * @throws StaticAnalysisCacheNotConfiguredException
      */
     public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
+    {
+        if ($runEntireClass && $this->isPcntlForkAvailable()) {
+            // forking the parent process is a more lightweight way to run a test in isolation.
+            // it requires the pcntl extension though.
+            $this->runInFork($test);
+            return;
+        }
+
+        // running in a separate process is slow, but works in most situations.
+        $this->runInWorkerProcess($test, $runEntireClass, $preserveGlobalState);
+    }
+
+    private function isPcntlForkAvailable(): bool {
+        $disabledFunctions = ini_get('disable_functions');
+
+        return
+            function_exists('pcntl_fork')
+            && !str_contains($disabledFunctions, 'pcntl')
+            && function_exists('socket_create_pair')
+            && !str_contains($disabledFunctions, 'socket')
+        ;
+    }
+
+    private function runInFork(TestCase $test): void
+    {
+         if (socket_create_pair(AF_UNIX, SOCK_STREAM, 0, $sockets) === false) {
+             throw new \Exception('could not create socket pair');
+         }
+
+        $pid = pcntl_fork();
+        // pcntl_fork may return NULL if the function is disabled in php.ini.
+        if ($pid === -1 || $pid === null) {
+            throw new \Exception('could not fork');
+        } else if ($pid) {
+            // we are the parent
+
+            pcntl_waitpid($pid, $status); // protect against zombie children
+
+            // read child output
+            $output = '';
+            while(($read = socket_read($sockets[1], 2048, PHP_BINARY_READ)) !== false) {
+                $output .= $read;
+            }
+            socket_close($sockets[1]);
+
+            $php = AbstractPhpProcess::factory();
+            $php->processChildResult($test, $output, ''); // TODO stderr
+
+        } else {
+            // we are the child
+
+            $offset                  = hrtime();
+            $dispatcher = Event\Facade::instance()->initForIsolation(
+                \PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
+                    $offset[0],
+                    $offset[1]
+                )
+            );
+
+            $test->setInIsolation(true);
+            $test->runBare();
+
+            // send result into parent
+            socket_write($sockets[0],
+                serialize(
+                    [
+                        'testResult'    => $test->result(),
+                        'codeCoverage'  => CodeCoverage::instance()->isActive() ? CodeCoverage::instance()->codeCoverage() : null,
+                        'numAssertions' => $test->numberOfAssertionsPerformed(),
+                        'output'        => !$test->expectsOutput() ? $output : '',
+                        'events'        => $dispatcher->flush(),
+                        'passedTests'   => PassedTests::instance()
+                    ]
+                )
+            );
+            socket_close($sockets[0]);
+        }
+    }
+
+    private function runInWorkerProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
     {
         $class = new ReflectionClass($test);
 
