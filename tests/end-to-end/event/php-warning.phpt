@@ -32,7 +32,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarni
 Test Prepared (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Undefined variable $b
-Test Triggered Suppressed PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
+Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning, suppressed using operator)
 Undefined variable $b
 Test Passed (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Finished (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)

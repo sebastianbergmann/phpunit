@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
+use function implode;
 use function sprintf;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Event;
@@ -103,10 +104,15 @@ final readonly class ErrorTriggered implements Event
             $message = PHP_EOL . $message;
         }
 
+        $details = [$this->test->id()];
+
+        if ($this->suppressed) {
+            $details[] = 'suppressed using operator';
+        }
+
         return sprintf(
-            'Test Triggered %sError (%s)%s',
-            $this->wasSuppressed() ? 'Suppressed ' : '',
-            $this->test->id(),
+            'Test Triggered Error (%s)%s',
+            implode(', ', $details),
             $message,
         );
     }

@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
+use function implode;
 use function sprintf;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Event;
@@ -117,20 +118,23 @@ final readonly class PhpDeprecationTriggered implements Event
             $message = PHP_EOL . $message;
         }
 
-        $status = '';
+        $details = [$this->test->id()];
+
+        if ($this->suppressed) {
+            $details[] = 'suppressed using operator';
+        }
 
         if ($this->ignoredByTest) {
-            $status = 'Test-Ignored ';
-        } elseif ($this->ignoredByBaseline) {
-            $status = 'Baseline-Ignored ';
-        } elseif ($this->suppressed) {
-            $status = 'Suppressed ';
+            $details[] = 'ignored by test';
+        }
+
+        if ($this->ignoredByBaseline) {
+            $details[] = 'ignored by baseline';
         }
 
         return sprintf(
-            'Test Triggered %sPHP Deprecation (%s)%s',
-            $status,
-            $this->test->id(),
+            'Test Triggered PHP Deprecation (%s)%s',
+            implode(', ', $details),
             $message,
         );
     }

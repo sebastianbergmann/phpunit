@@ -61,7 +61,7 @@ final class NoticeTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->ignoredByBaseline());
-        $this->assertSame('Test Triggered Baseline-Ignored Notice (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Notice (FooTest::testBar, ignored by baseline)' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
@@ -77,6 +77,6 @@ final class NoticeTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->wasSuppressed());
-        $this->assertSame('Test Triggered Suppressed Notice (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Notice (FooTest::testBar, suppressed using operator)' . PHP_EOL . 'message', $event->asString());
     }
 }

@@ -65,7 +65,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->ignoredByBaseline());
-        $this->assertSame('Test Triggered Baseline-Ignored Deprecation (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Deprecation (FooTest::testBar, ignored by baseline)' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeIgnoredByTest(): void
@@ -82,7 +82,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->ignoredByTest());
-        $this->assertSame('Test Triggered Test-Ignored Deprecation (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Deprecation (FooTest::testBar, ignored by test)' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
@@ -99,6 +99,6 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->wasSuppressed());
-        $this->assertSame('Test Triggered Suppressed Deprecation (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Deprecation (FooTest::testBar, suppressed using operator)' . PHP_EOL . 'message', $event->asString());
     }
 }

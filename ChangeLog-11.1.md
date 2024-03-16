@@ -16,6 +16,7 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 ### Changed
 
 * [#5708](https://github.com/sebastianbergmann/phpunit/issues/5708): Allow the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options to be used multiple times
+* Changed how the `DeprecationTriggered`, `ErrorTriggered`, `NoticeTriggered`, `PhpDeprecationTriggered`, `PhpNoticeTriggered`, `PhpWarningTriggered`, and `WarningTriggered` events are represented as text
 
 ### Deprecated
 
