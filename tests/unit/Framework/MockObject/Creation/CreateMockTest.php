@@ -15,12 +15,15 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
+use PHPUnit\Framework\MockObject\Generator\MethodNamedMethodException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\ClassWithMethodNamedMethod;
 use PHPUnit\TestFixture\MockObject\Enumeration;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodNamedMethod;
 use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 
 #[Group('test-doubles')]
@@ -79,5 +82,19 @@ final class CreateMockTest extends TestCase
         $this->expectException(UnknownTypeException::class);
 
         $this->createMock('this\does\not\exist');
+    }
+
+    public function testCannotCreateMockObjectForInterfaceWithMethodNamedMethod(): void
+    {
+        $this->expectException(MethodNamedMethodException::class);
+
+        $this->createMock(InterfaceWithMethodNamedMethod::class);
+    }
+
+    public function testCannotCreateMockObjectForExtendableClassWithMethodNamedMethod(): void
+    {
+        $this->expectException(MethodNamedMethodException::class);
+
+        $this->createMock(ClassWithMethodNamedMethod::class);
     }
 }

@@ -35,9 +35,7 @@ use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\TestFixture;
 use PHPUnit\TestFixture\RecordingSubscriber;
-use stdClass;
 
 #[CoversClass(DispatchingEmitter::class)]
 final class DispatchingEmitterTest extends Framework\TestCase
@@ -1105,137 +1103,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
-    public function testTestMockObjectCreatedForTraitDispatchesTestDoubleMockObjectCreatedForTraitEvent(): void
-    {
-        $traitName = TestFixture\MockObject\ExampleTrait::class;
-
-        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectForTraitCreatedSubscriber
-        {
-            public function notify(Test\MockObjectForTraitCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\MockObjectForTraitCreatedSubscriber::class,
-            Test\MockObjectForTraitCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedMockObjectForTrait($traitName);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\MockObjectForTraitCreated::class, $event);
-
-        $this->assertSame($traitName, $event->traitName());
-    }
-
-    public function testTestMockObjectCreatedForAbstractClassDispatchesTestDoubleMockObjectCreatedForAbstractClassEvent(): void
-    {
-        $className = stdClass::class;
-
-        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectForAbstractClassCreatedSubscriber
-        {
-            public function notify(Test\MockObjectForAbstractClassCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\MockObjectForAbstractClassCreatedSubscriber::class,
-            Test\MockObjectForAbstractClassCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedMockObjectForAbstractClass($className);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\MockObjectForAbstractClassCreated::class, $event);
-
-        $this->assertSame($className, $event->className());
-    }
-
-    public function testTestMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void
-    {
-        $wsdlFile          = __FILE__;
-        $originalClassName = self::class;
-        $mockClassName     = stdClass::class;
-        $methods           = [
-            'foo',
-            'bar',
-        ];
-        $callOriginalConstructor = false;
-        $options                 = [
-            'foo' => 'bar',
-            'bar' => 'baz',
-            'baz' => 9000,
-        ];
-
-        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectFromWsdlCreatedSubscriber
-        {
-            public function notify(Test\MockObjectFromWsdlCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\MockObjectFromWsdlCreatedSubscriber::class,
-            Test\MockObjectFromWsdlCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedMockObjectFromWsdl(
-            $wsdlFile,
-            $originalClassName,
-            $mockClassName,
-            $methods,
-            $callOriginalConstructor,
-            $options,
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\MockObjectFromWsdlCreated::class, $event);
-
-        $this->assertSame($wsdlFile, $event->wsdlFile());
-        $this->assertSame($originalClassName, $event->originalClassName());
-        $this->assertSame($mockClassName, $event->mockClassName());
-        $this->assertSame($methods, $event->methods());
-        $this->assertSame($callOriginalConstructor, $event->callOriginalConstructor());
-        $this->assertSame($options, $event->options());
-    }
-
     public function testTestPartialMockObjectCreatedDispatchesTestDoublePartialMockObjectCreatedEvent(): void
     {
         $className   = self::class;
@@ -1279,47 +1146,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($className, $event->className());
         $this->assertSame($methodNames, $event->methodNames());
-    }
-
-    public function testTestTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
-    {
-        $className            = self::class;
-        $constructorArguments = ['foo'];
-
-        $subscriber = new class extends RecordingSubscriber implements Test\TestProxyCreatedSubscriber
-        {
-            public function notify(Test\TestProxyCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\TestProxyCreatedSubscriber::class,
-            Test\TestProxyCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedTestProxy(
-            $className,
-            $constructorArguments,
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\TestProxyCreated::class, $event);
-
-        $this->assertSame($className, $event->className());
-        $this->assertSame("Array &0 [\n    0 => 'foo',\n]", $event->constructorArguments());
     }
 
     public function testTestTestStubCreatedDispatchesTestDoubleTestStubCreatedEvent(): void

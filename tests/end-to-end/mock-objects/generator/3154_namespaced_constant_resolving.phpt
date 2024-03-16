@@ -30,7 +30,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     Issue3154::class,
     true,
-    true,
     [],
     'Issue3154Mock',
     true,
@@ -45,8 +44,6 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function a(int $i = %d, int $j = 17, string $v = '%s', string $z = '#'): string
@@ -79,7 +76,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Is\Namespaced\Issue3154', 'a', $__phpunit_arguments, 'string', $this, true
+                'Is\Namespaced\Issue3154', 'a', $__phpunit_arguments, 'string', $this
             )
         );
 

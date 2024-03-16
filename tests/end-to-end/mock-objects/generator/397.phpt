@@ -16,7 +16,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     C::class,
     true,
-    true,
     [],
     'MockC',
     true,
@@ -31,8 +30,6 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function m(?C $other): C
@@ -65,7 +62,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObjectInternal
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'C', 'm', $__phpunit_arguments, 'C', $this, true
+                'C', 'm', $__phpunit_arguments, 'C', $this
             )
         );
 

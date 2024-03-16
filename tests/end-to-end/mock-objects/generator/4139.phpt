@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
-$mock = $generator->generate(InterfaceWithConstructor::class, true, true);
+$mock = $generator->generate(InterfaceWithConstructor::class, true);
 
 print $mock->classCode();
 --EXPECTF--
@@ -20,8 +20,6 @@ class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWi
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function __construct()
@@ -54,7 +52,7 @@ class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWi
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this, true
+                'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this
             )
         );
 

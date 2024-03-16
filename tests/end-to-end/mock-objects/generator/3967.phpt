@@ -18,7 +18,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'Baz',
     true,
-    true,
     [],
     'MockBaz',
     true,
@@ -33,8 +32,6 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 
     public function foo(): string
@@ -67,7 +64,7 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Bar', 'foo', $__phpunit_arguments, 'string', $this, true
+                'Bar', 'foo', $__phpunit_arguments, 'string', $this
             )
         );
 

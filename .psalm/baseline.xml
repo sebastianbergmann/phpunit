@@ -45,11 +45,6 @@
       <code><![CDATA[$calledMethods]]></code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Event/Events/Test/TestDouble/MockObjectFromWsdlCreated.php">
-    <PropertyTypeCoercion>
-      <code><![CDATA[$methods]]></code>
-    </PropertyTypeCoercion>
-  </file>
   <file src="src/Event/Events/Test/TestDouble/PartialMockObjectCreated.php">
     <PropertyTypeCoercion>
       <code><![CDATA[$methodNames]]></code>
@@ -232,20 +227,7 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$className]]></code>
       <code><![CDATA[$methods]]></code>
-      <code><![CDATA[$type]]></code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass>
-      <code><![CDATA[new MockTrait(
-                $classTemplate->render(),
-                $className['className'],
-            )]]></code>
-      <code><![CDATA[new MockTrait($classTemplate->render(), $className['className'])]]></code>
-      <code><![CDATA[new UnknownTraitException($traitName)]]></code>
-      <code><![CDATA[new UnknownTraitException($traitName)]]></code>
-    </DeprecatedClass>
-    <DeprecatedMethod>
-      <code><![CDATA[mockObjectForAbstractClass]]></code>
-    </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code><![CDATA[getMethod]]></code>
       <code><![CDATA[testDouble]]></code>
@@ -257,13 +239,6 @@
       <code><![CDATA[testDouble]]></code>
       <code><![CDATA[testDouble]]></code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument>
-      <code><![CDATA[$client->__getFunctions()]]></code>
-    </PossiblyNullArgument>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[!$parameterStart]]></code>
-      <code><![CDATA[empty($methods)]]></code>
-    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Framework/MockObject/Generator/MockClass.php">
     <LessSpecificReturnStatement>
@@ -285,7 +260,6 @@
                 'method_name'        => $this->methodName,
                 'modifier'           => $this->modifier,
                 'reference'          => $this->reference,
-                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
                 'deprecation'        => $deprecation,
                 'return_result'      => $returnResult,
             ]]]></code>
@@ -294,27 +268,11 @@
       <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
     </PossiblyFalseOperand>
   </file>
-  <file src="src/Framework/MockObject/Generator/MockTrait.php">
-    <LessSpecificReturnStatement>
-      <code><![CDATA[$this->mockName]]></code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType>
-      <code><![CDATA[class-string]]></code>
-    </MoreSpecificReturnType>
-  </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
-    <DeprecatedMethod>
-      <code><![CDATA[mockObjectForAbstractClass]]></code>
-      <code><![CDATA[mockObjectForTrait]]></code>
-    </DeprecatedMethod>
     <InvalidReturnStatement>
-      <code><![CDATA[$object]]></code>
-      <code><![CDATA[$object]]></code>
       <code><![CDATA[$object]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code><![CDATA[MockObject&MockedType]]></code>
-      <code><![CDATA[MockObject&MockedType]]></code>
       <code><![CDATA[MockObject&MockedType]]></code>
     </InvalidReturnType>
   </file>
@@ -351,19 +309,8 @@
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$e->getMessage()]]></code>
-      <code><![CDATA[$mockClassName]]></code>
-      <code><![CDATA[$originalClassName]]></code>
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod>
-      <code><![CDATA[disableArgumentCloning]]></code>
-      <code><![CDATA[disallowMockingUnknownTypes]]></code>
-      <code><![CDATA[enableProxyingToOriginalMethods]]></code>
-      <code><![CDATA[generateClassFromWsdl]]></code>
-      <code><![CDATA[mockObjectForAbstractClass]]></code>
-      <code><![CDATA[mockObjectForTrait]]></code>
-      <code><![CDATA[objectForTrait]]></code>
-    </DeprecatedMethod>
     <MissingThrowsDocblock>
       <code><![CDATA[getMethod]]></code>
     </MissingThrowsDocblock>

@@ -55,9 +55,6 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "suggest": {
-        "ext-soap": "To be able to generate mocks based on WSDL files"
-    },
     "bin": [
         "phpunit"
     ],

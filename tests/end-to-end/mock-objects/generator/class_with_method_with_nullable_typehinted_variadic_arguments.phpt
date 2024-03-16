@@ -16,7 +16,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'ClassWithMethodWithNullableTypehintedVariadicArguments',
     true,
-    true,
     [],
     'MockFoo',
     true,
@@ -31,8 +30,6 @@ class MockFoo extends ClassWithMethodWithNullableTypehintedVariadicArguments imp
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function methodWithNullableTypehintedVariadicArguments($a, ?string ...$parameters)
@@ -65,7 +62,7 @@ class MockFoo extends ClassWithMethodWithNullableTypehintedVariadicArguments imp
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithMethodWithNullableTypehintedVariadicArguments', 'methodWithNullableTypehintedVariadicArguments', $__phpunit_arguments, '', $this, true
+                'ClassWithMethodWithNullableTypehintedVariadicArguments', 'methodWithNullableTypehintedVariadicArguments', $__phpunit_arguments, '', $this
             )
         );
 
