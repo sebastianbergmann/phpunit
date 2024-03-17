@@ -251,7 +251,7 @@ final class TestRunner
      */
     public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
     {
-        if ($runEntireClass && $this->isPcntlForkAvailable()) {
+        if ($this->isPcntlForkAvailable()) {
             // forking the parent process is a more lightweight way to run a test in isolation.
             // it requires the pcntl extension though.
             $this->runInFork($test);
