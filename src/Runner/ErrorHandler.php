@@ -85,27 +85,31 @@ final class ErrorHandler
         assert(isset($trace[1]['file']));
         assert(isset($trace[2]['file']));
 
-        $triggeredInTestCode             = false;
         $triggeredInFirstPartyCode       = false;
-        $triggeredInThirdPartyCode       = false;
-        $triggerCalledFromTestCode       = false;
         $triggerCalledFromFirstPartyCode = false;
-        $triggerCalledFromThirdPartyCode = false;
 
-        if ($trace[1]['file'] === $test->file()) {
-            $triggeredInTestCode = true;
-        } elseif ($this->sourceFilter->includes($this->source, $trace[1]['file'])) {
+        if ($trace[1]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[1]['file'])) {
             $triggeredInFirstPartyCode = true;
-        } else {
-            $triggeredInThirdPartyCode = true;
         }
 
-        if ($trace[2]['file'] === $test->file()) {
-            $triggerCalledFromTestCode = true;
-        } elseif ($this->sourceFilter->includes($this->source, $trace[2]['file'])) {
+        if ($trace[2]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[2]['file'])) {
             $triggerCalledFromFirstPartyCode = true;
+        }
+
+        $self     = false;
+        $direct   = false;
+        $indirect = false;
+
+        if ($triggerCalledFromFirstPartyCode) {
+            if ($triggeredInFirstPartyCode) {
+                $self = true;
+            } else {
+                $direct = true;
+            }
         } else {
-            $triggerCalledFromThirdPartyCode = true;
+            $indirect = true;
         }
 
         switch ($errorNumber) {
