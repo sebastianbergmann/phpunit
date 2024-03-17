@@ -25,6 +25,7 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function assert;
 use function debug_backtrace;
 use function error_reporting;
 use function restore_error_handler;
@@ -74,8 +75,12 @@ final class ErrorHandler
             return false;
         }
 
+        $test = Event\Code\TestMethodBuilder::fromCallStack();
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        $test  = Event\Code\TestMethodBuilder::fromCallStack();
+
+        assert(isset($trace[1]['file']));
+        assert(isset($trace[2]['file']));
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
         $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
