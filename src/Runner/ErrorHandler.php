@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const E_COMPILE_ERROR;
 use const E_COMPILE_WARNING;
 use const E_CORE_ERROR;
@@ -73,7 +74,7 @@ final class ErrorHandler
             return false;
         }
 
-        $trace = debug_backtrace(0);
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
         $test  = Event\Code\TestMethodBuilder::fromCallStack();
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
