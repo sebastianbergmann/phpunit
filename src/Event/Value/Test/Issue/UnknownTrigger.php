@@ -14,20 +14,18 @@ namespace PHPUnit\Event\Code\IssueTrigger;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class SelfTrigger extends IssueTrigger
+final class UnknownTrigger extends IssueTrigger
 {
     /**
-     * Your own code triggers an issue in your own code.
-     *
-     * @psalm-assert-if-true SelfTrigger $this
+     * @psalm-assert-if-true UnknownTrigger $this
      */
-    public function isSelf(): true
+    public function isUnknown(): true
     {
         return true;
     }
 
     public function asString(): string
     {
-        return 'first-party code triggered issue in first-party code';
+        return 'unknown whether this issue was triggered in first-party or third-party code';
     }
 }

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Code\DeprecationTrigger;
+namespace PHPUnit\Event\Code\IssueTrigger;
 
 /**
  * @psalm-immutable
@@ -24,5 +24,10 @@ final class DirectTrigger extends IssueTrigger
     public function isDirect(): true
     {
         return true;
+    }
+
+    public function asString(): string
+    {
+        return 'first-party code triggered issue in third-party code';
     }
 }

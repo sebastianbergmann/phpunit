@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Code\DeprecationTrigger;
+namespace PHPUnit\Event\Code\IssueTrigger;
 
 /**
  * @psalm-immutable
@@ -29,6 +29,11 @@ abstract class IssueTrigger
     public static function indirect(): IndirectTrigger
     {
         return new IndirectTrigger;
+    }
+
+    public static function unknown(): UnknownTrigger
+    {
+        return new UnknownTrigger;
     }
 
     final private function __construct()
@@ -64,4 +69,14 @@ abstract class IssueTrigger
     {
         return false;
     }
+
+    /**
+     * @psalm-assert-if-true UnknownTrigger $this
+     */
+    public function isUnknown(): bool
+    {
+        return false;
+    }
+
+    abstract public function asString(): string;
 }

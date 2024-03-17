@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Code\DeprecationTrigger;
+namespace PHPUnit\Event\Code\IssueTrigger;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -26,6 +26,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
+        $this->assertFalse($trigger->isUnknown());
+        $this->assertSame('first-party code triggered issue in first-party code', $trigger->asString());
     }
 
     public function testCanBeDirect(): void
@@ -35,6 +37,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($trigger->isDirect());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isIndirect());
+        $this->assertFalse($trigger->isUnknown());
+        $this->assertSame('first-party code triggered issue in third-party code', $trigger->asString());
     }
 
     public function testCanBeIndirect(): void
@@ -44,5 +48,18 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($trigger->isIndirect());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
+        $this->assertFalse($trigger->isUnknown());
+        $this->assertSame('third-party code triggered issue in third-party code', $trigger->asString());
+    }
+
+    public function testCanBeUnknown(): void
+    {
+        $trigger = IssueTrigger::unknown();
+
+        $this->assertFalse($trigger->isSelf());
+        $this->assertFalse($trigger->isDirect());
+        $this->assertFalse($trigger->isIndirect());
+        $this->assertTrue($trigger->isUnknown());
+        $this->assertSame('unknown whether this issue was triggered in first-party or third-party code', $trigger->asString());
     }
 }
