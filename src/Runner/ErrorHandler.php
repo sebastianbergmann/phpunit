@@ -77,13 +77,13 @@ final class ErrorHandler
 
         $test = Event\Code\TestMethodBuilder::fromCallStack();
 
+        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
+        $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 
         assert(isset($trace[1]['file']));
         assert(isset($trace[2]['file']));
-
-        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
-        $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
 
         $triggeredInTestCode             = false;
         $triggeredInFirstPartyCode       = false;
