@@ -273,33 +273,116 @@ final class TestRunner
         ;
     }
 
+    // IPC inspired from https://github.com/barracudanetworks/forkdaemon-php
+    private const SOCKET_HEADER_SIZE = 4;
+
+    private function ipc_init()
+    {
+        // windows needs AF_INET
+        $domain = strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' ? AF_INET : AF_UNIX;
+
+        // create a socket pair for IPC
+        $sockets = array();
+        if (socket_create_pair($domain, SOCK_STREAM, 0, $sockets) === false)
+        {
+            throw new \RuntimeException('socket_create_pair failed: ' . socket_strerror(socket_last_error()));
+        }
+
+        return $sockets;
+    }
+
+    private function socket_receive($socket)
+    {
+        // initially read to the length of the header size, then
+        // expand to read more
+        $bytes_total = self::SOCKET_HEADER_SIZE;
+        $bytes_read = 0;
+        $have_header = false;
+        $socket_message = '';
+        while ($bytes_read < $bytes_total)
+        {
+            $read = @socket_read($socket, $bytes_total - $bytes_read);
+            if ($read === false)
+            {
+                throw new \RuntimeException('socket_receive error: ' . socket_strerror(socket_last_error()));
+            }
+
+            // blank socket_read means done
+            if ($read == '')
+            {
+                break;
+            }
+
+            $bytes_read += strlen($read);
+            $socket_message .= $read;
+
+            if (!$have_header && $bytes_read >= self::SOCKET_HEADER_SIZE)
+            {
+                $have_header = true;
+                list($bytes_total) = array_values(unpack('N', $socket_message));
+                $bytes_read = 0;
+                $socket_message = '';
+            }
+        }
+
+        return @unserialize($socket_message);
+    }
+
+    private function socket_send($socket, $message)
+    {
+        $serialized_message = @serialize($message);
+        if ($serialized_message == false)
+        {
+            throw new \RuntimeException('socket_send failed to serialize message');
+        }
+
+        $header = pack('N', strlen($serialized_message));
+        $data = $header . $serialized_message;
+        $bytes_left = strlen($data);
+        while ($bytes_left > 0)
+        {
+            $bytes_sent = @socket_write($socket, $data);
+            if ($bytes_sent === false)
+            {
+                throw new \RuntimeException('socket_send failed to write to socket');
+            }
+
+            $bytes_left -= $bytes_sent;
+            $data = substr($data, $bytes_sent);
+        }
+    }
+
     private function runInFork(TestCase $test): void
     {
-         if (socket_create_pair(AF_UNIX, SOCK_STREAM, 0, $sockets) === false) {
-             throw new \Exception('could not create socket pair');
-         }
+        list($socket_child, $socket_parent) = $this->ipc_init();
 
         $pid = pcntl_fork();
-        // pcntl_fork may return NULL if the function is disabled in php.ini.
-        if ($pid === -1 || $pid === null) {
+
+        if ($pid === -1 ) {
             throw new \Exception('could not fork');
         } else if ($pid) {
             // we are the parent
 
-            pcntl_waitpid($pid, $status); // protect against zombie children
+            socket_close($socket_parent);
 
-            // read child output
-            $output = '';
-            while(($read = socket_read($sockets[1], 2048, PHP_BINARY_READ)) !== false) {
-                $output .= $read;
+            // read child stdout, stderr
+            $result = $this->socket_receive($socket_child);
+
+            $stderr = '';
+            $stdout = '';
+            if (is_array($result) && array_key_exists('error', $result)) {
+                $stderr = $result['error'];
+            } else {
+                $stdout = $result;
             }
-            socket_close($sockets[1]);
 
             $php = AbstractPhpProcess::factory();
-            $php->processChildResult($test, $output, ''); // TODO stderr
+            $php->processChildResult($test, $stdout, $stderr);
 
         } else {
             // we are the child
+
+            socket_close($socket_child);
 
             $offset                  = hrtime();
             $dispatcher = Event\Facade::instance()->initForIsolation(
@@ -310,22 +393,27 @@ final class TestRunner
             );
 
             $test->setInIsolation(true);
-            $test->runBare();
+            try {
+                $test->run();
+            } catch (Throwable $e) {
+                $this->socket_send($socket_parent, ['error' => $e->getMessage()]);
+                exit();
+            }
+
+            $result = serialize(
+                [
+                    'testResult'    => $test->result(),
+                    'codeCoverage'  => CodeCoverage::instance()->isActive() ? CodeCoverage::instance()->codeCoverage() : null,
+                    'numAssertions' => $test->numberOfAssertionsPerformed(),
+                    'output'        => !$test->expectsOutput() ? $test->output() : '',
+                    'events'        => $dispatcher->flush(),
+                    'passedTests'   => PassedTests::instance()
+                ]
+            );
 
             // send result into parent
-            socket_write($sockets[0],
-                serialize(
-                    [
-                        'testResult'    => $test->result(),
-                        'codeCoverage'  => CodeCoverage::instance()->isActive() ? CodeCoverage::instance()->codeCoverage() : null,
-                        'numAssertions' => $test->numberOfAssertionsPerformed(),
-                        'output'        => !$test->expectsOutput() ? $output : '',
-                        'events'        => $dispatcher->flush(),
-                        'passedTests'   => PassedTests::instance()
-                    ]
-                )
-            );
-            socket_close($sockets[0]);
+            $this->socket_send($socket_parent, $result);
+            exit();
         }
     }
 
