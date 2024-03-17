@@ -9,35 +9,62 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use function array_key_exists;
+use function array_values;
+use function function_exists;
+use function hrtime;
+use function ini_get;
+use function is_array;
+use function pack;
+use function pcntl_fork;
+use function serialize;
+use function socket_close;
+use function socket_create_pair;
+use function socket_last_error;
+use function socket_read;
+use function socket_strerror;
+use function socket_write;
+use function str_contains;
+use function strlen;
+use function strtoupper;
+use function substr;
+use function unpack;
+use function unserialize;
+use Exception;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use RuntimeException;
 
-final class PcntlFork {
+final class PcntlFork
+{
     // IPC inspired from https://github.com/barracudanetworks/forkdaemon-php
     private const SOCKET_HEADER_SIZE = 4;
 
-    static public function isPcntlForkAvailable(): bool {
+    public static function isPcntlForkAvailable(): bool
+    {
         $disabledFunctions = ini_get('disable_functions');
 
         return
-            function_exists('pcntl_fork')
-            && !str_contains($disabledFunctions, 'pcntl')
-            && function_exists('socket_create_pair')
-            && !str_contains($disabledFunctions, 'socket')
-        ;
+            function_exists('pcntl_fork') &&
+            !str_contains($disabledFunctions, 'pcntl') &&
+            function_exists('socket_create_pair') &&
+            !str_contains($disabledFunctions, 'socket');
     }
 
     public function runTest(TestCase $test): void
     {
-        list($socket_child, $socket_parent) = $this->ipcInit();
+        [$socket_child, $socket_parent] = $this->ipcInit();
 
         $pid = pcntl_fork();
 
-        if ($pid === -1 ) {
-            throw new \Exception('could not fork');
-        } else if ($pid) {
+        if ($pid === -1) {
+            throw new Exception('could not fork');
+        }
+
+        if ($pid) {
             // we are the parent
 
             socket_close($socket_parent);
@@ -47,6 +74,7 @@ final class PcntlFork {
 
             $stderr = '';
             $stdout = '';
+
             if (is_array($result) && array_key_exists('error', $result)) {
                 $stderr = $result['error'];
             } else {
@@ -61,19 +89,21 @@ final class PcntlFork {
 
             socket_close($socket_child);
 
-            $offset                  = hrtime();
+            $offset     = hrtime();
             $dispatcher = Facade::instance()->initForIsolation(
-                \PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
+                HRTime::fromSecondsAndNanoseconds(
                     $offset[0],
-                    $offset[1]
-                )
+                    $offset[1],
+                ),
             );
 
             $test->setInIsolation(true);
+
             try {
                 $test->run();
             } catch (Throwable $e) {
                 $this->socketSend($socket_parent, ['error' => $e->getMessage()]);
+
                 exit();
             }
 
@@ -84,12 +114,13 @@ final class PcntlFork {
                     'numAssertions' => $test->numberOfAssertionsPerformed(),
                     'output'        => !$test->expectsOutput() ? $test->output() : '',
                     'events'        => $dispatcher->flush(),
-                    'passedTests'   => PassedTests::instance()
-                ]
+                    'passedTests'   => PassedTests::instance(),
+                ],
             );
 
             // send result into parent
             $this->socketSend($socket_parent, $result);
+
             exit();
         }
     }
@@ -100,10 +131,10 @@ final class PcntlFork {
         $domain = strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' ? AF_INET : AF_UNIX;
 
         // create a socket pair for IPC
-        $sockets = array();
-        if (socket_create_pair($domain, SOCK_STREAM, 0, $sockets) === false)
-        {
-            throw new \RuntimeException('socket_create_pair failed: ' . socket_strerror(socket_last_error()));
+        $sockets = [];
+
+        if (socket_create_pair($domain, SOCK_STREAM, 0, $sockets) === false) {
+            throw new RuntimeException('socket_create_pair failed: ' . socket_strerror(socket_last_error()));
         }
 
         return $sockets;
@@ -116,32 +147,30 @@ final class PcntlFork {
     {
         // initially read to the length of the header size, then
         // expand to read more
-        $bytes_total = self::SOCKET_HEADER_SIZE;
-        $bytes_read = 0;
-        $have_header = false;
+        $bytes_total    = self::SOCKET_HEADER_SIZE;
+        $bytes_read     = 0;
+        $have_header    = false;
         $socket_message = '';
-        while ($bytes_read < $bytes_total)
-        {
+
+        while ($bytes_read < $bytes_total) {
             $read = @socket_read($socket, $bytes_total - $bytes_read);
-            if ($read === false)
-            {
-                throw new \RuntimeException('socket_receive error: ' . socket_strerror(socket_last_error()));
+
+            if ($read === false) {
+                throw new RuntimeException('socket_receive error: ' . socket_strerror(socket_last_error()));
             }
 
             // blank socket_read means done
-            if ($read == '')
-            {
+            if ($read == '') {
                 break;
             }
 
             $bytes_read += strlen($read);
             $socket_message .= $read;
 
-            if (!$have_header && $bytes_read >= self::SOCKET_HEADER_SIZE)
-            {
-                $have_header = true;
-                list($bytes_total) = array_values(unpack('N', $socket_message));
-                $bytes_read = 0;
+            if (!$have_header && $bytes_read >= self::SOCKET_HEADER_SIZE) {
+                $have_header    = true;
+                [$bytes_total]  = array_values(unpack('N', $socket_message));
+                $bytes_read     = 0;
                 $socket_message = '';
             }
         }
@@ -151,25 +180,25 @@ final class PcntlFork {
 
     /**
      * @param resource $socket
-     * @param mixed $message
+     * @param mixed    $message
      */
     private function socketSend($socket, $message): void
     {
         $serialized_message = @serialize($message);
-        if ($serialized_message == false)
-        {
-            throw new \RuntimeException('socket_send failed to serialize message');
+
+        if ($serialized_message == false) {
+            throw new RuntimeException('socket_send failed to serialize message');
         }
 
-        $header = pack('N', strlen($serialized_message));
-        $data = $header . $serialized_message;
+        $header     = pack('N', strlen($serialized_message));
+        $data       = $header . $serialized_message;
         $bytes_left = strlen($data);
-        while ($bytes_left > 0)
-        {
+
+        while ($bytes_left > 0) {
             $bytes_sent = @socket_write($socket, $data);
-            if ($bytes_sent === false)
-            {
-                throw new \RuntimeException('socket_send failed to write to socket');
+
+            if ($bytes_sent === false) {
+                throw new RuntimeException('socket_send failed to write to socket');
             }
 
             $bytes_left -= $bytes_sent;

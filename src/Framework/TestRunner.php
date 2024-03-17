@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\TestRunner\TestResult\PassedTests;
-use PHPUnit\Util\PHP\PcntlFork;
 use const PHP_EOL;
 use function assert;
 use function class_exists;
@@ -35,6 +33,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\PHP\PcntlFork;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
@@ -255,17 +254,12 @@ final class TestRunner
         if (PcntlFork::isPcntlForkAvailable()) {
             // forking the parent process is a more lightweight way to run a test in isolation.
             // it requires the pcntl extension though.
-            $fork = new PcntlFork();
+            $fork = new PcntlFork;
             $fork->runTest($test);
+
             return;
         }
 
-        // running in a separate process is slow, but works in most situations.
-        $this->runInWorkerProcess($test, $runEntireClass, $preserveGlobalState);
-    }
-
-    private function runInWorkerProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
-    {
         $class = new ReflectionClass($test);
 
         if ($runEntireClass) {
