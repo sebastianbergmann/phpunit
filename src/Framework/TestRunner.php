@@ -276,7 +276,7 @@ final class TestRunner
     // IPC inspired from https://github.com/barracudanetworks/forkdaemon-php
     private const SOCKET_HEADER_SIZE = 4;
 
-    private function ipc_init()
+    private function ipc_init(): array
     {
         // windows needs AF_INET
         $domain = strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' ? AF_INET : AF_UNIX;
@@ -291,7 +291,10 @@ final class TestRunner
         return $sockets;
     }
 
-    private function socket_receive($socket)
+    /**
+     * @param resource $socket
+     */
+    private function socket_receive($socket): mixed
     {
         // initially read to the length of the header size, then
         // expand to read more
@@ -328,7 +331,11 @@ final class TestRunner
         return @unserialize($socket_message);
     }
 
-    private function socket_send($socket, $message)
+    /**
+     * @param resource $socket
+     * @param mixed $message
+     */
+    private function socket_send($socket, $message): void
     {
         $serialized_message = @serialize($message);
         if ($serialized_message == false)
