@@ -24,6 +24,7 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function debug_backtrace;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
@@ -31,6 +32,9 @@ use PHPUnit\Event;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
+use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\SourceFilter;
 use PHPUnit\Util\ExcludeList;
 
 /**
@@ -44,10 +48,18 @@ final class ErrorHandler
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
+    private readonly Source $source;
+    private readonly SourceFilter $sourceFilter;
 
     public static function instance(): self
     {
-        return self::$instance ?? self::$instance = new self;
+        return self::$instance ?? self::$instance = new self(Registry::get()->source());
+    }
+
+    private function __construct(Source $source)
+    {
+        $this->source       = $source;
+        $this->sourceFilter = new SourceFilter;
     }
 
     /**
@@ -61,10 +73,34 @@ final class ErrorHandler
             return false;
         }
 
-        $test = Event\Code\TestMethodBuilder::fromCallStack();
+        $trace = debug_backtrace(0);
+        $test  = Event\Code\TestMethodBuilder::fromCallStack();
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
         $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
+
+        $triggeredInTestCode             = false;
+        $triggeredInFirstPartyCode       = false;
+        $triggeredInThirdPartyCode       = false;
+        $triggerCalledFromTestCode       = false;
+        $triggerCalledFromFirstPartyCode = false;
+        $triggerCalledFromThirdPartyCode = false;
+
+        if ($trace[1]['file'] === $test->file()) {
+            $triggeredInTestCode = true;
+        } elseif ($this->sourceFilter->includes($this->source, $trace[1]['file'])) {
+            $triggeredInFirstPartyCode = true;
+        } else {
+            $triggeredInThirdPartyCode = true;
+        }
+
+        if ($trace[2]['file'] === $test->file()) {
+            $triggerCalledFromTestCode = true;
+        } elseif ($this->sourceFilter->includes($this->source, $trace[2]['file'])) {
+            $triggerCalledFromFirstPartyCode = true;
+        } else {
+            $triggerCalledFromThirdPartyCode = true;
+        }
 
         switch ($errorNumber) {
             case E_NOTICE:
