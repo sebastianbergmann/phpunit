@@ -31,7 +31,9 @@ use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
 use PHPUnit\TextUI\Configuration\Registry;
@@ -79,38 +81,6 @@ final class ErrorHandler
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
         $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
-
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-
-        assert(isset($trace[1]['file']));
-        assert(isset($trace[2]['file']));
-
-        $triggeredInFirstPartyCode       = false;
-        $triggerCalledFromFirstPartyCode = false;
-
-        if ($trace[1]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[1]['file'])) {
-            $triggeredInFirstPartyCode = true;
-        }
-
-        if ($trace[2]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[2]['file'])) {
-            $triggerCalledFromFirstPartyCode = true;
-        }
-
-        $self     = false;
-        $direct   = false;
-        $indirect = false;
-
-        if ($triggerCalledFromFirstPartyCode) {
-            if ($triggeredInFirstPartyCode) {
-                $self = true;
-            } else {
-                $direct = true;
-            }
-        } else {
-            $indirect = true;
-        }
 
         switch ($errorNumber) {
             case E_NOTICE:
@@ -171,6 +141,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
+                    $this->trigger($test),
                 );
 
                 break;
@@ -184,6 +155,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
+                    $this->trigger($test),
                 );
 
                 break;
@@ -257,5 +229,40 @@ final class ErrorHandler
         }
 
         return $this->baseline->has(Issue::from($file, $line, null, $description));
+    }
+
+    private function trigger(TestMethod $test): IssueTrigger
+    {
+        if (!$this->source->notEmpty()) {
+            return IssueTrigger::unknown();
+        }
+
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+
+        assert(isset($trace[2]['file']));
+        assert(isset($trace[3]['file']));
+
+        $triggeredInFirstPartyCode       = false;
+        $triggerCalledFromFirstPartyCode = false;
+
+        if ($trace[2]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[2]['file'])) {
+            $triggeredInFirstPartyCode = true;
+        }
+
+        if ($trace[3]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[3]['file'])) {
+            $triggerCalledFromFirstPartyCode = true;
+        }
+
+        if ($triggerCalledFromFirstPartyCode) {
+            if ($triggeredInFirstPartyCode) {
+                return IssueTrigger::self();
+            }
+
+            return IssueTrigger::direct();
+        }
+
+        return IssueTrigger::indirect();
     }
 }
