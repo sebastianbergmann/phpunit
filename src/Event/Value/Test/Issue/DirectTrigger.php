@@ -17,7 +17,7 @@ namespace PHPUnit\Event\Code\IssueTrigger;
 final class DirectTrigger extends IssueTrigger
 {
     /**
-     * Your own code triggers an issue in your own code.
+     * Your own code triggers an issue in third-party code.
      *
      * @psalm-assert-if-true DirectTrigger $this
      */
