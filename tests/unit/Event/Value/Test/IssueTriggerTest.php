@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(SelfTrigger::class)]
 #[CoversClass(DirectTrigger::class)]
 #[CoversClass(IndirectTrigger::class)]
+#[CoversClass(UnknownTrigger::class)]
 #[Small]
 final class IssueTriggerTest extends TestCase
 {
