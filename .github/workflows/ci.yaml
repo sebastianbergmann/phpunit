@@ -119,6 +119,11 @@ jobs:
           - "8.3"
           - "8.4"
 
+        include:
+          - os: ubuntu-latest
+            php-version: "8.3"
+            add-ext: ", pcntl"
+
     steps:
       - name: Configure Git to avoid issues with line endings
         if: matrix.os == 'windows-latest'
@@ -131,7 +136,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
+          extensions: "${{ env.PHP_EXTENSIONS }}${{ matrix.add-ext }}"
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
 
