@@ -28,6 +28,6 @@ final class IndirectTrigger extends IssueTrigger
 
     public function asString(): string
     {
-        return 'third-party code triggered issue in third-party code';
+        return 'issue triggered by third-party code';
     }
 }

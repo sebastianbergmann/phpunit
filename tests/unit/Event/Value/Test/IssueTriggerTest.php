@@ -28,7 +28,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
-        $this->assertSame('first-party code triggered issue in first-party code', $trigger->asString());
+        $this->assertSame('issue triggered by first-party code calling into first-party code', $trigger->asString());
     }
 
     public function testCanBeDirect(): void
@@ -39,7 +39,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
-        $this->assertSame('first-party code triggered issue in third-party code', $trigger->asString());
+        $this->assertSame('issue triggered by first-party code calling into third-party code', $trigger->asString());
     }
 
     public function testCanBeIndirect(): void
@@ -50,7 +50,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isUnknown());
-        $this->assertSame('third-party code triggered issue in third-party code', $trigger->asString());
+        $this->assertSame('issue triggered by third-party code', $trigger->asString());
     }
 
     public function testCanBeUnknown(): void
@@ -61,6 +61,6 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertTrue($trigger->isUnknown());
-        $this->assertSame('unknown whether this issue was triggered in first-party or third-party code', $trigger->asString());
+        $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $trigger->asString());
     }
 }

@@ -26,6 +26,6 @@ final class UnknownTrigger extends IssueTrigger
 
     public function asString(): string
     {
-        return 'unknown whether this issue was triggered in first-party or third-party code';
+        return 'unknown if issue was triggered in first-party code or third-party code';
     }
 }

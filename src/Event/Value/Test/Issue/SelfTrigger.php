@@ -28,6 +28,6 @@ final class SelfTrigger extends IssueTrigger
 
     public function asString(): string
     {
-        return 'first-party code triggered issue in first-party code';
+        return 'issue triggered by first-party code calling into first-party code';
     }
 }
