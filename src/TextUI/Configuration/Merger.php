@@ -616,24 +616,16 @@ final readonly class Merger
             $randomOrderSeed = time();
         }
 
-        if ($xmlConfiguration->wasLoadedFromFile()) {
-            if ($xmlConfiguration->hasValidationErrors()) {
-                if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
-                    EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                        'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!',
-                    );
-                } else {
-                    EventFacade::emitter()->testRunnerTriggeredWarning(
-                        "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
-                        $xmlConfiguration->validationErrors(),
-                    );
-                }
-            }
-
-            if ($xmlConfiguration->hasWarnings()) {
-                foreach ($xmlConfiguration->warnings() as $warning) {
-                    EventFacade::emitter()->testRunnerTriggeredWarning($warning);
-                }
+        if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
+            if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
+                EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!',
+                );
+            } else {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
+                    $xmlConfiguration->validationErrors(),
+                );
             }
         }
 
