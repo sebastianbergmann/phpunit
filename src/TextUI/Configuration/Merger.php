@@ -739,6 +739,7 @@ final readonly class Merger
                 $xmlConfiguration->source()->ignoreSuppressionOfPhpNotices(),
                 $xmlConfiguration->source()->ignoreSuppressionOfWarnings(),
                 $xmlConfiguration->source()->ignoreSuppressionOfPhpWarnings(),
+                $xmlConfiguration->source()->deprecationTriggers(),
             ),
             $testResultCacheFile,
             $coverageClover,

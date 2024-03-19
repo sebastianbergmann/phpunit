@@ -37,9 +37,15 @@ final readonly class Source
     private bool $ignoreSuppressionOfPhpWarnings;
 
     /**
-     * @psalm-param non-empty-string $baseline
+     * @psalm-var array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
      */
-    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings)
+    private array $deprecationTriggers;
+
+    /**
+     * @psalm-param non-empty-string $baseline
+     * @psalm-param array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>} $deprecationTriggers
+     */
+    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers)
     {
         $this->baseline                           = $baseline;
         $this->ignoreBaseline                     = $ignoreBaseline;
@@ -57,6 +63,7 @@ final readonly class Source
         $this->ignoreSuppressionOfPhpNotices      = $ignoreSuppressionOfPhpNotices;
         $this->ignoreSuppressionOfWarnings        = $ignoreSuppressionOfWarnings;
         $this->ignoreSuppressionOfPhpWarnings     = $ignoreSuppressionOfPhpWarnings;
+        $this->deprecationTriggers                = $deprecationTriggers;
     }
 
     /**
@@ -162,5 +169,13 @@ final readonly class Source
     public function ignoreSuppressionOfPhpWarnings(): bool
     {
         return $this->ignoreSuppressionOfPhpWarnings;
+    }
+
+    /**
+     * @psalm-return array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     */
+    public function deprecationTriggers(): array
+    {
+        return $this->deprecationTriggers;
     }
 }

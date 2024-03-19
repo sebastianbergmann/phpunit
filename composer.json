@@ -74,6 +74,7 @@
             "tests/"
         ],
         "files": [
+            "tests/_files/deprecation-trigger/trigger_deprecation.php",
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/Generator.php",

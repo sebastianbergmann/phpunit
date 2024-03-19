@@ -23,6 +23,7 @@
                     <xs:group ref="sourcePathGroup"/>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="deprecationTrigger" type="deprecationTriggerType" minOccurs="0"/>
         </xs:all>
         <xs:attribute name="baseline" type="xs:anyURI"/>
         <xs:attribute name="restrictDeprecations" type="xs:boolean" default="false"/>
@@ -319,5 +320,13 @@
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
         <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
         <xs:attribute name="showOnlySummary" type="xs:boolean" default="false"/>
+    </xs:complexType>
+    <xs:complexType name="deprecationTriggerType">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="function" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="method" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:sequence>
     </xs:complexType>
 </xs:schema>

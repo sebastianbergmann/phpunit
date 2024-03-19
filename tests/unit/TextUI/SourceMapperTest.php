@@ -50,6 +50,10 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
             ),
         ];
 
@@ -85,6 +89,10 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
             ),
         ];
 
@@ -116,6 +124,10 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
             ),
         ];
 
@@ -168,6 +180,10 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
             ),
         ];
 
@@ -221,6 +237,10 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
             ),
         ];
 
@@ -265,6 +285,10 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
             ),
         ];
     }

@@ -163,6 +163,21 @@ final class LoaderTest extends TestCase
 
         $file = iterator_to_array($source->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
+
+        $this->assertSame(
+            [
+                'functions' => [
+                    'PHPUnit\TestFixture\DeprecationTrigger\trigger_deprecation',
+                ],
+                'methods' => [
+                    [
+                        'className'  => 'PHPUnit\TestFixture\DeprecationTrigger\DeprecationTrigger',
+                        'methodName' => 'triggerDeprecation',
+                    ],
+                ],
+            ],
+            $source->deprecationTriggers(),
+        );
     }
 
     public function testCodeCoverageConfigurationIsReadCorrectly(): void

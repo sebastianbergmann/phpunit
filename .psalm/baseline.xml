@@ -895,6 +895,7 @@
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$bootstrap->getAttribute('class')]]></code>
+      <code><![CDATA[$deprecationTriggers]]></code>
       <code><![CDATA[$directoryNode->getAttribute('phpVersionOperator')]]></code>
       <code><![CDATA[$fileNode->getAttribute('phpVersionOperator')]]></code>
     </ArgumentTypeCoercion>
