@@ -175,6 +175,10 @@ final class LoaderTest extends TestCase
             ],
             $source->deprecationTriggers(),
         );
+
+        $this->assertTrue($source->ignoreSelfDeprecations());
+        $this->assertTrue($source->ignoreDirectDeprecations());
+        $this->assertTrue($source->ignoreIndirectDeprecations());
     }
 
     public function testCodeCoverageConfigurationIsReadCorrectly(): void

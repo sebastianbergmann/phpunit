@@ -56,6 +56,9 @@ final readonly class DefaultConfiguration extends Configuration
                     'functions' => [],
                     'methods'   => [],
                 ],
+                false,
+                false,
+                false,
             ),
             new CodeCoverage(
                 false,

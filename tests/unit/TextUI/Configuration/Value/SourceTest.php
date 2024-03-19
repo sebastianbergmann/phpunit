@@ -49,6 +49,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($includeDirectories, $source->includeDirectories());
@@ -79,6 +82,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($includeFiles, $source->includeFiles());
@@ -109,6 +115,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($excludeDirectories, $source->excludeDirectories());
@@ -139,6 +148,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($excludeFiles, $source->excludeFiles());
@@ -169,6 +181,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertSame($baseline, $source->baseline());
@@ -199,6 +214,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->hasBaseline());
@@ -232,6 +250,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->restrictDeprecations());
@@ -260,6 +281,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->restrictDeprecations());
@@ -288,6 +312,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->restrictNotices());
@@ -316,6 +343,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->restrictNotices());
@@ -344,6 +374,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->restrictWarnings());
@@ -372,6 +405,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->restrictWarnings());
@@ -400,6 +436,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfDeprecations());
@@ -428,6 +467,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfDeprecations());
@@ -456,6 +498,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpDeprecations());
@@ -484,6 +529,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpDeprecations());
@@ -512,6 +560,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfErrors());
@@ -540,6 +591,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfErrors());
@@ -568,6 +622,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfNotices());
@@ -596,6 +653,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfNotices());
@@ -624,6 +684,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpNotices());
@@ -652,6 +715,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpNotices());
@@ -680,6 +746,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfWarnings());
@@ -708,6 +777,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfWarnings());
@@ -736,6 +808,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpWarnings());
@@ -764,6 +839,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpWarnings());
@@ -792,6 +870,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertFalse($source->notEmpty());
@@ -828,6 +909,9 @@ final class SourceTest extends TestCase
                 'functions' => [],
                 'methods'   => [],
             ],
+            false,
+            false,
+            false,
         );
 
         $this->assertTrue($source->notEmpty());

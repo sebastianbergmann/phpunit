@@ -354,6 +354,18 @@ final class Collector
             return;
         }
 
+        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
+            return;
+        }
+
+        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
+            return;
+        }
+
+        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
+            return;
+        }
+
         if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
             return;
         }
@@ -387,6 +399,18 @@ final class Collector
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
+            return;
+        }
+
+        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
+            return;
+        }
+
+        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
+            return;
+        }
+
+        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
             return;
         }
 

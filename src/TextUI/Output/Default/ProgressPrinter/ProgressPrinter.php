@@ -139,6 +139,18 @@ final class ProgressPrinter
             return;
         }
 
+        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
+            return;
+        }
+
+        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
+            return;
+        }
+
+        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
+            return;
+        }
+
         if ($this->source->restrictDeprecations() &&
             !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
@@ -154,6 +166,18 @@ final class ProgressPrinter
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
         if ($event->ignoredByBaseline() || $event->ignoredByTest()) {
+            return;
+        }
+
+        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
+            return;
+        }
+
+        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
+            return;
+        }
+
+        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
             return;
         }
 

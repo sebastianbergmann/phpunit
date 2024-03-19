@@ -52,6 +52,9 @@ final class SourceFilterTest extends TestCase
                         'functions' => [],
                         'methods'   => [],
                     ],
+                    false,
+                    false,
+                    false,
                 ),
             ],
             'file included using file, but excluded using directory' => [
@@ -90,6 +93,9 @@ final class SourceFilterTest extends TestCase
                         'functions' => [],
                         'methods'   => [],
                     ],
+                    false,
+                    false,
+                    false,
                 ),
             ],
             'file included using file, but excluded using file' => [
@@ -124,6 +130,9 @@ final class SourceFilterTest extends TestCase
                         'functions' => [],
                         'methods'   => [],
                     ],
+                    false,
+                    false,
+                    false,
                 ),
             ],
             'file included using directory' => [
@@ -158,6 +167,9 @@ final class SourceFilterTest extends TestCase
                         'functions' => [],
                         'methods'   => [],
                     ],
+                    false,
+                    false,
+                    false,
                 ),
             ],
             'file included using directory, but excluded using file' => [
@@ -196,6 +208,9 @@ final class SourceFilterTest extends TestCase
                         'functions' => [],
                         'methods'   => [],
                     ],
+                    false,
+                    false,
+                    false,
                 ),
             ],
             'file included using directory, but excluded using directory' => [
@@ -238,6 +253,9 @@ final class SourceFilterTest extends TestCase
                         'functions' => [],
                         'methods'   => [],
                     ],
+                    false,
+                    false,
+                    false,
                 ),
             ],
         ];

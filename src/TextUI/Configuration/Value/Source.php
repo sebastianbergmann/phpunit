@@ -35,6 +35,9 @@ final readonly class Source
     private bool $ignoreSuppressionOfPhpNotices;
     private bool $ignoreSuppressionOfWarnings;
     private bool $ignoreSuppressionOfPhpWarnings;
+    private bool $ignoreSelfDeprecations;
+    private bool $ignoreDirectDeprecations;
+    private bool $ignoreIndirectDeprecations;
 
     /**
      * @psalm-var array{functions: list<non-empty-string>, methods: list<non-empty-string>}
@@ -45,7 +48,7 @@ final readonly class Source
      * @psalm-param non-empty-string $baseline
      * @psalm-param array{functions: list<non-empty-string>, methods: list<non-empty-string>} $deprecationTriggers
      */
-    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers)
+    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations)
     {
         $this->baseline                           = $baseline;
         $this->ignoreBaseline                     = $ignoreBaseline;
@@ -64,6 +67,9 @@ final readonly class Source
         $this->ignoreSuppressionOfWarnings        = $ignoreSuppressionOfWarnings;
         $this->ignoreSuppressionOfPhpWarnings     = $ignoreSuppressionOfPhpWarnings;
         $this->deprecationTriggers                = $deprecationTriggers;
+        $this->ignoreSelfDeprecations             = $ignoreSelfDeprecations;
+        $this->ignoreDirectDeprecations           = $ignoreDirectDeprecations;
+        $this->ignoreIndirectDeprecations         = $ignoreIndirectDeprecations;
     }
 
     /**
@@ -177,5 +183,20 @@ final readonly class Source
     public function deprecationTriggers(): array
     {
         return $this->deprecationTriggers;
+    }
+
+    public function ignoreSelfDeprecations(): bool
+    {
+        return $this->ignoreSelfDeprecations;
+    }
+
+    public function ignoreDirectDeprecations(): bool
+    {
+        return $this->ignoreDirectDeprecations;
+    }
+
+    public function ignoreIndirectDeprecations(): bool
+    {
+        return $this->ignoreIndirectDeprecations;
     }
 }
