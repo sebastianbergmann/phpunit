@@ -213,7 +213,7 @@ final class ErrorHandler
         $this->originalErrorReportingLevel = null;
     }
 
-    public function use(Baseline $baseline): void
+    public function useBaseline(Baseline $baseline): void
     {
         $this->baseline = $baseline;
     }

@@ -626,7 +626,7 @@ final readonly class Application
             }
 
             if ($baseline !== null) {
-                ErrorHandler::instance()->use($baseline);
+                ErrorHandler::instance()->useBaseline($baseline);
             }
         }
 
