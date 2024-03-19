@@ -25,6 +25,7 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function array_values;
 use function assert;
 use function debug_backtrace;
 use function error_reporting;
@@ -237,21 +238,21 @@ final class ErrorHandler
             return IssueTrigger::unknown();
         }
 
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+        $trace = $this->cleanedTrace();
 
-        assert(isset($trace[2]['file']));
-        assert(isset($trace[3]['file']));
+        assert(isset($trace[0]['file']));
+        assert(isset($trace[1]['file']));
 
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
-        if ($trace[2]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[2]['file'])) {
+        if ($trace[0]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[0]['file'])) {
             $triggeredInFirstPartyCode = true;
         }
 
-        if ($trace[3]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[3]['file'])) {
+        if ($trace[1]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[1]['file'])) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
@@ -264,5 +265,15 @@ final class ErrorHandler
         }
 
         return IssueTrigger::indirect();
+    }
+
+    private function cleanedTrace(): array
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+
+        // self::cleanedTrace(), self::trigger(), self::__invoke()
+        unset($trace[0], $trace[1], $trace[2]);
+
+        return array_values($trace);
     }
 }
