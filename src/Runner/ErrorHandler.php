@@ -148,7 +148,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test),
+                    $this->trigger($test, false),
                 );
 
                 break;
@@ -162,7 +162,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test),
+                    $this->trigger($test, true),
                 );
 
                 break;
@@ -246,13 +246,13 @@ final class ErrorHandler
         return $this->baseline->has(Issue::from($file, $line, null, $description));
     }
 
-    private function trigger(TestMethod $test): IssueTrigger
+    private function trigger(TestMethod $test, bool $filterTrigger): IssueTrigger
     {
         if (!$this->source->notEmpty()) {
             return IssueTrigger::unknown();
         }
 
-        $trace = $this->cleanedTrace();
+        $trace = $this->cleanedTrace($filterTrigger);
 
         assert(isset($trace[0]['file']));
         assert(isset($trace[1]['file']));
@@ -281,14 +281,14 @@ final class ErrorHandler
         return IssueTrigger::indirect();
     }
 
-    private function cleanedTrace(): array
+    private function cleanedTrace(bool $filterTrigger): array
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
         // self::cleanedTrace(), self::trigger(), self::__invoke()
         unset($trace[0], $trace[1], $trace[2]);
 
-        if ($this->deprecationTriggers === null) {
+        if ($this->deprecationTriggers === null || !$filterTrigger) {
             return array_values($trace);
         }
 
