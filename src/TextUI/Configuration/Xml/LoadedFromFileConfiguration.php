@@ -30,19 +30,12 @@ final readonly class LoadedFromFileConfiguration extends Configuration
     private ValidationResult $validationResult;
 
     /**
-     * @psalm-var list<non-empty-string>
-     */
-    private array $warnings;
-
-    /**
      * @param non-empty-string       $filename
-     * @param list<non-empty-string> $warnings
      */
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, array $warnings)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
-        $this->warnings         = $warnings;
 
         parent::__construct(
             $extensions,
@@ -77,18 +70,5 @@ final readonly class LoadedFromFileConfiguration extends Configuration
     public function wasLoadedFromFile(): bool
     {
         return true;
-    }
-
-    public function hasWarnings(): bool
-    {
-        return !empty($this->warnings);
-    }
-
-    /**
-     * @psalm-return list<non-empty-string>
-     */
-    public function warnings(): array
-    {
-        return $this->warnings;
     }
 }

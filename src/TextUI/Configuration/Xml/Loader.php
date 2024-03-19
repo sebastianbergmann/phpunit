@@ -114,8 +114,6 @@ final readonly class Loader
 
         assert($configurationFileRealpath !== false && $configurationFileRealpath !== '');
 
-        $warnings = [];
-
         return new LoadedFromFileConfiguration(
             $configurationFileRealpath,
             (new Validator)->validate($document, $xsdFilename),
@@ -127,7 +125,6 @@ final readonly class Loader
             $this->php($configurationFileRealpath, $xpath),
             $this->phpunit($configurationFileRealpath, $document),
             $this->testSuite($configurationFileRealpath, $xpath),
-            $warnings,
         );
     }
 
