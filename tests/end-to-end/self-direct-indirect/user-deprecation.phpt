@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/self-direct-indirect';
+$_SERVER['argv'][] = __DIR__ . '/_files/user-deprecation';
 
 require __DIR__ . '/../../bootstrap.php';
 
