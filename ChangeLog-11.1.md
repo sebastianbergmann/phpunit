@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 
 ### Added
 
+* [#5689](https://github.com/sebastianbergmann/phpunit/issues/5689): Distinguish between self, direct and indirect deprecations
 * [#5175](https://github.com/sebastianbergmann/phpunit/issues/5175): `#[CoversMethod]` and `#[UsesMethod]` attributes for more fine-grained code coverage targeting
 * [#5696](https://github.com/sebastianbergmann/phpunit/pull/5696): `#[DisableReturnValueGenerationForTestDoubles]` attribute for disabling return value generation for test doubles created using `createMock()`, `createMockForIntersectionOfInterfaces()`, `createPartialMock()`, `createStub()`, and `createStubForIntersectionOfInterfaces()`
 * [#5720](https://github.com/sebastianbergmann/phpunit/issues/5720): Support filtering using `--filter`, `--exclude-filter`, `--group`, and `--exclude-group` when listing tests using `--list-tests` and `--list-tests-xml` as well as listing groups with `--list-groups`
