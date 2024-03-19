@@ -7,8 +7,8 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 ### Added
 
 * [#5689](https://github.com/sebastianbergmann/phpunit/issues/5689): Distinguish between self, direct and indirect deprecations
-* [#5175](https://github.com/sebastianbergmann/phpunit/issues/5175): `#[CoversMethod]` and `#[UsesMethod]` attributes for more fine-grained code coverage targeting
 * [#5696](https://github.com/sebastianbergmann/phpunit/pull/5696): `#[DisableReturnValueGenerationForTestDoubles]` attribute for disabling return value generation for test doubles created using `createMock()`, `createMockForIntersectionOfInterfaces()`, `createPartialMock()`, `createStub()`, and `createStubForIntersectionOfInterfaces()`
+* [#5175](https://github.com/sebastianbergmann/phpunit/issues/5175): `#[CoversMethod]` and `#[UsesMethod]` attributes for more fine-grained code coverage targeting
 * [#5720](https://github.com/sebastianbergmann/phpunit/issues/5720): Support filtering using `--filter`, `--exclude-filter`, `--group`, and `--exclude-group` when listing tests using `--list-tests` and `--list-tests-xml` as well as listing groups with `--list-groups`
 * [#5733](https://github.com/sebastianbergmann/phpunit/issues/5733): Implicitly include (abstract) parent class(es) with `#[CoversClass]` and `#[UsesClass]` attributes
 * `--only-summary-for-coverage-text` CLI option to reduce the code coverage report in text format to a summary
@@ -16,8 +16,8 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 
 ### Changed
 
-* [#5708](https://github.com/sebastianbergmann/phpunit/issues/5708): Allow the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options to be used multiple times
 * [#5689](https://github.com/sebastianbergmann/phpunit/issues/5689): The XML configuration file generated using `--generate-configuration` now generates `<source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">` instead of `<source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">`
+* [#5708](https://github.com/sebastianbergmann/phpunit/issues/5708): Allow the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options to be used multiple times
 * Changed how the `DeprecationTriggered`, `ErrorTriggered`, `NoticeTriggered`, `PhpDeprecationTriggered`, `PhpNoticeTriggered`, `PhpWarningTriggered`, and `WarningTriggered` events are represented as text
 
 ### Deprecated
