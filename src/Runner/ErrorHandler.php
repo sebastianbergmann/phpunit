@@ -288,6 +288,10 @@ final class ErrorHandler
         // self::cleanedTrace(), self::trigger(), self::__invoke()
         unset($trace[0], $trace[1], $trace[2]);
 
+        if ($this->deprecationTriggers === null) {
+            return array_values($trace);
+        }
+
         foreach (array_keys($trace) as $frame) {
             foreach ($this->deprecationTriggers['functions'] as $function) {
                 if (!isset($trace[$frame]['class']) &&
