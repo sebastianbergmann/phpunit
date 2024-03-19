@@ -1,5 +1,5 @@
 --TEST--
-todo
+Test Runner warnings are displayed correctly when invalid deprecation triggers are configured in the XML configuration file
 --FILE--
 <?php declare(strict_types=1);
 

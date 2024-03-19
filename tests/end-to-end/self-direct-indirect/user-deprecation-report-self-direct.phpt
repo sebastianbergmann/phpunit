@@ -1,5 +1,5 @@
 --TEST--
-todo
+The correct deprecations are reported when deprecations triggered from third-party code should be ignored
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
