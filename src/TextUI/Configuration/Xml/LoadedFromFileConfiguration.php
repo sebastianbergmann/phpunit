@@ -30,7 +30,7 @@ final readonly class LoadedFromFileConfiguration extends Configuration
     private ValidationResult $validationResult;
 
     /**
-     * @param non-empty-string       $filename
+     * @param non-empty-string $filename
      */
     public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {

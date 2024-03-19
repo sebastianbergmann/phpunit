@@ -37,13 +37,13 @@ final readonly class Source
     private bool $ignoreSuppressionOfPhpWarnings;
 
     /**
-     * @psalm-var array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     * @psalm-var array{functions: list<non-empty-string>, methods: list<non-empty-string>}
      */
     private array $deprecationTriggers;
 
     /**
      * @psalm-param non-empty-string $baseline
-     * @psalm-param array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>} $deprecationTriggers
+     * @psalm-param array{functions: list<non-empty-string>, methods: list<non-empty-string>} $deprecationTriggers
      */
     public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictDeprecations, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers)
     {
@@ -172,7 +172,7 @@ final readonly class Source
     }
 
     /**
-     * @psalm-return array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     * @psalm-return array{functions: list<non-empty-string>, methods: list<non-empty-string>}
      */
     public function deprecationTriggers(): array
     {

@@ -170,10 +170,7 @@ final class LoaderTest extends TestCase
                     'PHPUnit\TestFixture\DeprecationTrigger\trigger_deprecation',
                 ],
                 'methods' => [
-                    [
-                        'className'  => 'PHPUnit\TestFixture\DeprecationTrigger\DeprecationTrigger',
-                        'methodName' => 'triggerDeprecation',
-                    ],
+                    'PHPUnit\TestFixture\DeprecationTrigger\DeprecationTrigger::triggerDeprecation',
                 ],
             ],
             $source->deprecationTriggers(),

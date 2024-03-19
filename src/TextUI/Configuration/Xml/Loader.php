@@ -12,16 +12,12 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use const DIRECTORY_SEPARATOR;
 use const PHP_VERSION;
 use function assert;
-use function class_exists;
 use function defined;
 use function dirname;
 use function explode;
-use function function_exists;
 use function is_numeric;
-use function method_exists;
 use function preg_match;
 use function realpath;
-use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strlen;
@@ -118,7 +114,7 @@ final readonly class Loader
             $configurationFileRealpath,
             (new Validator)->validate($document, $xsdFilename),
             $this->extensions($xpath),
-            $this->source($configurationFileRealpath, $xpath, $warnings),
+            $this->source($configurationFileRealpath, $xpath),
             $this->codeCoverage($configurationFileRealpath, $xpath),
             $this->groups($xpath),
             $this->logging($configurationFileRealpath, $xpath),
@@ -250,10 +246,7 @@ final readonly class Loader
         return dirname($filename) . DIRECTORY_SEPARATOR . $path;
     }
 
-    /**
-     * @psalm-param list<non-empty-string> $warnings
-     */
-    private function source(string $filename, DOMXPath $xpath, array &$warnings): Source
+    private function source(string $filename, DOMXPath $xpath): Source
     {
         $baseline                           = null;
         $restrictDeprecations               = false;
@@ -296,46 +289,13 @@ final readonly class Loader
         foreach ($xpath->query('source/deprecationTrigger/function') as $functionNode) {
             assert($functionNode instanceof DOMElement);
 
-            if (!function_exists($functionNode->textContent)) {
-                $warnings[] = sprintf(
-                    'Function %s cannot be configured as a deprecation trigger because it is not declared',
-                    $functionNode->textContent,
-                );
-
-                continue;
-            }
-
             $deprecationTriggers['functions'][] = $functionNode->textContent;
         }
 
         foreach ($xpath->query('source/deprecationTrigger/method') as $methodNode) {
             assert($methodNode instanceof DOMElement);
 
-            if (!str_contains($methodNode->textContent, '::')) {
-                $warnings[] = sprintf(
-                    '%s cannot be configured as a deprecation trigger because it is not in ClassName::methodName format',
-                    $methodNode->textContent,
-                );
-
-                continue;
-            }
-
-            [$className, $methodName] = explode('::', $methodNode->textContent);
-
-            if (!class_exists($className) || !method_exists($className, $methodName)) {
-                $warnings[] = sprintf(
-                    'Method %s::%s cannot be configured as a deprecation trigger because it is not declared',
-                    $className,
-                    $methodName,
-                );
-
-                continue;
-            }
-
-            $deprecationTriggers['methods'][] = [
-                'className'  => $className,
-                'methodName' => $methodName,
-            ];
+            $deprecationTriggers['methods'][] = $methodNode->textContent;
         }
 
         return new Source(

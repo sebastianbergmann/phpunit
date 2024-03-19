@@ -10,10 +10,15 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+use function class_exists;
+use function explode;
+use function function_exists;
 use function is_readable;
+use function method_exists;
 use function printf;
 use function realpath;
 use function sprintf;
+use function str_contains;
 use function trim;
 use function unlink;
 use PHPUnit\Event\EventFacadeIsSealedException;
@@ -181,6 +186,8 @@ final readonly class Application
             }
 
             $baselineGenerator = $this->configureBaseline($configuration);
+
+            $this->validateDeprecationTriggers($configuration);
 
             EventFacade::instance()->seal();
 
@@ -693,5 +700,44 @@ final readonly class Application
         (new TestSuiteFilterProcessor)->process($configuration, $suite);
 
         return $suite->collect();
+    }
+
+    private function validateDeprecationTriggers(Configuration $configuration): void
+    {
+        foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
+            if (!function_exists($function)) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Function %s cannot be configured as a deprecation trigger because it is not declared',
+                        $function,
+                    ),
+                );
+            }
+        }
+
+        foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
+            if (!str_contains($method, '::')) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        '%s cannot be configured as a deprecation trigger because it is not in ClassName::methodName format',
+                        $method,
+                    ),
+                );
+
+                continue;
+            }
+
+            [$className, $methodName] = explode('::', $method);
+
+            if (!class_exists($className) || !method_exists($className, $methodName)) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Method %s::%s cannot be configured as a deprecation trigger because it is not declared',
+                        $className,
+                        $methodName,
+                    ),
+                );
+            }
+        }
     }
 }
