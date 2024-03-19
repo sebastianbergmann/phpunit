@@ -710,6 +710,7 @@
   <file src="src/TextUI/Application.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$configuration->generateBaseline()]]></code>
+      <code><![CDATA[$deprecationTriggers]]></code>
     </ArgumentTypeCoercion>
     <InternalMethod>
       <code><![CDATA[nameAndVersion]]></code>
