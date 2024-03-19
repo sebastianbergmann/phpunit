@@ -108,6 +108,8 @@ final readonly class Loader
 
         $configurationFileRealpath = realpath($filename);
 
+        assert($configurationFileRealpath !== false && $configurationFileRealpath !== '');
+
         $warnings = [];
 
         return new LoadedFromFileConfiguration(
