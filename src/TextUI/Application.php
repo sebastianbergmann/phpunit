@@ -187,7 +187,7 @@ final readonly class Application
 
             $baselineGenerator = $this->configureBaseline($configuration);
 
-            $this->validateDeprecationTriggers($configuration);
+            $this->configureDeprecationTriggers($configuration);
 
             EventFacade::instance()->seal();
 
@@ -702,8 +702,13 @@ final readonly class Application
         return $suite->collect();
     }
 
-    private function validateDeprecationTriggers(Configuration $configuration): void
+    private function configureDeprecationTriggers(Configuration $configuration): void
     {
+        $deprecationTriggers = [
+            'functions' => [],
+            'methods'   => [],
+        ];
+
         foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
             if (!function_exists($function)) {
                 EventFacade::emitter()->testRunnerTriggeredWarning(
@@ -712,7 +717,11 @@ final readonly class Application
                         $function,
                     ),
                 );
+
+                continue;
             }
+
+            $deprecationTriggers['functions'][] = $function;
         }
 
         foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
@@ -737,7 +746,16 @@ final readonly class Application
                         $methodName,
                     ),
                 );
+
+                continue;
             }
+
+            $deprecationTriggers['methods'][] = [
+                'className'  => $className,
+                'methodName' => $methodName,
+            ];
         }
+
+        ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
     }
 }

@@ -25,6 +25,7 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function array_keys;
 use function array_values;
 use function assert;
 use function debug_backtrace;
@@ -55,6 +56,11 @@ final class ErrorHandler
     private ?int $originalErrorReportingLevel = null;
     private readonly Source $source;
     private readonly SourceFilter $sourceFilter;
+
+    /**
+     * @psalm-var array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     */
+    private ?array $deprecationTriggers = null;
 
     public static function instance(): self
     {
@@ -219,6 +225,14 @@ final class ErrorHandler
     }
 
     /**
+     * @psalm-param array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>} $deprecationTriggers
+     */
+    public function useDeprecationTriggers(array $deprecationTriggers): void
+    {
+        $this->deprecationTriggers = $deprecationTriggers;
+    }
+
+    /**
      * @psalm-param non-empty-string $file
      * @psalm-param positive-int $line
      * @psalm-param non-empty-string $description
@@ -273,6 +287,29 @@ final class ErrorHandler
 
         // self::cleanedTrace(), self::trigger(), self::__invoke()
         unset($trace[0], $trace[1], $trace[2]);
+
+        foreach (array_keys($trace) as $frame) {
+            foreach ($this->deprecationTriggers['functions'] as $function) {
+                if (!isset($trace[$frame]['class']) &&
+                    isset($trace[$frame]['function']) &&
+                    $trace[$frame]['function'] === $function) {
+                    unset($trace[$frame]);
+
+                    continue 2;
+                }
+            }
+
+            foreach ($this->deprecationTriggers['methods'] as $method) {
+                if (isset($trace[$frame]['class']) &&
+                    $trace[$frame]['class'] === $method['className'] &&
+                    isset($trace[$frame]['function']) &&
+                    $trace[$frame]['function'] === $method['methodName']) {
+                    unset($trace[$frame]);
+
+                    continue 2;
+                }
+            }
+        }
 
         return array_values($trace);
     }
