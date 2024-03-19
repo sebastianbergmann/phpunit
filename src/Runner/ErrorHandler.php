@@ -252,7 +252,7 @@ final class ErrorHandler
             return IssueTrigger::unknown();
         }
 
-        $trace = $this->cleanedTrace($filterTrigger);
+        $trace = $this->filteredStackTrace($filterTrigger);
 
         assert(isset($trace[0]['file']));
         assert(isset($trace[1]['file']));
@@ -281,14 +281,14 @@ final class ErrorHandler
         return IssueTrigger::indirect();
     }
 
-    private function cleanedTrace(bool $filterTrigger): array
+    private function filteredStackTrace(bool $filterDeprecationTriggers): array
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
         // self::cleanedTrace(), self::trigger(), self::__invoke()
         unset($trace[0], $trace[1], $trace[2]);
 
-        if ($this->deprecationTriggers === null || !$filterTrigger) {
+        if ($this->deprecationTriggers === null || !$filterDeprecationTriggers) {
             return array_values($trace);
         }
 
