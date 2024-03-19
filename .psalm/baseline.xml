@@ -921,6 +921,11 @@
       <code><![CDATA[removeChild]]></code>
     </PossiblyNullReference>
   </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/ReplaceRestrictDeprecationsWithIgnoreDeprecations.php">
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[assert($source instanceof DOMElement)]]></code>
+    </RedundantConditionGivenDocblockType>
+  </file>
   <file src="src/TextUI/Configuration/Xml/SchemaFinder.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[$result]]></code>

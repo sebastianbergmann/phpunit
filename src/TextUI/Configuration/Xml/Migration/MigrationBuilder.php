@@ -65,6 +65,10 @@ final readonly class MigrationBuilder
         '10.5' => [
             RemoveRegisterMockObjectsFromTestArgumentsRecursivelyAttribute::class,
         ],
+
+        '11.0' => [
+            ReplaceRestrictDeprecationsWithIgnoreDeprecations::class,
+        ],
     ];
 
     /**
