@@ -21,6 +21,7 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 
 ### Deprecated
 
+* [#5689](https://github.com/sebastianbergmann/phpunit/issues/5689): The `restrictDeprecations` attribute on the `<source>` element of the XML configuration file is now deprecated in favor of the `ignoreSelfDeprecations`, `ignoreDirectDeprecations`, and `ignoreIndirectDeprecations` attributes
 * [#5709](https://github.com/sebastianbergmann/phpunit/issues/5709): Deprecate support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options
 
 [11.1.0]: https://github.com/sebastianbergmann/phpunit/compare/11.0...main

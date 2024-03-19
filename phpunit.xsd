@@ -26,7 +26,6 @@
             <xs:element name="deprecationTrigger" type="deprecationTriggerType" minOccurs="0"/>
         </xs:all>
         <xs:attribute name="baseline" type="xs:anyURI"/>
-        <xs:attribute name="restrictDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="restrictNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="restrictWarnings" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreSuppressionOfDeprecations" type="xs:boolean" default="false"/>
