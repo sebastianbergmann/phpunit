@@ -72,6 +72,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMa
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Stub\ClosureMock;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -1240,6 +1241,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         return $partialMock;
+    }
+
+    /**
+     * Creates mock of a closure.
+     *
+     * @throws InvalidArgumentException
+     * @throws MockObjectException
+     */
+    final protected function createClosureMock(): ClosureMock|MockObject
+    {
+        return $this->createPartialMock(ClosureMock::class, ['__invoke']);
     }
 
     /**
