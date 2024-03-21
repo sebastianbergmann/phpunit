@@ -85,7 +85,10 @@ final class DefaultResultCache implements ResultCache
 
     public function load(): void
     {
-        $contents = @file_get_contents($this->cacheFilename);
+        if (!is_file($this->cacheFilename)) {
+            return;
+        }
+        $contents = file_get_contents($this->cacheFilename);
 
         if ($contents === false) {
             return;
