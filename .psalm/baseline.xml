@@ -614,6 +614,7 @@
     </PossiblyNullArgument>
     <RedundantCondition>
       <code><![CDATA[assert($test instanceof TestMethod)]]></code>
+      <code><![CDATA[assert($test instanceof TestMethod)]]></code>
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">

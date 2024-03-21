@@ -10,6 +10,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 * [#5748](https://github.com/sebastianbergmann/phpunit/pull/5748): Improve performance of `NamePrettifier::prettifyTestMethodName()`
 * [#5750](https://github.com/sebastianbergmann/phpunit/pull/5750): Micro-optimize `NamePrettifier::prettifyTestMethodName()` once again
 
+### Fixed
+
+* [#5760](https://github.com/sebastianbergmann/phpunit/issues/5760): TestDox printer does not display details about exceptions raised in before-test methods
+
 ## [10.5.13] - 2024-03-12
 
 ### Changed
