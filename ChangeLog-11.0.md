@@ -11,6 +11,10 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * [#5750](https://github.com/sebastianbergmann/phpunit/pull/5750): Micro-optimize `NamePrettifier::prettifyTestMethodName()` once again
 * [#5752](https://github.com/sebastianbergmann/phpunit/issues/5752): Improve message for deprecation of doubling methods named "method"
 
+### Fixed
+
+* [#5760](https://github.com/sebastianbergmann/phpunit/issues/5760): TestDox printer does not display details about exceptions raised in before-test methods
+
 ## [11.0.6] - 2024-03-12
 
 ### Changed

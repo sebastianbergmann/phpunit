@@ -1,7 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/5760
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/5760
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
