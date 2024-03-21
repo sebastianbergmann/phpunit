@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [10.5.14] - 2024-MM-DD
+## [10.5.14] - 2024-03-21
 
 ### Changed
 
@@ -160,7 +160,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
-[10.5.14]: https://github.com/sebastianbergmann/phpunit/compare/10.5.13...10.5
+[10.5.14]: https://github.com/sebastianbergmann/phpunit/compare/10.5.13...10.5.14
 [10.5.13]: https://github.com/sebastianbergmann/phpunit/compare/10.5.12...10.5.13
 [10.5.12]: https://github.com/sebastianbergmann/phpunit/compare/10.5.11...10.5.12
 [10.5.11]: https://github.com/sebastianbergmann/phpunit/compare/10.5.10...10.5.11
