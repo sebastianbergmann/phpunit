@@ -516,7 +516,9 @@ final class Application
     private function registerLogfileWriters(Configuration $configuration): void
     {
         if ($configuration->hasLogEventsText()) {
-            @unlink($configuration->logEventsText());
+            if (is_file($configuration->logEventsText())) {
+                unlink($configuration->logEventsText());
+            }
 
             EventFacade::instance()->registerTracer(
                 new EventLogger(
@@ -527,7 +529,9 @@ final class Application
         }
 
         if ($configuration->hasLogEventsVerboseText()) {
-            @unlink($configuration->logEventsVerboseText());
+            if (is_file($configuration->logEventsVerboseText())) {
+                unlink($configuration->logEventsVerboseText());
+            }
 
             EventFacade::instance()->registerTracer(
                 new EventLogger(

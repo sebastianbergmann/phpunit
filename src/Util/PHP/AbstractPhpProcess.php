@@ -138,13 +138,11 @@ abstract class AbstractPhpProcess
     {
         $_result = $this->runJob($job);
 
-        $processResult = @file_get_contents($processResultFile);
+        $processResult = '';
 
-        if ($processResult !== false) {
-
+        if (file_exists($processResultFile)) {
+            $processResult = file_get_contents($processResultFile);
             @unlink($processResultFile);
-        } else {
-            $processResult = '';
         }
 
         $this->processChildResult(
