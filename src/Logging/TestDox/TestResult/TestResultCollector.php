@@ -54,6 +54,7 @@ final class TestResultCollector
     private array $tests          = [];
     private ?TestStatus $status   = null;
     private ?Throwable $throwable = null;
+    private bool $prepared        = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -136,6 +137,7 @@ final class TestResultCollector
 
         $this->status    = TestStatus::unknown();
         $this->throwable = null;
+        $this->prepared  = true;
     }
 
     public function testErrored(Errored $event): void
@@ -146,6 +148,14 @@ final class TestResultCollector
 
         $this->status    = TestStatus::error($event->throwable()->message());
         $this->throwable = $event->throwable();
+
+        if (!$this->prepared) {
+            $test = $event->test();
+
+            assert($test instanceof TestMethod);
+
+            $this->process($test);
+        }
     }
 
     public function testFailed(Failed $event): void
@@ -290,18 +300,11 @@ final class TestResultCollector
 
         assert($test instanceof TestMethod);
 
-        if (!isset($this->tests[$test->testDox()->prettifiedClassName()])) {
-            $this->tests[$test->testDox()->prettifiedClassName()] = [];
-        }
-
-        $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
-            $test,
-            $this->status,
-            $this->throwable,
-        );
+        $this->process($test);
 
         $this->status    = null;
         $this->throwable = null;
+        $this->prepared  = false;
     }
 
     /**
@@ -339,5 +342,18 @@ final class TestResultCollector
         }
 
         $this->status = $status;
+    }
+
+    private function process(TestMethod $test): void
+    {
+        if (!isset($this->tests[$test->testDox()->prettifiedClassName()])) {
+            $this->tests[$test->testDox()->prettifiedClassName()] = [];
+        }
+
+        $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
+            $test,
+            $this->status,
+            $this->throwable,
+        );
     }
 }
