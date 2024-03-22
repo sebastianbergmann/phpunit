@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture\Issue5764;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class Issue5764Test extends TestCase

@@ -639,6 +639,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $files    = $this->getCoverageFiles();
 
         $buffer = false;
+
         if (is_file($files['coverage'])) {
             $buffer = @file_get_contents($files['coverage']);
         }
