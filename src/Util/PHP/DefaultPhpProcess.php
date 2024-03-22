@@ -16,11 +16,13 @@ use function fwrite;
 use function is_array;
 use function is_resource;
 use function proc_close;
+use function proc_get_status;
 use function proc_open;
 use function rewind;
 use function stream_get_contents;
 use function sys_get_temp_dir;
 use function tempnam;
+use function time_nanosleep;
 use function unlink;
 use PHPUnit\Framework\Exception;
 
@@ -95,6 +97,10 @@ class DefaultPhpProcess extends AbstractPhpProcess
             2 => $handles[2] ?? ['pipe', 'w'],
         ];
 
+        if ($this->stderrRedirection) {
+            $pipeSpec[2] = ['redirect', 1];
+        }
+
         $process = proc_open(
             $this->getCommand($settings, $this->tempFile),
             $pipeSpec,
@@ -114,6 +120,10 @@ class DefaultPhpProcess extends AbstractPhpProcess
         }
 
         fclose($pipes[0]);
+
+        while (proc_get_status($process)['running'] === true) {
+            time_nanosleep(0, 100000);
+        }
 
         $stderr = $stdout = '';
 

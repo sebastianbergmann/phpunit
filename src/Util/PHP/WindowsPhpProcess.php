@@ -38,6 +38,6 @@ final class WindowsPhpProcess extends DefaultPhpProcess
 
     protected function useTemporaryFile(): bool
     {
-        return true;
+        return false;
     }
 }
