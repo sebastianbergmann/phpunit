@@ -724,6 +724,8 @@
       <code><![CDATA[listTestsXml]]></code>
       <code><![CDATA[logEventsText]]></code>
       <code><![CDATA[logEventsText]]></code>
+      <code><![CDATA[logEventsText]]></code>
+      <code><![CDATA[logEventsVerboseText]]></code>
       <code><![CDATA[logEventsVerboseText]]></code>
       <code><![CDATA[logEventsVerboseText]]></code>
       <code><![CDATA[logfileJunit]]></code>
