@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.0.8] - 2024-03-22
+
+### Fixed
+
+* [#5765](https://github.com/sebastianbergmann/phpunit/pull/5765): Be more forgiving with error handlers that do not respect error suppression
+
 ## [11.0.7] - 2024-03-21
 
 ### Changed
@@ -143,6 +149,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
 * `PHPUnit\Framework\Constraint\Constraint::exporter()`
 
+[11.0.8]: https://github.com/sebastianbergmann/phpunit/compare/11.0.7...11.0.8
 [11.0.7]: https://github.com/sebastianbergmann/phpunit/compare/11.0.6...11.0.7
 [11.0.6]: https://github.com/sebastianbergmann/phpunit/compare/11.0.5...11.0.6
 [11.0.5]: https://github.com/sebastianbergmann/phpunit/compare/11.0.4...11.0.5
