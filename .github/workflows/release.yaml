@@ -41,3 +41,12 @@ jobs:
           tag: ${{ env.RELEASE_TAG }}
           name: PHPUnit ${{ env.RELEASE_TAG }}
           bodyFile: release-notes.md
+
+      - name: Announce release
+        id: mastodon
+        uses: cbrgm/mastodon-github-action@v2
+        with:
+          access-token: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          url: ${{ secrets.MASTODON_URL }}
+          language: "en"
+          message: "#PHPUnit ${{ env.RELEASE_TAG }} has been released: https://github.com/sebastianbergmann/phpunit/releases/tag/${{ env.RELEASE_TAG }}"
