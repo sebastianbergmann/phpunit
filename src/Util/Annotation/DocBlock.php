@@ -126,13 +126,17 @@ final class DocBlock
     {
         $className = $class->getName();
 
+        $startLine = $class->getStartLine();
+        $endLine   = $class->getEndLine();
+        $fileName  = $class->getFileName();
+
         return new self(
             (string) $class->getDocComment(),
             false,
             self::extractAnnotationsFromReflector($class),
-            $class->getStartLine(),
-            $class->getEndLine(),
-            $class->getFileName(),
+            ($startLine === false ? 0 : $startLine),
+            ($endLine === false ? 0 : $endLine),
+            ($fileName === false ? '' : $fileName),
             $className,
             $className
         );
