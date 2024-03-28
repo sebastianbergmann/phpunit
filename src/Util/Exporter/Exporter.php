@@ -14,5 +14,7 @@ namespace PHPUnit\Util;
  */
 interface Exporter
 {
+    public function handles(mixed $value): bool;
+
     public function export(mixed $value): string;
 }

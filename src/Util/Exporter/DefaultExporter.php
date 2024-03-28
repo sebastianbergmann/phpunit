@@ -23,6 +23,11 @@ final readonly class DefaultExporter implements Exporter
         $this->exporter = new ExporterImplementation;
     }
 
+    public function handles(mixed $value): true
+    {
+        return true;
+    }
+
     public function export(mixed $value): string
     {
         return $this->exporter->export($value);
