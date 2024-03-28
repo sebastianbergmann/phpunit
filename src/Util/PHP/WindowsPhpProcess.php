@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use function tmpfile;
-use PHPUnit\Framework\Exception;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
@@ -19,23 +16,6 @@ use PHPUnit\Framework\Exception;
  */
 final class WindowsPhpProcess extends DefaultPhpProcess
 {
-    /**
-     * @throws Exception
-     * @throws PhpProcessException
-     */
-    protected function getHandles(): array
-    {
-        if (false === $stdout_handle = tmpfile()) {
-            throw new PhpProcessException(
-                'A temporary file could not be created; verify that your TEMP environment variable is writable',
-            );
-        }
-
-        return [
-            1 => $stdout_handle,
-        ];
-    }
-
     protected function useTemporaryFile(): bool
     {
         return false;

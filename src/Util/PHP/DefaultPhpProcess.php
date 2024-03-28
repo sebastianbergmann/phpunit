@@ -16,13 +16,10 @@ use function fwrite;
 use function is_array;
 use function is_resource;
 use function proc_close;
-use function proc_get_status;
 use function proc_open;
-use function rewind;
 use function stream_get_contents;
 use function sys_get_temp_dir;
 use function tempnam;
-use function time_nanosleep;
 use function unlink;
 use PHPUnit\Framework\Exception;
 
@@ -58,14 +55,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * Returns an array of file handles to be used in place of pipes.
-     */
-    protected function getHandles(): array
-    {
-        return [];
-    }
-
-    /**
      * Handles creating the child process and returning the STDOUT and STDERR.
      *
      * @psalm-return array{stdout: string, stderr: string}
@@ -75,8 +64,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
      */
     protected function runProcess(string $job, array $settings): array
     {
-        $handles = $this->getHandles();
-
         $env = null;
 
         if ($this->env) {
@@ -92,9 +79,9 @@ class DefaultPhpProcess extends AbstractPhpProcess
         }
 
         $pipeSpec = [
-            0 => $handles[0] ?? ['pipe', 'r'],
-            1 => $handles[1] ?? ['pipe', 'w'],
-            2 => $handles[2] ?? ['pipe', 'w'],
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
         ];
 
         if ($this->stderrRedirection) {
@@ -121,10 +108,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
         fclose($pipes[0]);
 
-        while (proc_get_status($process)['running'] === true) {
-            time_nanosleep(0, 100000);
-        }
-
         $stderr = $stdout = '';
 
         if (isset($pipes[1])) {
@@ -137,22 +120,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
             $stderr = stream_get_contents($pipes[2]);
 
             fclose($pipes[2]);
-        }
-
-        if (isset($handles[1])) {
-            rewind($handles[1]);
-
-            $stdout = stream_get_contents($handles[1]);
-
-            fclose($handles[1]);
-        }
-
-        if (isset($handles[2])) {
-            rewind($handles[2]);
-
-            $stderr = stream_get_contents($handles[2]);
-
-            fclose($handles[2]);
         }
 
         proc_close($process);
