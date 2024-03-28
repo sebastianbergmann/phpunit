@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.0.9] - 2024-MM-DD
+
+### Fixed
+
+* [#5570](https://github.com/sebastianbergmann/phpunit/pull/5570): Windows does not support exclusive locks on stdout
+
 ## [11.0.8] - 2024-03-22
 
 ### Fixed
@@ -149,6 +155,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
 * `PHPUnit\Framework\Constraint\Constraint::exporter()`
 
+[11.0.9]: https://github.com/sebastianbergmann/phpunit/compare/11.0.8...11.0
 [11.0.8]: https://github.com/sebastianbergmann/phpunit/compare/11.0.7...11.0.8
 [11.0.7]: https://github.com/sebastianbergmann/phpunit/compare/11.0.6...11.0.7
 [11.0.6]: https://github.com/sebastianbergmann/phpunit/compare/11.0.5...11.0.6
