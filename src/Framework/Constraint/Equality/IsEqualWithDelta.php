@@ -12,9 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use function sprintf;
 use function trim;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Util\ExporterFacade;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -85,7 +85,7 @@ final class IsEqualWithDelta extends Constraint
     {
         return sprintf(
             'is equal to %s with delta <%F>',
-            (new Exporter)->export($this->value),
+            ExporterFacade::instance()->export($this->value),
             $this->delta,
         );
     }
