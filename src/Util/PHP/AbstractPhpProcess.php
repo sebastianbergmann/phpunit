@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use const PHP_BINARY;
 use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
@@ -164,7 +165,7 @@ abstract class AbstractPhpProcess
         $runtime = new Runtime;
 
         $command   = [];
-        $command[] = $runtime->getRawBinary();
+        $command[] = PHP_BINARY;
 
         if ($runtime->hasPCOV()) {
             $settings = array_merge(
