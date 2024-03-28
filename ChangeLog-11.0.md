@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 
 ## [11.0.9] - 2024-MM-DD
 
+### Changed
+
+* [#5766](https://github.com/sebastianbergmann/phpunit/pull/5766): Do not use a shell in `proc_open()` if not really needed
+
 ### Fixed
 
 * [#5570](https://github.com/sebastianbergmann/phpunit/pull/5570): Windows does not support exclusive locks on stdout
