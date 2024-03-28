@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 ### Changed
 
 * [#5766](https://github.com/sebastianbergmann/phpunit/pull/5766): Do not use a shell in `proc_open()` if not really needed
+* [#5772](https://github.com/sebastianbergmann/phpunit/pull/5772): Cleanup process handling after dropping temp-file handling
 
 ### Fixed
 
