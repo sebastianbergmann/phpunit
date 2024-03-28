@@ -70,9 +70,11 @@ final readonly class TestMethodBuilder
                 $dataSetName = (int) $dataSetName;
             }
 
+            $providedData = $testCase->providedData();
+
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                $exporter->export($testCase->providedData()),
+                $exporter->shortenedRecursiveExport($providedData),
                 $testCase->dataSetAsStringWithData(),
             );
         }
