@@ -31,18 +31,6 @@ final class TestSuiteBuilder
      */
     public static function from(FrameworkTestSuite $testSuite): TestSuite
     {
-        $groups = [];
-
-        foreach ($testSuite->groupDetails() as $groupName => $tests) {
-            if (!isset($groups[$groupName])) {
-                $groups[$groupName] = [];
-            }
-
-            foreach ($tests as $test) {
-                $groups[$groupName][] = $test::class;
-            }
-        }
-
         $tests = [];
 
         self::process($testSuite, $tests);
