@@ -42,10 +42,10 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestDox;
 use PHPUnit\Util\Color;
+use PHPUnit\Util\ExporterFacade;
 use ReflectionEnum;
 use ReflectionMethod;
 use ReflectionObject;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -267,7 +267,7 @@ final class NamePrettifier
             }
 
             if (is_bool($value) || is_int($value) || is_float($value)) {
-                $value = (new Exporter)->export($value);
+                $value = ExporterFacade::instance()->export($value);
             }
 
             if ($value === '') {

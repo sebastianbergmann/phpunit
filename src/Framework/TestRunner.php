@@ -22,6 +22,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function var_export;
+use function xdebug_is_debugger_active;
 use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
