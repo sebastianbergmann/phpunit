@@ -53,10 +53,6 @@ abstract class AbstractPhpProcess
 
     public static function factory(): self
     {
-        if (PHP_OS_FAMILY === 'Windows') {
-            return new WindowsPhpProcess;
-        }
-
         return new DefaultPhpProcess;
     }
 

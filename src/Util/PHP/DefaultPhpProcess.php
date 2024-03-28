@@ -40,7 +40,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      */
     public function runJob(string $job, array $settings = []): array
     {
-        if ($this->stdin || $this->useTemporaryFile()) {
+        if ($this->stdin) {
             if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'phpunit_')) ||
                 file_put_contents($this->tempFile, $job) === false) {
                 throw new PhpProcessException(
@@ -142,10 +142,5 @@ class DefaultPhpProcess extends AbstractPhpProcess
         if ($this->tempFile) {
             unlink($this->tempFile);
         }
-    }
-
-    protected function useTemporaryFile(): bool
-    {
-        return false;
     }
 }
