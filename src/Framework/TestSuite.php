@@ -83,6 +83,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @psalm-param ReflectionClass<TestCase> $class
      * @psalm-param list<non-empty-string> $groups
      */
     public static function fromClassReflector(ReflectionClass $class, array $groups = []): static
@@ -475,7 +476,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-assert-if-true class-string $this->name
+     * @psalm-assert-if-true class-string<TestCase> $this->name
      */
     public function isForTestClass(): bool
     {
@@ -483,6 +484,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @psalm-param ReflectionClass<TestCase> $class
      * @psalm-param list<non-empty-string> $groups
      *
      * @throws Exception

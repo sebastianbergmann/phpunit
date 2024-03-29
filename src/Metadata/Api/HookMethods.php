@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Metadata\Api;
 
-use PHPUnit\Framework\TestCase;
 use function array_unshift;
 use function assert;
 use function class_exists;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;
