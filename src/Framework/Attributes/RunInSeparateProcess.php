@@ -19,4 +19,15 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 final readonly class RunInSeparateProcess
 {
+    private ?bool $forkIfPossible;
+
+    public function __construct(?bool $forkIfPossible = null)
+    {
+        $this->forkIfPossible = $forkIfPossible;
+    }
+
+    public function forkIfPossible(): ?bool
+    {
+        return $this->forkIfPossible;
+    }
 }

@@ -297,12 +297,20 @@ final readonly class AttributeParser implements Parser
                     break;
 
                 case RunClassInSeparateProcess::class:
-                    $result[] = Metadata::runClassInSeparateProcess();
+                    assert($attributeInstance instanceof RunClassInSeparateProcess);
+
+                    $result[] = Metadata::runClassInSeparateProcess(
+                        $attributeInstance->forkIfPossible(),
+                    );
 
                     break;
 
                 case RunTestsInSeparateProcesses::class:
-                    $result[] = Metadata::runTestsInSeparateProcesses();
+                    assert($attributeInstance instanceof RunTestsInSeparateProcesses);
+
+                    $result[] = Metadata::runTestsInSeparateProcesses(
+                        $attributeInstance->forkIfPossible(),
+                    );
 
                     break;
 
@@ -638,7 +646,11 @@ final readonly class AttributeParser implements Parser
                     break;
 
                 case RunInSeparateProcess::class:
-                    $result[] = Metadata::runInSeparateProcess();
+                    assert($attributeInstance instanceof RunInSeparateProcess);
+
+                    $result[] = Metadata::runInSeparateProcess(
+                        $attributeInstance->forkIfPossible(),
+                    );
 
                     break;
 
