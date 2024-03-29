@@ -39,6 +39,8 @@ final class TestSuiteLoader
 
     /**
      * @throws Exception
+     *
+     * @return ReflectionClass<TestCase>
      */
     public function load(string $suiteClassFile): ReflectionClass
     {
