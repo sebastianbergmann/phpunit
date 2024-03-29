@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use PHPUnit\Framework\TestCase;
 use function array_unshift;
 use function assert;
 use function class_exists;
@@ -27,7 +28,7 @@ final class HookMethods
     private static array $hookMethods = [];
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string<TestCase> $className
      *
      * @psalm-return array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}
      */
