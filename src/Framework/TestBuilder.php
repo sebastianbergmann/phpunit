@@ -19,6 +19,9 @@ use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\Metadata\RunClassInSeparateProcess;
+use PHPUnit\Metadata\RunInSeparateProcess;
+use PHPUnit\Metadata\RunTestsInSeparateProcesses;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 
@@ -51,6 +54,7 @@ final readonly class TestBuilder
                 $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
                 $this->shouldGlobalStateBePreserved($className, $methodName),
                 $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+                $this->shouldForkIfPossible($className, $methodName),
                 $this->backupSettings($className, $methodName),
                 $groups,
             );
@@ -64,6 +68,7 @@ final readonly class TestBuilder
             $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
             $this->shouldGlobalStateBePreserved($className, $methodName),
             $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+            $this->shouldForkIfPossible($className, $methodName),
             $this->backupSettings($className, $methodName),
         );
 
@@ -76,7 +81,7 @@ final readonly class TestBuilder
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @psalm-param list<non-empty-string> $groups
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings, array $groups): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, bool $forkIfPossible, array $backupSettings, array $groups): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
@@ -98,6 +103,7 @@ final readonly class TestBuilder
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $runClassInSeparateProcess,
+                $forkIfPossible,
                 $backupSettings,
             );
 
@@ -110,7 +116,7 @@ final readonly class TestBuilder
     /**
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      */
-    private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): void
+    private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, bool $forkIfPossible, array $backupSettings): void
     {
         if ($runTestInSeparateProcess) {
             $test->setRunTestInSeparateProcess(true);
@@ -118,6 +124,10 @@ final readonly class TestBuilder
 
         if ($runClassInSeparateProcess) {
             $test->setRunClassInSeparateProcess(true);
+        }
+
+        if ($forkIfPossible) {
+            $test->setForkIfPossible(true);
         }
 
         if ($preserveGlobalState !== null) {
@@ -271,5 +281,54 @@ final readonly class TestBuilder
     private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
     {
         return MetadataRegistry::parser()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
+    }
+
+    /**
+     * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
+     */
+    private function shouldForkIfPossible(string $className, string $methodName): bool
+    {
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
+
+        if ($metadataForMethod->isRunInSeparateProcess()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isRunInSeparateProcess()->asArray()[0];
+
+            assert($metadata instanceof RunInSeparateProcess);
+
+            $forkIfPossible = $metadata->forkIfPossible();
+
+            if ($forkIfPossible !== null) {
+                return $forkIfPossible;
+            }
+        }
+
+        $metadataForClass = MetadataRegistry::parser()->forClass($className);
+
+        if ($metadataForClass->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+            $metadata = $metadataForClass->isRunTestsInSeparateProcesses()->asArray()[0];
+
+            assert($metadata instanceof RunTestsInSeparateProcesses);
+
+            $forkIfPossible = $metadata->forkIfPossible();
+
+            if ($forkIfPossible !== null) {
+                return $forkIfPossible;
+            }
+        }
+
+        if ($metadataForClass->isRunClassInSeparateProcess()->isNotEmpty()) {
+            $metadata = $metadataForClass->isRunClassInSeparateProcess()->asArray()[0];
+
+            assert($metadata instanceof RunClassInSeparateProcess);
+
+            $forkIfPossible = $metadata->forkIfPossible();
+
+            if ($forkIfPossible !== null) {
+                return $forkIfPossible;
+            }
+        }
+
+        return false;
     }
 }

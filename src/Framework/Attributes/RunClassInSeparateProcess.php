@@ -21,7 +21,7 @@ final readonly class RunClassInSeparateProcess
 {
     private ?bool $forkIfPossible;
 
-    public function __construct(bool $forkIfPossible = null)
+    public function __construct(?bool $forkIfPossible = null)
     {
         $this->forkIfPossible = $forkIfPossible;
     }

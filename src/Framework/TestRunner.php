@@ -249,9 +249,9 @@ final class TestRunner
      * @throws ProcessIsolationException
      * @throws StaticAnalysisCacheNotConfiguredException
      */
-    public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
+    public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState, bool $forkIfPossible): void
     {
-        if (PcntlFork::isPcntlForkAvailable()) {
+        if ($forkIfPossible && PcntlFork::isPcntlForkAvailable()) {
             // forking the parent process is a more lightweight way to run a test in isolation.
             // it requires the pcntl extension though.
             $fork = new PcntlFork;
