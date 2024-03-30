@@ -112,4 +112,14 @@ class ExecutionOrderDependencyTest extends TestCase
             'Right side of merge could be empty',
         );
     }
+
+    public function testEmptyClassOrCallable(): void
+    {
+        $empty = new ExecutionOrderDependency('');
+        $this->assertFalse($empty->shallowClone());
+        $this->assertFalse($empty->deepClone());
+        $this->assertFalse($empty->targetIsClass());
+        $this->assertSame('', $empty->getTargetClassName());
+
+    }
 }
