@@ -73,7 +73,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayOnlyConsidering
     /**
      * Asserts that two arrays are equal while only considering a list of keys.
      *
-     * @psalm-param list<array-key> $keysToBeConsidered
+     * @psalm-param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -92,7 +92,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayIgnoringListOfK
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
-     * @psalm-param list<array-key> $keysToBeIgnored
+     * @psalm-param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -111,7 +111,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayOnlyConside
     /**
      * Asserts that two arrays are identical while only considering a list of keys.
      *
-     * @psalm-param list<array-key> $keysToBeConsidered
+     * @psalm-param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -130,7 +130,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayIgnoringLis
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
-     * @psalm-param list<array-key> $keysToBeIgnored
+     * @psalm-param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
      * @throws ExpectationFailedException
