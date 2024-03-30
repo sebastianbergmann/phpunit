@@ -18,6 +18,7 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 
 * [#5689](https://github.com/sebastianbergmann/phpunit/issues/5689): The XML configuration file generated using `--generate-configuration` now generates `<source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">` instead of `<source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">`
 * [#5708](https://github.com/sebastianbergmann/phpunit/issues/5708): Allow the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options to be used multiple times
+* `PHPUnit\Framework\TestCase::__construct()` is now annotated to be final in preparation for declaring it `final` in PHPUnit 12
 * Changed how the `DeprecationTriggered`, `ErrorTriggered`, `NoticeTriggered`, `PhpDeprecationTriggered`, `PhpNoticeTriggered`, `PhpWarningTriggered`, and `WarningTriggered` events are represented as text
 
 ### Deprecated
