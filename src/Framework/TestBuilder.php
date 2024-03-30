@@ -28,6 +28,7 @@ use ReflectionClass;
 final readonly class TestBuilder
 {
     /**
+     * @psalm-param ReflectionClass<TestCase> $theClass
      * @psalm-param non-empty-string $methodName
      * @psalm-param list<non-empty-string> $groups
      *
@@ -71,7 +72,7 @@ final readonly class TestBuilder
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string<TestCase> $className
      * @psalm-param non-empty-string $methodName
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @psalm-param list<non-empty-string> $groups
@@ -143,7 +144,7 @@ final readonly class TestBuilder
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string<TestCase> $className
      * @psalm-param non-empty-string $methodName
      *
      * @psalm-return array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
@@ -221,7 +222,7 @@ final readonly class TestBuilder
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string<TestCase> $className
      * @psalm-param non-empty-string $methodName
      */
     private function shouldGlobalStateBePreserved(string $className, string $methodName): ?bool
@@ -250,7 +251,7 @@ final readonly class TestBuilder
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string<TestCase> $className
      * @psalm-param non-empty-string $methodName
      */
     private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
@@ -267,7 +268,7 @@ final readonly class TestBuilder
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string<TestCase> $className
      */
     private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
     {
