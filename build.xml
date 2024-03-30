@@ -33,6 +33,7 @@
         <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
         <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
             <arg value="fix"/>
+            <arg value="--show-progress=none"/>
             <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
         </exec>
     </target>
