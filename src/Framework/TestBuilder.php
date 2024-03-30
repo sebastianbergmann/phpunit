@@ -56,9 +56,8 @@ final readonly class TestBuilder
             );
         }
 
+        /** @psalm-suppress UnsafeInstantiation */
         $test = new $className($methodName);
-
-        assert($test instanceof TestCase);
 
         $this->configureTestCase(
             $test,
@@ -89,9 +88,8 @@ final readonly class TestBuilder
         );
 
         foreach ($data as $_dataName => $_data) {
+            /** @psalm-suppress UnsafeInstantiation */
             $_test = new $className($methodName);
-
-            assert($_test instanceof TestCase);
 
             $_test->setData($_dataName, $_data);
 
