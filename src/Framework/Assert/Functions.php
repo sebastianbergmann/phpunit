@@ -2308,13 +2308,6 @@ if (!function_exists('PHPUnit\Framework\isTrue')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\callback')) {
-    function callback(callable $callback): Callback
-    {
-        return Assert::callback(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\isFalse')) {
     function isFalse(): IsFalse
     {
@@ -2564,6 +2557,20 @@ if (!function_exists('PHPUnit\Framework\objectEquals')) {
     function objectEquals(object $object, string $method = 'equals'): ObjectEquals
     {
         return Assert::objectEquals(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\callback')) {
+    /**
+     * @psalm-template CallbackInput of mixed
+     *
+     * @psalm-param callable(CallbackInput $callback): bool $callback
+     *
+     * @psalm-return Callback<CallbackInput>
+     */
+    function callback(callable $callback): Callback
+    {
+        return Assert::callback($callback);
     }
 }
 
