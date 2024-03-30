@@ -160,7 +160,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var non-empty-string
      */
-    private string $name;
+    private string $methodName;
 
     /**
      * @psalm-var list<string>
@@ -225,9 +225,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function __construct(string $name)
     {
-        $this->setName($name);
+        $this->methodName = $name;
+        $this->status     = TestStatus::unknown();
 
-        $this->status = TestStatus::unknown();
+        if (is_callable($this->sortId(), true)) {
+            $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
+        }
     }
 
     /**
@@ -288,7 +291,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $buffer = sprintf(
             '%s::%s',
             (new ReflectionClass($this))->getName(),
-            $this->name,
+            $this->methodName,
         );
 
         return $buffer . $this->dataSetAsStringWithData();
@@ -362,7 +365,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function nameWithDataSet(): string
     {
-        return $this->name . $this->dataSetAsString();
+        return $this->methodName . $this->dataSetAsString();
     }
 
     /**
@@ -372,7 +375,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function name(): string
     {
-        return $this->name;
+        return $this->methodName;
     }
 
     /**
@@ -382,7 +385,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         return (new Groups)->size(
             static::class,
-            $this->name,
+            $this->methodName,
         );
     }
 
@@ -463,8 +466,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->invokeBeforeClassHookMethods($hookMethods, $emitter);
             }
 
-            if (method_exists(static::class, $this->name) &&
-                MetadataRegistry::parser()->forClassAndMethod(static::class, $this->name)->isDoesNotPerformAssertions()->isNotEmpty()) {
+            if (method_exists(static::class, $this->methodName) &&
+                MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isDoesNotPerformAssertions()->isNotEmpty()) {
                 $this->doesNotPerformAssertions = true;
             }
 
@@ -619,20 +622,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
-        }
-    }
-
-    /**
-     * @psalm-param non-empty-string $name
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function setName(string $name): void
-    {
-        $this->name = $name;
-
-        if (is_callable($this->sortId(), true)) {
-            $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
         }
     }
 
@@ -848,7 +837,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function sortId(): string
     {
-        $id = $this->name;
+        $id = $this->methodName;
 
         if (!str_contains($id, '::')) {
             $id = static::class . '::' . $id;
@@ -1181,7 +1170,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
         try {
-            $testResult = $this->{$this->name}(...$testArguments);
+            $testResult = $this->{$this->methodName}(...$testArguments);
         } catch (Throwable $exception) {
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
@@ -1665,13 +1654,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function checkRequirements(): void
     {
-        if (!$this->name || !method_exists($this, $this->name)) {
+        if (!$this->methodName || !method_exists($this, $this->methodName)) {
             return;
         }
 
         $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor(
             static::class,
-            $this->name,
+            $this->methodName,
         );
 
         if (!empty($missingRequirements)) {
