@@ -64,6 +64,11 @@ foreach ($class->getMethods() as $method) {
 
     $usedClasses[] = $returnType->getName();
 
+    // skip, so we can later on append a signature including precise analysis types
+    if ($method->getName() === 'callback') {
+        continue;
+    }
+
     $constraintMethods .= \sprintf(
         "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n}\n\n",
         \str_replace('final public static ', '', \trim($lines[$method->getStartLine() - 1])),
@@ -105,6 +110,19 @@ foreach ($class->getMethods() as $method) {
 $buffer .= $constraintMethods;
 
 $buffer .= <<<'EOT'
+if (!function_exists('PHPUnit\Framework\callback')) {
+    /**
+     * @psalm-template CallbackInput of mixed
+     *
+     * @psalm-param callable(CallbackInput $callback): bool $callback
+     *
+     * @psalm-return Callback<CallbackInput>
+     */
+    function callback(callable $callback): Callback
+    {
+        return Assert::callback($callback);
+    }
+}
 
 if (!function_exists('PHPUnit\Framework\any')) {
     /**
