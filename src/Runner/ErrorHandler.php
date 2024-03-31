@@ -53,6 +53,7 @@ final class ErrorHandler
     private static ?self $instance            = null;
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
+    private bool $enabledForTest              = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly Source $source;
     private readonly SourceFilter $sourceFilter;
@@ -92,89 +93,103 @@ final class ErrorHandler
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
-                Event\Facade::emitter()->testTriggeredPhpNotice(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredPhpNotice(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                        $ignoredByBaseline,
+                    );
+                }
 
                 break;
 
             case E_USER_NOTICE:
-                Event\Facade::emitter()->testTriggeredNotice(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredNotice(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                        $ignoredByBaseline,
+                    );
+                }
 
                 break;
 
             case E_WARNING:
-                Event\Facade::emitter()->testTriggeredPhpWarning(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredPhpWarning(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                        $ignoredByBaseline,
+                    );
+                }
 
                 break;
 
             case E_USER_WARNING:
-                Event\Facade::emitter()->testTriggeredWarning(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredWarning(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                        $ignoredByBaseline,
+                    );
+                }
 
                 break;
 
             case E_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredPhpDeprecation(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                    $ignoredByTest,
-                    $this->trigger($test, false),
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredPhpDeprecation(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                        $ignoredByBaseline,
+                        $ignoredByTest,
+                        $this->trigger($test, false),
+                    );
+                }
 
                 break;
 
             case E_USER_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredDeprecation(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                    $ignoredByTest,
-                    $this->trigger($test, true),
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredDeprecation(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                        $ignoredByBaseline,
+                        $ignoredByTest,
+                        $this->trigger($test, true),
+                    );
+                }
 
                 break;
 
             case E_USER_ERROR:
-                Event\Facade::emitter()->testTriggeredError(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                );
+                if ($this->enabledForTest) {
+                    Event\Facade::emitter()->testTriggeredError(
+                        $test,
+                        $errorString,
+                        $errorFile,
+                        $errorLine,
+                        $suppressed,
+                    );
+                }
 
                 throw new ErrorException('E_USER_ERROR was triggered');
 
@@ -185,24 +200,13 @@ final class ErrorHandler
         return false;
     }
 
-    public function enable(): void
+    public function enableForTest(): void
     {
-        if ($this->enabled) {
+        if (!$this->enable()) {
             return;
         }
 
-        $oldErrorHandler = set_error_handler($this);
-
-        if ($oldErrorHandler !== null) {
-            restore_error_handler();
-
-            return;
-        }
-
-        $this->enabled                     = true;
-        $this->originalErrorReportingLevel = error_reporting();
-
-        error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
+        $this->enabledForTest = true;
     }
 
     public function disable(): void
@@ -216,6 +220,7 @@ final class ErrorHandler
         error_reporting(error_reporting() | $this->originalErrorReportingLevel);
 
         $this->enabled                     = false;
+        $this->enabledForTest              = false;
         $this->originalErrorReportingLevel = null;
     }
 
@@ -230,6 +235,28 @@ final class ErrorHandler
     public function useDeprecationTriggers(array $deprecationTriggers): void
     {
         $this->deprecationTriggers = $deprecationTriggers;
+    }
+
+    private function enable(): bool
+    {
+        if ($this->enabled) {
+            return false;
+        }
+
+        $oldErrorHandler = set_error_handler($this);
+
+        if ($oldErrorHandler !== null) {
+            restore_error_handler();
+
+            return false;
+        }
+
+        $this->enabled                     = true;
+        $this->originalErrorReportingLevel = error_reporting();
+
+        error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
+
+        return true;
     }
 
     /**
