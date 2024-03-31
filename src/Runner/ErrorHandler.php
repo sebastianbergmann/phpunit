@@ -92,6 +92,10 @@ final class ErrorHandler
             return $this->processForTest($errorNumber, $errorString, $errorFile, $errorLine, $suppressed, $ignoredByBaseline);
         }
 
+        if ($this->enabledForDataProvider) {
+            return $this->processForDataProvider($errorNumber, $errorString, $errorFile, $errorLine, $suppressed, $ignoredByBaseline);
+        }
+
         return false;
     }
 
@@ -267,6 +271,11 @@ final class ErrorHandler
                 return false;
         }
 
+        return false;
+    }
+
+    private function processForDataProvider(int $errorNumber, string $errorString, string $errorFile, int $errorLine, bool $suppressed, bool $ignoredByBaseline): bool
+    {
         return false;
     }
 
