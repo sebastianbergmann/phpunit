@@ -17,8 +17,15 @@ use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\DataProvider\DeprecationTriggered as DataProviderTriggeredDeprecation;
+use PHPUnit\Event\DataProvider\ErrorTriggered as DataProviderTriggeredError;
 use PHPUnit\Event\DataProvider\MethodCalled as DataProviderMethodCalled;
 use PHPUnit\Event\DataProvider\MethodFinished as DataProviderMethodFinished;
+use PHPUnit\Event\DataProvider\NoticeTriggered as DataProviderTriggeredNotice;
+use PHPUnit\Event\DataProvider\PhpDeprecationTriggered as DataProviderTriggeredPhpDeprecation;
+use PHPUnit\Event\DataProvider\PhpNoticeTriggered as DataProviderTriggeredPhpNotice;
+use PHPUnit\Event\DataProvider\PhpWarningTriggered as DataProviderTriggeredPhpWarning;
+use PHPUnit\Event\DataProvider\WarningTriggered as DataProviderTriggeredWarning;
 use PHPUnit\Event\Test\DataProviderMethodCalled as DeprecatedDataProviderMethodCalled;
 use PHPUnit\Event\Test\DataProviderMethodFinished as DeprecatedDataProviderMethodFinished;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
@@ -181,6 +188,168 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $testMethod,
                 ...$calledMethods,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredDeprecation(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredDeprecation(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+                $ignoredByBaseline,
+                $trigger,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredError(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredError(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredNotice(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredNotice(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+                $ignoredByBaseline,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredPhpDeprecation(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredPhpDeprecation(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+                $ignoredByBaseline,
+                $trigger,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredPhpNotice(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredPhpNotice(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+                $ignoredByBaseline,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredPhpWarning(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredPhpWarning(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+                $ignoredByBaseline,
+            ),
+        );
+    }
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function dataProviderTriggeredWarning(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
+    {
+        $this->dispatcher->dispatch(
+            new DataProviderTriggeredWarning(
+                $this->telemetryInfo(),
+                $dataProvider,
+                $message,
+                $file,
+                $line,
+                $suppressed,
+                $ignoredByBaseline,
             ),
         );
     }

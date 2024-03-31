@@ -170,6 +170,13 @@ final class Facade
 
             DataProvider\MethodCalled::class,
             DataProvider\MethodFinished::class,
+            DataProvider\DeprecationTriggered::class,
+            DataProvider\ErrorTriggered::class,
+            DataProvider\NoticeTriggered::class,
+            DataProvider\WarningTriggered::class,
+            DataProvider\PhpDeprecationTriggered::class,
+            DataProvider\PhpNoticeTriggered::class,
+            DataProvider\PhpWarningTriggered::class,
 
             Test\DataProviderMethodCalled::class,
             Test\DataProviderMethodFinished::class,
