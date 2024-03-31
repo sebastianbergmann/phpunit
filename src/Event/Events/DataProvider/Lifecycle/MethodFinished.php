@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Test;
+namespace PHPUnit\Event\DataProvider;
 
 use const PHP_EOL;
 use function sprintf;
@@ -20,10 +20,8 @@ use PHPUnit\Event\Telemetry;
  * @psalm-immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated Use PHPUnit\Event\DataProvider\MethodFinished instead
  */
-final readonly class DataProviderMethodFinished implements Event
+final readonly class MethodFinished implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private ClassMethod $testMethod;

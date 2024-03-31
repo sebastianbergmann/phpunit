@@ -7,16 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Test;
+namespace PHPUnit\Event\DataProvider;
 
 use PHPUnit\Event\Subscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated Use PHPUnit\Event\DataProvider\MethodCalled\Subscriber instead
  */
-interface DataProviderMethodCalledSubscriber extends Subscriber
+interface MethodCalledSubscriber extends Subscriber
 {
-    public function notify(DataProviderMethodCalled $event): void;
+    public function notify(MethodCalled $event): void;
 }

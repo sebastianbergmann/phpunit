@@ -6,9 +6,26 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/Emitter/DispatchingEmitter.php">
+    <DeprecatedClass>
+      <code><![CDATA[new DeprecatedDataProviderMethodCalled(
+                $this->telemetryInfo(),
+                $testMethod,
+                $dataProviderMethod,
+            )]]></code>
+      <code><![CDATA[new DeprecatedDataProviderMethodFinished(
+                $this->telemetryInfo(),
+                $testMethod,
+                ...$calledMethods,
+            )]]></code>
+    </DeprecatedClass>
     <RedundantCondition>
       <code><![CDATA[assert($test instanceof TestMethod)]]></code>
     </RedundantCondition>
+  </file>
+  <file src="src/Event/Events/DataProvider/Lifecycle/MethodFinished.php">
+    <PropertyTypeCoercion>
+      <code><![CDATA[$calledMethods]]></code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Events/Test/HookMethod/AfterLastTestMethodFinished.php">
     <PropertyTypeCoercion>
@@ -40,10 +57,20 @@
       <code><![CDATA[$calledMethods]]></code>
     </PropertyTypeCoercion>
   </file>
+  <file src="src/Event/Events/Test/Lifecycle/DataProviderMethodCalledSubscriber.php">
+    <DeprecatedClass>
+      <code><![CDATA[DataProviderMethodCalled]]></code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Event/Events/Test/Lifecycle/DataProviderMethodFinished.php">
     <PropertyTypeCoercion>
       <code><![CDATA[$calledMethods]]></code>
     </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/Lifecycle/DataProviderMethodFinishedSubscriber.php">
+    <DeprecatedClass>
+      <code><![CDATA[DataProviderMethodFinished]]></code>
+    </DeprecatedClass>
   </file>
   <file src="src/Event/Events/Test/TestDouble/MockObjectFromWsdlCreated.php">
     <PropertyTypeCoercion>
@@ -59,6 +86,10 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code><![CDATA[Test\DataProviderMethodCalled::class]]></code>
+      <code><![CDATA[Test\DataProviderMethodFinished::class]]></code>
+    </DeprecatedClass>
     <InvalidArrayOffset>
       <code><![CDATA[gc_status()['running']]]></code>
     </InvalidArrayOffset>

@@ -17,8 +17,10 @@ use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Test\DataProviderMethodCalled;
-use PHPUnit\Event\Test\DataProviderMethodFinished;
+use PHPUnit\Event\DataProvider\MethodCalled as DataProviderMethodCalled;
+use PHPUnit\Event\DataProvider\MethodFinished as DataProviderMethodFinished;
+use PHPUnit\Event\Test\DataProviderMethodCalled as DeprecatedDataProviderMethodCalled;
+use PHPUnit\Event\Test\DataProviderMethodFinished as DeprecatedDataProviderMethodFinished;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
@@ -150,6 +152,14 @@ final class DispatchingEmitter implements Emitter
                 $dataProviderMethod,
             ),
         );
+
+        $this->dispatcher->dispatch(
+            new DeprecatedDataProviderMethodCalled(
+                $this->telemetryInfo(),
+                $testMethod,
+                $dataProviderMethod,
+            ),
+        );
     }
 
     /**
@@ -160,6 +170,14 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new DataProviderMethodFinished(
+                $this->telemetryInfo(),
+                $testMethod,
+                ...$calledMethods,
+            ),
+        );
+
+        $this->dispatcher->dispatch(
+            new DeprecatedDataProviderMethodFinished(
                 $this->telemetryInfo(),
                 $testMethod,
                 ...$calledMethods,

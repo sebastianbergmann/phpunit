@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Test;
+namespace PHPUnit\Event\DataProvider;
 
 use function sprintf;
 use PHPUnit\Event\Code\ClassMethod;
@@ -18,10 +18,8 @@ use PHPUnit\Event\Telemetry\Info;
  * @psalm-immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated Use PHPUnit\Event\DataProvider\MethodCalled instead
  */
-final readonly class DataProviderMethodCalled implements Event
+final readonly class MethodCalled implements Event
 {
     private Info $telemetryInfo;
     private ClassMethod $testMethod;

@@ -168,6 +168,9 @@ final class Facade
             Application\Started::class,
             Application\Finished::class,
 
+            DataProvider\MethodCalled::class,
+            DataProvider\MethodFinished::class,
+
             Test\DataProviderMethodCalled::class,
             Test\DataProviderMethodFinished::class,
             Test\MarkedIncomplete::class,

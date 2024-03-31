@@ -22,6 +22,9 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Data Provider Method Called (PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::provider for test method PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething)
+Data Provider Method Called (PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::provider for test method PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething)
+Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething:
+- PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::provider
 Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething:
 - PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::provider
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething)
