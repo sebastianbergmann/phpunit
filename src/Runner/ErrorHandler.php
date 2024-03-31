@@ -53,6 +53,7 @@ final class ErrorHandler
     private static ?self $instance            = null;
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
+    private bool $enabledForDataProvider      = false;
     private bool $enabledForTest              = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly Source $source;
@@ -200,13 +201,24 @@ final class ErrorHandler
         return false;
     }
 
+    public function enableForDataProvider(): void
+    {
+        if (!$this->enable()) {
+            return;
+        }
+
+        $this->enabledForDataProvider = true;
+        $this->enabledForTest         = false;
+    }
+
     public function enableForTest(): void
     {
         if (!$this->enable()) {
             return;
         }
 
-        $this->enabledForTest = true;
+        $this->enabledForTest         = true;
+        $this->enabledForDataProvider = false;
     }
 
     public function disable(): void
@@ -220,6 +232,7 @@ final class ErrorHandler
         error_reporting(error_reporting() | $this->originalErrorReportingLevel);
 
         $this->enabled                     = false;
+        $this->enabledForDataProvider      = false;
         $this->enabledForTest              = false;
         $this->originalErrorReportingLevel = null;
     }
