@@ -25,7 +25,7 @@ final class DefaultPrinterTest extends TestCase
         return [
             [DefaultPrinter::standardOutput()],
             [DefaultPrinter::standardError()],
-            [DefaultPrinter::from('socket://hostname:port')],
+            [DefaultPrinter::from('socket://www.example.com:80')],
         ];
     }
 
