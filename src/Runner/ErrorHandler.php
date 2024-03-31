@@ -86,116 +86,10 @@ final class ErrorHandler
             return false;
         }
 
-        $test = Event\Code\TestMethodBuilder::fromCallStack();
-
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
-        $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
 
-        switch ($errorNumber) {
-            case E_NOTICE:
-            case E_STRICT:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredPhpNotice(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                        $ignoredByBaseline,
-                    );
-                }
-
-                break;
-
-            case E_USER_NOTICE:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredNotice(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                        $ignoredByBaseline,
-                    );
-                }
-
-                break;
-
-            case E_WARNING:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredPhpWarning(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                        $ignoredByBaseline,
-                    );
-                }
-
-                break;
-
-            case E_USER_WARNING:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredWarning(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                        $ignoredByBaseline,
-                    );
-                }
-
-                break;
-
-            case E_DEPRECATED:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredPhpDeprecation(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                        $ignoredByBaseline,
-                        $ignoredByTest,
-                        $this->trigger($test, false),
-                    );
-                }
-
-                break;
-
-            case E_USER_DEPRECATED:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredDeprecation(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                        $ignoredByBaseline,
-                        $ignoredByTest,
-                        $this->trigger($test, true),
-                    );
-                }
-
-                break;
-
-            case E_USER_ERROR:
-                if ($this->enabledForTest) {
-                    Event\Facade::emitter()->testTriggeredError(
-                        $test,
-                        $errorString,
-                        $errorFile,
-                        $errorLine,
-                        $suppressed,
-                    );
-                }
-
-                throw new ErrorException('E_USER_ERROR was triggered');
-
-            default:
-                return false;
+        if ($this->enabledForTest) {
+            return $this->processForTest($errorNumber, $errorString, $errorFile, $errorLine, $suppressed, $ignoredByBaseline);
         }
 
         return false;
@@ -273,6 +167,110 @@ final class ErrorHandler
     }
 
     /**
+     * @throws NoTestCaseObjectOnCallStackException
+     */
+    private function processForTest(int $errorNumber, string $errorString, string $errorFile, int $errorLine, bool $suppressed, bool $ignoredByBaseline): bool
+    {
+        $test          = Event\Code\TestMethodBuilder::fromCallStack();
+        $ignoredByTest = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
+
+        switch ($errorNumber) {
+            case E_NOTICE:
+            case E_STRICT:
+                Event\Facade::emitter()->testTriggeredPhpNotice(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_NOTICE:
+                Event\Facade::emitter()->testTriggeredNotice(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_WARNING:
+                Event\Facade::emitter()->testTriggeredPhpWarning(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_WARNING:
+                Event\Facade::emitter()->testTriggeredWarning(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_DEPRECATED:
+                Event\Facade::emitter()->testTriggeredPhpDeprecation(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $ignoredByTest,
+                    $this->trigger($test, false),
+                );
+
+                break;
+
+            case E_USER_DEPRECATED:
+                Event\Facade::emitter()->testTriggeredDeprecation(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $ignoredByTest,
+                    $this->trigger($test, true),
+                );
+
+                break;
+
+            case E_USER_ERROR:
+                Event\Facade::emitter()->testTriggeredError(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                );
+
+                throw new ErrorException('E_USER_ERROR was triggered');
+
+            default:
+                return false;
+        }
+
+        return false;
+    }
+
+    /**
      * @psalm-param non-empty-string $file
      * @psalm-param positive-int $line
      * @psalm-param non-empty-string $description
@@ -325,8 +323,8 @@ final class ErrorHandler
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
-        // self::filteredStackTrace(), self::trigger(), self::__invoke()
-        unset($trace[0], $trace[1], $trace[2]);
+        // self::filteredStackTrace(), self::trigger(), self::processForTest(), self::__invoke()
+        unset($trace[0], $trace[1], $trace[2], $trace[3]);
 
         if ($this->deprecationTriggers === null || !$filterDeprecationTriggers) {
             return array_values($trace);
