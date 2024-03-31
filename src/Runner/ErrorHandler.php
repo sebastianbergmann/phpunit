@@ -285,7 +285,7 @@ final class ErrorHandler
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
-        // self::cleanedTrace(), self::trigger(), self::__invoke()
+        // self::filteredStackTrace(), self::trigger(), self::__invoke()
         unset($trace[0], $trace[1], $trace[2]);
 
         if ($this->deprecationTriggers === null || !$filterDeprecationTriggers) {
