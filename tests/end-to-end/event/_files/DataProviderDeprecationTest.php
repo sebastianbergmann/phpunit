@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use function trigger_error;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
