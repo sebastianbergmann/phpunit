@@ -19,6 +19,7 @@ jobs:
     name: Dependency Validation
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -44,6 +45,7 @@ jobs:
     if: github.event_name != 'schedule'
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -69,6 +71,7 @@ jobs:
       - dependency-validation
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -98,6 +101,7 @@ jobs:
       - dependency-validation
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
@@ -145,6 +149,7 @@ jobs:
       - unit-tests
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
@@ -195,6 +200,7 @@ jobs:
       - end-to-end-tests
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -229,6 +235,7 @@ jobs:
       - end-to-end-tests
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     env:
       PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
@@ -276,6 +283,7 @@ jobs:
       - build-phar
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
