@@ -14,6 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 Configuration: %s
+Random Seed: %s
 
 ..                                                                  2 / 2 (100%)
 
