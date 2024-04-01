@@ -1,0 +1,12 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "testFrameworkOptions": "--testsuite=unit",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "mutators": {
+        "@default": true,
+    }
+}
