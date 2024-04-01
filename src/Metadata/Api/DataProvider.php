@@ -32,6 +32,7 @@ use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
+use PHPUnit\Runner\ErrorHandler;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
@@ -143,7 +144,10 @@ final readonly class DataProvider
 
                 $className  = $_dataProvider->className();
                 $methodName = $_dataProvider->methodName();
-                $data       = $className::$methodName();
+
+                ErrorHandler::instance()->enableForDataProvider();
+
+                $data = $className::$methodName();
             } catch (Throwable $e) {
                 Event\Facade::emitter()->dataProviderMethodFinished(
                     $testMethod,
@@ -155,6 +159,8 @@ final readonly class DataProvider
                     $e->getCode(),
                     $e,
                 );
+            } finally {
+                ErrorHandler::instance()->disableForDataProvider();
             }
 
             if ($data instanceof Traversable) {
