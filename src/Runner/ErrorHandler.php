@@ -33,14 +33,18 @@ use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\NoDataProviderOnCallStackException;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 use PHPUnit\Util\ExcludeList;
+use ReflectionClass;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -75,6 +79,7 @@ final class ErrorHandler
     }
 
     /**
+     * @throws NoDataProviderOnCallStackException
      * @throws NoTestCaseObjectOnCallStackException
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
@@ -273,8 +278,104 @@ final class ErrorHandler
         return false;
     }
 
+    /**
+     * @throws NoDataProviderOnCallStackException
+     */
     private function processForDataProvider(int $errorNumber, string $errorString, string $errorFile, int $errorLine, bool $suppressed, bool $ignoredByBaseline): bool
     {
+        $dataProvider = $this->findDataProviderMethodOnCallStack();
+
+        switch ($errorNumber) {
+            case E_NOTICE:
+            case E_STRICT:
+                Event\Facade::emitter()->dataProviderTriggeredPhpNotice(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_NOTICE:
+                Event\Facade::emitter()->dataProviderTriggeredNotice(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_WARNING:
+                Event\Facade::emitter()->dataProviderTriggeredPhpWarning(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_WARNING:
+                Event\Facade::emitter()->dataProviderTriggeredWarning(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_DEPRECATED:
+                Event\Facade::emitter()->dataProviderTriggeredPhpDeprecation(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $this->trigger($dataProvider['file'], false),
+                );
+
+                break;
+
+            case E_USER_DEPRECATED:
+                Event\Facade::emitter()->dataProviderTriggeredDeprecation(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $this->trigger($dataProvider['file'], true),
+                );
+
+                break;
+
+            case E_USER_ERROR:
+                Event\Facade::emitter()->dataProviderTriggeredError(
+                    $dataProvider['method'],
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                );
+
+                throw new ErrorException('E_USER_ERROR was triggered');
+
+            default:
+                return false;
+        }
+
         return false;
     }
 
@@ -302,6 +403,11 @@ final class ErrorHandler
         }
 
         $trace = $this->filteredStackTrace($filterTrigger);
+
+        // Data Provider methods are called via Reflection
+        if (!isset($trace[1]['file'])) {
+            $trace[1] = $trace[0];
+        }
 
         assert(isset($trace[0]['file']));
         assert(isset($trace[1]['file']));
@@ -365,5 +471,47 @@ final class ErrorHandler
         }
 
         return array_values($trace);
+    }
+
+    /**
+     * @psalm-return array{file: non-empty-string, method: ClassMethod}
+     *
+     * @throws NoDataProviderOnCallStackException
+     */
+    private function findDataProviderMethodOnCallStack(): array
+    {
+        $trace             = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $dataProviderFrame = false;
+
+        foreach (array_keys($trace) as $frame) {
+            if (!isset($trace[$frame]['class'])) {
+                continue;
+            }
+
+            if ($trace[$frame]['class'] === DataProvider::class) {
+                // PHPUnit\Metadata\Api\DataProvider::dataProvidedByMethods(), ReflectionMethod::invoke()
+                $dataProviderFrame = $frame - 2;
+
+                break;
+            }
+        }
+
+        if ($dataProviderFrame === false) {
+            throw new NoDataProviderOnCallStackException;
+        }
+
+        assert(isset($trace[$dataProviderFrame]));
+        assert(isset($trace[$dataProviderFrame]['class']));
+        assert(isset($trace[$dataProviderFrame]['function']));
+        assert($trace[$dataProviderFrame]['function'] !== '');
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        return [
+            'file'   => (new ReflectionClass($trace[$dataProviderFrame]['class']))->getFileName(),
+            'method' => new ClassMethod(
+                $trace[$dataProviderFrame]['class'],
+                $trace[$dataProviderFrame]['function'],
+            ),
+        ];
     }
 }
