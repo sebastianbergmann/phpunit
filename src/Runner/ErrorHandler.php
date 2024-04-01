@@ -55,7 +55,6 @@ final class ErrorHandler
     private const INSUPPRESSIBLE_LEVELS       = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
     private static ?self $instance            = null;
     private ?Baseline $baseline               = null;
-    private bool $enabled                     = false;
     private bool $enabledForDataProvider      = false;
     private bool $enabledForTest              = false;
     private ?int $originalErrorReportingLevel = null;
@@ -110,7 +109,17 @@ final class ErrorHandler
         }
 
         $this->enabledForDataProvider = true;
-        $this->enabledForTest         = false;
+    }
+
+    public function disableForDataProvider(): void
+    {
+        if (!$this->enabledForDataProvider) {
+            return;
+        }
+
+        $this->enabledForDataProvider = false;
+
+        $this->disable();
     }
 
     public function enableForTest(): void
@@ -119,24 +128,18 @@ final class ErrorHandler
             return;
         }
 
-        $this->enabledForTest         = true;
-        $this->enabledForDataProvider = false;
+        $this->enabledForTest = true;
     }
 
-    public function disable(): void
+    public function disableForTest(): void
     {
-        if (!$this->enabled) {
+        if (!$this->enabledForTest) {
             return;
         }
 
-        restore_error_handler();
+        $this->enabledForTest = false;
 
-        error_reporting(error_reporting() | $this->originalErrorReportingLevel);
-
-        $this->enabled                     = false;
-        $this->enabledForDataProvider      = false;
-        $this->enabledForTest              = false;
-        $this->originalErrorReportingLevel = null;
+        $this->disable();
     }
 
     public function useBaseline(Baseline $baseline): void
@@ -154,8 +157,8 @@ final class ErrorHandler
 
     private function enable(): bool
     {
-        if ($this->enabled) {
-            return false;
+        if ($this->enabledForDataProvider || $this->enabledForTest) {
+            return true;
         }
 
         $oldErrorHandler = set_error_handler($this);
@@ -166,12 +169,24 @@ final class ErrorHandler
             return false;
         }
 
-        $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
 
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
 
         return true;
+    }
+
+    private function disable(): void
+    {
+        if ($this->enabledForDataProvider || $this->enabledForTest) {
+            return;
+        }
+
+        restore_error_handler();
+
+        error_reporting(error_reporting() | $this->originalErrorReportingLevel);
+
+        $this->originalErrorReportingLevel = null;
     }
 
     /**

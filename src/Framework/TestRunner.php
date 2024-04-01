@@ -191,7 +191,7 @@ final class TestRunner
             }
         }
 
-        ErrorHandler::instance()->disable();
+        ErrorHandler::instance()->disableForTest();
 
         if (!$error &&
             !$incomplete &&
