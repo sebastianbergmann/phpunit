@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function assert;
-use function interface_exists;
 use function sprintf;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -144,13 +142,6 @@ final class ReturnValueGeneratorTest extends TestCase
 
     public function test_Generates_test_stub_for_intersection_of_interfaces(): void
     {
-        /**
-         * @todo Figure out why AnotherInterface is not found by the autoloader
-         * when only the tests of this class are run; the interface is found as
-         * expected when the entire (unit) test suite is run
-         */
-        assert(interface_exists(AnotherInterface::class));
-
         $value = $this->generate(AnInterface::class . '&' . AnotherInterface::class);
 
         $this->assertInstanceOf(Stub::class, $value);
