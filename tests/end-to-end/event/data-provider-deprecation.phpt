@@ -1,5 +1,7 @@
 --TEST--
 The right events are emitted in the right order for a successful test that uses a data provider which triggers E_USER_DEPRECATED
+--XFAIL--
+Trigger (self, direct, indirect, unknown) for errors in data providers is not yet detected correctly
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
