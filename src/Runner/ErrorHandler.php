@@ -35,7 +35,6 @@ use function set_error_handler;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
-use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
 use PHPUnit\TextUI\Configuration\Registry;
@@ -237,7 +236,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, false),
+                    $this->trigger($test->file(), false),
                 );
 
                 break;
@@ -251,7 +250,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, true),
+                    $this->trigger($test->file(), true),
                 );
 
                 break;
@@ -293,7 +292,10 @@ final class ErrorHandler
         return $this->baseline->has(Issue::from($file, $line, null, $description));
     }
 
-    private function trigger(TestMethod $test, bool $filterTrigger): IssueTrigger
+    /**
+     * @psalm-param non-empty-string $file
+     */
+    private function trigger(string $file, bool $filterTrigger): IssueTrigger
     {
         if (!$this->source->notEmpty()) {
             return IssueTrigger::unknown();
@@ -307,12 +309,12 @@ final class ErrorHandler
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
-        if ($trace[0]['file'] === $test->file() ||
+        if ($trace[0]['file'] === $file ||
             $this->sourceFilter->includes($this->source, $trace[0]['file'])) {
             $triggeredInFirstPartyCode = true;
         }
 
-        if ($trace[1]['file'] === $test->file() ||
+        if ($trace[1]['file'] === $file ||
             $this->sourceFilter->includes($this->source, $trace[1]['file'])) {
             $triggerCalledFromFirstPartyCode = true;
         }
