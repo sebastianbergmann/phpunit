@@ -11,12 +11,14 @@ namespace PHPUnit\Util;
 
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ExcludeList::class)]
 #[CoversClass(InvalidDirectoryException::class)]
 #[Small]
+#[RunTestsInSeparateProcesses]
 final class ExcludeListTest extends TestCase
 {
     public function testIsInitialized(): void
