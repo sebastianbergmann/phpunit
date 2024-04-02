@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.23.0@005e3184fb6de4350a873b9b8c4dc3cede9db762">
+<files psalm-version="5.23.1@8471a896ccea3526b26d082f4461eeea467f10a4">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code><![CDATA[notify]]></code>
@@ -563,14 +563,6 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$this->name]]></code>
     </ArgumentTypeCoercion>
-    <LessSpecificReturnStatement>
-      <code><![CDATA[$this->providedTests]]></code>
-      <code><![CDATA[$this->requiredTests]]></code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType>
-      <code><![CDATA[list<ExecutionOrderDependency>]]></code>
-      <code><![CDATA[list<ExecutionOrderDependency>]]></code>
-    </MoreSpecificReturnType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <InvalidPropertyAssignmentValue>
