@@ -253,7 +253,7 @@ jobs:
       - name: Run mutation testing
         run: |
           git fetch origin $GITHUB_BASE_REF
-          php tools/infection.phar --threads=max --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered          
+          php ./tools/infection --threads=max --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
 
   build-phar:
     name: Build PHAR

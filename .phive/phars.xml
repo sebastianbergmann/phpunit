@@ -5,4 +5,5 @@
   <phar name="psalm" version="^5.0" installed="5.23.1" location="./tools/psalm" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.18" installed="0.18.11" location="./tools/php-scoper" copy="true"/>
   <phar name="composer" version="^2.0.3" installed="2.7.2" location="./tools/composer" copy="true"/>
+  <phar name="infection" version="^0.28" installed="0.28.1" location="./tools/infection" copy="true"/>
 </phive>
