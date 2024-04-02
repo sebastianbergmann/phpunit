@@ -65,7 +65,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     private array $groups         = [];
     /**
-     * @psalm-var list<ExecutionOrderDependency>|null
+     * @psalm-var ?list<ExecutionOrderDependency>
      */
     private ?array $requiredTests = null;
 
@@ -74,7 +74,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     private array $tests             = [];
     /**
-     * @psalm-var list<ExecutionOrderDependency>|null
+     * @psalm-var ?list<ExecutionOrderDependency>
      */
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
