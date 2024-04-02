@@ -1,9 +1,17 @@
 {
-    "$schema": "vendor/infection/infection/resources/schema.json",
+    "$schema": "https://raw.githubusercontent.com/infection/infection/0.28.1/resources/schema.json",
     "testFrameworkOptions": "--testsuite=unit",
     "source": {
         "directories": [
             "src"
+        ],
+        "excludes": [
+            // causes errors during loading xml fies
+            "Util/Xml/Xml.php",
+            // causes syntax errors since invalid PHP code is generated
+            "{Framework/MockObject/Generator/.*}",
+            // causes issues with saving and reading result cache json files, failing phpunit
+            "{Runner/ResultCache/.*}",
         ]
     },
     "mutators": {
