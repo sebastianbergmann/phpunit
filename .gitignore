@@ -4,6 +4,9 @@
 # Composer
 /vendor
 
+# GitHub.com
+/.github
+
 # Apache Ant
 /.ant_targets
 
