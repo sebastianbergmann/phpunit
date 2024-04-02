@@ -308,6 +308,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isIgnoreDeprecations());
     }
 
+    public function test_Can_be_filtered_for_IgnorePhpunitDeprecations(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnorePhpunitDeprecations();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnorePhpunitDeprecations());
+    }
+
     public function test_Can_be_filtered_for_PostCondition(): void
     {
         $collection = $this->collectionWithOneOfEach()->isPostCondition();
@@ -517,6 +525,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::excludeStaticPropertyFromBackupOnClass('', ''),
                 Metadata::groupOnClass(''),
                 Metadata::ignoreDeprecationsOnClass(),
+                Metadata::ignorePhpunitDeprecationsOnClass(),
                 Metadata::postCondition(),
                 Metadata::preCondition(),
                 Metadata::preserveGlobalStateOnClass(true),

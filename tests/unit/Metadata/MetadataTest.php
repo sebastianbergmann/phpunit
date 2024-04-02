@@ -38,6 +38,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(\PHPUnit\Metadata\Group::class)]
 #[CoversClass(IgnoreDeprecations::class)]
+#[CoversClass(IgnorePhpunitDeprecations::class)]
 #[CoversClass(Metadata::class)]
 #[CoversClass(PostCondition::class)]
 #[CoversClass(PreCondition::class)]
@@ -90,6 +91,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -113,6 +115,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeAfterClass(): void
@@ -140,6 +145,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -163,6 +169,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeBackupGlobalsOnClass(): void
@@ -190,6 +199,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -244,6 +254,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -298,6 +309,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -352,6 +364,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -406,6 +419,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -429,6 +443,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeBefore(): void
@@ -456,6 +473,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -479,6 +497,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeCoversOnClass(): void
@@ -506,6 +527,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -560,6 +582,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -614,6 +637,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -640,6 +664,9 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(self::class, $metadata->asStringForCodeUnitMapper());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeCoversDefaultClass(): void
@@ -667,6 +694,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -692,6 +720,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeCoversFunction(): void
@@ -718,6 +749,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -744,6 +776,9 @@ final class MetadataTest extends TestCase
 
         $this->assertSame('f', $metadata->functionName());
         $this->assertSame('::f', $metadata->asStringForCodeUnitMapper());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeCoversMethod(): void
@@ -771,6 +806,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -798,6 +834,9 @@ final class MetadataTest extends TestCase
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame('testCanBeCoversMethod', $metadata->methodName());
         $this->assertSame(self::class . '::testCanBeCoversMethod', $metadata->asStringForCodeUnitMapper());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeCoversNothingOnMethod(): void
@@ -825,6 +864,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -878,6 +918,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -931,6 +972,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -957,6 +999,9 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame('method', $metadata->methodName());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeDependsOnClass(): void
@@ -984,6 +1029,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1011,6 +1057,9 @@ final class MetadataTest extends TestCase
         $this->assertSame(self::class, $metadata->className());
         $this->assertFalse($metadata->deepClone());
         $this->assertFalse($metadata->shallowClone());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeDependsOnMethod(): void
@@ -1038,6 +1087,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1066,6 +1116,9 @@ final class MetadataTest extends TestCase
         $this->assertSame('method', $metadata->methodName());
         $this->assertFalse($metadata->deepClone());
         $this->assertFalse($metadata->shallowClone());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeDisableReturnValueGenerationForTestDoubles(): void
@@ -1093,6 +1146,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1116,6 +1170,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeDoesNotPerformAssertionsOnClass(): void
@@ -1143,6 +1200,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1196,6 +1254,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1249,6 +1308,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1303,6 +1363,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1357,6 +1418,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1383,6 +1445,7 @@ final class MetadataTest extends TestCase
 
         $this->assertSame('class', $metadata->className());
         $this->assertSame('property', $metadata->propertyName());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -1412,6 +1475,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1438,6 +1502,7 @@ final class MetadataTest extends TestCase
 
         $this->assertSame('class', $metadata->className());
         $this->assertSame('property', $metadata->propertyName());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -1467,6 +1532,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertTrue($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1492,6 +1558,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('name', $metadata->groupName());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -1521,6 +1588,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertTrue($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1544,6 +1612,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeIgnoreDeprecationsOnMethod(): void
@@ -1571,6 +1642,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertTrue($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1594,6 +1666,117 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
+    }
+
+    public function testCanBeIgnorePhpunitDeprecationsOnClass(): void
+    {
+        $metadata = Metadata::ignorePhpunitDeprecationsOnClass();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertTrue($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
+    }
+
+    public function testCanBeIgnorePhpunitDeprecationsOnMethod(): void
+    {
+        $metadata = Metadata::ignorePhpunitDeprecationsOnMethod();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertTrue($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeGroupOnMethod(): void
@@ -1621,6 +1804,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertTrue($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1646,6 +1830,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('name', $metadata->groupName());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -1675,6 +1860,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertTrue($metadata->isRunTestsInSeparateProcesses());
@@ -1698,6 +1884,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeRunClassInSeparateProcess(): void
@@ -1725,6 +1914,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertTrue($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1748,6 +1938,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeRunInSeparateProcess(): void
@@ -1775,6 +1968,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertTrue($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1798,6 +1992,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeTest(): void
@@ -1825,6 +2022,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1848,6 +2046,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBePreCondition(): void
@@ -1875,6 +2076,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1898,6 +2100,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBePostCondition(): void
@@ -1925,6 +2130,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1948,6 +2154,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBePreserveGlobalStateOnClass(): void
@@ -1974,6 +2183,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -1999,6 +2209,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -2027,6 +2238,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2052,6 +2264,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -2081,6 +2294,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2107,6 +2321,7 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(__METHOD__, $metadata->methodName());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -2136,6 +2351,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2162,6 +2378,7 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(__METHOD__, $metadata->methodName());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -2191,6 +2408,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2216,6 +2434,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -2245,6 +2464,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2270,6 +2490,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -2299,6 +2520,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2324,6 +2546,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystem());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -2353,6 +2576,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2378,6 +2602,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystem());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -2407,6 +2632,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2432,6 +2658,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystemFamily());
+
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
     }
@@ -2461,6 +2688,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2486,6 +2714,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystemFamily());
+
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
     }
@@ -2520,6 +2749,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2580,6 +2810,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2635,6 +2866,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2700,6 +2932,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2757,6 +2990,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2822,6 +3056,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2884,6 +3119,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2944,6 +3180,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -2999,6 +3236,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3055,6 +3293,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3111,6 +3350,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3166,6 +3406,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3221,6 +3462,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3246,6 +3488,11 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(['a', 'b'], $metadata->data());
+        $this->assertFalse($metadata->hasName());
+        $this->assertNull($metadata->name());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 
     public function testCanBeUsesOnClass(): void
@@ -3273,6 +3520,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3328,6 +3576,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3383,6 +3632,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3409,6 +3659,9 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(self::class, $metadata->asStringForCodeUnitMapper());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeUsesDefaultClass(): void
@@ -3436,6 +3689,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3461,6 +3715,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeUsesFunction(): void
@@ -3488,6 +3745,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3513,6 +3771,9 @@ final class MetadataTest extends TestCase
 
         $this->assertSame('f', $metadata->functionName());
         $this->assertSame('::f', $metadata->asStringForCodeUnitMapper());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeUsesMethod(): void
@@ -3540,6 +3801,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3567,6 +3829,9 @@ final class MetadataTest extends TestCase
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame('testCanBeUsesMethod', $metadata->methodName());
         $this->assertSame(self::class . '::testCanBeUsesMethod', $metadata->asStringForCodeUnitMapper());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
     }
 
     public function testCanBeWithoutErrorHandler(): void
@@ -3594,6 +3859,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
@@ -3617,5 +3883,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertTrue($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
     }
 }
