@@ -419,11 +419,6 @@ final class ErrorHandler
 
         $trace = $this->filteredStackTrace($filterTrigger);
 
-        // Data Provider methods are called via Reflection
-        if (!isset($trace[1]['file'])) {
-            $trace[1] = $trace[0];
-        }
-
         assert(isset($trace[0]['file']));
         assert(isset($trace[1]['file']));
 
@@ -504,8 +499,8 @@ final class ErrorHandler
             }
 
             if ($trace[$frame]['class'] === DataProvider::class) {
-                // PHPUnit\Metadata\Api\DataProvider::dataProvidedByMethods(), ReflectionMethod::invoke()
-                $dataProviderFrame = $frame - 2;
+                // PHPUnit\Metadata\Api\DataProvider::dataProvidedByMethods()
+                $dataProviderFrame = $frame - 1;
 
                 break;
             }
