@@ -13,9 +13,11 @@ return [
         'PHPUnit',
         'Prophecy'
     ],
+
     'expose-classes' => [
         '/^PHP_Token.*$/'
     ],
+
     'expose-constants' => [
         '/^__PHPUNIT_.+$/'
     ],
