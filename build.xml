@@ -327,8 +327,6 @@
             <arg value="--no-interaction" />
             <arg value="--output-dir" />
             <arg path="${basedir}/build/tmp/phar-scoped" />
-            <arg value="--prefix" />
-            <arg value="PHPUnit" />
             <arg path="${basedir}/build/tmp/phar" />
         </exec>
 

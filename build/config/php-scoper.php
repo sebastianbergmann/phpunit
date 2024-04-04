@@ -9,6 +9,8 @@
  */
 
 return [
+    'prefix' => 'PHPUnit',
+
     'exclude-namespaces' => [
         'PHPUnit',
         'Prophecy'
