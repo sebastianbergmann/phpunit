@@ -9,7 +9,7 @@
  */
 
 return [
-    'prefix' => 'PHPUnit',
+    'prefix' => 'PHPUnitPHAR',
 
     'exclude-namespaces' => [
         'PHPUnit',
