@@ -9,10 +9,13 @@
  */
 
 return [
+    'prefix' => 'PHPUnitPHAR',
+
     'exclude-namespaces' => [
         'PHPUnit',
         'Prophecy'
     ],
+
     'expose-constants' => [
         '/^__PHPUNIT_.+$/'
     ],
