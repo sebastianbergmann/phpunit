@@ -8,9 +8,12 @@
  * file that was distributed with this source code.
  */
 return [
+    'prefix' => 'PHPUnitPHAR',
+
     'exclude-namespaces' => [
         'PHPUnit',
     ],
+
     'expose-constants' => [
         '/^__PHPUNIT_.+$/'
     ],
