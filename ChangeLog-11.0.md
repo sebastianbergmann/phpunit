@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.0.10] - 2024-04-05
+
+### Changed
+
+* The namespaces of dependencies are now prefixed with `PHPUnitPHAR` instead of just `PHPUnit` for the PHAR distribution of PHPUnit
+
 ## [11.0.9] - 2024-03-28
 
 ### Changed
@@ -160,6 +166,7 @@ All notable changes of the PHPUnit 11.0 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::registerMockObjectsFromTestArgumentsRecursively()`
 * `PHPUnit\Framework\Constraint\Constraint::exporter()`
 
+[11.0.10]: https://github.com/sebastianbergmann/phpunit/compare/11.0.9...11.0.10
 [11.0.9]: https://github.com/sebastianbergmann/phpunit/compare/11.0.8...11.0.9
 [11.0.8]: https://github.com/sebastianbergmann/phpunit/compare/11.0.7...11.0.8
 [11.0.7]: https://github.com/sebastianbergmann/phpunit/compare/11.0.6...11.0.7
