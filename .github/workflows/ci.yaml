@@ -9,7 +9,7 @@ on:
 name: CI
 
 env:
-  COMPOSER_ROOT_VERSION: "11.1-dev"
+  COMPOSER_ROOT_VERSION: "11.2-dev"
 
 permissions:
   contents: read
