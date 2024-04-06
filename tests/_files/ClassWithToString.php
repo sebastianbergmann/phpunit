@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use Stringable;
 
-class ClassWithToString implements Stringable
+final class ClassWithToString implements Stringable
 {
     public function __toString(): string
     {

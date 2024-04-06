@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\Attributes\DependsOnClass;
 use PHPUnit\Framework\TestCase;
 
-class DependencyOnClassTest extends TestCase
+final class DependencyOnClassTest extends TestCase
 {
     #[DependsOnClass(DependencySuccessTest::class)]
     public function testThatDependsOnASuccessfulClass(): void

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @requires extension nonExistingExtension
  */
-class RequirementsClassBeforeClassHookTest extends TestCase
+final class RequirementsClassBeforeClassHookTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {

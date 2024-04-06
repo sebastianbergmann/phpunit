@@ -9,7 +9,7 @@
  */
 use PHPUnit\TestFixture\AbstractTest;
 
-class ConcreteTest extends AbstractTest
+final class ConcreteTest extends AbstractTest
 {
     public function testTwo(): void
     {

@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class AlternativeSuffixTest extends TestCase
+final class AlternativeSuffixTest extends TestCase
 {
     public function testOne(): void
     {

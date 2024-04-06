@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use CoveredClass;
 use PHPUnit\Framework\TestCase;
 
-class NamespaceCoverageMethodTest extends TestCase
+final class NamespaceCoverageMethodTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod

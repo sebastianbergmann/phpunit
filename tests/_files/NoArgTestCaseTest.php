@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class NoArgTestCaseTest extends TestCase
+final class NoArgTestCaseTest extends TestCase
 {
     public function testNothing(): void
     {

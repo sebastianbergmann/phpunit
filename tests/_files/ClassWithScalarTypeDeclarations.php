@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class ClassWithScalarTypeDeclarations
+final class ClassWithScalarTypeDeclarations
 {
     public function foo(string $string, int $int): void
     {

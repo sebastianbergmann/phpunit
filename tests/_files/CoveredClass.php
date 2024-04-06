@@ -26,7 +26,7 @@ class CoveredParentClass
     }
 }
 
-class CoveredClass extends CoveredParentClass
+final class CoveredClass extends CoveredParentClass
 {
     public function publicMethod(): void
     {

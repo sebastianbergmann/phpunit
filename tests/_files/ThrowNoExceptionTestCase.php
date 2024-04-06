@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class ThrowNoExceptionTestCase extends TestCase
+final class ThrowNoExceptionTestCase extends TestCase
 {
     public function test(): void
     {

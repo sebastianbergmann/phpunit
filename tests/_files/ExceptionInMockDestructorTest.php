@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class ExceptionInMockDestructorTest extends TestCase
+final class ExceptionInMockDestructorTest extends TestCase
 {
     public function testOne(): void
     {

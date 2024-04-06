@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class AssertionExampleTest extends TestCase
+final class AssertionExampleTest extends TestCase
 {
     public function testOne(): void
     {

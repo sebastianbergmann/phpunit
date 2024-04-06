@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class ClassWithNonPublicAttributes extends ParentClassWithProtectedAttributes
+final class ClassWithNonPublicAttributes extends ParentClassWithProtectedAttributes
 {
     public static $publicStaticAttribute       = 'foo';
     protected static $protectedStaticAttribute = 'bar';

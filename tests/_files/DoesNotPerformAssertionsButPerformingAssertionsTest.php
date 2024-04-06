@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
-class DoesNotPerformAssertionsButPerformingAssertionsTest extends TestCase
+final class DoesNotPerformAssertionsButPerformingAssertionsTest extends TestCase
 {
     #[DoesNotPerformAssertions]
     public function testFalseAndTrueAreStillFine(): void

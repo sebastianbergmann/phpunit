@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class TestGeneratorMaker
+final class TestGeneratorMaker
 {
     public function create($array = [])
     {

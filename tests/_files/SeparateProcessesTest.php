@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
 #[RunTestsInSeparateProcesses]
-class SeparateProcessesTest extends TestCase
+final class SeparateProcessesTest extends TestCase
 {
     public function testFoo(): void
     {

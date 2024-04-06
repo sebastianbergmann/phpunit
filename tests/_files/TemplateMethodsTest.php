@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
-class TemplateMethodsTest extends TestCase
+final class TemplateMethodsTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {

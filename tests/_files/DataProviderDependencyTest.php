@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderDependencyTest extends TestCase
+final class DataProviderDependencyTest extends TestCase
 {
     public static function provider(): array
     {

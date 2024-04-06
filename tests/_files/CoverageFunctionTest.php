@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversFunction('globalFunction')]
 #[UsesFunction('globalFunction')]
-class CoverageFunctionTest extends TestCase
+final class CoverageFunctionTest extends TestCase
 {
     public function testSomething(): void
     {

@@ -16,7 +16,7 @@ namespace PHPUnit\TestFixture;
  * @requires function testFuncClass
  * @requires extension testExtClass
  */
-class RequirementsClassDocBlockTest
+final class RequirementsClassDocBlockTest
 {
     /**
      * @requires PHP 5.4

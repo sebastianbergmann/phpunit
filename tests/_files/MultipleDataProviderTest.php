@@ -16,7 +16,7 @@ use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class MultipleDataProviderTest extends TestCase
+final class MultipleDataProviderTest extends TestCase
 {
     public static function providerA(): array
     {
