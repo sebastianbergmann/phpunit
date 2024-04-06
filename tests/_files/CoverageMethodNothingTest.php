@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
 #[CoversNothing]
-class CoverageMethodNothingTest extends TestCase
+final class CoverageMethodNothingTest extends TestCase
 {
     public function testSomething(): void
     {

@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 #[CoversFunction(BankAccount::class)]
-class BankAccountTest extends TestCase
+final class BankAccountTest extends TestCase
 {
     #[Group('balanceIsInitiallyZero')]
     #[Group('specification')]

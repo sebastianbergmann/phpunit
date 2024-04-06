@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderTest extends TestCase
+final class DataProviderTest extends TestCase
 {
     public static function providerMethod(): array
     {

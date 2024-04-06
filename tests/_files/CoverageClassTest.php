@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CoveredClass::class)]
 #[UsesClass(CoveredClass::class)]
-class CoverageClassTest extends TestCase
+final class CoverageClassTest extends TestCase
 {
     public function testSomething(): void
     {

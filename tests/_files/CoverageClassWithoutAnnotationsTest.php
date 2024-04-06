@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class CoverageClassWithoutAnnotationsTest extends TestCase
+final class CoverageClassWithoutAnnotationsTest extends TestCase
 {
     public function testSomething(): void
     {

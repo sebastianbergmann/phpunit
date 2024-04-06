@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class ConcreteTest extends AbstractTest
+final class ConcreteTest extends AbstractTest
 {
     public function testTwo(): void
     {

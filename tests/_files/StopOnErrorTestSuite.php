@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use Error;
 use PHPUnit\Framework\TestCase;
 
-class StopOnErrorTestSuite extends TestCase
+final class StopOnErrorTestSuite extends TestCase
 {
     public function testIncomplete(): void
     {

@@ -34,6 +34,8 @@ use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
+use PHPUnit\TestFixture\CoverageTraitMethodTest;
+use PHPUnit\TestFixture\CoverageTraitTest;
 use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
 use PHPUnit\TestFixture\InterfaceTargetTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAnnotationTest;
@@ -206,6 +208,22 @@ final class CodeCoverageTest extends TestCase
                 Test3194::class,
                 'testOne',
             ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
+                ],
+                CoverageTraitTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredTrait.php' => range(14, 17),
+                ],
+                CoverageTraitMethodTest::class,
+                'testSomething',
+            ],
         ];
     }
 
@@ -321,6 +339,22 @@ final class CodeCoverageTest extends TestCase
                 CoverageNamespacedFunctionTest::class,
                 'testFunc',
             ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
+                ],
+                CoverageTraitTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredTrait.php' => range(14, 17),
+                ],
+                CoverageTraitMethodTest::class,
+                'testSomething',
+            ],
         ];
     }
 
@@ -423,7 +457,7 @@ final class CodeCoverageTest extends TestCase
     public function testRejectsInvalidCoversClassTargetWithAttribute(): void
     {
         $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Class "InvalidClass" is not a valid target for code coverage');
+        $this->expectExceptionMessage('"InvalidClass" is not a valid target for code coverage');
 
         (new CodeCoverage)->linesToBeCovered(InvalidClassTargetWithAttributeTest::class, 'testOne');
     }
@@ -431,7 +465,7 @@ final class CodeCoverageTest extends TestCase
     public function testRejectsInvalidUsesClassTargetWithAttribute(): void
     {
         $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Class "InvalidClass" is not a valid target for code coverage');
+        $this->expectExceptionMessage('"InvalidClass" is not a valid target for code coverage');
 
         (new CodeCoverage)->linesToBeUsed(InvalidClassTargetWithAttributeTest::class, 'testOne');
     }

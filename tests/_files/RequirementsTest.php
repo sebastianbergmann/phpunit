@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
-class RequirementsTest extends TestCase
+final class RequirementsTest extends TestCase
 {
     public function testOne(): void
     {

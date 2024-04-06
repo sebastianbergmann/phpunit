@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-class ThrowExceptionTestCase extends TestCase
+final class ThrowExceptionTestCase extends TestCase
 {
     public function test(): void
     {

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @ticket t123456
  */
-class NumericGroupAnnotationTest extends TestCase
+final class NumericGroupAnnotationTest extends TestCase
 {
     /**
      * @testdox Empty test for @ticket numeric annotation values

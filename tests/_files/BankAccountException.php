@@ -11,6 +11,6 @@ namespace PHPUnit\TestFixture;
 
 use RuntimeException;
 
-class BankAccountException extends RuntimeException
+final class BankAccountException extends RuntimeException
 {
 }

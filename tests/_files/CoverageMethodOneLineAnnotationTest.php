@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class CoverageMethodOneLineAnnotationTest extends TestCase
+final class CoverageMethodOneLineAnnotationTest extends TestCase
 {
     /** @covers \PHPUnit\TestFixture\CoveredClass::publicMethod */
     public function testSomething(): void

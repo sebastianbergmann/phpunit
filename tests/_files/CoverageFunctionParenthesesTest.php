@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class CoverageFunctionParenthesesTest extends TestCase
+final class CoverageFunctionParenthesesTest extends TestCase
 {
     /**
      * @covers ::globalFunction()

@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderExecutionOrderTest extends TestCase
+final class DataProviderExecutionOrderTest extends TestCase
 {
     public static function dataProviderAdditions(): array
     {

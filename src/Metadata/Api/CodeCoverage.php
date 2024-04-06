@@ -15,6 +15,7 @@ use function count;
 use function interface_exists;
 use function sprintf;
 use function str_starts_with;
+use function trait_exists;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Metadata\Covers;
@@ -279,16 +280,16 @@ final class CodeCoverage
                 );
             }
 
-            if (!class_exists($name)) {
+            if (!(class_exists($name) || trait_exists($name))) {
                 throw new InvalidCoversTargetException(
                     sprintf(
-                        'Class "%s" is not a valid target for code coverage',
+                        '"%s" is not a valid target for code coverage',
                         $name,
                     ),
                 );
             }
 
-            assert(class_exists($names[0]));
+            assert(class_exists($names[0]) || trait_exists($names[0]));
 
             $reflector = new ReflectionClass($name);
 

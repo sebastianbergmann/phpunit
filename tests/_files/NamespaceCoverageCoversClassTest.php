@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @usesDefaultClass \PHPUnit\TestFixture\CoveredClass
  */
-class NamespaceCoverageCoversClassTest extends TestCase
+final class NamespaceCoverageCoversClassTest extends TestCase
 {
     /**
      * @covers ::privateMethod

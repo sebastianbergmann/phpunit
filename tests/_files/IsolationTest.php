@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class IsolationTest extends TestCase
+final class IsolationTest extends TestCase
 {
     public function testIsInIsolationReturnsFalse(): void
     {

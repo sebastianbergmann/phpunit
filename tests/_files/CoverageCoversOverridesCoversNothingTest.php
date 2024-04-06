@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversNothing
  */
-class CoverageCoversOverridesCoversNothingTest extends TestCase
+final class CoverageCoversOverridesCoversNothingTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod

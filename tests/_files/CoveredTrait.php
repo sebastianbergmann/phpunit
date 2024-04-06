@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Framework\TestCase;
-
-final class DoNoAssertionTestCase extends TestCase
+trait CoveredTrait
 {
-    public function testNothing(): void
+    public function m(int $x, int $y): int
     {
+        return $x + $y;
     }
 }

@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class CoverageNamespacedFunctionTest extends TestCase
+final class CoverageNamespacedFunctionTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\func()

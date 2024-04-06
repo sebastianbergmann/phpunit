@@ -13,7 +13,7 @@ use function ini_get;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
-class IniTest extends TestCase
+final class IniTest extends TestCase
 {
     #[PreserveGlobalState(true)]
     public function testIni(): void

@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class CoverageMethodParenthesesWhitespaceTest extends TestCase
+final class CoverageMethodParenthesesWhitespaceTest extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod ( )

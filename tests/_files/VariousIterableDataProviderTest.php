@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class VariousIterableDataProviderTest extends AbstractVariousIterableDataProviderTest
+final class VariousIterableDataProviderTest extends AbstractVariousIterableDataProviderTest
 {
     public static function asArrayStaticProvider(): array
     {

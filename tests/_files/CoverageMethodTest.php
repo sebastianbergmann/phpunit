@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversMethod(CoveredClass::class, 'publicMethod')]
 #[UsesMethod(CoveredClass::class, 'publicMethod')]
-class CoverageMethodTest extends TestCase
+final class CoverageMethodTest extends TestCase
 {
     public function testSomething(): void
     {

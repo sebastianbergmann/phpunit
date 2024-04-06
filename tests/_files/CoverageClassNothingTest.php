@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversNothing
  */
-class CoverageClassNothingTest extends TestCase
+final class CoverageClassNothingTest extends TestCase
 {
     public function testSomething(): void
     {
