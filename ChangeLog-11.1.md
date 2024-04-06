@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.1.1] - 2024-MM-DD
+
+### Fixed
+
+* [#5798](https://github.com/sebastianbergmann/phpunit/issues/5798): The `#[CoversClass]` and `#[UsesClass]` attributes can no longer target traits
+
 ## [11.1.0] - 2024-04-05
 
 ### Added
@@ -26,4 +32,5 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 * [#5689](https://github.com/sebastianbergmann/phpunit/issues/5689): The `restrictDeprecations` attribute on the `<source>` element of the XML configuration file is now deprecated in favor of the `ignoreSelfDeprecations`, `ignoreDirectDeprecations`, and `ignoreIndirectDeprecations` attributes
 * [#5709](https://github.com/sebastianbergmann/phpunit/issues/5709): Deprecate support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options
 
+[11.1.1]: https://github.com/sebastianbergmann/phpunit/compare/11.1.0...11.1
 [11.1.0]: https://github.com/sebastianbergmann/phpunit/compare/11.0.10...11.1.0
