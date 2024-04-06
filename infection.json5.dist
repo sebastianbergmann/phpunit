@@ -8,6 +8,8 @@
         "excludes": [
             // causes errors during loading xml fies
             "Util/Xml/Xml.php",
+            // test causes creation of files in project root when mutated
+            "TextUI/Output/Printer/DefaultPrinter.php",
             // causes syntax errors since invalid PHP code is generated
             "{Framework/MockObject/Generator/.*}",
             // causes issues with saving and reading result cache json files, failing phpunit
