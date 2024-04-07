@@ -28,4 +28,6 @@ trait Method
             func_get_args(),
         );
     }
+
+    abstract public function __phpunit_getInvocationHandler(): InvocationHandler;
 }
