@@ -26,7 +26,6 @@ use function interface_exists;
 use function is_array;
 use function is_object;
 use function md5;
-use function method_exists;
 use function mt_rand;
 use function preg_match;
 use function preg_match_all;
@@ -646,7 +645,7 @@ final class Generator
                 throw new ClassIsFinalException($_mockClassName['fullClassName']);
             }
 
-            if (method_exists($class, 'isReadOnly') && $class->isReadOnly()) {
+            if ($class->isReadOnly()) {
                 throw new ClassIsReadonlyException($_mockClassName['fullClassName']);
             }
 
