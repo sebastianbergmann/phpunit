@@ -48,7 +48,7 @@ final class Document extends DOMDocument
         // Find all attributes within the <phpunit> tag
         preg_match('#(?<=<phpunit)(?:\s+([^\s=]+)="([^"]*)")*#', $phpunitTag, $attributes);
 
-        if ($attributes === null || $attributes === []) {
+        if ($attributes === []) {
             return $xml;
         }
 
