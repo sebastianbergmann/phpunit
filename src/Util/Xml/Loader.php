@@ -61,7 +61,7 @@ final readonly class Loader
             );
         }
 
-        $document                     = new DOMDocument;
+        $document                     = new Document;
         $document->preserveWhiteSpace = false;
 
         $internal  = libxml_use_internal_errors(true);
