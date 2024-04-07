@@ -8,4 +8,8 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5799](https://github.com/sebastianbergmann/phpunit/issues/5799): `#[CoversTrait]` and `#[UsesTrait]` attributes
 
+### Deprecated
+
+* [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
+
 [11.2.0]: https://github.com/sebastianbergmann/phpunit/compare/11.1...main

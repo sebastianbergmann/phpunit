@@ -16,6 +16,7 @@ use function interface_exists;
 use function sprintf;
 use function str_starts_with;
 use function trait_exists;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Metadata\Covers;
@@ -292,6 +293,24 @@ final class CodeCoverage
             }
 
             assert(class_exists($names[0]) || trait_exists($names[0]));
+
+            if ($metadata->isCoversClass() && trait_exists($names[0])) {
+                EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                    sprintf(
+                        'Targeting a trait such as %s with #[CoversClass] is deprecated, please refactor your test to use #[CoversTrait] instead.',
+                        $names[0],
+                    ),
+                );
+            }
+
+            if ($metadata->isUsesClass() && trait_exists($names[0])) {
+                EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                    sprintf(
+                        'Targeting a trait such as %s with #[UsesClass] is deprecated, please refactor your test to use #[UsesTrait] instead.',
+                        $names[0],
+                    ),
+                );
+            }
 
             $reflector = new ReflectionClass($name);
 

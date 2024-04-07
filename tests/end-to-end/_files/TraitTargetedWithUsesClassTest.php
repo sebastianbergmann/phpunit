@@ -7,17 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\DeprecatedAnnotationsTestFixture;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\CoveredTrait;
 
-#[CoversClass(CoveredTrait::class)]
 #[UsesClass(CoveredTrait::class)]
-final class Issue5798Test extends TestCase
+final class TraitTargetedWithUsesClassTest extends TestCase
 {
     public function testSomething(): void
     {
+        $this->assertTrue(true);
     }
 }
