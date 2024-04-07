@@ -40,20 +40,21 @@ final class Document extends DOMDocument
         preg_match_all('#<phpunit[^>]*>#', $xml, $phpunitTags);
 
         $phpunitTag = $phpunitTags[0][0] ?? null;
-        if (!$phpunitTag) {
+
+        if ($phpunitTag === null) {
             return $xml;
         }
 
         // Find all attributes within the <phpunit> tag
         preg_match('#(?<=<phpunit)(?:\s+([^\s=]+)="([^"]*)")*#', $phpunitTag, $attributes);
 
-        if (!$attributes) {
+        if ($attributes === null || $attributes === []) {
             return $xml;
         }
 
         $phpunitNewTag = $phpunitTag;
 
-        foreach (explode(' ', $attributes[0]) ?: [] as $attribute) {
+        foreach (explode(' ', $attributes[0]) as $attribute) {
             if (trim($attribute) === '' || str_contains($attribute, ':xsi=')) {
                 // skip `xmlns:xsi` attribute
                 continue;
