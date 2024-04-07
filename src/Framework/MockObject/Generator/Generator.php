@@ -58,8 +58,10 @@ use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
+use PHPUnit\Framework\MockObject\TestDoubleState;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionObject;
 use SoapClient;
 use SoapFault;
 use Throwable;
@@ -580,12 +582,20 @@ final class Generator
         $className = $mockClass->generate();
         $object    = $this->instantiate($className, $callOriginalConstructor, $arguments);
 
-        if ($callOriginalMethods) {
-            $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
-        }
+        if ($object instanceof StubInternal && $mockClass instanceof MockClass) {
+            /**
+             * @psalm-suppress MissingThrowsDocblock
+             *
+             * @noinspection PhpUnhandledExceptionInspection
+             */
+            (new ReflectionObject($object))->getProperty('__phpunit_state')->setValue(
+                $object,
+                new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration),
+            );
 
-        if ($object instanceof StubInternal) {
-            $object->__phpunit_setReturnValueGeneration($returnValueGeneration);
+            if ($callOriginalMethods) {
+                $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
+            }
         }
 
         return $object;
@@ -1041,7 +1051,12 @@ final class Generator
             }
         }
 
-        $object->__phpunit_setOriginalObject($proxyTarget);
+        /**
+         * @psalm-suppress MissingThrowsDocblock
+         *
+         * @noinspection PhpUnhandledExceptionInspection
+         */
+        (new ReflectionObject($object))->getProperty('__phpunit_state')->getValue($object)->setProxyTarget($proxyTarget);
     }
 
     /**
