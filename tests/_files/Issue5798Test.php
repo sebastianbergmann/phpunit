@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\UsesTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversTrait(CoveredTrait::class)]
-#[UsesTrait(CoveredTrait::class)]
-final class CoverageTraitTest extends TestCase
+#[CoversClass(CoveredTrait::class)]
+#[UsesClass(CoveredTrait::class)]
+final class Issue5798Test extends TestCase
 {
     public function testSomething(): void
     {

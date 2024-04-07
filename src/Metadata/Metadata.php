@@ -75,6 +75,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @psalm-param trait-string $traitName
+     */
+    public static function coversTrait(string $traitName): CoversTrait
+    {
+        return new CoversTrait(self::CLASS_LEVEL, $traitName);
+    }
+
+    /**
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      */
@@ -435,6 +443,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @psalm-param trait-string $traitName
+     */
+    public static function UsesTrait(string $traitName): UsesTrait
+    {
+        return new UsesTrait(self::CLASS_LEVEL, $traitName);
+    }
+
+    /**
      * @psalm-param non-empty-string $functionName
      */
     public static function usesFunction(string $functionName): UsesFunction
@@ -566,6 +582,14 @@ abstract readonly class Metadata
      * @psalm-assert-if-true CoversDefaultClass $this
      */
     public function isCoversDefaultClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true CoversTrait $this
+     */
+    public function isCoversTrait(): bool
     {
         return false;
     }
@@ -832,6 +856,14 @@ abstract readonly class Metadata
      * @psalm-assert-if-true UsesDefaultClass $this
      */
     public function isUsesDefaultClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true UsesTrait $this
+     */
+    public function isUsesTrait(): bool
     {
         return false;
     }

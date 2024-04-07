@@ -41,6 +41,7 @@ use PHPUnit\TestFixture\InterfaceTargetTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAnnotationTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAttributeTest;
 use PHPUnit\TestFixture\InvalidFunctionTargetTest;
+use PHPUnit\TestFixture\Issue5798Test;
 use PHPUnit\TestFixture\MoreThanOneCoversDefaultClassAnnotationTest;
 use PHPUnit\TestFixture\MoreThanOneUsesDefaultClassAnnotationTest;
 use PHPUnit\TestFixture\NamespaceCoverageClassTest;
@@ -219,6 +220,14 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
+                    TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
+                ],
+                Issue5798Test::class,
+                'testSomething',
+            ],
+
+            [
+                [
                     TEST_FILES_PATH . 'CoveredTrait.php' => range(14, 17),
                 ],
                 CoverageTraitMethodTest::class,
@@ -345,6 +354,14 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
                 ],
                 CoverageTraitTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
+                ],
+                Issue5798Test::class,
                 'testSomething',
             ],
 

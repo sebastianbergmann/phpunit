@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 ## [11.2.0] - 2024-06-07
 
+### Added
+
+* [#5799](https://github.com/sebastianbergmann/phpunit/issues/5799): `#[CoversTrait]` and `#[UsesTrait]` attributes
+
 [11.2.0]: https://github.com/sebastianbergmann/phpunit/compare/11.1...main
