@@ -14,7 +14,6 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
-use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
@@ -48,6 +47,15 @@ final class CreateMockTest extends TestCase
         $this->assertInstanceOf(MockObject::class, $double);
     }
 
+    public function testCreatesMockObjectForReadonlyClass(): void
+    {
+        $double = $this->createMock(ReadonlyClass::class);
+
+        $this->assertInstanceOf(ReadonlyClass::class, $double);
+        $this->assertInstanceOf(Stub::class, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
+    }
+
     public function testReturnValueGenerationIsEnabledByDefault(): void
     {
         $double = $this->createMock(AnInterface::class);
@@ -60,13 +68,6 @@ final class CreateMockTest extends TestCase
         $this->expectException(ClassIsFinalException::class);
 
         $this->createMock(FinalClass::class);
-    }
-
-    public function testCannotCreateMockObjectForReadonlyClass(): void
-    {
-        $this->expectException(ClassIsReadonlyException::class);
-
-        $this->createMock(ReadonlyClass::class);
     }
 
     public function testCannotCreateMockObjectForEnumeration(): void

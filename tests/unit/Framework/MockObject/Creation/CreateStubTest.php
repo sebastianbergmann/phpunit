@@ -14,7 +14,6 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
-use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
@@ -46,6 +45,14 @@ final class CreateStubTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
+    public function testCreatesTestStubForReadonlyClass(): void
+    {
+        $double = $this->createStub(ReadonlyClass::class);
+
+        $this->assertInstanceOf(ReadonlyClass::class, $double);
+        $this->assertInstanceOf(Stub::class, $double);
+    }
+
     public function testReturnValueGenerationIsEnabledByDefault(): void
     {
         $double = $this->createStub(AnInterface::class);
@@ -58,13 +65,6 @@ final class CreateStubTest extends TestCase
         $this->expectException(ClassIsFinalException::class);
 
         $this->createStub(FinalClass::class);
-    }
-
-    public function testCannotCreateTestStubForReadonlyClass(): void
-    {
-        $this->expectException(ClassIsReadonlyException::class);
-
-        $this->createStub(ReadonlyClass::class);
     }
 
     public function testCannotCreateTestStubForEnumeration(): void
