@@ -1,5 +1,10 @@
 --TEST--
 The right events are emitted in the right order for a successful test that targets a trait with #[CoversClass]
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pcov') && !extension_loaded('xdebug')) {
+    print "skip: this test requires pcov or xdebug\n";
+}
 --FILE--
 <?php declare(strict_types=1);
 $traceFile    = tempnam(sys_get_temp_dir(), __FILE__);
