@@ -36,6 +36,7 @@ final class CreateMockTest extends TestCase
 
         $this->assertInstanceOf(AnInterface::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
     }
 
     public function testCreatesMockObjectForExtendableClass(): void
@@ -44,6 +45,7 @@ final class CreateMockTest extends TestCase
 
         $this->assertInstanceOf(ExtendableClass::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
     }
 
     public function testReturnValueGenerationIsEnabledByDefault(): void
