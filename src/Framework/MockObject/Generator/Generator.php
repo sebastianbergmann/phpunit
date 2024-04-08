@@ -1053,12 +1053,7 @@ final class Generator
             }
         }
 
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         *
-         * @noinspection PhpUnhandledExceptionInspection
-         */
-        (new ReflectionObject($object))->getProperty('__phpunit_state')->getValue($object)->setProxyTarget($proxyTarget);
+        $object->__phpunit_state()->setProxyTarget($proxyTarget);
     }
 
     /**
