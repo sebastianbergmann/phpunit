@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -443,6 +444,7 @@ EOT,
         $this->assertSame($testData, $actual);
     }
 
+    #[RequiresPhp('8.3')]
     public function testExpectationsAreClonedWhenTestDoubleIsCloned(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
