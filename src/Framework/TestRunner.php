@@ -359,6 +359,10 @@ final class TestRunner
             return true;
         }
 
+        if ($metadata->isCoversMethod()->isNotEmpty()) {
+            return true;
+        }
+
         if ($metadata->isCoversFunction()->isNotEmpty()) {
             return true;
         }
