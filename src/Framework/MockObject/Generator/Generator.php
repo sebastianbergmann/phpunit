@@ -765,7 +765,9 @@ final class Generator
         $traits = [];
 
         if (!$isReadonly && version_compare('8.3.0', PHP_VERSION, '>')) {
+            // @codeCoverageIgnoreStart
             $traits[] = MutableStubApi::class;
+            // @codeCoverageIgnoreEnd
         } else {
             $traits[] = StubApi::class;
         }
