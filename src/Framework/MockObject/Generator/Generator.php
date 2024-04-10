@@ -39,6 +39,7 @@ use function strlen;
 use function strpos;
 use function substr;
 use function trait_exists;
+use function version_compare;
 use Exception;
 use Iterator;
 use IteratorAggregate;
@@ -54,6 +55,7 @@ use PHPUnit\Framework\MockObject\Method;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
+use PHPUnit\Framework\MockObject\MutableStubApi;
 use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
@@ -760,7 +762,13 @@ final class Generator
         }
 
         /** @psalm-var trait-string[] $traits */
-        $traits = [StubApi::class];
+        $traits = [];
+
+        if (!$isReadonly && version_compare('8.3.0', PHP_VERSION, '>')) {
+            $traits[] = MutableStubApi::class;
+        } else {
+            $traits[] = StubApi::class;
+        }
 
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
