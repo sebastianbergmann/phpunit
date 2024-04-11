@@ -806,9 +806,7 @@ final class Generator
 
         if ($doubledCloneMethod) {
             $traits[] = DoubledCloneMethod::class;
-        }
-
-        if ($proxiedCloneMethod) {
+        } elseif ($proxiedCloneMethod) {
             $traits[] = ProxiedCloneMethod::class;
         }
 
