@@ -48,18 +48,22 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
+use PHPUnit\Framework\MockObject\ErrorCloneMethod;
 use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
 use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 use PHPUnit\Framework\MockObject\Method;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
+use PHPUnit\Framework\MockObject\MutableStubApi;
 use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
+use PHPUnit\Framework\MockObject\TestDoubleState;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionObject;
 use SoapClient;
 use SoapFault;
 use Throwable;
@@ -99,7 +103,6 @@ final class Generator
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
-     * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
@@ -232,7 +235,6 @@ final class Generator
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
-     * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
@@ -293,7 +295,6 @@ final class Generator
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
-     * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
@@ -381,7 +382,6 @@ final class Generator
     /**
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
-     * @throws ClassIsReadonlyException
      * @throws ReflectionException
      * @throws RuntimeException
      *
@@ -580,12 +580,20 @@ final class Generator
         $className = $mockClass->generate();
         $object    = $this->instantiate($className, $callOriginalConstructor, $arguments);
 
-        if ($callOriginalMethods) {
-            $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
-        }
+        if ($object instanceof StubInternal && $mockClass instanceof MockClass) {
+            /**
+             * @psalm-suppress MissingThrowsDocblock
+             *
+             * @noinspection PhpUnhandledExceptionInspection
+             */
+            (new ReflectionObject($object))->getProperty('__phpunit_state')->setValue(
+                $object,
+                new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration),
+            );
 
-        if ($object instanceof StubInternal) {
-            $object->__phpunit_setReturnValueGeneration($returnValueGeneration);
+            if ($callOriginalMethods) {
+                $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
+            }
         }
 
         return $object;
@@ -594,7 +602,6 @@ final class Generator
     /**
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
-     * @throws ClassIsReadonlyException
      * @throws ReflectionException
      * @throws RuntimeException
      */
@@ -605,6 +612,7 @@ final class Generator
         $doubledCloneMethod    = false;
         $proxiedCloneMethod    = false;
         $isClass               = false;
+        $isReadonly            = false;
         $isInterface           = false;
         $class                 = null;
         $mockMethods           = new MockMethodSet;
@@ -646,7 +654,7 @@ final class Generator
             }
 
             if ($class->isReadOnly()) {
-                throw new ClassIsReadonlyException($_mockClassName['fullClassName']);
+                $isReadonly = true;
             }
 
             // @see https://github.com/sebastianbergmann/phpunit/issues/2995
@@ -754,7 +762,16 @@ final class Generator
         }
 
         /** @psalm-var trait-string[] $traits */
-        $traits = [StubApi::class];
+        $traits  = [];
+        $isPhp82 = PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2;
+
+        if (!$isReadonly && $isPhp82) {
+            // @codeCoverageIgnoreStart
+            $traits[] = MutableStubApi::class;
+            // @codeCoverageIgnoreEnd
+        } else {
+            $traits[] = StubApi::class;
+        }
 
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
@@ -788,12 +805,16 @@ final class Generator
             $traits[] = Method::class;
         }
 
-        if ($doubledCloneMethod) {
-            $traits[] = DoubledCloneMethod::class;
-        }
-
-        if ($proxiedCloneMethod) {
-            $traits[] = ProxiedCloneMethod::class;
+        if ($isPhp82 && $isReadonly) {
+            // @codeCoverageIgnoreStart
+            $traits[] = ErrorCloneMethod::class;
+            // @codeCoverageIgnoreEnd
+        } else {
+            if ($doubledCloneMethod) {
+                $traits[] = DoubledCloneMethod::class;
+            } elseif ($proxiedCloneMethod) {
+                $traits[] = ProxiedCloneMethod::class;
+            }
         }
 
         $useStatements = '';
@@ -816,6 +837,7 @@ final class Generator
                     $_mockClassName,
                     $isInterface,
                     $additionalInterfaces,
+                    $isReadonly,
                 ),
                 'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
@@ -862,7 +884,7 @@ final class Generator
         ];
     }
 
-    private function generateTestDoubleClassDeclaration(bool $mockObject, array $mockClassName, bool $isInterface, array $additionalInterfaces = []): string
+    private function generateTestDoubleClassDeclaration(bool $mockObject, array $mockClassName, bool $isInterface, array $additionalInterfaces, bool $isReadonly): string
     {
         if ($mockObject) {
             $additionalInterfaces[] = MockObjectInternal::class;
@@ -870,7 +892,12 @@ final class Generator
             $additionalInterfaces[] = StubInternal::class;
         }
 
-        $buffer     = 'class ';
+        if ($isReadonly) {
+            $buffer = 'readonly class ';
+        } else {
+            $buffer = 'class ';
+        }
+
         $interfaces = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {
@@ -1041,7 +1068,7 @@ final class Generator
             }
         }
 
-        $object->__phpunit_setOriginalObject($proxyTarget);
+        $object->__phpunit_state()->setProxyTarget($proxyTarget);
     }
 
     /**

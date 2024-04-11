@@ -11,10 +11,12 @@ namespace PHPUnit\Framework\MockObject;
 
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @codeCoverageIgnore
  */
-trait StubApi
+trait MutableStubApi
 {
-    private readonly TestDoubleState $__phpunit_state;
+    private TestDoubleState $__phpunit_state;
 
     public function __phpunit_state(): TestDoubleState
     {

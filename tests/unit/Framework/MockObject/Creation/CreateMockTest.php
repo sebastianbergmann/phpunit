@@ -14,14 +14,13 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
-use PHPUnit\Framework\MockObject\Generator\ClassIsReadonlyException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
-use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
@@ -36,6 +35,7 @@ final class CreateMockTest extends TestCase
 
         $this->assertInstanceOf(AnInterface::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
     }
 
     public function testCreatesMockObjectForExtendableClass(): void
@@ -44,6 +44,16 @@ final class CreateMockTest extends TestCase
 
         $this->assertInstanceOf(ExtendableClass::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
+    }
+
+    public function testCreatesMockObjectForReadonlyClass(): void
+    {
+        $double = $this->createMock(ExtendableReadonlyClass::class);
+
+        $this->assertInstanceOf(ExtendableReadonlyClass::class, $double);
+        $this->assertInstanceOf(Stub::class, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
     }
 
     public function testReturnValueGenerationIsEnabledByDefault(): void
@@ -58,13 +68,6 @@ final class CreateMockTest extends TestCase
         $this->expectException(ClassIsFinalException::class);
 
         $this->createMock(FinalClass::class);
-    }
-
-    public function testCannotCreateMockObjectForReadonlyClass(): void
-    {
-        $this->expectException(ClassIsReadonlyException::class);
-
-        $this->createMock(ReadonlyClass::class);
     }
 
     public function testCannotCreateMockObjectForEnumeration(): void

@@ -27,7 +27,7 @@ declare(strict_types=1);
 
 class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use PHPUnit\Framework\MockObject\StubApi;
+    use PHPUnit\Framework\MockObject\%SStubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
     use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
@@ -67,7 +67,7 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
             )
         );
 
-        $__phpunit_result = call_user_func_array([$this->__phpunit_originalObject, "bar"], $__phpunit_arguments);
+        $__phpunit_result = call_user_func_array([$this->__phpunit_state()->proxyTarget(), "bar"], $__phpunit_arguments);
 
         return $__phpunit_result;
     }
@@ -106,7 +106,7 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
             )
         );
 
-        $__phpunit_result = call_user_func_array([$this->__phpunit_originalObject, "baz"], $__phpunit_arguments);
+        $__phpunit_result = call_user_func_array([$this->__phpunit_state()->proxyTarget(), "baz"], $__phpunit_arguments);
 
         return $__phpunit_result;
     }

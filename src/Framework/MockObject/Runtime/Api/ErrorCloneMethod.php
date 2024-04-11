@@ -10,11 +10,14 @@
 namespace PHPUnit\Framework\MockObject;
 
 /**
- * @internal This interface is not covered by the backward compatibility promise for PHPUnit
+ * @internal This trait is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @codeCoverageIgnore
  */
-interface MockObjectInternal extends MockObject, StubInternal
+trait ErrorCloneMethod
 {
-    public function __phpunit_hasMatchers(): bool;
-
-    public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
+    public function __clone(): void
+    {
+        throw new CannotCloneTestDoubleForReadonlyClassException;
+    }
 }

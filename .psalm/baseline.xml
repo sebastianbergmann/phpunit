@@ -255,7 +255,6 @@
       <code><![CDATA[testDouble]]></code>
       <code><![CDATA[testDouble]]></code>
       <code><![CDATA[testDouble]]></code>
-      <code><![CDATA[testDouble]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[$client->__getFunctions()]]></code>

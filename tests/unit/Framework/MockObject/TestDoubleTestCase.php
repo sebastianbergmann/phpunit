@@ -11,9 +11,11 @@ namespace PHPUnit\Framework\MockObject;
 
 use Exception;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
+use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
@@ -254,6 +256,27 @@ abstract class TestDoubleTestCase extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
+
+        clone $double;
+    }
+
+    #[TestDox('Original __clone() method is not called by default when test double object is cloned (readonly class)')]
+    #[RequiresPhp('8.3')]
+    final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
+    {
+        $double = clone $this->createTestDouble(ExtendableReadonlyClassWithCloneMethod::class);
+
+        $this->assertFalse($double->doSomething());
+    }
+
+    #[TestDox('Original __clone() method can optionally be called when test double object is cloned (readonly class)')]
+    #[RequiresPhp('8.3')]
+    final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
+    {
+        $double = $this->getMockBuilder(ExtendableReadonlyClassWithCloneMethod::class)->enableOriginalClone()->getMock();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(ExtendableReadonlyClassWithCloneMethod::class . '::__clone');
 
         clone $double;
     }

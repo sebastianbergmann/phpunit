@@ -16,6 +16,10 @@ trait DoubledCloneMethod
 {
     public function __clone(): void
     {
-        $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationHandler();
+        $this->__phpunit_state = clone $this->__phpunit_state;
+
+        $this->__phpunit_state()->cloneInvocationHandler();
     }
+
+    abstract public function __phpunit_state(): TestDoubleState;
 }
