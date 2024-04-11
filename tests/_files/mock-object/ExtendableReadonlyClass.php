@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-readonly class ReadonlyClass
+readonly class ExtendableReadonlyClass
 {
     public function __construct(private mixed $value)
     {

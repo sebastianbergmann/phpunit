@@ -19,8 +19,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\Enumeration;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClass;
 use PHPUnit\TestFixture\MockObject\FinalClass;
-use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
@@ -49,9 +49,9 @@ final class CreateMockTest extends TestCase
 
     public function testCreatesMockObjectForReadonlyClass(): void
     {
-        $double = $this->createMock(ReadonlyClass::class);
+        $double = $this->createMock(ExtendableReadonlyClass::class);
 
-        $this->assertInstanceOf(ReadonlyClass::class, $double);
+        $this->assertInstanceOf(ExtendableReadonlyClass::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
         $this->assertInstanceOf(MockObject::class, $double);
     }
