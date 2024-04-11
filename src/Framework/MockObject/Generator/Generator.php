@@ -39,7 +39,6 @@ use function strlen;
 use function strpos;
 use function substr;
 use function trait_exists;
-use function version_compare;
 use Exception;
 use Iterator;
 use IteratorAggregate;
@@ -49,6 +48,7 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
+use PHPUnit\Framework\MockObject\ErrorCloneMethod;
 use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
 use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 use PHPUnit\Framework\MockObject\Method;
@@ -762,9 +762,10 @@ final class Generator
         }
 
         /** @psalm-var trait-string[] $traits */
-        $traits = [];
+        $traits  = [];
+        $isPhp82 = PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2;
 
-        if (!$isReadonly && version_compare('8.3.0', PHP_VERSION, '>')) {
+        if (!$isReadonly && $isPhp82) {
             // @codeCoverageIgnoreStart
             $traits[] = MutableStubApi::class;
             // @codeCoverageIgnoreEnd
@@ -804,10 +805,16 @@ final class Generator
             $traits[] = Method::class;
         }
 
-        if ($doubledCloneMethod) {
-            $traits[] = DoubledCloneMethod::class;
-        } elseif ($proxiedCloneMethod) {
-            $traits[] = ProxiedCloneMethod::class;
+        if ($isPhp82 && $isReadonly) {
+            // @codeCoverageIgnoreStart
+            $traits[] = ErrorCloneMethod::class;
+            // @codeCoverageIgnoreEnd
+        } else {
+            if ($doubledCloneMethod) {
+                $traits[] = DoubledCloneMethod::class;
+            } elseif ($proxiedCloneMethod) {
+                $traits[] = ProxiedCloneMethod::class;
+            }
         }
 
         $useStatements = '';

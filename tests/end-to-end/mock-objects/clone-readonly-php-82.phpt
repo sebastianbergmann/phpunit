@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) PHPUnit\TestFixture\Php82CloneReadonlyTestDoubleTest::testOne
-Error: Cannot modify readonly property MockObject_ExtendableReadonlyClass_%s::$__phpunit_state
+PHPUnit\Framework\MockObject\CannotCloneTestDoubleForReadonlyClassException: Cloning test doubles for readonly classes is not supported on PHP 8.2
 
 %sPhp82CloneReadonlyTestDoubleTest.php:%d
 
