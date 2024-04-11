@@ -61,8 +61,10 @@ trait MockObjectApi
 
                     $this->__phpunit_state()->deprecationWasEmittedFor($test->id());
                 }
+                // @codeCoverageIgnoreStart
             } catch (NoTestCaseObjectOnCallStackException) {
                 EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
+                // @codeCoverageIgnoreEnd
             }
         }
 
