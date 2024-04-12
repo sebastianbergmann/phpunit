@@ -17,8 +17,8 @@ use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\MockObject\Generator\Generator;
 use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
-use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\MockObject\Generator\MethodNamedMethodException;
+use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\MockObject\Generator\ReflectionException;
 use PHPUnit\Framework\MockObject\Generator\RuntimeException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
@@ -73,8 +73,8 @@ final class MockBuilder
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
-     * @throws NameAlreadyInUseException
      * @throws MethodNamedMethodException
+     * @throws NameAlreadyInUseException
      * @throws ReflectionException
      * @throws RuntimeException
      * @throws UnknownTypeException

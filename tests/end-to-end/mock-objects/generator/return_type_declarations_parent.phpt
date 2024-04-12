@@ -33,7 +33,7 @@ declare(strict_types=1);
 
 class MockBar extends Bar implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use PHPUnit\Framework\MockObject\%SStubApi;
+    use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
