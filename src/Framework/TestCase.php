@@ -18,7 +18,9 @@ use const LC_TIME;
 use const PATHINFO_FILENAME;
 use const PHP_EOL;
 use const PHP_URL_PATH;
+use function array_is_list;
 use function array_keys;
+use function array_map;
 use function array_merge;
 use function array_values;
 use function assert;
@@ -56,6 +58,7 @@ use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\RuntimeException;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
@@ -91,7 +94,9 @@ use PHPUnit\Util\Cloner;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use ReflectionObject;
+use ReflectionParameter;
 use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
@@ -1061,6 +1066,37 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $this->dataName = $dataName;
         $this->data     = $data;
+
+        if (array_is_list($data)) {
+            return;
+        }
+
+        try {
+            $reflector  = new ReflectionMethod($this, $this->name);
+            $parameters = array_map(static fn (ReflectionParameter $parameter) => $parameter->name, $reflector->getParameters());
+
+            foreach (array_keys($data) as $parameter) {
+                if (is_string($parameter) && !in_array($parameter, $parameters, true)) {
+                    Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                        $this->valueObjectForEvents(),
+                        sprintf(
+                            'Providing invalid named argument $%s for method %s::%s() is deprecated and will not be supported in PHPUnit 11.0.',
+                            $parameter,
+                            $this::class,
+                            $this->name,
+                        ),
+                    );
+                }
+            }
+            // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e,
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
