@@ -137,7 +137,7 @@ final readonly class Issue
 
         $hash = sha1($lines[$key]);
 
-        assert(!empty($hash));
+        assert($hash !== '');
 
         return $hash;
     }
