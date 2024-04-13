@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test that fails because of an assertion failure in a precondition method
+The right events are emitted in the right order for a test that fails because of an assertion failure in a "pre condition" method
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);

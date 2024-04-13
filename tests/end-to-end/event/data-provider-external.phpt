@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a successful test that uses an external data provider
+The right events are emitted in the right order for a successful test that uses a data provider method in a different class
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
