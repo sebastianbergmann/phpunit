@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test that uses a data provider that is not public
+The right events are emitted in the right order for a test that uses a data provider that expects an argument
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
