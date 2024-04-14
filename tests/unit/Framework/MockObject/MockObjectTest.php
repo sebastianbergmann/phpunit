@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function call_user_func_array;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
@@ -27,6 +28,7 @@ use ReflectionProperty;
 #[Group('test-doubles/mock-object')]
 #[TestDox('Mock Object')]
 #[Medium]
+#[CoversClass(MockObject::class)]
 final class MockObjectTest extends TestDoubleTestCase
 {
     public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void

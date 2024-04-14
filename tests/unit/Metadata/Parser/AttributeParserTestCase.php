@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Parser;
 
 use function assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
@@ -53,6 +54,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
 
+#[CoversClass(AttributeParser::class)]
 abstract class AttributeParserTestCase extends TestCase
 {
     #[TestDox('Parses #[BackupGlobals] attribute on class')]

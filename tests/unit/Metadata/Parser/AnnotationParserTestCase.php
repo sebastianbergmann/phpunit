@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Parser;
 
 use function assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\RequiresPhp;
@@ -42,6 +43,7 @@ use PHPUnit\TestFixture\Metadata\Annotation\SmallTest;
 use PHPUnit\TestFixture\Metadata\Annotation\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 
+#[CoversClass(AnnotationParser::class)]
 abstract class AnnotationParserTestCase extends TestCase
 {
     public static function provideRequiresPhpTestMethods(): array
