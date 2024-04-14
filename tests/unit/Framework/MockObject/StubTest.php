@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -18,7 +17,6 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[Group('test-doubles/test-stub')]
 #[Medium]
 #[TestDox('Test Stub')]
-#[CoversClass(Stub::class)]
 final class StubTest extends TestDoubleTestCase
 {
     /**
