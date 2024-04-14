@@ -86,6 +86,7 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 #### Miscellaneous
 
-| Issue                                                             | Description                                                                                                                       | Since  | Replacement |
-|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------|-------------|
-| [#5100](https://github.com/sebastianbergmann/phpunit/issues/5100) | Support for non-static data provider methods, non-public data provider methods, and data provider methods that declare parameters | 10.0.0 |             |
+| Issue                                                             | Description                                                                                                                                               | Since   | Replacement |
+|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|---------|-------------|
+| [#5100](https://github.com/sebastianbergmann/phpunit/issues/5100) | Support for non-static data provider methods, non-public data provider methods, and data provider methods that declare parameters                         | 10.0.0  |             |
+| [#5812](https://github.com/sebastianbergmann/phpunit/pull/5812)   | Support for string array keys in data sets returned by data provider methods that do not match the parameter names of the test method(s) that use(s) them | 10.5.18 |             |

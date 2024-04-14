@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Deprecated
 
-* [#5812](https://github.com/sebastianbergmann/phpunit/pull/5812): Deprecate invalid named arguments in data providers
+* [#5812](https://github.com/sebastianbergmann/phpunit/pull/5812): Support for string array keys in data sets returned by data provider methods that do not match the parameter names of the test method(s) that use(s) them
 
 ### Fixed
 
