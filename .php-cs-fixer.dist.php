@@ -15,6 +15,8 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
     ->notName('DeprecatedPhpFeatureTest.php')
+    // don't mangle whitespaces in this test, which are required for the error reproduce
+    ->notName('Issue5795Test.php')
     ->notName('ReadonlyClass.php')
     ->notName('*.phpt');
 
