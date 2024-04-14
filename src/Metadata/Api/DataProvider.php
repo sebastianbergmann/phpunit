@@ -256,7 +256,7 @@ final class DataProvider
         foreach (explode("\n", $annotationContent) as $candidateRow) {
             $candidateRow = trim($candidateRow);
 
-            if ($candidateRow[0] !== '[') {
+            if ($candidateRow === '' || $candidateRow[0] !== '[') {
                 break;
             }
 
