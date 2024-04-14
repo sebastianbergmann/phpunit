@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 
 ### Fixed
 
+* [#5795](https://github.com/sebastianbergmann/phpunit/issues/5795): Using `@testWith` annotation may generate `PHP Warning:  Uninitialized string offset 0`
 * [#5807](https://github.com/sebastianbergmann/phpunit/issues/5807): The `#[CoversMethod]` attribute is not considered for risky test check
 
 ## [11.1.1] - 2024-04-06
