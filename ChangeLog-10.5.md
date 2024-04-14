@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5812](https://github.com/sebastianbergmann/phpunit/pull/5812): Deprecate invalid named arguments in data providers
 
+### Fixed
+
+* [#5795](https://github.com/sebastianbergmann/phpunit/issues/5795): Using `@testWith` annotation may generate `PHP Warning:  Uninitialized string offset 0`
+
 ## [10.5.17] - 2024-04-05
 
 ### Changed
