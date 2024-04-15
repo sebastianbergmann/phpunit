@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5799](https://github.com/sebastianbergmann/phpunit/issues/5799): `#[CoversTrait]` and `#[UsesTrait]` attributes
 * [#5804](https://github.com/sebastianbergmann/phpunit/pull/5804): Support doubling `readonly` classes
+* [#5811](https://github.com/sebastianbergmann/phpunit/issues/5811): `assertObjectNotEquals()`
 
 ### Deprecated
 

@@ -2282,6 +2282,19 @@ XML;
         $this->fail();
     }
 
+    public function testTwoObjectsCanBeAssertedToNotBeEqualUsingComparisonMethod(): void
+    {
+        $this->assertObjectNotEquals(new ValueObject(1), new ValueObject(2));
+
+        try {
+            $this->assertObjectNotEquals(new ValueObject(1), new ValueObject(1));
+        } catch (AssertionFailedError) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testObjectHasPropertyCanBeAsserted(): void
     {
         $objectWithProperty              = new stdClass;

@@ -484,6 +484,20 @@ if (!function_exists('PHPUnit\Framework\assertObjectEquals')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertObjectNotEquals')) {
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertObjectNotEquals
+     */
+    function assertObjectNotEquals(object $expected, object $actual, string $method = 'equals', string $message = ''): void
+    {
+        Assert::assertObjectNotEquals(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertEmpty')) {
     /**
      * Asserts that a variable is empty.
