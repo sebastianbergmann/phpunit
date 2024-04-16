@@ -7,12 +7,19 @@ $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = 'custom.xml';
 $_SERVER['argv'][] = '--migrate-configuration';
 
+$originalPHPUnitXMLFile = __DIR__ . '/_files/migration-from-85/phpunit-8.5.xml';
+$phpunitXMLFile = sys_get_temp_dir() . '/custom.xml';
+
 chdir(sys_get_temp_dir());
-copy(__DIR__ . '/_files/migration-from-85/phpunit-8.5.xml', 'custom.xml');
+copy($originalPHPUnitXMLFile, $phpunitXMLFile);
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+
+assert(
+    file_get_contents($originalPHPUnitXMLFile) === file_get_contents($phpunitXMLFile)
+);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

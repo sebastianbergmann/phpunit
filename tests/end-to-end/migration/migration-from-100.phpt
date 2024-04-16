@@ -5,12 +5,19 @@ Configuration migration from PHPUnit 10.0 format works
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--migrate-configuration';
 
+$originalPHPUnitXMLFile = __DIR__ . '/_files/migration-from-100/phpunit-10.0.xml';
+$phpunitXMLFile = sys_get_temp_dir() . '/phpunit.xml';
+
 chdir(sys_get_temp_dir());
-copy(__DIR__ . '/_files/migration-from-100/phpunit-10.0.xml', 'phpunit.xml');
+copy($originalPHPUnitXMLFile, $phpunitXMLFile);
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+
+assert(
+    file_get_contents($originalPHPUnitXMLFile) === file_get_contents($phpunitXMLFile)
+);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
