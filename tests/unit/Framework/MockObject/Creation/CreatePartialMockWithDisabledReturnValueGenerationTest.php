@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -22,6 +23,7 @@ use PHPUnit\TestFixture\MockObject\ExtendableClass;
 #[Medium]
 #[TestDox('createPartialMock()')]
 #[DisableReturnValueGenerationForTestDoubles]
+#[CoversMethod(TestCase::class, 'createPartialMock')]
 final class CreatePartialMockWithDisabledReturnValueGenerationTest extends TestCase
 {
     public function testReturnValueGenerationCanBeDisabledWithAttribute(): void

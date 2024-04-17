@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -24,6 +25,7 @@ use PHPUnit\TestFixture\MockObject\AnotherInterfaceThatDoesSomething;
 #[Group('test-doubles/mock-object')]
 #[Medium]
 #[TestDox('createMockForIntersectionOfInterfaces()')]
+#[CoversMethod(TestCase::class, 'createMockForIntersectionOfInterfaces')]
 final class CreateMockForIntersectionOfInterfacesTest extends TestCase
 {
     public function testCreatesMockObjectForIntersectionOfInterfaces(): void

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -27,6 +28,7 @@ use PHPUnit\TestFixture\MockObject\FinalClass;
 #[Group('test-doubles/mock-object')]
 #[Medium]
 #[TestDox('createMock()')]
+#[CoversMethod(TestCase::class, 'createMock')]
 final class CreateMockTest extends TestCase
 {
     public function testCreatesMockObjectForInterface(): void

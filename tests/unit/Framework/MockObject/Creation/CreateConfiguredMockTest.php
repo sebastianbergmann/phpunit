@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -20,6 +21,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 #[Group('test-doubles/mock-object')]
 #[Medium]
 #[TestDox('createConfiguredMock()')]
+#[CoversMethod(TestCase::class, 'createConfiguredMock')]
 final class CreateConfiguredMockTest extends TestCase
 {
     public function testCreatesMockObjectForInterfaceOrExtendableClassWithReturnValueConfigurationForMultipleMethods(): void

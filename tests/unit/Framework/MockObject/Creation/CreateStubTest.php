@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -27,6 +28,7 @@ use PHPUnit\TestFixture\MockObject\FinalClass;
 #[Group('test-doubles/test-stub')]
 #[Medium]
 #[TestDox('createStub()')]
+#[CoversMethod(TestCase::class, 'createStub')]
 final class CreateStubTest extends TestCase
 {
     public function testCreatesTestStubForInterface(): void
