@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 #[RequiresPhpExtension('soap')]
 #[TestDox('getMockFromWsdl()')]
 #[IgnorePhpunitDeprecations]
+#[CoversMethod(TestCase::class, 'getMockFromWsdl')]
 final class GetMockFromWsdlTest extends TestCase
 {
     #[TestDox('Creates mock object from WSDL file')]

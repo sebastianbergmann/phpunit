@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -23,6 +24,7 @@ use PHPUnit\TestFixture\MockObject\AnotherInterface;
 #[Medium]
 #[TestDox('createStubForIntersectionOfInterfaces()')]
 #[DisableReturnValueGenerationForTestDoubles]
+#[CoversMethod(TestCase::class, 'createStubForIntersectionOfInterfaces')]
 final class CreateStubForIntersectionOfInterfacesWithDisabledReturnValueGenerationTest extends TestCase
 {
     public function testReturnValueGenerationCanBeDisabledWithAttribute(): void

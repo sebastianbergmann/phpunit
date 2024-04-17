@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
@@ -23,6 +24,7 @@ use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 #[Medium]
 #[TestDox('getMockForTrait()')]
 #[IgnorePhpunitDeprecations]
+#[CoversMethod(TestCase::class, 'getMockForTrait')]
 final class GetMockForTraitTest extends TestCase
 {
     public function testCreatesMockObjectForTraitAndAllowsConfigurationOfAbstractMethods(): void
