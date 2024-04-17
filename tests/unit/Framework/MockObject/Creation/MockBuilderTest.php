@@ -14,6 +14,7 @@ use function mt_rand;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
@@ -26,6 +27,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 #[Medium]
 final class MockBuilderTest extends TestCase
 {
+    #[TestDox('setMockClassName() can be used to configure the name of the mock object class')]
     public function testCanCreateMockObjectWithSpecifiedClassName(): void
     {
         $className = 'random_' . md5((string) mt_rand());
@@ -37,6 +39,7 @@ final class MockBuilderTest extends TestCase
         $this->assertSame($className, $double::class);
     }
 
+    #[TestDox('addMethods() can be used to configure an additional method for the mock object class when the original class does not have a method of the same name')]
     public function testCanCreateMockObjectForExtendableClassWhileAddingMethodsToIt(): void
     {
         $double = $this->getMockBuilder(ExtendableClass::class)
@@ -50,6 +53,7 @@ final class MockBuilderTest extends TestCase
         $this->assertSame($value, $double->additionalMethod());
     }
 
+    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class when the original class has a method of the same name')]
     public function testCannotCreateMockObjectForExtendableClassAddingMethodsToItThatItAlreadyHas(): void
     {
         $this->expectException(CannotUseAddMethodsException::class);
