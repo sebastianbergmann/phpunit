@@ -230,7 +230,7 @@ abstract class AbstractPhpProcess
      * @throws Exception
      * @throws NoPreviousThrowableException
      */
-    private function processChildResult(Test $test, string $stdout, string $stderr): void
+    public function processChildResult(Test $test, string $stdout, string $stderr): void
     {
         if (!empty($stderr)) {
             $exception = new Exception(trim($stderr));

@@ -390,19 +390,19 @@ abstract readonly class Metadata
         return new RequiresSetting(self::METHOD_LEVEL, $setting, $value);
     }
 
-    public static function runClassInSeparateProcess(): RunClassInSeparateProcess
+    public static function runClassInSeparateProcess(?bool $forkIfPossible = null): RunClassInSeparateProcess
     {
-        return new RunClassInSeparateProcess(self::CLASS_LEVEL);
+        return new RunClassInSeparateProcess(self::CLASS_LEVEL, $forkIfPossible);
     }
 
-    public static function runTestsInSeparateProcesses(): RunTestsInSeparateProcesses
+    public static function runTestsInSeparateProcesses(?bool $forkIfPossible = null): RunTestsInSeparateProcesses
     {
-        return new RunTestsInSeparateProcesses(self::CLASS_LEVEL);
+        return new RunTestsInSeparateProcesses(self::CLASS_LEVEL, $forkIfPossible);
     }
 
-    public static function runInSeparateProcess(): RunInSeparateProcess
+    public static function runInSeparateProcess(?bool $forkIfPossible = null): RunInSeparateProcess
     {
-        return new RunInSeparateProcess(self::METHOD_LEVEL);
+        return new RunInSeparateProcess(self::METHOD_LEVEL, $forkIfPossible);
     }
 
     public static function test(): Test

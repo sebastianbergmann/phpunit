@@ -33,6 +33,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\PHP\PcntlFork;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
@@ -248,8 +249,17 @@ final class TestRunner
      * @throws ProcessIsolationException
      * @throws StaticAnalysisCacheNotConfiguredException
      */
-    public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
+    public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState, bool $forkIfPossible): void
     {
+        if ($forkIfPossible && PcntlFork::isPcntlForkAvailable()) {
+            // forking the parent process is a more lightweight way to run a test in isolation.
+            // it requires the pcntl extension though.
+            $fork = new PcntlFork;
+            $fork->runTest($test);
+
+            return;
+        }
+
         $class = new ReflectionClass($test);
 
         if ($runEntireClass) {

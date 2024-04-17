@@ -16,6 +16,23 @@ namespace PHPUnit\Metadata;
  */
 final readonly class RunTestsInSeparateProcesses extends Metadata
 {
+    private ?bool $forkIfPossible;
+
+    /**
+     * @psalm-param 0|1 $level
+     */
+    protected function __construct(int $level, ?bool $forkIfPossible = null)
+    {
+        $this->forkIfPossible = $forkIfPossible;
+
+        parent::__construct($level);
+    }
+
+    public function forkIfPossible(): ?bool
+    {
+        return $this->forkIfPossible;
+    }
+
     /**
      * @psalm-assert-if-true RunTestsInSeparateProcesses $this
      */
