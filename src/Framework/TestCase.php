@@ -2313,7 +2313,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
     {
-        $stub = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces, false);
+        $stub = (new MockGenerator)->testDoubleForInterfaceIntersection($interfaces, true);
 
         Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
 

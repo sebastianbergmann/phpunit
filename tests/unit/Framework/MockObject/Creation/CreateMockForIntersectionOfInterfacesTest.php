@@ -33,6 +33,12 @@ final class CreateMockForIntersectionOfInterfacesTest extends TestCase
         $this->assertInstanceOf(AnInterface::class, $double);
         $this->assertInstanceOf(AnotherInterface::class, $double);
         $this->assertInstanceOf(Stub::class, $double);
+
+        $double->method('doSomething')->willReturn(true);
+        $double->method('doSomethingElse')->willReturn(true);
+
+        $this->assertTrue($double->doSomething());
+        $this->assertTrue($double->doSomethingElse());
     }
 
     public function testCannotCreateMockObjectForIntersectionOfInterfacesWhenLessThanTwoInterfacesAreSpecified(): void
