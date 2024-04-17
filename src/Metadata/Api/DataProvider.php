@@ -10,7 +10,6 @@
 namespace PHPUnit\Metadata\Api;
 
 use function array_key_exists;
-use function array_merge;
 use function assert;
 use function explode;
 use function is_array;
@@ -39,7 +38,6 @@ use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
-use Traversable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -176,33 +174,24 @@ final class DataProvider
                 );
             }
 
-            if ($data instanceof Traversable) {
-                $origData = $data;
-                $data     = [];
+            foreach ($data as $key => $value) {
+                if (is_int($key)) {
+                    $result[] = $value;
+                } elseif (array_key_exists($key, $result)) {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethod,
+                        ...$methodsCalled,
+                    );
 
-                foreach ($origData as $key => $value) {
-                    if (is_int($key)) {
-                        $data[] = $value;
-                    } elseif (array_key_exists($key, $data)) {
-                        Event\Facade::emitter()->dataProviderMethodFinished(
-                            $testMethod,
-                            ...$methodsCalled,
-                        );
-
-                        throw new InvalidDataProviderException(
-                            sprintf(
-                                'The key "%s" has already been defined by a previous data provider',
-                                $key,
-                            ),
-                        );
-                    } else {
-                        $data[$key] = $value;
-                    }
+                    throw new InvalidDataProviderException(
+                        sprintf(
+                            'The key "%s" has already been defined by a previous data provider',
+                            $key,
+                        ),
+                    );
+                } else {
+                    $result[$key] = $value;
                 }
-            }
-
-            if (is_array($data)) {
-                $result = array_merge($result, $data);
             }
         }
 
