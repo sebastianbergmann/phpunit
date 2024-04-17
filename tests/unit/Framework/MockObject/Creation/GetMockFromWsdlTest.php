@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
 final class GetMockFromWsdlTest extends TestCase
 {
     #[TestDox('Creates mock object from WSDL file')]
-    public function test_CreatesMockObjectFromWsdlFileWithNonNamespacedClassName(): void
+    public function testCreatesMockObjectFromWsdlFileWithNonNamespacedClassName(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
 
