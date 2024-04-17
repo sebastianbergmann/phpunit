@@ -16,8 +16,10 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\AbstractClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
+use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
 #[CoversClass(MockBuilder::class)]
 #[CoversClass(CannotUseAddMethodsException::class)]
@@ -61,5 +63,39 @@ final class MockBuilderTest extends TestCase
         $this->getMockBuilder(ExtendableClass::class)
             ->addMethods(['doSomething'])
             ->getMock();
+    }
+
+    #[TestDox('getMockForAbstractClass() can be used to create a mock object for an abstract class')]
+    public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void
+    {
+        $mock = $this->getMockBuilder(AbstractClass::class)
+            ->getMockForAbstractClass();
+
+        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+
+        $this->assertTrue($mock->doSomething());
+    }
+
+    #[TestDox('getMockForTrait() can be used to create a mock object for a trait')]
+    public function testCreatesMockObjectForTraitAndAllowsConfigurationOfMethods(): void
+    {
+        $mock = $this->getMockBuilder(TraitWithConcreteAndAbstractMethod::class)
+            ->getMockForTrait();
+
+        $mock->method('abstractMethod')->willReturn(true);
+
+        $this->assertTrue($mock->concreteMethod());
+    }
+
+    #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
+    public function testCreatesPartialMockObjectForExtendableClass(): void
+    {
+        $mock = $this->getMockBuilder(ExtendableClass::class)
+            ->onlyMethods(['doSomethingElse'])
+            ->getMock();
+
+        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+
+        $this->assertTrue($mock->doSomething());
     }
 }
