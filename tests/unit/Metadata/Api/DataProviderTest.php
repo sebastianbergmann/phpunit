@@ -168,13 +168,10 @@ final class DataProviderTest extends TestCase
 
     public function testWithDuplicateKeyDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');
+        $this->expectException(InvalidDataProviderException::class);
+        $this->expectExceptionMessage('The key "bar" has already been defined by a previous data provider');
 
-        $this->assertSame(
-            [
-                'bar' => [2],
-            ],
-            $dataSets,
-        );
+        /* @noinspection UnusedFunctionResultInspection */
+        (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');
     }
 }
