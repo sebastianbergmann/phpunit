@@ -12,6 +12,7 @@ namespace PHPUnit\Runner;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
 use function array_merge;
+use function assert;
 use function basename;
 use function debug_backtrace;
 use function defined;
@@ -54,7 +55,9 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\PHP\DefaultPhpJobRunner;
+use PHPUnit\Util\PHP\PhpJob;
+use PHPUnit\Util\PHP\PhpJobRunner;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\ReflectionException;
@@ -75,7 +78,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @psalm-var non-empty-string
      */
     private readonly string $filename;
-    private readonly AbstractPhpProcess $phpUtil;
+    private readonly PhpJobRunner $phpJobRunner;
     private string $output = '';
 
     /**
@@ -85,14 +88,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      *
      * @throws Exception
      */
-    public function __construct(string $filename, ?AbstractPhpProcess $phpUtil = null)
+    public function __construct(string $filename, ?PhpJobRunner $phpJobRunner = null)
     {
         if (!is_file($filename)) {
             throw new FileDoesNotExistException($filename);
         }
 
-        $this->filename = $filename;
-        $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
+        $this->filename     = $filename;
+        $this->phpJobRunner = $phpJobRunner ?: new DefaultPhpJobRunner;
     }
 
     /**
@@ -136,24 +139,24 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             return;
         }
 
-        $code     = $this->render($sections['FILE']);
-        $xfail    = false;
-        $settings = $this->parseIniSection($this->settings(CodeCoverage::instance()->isActive()));
+        $code                 = $this->render($sections['FILE']);
+        $xfail                = false;
+        $environmentVariables = [];
+        $phpSettings          = $this->parseIniSection($this->settings(CodeCoverage::instance()->isActive()));
+        $input                = null;
+        $arguments            = [];
 
         $emitter->testPrepared($this->valueObjectForEvents());
 
         if (isset($sections['INI'])) {
-            $settings = $this->parseIniSection($sections['INI'], $settings);
+            $phpSettings = $this->parseIniSection($sections['INI'], $phpSettings);
         }
 
         if (isset($sections['ENV'])) {
-            $env = $this->parseEnvSection($sections['ENV']);
-            $this->phpUtil->setEnv($env);
+            $environmentVariables = $this->parseEnvSection($sections['ENV']);
         }
 
-        $this->phpUtil->setUseStderrRedirection(true);
-
-        if ($this->shouldTestBeSkipped($sections, $settings)) {
+        if ($this->shouldTestBeSkipped($sections, $phpSettings)) {
             return;
         }
 
@@ -162,11 +165,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (isset($sections['STDIN'])) {
-            $this->phpUtil->setStdin($sections['STDIN']);
+            $input = $sections['STDIN'];
         }
 
         if (isset($sections['ARGS'])) {
-            $this->phpUtil->setArgs($sections['ARGS']);
+            $arguments = explode(' ', $sections['ARGS']);
         }
 
         if (CodeCoverage::instance()->isActive()) {
@@ -183,7 +186,17 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             );
         }
 
-        $jobResult    = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
+        $jobResult = $this->phpJobRunner->run(
+            new PhpJob(
+                $code,
+                $this->stringifyIni($phpSettings),
+                $environmentVariables,
+                $arguments,
+                $input,
+                true,
+            ),
+        );
+
         $this->output = $jobResult['stdout'] ?? '';
 
         if (CodeCoverage::instance()->isActive()) {
@@ -389,8 +402,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             return false;
         }
 
-        $skipif    = $this->render($sections['SKIPIF']);
-        $jobResult = $this->phpUtil->runJob($skipif, $this->stringifyIni($settings));
+        $jobResult = $this->phpJobRunner->run(
+            new PhpJob(
+                $this->render($sections['SKIPIF']),
+                $this->stringifyIni($settings),
+            ),
+        );
 
         if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
             $message = '';
@@ -414,14 +431,16 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function runClean(array $sections, bool $collectCoverage): void
     {
-        $this->phpUtil->setStdin('');
-        $this->phpUtil->setArgs('');
-
-        if (isset($sections['CLEAN'])) {
-            $cleanCode = $this->render($sections['CLEAN']);
-
-            $this->phpUtil->runJob($cleanCode, $this->settings($collectCoverage));
+        if (!isset($sections['CLEAN'])) {
+            return;
         }
+
+        $this->phpJobRunner->run(
+            new PhpJob(
+                $this->render($sections['CLEAN']),
+                $this->settings($collectCoverage),
+            ),
+        );
     }
 
     /**
@@ -557,6 +576,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return true;
     }
 
+    /**
+     * @psalm-param non-empty-string $code
+     *
+     * @psalm-return non-empty-string
+     */
     private function render(string $code): string
     {
         return str_replace(
@@ -584,6 +608,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @psalm-param non-empty-string $job
+     *
+     * @psalm-param-out non-empty-string $job
+     *
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      */
     private function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory): void
@@ -633,6 +661,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         file_put_contents($files['job'], $job);
 
         $job = $template->render();
+
+        assert($job !== '');
     }
 
     private function cleanupForCoverage(): RawCodeCoverageData

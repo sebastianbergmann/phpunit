@@ -658,6 +658,7 @@
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <ArgumentTypeCoercion>
+      <code><![CDATA[$arguments]]></code>
       <code><![CDATA[$message]]></code>
     </ArgumentTypeCoercion>
     <InternalClass>
@@ -668,9 +669,25 @@
       <code><![CDATA[RawCodeCoverageData::fromXdebugWithoutPathCoverage([])]]></code>
       <code><![CDATA[RawCodeCoverageData::fromXdebugWithoutPathCoverage([])]]></code>
     </InternalMethod>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[str_replace(
+            [
+                '__DIR__',
+                '__FILE__',
+            ],
+            [
+                "'" . dirname($this->filename) . "'",
+                "'" . $this->filename . "'",
+            ],
+            $code,
+        )]]></code>
+    </LessSpecificReturnStatement>
     <MissingThrowsDocblock>
       <code><![CDATA[bootstrap]]></code>
     </MissingThrowsDocblock>
+    <MoreSpecificReturnType>
+      <code><![CDATA[non-empty-string]]></code>
+    </MoreSpecificReturnType>
     <PossiblyInvalidArgument>
       <code><![CDATA[$sections['FILEEOF']]]></code>
     </PossiblyInvalidArgument>
@@ -994,24 +1011,13 @@
       <code><![CDATA[self::$directories]]></code>
     </InvalidPropertyAssignmentValue>
   </file>
-  <file src="src/Util/PHP/AbstractPhpProcess.php">
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[!$file]]></code>
-      <code><![CDATA[!$file]]></code>
-      <code><![CDATA[$file]]></code>
-    </RiskyTruthyFalsyComparison>
-  </file>
-  <file src="src/Util/PHP/DefaultPhpProcess.php">
+  <file src="src/Util/PHP/DefaultPhpJobRunner.php">
     <DocblockTypeContradiction>
-      <code><![CDATA[is_array($envVar)]]></code>
+      <code><![CDATA[is_array($value)]]></code>
     </DocblockTypeContradiction>
     <RedundantCondition>
       <code><![CDATA[$_SERVER]]></code>
     </RedundantCondition>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[!($this->tempFile = tempnam(sys_get_temp_dir(), 'phpunit_'))]]></code>
-      <code><![CDATA[$this->tempFile]]></code>
-    </RiskyTruthyFalsyComparison>
     <TypeDoesNotContainNull>
       <code><![CDATA[[]]]></code>
     </TypeDoesNotContainNull>
