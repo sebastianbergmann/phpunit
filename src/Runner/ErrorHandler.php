@@ -254,19 +254,18 @@ final class ErrorHandler
 
         $trace = $this->filteredStackTrace($filterTrigger);
 
-        assert(isset($trace[0]['file']));
-        assert(isset($trace[1]['file']));
-
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
-        if ($trace[0]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[0]['file'])) {
+        if (isset($trace[0]['file']) && (
+            $trace[0]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[0]['file']))) {
             $triggeredInFirstPartyCode = true;
         }
 
-        if ($trace[1]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[1]['file'])) {
+        if (isset($trace[0]['file']) && (
+            $trace[1]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[1]['file']))) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
