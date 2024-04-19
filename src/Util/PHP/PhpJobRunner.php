@@ -14,5 +14,8 @@ namespace PHPUnit\Util\PHP;
  */
 interface PhpJobRunner
 {
+    /**
+     * @psalm-return array{stdout: string, stderr: string}
+     */
     public function run(PhpJob $job): array;
 }
