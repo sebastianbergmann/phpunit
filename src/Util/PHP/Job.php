@@ -14,7 +14,7 @@ namespace PHPUnit\Util\PHP;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class PhpJob
+final readonly class Job
 {
     /**
      * @psalm-var non-empty-string

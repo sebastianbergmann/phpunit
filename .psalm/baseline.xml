@@ -1011,7 +1011,7 @@
       <code><![CDATA[self::$directories]]></code>
     </InvalidPropertyAssignmentValue>
   </file>
-  <file src="src/Util/PHP/DefaultPhpJobRunner.php">
+  <file src="src/Util/PHP/DefaultJobRunner.php">
     <DocblockTypeContradiction>
       <code><![CDATA[is_array($value)]]></code>
     </DocblockTypeContradiction>

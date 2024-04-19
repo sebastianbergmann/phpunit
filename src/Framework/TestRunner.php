@@ -42,8 +42,8 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\GlobalState;
-use PHPUnit\Util\PHP\PhpJob;
-use PHPUnit\Util\PHP\PhpJobRunnerRegistry;
+use PHPUnit\Util\PHP\Job;
+use PHPUnit\Util\PHP\JobRunnerRegistry;
 use PHPUnit\Util\PHP\PhpProcessException;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
@@ -497,7 +497,7 @@ final class TestRunner
      */
     private function runTestJob(string $code, Test $test, string $processResultFile): void
     {
-        $_result = PhpJobRunnerRegistry::run(new PhpJob($code));
+        $result = JobRunnerRegistry::run(new Job($code));
 
         $processResult = '';
 
@@ -510,7 +510,7 @@ final class TestRunner
         $this->processChildResult(
             $test,
             $processResult,
-            $_result['stderr'],
+            $result->stderr(),
         );
     }
 

@@ -32,14 +32,12 @@ use SebastianBergmann\Environment\Runtime;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class DefaultPhpJobRunner implements PhpJobRunner
+final readonly class DefaultJobRunner implements JobRunner
 {
     /**
-     * @psalm-return array{stdout: string, stderr: string}
-     *
      * @throws PhpProcessException
      */
-    public function run(PhpJob $job): array
+    public function run(Job $job): Result
     {
         $temporaryFile = null;
 
@@ -53,7 +51,7 @@ final readonly class DefaultPhpJobRunner implements PhpJobRunner
                 );
             }
 
-            $job = new PhpJob(
+            $job = new Job(
                 $job->input(),
                 $job->phpSettings(),
                 $job->environmentVariables(),
@@ -71,11 +69,9 @@ final readonly class DefaultPhpJobRunner implements PhpJobRunner
     /**
      * @psalm-param ?non-empty-string $temporaryFile
      *
-     * @psalm-return array{stdout: string, stderr: string}
-     *
      * @throws PhpProcessException
      */
-    private function runProcess(PhpJob $job, ?string $temporaryFile): array
+    private function runProcess(Job $job, ?string $temporaryFile): Result
     {
         $environmentVariables = null;
 
@@ -144,13 +140,13 @@ final readonly class DefaultPhpJobRunner implements PhpJobRunner
             unlink($temporaryFile);
         }
 
-        return ['stdout' => $stdout, 'stderr' => $stderr];
+        return new Result($stdout, $stderr);
     }
 
     /**
      * @psalm-return non-empty-list<string>
      */
-    private function buildCommand(PhpJob $job, ?string $file): array
+    private function buildCommand(Job $job, ?string $file): array
     {
         $runtime     = new Runtime;
         $command     = [PHP_BINARY];

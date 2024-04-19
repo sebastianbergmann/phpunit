@@ -12,23 +12,20 @@ namespace PHPUnit\Util\PHP;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PhpJobRunnerRegistry
+final class JobRunnerRegistry
 {
-    private static ?PhpJobRunner $runner = null;
+    private static ?JobRunner $runner = null;
 
-    /**
-     * @psalm-return array{stdout: string, stderr: string}
-     */
-    public static function run(PhpJob $job): array
+    public static function run(Job $job): Result
     {
         if (self::$runner === null) {
-            self::$runner = new DefaultPhpJobRunner;
+            self::$runner = new DefaultJobRunner;
         }
 
         return self::$runner->run($job);
     }
 
-    public static function set(PhpJobRunner $runner): void
+    public static function set(JobRunner $runner): void
     {
         self::$runner = $runner;
     }

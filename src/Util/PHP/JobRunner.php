@@ -12,10 +12,7 @@ namespace PHPUnit\Util\PHP;
 /**
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
-interface PhpJobRunner
+interface JobRunner
 {
-    /**
-     * @psalm-return array{stdout: string, stderr: string}
-     */
-    public function run(PhpJob $job): array;
+    public function run(Job $job): Result;
 }

@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(PhpJob::class)]
+#[CoversClass(Job::class)]
 #[Small]
 final class PhpJobTest extends TestCase
 {
@@ -21,7 +21,7 @@ final class PhpJobTest extends TestCase
     {
         $code = 'the-code';
 
-        $job = new PhpJob(
+        $job = new Job(
             $code,
             [],
             [],
@@ -41,7 +41,7 @@ final class PhpJobTest extends TestCase
     {
         $phpSettings = ['foo' => 'bar'];
 
-        $job = new PhpJob(
+        $job = new Job(
             'the-code',
             $phpSettings,
             [],
@@ -61,7 +61,7 @@ final class PhpJobTest extends TestCase
     {
         $environmentVariables = ['foo' => 'bar'];
 
-        $job = new PhpJob(
+        $job = new Job(
             'the-code',
             [],
             $environmentVariables,
@@ -81,7 +81,7 @@ final class PhpJobTest extends TestCase
     {
         $arguments = ['foo', 'bar'];
 
-        $job = new PhpJob(
+        $job = new Job(
             'the-code',
             [],
             [],
@@ -102,7 +102,7 @@ final class PhpJobTest extends TestCase
     {
         $input = 'the-input';
 
-        $job = new PhpJob(
+        $job = new Job(
             'the-code',
             [],
             [],
@@ -120,7 +120,7 @@ final class PhpJobTest extends TestCase
 
     public function testMayNotHaveInput(): void
     {
-        $job = new PhpJob(
+        $job = new Job(
             'the-code',
             [],
             [],
@@ -138,7 +138,7 @@ final class PhpJobTest extends TestCase
 
     public function testMayRedirectErrors(): void
     {
-        $job = new PhpJob(
+        $job = new Job(
             'the-code',
             [],
             [],
