@@ -8,15 +8,15 @@ if (!isset($argv[1]) || !is_file($argv[1])) {
 
 use Seld\PharUtils\Timestamps;
 
-$util = new Timestamps($argv[1]);
-
 if (is_string(getenv('SOURCE_DATE_EPOCH'))) {
-    $timestamp = new DateTime;
-    $timestamp->setTimestamp((int) getenv('SOURCE_DATE_EPOCH'));
+    $epoch = (int) getenv('SOURCE_DATE_EPOCH');
 } else {
-    $timestamp = new DateTimeImmutable('now');
+    $epoch = (int) trim(shell_exec('git log -1 --format=%at ' . trim(shell_exec('git describe --abbrev=0'))));
 }
 
-$util->updateTimestamps($timestamp);
+$timestamp = new DateTime;
+$timestamp->setTimestamp($epoch);
 
+$util = new Timestamps($argv[1]);
+$util->updateTimestamps($timestamp);
 $util->save($argv[1], Phar::SHA512);
