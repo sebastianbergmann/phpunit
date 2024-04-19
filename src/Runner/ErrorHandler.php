@@ -263,7 +263,7 @@ final class ErrorHandler
             $triggeredInFirstPartyCode = true;
         }
 
-        if (isset($trace[0]['file']) && (
+        if (isset($trace[1]['file']) && (
             $trace[1]['file'] === $test->file() ||
             $this->sourceFilter->includes($this->source, $trace[1]['file']))) {
             $triggerCalledFromFirstPartyCode = true;
