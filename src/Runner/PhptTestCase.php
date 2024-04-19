@@ -55,9 +55,8 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\PHP\DefaultPhpJobRunner;
 use PHPUnit\Util\PHP\PhpJob;
-use PHPUnit\Util\PHP\PhpJobRunner;
+use PHPUnit\Util\PHP\PhpJobRunnerRegistry;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\ReflectionException;
@@ -78,7 +77,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @psalm-var non-empty-string
      */
     private readonly string $filename;
-    private readonly PhpJobRunner $phpJobRunner;
     private string $output = '';
 
     /**
@@ -88,14 +86,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      *
      * @throws Exception
      */
-    public function __construct(string $filename, ?PhpJobRunner $phpJobRunner = null)
+    public function __construct(string $filename)
     {
         if (!is_file($filename)) {
             throw new FileDoesNotExistException($filename);
         }
 
-        $this->filename     = $filename;
-        $this->phpJobRunner = $phpJobRunner ?: new DefaultPhpJobRunner;
+        $this->filename = $filename;
     }
 
     /**
@@ -186,7 +183,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             );
         }
 
-        $jobResult = $this->phpJobRunner->run(
+        $jobResult = PhpJobRunnerRegistry::run(
             new PhpJob(
                 $code,
                 $this->stringifyIni($phpSettings),
@@ -402,7 +399,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             return false;
         }
 
-        $jobResult = $this->phpJobRunner->run(
+        $jobResult = PhpJobRunnerRegistry::run(
             new PhpJob(
                 $this->render($sections['SKIPIF']),
                 $this->stringifyIni($settings),
@@ -435,7 +432,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             return;
         }
 
-        $this->phpJobRunner->run(
+        PhpJobRunnerRegistry::run(
             new PhpJob(
                 $this->render($sections['CLEAN']),
                 $this->settings($collectCoverage),

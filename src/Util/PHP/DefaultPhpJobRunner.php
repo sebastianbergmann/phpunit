@@ -13,6 +13,7 @@ use const PHP_BINARY;
 use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
+use function assert;
 use function fclose;
 use function file_put_contents;
 use function fwrite;
@@ -31,10 +32,8 @@ use SebastianBergmann\Environment\Runtime;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DefaultPhpJobRunner implements PhpJobRunner
+final readonly class DefaultPhpJobRunner implements PhpJobRunner
 {
-    private ?string $temporaryFile = null;
-
     /**
      * @psalm-return array{stdout: string, stderr: string}
      *
@@ -42,11 +41,13 @@ final class DefaultPhpJobRunner implements PhpJobRunner
      */
     public function run(PhpJob $job): array
     {
-        if ($job->hasInput()) {
-            $this->temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $temporaryFile = null;
 
-            if ($this->temporaryFile === false ||
-                file_put_contents($this->temporaryFile, $job->code()) === false) {
+        if ($job->hasInput()) {
+            $temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+            if ($temporaryFile === false ||
+                file_put_contents($temporaryFile, $job->code()) === false) {
                 throw new PhpProcessException(
                     'Unable to write temporary file',
                 );
@@ -62,15 +63,19 @@ final class DefaultPhpJobRunner implements PhpJobRunner
             );
         }
 
-        return $this->runProcess($job);
+        assert($temporaryFile !== '');
+
+        return $this->runProcess($job, $temporaryFile);
     }
 
     /**
+     * @psalm-param ?non-empty-string $temporaryFile
+     *
      * @psalm-return array{stdout: string, stderr: string}
      *
      * @throws PhpProcessException
      */
-    private function runProcess(PhpJob $job): array
+    private function runProcess(PhpJob $job, ?string $temporaryFile): array
     {
         $environmentVariables = null;
 
@@ -102,7 +107,7 @@ final class DefaultPhpJobRunner implements PhpJobRunner
         }
 
         $process = proc_open(
-            $this->getCommand($job, $this->temporaryFile),
+            $this->buildCommand($job, $temporaryFile),
             $pipeSpec,
             $pipes,
             null,
@@ -135,23 +140,20 @@ final class DefaultPhpJobRunner implements PhpJobRunner
 
         proc_close($process);
 
-        if ($this->temporaryFile !== null) {
-            unlink($this->temporaryFile);
+        if ($temporaryFile !== null) {
+            unlink($temporaryFile);
         }
 
         return ['stdout' => $stdout, 'stderr' => $stderr];
     }
 
     /**
-     * Returns the command based into the configurations.
-     *
-     * @return string[]
+     * @psalm-return non-empty-list<string>
      */
-    private function getCommand(PhpJob $job, ?string $file = null): array
+    private function buildCommand(PhpJob $job, ?string $file): array
     {
         $runtime     = new Runtime;
-        $command     = [];
-        $command[]   = PHP_BINARY;
+        $command     = [PHP_BINARY];
         $phpSettings = $job->phpSettings();
 
         if ($runtime->hasPCOV()) {
