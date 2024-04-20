@@ -16,10 +16,10 @@ if (is_string(getenv('SOURCE_DATE_EPOCH'))) {
         $epoch
     );
 } else {
-    $tag = shell_exec('git describe --abbrev=0');
+    $tag = @shell_exec('git describe --abbrev=0 2>&1');
 
     if (is_string($tag) && strpos($tag, 'fatal') === false) {
-        $tmp = shell_exec('git log -1 --format=%at ' . trim($tag));
+        $tmp = @shell_exec('git log -1 --format=%at ' . trim($tag) . ' 2>&1');
 
         if (is_string($tag) && is_numeric(trim($tmp))) {
             $epoch = (int) trim($tmp);
