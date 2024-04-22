@@ -4,6 +4,8 @@ https://github.com/sebastianbergmann/phpunit/issues/5771
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/5771/Issue5771Test.php';
+$_SERVER['argv'][] = '--log-junit';
+$_SERVER['argv'][] = tempnam(sys_get_temp_dir(), __FILE__);
 
 require_once __DIR__ . '/../../bootstrap.php';
 
