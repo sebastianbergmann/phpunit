@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class Issue5771Test extends TestCase
 {
     #[RunInSeparateProcess]
-    public function test(): void
+    public function testOne(): void
     {
         exit;
     }
