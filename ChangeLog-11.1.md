@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.1 release series are documented in this fi
 
 ### Fixed
 
+* [#5771](https://github.com/sebastianbergmann/phpunit/issues/5771): JUnit XML logger may crash when test that is run in separate process exits unexpectedly
 * [#5819](https://github.com/sebastianbergmann/phpunit/issues/5819): Duplicate keys from different data providers are not handled properly
 
 ## [11.1.2] - 2024-04-14
