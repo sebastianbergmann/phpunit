@@ -9,11 +9,14 @@
  */
 namespace PHPUnit\TestFixture\Issue5822;
 
+use const E_USER_DEPRECATED;
+use function call_user_func;
+use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
 class Issue5822Test extends TestCase
 {
-    public function testDebugBacktrace()
+    public function testDebugBacktrace(): void
     {
         $this->callUserFuncExample();
         $this->assertTrue(true);
@@ -26,6 +29,6 @@ class Issue5822Test extends TestCase
 
     private function exampleCallback(): void
     {
-        trigger_error('My Deprecation Error', \E_USER_DEPRECATED);
+        trigger_error('My Deprecation Error', E_USER_DEPRECATED);
     }
 }

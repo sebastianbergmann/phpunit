@@ -27,7 +27,6 @@ use const E_USER_WARNING;
 use const E_WARNING;
 use function array_keys;
 use function array_values;
-use function assert;
 use function debug_backtrace;
 use function error_reporting;
 use function restore_error_handler;
@@ -259,13 +258,15 @@ final class ErrorHandler
 
         if (isset($trace[0]['file']) && (
             $trace[0]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[0]['file']))) {
+            $this->sourceFilter->includes($this->source, $trace[0]['file'])
+        )) {
             $triggeredInFirstPartyCode = true;
         }
 
         if (isset($trace[1]['file']) && (
             $trace[1]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[1]['file']))) {
+            $this->sourceFilter->includes($this->source, $trace[1]['file'])
+        )) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
