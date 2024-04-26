@@ -80,34 +80,34 @@ final class MockBuilderTest extends TestCase
     #[TestDox('getMockForAbstractClass() can be used to create a mock object for an abstract class')]
     public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void
     {
-        $mock = $this->getMockBuilder(AbstractClass::class)
+        $double = $this->getMockBuilder(AbstractClass::class)
             ->getMockForAbstractClass();
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
     }
 
     #[TestDox('getMockForTrait() can be used to create a mock object for a trait')]
     public function testCreatesMockObjectForTraitAndAllowsConfigurationOfMethods(): void
     {
-        $mock = $this->getMockBuilder(TraitWithConcreteAndAbstractMethod::class)
+        $double = $this->getMockBuilder(TraitWithConcreteAndAbstractMethod::class)
             ->getMockForTrait();
 
-        $mock->method('abstractMethod')->willReturn(true);
+        $double->method('abstractMethod')->willReturn(true);
 
-        $this->assertTrue($mock->concreteMethod());
+        $this->assertTrue($double->concreteMethod());
     }
 
     #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
     public function testCreatesPartialMockObjectForExtendableClass(): void
     {
-        $mock = $this->getMockBuilder(ExtendableClass::class)
+        $double = $this->getMockBuilder(ExtendableClass::class)
             ->onlyMethods(['doSomethingElse'])
             ->getMock();
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
     }
 }
