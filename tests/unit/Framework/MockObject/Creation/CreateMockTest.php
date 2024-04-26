@@ -54,7 +54,7 @@ final class CreateMockTest extends TestCase
         $this->createMock(FinalClass::class);
     }
 
-    #[RequiresPhp('8.2')]
+    #[RequiresPhp('^8.2')]
     public function testCannotCreateMockObjectForReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);

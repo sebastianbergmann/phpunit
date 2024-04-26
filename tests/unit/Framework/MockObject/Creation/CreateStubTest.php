@@ -54,7 +54,7 @@ final class CreateStubTest extends TestCase
         $this->createStub(FinalClass::class);
     }
 
-    #[RequiresPhp('8.2')]
+    #[RequiresPhp('^8.2')]
     public function testCannotCreateTestStubForReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);
