@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
+use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AbstractClass;
@@ -29,9 +30,10 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
 #[CoversClass(MockBuilder::class)]
-#[CoversClass(DuplicateMethodException::class)]
-#[CoversClass(NameAlreadyInUseException::class)]
 #[CoversClass(CannotUseAddMethodsException::class)]
+#[CoversClass(DuplicateMethodException::class)]
+#[CoversClass(InvalidMethodNameException::class)]
+#[CoversClass(NameAlreadyInUseException::class)]
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
 #[Group('test-doubles/mock-object')]
@@ -91,6 +93,16 @@ final class MockBuilderTest extends TestCase
 
         $this->getMockBuilder(ExtendableClass::class)
             ->addMethods(['additionalMethod', 'additionalMethod'])
+            ->getMock();
+    }
+
+    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class with invalid name')]
+    public function testCannotCreateMockObjectForExtendableClassAddingMethodToItWithInvalidName(): void
+    {
+        $this->expectException(InvalidMethodNameException::class);
+
+        $this->getMockBuilder(ExtendableClass::class)
+            ->addMethods(['1234'])
             ->getMock();
     }
 
