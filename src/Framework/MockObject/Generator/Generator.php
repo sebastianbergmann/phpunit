@@ -92,12 +92,12 @@ final class Generator
     /**
      * Returns a test double for the specified class.
      *
-     * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidMethodNameException
+     * @throws NameAlreadyInUseException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
      * @throws RuntimeException
@@ -114,7 +114,7 @@ final class Generator
         }
 
         $this->ensureValidMethods($methods);
-        $this->ensureMockedClassDoesNotAlreadyExist($mockClassName);
+        $this->ensureNameForTestDoubleClassIsAvailable($mockClassName);
 
         if (!$callOriginalConstructor && $callOriginalMethods) {
             throw new OriginalConstructorInvocationRequiredException;
@@ -219,13 +219,13 @@ final class Generator
      *
      * Concrete methods to mock can be specified with the $mockedMethods parameter.
      *
-     * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
+     * @throws NameAlreadyInUseException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
      * @throws RuntimeException
@@ -279,13 +279,13 @@ final class Generator
      *
      * @psalm-param trait-string $traitName
      *
-     * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
+     * @throws NameAlreadyInUseException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
      * @throws RuntimeException
@@ -922,17 +922,19 @@ final class Generator
     }
 
     /**
-     * @throws ClassAlreadyExistsException
+     * @throws NameAlreadyInUseException
      * @throws ReflectionException
      */
-    private function ensureMockedClassDoesNotAlreadyExist(string $mockClassName): void
+    private function ensureNameForTestDoubleClassIsAvailable(string $className): void
     {
-        if ($mockClassName !== '' && class_exists($mockClassName, false)) {
-            $reflector = $this->reflectClass($mockClassName);
+        if ($className === '') {
+            return;
+        }
 
-            if (!$reflector->implementsInterface(MockObject::class)) {
-                throw new ClassAlreadyExistsException($mockClassName);
-            }
+        if (class_exists($className, false) ||
+            interface_exists($className, false) ||
+            trait_exists($className, false)) {
+            throw new NameAlreadyInUseException($className);
         }
     }
 
