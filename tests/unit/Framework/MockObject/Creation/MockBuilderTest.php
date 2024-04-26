@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AbstractClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
@@ -23,6 +24,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
 #[CoversClass(MockBuilder::class)]
+#[CoversClass(NameAlreadyInUseException::class)]
 #[CoversClass(CannotUseAddMethodsException::class)]
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
@@ -40,6 +42,16 @@ final class MockBuilderTest extends TestCase
             ->getMock();
 
         $this->assertSame($className, $double::class);
+    }
+
+    #[TestDox('setMockClassName() cannot be used to configure the name of the mock object class when a class with that name already exists')]
+    public function testCannotCreateMockObjectWithSpecifiedClassNameWhenClassWithThatNameAlreadyExists(): void
+    {
+        $this->expectException(NameAlreadyInUseException::class);
+
+        $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->setMockClassName(__CLASS__)
+            ->getMock();
     }
 
     #[IgnorePhpunitDeprecations]

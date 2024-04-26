@@ -14,14 +14,17 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ClassAlreadyExistsException extends \PHPUnit\Framework\Exception implements Exception
+final class NameAlreadyInUseException extends \PHPUnit\Framework\Exception implements Exception
 {
-    public function __construct(string $className)
+    /**
+     * @psalm-param class-string|trait-string $name
+     */
+    public function __construct(string $name)
     {
         parent::__construct(
             sprintf(
-                'Class "%s" already exists',
-                $className,
+                'The name "%s" is already in use',
+                $name,
             ),
         );
     }
