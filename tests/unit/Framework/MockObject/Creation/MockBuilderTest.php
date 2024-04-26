@@ -9,8 +9,13 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
+use function class_exists;
+use function interface_exists;
 use function md5;
 use function mt_rand;
+use function substr;
+use function trait_exists;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -109,5 +114,21 @@ final class MockBuilderTest extends TestCase
         $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
         $this->assertTrue($double->doSomething());
+    }
+
+    #[TestDox('allowMockingUnknownTypes() can be used to allow mocking of unknown types')]
+    public function testCreatesMockObjectForUnknownType(): void
+    {
+        $type = 'Type_' . substr(md5((string) mt_rand()), 0, 8);
+
+        assert(!class_exists($type) && !interface_exists($type) && !trait_exists($type));
+
+        $double = $this->getMockBuilder($type)
+            ->allowMockingUnknownTypes()
+            ->getMock();
+
+        $this->assertInstanceOf($type, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
+
     }
 }
