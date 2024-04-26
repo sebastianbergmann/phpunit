@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\CannotUseAddMethodsException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
