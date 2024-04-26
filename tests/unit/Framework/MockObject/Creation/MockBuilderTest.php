@@ -75,7 +75,7 @@ final class MockBuilderTest extends TestCase
     }
 
     #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class when the original class has a method of the same name')]
-    public function testCannotCreateMockObjectForExtendableClassAddingMethodsToItThatItAlreadyHas(): void
+    public function testCannotCreateMockObjectForExtendableClassAddingMethodToItThatItAlreadyHas(): void
     {
         $this->expectException(CannotUseAddMethodsException::class);
 
