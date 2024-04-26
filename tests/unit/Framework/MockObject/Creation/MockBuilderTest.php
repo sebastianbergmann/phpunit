@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\ClassAlreadyExistsException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AbstractClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
@@ -22,6 +23,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
 #[CoversClass(MockBuilder::class)]
+#[CoversClass(ClassAlreadyExistsException::class)]
 #[CoversClass(CannotUseAddMethodsException::class)]
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
@@ -39,6 +41,16 @@ final class MockBuilderTest extends TestCase
             ->getMock();
 
         $this->assertSame($className, $double::class);
+    }
+
+    #[TestDox('setMockClassName() cannot be used to configure the name of the mock object class when a class with that name already exists')]
+    public function testCannotCreateMockObjectWithSpecifiedClassNameWhenClassWithThatNameAlreadyExists(): void
+    {
+        $this->expectException(ClassAlreadyExistsException::class);
+
+        $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->setMockClassName(__CLASS__)
+            ->getMock();
     }
 
     #[TestDox('addMethods() can be used to configure an additional method for the mock object class when the original class does not have a method of the same name')]
