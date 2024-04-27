@@ -9,13 +9,21 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
+use function class_exists;
+use function interface_exists;
 use function md5;
 use function mt_rand;
+use function substr;
+use function trait_exists;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\CannotUseAddMethodsException;
+use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
+use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AbstractClass;
@@ -24,8 +32,10 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
 #[CoversClass(MockBuilder::class)]
-#[CoversClass(NameAlreadyInUseException::class)]
 #[CoversClass(CannotUseAddMethodsException::class)]
+#[CoversClass(DuplicateMethodException::class)]
+#[CoversClass(InvalidMethodNameException::class)]
+#[CoversClass(NameAlreadyInUseException::class)]
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
 #[Group('test-doubles/mock-object')]
@@ -71,7 +81,7 @@ final class MockBuilderTest extends TestCase
 
     #[IgnorePhpunitDeprecations]
     #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class when the original class has a method of the same name')]
-    public function testCannotCreateMockObjectForExtendableClassAddingMethodsToItThatItAlreadyHas(): void
+    public function testCannotCreateMockObjectForExtendableClassAddingMethodToItThatItAlreadyHas(): void
     {
         $this->expectException(CannotUseAddMethodsException::class);
 
@@ -81,39 +91,78 @@ final class MockBuilderTest extends TestCase
     }
 
     #[IgnorePhpunitDeprecations]
+    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class multiple times using the same name')]
+    public function testCannotCreateMockObjectForExtendableClassAddingMultipleMethodsWithSameNameToIt(): void
+    {
+        $this->expectException(DuplicateMethodException::class);
+
+        $this->getMockBuilder(ExtendableClass::class)
+            ->addMethods(['additionalMethod', 'additionalMethod'])
+            ->getMock();
+    }
+
+    #[IgnorePhpunitDeprecations]
+    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class with invalid name')]
+    public function testCannotCreateMockObjectForExtendableClassAddingMethodToItWithInvalidName(): void
+    {
+        $this->expectException(InvalidMethodNameException::class);
+
+        $this->getMockBuilder(ExtendableClass::class)
+            ->addMethods(['1234'])
+            ->getMock();
+    }
+
+    #[IgnorePhpunitDeprecations]
     #[TestDox('getMockForAbstractClass() can be used to create a mock object for an abstract class')]
     public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void
     {
-        $mock = $this->getMockBuilder(AbstractClass::class)
+        $double = $this->getMockBuilder(AbstractClass::class)
             ->getMockForAbstractClass();
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
     }
 
     #[IgnorePhpunitDeprecations]
     #[TestDox('getMockForTrait() can be used to create a mock object for a trait')]
     public function testCreatesMockObjectForTraitAndAllowsConfigurationOfMethods(): void
     {
-        $mock = $this->getMockBuilder(TraitWithConcreteAndAbstractMethod::class)
+        $double = $this->getMockBuilder(TraitWithConcreteAndAbstractMethod::class)
             ->getMockForTrait();
 
-        $mock->method('abstractMethod')->willReturn(true);
+        $double->method('abstractMethod')->willReturn(true);
 
-        $this->assertTrue($mock->concreteMethod());
+        $this->assertTrue($double->concreteMethod());
     }
 
     #[IgnorePhpunitDeprecations]
     #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
     public function testCreatesPartialMockObjectForExtendableClass(): void
     {
-        $mock = $this->getMockBuilder(ExtendableClass::class)
+        $double = $this->getMockBuilder(ExtendableClass::class)
             ->onlyMethods(['doSomethingElse'])
             ->getMock();
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
+    }
+
+    #[IgnorePhpunitDeprecations]
+    #[TestDox('allowMockingUnknownTypes() can be used to allow mocking of unknown types')]
+    public function testCreatesMockObjectForUnknownType(): void
+    {
+        $type = 'Type_' . substr(md5((string) mt_rand()), 0, 8);
+
+        assert(!class_exists($type) && !interface_exists($type) && !trait_exists($type));
+
+        $double = $this->getMockBuilder($type)
+            ->allowMockingUnknownTypes()
+            ->getMock();
+
+        $this->assertInstanceOf($type, $double);
+        $this->assertInstanceOf(MockObject::class, $double);
+
     }
 }

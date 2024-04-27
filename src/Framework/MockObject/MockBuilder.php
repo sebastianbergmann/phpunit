@@ -16,6 +16,7 @@ use function trait_exists;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Generator\CannotUseAddMethodsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
