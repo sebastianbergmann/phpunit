@@ -235,6 +235,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * This method is called before the first test of this test class is run.
+     *
+     * @codeCoverageIgnore
      */
     public static function setUpBeforeClass(): void
     {
@@ -242,6 +244,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * This method is called after the last test of this test class is run.
+     *
+     * @codeCoverageIgnore
      */
     public static function tearDownAfterClass(): void
     {
@@ -249,6 +253,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * This method is called before each test.
+     *
+     * @codeCoverageIgnore
      */
     protected function setUp(): void
     {
@@ -258,6 +264,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Performs assertions shared by all tests of a test case.
      *
      * This method is called between setUp() and test.
+     *
+     * @codeCoverageIgnore
      */
     protected function assertPreConditions(): void
     {
@@ -267,6 +275,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Performs assertions shared by all tests of a test case.
      *
      * This method is called between test and tearDown().
+     *
+     * @codeCoverageIgnore
      */
     protected function assertPostConditions(): void
     {
@@ -274,6 +284,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * This method is called after each test.
+     *
+     * @codeCoverageIgnore
      */
     protected function tearDown(): void
     {
@@ -719,6 +731,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     *
+     * @codeCoverageIgnore
      */
     final public function setInIsolation(bool $inIsolation): void
     {
@@ -727,14 +741,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function isInIsolation(): bool
-    {
-        return $this->inIsolation;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     *
+     * @codeCoverageIgnore
      */
     final public function result(): mixed
     {
