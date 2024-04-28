@@ -63,7 +63,6 @@
                 </xs:complexType>
             </xs:element>
         </xs:all>
-        <xs:attribute name="cacheDirectory" type="xs:anyURI"/>
         <xs:attribute name="pathCoverage" type="xs:boolean" default="false"/>
         <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
         <xs:attribute name="ignoreDeprecatedCodeUnits" type="xs:boolean" default="false"/>
