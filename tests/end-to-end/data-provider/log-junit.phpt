@@ -11,6 +11,8 @@ $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = $logfile;
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderTest.php';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderWithStringKeysTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/success.phpt';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/failure.phpt';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -22,7 +24,7 @@ unlink($logfile);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CLI Arguments" tests="8" assertions="8" errors="0" failures="2" skipped="0" time="%s">
+  <testsuite name="CLI Arguments" tests="10" assertions="10" errors="0" failures="3" skipped="0" time="%s">
     <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
       <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
         <testcase name="testAdd with data set #0" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
@@ -49,5 +51,16 @@ Failed asserting that 2 matches expected 3.
         <testcase name="testAdd with data set &quot;1 + 0 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
       </testsuite>
     </testsuite>
+    <testcase name="success.phpt" file="%ssuccess.phpt" assertions="1" time="%s"/>
+    <testcase name="failure.phpt" file="%sfailure.phpt" assertions="1" time="%s">
+      <failure type="PHPUnit\Framework\PhptAssertionFailedError">failure.phptFailed asserting that two strings are equal.%A
+--- Expected
++++ Actual
+@@ @@
+-'success'
++'failure'
+%A
+%s:%d</failure>
+    </testcase>
   </testsuite>
 </testsuites>
