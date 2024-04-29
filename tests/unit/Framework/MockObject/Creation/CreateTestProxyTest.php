@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function assert;
-use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
@@ -24,7 +23,6 @@ use PHPUnit\TestFixture\MockObject\TestProxyFixture;
 #[Medium]
 #[TestDox('createTestProxy()')]
 #[IgnorePhpunitDeprecations]
-#[CoversMethod(TestCase::class, 'createTestProxy')]
 final class CreateTestProxyTest extends TestCase
 {
     public function testCreatesTestProxyForExtendableClass(): void
