@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
@@ -27,7 +26,6 @@ use ReflectionProperty;
 #[RequiresPhpExtension('soap')]
 #[TestDox('getMockForAbstractClass()')]
 #[IgnorePhpunitDeprecations]
-#[CoversMethod(TestCase::class, 'getMockForAbstractClass')]
 final class GetMockForAbstractClassTest extends TestCase
 {
     public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void

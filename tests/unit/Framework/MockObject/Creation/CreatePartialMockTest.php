@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -22,7 +21,6 @@ use ReflectionProperty;
 #[Group('test-doubles/mock-object')]
 #[Medium]
 #[TestDox('createPartialMock()')]
-#[CoversMethod(TestCase::class, 'createPartialMock')]
 final class CreatePartialMockTest extends TestCase
 {
     public function testCreatesPartialMockObjectForExtendableClass(): void
