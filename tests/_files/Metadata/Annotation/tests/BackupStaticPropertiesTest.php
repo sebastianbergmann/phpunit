@@ -22,6 +22,7 @@ final class BackupStaticPropertiesTest extends TestCase
      * @backupStaticAttributes disabled
      *
      * @excludeStaticPropertyFromBackup anotherClassName propertyName
+     * @excludeStaticPropertyFromBackup ...
      */
     public function testOne(): void
     {
