@@ -211,16 +211,36 @@ final class Application
 
             if ($testDoxResult !== null &&
                 $configuration->hasLogfileTestdoxHtml()) {
-                OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
-                    (new TestDoxHtmlRenderer)->render($testDoxResult),
-                );
+                try {
+                    OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
+                        (new TestDoxHtmlRenderer)->render($testDoxResult),
+                    );
+                } catch (Exception $e) {
+                    EventFacade::emitter()->testRunnerTriggeredWarning(
+                        sprintf(
+                            'Cannot log test results in TestDox HTML format to "%s": %s',
+                            $configuration->logfileTestdoxHtml(),
+                            $e->getMessage(),
+                        ),
+                    );
+                }
             }
 
             if ($testDoxResult !== null &&
                 $configuration->hasLogfileTestdoxText()) {
-                OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
-                    (new TestDoxTextRenderer)->render($testDoxResult),
-                );
+                try {
+                    OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
+                        (new TestDoxTextRenderer)->render($testDoxResult),
+                    );
+                } catch (Exception $e) {
+                    EventFacade::emitter()->testRunnerTriggeredWarning(
+                        sprintf(
+                            'Cannot log test results in TestDox plain text format to "%s": %s',
+                            $configuration->logfileTestdoxText(),
+                            $e->getMessage(),
+                        ),
+                    );
+                }
             }
 
             $result = TestResultFacade::result();
@@ -545,19 +565,39 @@ final class Application
         }
 
         if ($configuration->hasLogfileJunit()) {
-            new JunitXmlLogger(
-                OutputFacade::printerFor($configuration->logfileJunit()),
-                EventFacade::instance(),
-            );
+            try {
+                new JunitXmlLogger(
+                    OutputFacade::printerFor($configuration->logfileJunit()),
+                    EventFacade::instance(),
+                );
+            } catch (Exception $e) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot log test results in JUnit XML format to "%s": %s',
+                        $configuration->logfileJunit(),
+                        $e->getMessage(),
+                    ),
+                );
+            }
         }
 
         if ($configuration->hasLogfileTeamcity()) {
-            new TeamCityLogger(
-                DefaultPrinter::from(
-                    $configuration->logfileTeamcity(),
-                ),
-                EventFacade::instance(),
-            );
+            try {
+                new TeamCityLogger(
+                    DefaultPrinter::from(
+                        $configuration->logfileTeamcity(),
+                    ),
+                    EventFacade::instance(),
+                );
+            } catch (Exception $e) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot log test results in TeamCity format to "%s": %s',
+                        $configuration->logfileTeamcity(),
+                        $e->getMessage(),
+                    ),
+                );
+            }
         }
     }
 
