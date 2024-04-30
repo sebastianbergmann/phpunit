@@ -899,14 +899,6 @@
       <code><![CDATA[nameAndVersion]]></code>
     </InternalMethod>
     <MissingThrowsDocblock>
-      <code><![CDATA[DefaultPrinter::from(
-                    $configuration->logfileTeamcity(),
-                )]]></code>
-      <code><![CDATA[DefaultPrinter::from(
-                    $configuration->logfileTeamcity(),
-                )]]></code>
-      <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
-      <code><![CDATA[OutputFacade::printerFor($configuration->logfileJunit())]]></code>
       <code><![CDATA[atLeastVersion]]></code>
       <code><![CDATA[build]]></code>
       <code><![CDATA[configurationFile]]></code>
