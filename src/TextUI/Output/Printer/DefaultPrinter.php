@@ -17,7 +17,6 @@ use function fclose;
 use function fopen;
 use function fsockopen;
 use function fwrite;
-use function sprintf;
 use function str_replace;
 use function str_starts_with;
 use PHPUnit\TextUI\DirectoryDoesNotExistException;
@@ -75,12 +74,7 @@ final class DefaultPrinter implements Printer
             $tmp = explode(':', str_replace('socket://', '', $out));
 
             if (count($tmp) !== 2) {
-                throw new InvalidSocketException(
-                    sprintf(
-                        '"%s" does not match "socket://hostname:port" format',
-                        $out,
-                    ),
-                );
+                throw new InvalidSocketException($out);
             }
 
             $this->stream = fsockopen($tmp[0], (int) $tmp[1]);
