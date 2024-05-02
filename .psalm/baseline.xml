@@ -395,17 +395,6 @@
       <code><![CDATA[$this->name]]></code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Logging/JUnit/JunitXmlLogger.php">
-    <InvalidPropertyAssignmentValue>
-      <code><![CDATA[$this->testSuiteTimes]]></code>
-    </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock>
-      <code><![CDATA[dataFromDataProvider]]></code>
-    </MissingThrowsDocblock>
-    <RedundantCondition>
-      <code><![CDATA[assert($test instanceof TestMethod)]]></code>
-    </RedundantCondition>
-  </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
     <MissingThrowsDocblock>
       <code><![CDATA[comparisonFailure]]></code>
