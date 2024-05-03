@@ -19,7 +19,7 @@ use function fsockopen;
 use function fwrite;
 use function str_replace;
 use function str_starts_with;
-use PHPUnit\TextUI\DirectoryDoesNotExistException;
+use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\Util\Filesystem;
 
