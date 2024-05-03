@@ -15,13 +15,13 @@ use RuntimeException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DirectoryCannotBeCreatedException extends RuntimeException implements Exception
+final class DirectoryDoesNotExistException extends RuntimeException implements Exception
 {
     public function __construct(string $directory)
     {
         parent::__construct(
             sprintf(
-                'Cannot create directory "%s"',
+                'Directory "%s" does not exist and could not be created',
                 $directory,
             ),
         );
