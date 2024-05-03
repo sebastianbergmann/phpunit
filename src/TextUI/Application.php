@@ -39,6 +39,7 @@ use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
+use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
@@ -217,7 +218,7 @@ final readonly class Application
                     OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
                         (new TestDoxHtmlRenderer)->render($testDoxResult),
                     );
-                } catch (Exception $e) {
+                } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
                     EventFacade::emitter()->testRunnerTriggeredWarning(
                         sprintf(
                             'Cannot log test results in TestDox HTML format to "%s": %s',
@@ -234,7 +235,7 @@ final readonly class Application
                     OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
                         (new TestDoxTextRenderer)->render($testDoxResult),
                     );
-                } catch (Exception $e) {
+                } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
                     EventFacade::emitter()->testRunnerTriggeredWarning(
                         sprintf(
                             'Cannot log test results in TestDox plain text format to "%s": %s',
@@ -590,7 +591,7 @@ final readonly class Application
                     OutputFacade::printerFor($configuration->logfileJunit()),
                     EventFacade::instance(),
                 );
-            } catch (Exception $e) {
+            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
                 EventFacade::emitter()->testRunnerTriggeredWarning(
                     sprintf(
                         'Cannot log test results in JUnit XML format to "%s": %s',
@@ -609,7 +610,7 @@ final readonly class Application
                     ),
                     EventFacade::instance(),
                 );
-            } catch (Exception $e) {
+            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
                 EventFacade::emitter()->testRunnerTriggeredWarning(
                     sprintf(
                         'Cannot log test results in TeamCity format to "%s": %s',
