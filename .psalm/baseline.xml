@@ -378,17 +378,19 @@
       <code><![CDATA[$groups]]></code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Framework/TestRunner.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$cce->getMessage()]]></code>
-      <code><![CDATA[$test->output()]]></code>
-    </ArgumentTypeCoercion>
+  <file src="src/Framework/TestRunner/SeparateProcessTestRunner.php">
     <InvalidArgument>
       <code><![CDATA[$var]]></code>
     </InvalidArgument>
     <MissingThrowsDocblock>
       <code><![CDATA[bootstrap]]></code>
     </MissingThrowsDocblock>
+  </file>
+  <file src="src/Framework/TestRunner/TestRunner.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$cce->getMessage()]]></code>
+      <code><![CDATA[$test->output()]]></code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion>
@@ -656,7 +658,7 @@
       <code><![CDATA[TestIdFilterIterator]]></code>
     </MissingTemplateParam>
   </file>
-  <file src="src/Runner/PhptTestCase.php">
+  <file src="src/Runner/PHPT/PhptTestCase.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$arguments]]></code>
       <code><![CDATA[$message]]></code>

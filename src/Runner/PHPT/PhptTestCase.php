@@ -616,7 +616,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $files = $this->getCoverageFiles();
 
         $template = new Template(
-            __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl',
+            __DIR__ . '/templates/phpt.tpl',
         );
 
         $composerAutoload = '\'\'';
