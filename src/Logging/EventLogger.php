@@ -42,7 +42,8 @@ final readonly class EventLogger implements Tracer
 
         $flags = FILE_APPEND;
 
-        if (PHP_OS_FAMILY !== 'Windows' || $this->path !== 'php://stdout') {
+        if (!(PHP_OS_FAMILY === 'Windows' || PHP_OS_FAMILY === 'Darwin') ||
+            $this->path !== 'php://stdout') {
             $flags |= LOCK_EX;
         }
 
