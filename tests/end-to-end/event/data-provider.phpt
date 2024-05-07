@@ -22,6 +22,9 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Data Provider Method Called (PHPUnit\TestFixture\Event\DataProviderTest::values for test method PHPUnit\TestFixture\Event\DataProviderTest::testSuccess)
+Data Provider Method Called (PHPUnit\TestFixture\Event\DataProviderTest::values for test method PHPUnit\TestFixture\Event\DataProviderTest::testSuccess)
+Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderTest::testSuccess:
+- PHPUnit\TestFixture\Event\DataProviderTest::values
 Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\DataProviderTest::values
 Test Suite Loaded (2 tests)

@@ -41,6 +41,55 @@ interface Emitter
 
     public function dataProviderMethodFinished(ClassMethod $testMethod, ClassMethod ...$calledMethods): void;
 
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredDeprecation(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger): void;
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredError(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed): void;
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredNotice(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredPhpDeprecation(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger): void;
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredPhpNotice(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredPhpWarning(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @psalm-param non-empty-string $message
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     */
+    public function dataProviderTriggeredWarning(ClassMethod $dataProvider, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
     public function testSuiteFiltered(TestSuite $testSuite): void;

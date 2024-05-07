@@ -22,6 +22,9 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Data Provider Method Called (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider for test method PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne)
+Data Provider Method Called (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider for test method PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne)
+Data Provider Method Finished for PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne:
+- PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider
 Data Provider Method Finished for PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne:
 - PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne)

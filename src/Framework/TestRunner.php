@@ -91,7 +91,7 @@ final class TestRunner
         $skipped    = false;
 
         if ($this->shouldErrorHandlerBeUsed($test)) {
-            ErrorHandler::instance()->enable();
+            ErrorHandler::instance()->enableForTest();
         }
 
         $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
@@ -202,7 +202,7 @@ final class TestRunner
             }
         }
 
-        ErrorHandler::instance()->disable();
+        ErrorHandler::instance()->disableForTest();
 
         if (!$error &&
             !$incomplete &&

@@ -13,6 +13,8 @@ use PHPUnit\Event\Subscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated Use PHPUnit\Event\DataProvider\MethodCalled\Subscriber instead
  */
 interface DataProviderMethodCalledSubscriber extends Subscriber
 {
