@@ -17,6 +17,7 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\TestRunner\TestResult\TestResult;
+use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
@@ -101,6 +102,7 @@ final class Facade
     }
 
     /**
+     * @throws CannotOpenSocketException
      * @throws DirectoryDoesNotExistException
      * @throws InvalidSocketException
      */

@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\TextUI\Output\DefaultPrinter;
 
@@ -22,11 +23,17 @@ final class DefaultPrinterTest extends TestCase
 {
     public static function providePrinter(): array
     {
-        return [
-            [DefaultPrinter::standardOutput()],
-            [DefaultPrinter::standardError()],
-            [DefaultPrinter::from('socket://www.example.com:80')],
+        $data = [
+            'standard output' => [DefaultPrinter::standardOutput()],
+            'standard error'  => [DefaultPrinter::standardError()],
         ];
+
+        try {
+            $data['socket'] = [DefaultPrinter::from('socket://www.example.com:80')];
+        } catch (CannotOpenSocketException $e) {
+        }
+
+        return $data;
     }
 
     #[DataProvider('providePrinter')]
