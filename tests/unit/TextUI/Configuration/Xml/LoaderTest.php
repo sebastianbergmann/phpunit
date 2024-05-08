@@ -211,6 +211,7 @@ final class LoaderTest extends TestCase
         $this->assertSame($defaultColors->successHigh(), $codeCoverage->html()->colorSuccessHigh());
         $this->assertSame($defaultColors->warning(), $codeCoverage->html()->colorWarning());
         $this->assertSame($defaultColors->danger(), $codeCoverage->html()->colorDanger());
+        $this->assertSame($defaultColors->theme(), $codeCoverage->html()->theme());
         $this->assertFalse($codeCoverage->html()->hasCustomCssFile());
 
         $this->assertTrue($codeCoverage->hasPhp());

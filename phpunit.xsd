@@ -316,6 +316,7 @@
         <xs:attribute name="colorWarning" type="xs:string" default="#fcf8e3"/>
         <xs:attribute name="colorDanger" type="xs:string" default="#f2dede"/>
         <xs:attribute name="customCssFile" type="xs:string"/>
+        <xs:attribute name="theme" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="coverageReportTextType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>

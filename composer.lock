@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3871b6355e38b9f01fc1f1190e544f32",
+    "content-hash": "9f98bd79ddefacac3829b1eaee2ed49c",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -243,16 +243,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "11.0.3",
+            "version": "dev-update-to-bootstrap-5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "7e35a2cbcabac0e6865fd373742ea432a3c34f92"
+                "url": "https://github.com/gammamatrix/php-code-coverage.git",
+                "reference": "ba3047f872113a15df70f8e5d246b0524681f98c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7e35a2cbcabac0e6865fd373742ea432a3c34f92",
-                "reference": "7e35a2cbcabac0e6865fd373742ea432a3c34f92",
+                "url": "https://api.github.com/repos/gammamatrix/php-code-coverage/zipball/ba3047f872113a15df70f8e5d246b0524681f98c",
+                "reference": "ba3047f872113a15df70f8e5d246b0524681f98c",
                 "shasum": ""
             },
             "require": {
@@ -288,7 +288,12 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "files": [
+                    "tests/TestCase.php",
+                    "tests/_files/BankAccountTest.php"
+                ]
+            },
             "license": [
                 "BSD-3-Clause"
             ],
@@ -309,15 +314,15 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.3"
+                "source": "https://github.com/gammamatrix/php-code-coverage/tree/update-to-bootstrap-5"
             },
             "funding": [
                 {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/sebastianbergmann"
                 }
             ],
-            "time": "2024-03-12T15:35:40+00:00"
+            "time": "2024-05-08T03:33:59+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1541,7 +1546,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "phpunit/php-code-coverage": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

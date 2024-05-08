@@ -282,6 +282,7 @@ final class CodeCoverage
                         $configuration->coverageHtmlColorSuccessHigh(),
                         $configuration->coverageHtmlColorWarning(),
                         $configuration->coverageHtmlColorDanger(),
+                        $configuration->coverageHtmlTheme(),
                     ),
                     Thresholds::from(
                         $configuration->coverageHtmlLowUpperBound(),
