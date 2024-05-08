@@ -310,11 +310,11 @@
         <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
         <xs:attribute name="lowUpperBound" type="xs:integer" default="50"/>
         <xs:attribute name="highLowerBound" type="xs:integer" default="90"/>
-        <xs:attribute name="colorSuccessLow" type="xs:string" default="#dff0d8"/>
-        <xs:attribute name="colorSuccessMedium" type="xs:string" default="#c3e3b5"/>
-        <xs:attribute name="colorSuccessHigh" type="xs:string" default="#99cb84"/>
-        <xs:attribute name="colorWarning" type="xs:string" default="#fcf8e3"/>
-        <xs:attribute name="colorDanger" type="xs:string" default="#f2dede"/>
+        <xs:attribute name="colorSuccessLow" type="xs:string"/>
+        <xs:attribute name="colorSuccessMedium" type="xs:string"/>
+        <xs:attribute name="colorSuccessHigh" type="xs:string"/>
+        <xs:attribute name="colorWarning" type="xs:string"/>
+        <xs:attribute name="colorDanger" type="xs:string"/>
         <xs:attribute name="customCssFile" type="xs:string"/>
         <xs:attribute name="theme" type="xs:string"/>
     </xs:complexType>
