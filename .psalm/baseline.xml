@@ -741,6 +741,9 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[!empty($matches['operator']) ? $matches['operator'] : '>=']]></code>
     </ArgumentTypeCoercion>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[empty($matches['operator'])]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
   <file src="src/Runner/Baseline/RelativePathCalculator.php">
     <LessSpecificReturnStatement>
