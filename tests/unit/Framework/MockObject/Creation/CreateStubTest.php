@@ -45,7 +45,7 @@ final class CreateStubTest extends TestCase
         $this->assertInstanceOf(Stub::class, $double);
     }
 
-    public function testCreatesTestStubForReadonlyClass(): void
+    public function testCreatesTestStubForExtendableReadonlyClass(): void
     {
         $double = $this->createStub(ExtendableReadonlyClass::class);
 

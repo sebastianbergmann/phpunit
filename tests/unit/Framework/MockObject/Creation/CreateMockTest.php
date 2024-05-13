@@ -47,7 +47,7 @@ final class CreateMockTest extends TestCase
         $this->assertInstanceOf(MockObject::class, $double);
     }
 
-    public function testCreatesMockObjectForReadonlyClass(): void
+    public function testCreatesMockObjectForExtendableReadonlyClass(): void
     {
         $double = $this->createMock(ExtendableReadonlyClass::class);
 
