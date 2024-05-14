@@ -46,9 +46,11 @@ final readonly class DefaultJobRunner implements JobRunner
 
             if ($temporaryFile === false ||
                 file_put_contents($temporaryFile, $job->code()) === false) {
+                // @codeCoverageIgnoreStart
                 throw new PhpProcessException(
                     'Unable to write temporary file',
                 );
+                // @codeCoverageIgnoreEnd
             }
 
             $job = new Job(
@@ -111,9 +113,11 @@ final readonly class DefaultJobRunner implements JobRunner
         );
 
         if (!is_resource($process)) {
+            // @codeCoverageIgnoreStart
             throw new PhpProcessException(
                 'Unable to spawn worker process',
             );
+            // @codeCoverageIgnoreEnd
         }
 
         fwrite($pipes[0], $job->code());
