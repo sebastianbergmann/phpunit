@@ -34,7 +34,7 @@ fwrite(STDOUT, 'test');
 EOT
                 ),
             ],
-            'output to stderr: yes' => [
+            'output to stderr' => [
                 new Result('', 'test'),
                 new Job(
                     <<<'EOT'
