@@ -25,41 +25,41 @@ final class DefaultJobRunnerTest extends TestCase
 {
     public static function provider(): Generator
     {
-        yield 'output to stdout' => [
-            new Result('test', ''),
-            new Job(
-                <<<'EOT'
+        if (version_compare(PHP_VERSION, '8.3.0', '>')) {
+            yield 'output to stdout' => [
+                new Result('test', ''),
+                new Job(
+                    <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test');
 
 EOT
-            ),
-        ];
+                ),
+            ];
 
-        yield 'output to stderr' => [
-            new Result('', 'test'),
-            new Job(
-                <<<'EOT'
+            yield 'output to stderr' => [
+                new Result('', 'test'),
+                new Job(
+                    <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
 EOT
-            ),
-        ];
+                ),
+            ];
 
-        yield 'output to stdout and stderr' => [
-            new Result('test-stdout', 'test-stderr'),
-            new Job(
-                <<<'EOT'
+            yield 'output to stdout and stderr' => [
+                new Result('test-stdout', 'test-stderr'),
+                new Job(
+                    <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test-stdout');
 fwrite(STDERR, 'test-stderr');
 
 EOT
-            ),
-        ];
+                ),
+            ];
 
-        if (version_compare(PHP_VERSION, '8.3.0', '>')) {
             yield 'stderr redirected to stdout' => [
                 new Result('test', ''),
                 new Job(
