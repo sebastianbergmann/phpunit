@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use function version_compare;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -58,17 +59,19 @@ EOT
             ),
         ];
 
-        yield 'stderr redirected to stdout' => [
-            new Result('test', ''),
-            new Job(
-                <<<'EOT'
+        if (version_compare(PHP_VERSION, '8.3.0', '>')) {
+            yield 'stderr redirected to stdout' => [
+                new Result('test', ''),
+                new Job(
+                    <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
 EOT,
-                redirectErrors: true,
-            ),
-        ];
+                    redirectErrors: true,
+                ),
+            ];
+        }
 
         yield 'configured environment variables' => [
             new Result('test', ''),
