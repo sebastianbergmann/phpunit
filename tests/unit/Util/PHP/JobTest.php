@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Job::class)]
 #[Small]
-final class PhpJobTest extends TestCase
+final class JobTest extends TestCase
 {
     public function testHasCode(): void
     {
