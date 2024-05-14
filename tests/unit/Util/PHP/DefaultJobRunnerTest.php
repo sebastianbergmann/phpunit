@@ -88,6 +88,17 @@ EOT,
                     arguments: ['test'],
                 ),
             ],
+            'input from stdin' => [
+                new Result('test', ''),
+                new Job(
+                    <<<'EOT'
+<?php declare(strict_types=1);
+print file_get_contents('php://stdin');
+
+EOT,
+                    input: 'test',
+                ),
+            ],
         ];
     }
 
