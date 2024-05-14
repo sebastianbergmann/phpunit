@@ -55,7 +55,7 @@ fwrite(STDERR, 'test-stderr');
 EOT
                 ),
             ],
-            'redirect stderr to stdout' => [
+            'stderr redirected to stdout' => [
                 new Result('test', ''),
                 new Job(
                     <<<'EOT'
@@ -66,7 +66,7 @@ EOT,
                     redirectErrors: true,
                 ),
             ],
-            'environment variables' => [
+            'configured environment variables' => [
                 new Result('test', ''),
                 new Job(
                     <<<'EOT'
