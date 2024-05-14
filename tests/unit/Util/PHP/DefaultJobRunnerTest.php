@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -21,84 +22,88 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class DefaultJobRunnerTest extends TestCase
 {
-    public static function provider(): array
+    public static function provider(): Generator
     {
-        return [
-            'output to stdout' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+        yield 'output to stdout' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test');
 
 EOT
-                ),
-            ],
-            'output to stderr' => [
-                new Result('', 'test'),
-                new Job(
-                    <<<'EOT'
+            ),
+        ];
+
+        yield 'output to stderr' => [
+            new Result('', 'test'),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
 EOT
-                ),
-            ],
-            'output to stdout and stderr' => [
-                new Result('test-stdout', 'test-stderr'),
-                new Job(
-                    <<<'EOT'
+            ),
+        ];
+
+        yield 'output to stdout and stderr' => [
+            new Result('test-stdout', 'test-stderr'),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test-stdout');
 fwrite(STDERR, 'test-stderr');
 
 EOT
-                ),
-            ],
-            'stderr redirected to stdout' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+            ),
+        ];
+
+        yield 'stderr redirected to stdout' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
 EOT,
-                    redirectErrors: true,
-                ),
-            ],
-            'configured environment variables' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+                redirectErrors: true,
+            ),
+        ];
+
+        yield 'configured environment variables' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 print getenv('test');
 
 EOT,
-                    environmentVariables: ['test' => 'test'],
-                ),
-            ],
-            'arguments' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+                environmentVariables: ['test' => 'test'],
+            ),
+        ];
+
+        yield 'arguments' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 print $argv[1];
 
 EOT,
-                    arguments: ['test'],
-                ),
-            ],
-            'input from stdin' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+                arguments: ['test'],
+            ),
+        ];
+
+        yield 'input from stdin' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 print file_get_contents('php://stdin');
 
 EOT,
-                    input: 'test',
-                ),
-            ],
+                input: 'test',
+            ),
         ];
     }
 
