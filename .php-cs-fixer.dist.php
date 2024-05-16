@@ -349,4 +349,6 @@ $config->setFinder($finder)
 
 $config->setCacheFile(__DIR__ . '/.php-cs-fixer.cache/' . json_decode((string) @file_get_contents('composer.json'), true)["extra"]["branch-alias"]["dev-main"] ?? 'unknown');
 
+$config->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect());
+
 return $config;
