@@ -28,8 +28,9 @@ final readonly class Html
     private string $colorWarning;
     private string $colorDanger;
     private ?string $customCssFile;
+    private string $theme;
 
-    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile)
+    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile, string $theme = '')
     {
         $this->target             = $target;
         $this->lowUpperBound      = $lowUpperBound;
@@ -40,6 +41,7 @@ final readonly class Html
         $this->colorWarning       = $colorWarning;
         $this->colorDanger        = $colorDanger;
         $this->customCssFile      = $customCssFile;
+        $this->theme              = $theme;
     }
 
     public function target(): Directory
@@ -80,6 +82,11 @@ final readonly class Html
     public function colorDanger(): string
     {
         return $this->colorDanger;
+    }
+
+    public function theme(): string
+    {
+        return $this->theme;
     }
 
     /**

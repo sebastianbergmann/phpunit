@@ -428,6 +428,7 @@ final readonly class Loader
                 $this->getStringAttributeWithDefault($element, 'colorWarning', $defaultColors->warning()),
                 $this->getStringAttributeWithDefault($element, 'colorDanger', $defaultColors->danger()),
                 $this->getStringAttribute($element, 'customCssFile'),
+                $this->getStringAttributeWithDefault($element, 'theme', $defaultColors->theme()),
             );
         }
 
