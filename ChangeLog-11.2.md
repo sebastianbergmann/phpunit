@@ -14,4 +14,4 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 
-[11.2.0]: https://github.com/sebastianbergmann/phpunit/compare/11.1...main
+[11.2.0]: https://github.com/sebastianbergmann/phpunit/compare/11.1.3...11.2.0
