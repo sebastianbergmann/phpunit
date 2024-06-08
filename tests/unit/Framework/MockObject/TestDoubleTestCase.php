@@ -281,6 +281,18 @@ abstract class TestDoubleTestCase extends TestCase
         clone $double;
     }
 
+    public function testMethodNameCanOnlyBeConfiguredOnce(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $this->expectException(MethodNameAlreadyConfiguredException::class);
+
+        $double
+            ->method('doSomething')
+            ->method('doSomething')
+            ->willReturn(true);
+    }
+
     /**
      * @psalm-template RealInstanceType of object
      *
