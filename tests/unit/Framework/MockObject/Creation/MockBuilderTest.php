@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\TestFixture\MockObject\ClassCallingMethodInConstructor;
 use function assert;
 use function class_exists;
 use function interface_exists;
@@ -164,5 +165,16 @@ final class MockBuilderTest extends TestCase
         $this->assertInstanceOf($type, $double);
         $this->assertInstanceOf(MockObject::class, $double);
 
+    }
+
+    #[TestDox('onlyMethods() mocked methods can be called within the original constructor')]
+    public function testOnlyMethodCalledInConstructorWorks(): void
+    {
+        $testClassMock = $this->getMockBuilder(ClassCallingMethodInConstructor::class)
+            ->onlyMethods(['reset'])
+            ->getMock();
+
+        $testClassMock->expects($this::once())->method('reset');
+        $testClassMock->second();
     }
 }
