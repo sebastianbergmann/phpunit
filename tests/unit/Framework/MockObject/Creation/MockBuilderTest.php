@@ -167,7 +167,7 @@ final class MockBuilderTest extends TestCase
 
     }
 
-    #[TestDox('onlyMethods() mocked methods can be called within the original constructor')]
+    #[TestDox('Mocked methods can be called from the original constructor of a partially mocked class')]
     public function testOnlyMethodCalledInConstructorWorks(): void
     {
         $double = $this->getMockBuilder(ClassCallingMethodInConstructor::class)
