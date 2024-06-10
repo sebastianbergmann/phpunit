@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 ### Fixed
 
+* [#5857](https://github.com/sebastianbergmann/phpunit/issues/5857): Mocked method called in constructor and a additional method throws an unexpected exception
 * [#5859](https://github.com/sebastianbergmann/phpunit/issues/5859): XML Configuration File Migrator does not remove `cacheDirectory` attribute from `<coverage>` element when migrating from PHPUnit 11.1 to PHPUnit 11.2
 
 ## [11.2.0] - 2024-06-07
