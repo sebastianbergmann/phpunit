@@ -69,6 +69,10 @@ final readonly class MigrationBuilder
         '11.0' => [
             ReplaceRestrictDeprecationsWithIgnoreDeprecations::class,
         ],
+
+        '11.1' => [
+            RemoveCoverageElementCacheDirectoryAttribute::class,
+        ],
     ];
 
     /**
