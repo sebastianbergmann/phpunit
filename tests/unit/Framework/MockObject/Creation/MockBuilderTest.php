@@ -170,6 +170,8 @@ final class MockBuilderTest extends TestCase
     #[TestDox('Mocked methods can be called from the original constructor of a partially mocked class')]
     public function testOnlyMethodCalledInConstructorWorks(): void
     {
+        $this->markTestIncomplete('https://github.com/sebastianbergmann/phpunit/issues/5857');
+
         $double = $this->getMockBuilder(ClassCallingMethodInConstructor::class)
             ->onlyMethods(['reset'])
             ->getMock();
