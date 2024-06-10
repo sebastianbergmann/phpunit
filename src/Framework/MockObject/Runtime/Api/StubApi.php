@@ -24,12 +24,12 @@ trait StubApi
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_getInvocationHandler(): InvocationHandler
     {
-        return $this->__phpunit_state->invocationHandler();
+        return $this->__phpunit_state()->invocationHandler();
     }
 
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_unsetInvocationMocker(): void
     {
-        $this->__phpunit_state->unsetInvocationHandler();
+        $this->__phpunit_state()->unsetInvocationHandler();
     }
 }
