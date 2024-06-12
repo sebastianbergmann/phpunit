@@ -347,6 +347,30 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
 
             $test->run();
+
+            foreach (array_keys($this->tests) as $key) {
+                if ($test === $this->tests[$key]) {
+                    unset($this->tests[$key]);
+
+                    break;
+                }
+            }
+
+            if ($test instanceof TestCase || $test instanceof self) {
+                foreach ($test->groups() as $group) {
+                    if (!isset($this->groups[$group])) {
+                        continue;
+                    }
+
+                    foreach (array_keys($this->groups[$group]) as $key) {
+                        if ($test === $this->groups[$group][$key]) {
+                            unset($this->groups[$group][$key]);
+
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         $this->invokeMethodsAfterLastTest($emitter);
