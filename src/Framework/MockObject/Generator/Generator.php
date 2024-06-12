@@ -93,11 +93,6 @@ final class Generator
     ];
 
     /**
-     * @psalm-var array<non-empty-string, MockClass>
-     */
-    private static array $cache = [];
-
-    /**
      * Returns a test double for the specified class.
      *
      * @throws ClassIsEnumerationException
@@ -415,21 +410,17 @@ final class Generator
             serialize($callOriginalMethods),
         );
 
-        if (!isset(self::$cache[$key])) {
-            self::$cache[$key] = $this->generateCodeForTestDoubleClass(
-                $type,
-                $mockObject,
-                $markAsMockObject,
-                $methods,
-                $mockClassName,
-                $callOriginalClone,
-                $callAutoload,
-                $cloneArguments,
-                $callOriginalMethods,
-            );
-        }
-
-        return self::$cache[$key];
+        return $this->generateCodeForTestDoubleClass(
+            $type,
+            $mockObject,
+            $markAsMockObject,
+            $methods,
+            $mockClassName,
+            $callOriginalClone,
+            $callAutoload,
+            $cloneArguments,
+            $callOriginalMethods,
+        );
     }
 
     /**
