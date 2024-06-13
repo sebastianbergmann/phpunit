@@ -300,7 +300,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Returns the test groups of the suite.
      *
-     * @psalm-return list<string>
+     * @psalm-return list<non-empty-string>
      */
     public function groups(): array
     {
