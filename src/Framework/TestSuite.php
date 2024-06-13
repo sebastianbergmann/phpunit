@@ -62,7 +62,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private string $name;
 
     /**
-     * @psalm-var array<string,list<Test>>
+     * @psalm-var array<non-empty-string, list<non-empty-string>>
      */
     private array $groups = [];
 
@@ -175,16 +175,24 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $groups[] = 'default';
             }
 
-            foreach ($groups as $group) {
-                if (!isset($this->groups[$group])) {
-                    $this->groups[$group] = [$test];
-                } else {
-                    $this->groups[$group][] = $test;
-                }
+            if ($test instanceof TestCase) {
+                $id = $test->valueObjectForEvents()->id();
+
+                $test->setGroups($groups);
             }
 
-            if ($test instanceof TestCase) {
-                $test->setGroups($groups);
+            if ($test instanceof PhptTestCase) {
+                $id = $test->valueObjectForEvents()->id();
+            }
+
+            if (isset($id)) {
+                foreach ($groups as $group) {
+                    if (!isset($this->groups[$group])) {
+                        $this->groups[$group] = [$id];
+                    } else {
+                        $this->groups[$group][] = $id;
+                    }
+                }
             }
         }
     }
@@ -310,6 +318,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         );
     }
 
+    /**
+     * @psalm-return array<non-empty-string, list<non-empty-string>>
+     */
     public function groupDetails(): array
     {
         return $this->groups;
@@ -382,22 +393,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     unset($this->tests[$key]);
 
                     break;
-                }
-            }
-
-            if ($test instanceof TestCase || $test instanceof self) {
-                foreach ($test->groups() as $group) {
-                    if (!isset($this->groups[$group])) {
-                        continue;
-                    }
-
-                    foreach (array_keys($this->groups[$group]) as $key) {
-                        if ($test === $this->groups[$group][$key]) {
-                            unset($this->groups[$group][$key]);
-
-                            break;
-                        }
-                    }
                 }
             }
         }

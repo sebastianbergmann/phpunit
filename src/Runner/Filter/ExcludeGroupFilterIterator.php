@@ -17,9 +17,10 @@ use function in_array;
 final class ExcludeGroupFilterIterator extends GroupFilterIterator
 {
     /**
-     * @psalm-param list<int> $groupTests
+     * @psalm-param non-empty-string $id
+     * @psalm-param list<non-empty-string> $groupTests
      */
-    protected function doAccept(int $id, array $groupTests): bool
+    protected function doAccept(string $id, array $groupTests): bool
     {
         return !in_array($id, $groupTests, true);
     }
