@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use const PHP_EOL;
 use function array_keys;
-use function array_map;
 use function array_merge;
 use function assert;
 use function call_user_func;
@@ -312,10 +311,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function groups(): array
     {
-        return array_map(
-            'strval',
-            array_keys($this->groups),
-        );
+        return array_keys($this->groups);
     }
 
     /**
