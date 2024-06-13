@@ -160,15 +160,22 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addTest(Test $test, array $groups = []): void
     {
+        if ($test instanceof self) {
+            $this->tests[] = $test;
+
+            $this->clearCaches();
+
+            return;
+        }
+
+        assert($test instanceof TestCase || $test instanceof PhptTestCase);
+
         $class = new ReflectionClass($test);
 
         if (!$class->isAbstract()) {
             $this->tests[] = $test;
-            $this->clearCaches();
 
-            if ($test instanceof self && empty($groups)) {
-                $groups = $test->groups();
-            }
+            $this->clearCaches();
 
             if ($this->containsOnlyVirtualGroups($groups)) {
                 $groups[] = 'default';
@@ -178,19 +185,15 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $id = $test->valueObjectForEvents()->id();
 
                 $test->setGroups($groups);
-            }
-
-            if ($test instanceof PhptTestCase) {
+            } else {
                 $id = $test->valueObjectForEvents()->id();
             }
 
-            if (isset($id)) {
-                foreach ($groups as $group) {
-                    if (!isset($this->groups[$group])) {
-                        $this->groups[$group] = [$id];
-                    } else {
-                        $this->groups[$group][] = $id;
-                    }
+            foreach ($groups as $group) {
+                if (!isset($this->groups[$group])) {
+                    $this->groups[$group] = [$id];
+                } else {
+                    $this->groups[$group][] = $id;
                 }
             }
         }
