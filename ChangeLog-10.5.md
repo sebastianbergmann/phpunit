@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.21] - 2024-MM-DD
+
+### Changed
+
+* [#5861](https://github.com/sebastianbergmann/phpunit/pull/5861): Destroy `TestCase` object after its test was run
+
 ## [10.5.20] - 2024-04-24
 
 * [#5771](https://github.com/sebastianbergmann/phpunit/issues/5771): JUnit XML logger may crash when test that is run in separate process exits unexpectedly
@@ -204,6 +210,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.21]: https://github.com/sebastianbergmann/phpunit/compare/10.5.20...10.5
 [10.5.20]: https://github.com/sebastianbergmann/phpunit/compare/10.5.19...10.5.20
 [10.5.19]: https://github.com/sebastianbergmann/phpunit/compare/10.5.18...10.5.19
 [10.5.18]: https://github.com/sebastianbergmann/phpunit/compare/10.5.17...10.5.18
