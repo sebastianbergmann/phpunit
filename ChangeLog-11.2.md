@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.2.2] - 2024-MM-DD
+
+### Changed
+
+* [#5861](https://github.com/sebastianbergmann/phpunit/pull/5861): Destroy `TestCase` object after its test was run
+
 ## [11.2.1] - 2024-06-11
 
 ### Fixed
@@ -21,5 +27,6 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 
+[11.2.2]: https://github.com/sebastianbergmann/phpunit/compare/11.2.1...11.2
 [11.2.1]: https://github.com/sebastianbergmann/phpunit/compare/11.2.0...11.2.1
 [11.2.0]: https://github.com/sebastianbergmann/phpunit/compare/11.1.3...11.2.0
