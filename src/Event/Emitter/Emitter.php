@@ -116,30 +116,9 @@ interface Emitter
     public function testCreatedMockObjectForIntersectionOfInterfaces(array $interfaces): void;
 
     /**
-     * @psalm-param trait-string $traitName
-     */
-    public function testCreatedMockObjectForTrait(string $traitName): void;
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public function testCreatedMockObjectForAbstractClass(string $className): void;
-
-    /**
-     * @psalm-param class-string $originalClassName
-     * @psalm-param class-string $mockClassName
-     */
-    public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void;
-
-    /**
      * @psalm-param class-string $className
      */
     public function testCreatedPartialMockObject(string $className, string ...$methodNames): void;
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public function testCreatedTestProxy(string $className, array $constructorArguments): void;
 
     /**
      * @psalm-param class-string $className

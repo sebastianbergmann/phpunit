@@ -91,20 +91,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame($object, $double->doSomething($object));
     }
 
-    #[IgnorePhpunitDeprecations]
-    public function testCloningOfObjectsPassedAsArgumentCanBeEnabled(): void
-    {
-        $object = new stdClass;
-
-        $double = $this->getMockBuilder(InterfaceWithMethodThatExpectsObject::class)
-            ->enableArgumentCloning()
-            ->getMock();
-
-        $double->method('doSomething')->willReturnArgument(0);
-
-        $this->assertNotSame($object, $double->doSomething($object));
-    }
-
     final public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);

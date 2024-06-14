@@ -9,7 +9,7 @@ on:
 name: CI
 
 env:
-  COMPOSER_ROOT_VERSION: "11.3-dev"
+  COMPOSER_ROOT_VERSION: "12.0-dev"
 
 permissions:
   contents: read
@@ -115,7 +115,6 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
 
@@ -162,7 +161,6 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
 
@@ -322,7 +320,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
 

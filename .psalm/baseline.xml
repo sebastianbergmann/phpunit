@@ -45,11 +45,6 @@
       <code><![CDATA[$calledMethods]]></code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Event/Events/Test/TestDouble/MockObjectFromWsdlCreated.php">
-    <PropertyTypeCoercion>
-      <code><![CDATA[$methods]]></code>
-    </PropertyTypeCoercion>
-  </file>
   <file src="src/Event/Events/Test/TestDouble/PartialMockObjectCreated.php">
     <PropertyTypeCoercion>
       <code><![CDATA[$methodNames]]></code>
@@ -59,9 +54,6 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$eventClass . 'Subscriber']]></code>
     </ArgumentTypeCoercion>
-    <InvalidArrayOffset>
-      <code><![CDATA[gc_status()['running']]]></code>
-    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Runtime/PHP.php">
     <ImpureFunctionCall>
@@ -85,18 +77,6 @@
     <ImpureMethodCall>
       <code><![CDATA[fromBytes]]></code>
     </ImpureMethodCall>
-  </file>
-  <file src="src/Event/Value/Telemetry/Php83GarbageCollectorStatusProvider.php">
-    <InvalidArrayOffset>
-      <code><![CDATA[$status['application_time']]]></code>
-      <code><![CDATA[$status['buffer_size']]]></code>
-      <code><![CDATA[$status['collector_time']]]></code>
-      <code><![CDATA[$status['destructor_time']]]></code>
-      <code><![CDATA[$status['free_time']]]></code>
-      <code><![CDATA[$status['full']]]></code>
-      <code><![CDATA[$status['protected']]]></code>
-      <code><![CDATA[$status['running']]]></code>
-    </InvalidArrayOffset>
   </file>
   <file src="src/Event/Value/Test/TestCollection.php">
     <PropertyTypeCoercion>
@@ -211,6 +191,42 @@
       <code><![CDATA[$type]]></code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Framework/Constraint/Type/IsType.php">
+    <MissingClassConstType>
+      <code><![CDATA[KNOWN_TYPES = [
+        'array'             => true,
+        'boolean'           => true,
+        'bool'              => true,
+        'double'            => true,
+        'float'             => true,
+        'integer'           => true,
+        'int'               => true,
+        'null'              => true,
+        'numeric'           => true,
+        'object'            => true,
+        'real'              => true,
+        'resource'          => true,
+        'resource (closed)' => true,
+        'string'            => true,
+        'scalar'            => true,
+        'callable'          => true,
+        'iterable'          => true,
+    ]]]></code>
+      <code><![CDATA[TYPE_ARRAY = 'array']]></code>
+      <code><![CDATA[TYPE_BOOL = 'bool']]></code>
+      <code><![CDATA[TYPE_CALLABLE = 'callable']]></code>
+      <code><![CDATA[TYPE_CLOSED_RESOURCE = 'resource (closed)']]></code>
+      <code><![CDATA[TYPE_FLOAT = 'float']]></code>
+      <code><![CDATA[TYPE_INT = 'int']]></code>
+      <code><![CDATA[TYPE_ITERABLE = 'iterable']]></code>
+      <code><![CDATA[TYPE_NULL = 'null']]></code>
+      <code><![CDATA[TYPE_NUMERIC = 'numeric']]></code>
+      <code><![CDATA[TYPE_OBJECT = 'object']]></code>
+      <code><![CDATA[TYPE_RESOURCE = 'resource']]></code>
+      <code><![CDATA[TYPE_SCALAR = 'scalar']]></code>
+      <code><![CDATA[TYPE_STRING = 'string']]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/Framework/DataProviderTestSuite.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$className]]></code>
@@ -232,20 +248,21 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$className]]></code>
       <code><![CDATA[$methods]]></code>
-      <code><![CDATA[$type]]></code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass>
-      <code><![CDATA[new MockTrait(
-                $classTemplate->render(),
-                $className['className'],
-            )]]></code>
-      <code><![CDATA[new MockTrait($classTemplate->render(), $className['className'])]]></code>
-      <code><![CDATA[new UnknownTraitException($traitName)]]></code>
-      <code><![CDATA[new UnknownTraitException($traitName)]]></code>
-    </DeprecatedClass>
-    <DeprecatedMethod>
-      <code><![CDATA[mockObjectForAbstractClass]]></code>
-    </DeprecatedMethod>
+    <MissingClassConstType>
+      <code><![CDATA[EXCLUDED_METHOD_NAMES = [
+        '__CLASS__'       => true,
+        '__DIR__'         => true,
+        '__FILE__'        => true,
+        '__FUNCTION__'    => true,
+        '__LINE__'        => true,
+        '__METHOD__'      => true,
+        '__NAMESPACE__'   => true,
+        '__TRAIT__'       => true,
+        '__clone'         => true,
+        '__halt_compiler' => true,
+    ]]]></code>
+    </MissingClassConstType>
     <MissingThrowsDocblock>
       <code><![CDATA[getMethod]]></code>
       <code><![CDATA[testDouble]]></code>
@@ -256,13 +273,14 @@
       <code><![CDATA[testDouble]]></code>
       <code><![CDATA[testDouble]]></code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument>
-      <code><![CDATA[$client->__getFunctions()]]></code>
-    </PossiblyNullArgument>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[!$parameterStart]]></code>
-      <code><![CDATA[empty($methods)]]></code>
-    </RiskyTruthyFalsyComparison>
+  </file>
+  <file src="src/Framework/MockObject/Generator/MockBuilder.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[$object]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[MockObject&MockedType]]></code>
+    </InvalidReturnType>
   </file>
   <file src="src/Framework/MockObject/Generator/MockClass.php">
     <LessSpecificReturnStatement>
@@ -284,7 +302,6 @@
                 'method_name'        => $this->methodName,
                 'modifier'           => $this->modifier,
                 'reference'          => $this->reference,
-                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
                 'deprecation'        => $deprecation,
                 'return_result'      => $returnResult,
             ]]]></code>
@@ -292,30 +309,6 @@
     <PossiblyFalseOperand>
       <code><![CDATA[strpos($parameterAsString, '<optional> ')]]></code>
     </PossiblyFalseOperand>
-  </file>
-  <file src="src/Framework/MockObject/Generator/MockTrait.php">
-    <LessSpecificReturnStatement>
-      <code><![CDATA[$this->mockName]]></code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType>
-      <code><![CDATA[class-string]]></code>
-    </MoreSpecificReturnType>
-  </file>
-  <file src="src/Framework/MockObject/MockBuilder.php">
-    <DeprecatedMethod>
-      <code><![CDATA[mockObjectForAbstractClass]]></code>
-      <code><![CDATA[mockObjectForTrait]]></code>
-    </DeprecatedMethod>
-    <InvalidReturnStatement>
-      <code><![CDATA[$object]]></code>
-      <code><![CDATA[$object]]></code>
-      <code><![CDATA[$object]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[MockObject&MockedType]]></code>
-      <code><![CDATA[MockObject&MockedType]]></code>
-      <code><![CDATA[MockObject&MockedType]]></code>
-    </InvalidReturnType>
   </file>
   <file src="src/Framework/MockObject/Runtime/Builder/InvocationMocker.php">
     <PropertyTypeCoercion>
@@ -350,19 +343,11 @@
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$e->getMessage()]]></code>
-      <code><![CDATA[$mockClassName]]></code>
-      <code><![CDATA[$originalClassName]]></code>
       <code><![CDATA[$this->expectedException]]></code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod>
-      <code><![CDATA[disableArgumentCloning]]></code>
-      <code><![CDATA[disallowMockingUnknownTypes]]></code>
-      <code><![CDATA[enableProxyingToOriginalMethods]]></code>
-      <code><![CDATA[generateClassFromWsdl]]></code>
-      <code><![CDATA[mockObjectForAbstractClass]]></code>
-      <code><![CDATA[mockObjectForTrait]]></code>
-      <code><![CDATA[objectForTrait]]></code>
-    </DeprecatedMethod>
+    <MissingClassConstType>
+      <code><![CDATA[LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME]]]></code>
+    </MissingClassConstType>
     <MissingThrowsDocblock>
       <code><![CDATA[getMethod]]></code>
     </MissingThrowsDocblock>
@@ -422,6 +407,79 @@
       <code><![CDATA[assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)]]></code>
       <code><![CDATA[assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)]]></code>
     </RedundantCondition>
+  </file>
+  <file src="src/Logging/TestDox/HtmlRenderer.php">
+    <MissingClassConstType>
+      <code><![CDATA[CLASS_FOOTER = <<<'EOT'
+        </ul>
+EOT]]></code>
+      <code><![CDATA[CLASS_HEADER = <<<'EOT'
+
+        <h2>%s</h2>
+        <ul>
+
+EOT]]></code>
+      <code><![CDATA[PAGE_FOOTER = <<<'EOT'
+
+    </body>
+</html>
+EOT]]></code>
+      <code><![CDATA[PAGE_HEADER = <<<'EOT'
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Test Documentation</title>
+        <style>
+            body {
+                text-rendering: optimizeLegibility;
+                font-family: Source SansSerif Pro, Arial, sans-serif;
+                font-variant-ligatures: common-ligatures;
+                font-kerning: normal;
+                margin-left: 2rem;
+                background-color: #fff;
+                color: #000;
+            }
+
+            body > ul > li {
+                font-size: larger;
+            }
+
+            h2 {
+                font-size: larger;
+                text-decoration-line: underline;
+                text-decoration-thickness: 2px;
+                margin: 0;
+                padding: 0.5rem 0;
+            }
+
+            ul {
+                list-style: none;
+                margin: 0 0 2rem;
+                padding: 0 0 0 1rem;
+                text-indent: -1rem;
+            }
+
+            .success:before {
+                color: #4e9a06;
+                content: '✓';
+                padding-right: 0.5rem;
+            }
+
+            .defect {
+                color: #a40000;
+            }
+
+            .defect:before {
+                color: #a40000;
+                content: '✗';
+                padding-right: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+EOT]]></code>
+    </MissingClassConstType>
   </file>
   <file src="src/Logging/TestDox/NamePrettifier.php">
     <InvalidCast>
@@ -494,6 +552,12 @@
       <code><![CDATA[assert($metadata instanceof RequiresSetting)]]></code>
     </RedundantCondition>
   </file>
+  <file src="src/Metadata/Metadata.php">
+    <MissingClassConstType>
+      <code><![CDATA[CLASS_LEVEL  = 0]]></code>
+      <code><![CDATA[METHOD_LEVEL = 1]]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/Metadata/MetadataCollection.php">
     <PropertyTypeCoercion>
       <code><![CDATA[$metadata]]></code>
@@ -534,6 +598,13 @@
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >]]></code>
     </InvalidReturnType>
+    <MissingClassConstType>
+      <code><![CDATA[REGEX_REQUIRES                    = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^\s<>=!]+))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m']]></code>
+      <code><![CDATA[REGEX_REQUIRES_OS                 = '/@requires\s+(?P<name>OS(?:FAMILY)?)\s+(?P<value>.+?)[ \t]*\r?$/m']]></code>
+      <code><![CDATA[REGEX_REQUIRES_SETTING            = '/@requires\s+(?P<name>setting)\s+(?P<setting>([^ ]+?))\s*(?P<value>[\w\.-]+[\w\.]?)?[ \t]*\r?$/m']]></code>
+      <code><![CDATA[REGEX_REQUIRES_VERSION            = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m']]></code>
+      <code><![CDATA[REGEX_REQUIRES_VERSION_CONSTRAINT = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<constraint>[\d\t \-.|~^]+)[ \t]*\r?$/m']]></code>
+    </MissingClassConstType>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[empty($matches['version'])]]></code>
       <code><![CDATA[empty($requires[$matches['name']])]]></code>
@@ -566,9 +637,17 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[!empty($matches['operator']) ? $matches['operator'] : '>=']]></code>
     </ArgumentTypeCoercion>
+    <MissingClassConstType>
+      <code><![CDATA[VERSION_COMPARISON = '/(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m']]></code>
+    </MissingClassConstType>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[empty($matches['operator'])]]></code>
     </RiskyTruthyFalsyComparison>
+  </file>
+  <file src="src/Runner/Baseline/Baseline.php">
+    <MissingClassConstType>
+      <code><![CDATA[VERSION = 1]]></code>
+    </MissingClassConstType>
   </file>
   <file src="src/Runner/Baseline/RelativePathCalculator.php">
     <LessSpecificReturnStatement>
@@ -643,6 +722,10 @@
       <code><![CDATA[$errorString]]></code>
       <code><![CDATA[$errorString]]></code>
     </ArgumentTypeCoercion>
+    <MissingClassConstType>
+      <code><![CDATA[INSUPPRESSIBLE_LEVELS       = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR]]></code>
+      <code><![CDATA[UNHANDLEABLE_LEVELS         = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING]]></code>
+    </MissingClassConstType>
     <MissingThrowsDocblock>
       <code><![CDATA[Issue::from($file, $line, null, $description)]]></code>
       <code><![CDATA[Issue::from($file, $line, null, $description)]]></code>
@@ -702,6 +785,12 @@
       <code><![CDATA[$setting[1]]]></code>
     </PossiblyUndefinedArrayOffset>
   </file>
+  <file src="src/Runner/ResultCache/DefaultResultCache.php">
+    <MissingClassConstType>
+      <code><![CDATA[DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache']]></code>
+      <code><![CDATA[VERSION = 1]]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/Runner/TestResult/Collector.php">
     <RedundantCondition>
       <code><![CDATA[assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)]]></code>
@@ -722,6 +811,20 @@
       <code><![CDATA[$this->sortBySize($suite->tests())]]></code>
       <code><![CDATA[$this->sortDefectsFirst($suite->tests())]]></code>
     </ArgumentTypeCoercion>
+    <MissingClassConstType>
+      <code><![CDATA[ORDER_DEFAULT = 0]]></code>
+      <code><![CDATA[ORDER_DEFECTS_FIRST = 3]]></code>
+      <code><![CDATA[ORDER_DURATION = 4]]></code>
+      <code><![CDATA[ORDER_RANDOMIZED = 1]]></code>
+      <code><![CDATA[ORDER_REVERSED = 2]]></code>
+      <code><![CDATA[ORDER_SIZE = 5]]></code>
+      <code><![CDATA[SIZE_SORT_WEIGHT = [
+        'small'   => 1,
+        'medium'  => 2,
+        'large'   => 3,
+        'unknown' => 4,
+    ]]]></code>
+    </MissingClassConstType>
   </file>
   <file src="src/TextUI/Application.php">
     <ArgumentTypeCoercion>
@@ -757,6 +860,14 @@
       <code><![CDATA[include_once $filename]]></code>
     </UnresolvableInclude>
   </file>
+  <file src="src/TextUI/Command/Result.php">
+    <MissingClassConstType>
+      <code><![CDATA[CRASH     = 255]]></code>
+      <code><![CDATA[EXCEPTION = 2]]></code>
+      <code><![CDATA[FAILURE   = 1]]></code>
+      <code><![CDATA[SUCCESS   = 0]]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/TextUI/Configuration/Builder.php">
     <MissingThrowsDocblock>
       <code><![CDATA[Registry::init(
@@ -771,6 +882,110 @@
       <code><![CDATA[$parameters]]></code>
       <code><![CDATA[$testSuffixes]]></code>
     </ArgumentTypeCoercion>
+    <MissingClassConstType>
+      <code><![CDATA[LONG_OPTIONS = [
+        'atleast-version=',
+        'bootstrap=',
+        'cache-result',
+        'do-not-cache-result',
+        'cache-directory=',
+        'check-version',
+        'colors==',
+        'columns=',
+        'configuration=',
+        'warm-coverage-cache',
+        'coverage-filter=',
+        'coverage-clover=',
+        'coverage-cobertura=',
+        'coverage-crap4j=',
+        'coverage-html=',
+        'coverage-php=',
+        'coverage-text==',
+        'only-summary-for-coverage-text',
+        'show-uncovered-for-coverage-text',
+        'coverage-xml=',
+        'path-coverage',
+        'disallow-test-output',
+        'display-incomplete',
+        'display-skipped',
+        'display-deprecations',
+        'display-errors',
+        'display-notices',
+        'display-warnings',
+        'default-time-limit=',
+        'enforce-time-limit',
+        'exclude-group=',
+        'filter=',
+        'exclude-filter=',
+        'generate-baseline=',
+        'use-baseline=',
+        'ignore-baseline',
+        'generate-configuration',
+        'globals-backup',
+        'group=',
+        'covers=',
+        'uses=',
+        'help',
+        'resolve-dependencies',
+        'ignore-dependencies',
+        'include-path=',
+        'list-groups',
+        'list-suites',
+        'list-test-files',
+        'list-tests',
+        'list-tests-xml=',
+        'log-junit=',
+        'log-teamcity=',
+        'migrate-configuration',
+        'no-configuration',
+        'no-coverage',
+        'no-logging',
+        'no-extensions',
+        'no-output',
+        'no-progress',
+        'no-results',
+        'order-by=',
+        'process-isolation',
+        'dont-report-useless-tests',
+        'random-order',
+        'random-order-seed=',
+        'reverse-order',
+        'reverse-list',
+        'static-backup',
+        'stderr',
+        'fail-on-deprecation',
+        'fail-on-empty-test-suite',
+        'fail-on-incomplete',
+        'fail-on-notice',
+        'fail-on-risky',
+        'fail-on-skipped',
+        'fail-on-warning',
+        'stop-on-defect',
+        'stop-on-deprecation',
+        'stop-on-error',
+        'stop-on-failure',
+        'stop-on-incomplete',
+        'stop-on-notice',
+        'stop-on-risky',
+        'stop-on-skipped',
+        'stop-on-warning',
+        'strict-coverage',
+        'disable-coverage-ignore',
+        'strict-global-state',
+        'teamcity',
+        'testdox',
+        'testdox-html=',
+        'testdox-text=',
+        'test-suffix=',
+        'testsuite=',
+        'exclude-testsuite=',
+        'log-events-text=',
+        'log-events-verbose-text=',
+        'version',
+        'debug',
+    ]]]></code>
+      <code><![CDATA[SHORT_OPTIONS = 'd:c:h']]></code>
+    </MissingClassConstType>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
     <InvalidNullableReturnType>
@@ -794,6 +1009,12 @@
       <code><![CDATA[$this->testsCovering]]></code>
       <code><![CDATA[$this->testsUsing]]></code>
     </LessSpecificReturnStatement>
+    <MissingClassConstType>
+      <code><![CDATA[COLOR_ALWAYS  = 'always']]></code>
+      <code><![CDATA[COLOR_AUTO    = 'auto']]></code>
+      <code><![CDATA[COLOR_DEFAULT = self::COLOR_NEVER]]></code>
+      <code><![CDATA[COLOR_NEVER   = 'never']]></code>
+    </MissingClassConstType>
     <MoreSpecificReturnType>
       <code><![CDATA[list<string>]]></code>
       <code><![CDATA[list<string>]]></code>
@@ -909,6 +1130,36 @@
       <code><![CDATA[$variables]]></code>
     </PropertyTypeCoercion>
   </file>
+  <file src="src/TextUI/Configuration/Xml/Generator.php">
+    <MissingClassConstType>
+      <code><![CDATA[TEMPLATE = <<<'EOT'
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/{phpunit_version}/phpunit.xsd"
+         bootstrap="{bootstrap_script}"
+         cacheDirectory="{cache_directory}"
+         executionOrder="depends,defects"
+         requireCoverageMetadata="true"
+         beStrictAboutCoverageMetadata="true"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true">
+    <testsuites>
+        <testsuite name="default">
+            <directory>{tests_directory}</directory>
+        </testsuite>
+    </testsuites>
+
+    <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
+        <include>
+            <directory>{src_directory}</directory>
+        </include>
+    </source>
+</phpunit>
+
+EOT]]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$bootstrap->getAttribute('class')]]></code>
@@ -920,6 +1171,64 @@
       <code><![CDATA[assert($directoryNode instanceof DOMElement)]]></code>
       <code><![CDATA[assert($fileNode instanceof DOMElement)]]></code>
     </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/MigrationBuilder.php">
+    <MissingClassConstType>
+      <code><![CDATA[AVAILABLE_MIGRATIONS = [
+        '8.5' => [
+            RemoveLogTypes::class,
+        ],
+
+        '9.2' => [
+            RemoveCacheTokensAttribute::class,
+            IntroduceCoverageElement::class,
+            MoveAttributesFromRootToCoverage::class,
+            MoveAttributesFromFilterWhitelistToCoverage::class,
+            MoveWhitelistIncludesToCoverage::class,
+            MoveWhitelistExcludesToCoverage::class,
+            RemoveEmptyFilter::class,
+            CoverageCloverToReport::class,
+            CoverageCrap4jToReport::class,
+            CoverageHtmlToReport::class,
+            CoveragePhpToReport::class,
+            CoverageTextToReport::class,
+            CoverageXmlToReport::class,
+            ConvertLogTypes::class,
+        ],
+
+        '9.5' => [
+            RemoveListeners::class,
+            RemoveTestSuiteLoaderAttributes::class,
+            RemoveCacheResultFileAttribute::class,
+            RemoveCoverageElementCacheDirectoryAttribute::class,
+            RemoveCoverageElementProcessUncoveredFilesAttribute::class,
+            IntroduceCacheDirectoryAttribute::class,
+            RenameBackupStaticAttributesAttribute::class,
+            RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute::class,
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
+            RemovePrinterAttributes::class,
+            RemoveVerboseAttribute::class,
+            RenameForceCoversAnnotationAttribute::class,
+            RenameBeStrictAboutCoversAnnotationAttribute::class,
+            RemoveConversionToExceptionsAttributes::class,
+            RemoveNoInteractionAttribute::class,
+            RemoveLoggingElements::class,
+            RemoveTestDoxGroupsElement::class,
+        ],
+
+        '10.0' => [
+            MoveCoverageDirectoriesToSource::class,
+        ],
+
+        '10.5' => [
+            RemoveRegisterMockObjectsFromTestArgumentsRecursivelyAttribute::class,
+        ],
+
+        '11.0' => [
+            ReplaceRestrictDeprecationsWithIgnoreDeprecations::class,
+        ],
+    ]]]></code>
+    </MissingClassConstType>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/LogToReportMigration.php">
     <PossiblyNullReference>
@@ -951,6 +1260,9 @@
     </MoreSpecificReturnType>
   </file>
   <file src="src/TextUI/Help.php">
+    <MissingClassConstType>
+      <code><![CDATA[LEFT_MARGIN              = '  ']]></code>
+    </MissingClassConstType>
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[$option['desc']]]></code>
       <code><![CDATA[$option['desc']]]></code>
@@ -1004,6 +1316,13 @@
       <code><![CDATA[$this->stream]]></code>
     </PossiblyInvalidArgument>
   </file>
+  <file src="src/TextUI/ShellExitCodeCalculator.php">
+    <MissingClassConstType>
+      <code><![CDATA[EXCEPTION_EXIT = 2]]></code>
+      <code><![CDATA[FAILURE_EXIT   = 1]]></code>
+      <code><![CDATA[SUCCESS_EXIT   = 0]]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/TextUI/TestSuiteFilterProcessor.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$configuration->excludeFilter()]]></code>
@@ -1012,12 +1331,192 @@
       <code><![CDATA[$configuration->groups()]]></code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Util/Color.php">
+    <MissingClassConstType>
+      <code><![CDATA[WHITESPACE_EOL_MAP = [
+        ' '  => '·',
+        "\t" => '⇥',
+        "\n" => '↵',
+        "\r" => '⟵',
+    ]]]></code>
+      <code><![CDATA[WHITESPACE_MAP = [
+        ' '  => '·',
+        "\t" => '⇥',
+    ]]]></code>
+    </MissingClassConstType>
+  </file>
   <file src="src/Util/ExcludeList.php">
     <InvalidPropertyAssignmentValue>
       <code><![CDATA[self::$directories]]></code>
       <code><![CDATA[self::$directories]]></code>
       <code><![CDATA[self::$directories]]></code>
     </InvalidPropertyAssignmentValue>
+    <MissingClassConstType>
+      <code><![CDATA[EXCLUDED_CLASS_NAMES = [
+        // composer
+        ClassLoader::class => 1,
+
+        // myclabs/deepcopy
+        DeepCopy::class => 1,
+
+        // nikic/php-parser
+        Parser::class => 1,
+
+        // phar-io/manifest
+        Manifest::class => 1,
+
+        // phar-io/version
+        PharIoVersion::class => 1,
+
+        // phpunit/phpunit
+        TestCase::class => 2,
+
+        // phpunit/php-code-coverage
+        CodeCoverage::class => 1,
+
+        // phpunit/php-file-iterator
+        FileIteratorFacade::class => 1,
+
+        // phpunit/php-invoker
+        Invoker::class => 1,
+
+        // phpunit/php-text-template
+        Template::class => 1,
+
+        // phpunit/php-timer
+        Timer::class => 1,
+
+        // sebastian/cli-parser
+        CliParser::class => 1,
+
+        // sebastian/code-unit
+        CodeUnit::class => 1,
+
+        // sebastian/code-unit-reverse-lookup
+        Wizard::class => 1,
+
+        // sebastian/comparator
+        Comparator::class => 1,
+
+        // sebastian/complexity
+        Calculator::class => 1,
+
+        // sebastian/diff
+        Diff::class => 1,
+
+        // sebastian/environment
+        Runtime::class => 1,
+
+        // sebastian/exporter
+        Exporter::class => 1,
+
+        // sebastian/global-state
+        Snapshot::class => 1,
+
+        // sebastian/lines-of-code
+        Counter::class => 1,
+
+        // sebastian/object-enumerator
+        Enumerator::class => 1,
+
+        // sebastian/object-reflector
+        ObjectReflector::class => 1,
+
+        // sebastian/recursion-context
+        Context::class => 1,
+
+        // sebastian/type
+        TypeName::class => 1,
+
+        // sebastian/version
+        Version::class => 1,
+
+        // theseer/tokenizer
+        Tokenizer::class => 1,
+    ]]]></code>
+    </MissingClassConstType>
+  </file>
+  <file src="src/Util/GlobalState.php">
+    <MissingClassConstType>
+      <code><![CDATA[DEPRECATED_INI_SETTINGS = [
+        '7.3' => [
+            'iconv.input_encoding'       => true,
+            'iconv.output_encoding'      => true,
+            'iconv.internal_encoding'    => true,
+            'mbstring.func_overload'     => true,
+            'mbstring.http_input'        => true,
+            'mbstring.http_output'       => true,
+            'mbstring.internal_encoding' => true,
+            'string.strip_tags'          => true,
+        ],
+
+        '7.4' => [
+            'iconv.input_encoding'       => true,
+            'iconv.output_encoding'      => true,
+            'iconv.internal_encoding'    => true,
+            'mbstring.func_overload'     => true,
+            'mbstring.http_input'        => true,
+            'mbstring.http_output'       => true,
+            'mbstring.internal_encoding' => true,
+            'pdo_odbc.db2_instance_name' => true,
+            'string.strip_tags'          => true,
+        ],
+
+        '8.0' => [
+            'iconv.input_encoding'       => true,
+            'iconv.output_encoding'      => true,
+            'iconv.internal_encoding'    => true,
+            'mbstring.http_input'        => true,
+            'mbstring.http_output'       => true,
+            'mbstring.internal_encoding' => true,
+        ],
+
+        '8.1' => [
+            'auto_detect_line_endings'     => true,
+            'filter.default'               => true,
+            'iconv.input_encoding'         => true,
+            'iconv.output_encoding'        => true,
+            'iconv.internal_encoding'      => true,
+            'mbstring.http_input'          => true,
+            'mbstring.http_output'         => true,
+            'mbstring.internal_encoding'   => true,
+            'oci8.old_oci_close_semantics' => true,
+        ],
+
+        '8.2' => [
+            'auto_detect_line_endings'     => true,
+            'filter.default'               => true,
+            'iconv.input_encoding'         => true,
+            'iconv.output_encoding'        => true,
+            'iconv.internal_encoding'      => true,
+            'mbstring.http_input'          => true,
+            'mbstring.http_output'         => true,
+            'mbstring.internal_encoding'   => true,
+            'oci8.old_oci_close_semantics' => true,
+        ],
+
+        '8.3' => [
+            'auto_detect_line_endings'     => true,
+            'filter.default'               => true,
+            'iconv.input_encoding'         => true,
+            'iconv.output_encoding'        => true,
+            'iconv.internal_encoding'      => true,
+            'mbstring.http_input'          => true,
+            'mbstring.http_output'         => true,
+            'mbstring.internal_encoding'   => true,
+            'oci8.old_oci_close_semantics' => true,
+        ],
+    ]]]></code>
+      <code><![CDATA[SUPER_GLOBAL_ARRAYS = [
+        '_ENV',
+        '_POST',
+        '_GET',
+        '_COOKIE',
+        '_SERVER',
+        '_FILES',
+        '_REQUEST',
+    ]]]></code>
+    </MissingClassConstType>
   </file>
   <file src="src/Util/PHP/DefaultJobRunner.php">
     <DocblockTypeContradiction>

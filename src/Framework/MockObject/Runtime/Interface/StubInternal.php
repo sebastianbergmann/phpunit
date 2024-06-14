@@ -19,6 +19,4 @@ interface StubInternal extends Stub
     public function __phpunit_getInvocationHandler(): InvocationHandler;
 
     public function __phpunit_unsetInvocationMocker(): void;
-
-    public function __phpunit_wasGeneratedAsMockObject(): bool;
 }

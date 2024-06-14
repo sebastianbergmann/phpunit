@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\ConfigurableMethod;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class MockClass implements MockType
+final readonly class MockClass
 {
     private string $classCode;
 

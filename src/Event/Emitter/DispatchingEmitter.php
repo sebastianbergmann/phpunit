@@ -27,7 +27,6 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -500,60 +499,6 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @psalm-param trait-string $traitName
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedMockObjectForTrait(string $traitName): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\MockObjectForTraitCreated(
-                $this->telemetryInfo(),
-                $traitName,
-            ),
-        );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedMockObjectForAbstractClass(string $className): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\MockObjectForAbstractClassCreated(
-                $this->telemetryInfo(),
-                $className,
-            ),
-        );
-    }
-
-    /**
-     * @psalm-param class-string $originalClassName
-     * @psalm-param class-string $mockClassName
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\MockObjectFromWsdlCreated(
-                $this->telemetryInfo(),
-                $wsdlFile,
-                $originalClassName,
-                $mockClassName,
-                $methods,
-                $callOriginalConstructor,
-                $options,
-            ),
-        );
-    }
-
-    /**
      * @psalm-param class-string $className
      *
      * @throws InvalidArgumentException
@@ -566,23 +511,6 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $className,
                 ...$methodNames,
-            ),
-        );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedTestProxy(string $className, array $constructorArguments): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\TestProxyCreated(
-                $this->telemetryInfo(),
-                $className,
-                (new Exporter)->export($constructorArguments),
             ),
         );
     }
