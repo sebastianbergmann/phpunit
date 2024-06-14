@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use const PHP_EOL;
 use function array_keys;
-use function array_map;
 use function array_merge;
 use function assert;
 use function call_user_func;
@@ -62,7 +61,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private string $name;
 
     /**
-     * @psalm-var array<string,list<Test>>
+     * @psalm-var array<non-empty-string, list<non-empty-string>>
      */
     private array $groups = [];
 
@@ -81,6 +80,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
+    private bool $wasRun             = false;
 
     /**
      * @psalm-param non-empty-string $name
@@ -160,30 +160,41 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addTest(Test $test, array $groups = []): void
     {
+        if ($test instanceof self) {
+            $this->tests[] = $test;
+
+            $this->clearCaches();
+
+            return;
+        }
+
+        assert($test instanceof TestCase || $test instanceof PhptTestCase);
+
         $class = new ReflectionClass($test);
 
         if (!$class->isAbstract()) {
             $this->tests[] = $test;
-            $this->clearCaches();
 
-            if ($test instanceof self && empty($groups)) {
-                $groups = $test->groups();
-            }
+            $this->clearCaches();
 
             if ($this->containsOnlyVirtualGroups($groups)) {
                 $groups[] = 'default';
             }
 
-            foreach ($groups as $group) {
-                if (!isset($this->groups[$group])) {
-                    $this->groups[$group] = [$test];
-                } else {
-                    $this->groups[$group][] = $test;
-                }
+            if ($test instanceof TestCase) {
+                $id = $test->valueObjectForEvents()->id();
+
+                $test->setGroups($groups);
+            } else {
+                $id = $test->valueObjectForEvents()->id();
             }
 
-            if ($test instanceof TestCase) {
-                $test->setGroups($groups);
+            foreach ($groups as $group) {
+                if (!isset($this->groups[$group])) {
+                    $this->groups[$group] = [$id];
+                } else {
+                    $this->groups[$group][] = $id;
+                }
             }
         }
     }
@@ -299,16 +310,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Returns the test groups of the suite.
      *
-     * @psalm-return list<string>
+     * @psalm-return list<non-empty-string>
      */
     public function groups(): array
     {
-        return array_map(
-            'strval',
-            array_keys($this->groups),
-        );
+        return array_keys($this->groups);
     }
 
+    /**
+     * @psalm-return array<non-empty-string, list<non-empty-string>>
+     */
     public function groupDetails(): array
     {
         return $this->groups;
@@ -346,6 +357,14 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function run(): void
     {
+        if ($this->wasRun) {
+            // @codeCoverageIgnoreStart
+            throw new Exception('The tests aggregated by this TestSuite were already run');
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->wasRun = true;
+
         if (count($this) === 0) {
             return;
         }
@@ -367,6 +386,14 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
 
             $test->run();
+
+            foreach (array_keys($this->tests) as $key) {
+                if ($test === $this->tests[$key]) {
+                    unset($this->tests[$key]);
+
+                    break;
+                }
+            }
         }
 
         $this->invokeMethodsAfterLastTest($emitter);
