@@ -14,7 +14,7 @@ use function call_user_func;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
-class Issue5822Test extends TestCase
+final class Issue5822Test extends TestCase
 {
     public function testDebugBacktrace(): void
     {
