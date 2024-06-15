@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5861](https://github.com/sebastianbergmann/phpunit/pull/5861): Destroy `TestCase` object after its test was run
 
+### Fixed
+
+* [#5822](https://github.com/sebastianbergmann/phpunit/pull/5822): PHP deprecations triggered within a closure are not handled correctly
+
 ## [11.2.1] - 2024-06-11
 
 ### Fixed
