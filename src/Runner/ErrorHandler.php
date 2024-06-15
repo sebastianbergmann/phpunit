@@ -256,17 +256,15 @@ final class ErrorHandler
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
-        if (isset($trace[0]['file']) && (
-            $trace[0]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[0]['file'])
-        )) {
+        if (isset($trace[0]['file']) &&
+            ($trace[0]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[0]['file']))) {
             $triggeredInFirstPartyCode = true;
         }
 
-        if (isset($trace[1]['file']) && (
-            $trace[1]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[1]['file'])
-        )) {
+        if (isset($trace[1]['file']) &&
+            ($trace[1]['file'] === $test->file() ||
+            $this->sourceFilter->includes($this->source, $trace[1]['file']))) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
