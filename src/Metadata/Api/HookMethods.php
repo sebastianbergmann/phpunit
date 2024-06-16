@@ -44,7 +44,7 @@ final class HookMethods
 
         self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
-        foreach (Reflection::methodsInTestClass(new ReflectionClass($className)) as $method) {
+        foreach (Reflection::methodsDeclaredDirectlyInTestClass(new ReflectionClass($className)) as $method) {
             $methodName = $method->getName();
 
             assert(!empty($methodName));

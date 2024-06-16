@@ -52,7 +52,7 @@ final readonly class Reflection
      *
      * @psalm-return list<ReflectionMethod>
      */
-    public static function publicMethodsInTestClass(ReflectionClass $class): array
+    public static function publicMethodsDeclaredDirectlyInTestClass(ReflectionClass $class): array
     {
         return self::filterAndSortMethods($class, ReflectionMethod::IS_PUBLIC, true);
     }
@@ -62,7 +62,7 @@ final readonly class Reflection
      *
      * @psalm-return list<ReflectionMethod>
      */
-    public static function methodsInTestClass(ReflectionClass $class): array
+    public static function methodsDeclaredDirectlyInTestClass(ReflectionClass $class): array
     {
         return self::filterAndSortMethods($class, null, false);
     }

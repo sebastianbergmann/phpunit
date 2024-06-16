@@ -44,7 +44,7 @@ final class ReflectionTest extends TestCase
 
     public function testFindsPublicMethodsInTestClass(): void
     {
-        $methods = Reflection::publicMethodsInTestClass(new ReflectionClass(BankAccountTest::class));
+        $methods = Reflection::publicMethodsDeclaredDirectlyInTestClass(new ReflectionClass(BankAccountTest::class));
 
         $this->assertCount(3, $methods);
         $this->assertSame('testBalanceIsInitiallyZero', $methods[0]->getName());
@@ -54,7 +54,7 @@ final class ReflectionTest extends TestCase
 
     public function testFindsMethodsInTestClass(): void
     {
-        $methods = Reflection::methodsInTestClass(new ReflectionClass(BankAccountTest::class));
+        $methods = Reflection::methodsDeclaredDirectlyInTestClass(new ReflectionClass(BankAccountTest::class));
 
         $this->assertCount(3, $methods);
         $this->assertSame('testBalanceIsInitiallyZero', $methods[0]->getName());
