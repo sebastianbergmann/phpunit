@@ -98,28 +98,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         $testSuite = new static($class->getName());
 
-        $constructor = $class->getConstructor();
-
-        if ($constructor !== null && !$constructor->isPublic()) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
-                sprintf(
-                    'Class "%s" has no public constructor.',
-                    $class->getName(),
-                ),
-            );
-
-            return $testSuite;
-        }
-
         foreach (Reflection::publicMethodsDeclaredDirectlyInTestClass($class) as $method) {
-            if ($method->getDeclaringClass()->getName() === Assert::class) {
-                continue;
-            }
-
-            if ($method->getDeclaringClass()->getName() === TestCase::class) {
-                continue;
-            }
-
             if (!TestUtil::isTestMethod($method)) {
                 continue;
             }
