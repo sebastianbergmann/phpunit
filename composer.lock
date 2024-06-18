@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "429a3eb9ee943fc7e699f06d7ecbb241",
+    "content-hash": "a41e492a42ff244bbbbce2e8bd2b9d06",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1003,16 +1003,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "6.1.1",
+            "version": "6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "7eb922f18c8a13f6761772ae5ee47032a4d33d62"
+                "reference": "507d2333cbc4e6ea248fbda2d45ee1511e03da13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/7eb922f18c8a13f6761772ae5ee47032a4d33d62",
-                "reference": "7eb922f18c8a13f6761772ae5ee47032a4d33d62",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/507d2333cbc4e6ea248fbda2d45ee1511e03da13",
+                "reference": "507d2333cbc4e6ea248fbda2d45ee1511e03da13",
                 "shasum": ""
             },
             "require": {
@@ -1069,7 +1069,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/exporter/issues",
                 "security": "https://github.com/sebastianbergmann/exporter/security/policy",
-                "source": "https://github.com/sebastianbergmann/exporter/tree/6.1.1"
+                "source": "https://github.com/sebastianbergmann/exporter/tree/6.1.2"
             },
             "funding": [
                 {
@@ -1077,7 +1077,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-18T06:31:36+00:00"
+            "time": "2024-06-18T11:19:56+00:00"
         },
         {
             "name": "sebastian/global-state",
