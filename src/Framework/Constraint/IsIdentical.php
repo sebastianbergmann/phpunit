@@ -16,8 +16,8 @@ use function is_object;
 use function is_string;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Exporter\Exporter;
 use UnitEnum;
 
 /**
@@ -67,13 +67,11 @@ final class IsIdentical extends Constraint
 
             // if both values are array or enums, make sure a diff is generated
             if ((is_array($this->value) && is_array($other)) || ($this->value instanceof UnitEnum && $other instanceof UnitEnum)) {
-                $exporter = new Exporter;
-
                 $f = new ComparisonFailure(
                     $this->value,
                     $other,
-                    $exporter->export($this->value),
-                    $exporter->export($other),
+                    Exporter::export($this->value),
+                    Exporter::export($other),
                 );
             }
 
@@ -93,7 +91,7 @@ final class IsIdentical extends Constraint
                 $this->value::class . '"';
         }
 
-        return 'is identical to ' . (new Exporter)->export($this->value);
+        return 'is identical to ' . Exporter::export($this->value);
     }
 
     /**

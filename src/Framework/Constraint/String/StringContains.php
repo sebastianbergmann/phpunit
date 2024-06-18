@@ -17,7 +17,7 @@ use function sprintf;
 use function str_contains;
 use function strlen;
 use function strtr;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -60,7 +60,7 @@ final class StringContains extends Constraint
 
     public function failureDescription(mixed $other): string
     {
-        $stringifiedHaystack = (new Exporter)->export($other);
+        $stringifiedHaystack = Exporter::export($other);
         $haystackEncoding    = $this->getDetectedEncoding($other);
         $haystackLength      = $this->getHaystackLength($other);
 
