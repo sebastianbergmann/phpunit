@@ -72,13 +72,13 @@ final readonly class PHPUnit
     private int $numberOfTestsBeforeGarbageCollection;
 
     /**
-     * @psalm-var positive-int
+     * @psalm-var non-negative-int
      */
     private int $shortenArraysForExportThreshold;
 
     /**
      * @psalm-param ?non-empty-string $extensionsDirectory
-     * @psalm-param positive-int $shortenArraysForExportThreshold
+     * @psalm-param non-negative-int $shortenArraysForExportThreshold
      */
     public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold)
     {
@@ -448,7 +448,7 @@ final readonly class PHPUnit
     }
 
     /**
-     * @psalm-return positive-int
+     * @psalm-return non-negative-int
      */
     public function shortenArraysForExportThreshold(): int
     {

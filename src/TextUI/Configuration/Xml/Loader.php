@@ -809,10 +809,10 @@ final readonly class Loader
             $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoverageMetadata', false);
         }
 
-        $shortenArraysForExportThreshold = $this->getIntegerAttribute($document->documentElement, 'shortenArraysForExportThreshold', 10);
+        $shortenArraysForExportThreshold = $this->getIntegerAttribute($document->documentElement, 'shortenArraysForExportThreshold', 0);
 
-        if ($shortenArraysForExportThreshold < 1) {
-            $shortenArraysForExportThreshold = 10;
+        if ($shortenArraysForExportThreshold < 0) {
+            $shortenArraysForExportThreshold = 0;
         }
 
         return new PHPUnit(
