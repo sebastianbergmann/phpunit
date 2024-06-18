@@ -49,7 +49,7 @@ final readonly class TestMethodBuilder
      */
     public static function fromCallStack(): TestMethod
     {
-        foreach (debug_backtrace() as $frame) {
+        foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
             if (isset($frame['object']) && $frame['object'] instanceof TestCase) {
                 return $frame['object']->valueObjectForEvents();
             }
