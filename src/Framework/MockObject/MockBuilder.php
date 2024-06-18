@@ -552,7 +552,7 @@ final class MockBuilder
 
     private function calledFromTestCase(): bool
     {
-        $caller = debug_backtrace(limit: 3)[2];
+        $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, limit: 3)[2];
 
         return isset($caller['class']) && $caller['class'] === TestCase::class;
     }
