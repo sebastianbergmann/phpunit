@@ -809,6 +809,12 @@ final readonly class Loader
             $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoverageMetadata', false);
         }
 
+        $shortenArraysForExportThreshold = $this->getIntegerAttribute($document->documentElement, 'shortenArraysForExportThreshold', 0);
+
+        if ($shortenArraysForExportThreshold < 0) {
+            $shortenArraysForExportThreshold = 0;
+        }
+
         return new PHPUnit(
             $cacheDirectory,
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
@@ -860,6 +866,7 @@ final readonly class Loader
             $this->getBooleanAttribute($document->documentElement, 'testdox', false),
             $this->getBooleanAttribute($document->documentElement, 'controlGarbageCollector', false),
             $this->getIntegerAttribute($document->documentElement, 'numberOfTestsBeforeGarbageCollection', 100),
+            $shortenArraysForExportThreshold,
         );
     }
 

@@ -26,6 +26,7 @@ final readonly class Generator
          bootstrap="{bootstrap_script}"
          cacheDirectory="{cache_directory}"
          executionOrder="depends,defects"
+         shortenArraysForExportThreshold="10"
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"

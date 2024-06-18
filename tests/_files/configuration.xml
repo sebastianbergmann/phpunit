@@ -31,6 +31,7 @@
          executionOrder="default"
          controlGarbageCollector="true"
          numberOfTestsBeforeGarbageCollection="1000"
+         shortenArraysForExportThreshold="10"
 >
     <testsuites>
         <testsuite name="My Test Suite">

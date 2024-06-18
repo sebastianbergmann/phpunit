@@ -18,7 +18,7 @@ use function strtolower;
 use function substr;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Cloner;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -126,8 +126,6 @@ final readonly class Invocation implements SelfDescribing
 
     public function toString(): string
     {
-        $exporter = new Exporter;
-
         return sprintf(
             '%s::%s(%s)%s',
             $this->className,
@@ -135,7 +133,7 @@ final readonly class Invocation implements SelfDescribing
             implode(
                 ', ',
                 array_map(
-                    [$exporter, 'shortenedExport'],
+                    [Exporter::class, 'shortenedExport'],
                     $this->parameters,
                 ),
             ),

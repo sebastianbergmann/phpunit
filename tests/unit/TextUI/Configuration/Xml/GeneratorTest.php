@@ -28,6 +28,7 @@ final class GeneratorTest extends TestCase
          bootstrap="vendor/autoload.php"
          cacheDirectory=".phpunit.cache"
          executionOrder="depends,defects"
+         shortenArraysForExportThreshold="10"
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"

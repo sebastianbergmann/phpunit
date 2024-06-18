@@ -27,7 +27,7 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -582,7 +582,7 @@ final class DispatchingEmitter implements Emitter
             new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
-                (new Exporter)->export($constructorArguments),
+                Exporter::export($constructorArguments),
             ),
         );
     }

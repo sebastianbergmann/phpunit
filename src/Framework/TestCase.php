@@ -94,6 +94,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -104,7 +105,6 @@ use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
-use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\GlobalState\ExcludeList as GlobalStateExcludeList;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Snapshot;
@@ -836,7 +836,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         return $this->dataSetAsString() . sprintf(
             ' (%s)',
-            (new Exporter)->shortenedRecursiveExport($this->data),
+            Exporter::shortenedRecursiveExport($this->data),
         );
     }
 
@@ -2085,16 +2085,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
-            $differ   = new Differ(new UnifiedDiffOutputBuilder($header));
-            $exporter = new Exporter;
+            $differ = new Differ(new UnifiedDiffOutputBuilder($header));
 
             Event\Facade::emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
                 'This test modified global state but was not expected to do so' . PHP_EOL .
                 trim(
                     $differ->diff(
-                        $exporter->export($before),
-                        $exporter->export($after),
+                        Exporter::export($before),
+                        Exporter::export($after),
                     ),
                 ),
             );
