@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\Exporter\Exporter as OriginalExporter;
 
 /**
@@ -41,7 +41,7 @@ final class Exporter
         }
 
         self::$exporter = new OriginalExporter(
-            Registry::get()->shortenArraysForExportThreshold(),
+            ConfigurationRegistry::get()->shortenArraysForExportThreshold(),
         );
 
         return self::$exporter;
