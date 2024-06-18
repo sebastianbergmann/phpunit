@@ -42,7 +42,7 @@
         "sebastian/comparator": "^6.0",
         "sebastian/diff": "^6.0",
         "sebastian/environment": "^7.0",
-        "sebastian/exporter": "^6.0",
+        "sebastian/exporter": "^6.1",
         "sebastian/global-state": "^7.0",
         "sebastian/object-enumerator": "^6.0",
         "sebastian/type": "^5.0",
