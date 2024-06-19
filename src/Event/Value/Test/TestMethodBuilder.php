@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event\Code;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const DEBUG_BACKTRACE_PROVIDE_OBJECT;
 use function assert;
 use function debug_backtrace;
 use function is_numeric;
