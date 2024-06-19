@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 ### Changed
 
-* [#5871](https://github.com/sebastianbergmann/phpunit/pull/5871): Do not collect unnecessary information using `debug_backtrace()`
+* [#5870](https://github.com/sebastianbergmann/phpunit/pull/5870): Do not collect unnecessary information using `debug_backtrace()`
 
 ## [11.2.2] - 2024-06-15
 
