@@ -27,8 +27,8 @@ use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AbstractClass;
-use PHPUnit\TestFixture\MockObject\ClassCallingMethodInConstructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInConstructor;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
@@ -170,7 +170,7 @@ final class MockBuilderTest extends TestCase
     #[TestDox('Mocked methods can be called from the original constructor of a partially mocked class')]
     public function testOnlyMethodCalledInConstructorWorks(): void
     {
-        $double = $this->getMockBuilder(ClassCallingMethodInConstructor::class)
+        $double = $this->getMockBuilder(ExtendableClassCallingMethodInConstructor::class)
             ->onlyMethods(['reset'])
             ->getMock();
 

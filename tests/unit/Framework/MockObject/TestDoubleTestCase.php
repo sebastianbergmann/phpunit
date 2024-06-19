@@ -13,7 +13,9 @@ use Exception;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
@@ -291,6 +293,19 @@ abstract class TestDoubleTestCase extends TestCase
             ->method('doSomething')
             ->method('doSomething')
             ->willReturn(true);
+    }
+
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5874')]
+    public function testDoubledMethodsCanBeCalledFromDestructorOnTestDoubleCreatedByTheReturnValueGenerator(): void
+    {
+        $this->markTestIncomplete('https://github.com/sebastianbergmann/phpunit/issues/5874');
+
+        $double = $this->createTestDouble(ExtendableClassCallingMethodInDestructor::class);
+
+        $this->assertInstanceOf(
+            ExtendableClassCallingMethodInDestructor::class,
+            $double->doSomething(),
+        );
     }
 
     /**

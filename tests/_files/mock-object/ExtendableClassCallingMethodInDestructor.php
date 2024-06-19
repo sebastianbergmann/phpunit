@@ -9,19 +9,19 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class ClassCallingMethodInConstructor
+class ExtendableClassCallingMethodInDestructor
 {
-    public function __construct()
+    public function __destruct()
     {
-        $this->reset();
+        $this->doSomethingElse();
     }
 
-    public function reset(): void
+    public function doSomething(): static
     {
+        return $this;
     }
 
-    public function second(): void
+    public function doSomethingElse(): void
     {
-        $this->reset();
     }
 }
