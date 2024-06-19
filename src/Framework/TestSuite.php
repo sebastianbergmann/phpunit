@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function array_keys;
 use function array_map;
+use function array_shift;
 use function assert;
 use function call_user_func;
 use function class_exists;
@@ -348,7 +349,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
+        /** @var Test[] $tests Local array, so we clear references to instances asap during the real loop. */
+        $tests = [];
+
         foreach ($this as $test) {
+            $tests[] = $test;
+        }
+
+        $this->tests  = [];
+        $this->groups = [];
+
+        while ($test = array_shift($tests)) {
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 
@@ -356,30 +367,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
 
             $test->run();
-
-            foreach (array_keys($this->tests) as $key) {
-                if ($test === $this->tests[$key]) {
-                    unset($this->tests[$key]);
-
-                    break;
-                }
-            }
-
-            if ($test instanceof TestCase || $test instanceof self) {
-                foreach ($test->groups() as $group) {
-                    if (!isset($this->groups[$group])) {
-                        continue;
-                    }
-
-                    foreach (array_keys($this->groups[$group]) as $key) {
-                        if ($test === $this->groups[$group][$key]) {
-                            unset($this->groups[$group][$key]);
-
-                            break;
-                        }
-                    }
-                }
-            }
         }
 
         $this->invokeMethodsAfterLastTest($emitter);
