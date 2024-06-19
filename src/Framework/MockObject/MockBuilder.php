@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use function array_merge;
 use function assert;
 use function debug_backtrace;
@@ -552,7 +553,7 @@ final class MockBuilder
 
     private function calledFromTestCase(): bool
     {
-        $caller = debug_backtrace(limit: 3)[2];
+        $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, limit: 3)[2];
 
         return isset($caller['class']) && $caller['class'] === TestCase::class;
     }
