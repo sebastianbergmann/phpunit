@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class ClassCallingMethodInConstructor
+class ExtendableClassCallingMethodInConstructor
 {
     public function __construct()
     {
