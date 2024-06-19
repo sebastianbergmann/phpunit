@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use function array_merge;
 use function assert;
 use function debug_backtrace;
