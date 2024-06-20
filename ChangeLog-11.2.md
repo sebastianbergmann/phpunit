@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.2.5] - 2024-MM-DD
+
+### Changed
+
+* [#5877](https://github.com/sebastianbergmann/phpunit/pull/5877): Use `array_pop()` instead of `array_shift()` for processing `Test` objects in `TestSuite::run()` and optimize `TestSuite::isEmpty()`
+
 ## [11.2.4] - 2024-06-20
 
 ### Changed
@@ -43,6 +49,7 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 
+[11.2.5]: https://github.com/sebastianbergmann/phpunit/compare/11.2.4...11.2
 [11.2.4]: https://github.com/sebastianbergmann/phpunit/compare/11.2.3...11.2.4
 [11.2.3]: https://github.com/sebastianbergmann/phpunit/compare/11.2.2...11.2.3
 [11.2.2]: https://github.com/sebastianbergmann/phpunit/compare/11.2.1...11.2.2
