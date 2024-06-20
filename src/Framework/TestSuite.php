@@ -349,7 +349,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        /** @var Test[] $tests Local array, so we clear references to instances asap during the real loop. */
+        /** @psalm-var list<Test> $tests */
         $tests = [];
 
         foreach ($this as $test) {
