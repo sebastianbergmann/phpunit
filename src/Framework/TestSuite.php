@@ -137,7 +137,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $testSuite->addTestMethod($class, $method);
         }
 
-        if (count($testSuite) === 0) {
+        if ($testSuite->isEmpty()) {
             Event\Facade::emitter()->testRunnerTriggeredWarning(
                 sprintf(
                     'No tests found in class "%s".',
@@ -290,7 +290,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function isEmpty(): bool
     {
-        return empty($this->tests);
+        foreach ($this as $test) {
+            if (count($test) !== 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -337,7 +343,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $this->wasRun = true;
 
-        if (count($this) === 0) {
+        if ($this->isEmpty()) {
             return;
         }
 
@@ -362,7 +368,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $this->tests  = [];
         $this->groups = [];
 
-        while (($test = array_pop($tests)) !== false) {
+        while (($test = array_pop($tests)) !== null) {
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 
