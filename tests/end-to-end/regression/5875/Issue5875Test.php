@@ -7,16 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework;
+namespace PHPUnit\TestFixture\Issue5875;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
-use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\TestCase;
 
-#[CoversClass(TestSuite::class)]
-#[Small]
-final class TestSuiteRunDestructsTestCaseTest extends TestCase
+final class Issue5875Test extends TestCase
 {
     private static int $destructsDone = 0;
 
