@@ -12,7 +12,8 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function array_keys;
 use function array_map;
-use function array_shift;
+use function array_pop;
+use function array_reverse;
 use function assert;
 use function call_user_func;
 use function class_exists;
@@ -356,10 +357,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $tests[] = $test;
         }
 
+        $tests = array_reverse($tests);
+
         $this->tests  = [];
         $this->groups = [];
 
-        while ($test = array_shift($tests)) {
+        while (($test = array_pop($tests)) !== false) {
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 
