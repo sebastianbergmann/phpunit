@@ -18,7 +18,7 @@ Runtime: %s
 
 There were 7 PHPUnit test runner warnings:
 
-1) Using comma-separated values with --group is deprecated and will no longer work in PHPUnit 12. You can use --group multiple times instead
+1) Using comma-separated values with --group is deprecated and will no longer work in PHPUnit 12. You can use --group multiple times instead.
 
 2) Group name "small" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
