@@ -60,7 +60,16 @@ final class Generator
      */
     public function testTriggeredIssue(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): void
     {
-        if (!$this->source->ignoreSuppressionOfPhpWarnings() && $event->wasSuppressed()) {
+        $isSuppressionIgnored = match ($event::class) {
+            DeprecationTriggered::class    => $this->source->ignoreSuppressionOfDeprecations(),
+            NoticeTriggered::class         => $this->source->ignoreSuppressionOfNotices(),
+            PhpDeprecationTriggered::class => $this->source->ignoreSuppressionOfPhpDeprecations(),
+            PhpNoticeTriggered::class      => $this->source->ignoreSuppressionOfPhpNotices(),
+            PhpWarningTriggered::class     => $this->source->ignoreSuppressionOfPhpWarnings(),
+            WarningTriggered::class        => $this->source->ignoreSuppressionOfWarnings(),
+        };
+
+        if (!$isSuppressionIgnored && $event->wasSuppressed()) {
             return;
         }
 
