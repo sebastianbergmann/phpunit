@@ -22,7 +22,7 @@ print file_get_contents($traceFile);
 unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered Warning (Using comma-separated values with --exclude-group is deprecated and will no longer work in PHPUnit 12)
+Test Runner Triggered Warning (Using comma-separated values with --exclude-group is deprecated and will no longer work in PHPUnit 12. You can use --exclude-group multiple times instead)
 Test Runner Configured
 Test Suite Loaded (3 tests)
 Event Facade Sealed
