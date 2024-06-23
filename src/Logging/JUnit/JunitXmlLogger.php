@@ -31,6 +31,7 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TextUI\Output\Printer;
@@ -76,7 +77,7 @@ final class JunitXmlLogger
     private array $testSuiteSkipped = [0];
 
     /**
-     * @psalm-var array<int,int>
+     * @psalm-var array<int,float>
      */
     private array $testSuiteTimes        = [0];
     private int $testSuiteLevel          = 0;
@@ -175,6 +176,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     public function testPreparationStarted(PreparationStarted $event): void
     {
@@ -211,6 +213,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
@@ -219,6 +222,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     public function testSkipped(Skipped $event): void
     {
@@ -227,6 +231,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     public function testErrored(Errored $event): void
     {
@@ -237,6 +242,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     public function testFailed(Failed $event): void
     {
@@ -311,6 +317,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     private function handleFault(Errored|Failed $event, string $type): void
     {
@@ -344,6 +351,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     private function handleIncompleteOrSkipped(MarkedIncomplete|Skipped $event): void
     {
@@ -366,6 +374,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     private function testAsString(Test $test): string
     {
@@ -385,6 +394,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      */
     private function name(Test $test): string
     {
@@ -417,6 +427,7 @@ final class JunitXmlLogger
 
     /**
      * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
      *
      * @psalm-assert !null $this->currentTestCase
      */
@@ -430,8 +441,6 @@ final class JunitXmlLogger
         $testCase->setAttribute('file', $test->file());
 
         if ($test->isTestMethod()) {
-            assert($test instanceof TestMethod);
-
             $testCase->setAttribute('line', (string) $test->line());
             $testCase->setAttribute('class', $test->className());
             $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
