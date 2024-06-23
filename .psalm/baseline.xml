@@ -450,12 +450,8 @@
       <code><![CDATA[non-empty-list<non-empty-string>]]></code>
     </MoreSpecificReturnType>
     <RedundantCondition>
-      <code><![CDATA[$metadata instanceof Covers]]></code>
-      <code><![CDATA[$metadata instanceof Uses]]></code>
-      <code><![CDATA[$metadata->isCovers()]]></code>
-      <code><![CDATA[$metadata->isUses()]]></code>
-      <code><![CDATA[assert($metadata instanceof Covers)]]></code>
-      <code><![CDATA[assert($metadata instanceof Uses)]]></code>
+      <code><![CDATA[$metadata instanceof CoversFunction]]></code>
+      <code><![CDATA[$metadata instanceof UsesFunction]]></code>
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
@@ -465,9 +461,6 @@
     <PossiblyNullArgument>
       <code><![CDATA[$key]]></code>
     </PossiblyNullArgument>
-    <RedundantCast>
-      <code><![CDATA[(int) $matches[0][1]]]></code>
-    </RedundantCast>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition>
@@ -478,8 +471,6 @@
     <RedundantCondition>
       <code><![CDATA[$metadata instanceof CoversFunction]]></code>
       <code><![CDATA[$metadata instanceof UsesFunction]]></code>
-      <code><![CDATA[assert($metadata instanceof Covers)]]></code>
-      <code><![CDATA[assert($metadata instanceof Uses)]]></code>
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Requirements.php">
@@ -498,69 +489,6 @@
     <PropertyTypeCoercion>
       <code><![CDATA[$metadata]]></code>
     </PropertyTypeCoercion>
-  </file>
-  <file src="src/Metadata/Parser/Annotation/DocBlock.php">
-    <InvalidPropertyAssignmentValue>
-      <code><![CDATA[array_merge(
-            $requires,
-            ['__OFFSET' => $recordedOffsets],
-            array_filter(
-                [
-                    'setting'            => $recordedSettings,
-                    'extension_versions' => $extensionVersions,
-                ],
-            ),
-        )]]></code>
-    </InvalidPropertyAssignmentValue>
-    <InvalidReturnStatement>
-      <code><![CDATA[$this->parsedRequirements = array_merge(
-            $requires,
-            ['__OFFSET' => $recordedOffsets],
-            array_filter(
-                [
-                    'setting'            => $recordedSettings,
-                    'extension_versions' => $extensionVersions,
-                ],
-            ),
-        )]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[array{
-     *   __OFFSET: array<string, int>&array{__FILE: string},
-     *   setting?: array<string, string>,
-     *   extension_versions?: array<string, array{version: string, operator: string}>
-     * }&array<
-     *   string,
-     *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
-     * >]]></code>
-    </InvalidReturnType>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[empty($matches['version'])]]></code>
-      <code><![CDATA[empty($requires[$matches['name']])]]></code>
-      <code><![CDATA[preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)]]></code>
-    </RiskyTruthyFalsyComparison>
-  </file>
-  <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$_className]]></code>
-      <code><![CDATA[$_className]]></code>
-      <code><![CDATA[$function]]></code>
-      <code><![CDATA[$function]]></code>
-      <code><![CDATA[$pieces[0]]]></code>
-      <code><![CDATA[$pieces[0]]]></code>
-      <code><![CDATA[$pieces[1]]]></code>
-      <code><![CDATA[$pieces[1]]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[explode('::', $value)]]></code>
-      <code><![CDATA[explode('::', $value)]]></code>
-      <code><![CDATA[trim($tmp[0])]]></code>
-      <code><![CDATA[trim($tmp[1])]]></code>
-    </ArgumentTypeCoercion>
   </file>
   <file src="src/Metadata/Version/Requirement.php">
     <ArgumentTypeCoercion>

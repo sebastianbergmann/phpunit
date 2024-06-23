@@ -16,12 +16,10 @@ use function assert;
 use function strtolower;
 use function trim;
 use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\Group;
 use PHPUnit\Metadata\Parser\Registry;
-use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
 
@@ -74,26 +72,12 @@ final class Groups
                 continue;
             }
 
-            if ($metadata->isCovers()) {
-                assert($metadata instanceof Covers);
-
-                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->target());
-
-                continue;
-            }
-
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
                 $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
 
                 continue;
-            }
-
-            if ($metadata->isUses()) {
-                assert($metadata instanceof Uses);
-
-                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->target());
             }
         }
 

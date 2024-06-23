@@ -9,15 +9,14 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\TestCase;
 
+#[CoversFunction('\PHPUnit\TestFixture\func')]
+#[UsesFunction('\PHPUnit\TestFixture\func')]
 final class CoverageNamespacedFunctionTest extends TestCase
 {
-    /**
-     * @covers \PHPUnit\TestFixture\func()
-     *
-     * @uses \PHPUnit\TestFixture\func()
-     */
     public function testFunc(): void
     {
         func();

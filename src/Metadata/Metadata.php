@@ -99,30 +99,6 @@ abstract readonly class Metadata
         return new CoversFunction(self::CLASS_LEVEL, $functionName);
     }
 
-    /**
-     * @psalm-param non-empty-string $target
-     */
-    public static function coversOnClass(string $target): Covers
-    {
-        return new Covers(self::CLASS_LEVEL, $target);
-    }
-
-    /**
-     * @psalm-param non-empty-string $target
-     */
-    public static function coversOnMethod(string $target): Covers
-    {
-        return new Covers(self::METHOD_LEVEL, $target);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function coversDefaultClass(string $className): CoversDefaultClass
-    {
-        return new CoversDefaultClass(self::CLASS_LEVEL, $className);
-    }
-
     public static function coversNothingOnClass(): CoversNothing
     {
         return new CoversNothing(self::CLASS_LEVEL);
@@ -467,30 +443,6 @@ abstract readonly class Metadata
         return new UsesMethod(self::CLASS_LEVEL, $className, $methodName);
     }
 
-    /**
-     * @psalm-param non-empty-string $target
-     */
-    public static function usesOnClass(string $target): Uses
-    {
-        return new Uses(self::CLASS_LEVEL, $target);
-    }
-
-    /**
-     * @psalm-param non-empty-string $target
-     */
-    public static function usesOnMethod(string $target): Uses
-    {
-        return new Uses(self::METHOD_LEVEL, $target);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function usesDefaultClass(string $className): UsesDefaultClass
-    {
-        return new UsesDefaultClass(self::CLASS_LEVEL, $className);
-    }
-
     public static function withoutErrorHandler(): WithoutErrorHandler
     {
         return new WithoutErrorHandler(self::METHOD_LEVEL);
@@ -563,25 +515,9 @@ abstract readonly class Metadata
     }
 
     /**
-     * @psalm-assert-if-true Covers $this
-     */
-    public function isCovers(): bool
-    {
-        return false;
-    }
-
-    /**
      * @psalm-assert-if-true CoversClass $this
      */
     public function isCoversClass(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true CoversDefaultClass $this
-     */
-    public function isCoversDefaultClass(): bool
     {
         return false;
     }
@@ -837,25 +773,9 @@ abstract readonly class Metadata
     }
 
     /**
-     * @psalm-assert-if-true Uses $this
-     */
-    public function isUses(): bool
-    {
-        return false;
-    }
-
-    /**
      * @psalm-assert-if-true UsesClass $this
      */
     public function isUsesClass(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true UsesDefaultClass $this
-     */
-    public function isUsesDefaultClass(): bool
     {
         return false;
     }
