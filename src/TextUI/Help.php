@@ -248,6 +248,7 @@ final class Help
 
                 ['arg'    => '--teamcity', 'desc' => 'Replace default progress and result output with TeamCity format'],
                 ['arg'    => '--testdox', 'desc' => 'Replace default result output with TestDox format'],
+                ['arg'    => '--testdox-summary', 'desc' => 'Repeat TestDox output for tests with errors, failures, or issues'],
                 ['spacer' => ''],
 
                 ['arg' => '--debug', 'desc' => 'Replace default progress and result output with debugging information'],

@@ -207,6 +207,7 @@
         <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
         <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
         <xs:attribute name="testdox" type="xs:boolean" default="false"/>
+        <xs:attribute name="testdoxSummary" type="xs:boolean" default="false"/>
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
         <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>

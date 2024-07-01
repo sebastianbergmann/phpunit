@@ -120,6 +120,7 @@ final class Builder
         'strict-global-state',
         'teamcity',
         'testdox',
+        'testdox-summary',
         'testdox-html=',
         'testdox-text=',
         'test-suffix=',
@@ -252,6 +253,7 @@ final class Builder
         $logEventsVerboseText              = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
+        $printerTestDoxSummary             = null;
         $debug                             = false;
 
         foreach ($options[0] as $option) {
@@ -713,6 +715,11 @@ final class Builder
 
                     break;
 
+                case '--testdox-summary':
+                    $printerTestDoxSummary = true;
+
+                    break;
+
                 case '--testdox-html':
                     $testdoxHtmlFile = $option[1];
 
@@ -1032,6 +1039,7 @@ final class Builder
             $logEventsVerboseText,
             $printerTeamCity,
             $printerTestDox,
+            $printerTestDoxSummary,
             $debug,
         );
     }

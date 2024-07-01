@@ -125,6 +125,8 @@
                                      with TeamCity format
   [32m--testdox                         [0m Replace default result output with TestDox
                                      format
+  [32m--testdox-summary                 [0m Repeat TestDox output for tests with
+                                     errors, failures, or issues
 
   [32m--debug                           [0m Replace default progress and result output
                                      with debugging information

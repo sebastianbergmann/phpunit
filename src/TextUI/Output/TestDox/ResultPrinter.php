@@ -34,12 +34,14 @@ final readonly class ResultPrinter
     private Printer $printer;
     private bool $colors;
     private int $columns;
+    private bool $printSummary;
 
-    public function __construct(Printer $printer, bool $colors, int $columns)
+    public function __construct(Printer $printer, bool $colors, int $columns, bool $printSummary)
     {
-        $this->printer = $printer;
-        $this->colors  = $colors;
-        $this->columns = $columns;
+        $this->printer      = $printer;
+        $this->colors       = $colors;
+        $this->columns      = $columns;
+        $this->printSummary = $printSummary;
     }
 
     /**
@@ -47,20 +49,62 @@ final readonly class ResultPrinter
      */
     public function print(array $tests): void
     {
-        foreach ($tests as $prettifiedClassName => $_tests) {
-            $this->printPrettifiedClassName($prettifiedClassName);
+        $this->doPrint($tests, false);
 
-            foreach ($_tests as $test) {
-                $this->printTestResult($test);
-            }
+        if ($this->printSummary) {
+            $this->printer->print('Summary of tests with errors, failures, or issues:' . PHP_EOL . PHP_EOL);
 
-            $this->printer->print(PHP_EOL);
+            $this->doPrint($tests, true);
         }
     }
 
     public function flush(): void
     {
         $this->printer->flush();
+    }
+
+    /**
+     * @psalm-param array<string, TestResultCollection> $tests
+     */
+    private function doPrint(array $tests, bool $onlySummary): void
+    {
+        foreach ($tests as $prettifiedClassName => $_tests) {
+            $print = true;
+
+            if ($onlySummary) {
+                $found = false;
+
+                foreach ($_tests as $test) {
+                    if ($test->status()->isSuccess()) {
+                        continue;
+                    }
+
+                    $found = true;
+
+                    break;
+                }
+
+                if (!$found) {
+                    $print = false;
+                }
+            }
+
+            if (!$print) {
+                continue;
+            }
+
+            $this->printPrettifiedClassName($prettifiedClassName);
+
+            foreach ($_tests as $test) {
+                if ($onlySummary && $test->status()->isSuccess()) {
+                    continue;
+                }
+
+                $this->printTestResult($test);
+            }
+
+            $this->printer->print(PHP_EOL);
+        }
     }
 
     /**
