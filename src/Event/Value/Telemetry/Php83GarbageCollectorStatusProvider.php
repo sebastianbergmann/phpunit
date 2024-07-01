@@ -25,13 +25,21 @@ final readonly class Php83GarbageCollectorStatusProvider implements GarbageColle
             $status['collected'],
             $status['threshold'],
             $status['roots'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['application_time'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['collector_time'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['destructor_time'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['free_time'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['running'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['protected'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['full'],
+            /** @phpstan-ignore offsetAccess.notFound */
             $status['buffer_size'],
         );
     }

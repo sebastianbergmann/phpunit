@@ -19,7 +19,7 @@ use SplObjectStorage;
 final class SourceMapper
 {
     /**
-     * @var SplObjectStorage<Source, array<non-empty-string, true>>
+     * @var ?SplObjectStorage<Source, array<non-empty-string, true>>
      */
     private static ?SplObjectStorage $files = null;
 
@@ -29,6 +29,7 @@ final class SourceMapper
     public function map(Source $source): array
     {
         if (self::$files === null) {
+            /** @phpstan-ignore assign.propertyType */
             self::$files = new SplObjectStorage;
         }
 
