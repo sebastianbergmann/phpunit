@@ -19,7 +19,7 @@ final class TestDoubleState
     private static array $deprecationEmittedForTest = [];
 
     /**
-     * @psalm-var list<ConfigurableMethod>
+     * @var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
     private readonly bool $generateReturnValues;
@@ -27,7 +27,7 @@ final class TestDoubleState
     private ?object $proxyTarget                  = null;
 
     /**
-     * @psalm-param list<ConfigurableMethod> $configurableMethods
+     * @param list<ConfigurableMethod> $configurableMethods
      */
     public function __construct(array $configurableMethods, bool $generateReturnValues)
     {

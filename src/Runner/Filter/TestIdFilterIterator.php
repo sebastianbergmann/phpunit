@@ -24,13 +24,13 @@ use RecursiveIterator;
 final class TestIdFilterIterator extends RecursiveFilterIterator
 {
     /**
-     * @psalm-var non-empty-list<non-empty-string>
+     * @var non-empty-list<non-empty-string>
      */
     private readonly array $testIds;
 
     /**
-     * @psalm-param RecursiveIterator<int, Test> $iterator
-     * @psalm-param non-empty-list<non-empty-string> $testIds
+     * @param RecursiveIterator<int, Test>     $iterator
+     * @param non-empty-list<non-empty-string> $testIds
      */
     public function __construct(RecursiveIterator $iterator, array $testIds)
     {

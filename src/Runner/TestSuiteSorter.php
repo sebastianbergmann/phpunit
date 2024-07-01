@@ -69,18 +69,18 @@ final class TestSuiteSorter
     ];
 
     /**
-     * @psalm-var array<string, int> Associative array of (string => DEFECT_SORT_WEIGHT) elements
+     * @var array<string, int> Associative array of (string => DEFECT_SORT_WEIGHT) elements
      */
     private array $defectSortOrder = [];
     private readonly ResultCache $cache;
 
     /**
-     * @psalm-var array<string> A list of normalized names of tests before reordering
+     * @var array<string> A list of normalized names of tests before reordering
      */
     private array $originalExecutionOrder = [];
 
     /**
-     * @psalm-var array<string> A list of normalized names of tests affected by reordering
+     * @var array<string> A list of normalized names of tests affected by reordering
      */
     private array $executionOrder = [];
 
@@ -300,9 +300,9 @@ final class TestSuiteSorter
      * 3. If the test has dependencies but none left to do: mark done, start again from the top
      * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
-     * @psalm-param array<DataProviderTestSuite|TestCase> $tests
+     * @param array<DataProviderTestSuite|TestCase> $tests
      *
-     * @psalm-return array<DataProviderTestSuite|TestCase>
+     * @return array<DataProviderTestSuite|TestCase>
      */
     private function resolveDependencies(array $tests): array
     {

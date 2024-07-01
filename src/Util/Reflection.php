@@ -24,10 +24,10 @@ use ReflectionMethod;
 final readonly class Reflection
 {
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
-     * @psalm-return array{file: non-empty-string, line: non-negative-int}
+     * @return array{file: non-empty-string, line: non-negative-int}
      */
     public static function sourceLocationFor(string $className, string $methodName): array
     {
@@ -48,9 +48,9 @@ final readonly class Reflection
     }
 
     /**
-     * @psalm-param ReflectionClass<TestCase> $class
+     * @param ReflectionClass<TestCase> $class
      *
-     * @psalm-return list<ReflectionMethod>
+     * @return list<ReflectionMethod>
      */
     public static function publicMethodsDeclaredDirectlyInTestClass(ReflectionClass $class): array
     {
@@ -58,9 +58,9 @@ final readonly class Reflection
     }
 
     /**
-     * @psalm-param ReflectionClass<TestCase> $class
+     * @param ReflectionClass<TestCase> $class
      *
-     * @psalm-return list<ReflectionMethod>
+     * @return list<ReflectionMethod>
      */
     public static function methodsDeclaredDirectlyInTestClass(ReflectionClass $class): array
     {
@@ -68,9 +68,9 @@ final readonly class Reflection
     }
 
     /**
-     * @psalm-param ReflectionClass<TestCase> $class
+     * @param ReflectionClass<TestCase> $class
      *
-     * @psalm-return list<ReflectionMethod>
+     * @return list<ReflectionMethod>
      */
     private static function filterAndSortMethods(ReflectionClass $class, ?int $filter, bool $sortHighestToLowest): array
     {

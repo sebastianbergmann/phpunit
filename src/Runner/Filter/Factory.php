@@ -20,12 +20,12 @@ use PHPUnit\Framework\TestSuite;
 final class Factory
 {
     /**
-     * @psalm-var list<array{className: class-string, argument: array|string}>
+     * @var list<array{className: class-string, argument: array|string}>
      */
     private array $filters = [];
 
     /**
-     * @psalm-param list<non-empty-string> $testIds
+     * @param list<non-empty-string> $testIds
      */
     public function addTestIdFilter(array $testIds): void
     {
@@ -36,7 +36,7 @@ final class Factory
     }
 
     /**
-     * @psalm-param list<non-empty-string> $groups
+     * @param list<non-empty-string> $groups
      */
     public function addIncludeGroupFilter(array $groups): void
     {
@@ -47,7 +47,7 @@ final class Factory
     }
 
     /**
-     * @psalm-param list<non-empty-string> $groups
+     * @param list<non-empty-string> $groups
      */
     public function addExcludeGroupFilter(array $groups): void
     {
@@ -58,7 +58,7 @@ final class Factory
     }
 
     /**
-     * @psalm-param non-empty-string $name
+     * @param non-empty-string $name
      */
     public function addIncludeNameFilter(string $name): void
     {
@@ -69,7 +69,7 @@ final class Factory
     }
 
     /**
-     * @psalm-param non-empty-string $name
+     * @param non-empty-string $name
      */
     public function addExcludeNameFilter(string $name): void
     {

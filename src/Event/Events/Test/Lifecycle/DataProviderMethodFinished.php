@@ -17,7 +17,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -27,7 +27,7 @@ final readonly class DataProviderMethodFinished implements Event
     private ClassMethod $testMethod;
 
     /**
-     * @psalm-var list<ClassMethod>
+     * @var list<ClassMethod>
      */
     private array $calledMethods;
 
@@ -49,7 +49,7 @@ final readonly class DataProviderMethodFinished implements Event
     }
 
     /**
-     * @psalm-return list<Code\ClassMethod>
+     * @return list<Code\ClassMethod>
      */
     public function calledMethods(): array
     {

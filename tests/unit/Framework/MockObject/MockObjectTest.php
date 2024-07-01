@@ -461,7 +461,7 @@ EOT,
     }
 
     /**
-     * @psalm-param class-string $type
+     * @param class-string $type
      */
     protected function createTestDouble(string $type): object
     {

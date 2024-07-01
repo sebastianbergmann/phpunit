@@ -309,11 +309,11 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     /**
-     * @psalm-template RealInstanceType of object
+     * @template RealInstanceType of object
      *
-     * @psalm-param class-string<RealInstanceType> $type
+     * @param class-string<RealInstanceType> $type
      *
-     * @psalm-return (Stub|MockObject)&RealInstanceType
+     * @return (MockObject|Stub)&RealInstanceType
      */
     abstract protected function createTestDouble(string $type): object;
 }

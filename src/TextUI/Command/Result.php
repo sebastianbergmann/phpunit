@@ -10,7 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */

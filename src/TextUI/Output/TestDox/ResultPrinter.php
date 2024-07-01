@@ -45,7 +45,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @psalm-param array<string, TestResultCollection> $tests
+     * @param array<string, TestResultCollection> $tests
      */
     public function print(array $tests): void
     {
@@ -64,7 +64,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @psalm-param array<string, TestResultCollection> $tests
+     * @param array<string, TestResultCollection> $tests
      */
     private function doPrint(array $tests, bool $onlySummary): void
     {
@@ -107,9 +107,6 @@ final readonly class ResultPrinter
         }
     }
 
-    /**
-     * @psalm-param string $prettifiedClassName
-     */
     private function printPrettifiedClassName(string $prettifiedClassName): void
     {
         $buffer = $prettifiedClassName;
@@ -239,7 +236,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @psalm-return array{message: string, diff: string}
+     * @return array{message: string, diff: string}
      */
     private function colorizeMessageAndDiff(string $buffer, string $style): array
     {
@@ -318,7 +315,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @psalm-param 'default'|'start'|'message'|'diff'|'trace'|'last' $type
+     * @param 'default'|'diff'|'last'|'message'|'start'|'trace' $type
      */
     private function prefixFor(string $type, TestStatus $status): string
     {

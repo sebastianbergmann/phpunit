@@ -154,7 +154,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
     }
 
     /**
-     * @psalm-param non-empty-string $code
+     * @param non-empty-string $code
      *
      * @throws Exception
      * @throws NoPreviousThrowableException

@@ -370,7 +370,7 @@ final class CodeCoverageTest extends TestCase
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     #[DataProvider('linesToBeCoveredProvider')]
     public function testLinesToBeCoveredCanBeDetermined(array|false $expected, string $className, string $methodName): void
@@ -385,7 +385,7 @@ final class CodeCoverageTest extends TestCase
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     #[DataProvider('linesToBeUsedProvider')]
     public function testLinesToBeUsedCanBeDetermined(array|false $expected, string $className, string $methodName): void
@@ -400,7 +400,7 @@ final class CodeCoverageTest extends TestCase
     }
 
     /**
-     * @psalm-param class-string $testCase
+     * @param class-string $testCase
      */
     #[DataProvider('canSkipCoverageProvider')]
     public function testWhetherCollectionOfCodeCoverageDataCanBeSkippedCanBeDetermined(string $testCase, bool $expectedCanSkip): void

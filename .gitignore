@@ -16,9 +16,6 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 
-# Psalm
-/.psalm/cache
-
 # PHPUnit
 /.phpunit.cache
 .phpunit.result.cache

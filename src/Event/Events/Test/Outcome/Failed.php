@@ -19,7 +19,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -54,7 +54,7 @@ final readonly class Failed implements Event
     }
 
     /**
-     * @psalm-assert-if-true !null $this->comparisonFailure
+     * @phpstan-assert-if-true !null $this->comparisonFailure
      */
     public function hasComparisonFailure(): bool
     {

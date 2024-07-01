@@ -23,7 +23,7 @@ final class TestSuiteIterator implements RecursiveIterator
     private int $position = 0;
 
     /**
-     * @psalm-var list<Test>
+     * @var list<Test>
      */
     private readonly array $tests;
 

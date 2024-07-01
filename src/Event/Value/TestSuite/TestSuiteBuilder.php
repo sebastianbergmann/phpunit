@@ -91,7 +91,7 @@ final readonly class TestSuiteBuilder
     }
 
     /**
-     * @psalm-param list<Test> $tests
+     * @param list<Test> $tests
      */
     private static function process(FrameworkTestSuite $testSuite, array &$tests): void
     {

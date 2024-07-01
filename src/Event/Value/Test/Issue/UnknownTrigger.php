@@ -10,15 +10,12 @@
 namespace PHPUnit\Event\Code\IssueTrigger;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class UnknownTrigger extends IssueTrigger
 {
-    /**
-     * @psalm-assert-if-true UnknownTrigger $this
-     */
     public function isUnknown(): true
     {
         return true;

@@ -40,17 +40,17 @@ use PHPUnit\Util\VersionComparisonOperator;
 final class AnnotationParser implements Parser
 {
     /**
-     * @psalm-var array<string, true>
+     * @var array<string, true>
      */
     private static array $deprecationEmittedForClass = [];
 
     /**
-     * @psalm-var array<string, true>
+     * @var array<string, true>
      */
     private static array $deprecationEmittedForMethod = [];
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      *
      * @throws AnnotationsAreNotSupportedForInternalClassesException
      * @throws InvalidVersionOperatorException
@@ -195,8 +195,8 @@ final class AnnotationParser implements Parser
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws AnnotationsAreNotSupportedForInternalClassesException
      * @throws InvalidVersionOperatorException
@@ -438,8 +438,8 @@ final class AnnotationParser implements Parser
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws AnnotationsAreNotSupportedForInternalClassesException
      * @throws InvalidVersionOperatorException
@@ -469,9 +469,9 @@ final class AnnotationParser implements Parser
     }
 
     /**
-     * @psalm-return list<Metadata>
-     *
      * @throws InvalidVersionOperatorException
+     *
+     * @return list<Metadata>
      */
     private function parseRequirements(array $requirements, string $level): array
     {

@@ -13,7 +13,7 @@ use function array_key_exists;
 use PHPUnit\Runner\ParameterDoesNotExistException;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -22,7 +22,7 @@ final readonly class ParameterCollection
     private array $parameters;
 
     /**
-     * @psalm-param array<string, string> $parameters
+     * @param array<string, string> $parameters
      */
     public static function fromArray(array $parameters): self
     {

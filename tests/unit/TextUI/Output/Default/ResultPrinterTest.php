@@ -53,7 +53,7 @@ use PHPUnit\TextUI\Output\SummaryPrinter;
 final class ResultPrinterTest extends TestCase
 {
     /**
-     * @psalm-return array<string,array{0: string, 1: TestResult}>
+     * @return array<string,array{0: string, 1: TestResult}>
      */
     public static function provider(): array
     {
@@ -422,24 +422,24 @@ final class ResultPrinterTest extends TestCase
     }
 
     /**
-     * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
-     * @psalm-param list<Failed> $testFailedEvents
-     * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
-     * @psalm-param list<TestSuiteSkipped> $testSuiteSkippedEvents
-     * @psalm-param list<TestSkipped> $testSkippedEvents
-     * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
-     * @psalm-param list<Issue> $deprecations
-     * @psalm-param list<Issue> $phpDeprecations
-     * @psalm-param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
-     * @psalm-param list<Issue> $errors
-     * @psalm-param list<Issue> $notices
-     * @psalm-param list<Issue> $phpNotices
-     * @psalm-param list<Issue> $warnings
-     * @psalm-param list<Issue> $phpWarnings
-     * @psalm-param array<string,list<PhpunitErrorTriggered>> $testTriggeredPhpunitErrorEvents
-     * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
-     * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
-     * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
+     * @param list<BeforeFirstTestMethodErrored|Errored>      $testErroredEvents
+     * @param list<Failed>                                    $testFailedEvents
+     * @param array<string,list<ConsideredRisky>>             $testConsideredRiskyEvents
+     * @param list<TestSuiteSkipped>                          $testSuiteSkippedEvents
+     * @param list<TestSkipped>                               $testSkippedEvents
+     * @param list<MarkedIncomplete>                          $testMarkedIncompleteEvents
+     * @param list<Issue>                                     $deprecations
+     * @param list<Issue>                                     $phpDeprecations
+     * @param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
+     * @param list<Issue>                                     $errors
+     * @param list<Issue>                                     $notices
+     * @param list<Issue>                                     $phpNotices
+     * @param list<Issue>                                     $warnings
+     * @param list<Issue>                                     $phpWarnings
+     * @param array<string,list<PhpunitErrorTriggered>>       $testTriggeredPhpunitErrorEvents
+     * @param array<string,list<PhpunitWarningTriggered>>     $testTriggeredPhpunitWarningEvents
+     * @param list<TestRunnerDeprecationTriggered>            $testRunnerTriggeredDeprecationEvents
+     * @param list<TestRunnerWarningTriggered>                $testRunnerTriggeredWarningEvents
      */
     private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = [], int $numberOfIssuesIgnoredByBaseline = 0): TestResult
     {

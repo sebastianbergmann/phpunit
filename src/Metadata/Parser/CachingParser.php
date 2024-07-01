@@ -27,7 +27,7 @@ final class CachingParser implements Parser
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     public function forClass(string $className): MetadataCollection
     {
@@ -41,8 +41,8 @@ final class CachingParser implements Parser
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
@@ -58,8 +58,8 @@ final class CachingParser implements Parser
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection
     {

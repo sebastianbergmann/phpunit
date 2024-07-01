@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Code\IssueTrigger;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -18,8 +18,6 @@ final class IndirectTrigger extends IssueTrigger
 {
     /**
      * Third-party code triggers an issue either in your own code or in third-party code.
-     *
-     * @psalm-assert-if-true IndirectTrigger $this
      */
     public function isIndirect(): true
     {

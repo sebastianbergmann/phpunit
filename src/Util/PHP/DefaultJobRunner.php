@@ -69,7 +69,7 @@ final readonly class DefaultJobRunner implements JobRunner
     }
 
     /**
-     * @psalm-param ?non-empty-string $temporaryFile
+     * @param ?non-empty-string $temporaryFile
      *
      * @throws PhpProcessException
      */
@@ -78,6 +78,7 @@ final readonly class DefaultJobRunner implements JobRunner
         $environmentVariables = null;
 
         if ($job->hasEnvironmentVariables()) {
+            /** @phpstan-ignore nullCoalesce.variable */
             $environmentVariables = $_SERVER ?? [];
 
             unset($environmentVariables['argv'], $environmentVariables['argc']);
@@ -148,7 +149,7 @@ final readonly class DefaultJobRunner implements JobRunner
     }
 
     /**
-     * @psalm-return non-empty-list<string>
+     * @return non-empty-list<string>
      */
     private function buildCommand(Job $job, ?string $file): array
     {

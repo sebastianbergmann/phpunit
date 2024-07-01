@@ -58,34 +58,34 @@ use Throwable;
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $name;
 
     /**
-     * @psalm-var array<non-empty-string, list<non-empty-string>>
+     * @var array<non-empty-string, list<non-empty-string>>
      */
     private array $groups = [];
 
     /**
-     * @psalm-var ?list<ExecutionOrderDependency>
+     * @var ?list<ExecutionOrderDependency>
      */
     private ?array $requiredTests = null;
 
     /**
-     * @psalm-var list<Test>
+     * @var list<Test>
      */
     private array $tests = [];
 
     /**
-     * @psalm-var ?list<ExecutionOrderDependency>
+     * @var ?list<ExecutionOrderDependency>
      */
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
     private bool $wasRun             = false;
 
     /**
-     * @psalm-param non-empty-string $name
+     * @param non-empty-string $name
      */
     public static function empty(string $name): static
     {
@@ -93,8 +93,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-param ReflectionClass<TestCase> $class
-     * @psalm-param list<non-empty-string> $groups
+     * @param ReflectionClass<TestCase> $class
+     * @param list<non-empty-string>    $groups
      */
     public static function fromClassReflector(ReflectionClass $class, array $groups = []): static
     {
@@ -121,7 +121,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-param non-empty-string $name
+     * @param non-empty-string $name
      */
     final private function __construct(string $name)
     {
@@ -183,7 +183,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Adds the tests from the given class to the suite.
      *
-     * @psalm-param list<non-empty-string> $groups
+     * @param list<non-empty-string> $groups
      *
      * @throws Exception
      */
@@ -219,7 +219,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * added, a <code>PHPUnit\Framework\WarningTestCase</code> will be created instead,
      * leaving the current test run untouched.
      *
-     * @psalm-param list<non-empty-string> $groups
+     * @param list<non-empty-string> $groups
      *
      * @throws Exception
      */
@@ -287,7 +287,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function name(): string
     {
@@ -297,7 +297,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Returns the test groups of the suite.
      *
-     * @psalm-return list<non-empty-string>
+     * @return list<non-empty-string>
      */
     public function groups(): array
     {
@@ -305,7 +305,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return array<non-empty-string, list<non-empty-string>>
+     * @return array<non-empty-string, list<non-empty-string>>
      */
     public function groupDetails(): array
     {
@@ -313,7 +313,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return list<TestCase|PhptTestCase>
+     * @return list<PhptTestCase|TestCase>
      */
     public function collect(): array
     {
@@ -365,7 +365,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        /** @psalm-var list<Test> $tests */
+        /** @var list<Test> $tests */
         $tests = [];
 
         foreach ($this as $test) {
@@ -395,7 +395,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Returns the tests as an enumeration.
      *
-     * @psalm-return list<Test>
+     * @return list<Test>
      */
     public function tests(): array
     {
@@ -405,7 +405,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Set tests of the test suite.
      *
-     * @psalm-param list<Test> $tests
+     * @param list<Test> $tests
      */
     public function setTests(array $tests): void
     {
@@ -448,7 +448,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -472,7 +472,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -502,7 +502,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-assert-if-true class-string<TestCase> $this->name
+     * @phpstan-assert-if-true class-string<TestCase> $this->name
      */
     public function isForTestClass(): bool
     {
@@ -510,8 +510,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-param ReflectionClass<TestCase> $class
-     * @psalm-param list<non-empty-string> $groups
+     * @param ReflectionClass<TestCase> $class
+     * @param list<non-empty-string>    $groups
      *
      * @throws Exception
      */

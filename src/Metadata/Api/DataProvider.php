@@ -41,8 +41,8 @@ use Throwable;
 final readonly class DataProvider
 {
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws InvalidDataProviderException
      */
@@ -82,8 +82,8 @@ final readonly class DataProvider
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws InvalidDataProviderException
      */
@@ -213,7 +213,7 @@ final readonly class DataProvider
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      *
      * @throws InvalidDataProviderException
      */

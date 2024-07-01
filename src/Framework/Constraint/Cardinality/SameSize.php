@@ -18,7 +18,7 @@ use PHPUnit\Framework\Exception;
 final class SameSize extends Count
 {
     /**
-     * @psalm-param Countable|iterable $expected
+     * @param Countable|iterable $expected
      *
      * @throws Exception
      */

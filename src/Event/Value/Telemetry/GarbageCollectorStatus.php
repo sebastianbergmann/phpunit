@@ -12,7 +12,7 @@ namespace PHPUnit\Event\Telemetry;
 use PHPUnit\Event\RuntimeException;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -68,14 +68,14 @@ final readonly class GarbageCollectorStatus
     }
 
     /**
-     * @psalm-assert-if-true !null $this->applicationTime
-     * @psalm-assert-if-true !null $this->collectorTime
-     * @psalm-assert-if-true !null $this->destructorTime
-     * @psalm-assert-if-true !null $this->freeTime
-     * @psalm-assert-if-true !null $this->running
-     * @psalm-assert-if-true !null $this->protected
-     * @psalm-assert-if-true !null $this->full
-     * @psalm-assert-if-true !null $this->bufferSize
+     * @phpstan-assert-if-true !null $this->applicationTime
+     * @phpstan-assert-if-true !null $this->collectorTime
+     * @phpstan-assert-if-true !null $this->destructorTime
+     * @phpstan-assert-if-true !null $this->freeTime
+     * @phpstan-assert-if-true !null $this->running
+     * @phpstan-assert-if-true !null $this->protected
+     * @phpstan-assert-if-true !null $this->full
+     * @phpstan-assert-if-true !null $this->bufferSize
      */
     public function hasExtendedInformation(): bool
     {

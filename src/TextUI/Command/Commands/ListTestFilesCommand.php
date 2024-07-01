@@ -24,12 +24,12 @@ use ReflectionException;
 final readonly class ListTestFilesCommand implements Command
 {
     /**
-     * @psalm-var list<TestCase|PhptTestCase>
+     * @var list<PhptTestCase|TestCase>
      */
     private array $tests;
 
     /**
-     * @psalm-param list<TestCase|PhptTestCase> $tests
+     * @param list<PhptTestCase|TestCase> $tests
      */
     public function __construct(array $tests)
     {

@@ -30,7 +30,7 @@ use PHPUnit\Util\Filesystem;
 final class DefaultPrinter implements Printer
 {
     /**
-     * @psalm-var closed-resource|resource
+     * @var closed-resource|resource
      */
     private $stream;
     private readonly bool $isPhpStream;

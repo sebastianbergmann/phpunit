@@ -38,10 +38,10 @@ use PHPUnit\Runner\Version;
 final readonly class Requirements
 {
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
-     * @psalm-return list<string>
+     * @return list<string>
      */
     public function requirementsNotSatisfiedFor(string $className, string $methodName): array
     {

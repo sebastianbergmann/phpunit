@@ -20,7 +20,7 @@ use Iterator;
 final class MetadataCollectionIterator implements Iterator
 {
     /**
-     * @psalm-var list<Metadata>
+     * @var list<Metadata>
      */
     private readonly array $metadata;
     private int $position = 0;

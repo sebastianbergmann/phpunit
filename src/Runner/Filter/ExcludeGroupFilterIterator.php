@@ -17,8 +17,8 @@ use function in_array;
 final class ExcludeGroupFilterIterator extends GroupFilterIterator
 {
     /**
-     * @psalm-param non-empty-string $id
-     * @psalm-param list<non-empty-string> $groupTests
+     * @param non-empty-string       $id
+     * @param list<non-empty-string> $groupTests
      */
     protected function doAccept(string $id, array $groupTests): bool
     {

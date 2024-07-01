@@ -36,10 +36,10 @@ final class Groups
     private static array $groupCache = [];
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
-     * @psalm-return array<int, string>
+     * @return array<int, string>
      */
     public function groups(string $className, string $methodName, bool $includeVirtual = true): array
     {
@@ -101,8 +101,8 @@ final class Groups
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function size(string $className, string $methodName): TestSize
     {

@@ -26,12 +26,12 @@ use ReflectionClass;
 final class TestSuiteLoader
 {
     /**
-     * @psalm-var list<class-string>
+     * @var list<class-string>
      */
     private static array $declaredClasses = [];
 
     /**
-     * @psalm-var array<non-empty-string, list<class-string>>
+     * @var array<non-empty-string, list<class-string>>
      */
     private static array $fileToClassesMap = [];
 
@@ -99,7 +99,7 @@ final class TestSuiteLoader
     }
 
     /**
-     * @psalm-return array<class-string>
+     * @return array<class-string>
      */
     private function loadSuiteClassFile(string $suiteClassFile): array
     {

@@ -14,25 +14,25 @@ use PHPUnit\Util\VersionComparisonOperator;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class TestFile
 {
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $path;
     private string $phpVersion;
     private VersionComparisonOperator $phpVersionOperator;
 
     /**
-     * @psalm-var list<non-empty-string>
+     * @var list<non-empty-string>
      */
     private array $groups;
 
     /**
-     * @psalm-param non-empty-string $path
-     * @psalm-param list<non-empty-string> $groups
+     * @param non-empty-string       $path
+     * @param list<non-empty-string> $groups
      */
     public function __construct(string $path, string $phpVersion, VersionComparisonOperator $phpVersionOperator, array $groups)
     {
@@ -43,7 +43,7 @@ final readonly class TestFile
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function path(): string
     {
@@ -61,7 +61,7 @@ final readonly class TestFile
     }
 
     /**
-     * @psalm-return list<non-empty-string>
+     * @return list<non-empty-string>
      */
     public function groups(): array
     {

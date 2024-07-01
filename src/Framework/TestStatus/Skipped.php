@@ -10,15 +10,12 @@
 namespace PHPUnit\Framework\TestStatus;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Skipped extends Known
 {
-    /**
-     * @psalm-assert-if-true Skipped $this
-     */
     public function isSkipped(): bool
     {
         return true;

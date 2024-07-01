@@ -16,17 +16,17 @@ use LibXMLError;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class ValidationResult
 {
     /**
-     * @psalm-var array<int,list<string>>
+     * @var array<int,list<string>>
      */
     private array $validationErrors;
 
     /**
-     * @psalm-param array<int,LibXMLError> $errors
+     * @param array<int,LibXMLError> $errors
      */
     public static function fromArray(array $errors): self
     {

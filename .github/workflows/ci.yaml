@@ -62,8 +62,8 @@ jobs:
       - name: Run PHP-CS-Fixer
         run: ./tools/php-cs-fixer fix --dry-run --show-progress=dots --using-cache=no --verbose
 
-  type-checker:
-    name: Type Checker
+  static-analysis:
+    name: Static Analysis
 
     if: github.event_name != 'schedule'
 
@@ -81,18 +81,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
-          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
-          tools: none
 
       - name: Install dependencies with Composer
-        run: ./tools/composer install --no-interaction --no-ansi --no-progress
+        run: ./tools/composer update --no-interaction --no-ansi --no-progress
 
-      - name: Run Psalm on public API
-        run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
-
-      - name: Run Psalm on internal code
-        run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+      - name: Run PHPStan
+        run: ./tools/phpstan analyse --no-progress --error-format=github
 
   unit-tests:
     name: Unit Tests

@@ -27,7 +27,7 @@ final readonly class Filesystem
     }
 
     /**
-     * @psalm-param non-empty-string $path
+     * @param non-empty-string $path
      *
      * @return false|non-empty-string
      */

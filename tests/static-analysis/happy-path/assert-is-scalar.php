@@ -14,7 +14,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @param mixed $value
  *
- * @psalm-return scalar
+ * @return scalar
  */
 function consume($value)
 {

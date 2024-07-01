@@ -53,12 +53,12 @@ use ReflectionObject;
 final class NamePrettifier
 {
     /**
-     * @psalm-var array<string, int>
+     * @var array<string, int>
      */
     private static array $strings = [];
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     public function prettifyTestClassName(string $className): string
     {

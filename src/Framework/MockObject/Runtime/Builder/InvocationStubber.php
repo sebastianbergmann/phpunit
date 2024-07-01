@@ -24,7 +24,7 @@ interface InvocationStubber
     public function willReturnReference(mixed &$reference): self;
 
     /**
-     * @psalm-param array<int, array<int, mixed>> $valueMap
+     * @param array<int, array<int, mixed>> $valueMap
      */
     public function willReturnMap(array $valueMap): self;
 

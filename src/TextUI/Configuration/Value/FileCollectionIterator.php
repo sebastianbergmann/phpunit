@@ -20,7 +20,7 @@ use Iterator;
 final class FileCollectionIterator implements Iterator
 {
     /**
-     * @psalm-var list<File>
+     * @var list<File>
      */
     private readonly array $files;
     private int $position = 0;

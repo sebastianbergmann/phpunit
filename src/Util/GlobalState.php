@@ -37,7 +37,7 @@ use Closure;
 final readonly class GlobalState
 {
     /**
-     * @psalm-var list<string>
+     * @var list<string>
      */
     private const SUPER_GLOBAL_ARRAYS = [
         '_ENV',
@@ -50,7 +50,7 @@ final readonly class GlobalState
     ];
 
     /**
-     * @psalm-var array<string, array<string, true>>
+     * @var array<string, array<string, true>>
      */
     private const DEPRECATED_INI_SETTINGS = [
         '7.3' => [
@@ -131,7 +131,7 @@ final readonly class GlobalState
     }
 
     /**
-     * @psalm-param list<string> $files
+     * @param list<string> $files
      *
      * @throws Exception
      */

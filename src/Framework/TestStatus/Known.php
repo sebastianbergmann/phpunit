@@ -10,15 +10,12 @@
 namespace PHPUnit\Framework\TestStatus;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract readonly class Known extends TestStatus
 {
-    /**
-     * @psalm-assert-if-true Known $this
-     */
     public function isKnown(): bool
     {
         return true;

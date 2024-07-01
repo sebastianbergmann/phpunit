@@ -74,7 +74,7 @@ use Throwable;
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private readonly string $filename;
     private string $output = '';
@@ -82,7 +82,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     /**
      * Constructs a test case with the given filename.
      *
-     * @psalm-param non-empty-string $filename
+     * @param non-empty-string $filename
      *
      * @throws Exception
      */
@@ -293,7 +293,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -301,7 +301,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -574,9 +574,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-param non-empty-string $code
+     * @param non-empty-string $code
      *
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     private function render(string $code): string
     {
@@ -605,9 +605,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-param non-empty-string $job
+     * @param non-empty-string $job
      *
-     * @psalm-param-out non-empty-string $job
+     * @param-out non-empty-string $job
      *
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      */
@@ -819,7 +819,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @psalm-return list<string>
+     * @return list<string>
      */
     private function settings(bool $collectCoverage): array
     {

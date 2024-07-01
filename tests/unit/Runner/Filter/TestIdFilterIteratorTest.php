@@ -35,7 +35,7 @@ final class TestIdFilterIteratorTest extends TestCase
     }
 
     /**
-     * @psalm-param list<non-empty-string> $testIds
+     * @param list<non-empty-string> $testIds
      */
     private function testSuiteIterator(array $testIds): Iterator
     {

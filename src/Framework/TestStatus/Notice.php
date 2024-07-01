@@ -10,15 +10,12 @@
 namespace PHPUnit\Framework\TestStatus;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Notice extends Known
 {
-    /**
-     * @psalm-assert-if-true Notice $this
-     */
     public function isNotice(): bool
     {
         return true;

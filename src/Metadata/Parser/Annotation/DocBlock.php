@@ -46,7 +46,7 @@ final class DocBlock
     private readonly string $docComment;
 
     /**
-     * @psalm-var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index
+     * @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index
      */
     private readonly array $symbolAnnotations;
 
@@ -120,8 +120,6 @@ final class DocBlock
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
-     *
-     * @throws InvalidVersionRequirementException
      */
     public function requirements(): array
     {
@@ -224,7 +222,7 @@ final class DocBlock
     }
 
     /**
-     * @psalm-return array<string, array<int, string>>
+     * @return array<string, array<int, string>>
      */
     private static function parseDocBlock(string $docBlock): array
     {

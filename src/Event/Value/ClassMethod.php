@@ -10,25 +10,25 @@
 namespace PHPUnit\Event\Code;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class ClassMethod
 {
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $className;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $methodName;
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function __construct(string $className, string $methodName)
     {
@@ -37,7 +37,7 @@ final readonly class ClassMethod
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function className(): string
     {
@@ -45,7 +45,7 @@ final readonly class ClassMethod
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function methodName(): string
     {

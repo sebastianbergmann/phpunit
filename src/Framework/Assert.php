@@ -77,7 +77,7 @@ abstract class Assert
     /**
      * Asserts that two arrays are equal while only considering a list of keys.
      *
-     * @psalm-param non-empty-list<array-key> $keysToBeConsidered
+     * @param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -106,7 +106,7 @@ abstract class Assert
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
-     * @psalm-param non-empty-list<array-key> $keysToBeIgnored
+     * @param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -123,7 +123,7 @@ abstract class Assert
     /**
      * Asserts that two arrays are identical while only considering a list of keys.
      *
-     * @psalm-param non-empty-list<array-key> $keysToBeConsidered
+     * @param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -140,7 +140,7 @@ abstract class Assert
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
-     * @psalm-param non-empty-list<array-key> $keysToBeIgnored
+     * @param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -488,7 +488,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws GeneratorNotSupportedException
      *
-     * @psalm-assert empty $actual
+     * @phpstan-assert empty $actual
      */
     final public static function assertEmpty(mixed $actual, string $message = ''): void
     {
@@ -505,7 +505,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws GeneratorNotSupportedException
      *
-     * @psalm-assert !empty $actual
+     * @phpstan-assert !empty $actual
      */
     final public static function assertNotEmpty(mixed $actual, string $message = ''): void
     {
@@ -933,7 +933,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      *
-     * @psalm-assert true $condition
+     * @phpstan-assert true $condition
      */
     final public static function assertTrue(mixed $condition, string $message = ''): void
     {
@@ -945,7 +945,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !true $condition
+     * @phpstan-assert !true $condition
      */
     final public static function assertNotTrue(mixed $condition, string $message = ''): void
     {
@@ -957,7 +957,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      *
-     * @psalm-assert false $condition
+     * @phpstan-assert false $condition
      */
     final public static function assertFalse(mixed $condition, string $message = ''): void
     {
@@ -969,7 +969,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !false $condition
+     * @phpstan-assert !false $condition
      */
     final public static function assertNotFalse(mixed $condition, string $message = ''): void
     {
@@ -981,7 +981,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      *
-     * @psalm-assert null $actual
+     * @phpstan-assert null $actual
      */
     final public static function assertNull(mixed $actual, string $message = ''): void
     {
@@ -993,7 +993,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !null $actual
+     * @phpstan-assert !null $actual
      */
     final public static function assertNotNull(mixed $actual, string $message = ''): void
     {
@@ -1065,13 +1065,13 @@ abstract class Assert
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
+     * @template ExpectedType
+     *
+     * @param ExpectedType $expected
+     *
      * @throws ExpectationFailedException
      *
-     * @psalm-template ExpectedType
-     *
-     * @psalm-param ExpectedType $expected
-     *
-     * @psalm-assert =ExpectedType $actual
+     * @phpstan-assert =ExpectedType $actual
      */
     final public static function assertSame(mixed $expected, mixed $actual, string $message = ''): void
     {
@@ -1107,15 +1107,15 @@ abstract class Assert
     /**
      * Asserts that a variable is of a given type.
      *
+     * @template ExpectedType of object
+     *
+     * @param class-string<ExpectedType> $expected
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws UnknownClassOrInterfaceException
      *
-     * @psalm-template ExpectedType of object
-     *
-     * @psalm-param class-string<ExpectedType> $expected
-     *
-     * @psalm-assert =ExpectedType $actual
+     * @phpstan-assert =ExpectedType $actual
      */
     final public static function assertInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
@@ -1133,14 +1133,14 @@ abstract class Assert
     /**
      * Asserts that a variable is not of a given type.
      *
+     * @template ExpectedType of object
+     *
+     * @param class-string<ExpectedType> $expected
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-template ExpectedType of object
-     *
-     * @psalm-param class-string<ExpectedType> $expected
-     *
-     * @psalm-assert !ExpectedType $actual
+     * @phpstan-assert !ExpectedType $actual
      */
     final public static function assertNotInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
@@ -1163,7 +1163,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert array $actual
+     * @phpstan-assert array $actual
      */
     final public static function assertIsArray(mixed $actual, string $message = ''): void
     {
@@ -1180,7 +1180,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert bool $actual
+     * @phpstan-assert bool $actual
      */
     final public static function assertIsBool(mixed $actual, string $message = ''): void
     {
@@ -1197,7 +1197,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert float $actual
+     * @phpstan-assert float $actual
      */
     final public static function assertIsFloat(mixed $actual, string $message = ''): void
     {
@@ -1214,7 +1214,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert int $actual
+     * @phpstan-assert int $actual
      */
     final public static function assertIsInt(mixed $actual, string $message = ''): void
     {
@@ -1231,7 +1231,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert numeric $actual
+     * @phpstan-assert numeric $actual
      */
     final public static function assertIsNumeric(mixed $actual, string $message = ''): void
     {
@@ -1248,7 +1248,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert object $actual
+     * @phpstan-assert object $actual
      */
     final public static function assertIsObject(mixed $actual, string $message = ''): void
     {
@@ -1265,7 +1265,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert resource $actual
+     * @phpstan-assert resource $actual
      */
     final public static function assertIsResource(mixed $actual, string $message = ''): void
     {
@@ -1282,7 +1282,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert resource $actual
+     * @phpstan-assert resource $actual
      */
     final public static function assertIsClosedResource(mixed $actual, string $message = ''): void
     {
@@ -1299,7 +1299,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert string $actual
+     * @phpstan-assert string $actual
      */
     final public static function assertIsString(mixed $actual, string $message = ''): void
     {
@@ -1316,7 +1316,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert scalar $actual
+     * @phpstan-assert scalar $actual
      */
     final public static function assertIsScalar(mixed $actual, string $message = ''): void
     {
@@ -1333,7 +1333,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert callable $actual
+     * @phpstan-assert callable $actual
      */
     final public static function assertIsCallable(mixed $actual, string $message = ''): void
     {
@@ -1350,7 +1350,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert iterable $actual
+     * @phpstan-assert iterable $actual
      */
     final public static function assertIsIterable(mixed $actual, string $message = ''): void
     {
@@ -1367,7 +1367,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !array $actual
+     * @phpstan-assert !array $actual
      */
     final public static function assertIsNotArray(mixed $actual, string $message = ''): void
     {
@@ -1384,7 +1384,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !bool $actual
+     * @phpstan-assert !bool $actual
      */
     final public static function assertIsNotBool(mixed $actual, string $message = ''): void
     {
@@ -1401,7 +1401,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !float $actual
+     * @phpstan-assert !float $actual
      */
     final public static function assertIsNotFloat(mixed $actual, string $message = ''): void
     {
@@ -1418,7 +1418,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !int $actual
+     * @phpstan-assert !int $actual
      */
     final public static function assertIsNotInt(mixed $actual, string $message = ''): void
     {
@@ -1435,7 +1435,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !numeric $actual
+     * @phpstan-assert !numeric $actual
      */
     final public static function assertIsNotNumeric(mixed $actual, string $message = ''): void
     {
@@ -1452,7 +1452,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !object $actual
+     * @phpstan-assert !object $actual
      */
     final public static function assertIsNotObject(mixed $actual, string $message = ''): void
     {
@@ -1469,7 +1469,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !resource $actual
+     * @phpstan-assert !resource $actual
      */
     final public static function assertIsNotResource(mixed $actual, string $message = ''): void
     {
@@ -1486,7 +1486,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !resource $actual
+     * @phpstan-assert !resource $actual
      */
     final public static function assertIsNotClosedResource(mixed $actual, string $message = ''): void
     {
@@ -1503,7 +1503,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !string $actual
+     * @phpstan-assert !string $actual
      */
     final public static function assertIsNotString(mixed $actual, string $message = ''): void
     {
@@ -1520,7 +1520,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !scalar $actual
+     * @phpstan-assert !scalar $actual
      */
     final public static function assertIsNotScalar(mixed $actual, string $message = ''): void
     {
@@ -1537,7 +1537,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !callable $actual
+     * @phpstan-assert !callable $actual
      */
     final public static function assertIsNotCallable(mixed $actual, string $message = ''): void
     {
@@ -1554,7 +1554,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @psalm-assert !iterable $actual
+     * @phpstan-assert !iterable $actual
      */
     final public static function assertIsNotIterable(mixed $actual, string $message = ''): void
     {
@@ -1775,7 +1775,7 @@ abstract class Assert
     /**
      * Asserts that a string starts with a given prefix.
      *
-     * @psalm-param non-empty-string $prefix
+     * @param non-empty-string $prefix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1788,7 +1788,7 @@ abstract class Assert
     /**
      * Asserts that a string starts not with a given prefix.
      *
-     * @psalm-param non-empty-string $prefix
+     * @param non-empty-string $prefix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1847,7 +1847,7 @@ abstract class Assert
     /**
      * Asserts that a string ends with a given suffix.
      *
-     * @psalm-param non-empty-string $suffix
+     * @param non-empty-string $suffix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1860,7 +1860,7 @@ abstract class Assert
     /**
      * Asserts that a string ends not with a given suffix.
      *
-     * @psalm-param non-empty-string $suffix
+     * @param non-empty-string $suffix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -2139,11 +2139,11 @@ abstract class Assert
     }
 
     /**
-     * @psalm-template CallbackInput of mixed
+     * @template CallbackInput of mixed
      *
-     * @psalm-param callable(CallbackInput $callback): bool $callback
+     * @param callable(CallbackInput $callback): bool $callback
      *
-     * @psalm-return Callback<CallbackInput>
+     * @return Callback<CallbackInput>
      */
     final public static function callback(callable $callback): Callback
     {
@@ -2288,7 +2288,7 @@ abstract class Assert
     }
 
     /**
-     * @psalm-param 'array'|'boolean'|'bool'|'double'|'float'|'integer'|'int'|'null'|'numeric'|'object'|'real'|'resource'|'resource (closed)'|'string'|'scalar'|'callable'|'iterable' $type
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
      *
      * @throws Exception
      */
@@ -2321,7 +2321,7 @@ abstract class Assert
     }
 
     /**
-     * @psalm-param non-empty-string $prefix
+     * @param non-empty-string $prefix
      *
      * @throws InvalidArgumentException
      */
@@ -2336,7 +2336,7 @@ abstract class Assert
     }
 
     /**
-     * @psalm-param non-empty-string $suffix
+     * @param non-empty-string $suffix
      *
      * @throws InvalidArgumentException
      */

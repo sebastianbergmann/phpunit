@@ -376,7 +376,7 @@ final readonly class Application
     }
 
     /**
-     * @psalm-return array{requiresCodeCoverageCollection: bool, replacesOutput: bool, replacesProgressOutput: bool, replacesResultOutput: bool}
+     * @return array{requiresCodeCoverageCollection: bool, replacesOutput: bool, replacesProgressOutput: bool, replacesResultOutput: bool}
      */
     private function bootstrapExtensions(Configuration $configuration): array
     {
@@ -514,7 +514,7 @@ final readonly class Application
     }
 
     /**
-     * @psalm-param ?list<string> $pharExtensions
+     * @param ?list<string> $pharExtensions
      */
     private function writePharExtensionInformation(Printer $printer, ?array $pharExtensions): void
     {
@@ -668,7 +668,6 @@ final readonly class Application
         }
 
         if ($configuration->source()->useBaseline()) {
-            /** @psalm-suppress MissingThrowsDocblock */
             $baselineFile = $configuration->source()->baseline();
             $baseline     = null;
 
@@ -739,7 +738,7 @@ final readonly class Application
     }
 
     /**
-     * @psalm-return list<TestCase|PhptTestCase>
+     * @return list<PhptTestCase|TestCase>
      */
     private function filteredTests(Configuration $configuration, TestSuite $suite): array
     {

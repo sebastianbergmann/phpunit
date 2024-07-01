@@ -20,7 +20,7 @@ use Iterator;
 final class GroupCollectionIterator implements Iterator
 {
     /**
-     * @psalm-var list<Group>
+     * @var list<Group>
      */
     private readonly array $groups;
     private int $position = 0;

@@ -20,7 +20,7 @@ use Iterator;
 final class TestSuiteCollectionIterator implements Iterator
 {
     /**
-     * @psalm-var list<TestSuite>
+     * @var list<TestSuite>
      */
     private readonly array $testSuites;
     private int $position = 0;

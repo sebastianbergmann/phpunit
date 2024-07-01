@@ -14,7 +14,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -24,25 +24,25 @@ final readonly class MockObjectFromWsdlCreated implements Event
     private string $wsdlFile;
 
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $originalClassName;
 
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $mockClassName;
 
     /**
-     * @psalm-var list<string>
+     * @var list<string>
      */
     private array $methods;
     private bool $callOriginalConstructor;
     private array $options;
 
     /**
-     * @psalm-param class-string $originalClassName
-     * @psalm-param class-string $mockClassName
+     * @param class-string $originalClassName
+     * @param class-string $mockClassName
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options)
     {
@@ -66,7 +66,7 @@ final readonly class MockObjectFromWsdlCreated implements Event
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function originalClassName(): string
     {
@@ -74,7 +74,7 @@ final readonly class MockObjectFromWsdlCreated implements Event
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function mockClassName(): string
     {
@@ -82,7 +82,7 @@ final readonly class MockObjectFromWsdlCreated implements Event
     }
 
     /**
-     * @psalm-return list<string>
+     * @return list<string>
      */
     public function methods(): array
     {

@@ -21,12 +21,12 @@ final readonly class MockTrait implements MockType
     private string $classCode;
 
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $mockName;
 
     /**
-     * @psalm-param class-string $mockName
+     * @param class-string $mockName
      */
     public function __construct(string $classCode, string $mockName)
     {
@@ -35,7 +35,7 @@ final readonly class MockTrait implements MockType
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function generate(): string
     {

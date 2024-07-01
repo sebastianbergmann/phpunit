@@ -17,11 +17,11 @@ use Throwable;
 final readonly class Cloner
 {
     /**
-     * @psalm-template OriginalType of object
+     * @template OriginalType of object
      *
-     * @psalm-param OriginalType $original
+     * @param OriginalType $original
      *
-     * @psalm-return OriginalType
+     * @return OriginalType
      */
     public static function clone(object $original): object
     {

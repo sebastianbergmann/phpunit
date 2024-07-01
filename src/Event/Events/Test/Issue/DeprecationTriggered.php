@@ -18,7 +18,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -28,17 +28,17 @@ final readonly class DeprecationTriggered implements Event
     private Test $test;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $message;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $file;
 
     /**
-     * @psalm-var positive-int
+     * @var positive-int
      */
     private int $line;
     private bool $suppressed;
@@ -47,9 +47,9 @@ final readonly class DeprecationTriggered implements Event
     private IssueTrigger $trigger;
 
     /**
-     * @psalm-param non-empty-string $message
-     * @psalm-param non-empty-string $file
-     * @psalm-param positive-int $line
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
      */
     public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, IssueTrigger $trigger)
     {
@@ -75,7 +75,7 @@ final readonly class DeprecationTriggered implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function message(): string
     {
@@ -83,7 +83,7 @@ final readonly class DeprecationTriggered implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function file(): string
     {
@@ -91,7 +91,7 @@ final readonly class DeprecationTriggered implements Event
     }
 
     /**
-     * @psalm-return positive-int
+     * @return positive-int
      */
     public function line(): int
     {

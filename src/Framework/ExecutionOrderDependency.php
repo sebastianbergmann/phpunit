@@ -60,9 +60,9 @@ final class ExecutionOrderDependency implements Stringable
     }
 
     /**
-     * @psalm-param list<ExecutionOrderDependency> $dependencies
+     * @param list<ExecutionOrderDependency> $dependencies
      *
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public static function filterInvalid(array $dependencies): array
     {
@@ -75,10 +75,10 @@ final class ExecutionOrderDependency implements Stringable
     }
 
     /**
-     * @psalm-param list<ExecutionOrderDependency> $existing
-     * @psalm-param list<ExecutionOrderDependency> $additional
+     * @param list<ExecutionOrderDependency> $existing
+     * @param list<ExecutionOrderDependency> $additional
      *
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
@@ -102,10 +102,10 @@ final class ExecutionOrderDependency implements Stringable
     }
 
     /**
-     * @psalm-param list<ExecutionOrderDependency> $left
-     * @psalm-param list<ExecutionOrderDependency> $right
+     * @param list<ExecutionOrderDependency> $left
+     * @param list<ExecutionOrderDependency> $right
      *
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public static function diff(array $left, array $right): array
     {

@@ -12,13 +12,10 @@ namespace PHPUnit\Framework\TestSize;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class Medium extends Known
 {
-    /**
-     * @psalm-assert-if-true Medium $this
-     */
     public function isMedium(): bool
     {
         return true;

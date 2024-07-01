@@ -215,7 +215,7 @@ final readonly class Loader
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     private function toAbsolutePath(string $filename, string $path): string
     {
@@ -1038,7 +1038,7 @@ final readonly class Loader
     }
 
     /**
-     * @psalm-return list<DOMElement>
+     * @return list<DOMElement>
      */
     private function getTestSuiteElements(DOMXPath $xpath): array
     {

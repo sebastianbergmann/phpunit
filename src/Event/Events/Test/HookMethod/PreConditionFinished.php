@@ -16,7 +16,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -25,17 +25,17 @@ final readonly class PreConditionFinished implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $testClassName;
 
     /**
-     * @psalm-var list<Code\ClassMethod>
+     * @var list<Code\ClassMethod>
      */
     private array $calledMethods;
 
     /**
-     * @psalm-param class-string $testClassName
+     * @param class-string $testClassName
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod ...$calledMethods)
     {
@@ -50,7 +50,7 @@ final readonly class PreConditionFinished implements Event
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function testClassName(): string
     {
@@ -58,7 +58,7 @@ final readonly class PreConditionFinished implements Event
     }
 
     /**
-     * @psalm-return list<Code\ClassMethod>
+     * @return list<Code\ClassMethod>
      */
     public function calledMethods(): array
     {

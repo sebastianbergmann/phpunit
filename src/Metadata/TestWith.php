@@ -10,7 +10,7 @@
 namespace PHPUnit\Metadata;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -19,13 +19,13 @@ final readonly class TestWith extends Metadata
     private array $data;
 
     /**
-     * @psalm-var ?non-empty-string
+     * @var ?non-empty-string
      */
     private ?string $name;
 
     /**
-     * @psalm-param 0|1 $level
-     * @psalm-param ?non-empty-string $name
+     * @param 0|1               $level
+     * @param ?non-empty-string $name
      */
     protected function __construct(int $level, array $data, ?string $name = null)
     {
@@ -35,9 +35,6 @@ final readonly class TestWith extends Metadata
         $this->name = $name;
     }
 
-    /**
-     * @psalm-assert-if-true TestWith $this
-     */
     public function isTestWith(): bool
     {
         return true;
@@ -49,7 +46,7 @@ final readonly class TestWith extends Metadata
     }
 
     /**
-     * @psalm-assert-if-true !null $this->name
+     * @phpstan-assert-if-true !null $this->name
      */
     public function hasName(): bool
     {
@@ -57,7 +54,7 @@ final readonly class TestWith extends Metadata
     }
 
     /**
-     * @psalm-return ?non-empty-string
+     * @return ?non-empty-string
      */
     public function name(): ?string
     {

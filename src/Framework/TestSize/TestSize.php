@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\TestSize;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 abstract readonly class TestSize
 {
@@ -37,7 +37,7 @@ abstract readonly class TestSize
     }
 
     /**
-     * @psalm-assert-if-true Known $this
+     * @phpstan-assert-if-true Known $this
      */
     public function isKnown(): bool
     {
@@ -45,7 +45,7 @@ abstract readonly class TestSize
     }
 
     /**
-     * @psalm-assert-if-true Unknown $this
+     * @phpstan-assert-if-true Unknown $this
      */
     public function isUnknown(): bool
     {
@@ -53,7 +53,7 @@ abstract readonly class TestSize
     }
 
     /**
-     * @psalm-assert-if-true Small $this
+     * @phpstan-assert-if-true Small $this
      */
     public function isSmall(): bool
     {
@@ -61,7 +61,7 @@ abstract readonly class TestSize
     }
 
     /**
-     * @psalm-assert-if-true Medium $this
+     * @phpstan-assert-if-true Medium $this
      */
     public function isMedium(): bool
     {
@@ -69,7 +69,7 @@ abstract readonly class TestSize
     }
 
     /**
-     * @psalm-assert-if-true Large $this
+     * @phpstan-assert-if-true Large $this
      */
     public function isLarge(): bool
     {

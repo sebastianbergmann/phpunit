@@ -93,7 +93,7 @@ final class Generator
     ];
 
     /**
-     * @psalm-var array<non-empty-string, MockClass>
+     * @var array<non-empty-string, MockClass>
      */
     private static array $cache = [];
 
@@ -161,7 +161,7 @@ final class Generator
     }
 
     /**
-     * @psalm-param list<class-string> $interfaces
+     * @param list<class-string> $interfaces
      *
      * @throws RuntimeException
      * @throws UnknownTypeException
@@ -290,7 +290,7 @@ final class Generator
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
      *
-     * @psalm-param trait-string $traitName
+     * @param trait-string $traitName
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
@@ -338,7 +338,7 @@ final class Generator
     /**
      * Returns an object for the specified trait.
      *
-     * @psalm-param trait-string $traitName
+     * @param trait-string $traitName
      *
      * @throws ReflectionException
      * @throws RuntimeException
@@ -532,7 +532,7 @@ final class Generator
     /**
      * @throws ReflectionException
      *
-     * @psalm-return list<MockMethod>
+     * @return list<MockMethod>
      */
     public function mockClassMethods(string $className, bool $callOriginalMethods, bool $cloneArguments): array
     {
@@ -549,11 +549,11 @@ final class Generator
     }
 
     /**
-     * @psalm-param class-string $interfaceName
+     * @param class-string $interfaceName
      *
      * @throws ReflectionException
      *
-     * @psalm-return list<ReflectionMethod>
+     * @return list<ReflectionMethod>
      */
     private function userDefinedInterfaceMethods(string $interfaceName): array
     {
@@ -595,8 +595,6 @@ final class Generator
 
         if ($object instanceof StubInternal && $mockClass instanceof MockClass) {
             /**
-             * @psalm-suppress MissingThrowsDocblock
-             *
              * @noinspection PhpUnhandledExceptionInspection
              */
             $reflector->getProperty('__phpunit_state')->setValue(
@@ -788,7 +786,7 @@ final class Generator
             );
         }
 
-        /** @psalm-var trait-string[] $traits */
+        /** @var trait-string[] $traits */
         $traits  = [];
         $isPhp82 = PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2;
 
@@ -1031,7 +1029,7 @@ final class Generator
     }
 
     /**
-     * @psalm-param class-string $type
+     * @param class-string $type
      *
      * @throws ReflectionException
      */
@@ -1063,7 +1061,7 @@ final class Generator
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      *
      * @throws ReflectionException
      */
@@ -1085,11 +1083,11 @@ final class Generator
     }
 
     /**
-     * @psalm-param class-string $classOrInterfaceName
-     *
-     * @psalm-return list<string>
+     * @param class-string $classOrInterfaceName
      *
      * @throws ReflectionException
+     *
+     * @return list<string>
      */
     private function namesOfMethodsIn(string $classOrInterfaceName): array
     {
@@ -1106,11 +1104,11 @@ final class Generator
     }
 
     /**
-     * @psalm-param class-string $interfaceName
-     *
-     * @psalm-return list<MockMethod>
+     * @param class-string $interfaceName
      *
      * @throws ReflectionException
+     *
+     * @return list<MockMethod>
      */
     private function interfaceMethods(string $interfaceName, bool $cloneArguments): array
     {

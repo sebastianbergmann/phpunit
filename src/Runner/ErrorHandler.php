@@ -57,7 +57,7 @@ final class ErrorHandler
     private readonly SourceFilter $sourceFilter;
 
     /**
-     * @psalm-var array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     * @var array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
      */
     private ?array $deprecationTriggers = null;
 
@@ -224,7 +224,7 @@ final class ErrorHandler
     }
 
     /**
-     * @psalm-param array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>} $deprecationTriggers
+     * @param array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>} $deprecationTriggers
      */
     public function useDeprecationTriggers(array $deprecationTriggers): void
     {
@@ -232,9 +232,9 @@ final class ErrorHandler
     }
 
     /**
-     * @psalm-param non-empty-string $file
-     * @psalm-param positive-int $line
-     * @psalm-param non-empty-string $description
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     * @param non-empty-string $description
      */
     private function ignoredByBaseline(string $file, int $line, string $description): bool
     {

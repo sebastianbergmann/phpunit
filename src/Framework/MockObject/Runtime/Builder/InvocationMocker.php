@@ -51,12 +51,12 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     private readonly Matcher $matcher;
 
     /**
-     * @psalm-var list<ConfigurableMethod>
+     * @var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
 
     /**
-     * @psalm-var ?array<string, int>
+     * @var ?array<string, int>
      */
     private ?array $configurableMethodNames = null;
 

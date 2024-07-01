@@ -32,7 +32,7 @@ use function trim;
 final class Color
 {
     /**
-     * @psalm-var array<string,string>
+     * @var array<string,string>
      */
     private const WHITESPACE_MAP = [
         ' '  => '·',
@@ -40,7 +40,7 @@ final class Color
     ];
 
     /**
-     * @psalm-var array<string,string>
+     * @var array<string,string>
      */
     private const WHITESPACE_EOL_MAP = [
         ' '  => '·',
@@ -50,7 +50,7 @@ final class Color
     ];
 
     /**
-     * @psalm-var array<string,string>
+     * @var array<string,string>
      */
     private static array $ansiCodes = [
         'reset'      => '0',

@@ -232,7 +232,7 @@ abstract class Constraint implements Countable, SelfDescribing
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     protected function valueToTypeStringFragment(mixed $value): string
     {

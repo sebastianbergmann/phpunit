@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
- * @psalm-template MockedType
+ * @template MockedType
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -41,18 +41,18 @@ final class MockBuilder
     private readonly TestCase $testCase;
 
     /**
-     * @psalm-var class-string|trait-string
+     * @var class-string|trait-string
      */
     private readonly string $type;
 
     /**
-     * @psalm-var list<non-empty-string>
+     * @var list<non-empty-string>
      */
     private array $methods          = [];
     private bool $emptyMethodsArray = false;
 
     /**
-     * @psalm-var ?class-string
+     * @var ?class-string
      */
     private ?string $mockClassName         = null;
     private array $constructorArgs         = [];
@@ -67,7 +67,7 @@ final class MockBuilder
     private readonly Generator $generator;
 
     /**
-     * @psalm-param class-string|trait-string $type
+     * @param class-string|trait-string $type
      */
     public function __construct(TestCase $testCase, string $type)
     {
@@ -90,7 +90,7 @@ final class MockBuilder
      * @throws RuntimeException
      * @throws UnknownTypeException
      *
-     * @psalm-return MockObject&MockedType
+     * @return MockedType&MockObject
      */
     public function getMock(): MockObject
     {
@@ -122,11 +122,11 @@ final class MockBuilder
     /**
      * Creates a mock object for an abstract class using a fluent interface.
      *
-     * @psalm-return MockObject&MockedType
-     *
      * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
+     *
+     * @return MockedType&MockObject
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5305
      */
@@ -158,11 +158,11 @@ final class MockBuilder
     /**
      * Creates a mock object for a trait using a fluent interface.
      *
-     * @psalm-return MockObject&MockedType
-     *
      * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
+     *
+     * @return MockedType&MockObject
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5306
      */
@@ -196,7 +196,7 @@ final class MockBuilder
     /**
      * Specifies the subset of methods to mock, requiring each to exist in the class.
      *
-     * @psalm-param list<non-empty-string> $methods
+     * @param list<non-empty-string> $methods
      *
      * @throws CannotUseOnlyMethodsException
      * @throws ReflectionException
@@ -237,7 +237,7 @@ final class MockBuilder
     /**
      * Specifies methods that don't exist in the class which you want to mock.
      *
-     * @psalm-param list<non-empty-string> $methods
+     * @param list<non-empty-string> $methods
      *
      * @throws CannotUseAddMethodsException
      * @throws ReflectionException
@@ -298,7 +298,7 @@ final class MockBuilder
     /**
      * Specifies the name for the mock class.
      *
-     * @psalm-param class-string $name
+     * @param class-string $name
      *
      * @return $this
      */

@@ -54,7 +54,7 @@ EOT,
     }
 
     /**
-     * @psalm-return list<Code\ClassMethod>
+     * @return list<Code\ClassMethod>
      */
     private function calledMethods(): array
     {

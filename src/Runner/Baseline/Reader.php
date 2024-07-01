@@ -27,7 +27,7 @@ use PHPUnit\Util\Xml\XmlException;
 final readonly class Reader
 {
     /**
-     * @psalm-param non-empty-string $baselineFile
+     * @param non-empty-string $baselineFile
      *
      * @throws CannotLoadBaselineException
      */

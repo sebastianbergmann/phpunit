@@ -142,7 +142,7 @@ final class Help
     }
 
     /**
-     * @psalm-return array<non-empty-string, non-empty-list<array{text: non-empty-string}|array{arg: non-empty-string, desc: non-empty-string}|array{spacer: ''}>>
+     * @return array<non-empty-string, non-empty-list<array{arg: non-empty-string, desc: non-empty-string}|array{spacer: ''}|array{text: non-empty-string}>>
      */
     private function elements(): array
     {

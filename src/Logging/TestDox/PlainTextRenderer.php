@@ -17,7 +17,7 @@ use function sprintf;
 final readonly class PlainTextRenderer
 {
     /**
-     * @psalm-param array<string, TestResultCollection> $tests
+     * @param array<string, TestResultCollection> $tests
      */
     public function render(array $tests): string
     {
@@ -41,7 +41,7 @@ final readonly class PlainTextRenderer
     }
 
     /**
-     * @psalm-return array<string, 'x'|' '>
+     * @return array<string, ' '|'x'>
      */
     private function reduce(TestResultCollection $tests): array
     {

@@ -17,13 +17,10 @@ use SebastianBergmann\Template\Template;
 trait TemplateLoader
 {
     /**
-     * @psalm-var array<string,Template>
+     * @var array<string,Template>
      */
     private static array $templates = [];
 
-    /**
-     * @psalm-suppress MissingThrowsDocblock
-     */
     private function loadTemplate(string $template): Template
     {
         $filename = __DIR__ . '/templates/' . $template;

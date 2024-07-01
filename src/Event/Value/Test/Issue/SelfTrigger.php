@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Code\IssueTrigger;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -18,8 +18,6 @@ final class SelfTrigger extends IssueTrigger
 {
     /**
      * Your own code triggers an issue in your own code.
-     *
-     * @psalm-assert-if-true SelfTrigger $this
      */
     public function isSelf(): true
     {

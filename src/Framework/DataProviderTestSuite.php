@@ -19,13 +19,13 @@ use PHPUnit\Metadata\Api\Groups;
 final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * @psalm-var list<ExecutionOrderDependency>
+     * @var list<ExecutionOrderDependency>
      */
     private array $dependencies   = [];
     private ?array $providedTests = null;
 
     /**
-     * @psalm-param list<ExecutionOrderDependency> $dependencies
+     * @param list<ExecutionOrderDependency> $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
@@ -41,7 +41,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -53,7 +53,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @psalm-return list<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {

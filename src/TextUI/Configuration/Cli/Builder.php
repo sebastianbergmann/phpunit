@@ -134,7 +134,7 @@ final class Builder
     private const SHORT_OPTIONS = 'd:c:h';
 
     /**
-     * @psalm-var array<string, non-negative-int>
+     * @var array<string, non-negative-int>
      */
     private array $processed = [];
 
@@ -1045,7 +1045,7 @@ final class Builder
     }
 
     /**
-     * @psalm-param non-empty-string $option
+     * @param non-empty-string $option
      */
     private function markProcessed(string $option): void
     {

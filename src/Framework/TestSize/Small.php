@@ -12,13 +12,10 @@ namespace PHPUnit\Framework\TestSize;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class Small extends Known
 {
-    /**
-     * @psalm-assert-if-true Small $this
-     */
     public function isSmall(): bool
     {
         return true;

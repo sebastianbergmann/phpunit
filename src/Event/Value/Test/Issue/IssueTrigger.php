@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Code\IssueTrigger;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -43,7 +43,7 @@ abstract class IssueTrigger
     /**
      * Your own code triggers an issue in your own code.
      *
-     * @psalm-assert-if-true SelfTrigger $this
+     * @phpstan-assert-if-true SelfTrigger $this
      */
     public function isSelf(): bool
     {
@@ -53,7 +53,7 @@ abstract class IssueTrigger
     /**
      * Your own code triggers an issue in third-party code.
      *
-     * @psalm-assert-if-true DirectTrigger $this
+     * @phpstan-assert-if-true DirectTrigger $this
      */
     public function isDirect(): bool
     {
@@ -63,7 +63,7 @@ abstract class IssueTrigger
     /**
      * Third-party code triggers an issue either in your own code or in third-party code.
      *
-     * @psalm-assert-if-true IndirectTrigger $this
+     * @phpstan-assert-if-true IndirectTrigger $this
      */
     public function isIndirect(): bool
     {
@@ -71,7 +71,7 @@ abstract class IssueTrigger
     }
 
     /**
-     * @psalm-assert-if-true UnknownTrigger $this
+     * @phpstan-assert-if-true UnknownTrigger $this
      */
     public function isUnknown(): bool
     {

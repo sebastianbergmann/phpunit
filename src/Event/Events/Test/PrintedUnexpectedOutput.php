@@ -14,7 +14,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -23,12 +23,12 @@ final readonly class PrintedUnexpectedOutput implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $output;
 
     /**
-     * @psalm-param non-empty-string $output
+     * @param non-empty-string $output
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $output)
     {
@@ -42,7 +42,7 @@ final readonly class PrintedUnexpectedOutput implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function output(): string
     {

@@ -23,7 +23,7 @@ use PHPUnit\Runner\Version;
 final readonly class SchemaFinder
 {
     /**
-     * @psalm-return non-empty-list<non-empty-string>
+     * @return non-empty-list<non-empty-string>
      */
     public function available(): array
     {

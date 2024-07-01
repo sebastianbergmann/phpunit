@@ -10,15 +10,12 @@
 namespace PHPUnit\Metadata;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class After extends Metadata
 {
-    /**
-     * @psalm-assert-if-true After $this
-     */
     public function isAfter(): bool
     {
         return true;
