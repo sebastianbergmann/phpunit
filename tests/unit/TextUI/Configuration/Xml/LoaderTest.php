@@ -362,9 +362,10 @@ final class LoaderTest extends TestCase
 
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
-        $this->assertTrue(
-            $this->configuration('configuration_testdox.xml')->phpunit()->testdoxPrinter(),
-        );
+        $configuration = $this->configuration('configuration_testdox.xml')->phpunit();
+
+        $this->assertTrue($configuration->testdoxPrinter());
+        $this->assertTrue($configuration->testdoxPrinterSummary());
     }
 
     public function testConfigurationForSingleTestSuiteCanBeLoaded(): void

@@ -222,6 +222,7 @@ final class Facade
                 self::$printer,
                 $configuration->colors(),
                 $configuration->columns(),
+                $configuration->testDoxOutputWithSummary(),
             );
         }
 

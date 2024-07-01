@@ -554,6 +554,12 @@ final readonly class Merger
             $testDoxOutput = $xmlConfiguration->phpunit()->testdoxPrinter();
         }
 
+        if ($cliConfiguration->hasTestDoxPrinterSummary() && $cliConfiguration->testdoxPrinterSummary()) {
+            $testDoxOutputSummary = true;
+        } else {
+            $testDoxOutputSummary = $xmlConfiguration->phpunit()->testdoxPrinterSummary();
+        }
+
         $noProgress = false;
 
         if ($cliConfiguration->hasNoProgress() && $cliConfiguration->noProgress()) {
@@ -814,6 +820,7 @@ final readonly class Merger
             $logEventsVerboseText,
             $teamCityOutput,
             $testDoxOutput,
+            $testDoxOutputSummary,
             $testsCovering,
             $testsUsing,
             $filter,

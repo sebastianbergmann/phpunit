@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpunit testdox="true"></phpunit>
+<phpunit testdox="true" testdoxSummary="true"></phpunit>

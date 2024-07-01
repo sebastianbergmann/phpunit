@@ -93,6 +93,7 @@ Reporting:
 
   --teamcity                         Replace default progress and result output with TeamCity format
   --testdox                          Replace default result output with TestDox format
+  --testdox-summary                  Repeat TestDox output for tests with errors, failures, or issues
 
   --debug                            Replace default progress and result output with debugging information
 
