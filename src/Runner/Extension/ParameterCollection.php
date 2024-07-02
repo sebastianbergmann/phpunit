@@ -19,6 +19,9 @@ use PHPUnit\Runner\ParameterDoesNotExistException;
  */
 final readonly class ParameterCollection
 {
+    /**
+     * @var array<string, string>
+     */
     private array $parameters;
 
     /**
@@ -29,6 +32,9 @@ final readonly class ParameterCollection
         return new self($parameters);
     }
 
+    /**
+     * @param array<string, string> $parameters
+     */
     private function __construct(array $parameters)
     {
         $this->parameters = $parameters;

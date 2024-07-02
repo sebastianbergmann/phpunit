@@ -21,7 +21,11 @@ final class DataProviderTestSuite extends TestSuite
     /**
      * @var list<ExecutionOrderDependency>
      */
-    private array $dependencies   = [];
+    private array $dependencies = [];
+
+    /**
+     * @var ?non-empty-list<ExecutionOrderDependency>
+     */
     private ?array $providedTests = null;
 
     /**
@@ -41,7 +45,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @return non-empty-list<ExecutionOrderDependency>
      */
     public function provides(): array
     {

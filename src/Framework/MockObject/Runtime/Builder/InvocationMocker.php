@@ -303,6 +303,8 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     }
 
     /**
+     * @param array<mixed> $values
+     *
      * @throws IncompatibleReturnValueException
      */
     private function ensureTypeOfReturnValues(array $values): void

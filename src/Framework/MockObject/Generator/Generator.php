@@ -77,7 +77,7 @@ final class Generator
     use TemplateLoader;
 
     /**
-     * @var array
+     * @var array<non-empty-string, true>
      */
     private const EXCLUDED_METHOD_NAMES = [
         '__CLASS__'       => true,
@@ -99,6 +99,9 @@ final class Generator
 
     /**
      * Returns a test double for the specified class.
+     *
+     * @param ?list<non-empty-string> $methods
+     * @param list<mixed>             $arguments
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
@@ -232,6 +235,9 @@ final class Generator
      *
      * Concrete methods to mock can be specified with the $mockedMethods parameter.
      *
+     * @param list<mixed>             $arguments
+     * @param ?list<non-empty-string> $mockedMethods
+     *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
@@ -290,7 +296,9 @@ final class Generator
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
      *
-     * @param trait-string $traitName
+     * @param trait-string            $traitName
+     * @param list<mixed>             $arguments
+     * @param ?list<non-empty-string> $mockedMethods
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
@@ -339,6 +347,7 @@ final class Generator
      * Returns an object for the specified trait.
      *
      * @param trait-string $traitName
+     * @param list<mixed>  $arguments
      *
      * @throws ReflectionException
      * @throws RuntimeException
@@ -380,6 +389,8 @@ final class Generator
     }
 
     /**
+     * @param ?list<non-empty-string> $methods
+     *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ReflectionException
@@ -433,6 +444,11 @@ final class Generator
     }
 
     /**
+     * @param non-empty-string       $wsdlFile
+     * @param class-string           $className
+     * @param list<non-empty-string> $methods
+     * @param array<mixed>           $options
+     *
      * @throws RuntimeException
      * @throws SoapExtensionNotAvailableException
      *
@@ -572,6 +588,8 @@ final class Generator
     }
 
     /**
+     * @param array<mixed> $arguments
+     *
      * @throws ReflectionException
      * @throws RuntimeException
      */
@@ -625,6 +643,8 @@ final class Generator
     }
 
     /**
+     * @param ?list<non-empty-string> $explicitMethods
+     *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ReflectionException
@@ -877,6 +897,9 @@ final class Generator
         );
     }
 
+    /**
+     * @return array{className: non-empty-string, originalClassName: non-empty-string, fullClassName: non-empty-string, namespaceName: string}
+     */
     private function generateClassName(string $type, string $className, string $prefix): array
     {
         if ($type[0] === '\\') {
@@ -909,6 +932,10 @@ final class Generator
         ];
     }
 
+    /**
+     * @param array{className: non-empty-string, originalClassName: non-empty-string, fullClassName: non-empty-string, namespaceName: string} $mockClassName
+     * @param list<class-string>                                                                                                              $additionalInterfaces
+     */
     private function generateTestDoubleClassDeclaration(bool $mockObject, array $mockClassName, bool $isInterface, array $additionalInterfaces, bool $isReadonly): string
     {
         if ($mockObject) {
@@ -991,6 +1018,8 @@ final class Generator
     }
 
     /**
+     * @param ?list<non-empty-string> $methods
+     *
      * @throws DuplicateMethodException
      * @throws InvalidMethodNameException
      */
@@ -1030,6 +1059,7 @@ final class Generator
 
     /**
      * @param class-string $type
+     * @param array<mixed> $arguments
      *
      * @throws ReflectionException
      */
@@ -1064,6 +1094,8 @@ final class Generator
      * @param class-string $className
      *
      * @throws ReflectionException
+     *
+     * @phpstan-ignore missingType.generics
      */
     private function reflectClass(string $className): ReflectionClass
     {

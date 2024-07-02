@@ -17,8 +17,14 @@ use PHPUnit\Framework\MockObject\Invocation;
  */
 final class ConsecutiveCalls implements Stub
 {
+    /**
+     * @var array<mixed>
+     */
     private array $stack;
 
+    /**
+     * @param array<mixed> $stack
+     */
     public function __construct(array $stack)
     {
         $this->stack = $stack;

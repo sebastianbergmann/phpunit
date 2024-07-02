@@ -31,6 +31,10 @@ final readonly class Configuration
     private ?string $colors;
     private null|int|string $columns;
     private ?string $configurationFile;
+
+    /**
+     * @var ?non-empty-list<non-empty-string>
+     */
     private ?array $coverageFilter;
     private ?string $coverageClover;
     private ?string $coverageCobertura;
@@ -47,6 +51,10 @@ final readonly class Configuration
     private ?bool $disableCodeCoverageIgnore;
     private ?bool $disallowTestOutput;
     private ?bool $enforceTimeLimit;
+
+    /**
+     * @var ?non-empty-list<non-empty-string>
+     */
     private ?array $excludeGroups;
     private ?int $executionOrder;
     private ?int $executionOrderDefects;
@@ -73,11 +81,27 @@ final readonly class Configuration
     private bool $ignoreBaseline;
     private bool $generateConfiguration;
     private bool $migrateConfiguration;
+
+    /**
+     * @var ?non-empty-list<non-empty-string>
+     */
     private ?array $groups;
+
+    /**
+     * @var ?non-empty-list<non-empty-string>
+     */
     private ?array $testsCovering;
+
+    /**
+     * @var ?non-empty-list<non-empty-string>
+     */
     private ?array $testsUsing;
     private bool $help;
     private ?string $includePath;
+
+    /**
+     * @var ?non-empty-array<non-empty-string, non-empty-string>
+     */
     private ?array $iniSettings;
     private ?string $junitLogfile;
     private bool $listGroups;
@@ -124,8 +148,14 @@ final readonly class Configuration
     private bool $debug;
 
     /**
-     * @param list<non-empty-string>            $arguments
-     * @param ?non-empty-list<non-empty-string> $testSuffixes
+     * @param list<non-empty-string>                               $arguments
+     * @param ?non-empty-list<non-empty-string>                    $excludeGroups
+     * @param ?non-empty-list<non-empty-string>                    $groups
+     * @param ?non-empty-list<non-empty-string>                    $testsCovering
+     * @param ?non-empty-list<non-empty-string>                    $testsUsing
+     * @param ?non-empty-array<non-empty-string, non-empty-string> $iniSettings
+     * @param ?non-empty-list<non-empty-string>                    $testSuffixes
+     * @param ?non-empty-list<non-empty-string>                    $coverageFilter
      */
     public function __construct(array $arguments, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configurationFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnDeprecation, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnNotice, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?bool $stopOnDefect, ?bool $stopOnDeprecation, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnNotice, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $filter, ?string $excludeFilter, ?string $generateBaseline, ?string $useBaseline, bool $ignoreBaseline, bool $generateConfiguration, bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, bool $listGroups, bool $listSuites, bool $listTestFiles, bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, bool $useDefaultConfiguration, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerTeamCity, ?bool $testdoxPrinter, ?bool $testdoxPrinterSummary, bool $debug)
     {
@@ -453,6 +483,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-list<non-empty-string>
      */
     public function coverageFilter(): array
     {
@@ -758,6 +790,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-list<non-empty-string>
      */
     public function excludeGroups(): array
     {
@@ -1233,6 +1267,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-list<non-empty-string>
      */
     public function groups(): array
     {
@@ -1253,6 +1289,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-list<non-empty-string>
      */
     public function testsCovering(): array
     {
@@ -1273,6 +1311,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-list<non-empty-string>
      */
     public function testsUsing(): array
     {
@@ -1318,6 +1358,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-array<non-empty-string, non-empty-string>
      */
     public function iniSettings(): array
     {

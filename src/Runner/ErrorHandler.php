@@ -279,6 +279,9 @@ final class ErrorHandler
         return IssueTrigger::indirect();
     }
 
+    /**
+     * @return list<array{file: string, line: int, class: string, function: string, type: string}>
+     */
     private function filteredStackTrace(bool $filterDeprecationTriggers): array
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);

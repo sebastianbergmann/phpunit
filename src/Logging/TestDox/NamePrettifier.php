@@ -220,6 +220,9 @@ final class NamePrettifier
         return Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
     }
 
+    /**
+     * @return array<non-empty-string, non-empty-string>
+     */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test, bool $colorize): array
     {
         assert(method_exists($test, $test->name()));

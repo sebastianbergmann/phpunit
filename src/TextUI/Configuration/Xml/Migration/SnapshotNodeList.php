@@ -28,6 +28,9 @@ final class SnapshotNodeList implements Countable, IteratorAggregate
      */
     private array $nodes = [];
 
+    /**
+     * @param DOMNodeList<DOMNode> $list
+     */
     public static function fromNodeList(DOMNodeList $list): self
     {
         $snapshot = new self;
@@ -44,6 +47,9 @@ final class SnapshotNodeList implements Countable, IteratorAggregate
         return count($this->nodes);
     }
 
+    /**
+     * @return ArrayIterator<int, DOMNode>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->nodes);

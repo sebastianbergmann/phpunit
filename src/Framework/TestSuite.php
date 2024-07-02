@@ -138,6 +138,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Adds a test to the suite.
+     *
+     * @param list<non-empty-string> $groups
      */
     public function addTest(Test $test, array $groups = []): void
     {
@@ -183,7 +185,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Adds the tests from the given class to the suite.
      *
-     * @param list<non-empty-string> $groups
+     * @param ReflectionClass<TestCase> $testClass
+     * @param list<non-empty-string>    $groups
      *
      * @throws Exception
      */
@@ -251,6 +254,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Wrapper for addTestFile() that adds multiple test files.
+     *
+     * @param iterable<string> $fileNames
      *
      * @throws Exception
      */
@@ -570,6 +575,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $this->requiredTests = null;
     }
 
+    /**
+     * @param list<non-empty-string> $groups
+     */
     private function containsOnlyVirtualGroups(array $groups): bool
     {
         foreach ($groups as $group) {

@@ -128,6 +128,8 @@ interface Emitter
     /**
      * @param class-string $originalClassName
      * @param class-string $mockClassName
+     * @param list<string> $methods
+     * @param list<mixed>  $options
      */
     public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void;
 
@@ -138,6 +140,7 @@ interface Emitter
 
     /**
      * @param class-string $className
+     * @param list<mixed>  $constructorArguments
      */
     public function testCreatedTestProxy(string $className, array $constructorArguments): void;
 

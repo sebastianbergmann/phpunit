@@ -154,6 +154,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<ExecutionOrderDependency>
      */
     private array $providedTests = [];
+
+    /**
+     * @var array<mixed>
+     */
     private array $data          = [];
     private int|string $dataName = '';
 
@@ -170,14 +174,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var list<ExecutionOrderDependency>
      */
-    private array $dependencies    = [];
+    private array $dependencies = [];
+
+    /**
+     * @var array<non-empty-string, array<mixed>>
+     */
     private array $dependencyInput = [];
 
     /**
      * @var array<string,string>
      */
     private array $iniSettings = [];
-    private array $locale      = [];
+
+    /**
+     * @var array<int, non-empty-string>
+     */
+    private array $locale = [];
 
     /**
      * @var list<MockObjectInternal>
@@ -359,6 +371,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @return list<string>
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function groups(): array
@@ -367,6 +381,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param list<string> $groups
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setGroups(array $groups): void
@@ -656,6 +672,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array<non-empty-string, array<mixed>> $dependencyInput
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      *
      * @codeCoverageIgnore
@@ -666,6 +684,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @return array<non-empty-string, array<mixed>>
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function dependencyInput(): array
@@ -690,6 +710,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param list<string> $backupGlobalsExcludeList
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setBackupGlobalsExcludeList(array $backupGlobalsExcludeList): void
@@ -706,6 +728,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array<string,list<class-string>> $backupStaticPropertiesExcludeList
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setBackupStaticPropertiesExcludeList(array $backupStaticPropertiesExcludeList): void
@@ -843,6 +867,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @return array<mixed>
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function providedData(): array
@@ -889,6 +915,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array<mixed> $data
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setData(int|string $dataName, array $data): void
@@ -998,6 +1026,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array<mixed> $valueMap
+     *
      * @deprecated Use <code>$double->willReturnMap()</code> instead of <code>$double->will($this->returnValueMap())</code>
      * @see https://github.com/sebastianbergmann/phpunit/issues/5423
      *
@@ -1357,6 +1387,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @template RealInstanceType of object
      *
      * @param class-string<RealInstanceType> $originalClassName
+     * @param array<non-empty-string, mixed> $configuration
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException
@@ -1417,6 +1448,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @template RealInstanceType of object
      *
      * @param class-string<RealInstanceType> $originalClassName
+     * @param array<mixed>                   $constructorArguments
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException
@@ -1453,6 +1485,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @template RealInstanceType of object
      *
      * @param class-string<RealInstanceType> $originalClassName
+     * @param array<mixed>                   $arguments
+     * @param list<non-empty-string>         $mockedMethods
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException
@@ -1491,6 +1525,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * Creates a mock object based on the given WSDL file.
+     *
+     * @param list<string> $methods
+     * @param list<mixed>  $options
      *
      * @throws MockObjectException
      *
@@ -1552,7 +1589,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
      *
-     * @param trait-string $traitName
+     * @param trait-string           $traitName
+     * @param array<mixed>           $arguments
+     * @param list<non-empty-string> $mockedMethods
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException
@@ -1588,6 +1627,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates an object that uses the specified trait.
      *
      * @param trait-string $traitName
+     * @param array<mixed> $arguments
      *
      * @throws MockObjectException
      *
@@ -2083,6 +2123,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
+    /**
+     * @param array<mixed> $before
+     * @param array<mixed> $after
+     */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
@@ -2250,6 +2294,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     *
      * @throws Throwable
      *
      * @codeCoverageIgnore
@@ -2265,6 +2311,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     *
      * @throws Throwable
      */
     private function invokeBeforeTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
@@ -2278,6 +2326,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     *
      * @throws Throwable
      */
     private function invokePreConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
@@ -2291,6 +2341,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     *
      * @throws Throwable
      */
     private function invokePostConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
@@ -2304,6 +2356,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     *
      * @throws Throwable
      */
     private function invokeAfterTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
@@ -2317,6 +2371,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     *
      * @throws Throwable
      *
      * @codeCoverageIgnore
@@ -2332,9 +2388,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param list<non-empty-string>                                                                                                                                                                    $hookMethods
-     * @param 'testAfterLastTestMethodCalled'|'testAfterTestMethodCalled'|'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPostConditionCalled'|'testPreConditionCalled'             $calledMethod
-     * @param 'testAfterLastTestMethodFinished'|'testAfterTestMethodFinished'|'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPostConditionFinished'|'testPreConditionFinished' $finishedMethod
+     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param 'testAfterLastTestMethodCalled'|'testAfterTestMethodCalled'|'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPostConditionCalled'|'testPreConditionCalled'                                              $calledMethod
+     * @param 'testAfterLastTestMethodFinished'|'testAfterTestMethodFinished'|'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPostConditionFinished'|'testPreConditionFinished'                                  $finishedMethod
+     * @param list<non-empty-string>                                                                                                                                                                                                     $hookMethods
      *
      * @throws Throwable
      */
@@ -2381,6 +2438,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
+    /**
+     * @param non-empty-string $methodName
+     */
     private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
     {
         $reflector = new ReflectionObject($this);
@@ -2548,6 +2608,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @template RealInstanceType of object
      *
      * @param class-string<RealInstanceType> $originalClassName
+     * @param array<non-empty-string, mixed> $configuration
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException

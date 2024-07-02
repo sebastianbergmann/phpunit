@@ -16,6 +16,9 @@ use function assert;
  */
 final class TestDoubleState
 {
+    /**
+     * @var array<non-empty-string, true>
+     */
     private static array $deprecationEmittedForTest = [];
 
     /**

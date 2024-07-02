@@ -427,7 +427,8 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param ?non-empty-string $name
+     * @param array<array<mixed>> $data
+     * @param ?non-empty-string   $name
      */
     public static function testWith(array $data, ?string $name = null): TestWith
     {

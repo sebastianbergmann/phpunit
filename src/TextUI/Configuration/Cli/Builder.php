@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\CliArguments;
 
 use function array_map;
 use function array_merge;
+use function assert;
 use function basename;
 use function explode;
 use function getcwd;
@@ -139,6 +140,8 @@ final class Builder
     private array $processed = [];
 
     /**
+     * @param list<string> $parameters
+     *
      * @throws Exception
      */
     public function fromParameters(array $parameters): Configuration
@@ -363,7 +366,11 @@ final class Builder
                     $tmp = explode('=', $option[1]);
 
                     if (isset($tmp[0])) {
+                        assert($tmp[0] !== '');
+
                         if (isset($tmp[1])) {
+                            assert($tmp[1] !== '');
+
                             $iniSettings[$tmp[0]] = $tmp[1];
                         } else {
                             $iniSettings[$tmp[0]] = '1';

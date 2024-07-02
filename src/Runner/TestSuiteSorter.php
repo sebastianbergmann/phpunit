@@ -136,11 +136,17 @@ final class TestSuiteSorter
         }
     }
 
+    /**
+     * @return array<string>
+     */
     public function getOriginalExecutionOrder(): array
     {
         return $this->originalExecutionOrder;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getExecutionOrder(): array
     {
         return $this->executionOrder;
@@ -193,11 +199,21 @@ final class TestSuiteSorter
         $this->defectSortOrder[$suite->sortId()] = $max;
     }
 
+    /**
+     * @param list<Test> $tests
+     *
+     * @return list<Test>
+     */
     private function reverse(array $tests): array
     {
         return array_reverse($tests);
     }
 
+    /**
+     * @param list<Test> $tests
+     *
+     * @return list<Test>
+     */
     private function randomize(array $tests): array
     {
         shuffle($tests);
@@ -205,6 +221,11 @@ final class TestSuiteSorter
         return $tests;
     }
 
+    /**
+     * @param list<Test> $tests
+     *
+     * @return list<Test>
+     */
     private function sortDefectsFirst(array $tests): array
     {
         usort(
@@ -215,6 +236,11 @@ final class TestSuiteSorter
         return $tests;
     }
 
+    /**
+     * @param list<Test> $tests
+     *
+     * @return list<Test>
+     */
     private function sortByDuration(array $tests): array
     {
         usort(
@@ -225,6 +251,11 @@ final class TestSuiteSorter
         return $tests;
     }
 
+    /**
+     * @param list<Test> $tests
+     *
+     * @return list<Test>
+     */
     private function sortBySize(array $tests): array
     {
         usort(
@@ -325,6 +356,9 @@ final class TestSuiteSorter
         return array_merge($newTestOrder, $tests);
     }
 
+    /**
+     * @return array<string>
+     */
     private function calculateTestExecutionOrder(Test $suite): array
     {
         $tests = [];

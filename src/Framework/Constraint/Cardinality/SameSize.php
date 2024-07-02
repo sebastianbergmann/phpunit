@@ -18,11 +18,11 @@ use PHPUnit\Framework\Exception;
 final class SameSize extends Count
 {
     /**
-     * @param Countable|iterable $expected
+     * @param Countable|iterable<mixed> $expected
      *
      * @throws Exception
      */
-    public function __construct($expected)
+    public function __construct(Countable|iterable $expected)
     {
         parent::__construct((int) $this->getCountOf($expected));
     }

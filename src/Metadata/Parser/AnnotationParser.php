@@ -472,6 +472,8 @@ final class AnnotationParser implements Parser
      * @throws InvalidVersionOperatorException
      *
      * @return list<Metadata>
+     *
+     * @phpstan-ignore missingType.iterableValue
      */
     private function parseRequirements(array $requirements, string $level): array
     {

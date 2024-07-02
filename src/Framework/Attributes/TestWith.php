@@ -19,6 +19,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final readonly class TestWith
 {
+    /**
+     * @var array<mixed>
+     */
     private array $data;
 
     /**
@@ -27,6 +30,7 @@ final readonly class TestWith
     private ?string $name;
 
     /**
+     * @param array<mixed>      $data
      * @param ?non-empty-string $name
      */
     public function __construct(array $data, ?string $name = null)
@@ -35,6 +39,9 @@ final readonly class TestWith
         $this->name = $name;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function data(): array
     {
         return $this->data;

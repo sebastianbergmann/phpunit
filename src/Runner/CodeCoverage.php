@@ -165,6 +165,10 @@ final class CodeCoverage
         $this->collecting = true;
     }
 
+    /**
+     * @param array<string,list<int>>|false $linesToBeCovered
+     * @param array<string,list<int>>       $linesToBeUsed
+     */
     public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
     {
         if (!$this->collecting) {

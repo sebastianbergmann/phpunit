@@ -31,6 +31,8 @@ final class Parameters implements ParametersRule
     private null|bool|ExpectationFailedException $parameterVerificationResult;
 
     /**
+     * @param array<mixed> $parameters
+     *
      * @throws \PHPUnit\Framework\Exception
      */
     public function __construct(array $parameters)

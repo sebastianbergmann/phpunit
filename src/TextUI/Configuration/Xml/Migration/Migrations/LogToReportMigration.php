@@ -48,6 +48,9 @@ abstract readonly class LogToReportMigration implements Migration
         $logNode->parentNode->removeChild($logNode);
     }
 
+    /**
+     * @param list<non-empty-string> $attributes
+     */
     protected function migrateAttributes(DOMElement $src, DOMElement $dest, array $attributes): void
     {
         foreach ($attributes as $attr) {

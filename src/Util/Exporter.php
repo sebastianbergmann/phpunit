@@ -24,6 +24,9 @@ final class Exporter
         return self::exporter()->export($value);
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     public static function shortenedRecursiveExport(array $data): string
     {
         return self::exporter()->shortenedRecursiveExport($data);

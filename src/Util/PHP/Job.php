@@ -20,6 +20,10 @@ final readonly class Job
      * @var non-empty-string
      */
     private string $code;
+
+    /**
+     * @var list<string>
+     */
     private array $phpSettings;
 
     /**
@@ -40,6 +44,7 @@ final readonly class Job
 
     /**
      * @param non-empty-string       $code
+     * @param list<string>           $phpSettings
      * @param array<string, string>  $environmentVariables
      * @param list<non-empty-string> $arguments
      * @param ?non-empty-string      $input
@@ -62,6 +67,9 @@ final readonly class Job
         return $this->code;
     }
 
+    /**
+     * @return list<string>
+     */
     public function phpSettings(): array
     {
         return $this->phpSettings;

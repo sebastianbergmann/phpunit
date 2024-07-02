@@ -77,6 +77,8 @@ abstract class Assert
     /**
      * Asserts that two arrays are equal while only considering a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
@@ -106,6 +108,8 @@ abstract class Assert
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
@@ -123,6 +127,8 @@ abstract class Assert
     /**
      * Asserts that two arrays are identical while only considering a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
@@ -140,6 +146,8 @@ abstract class Assert
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
@@ -157,6 +165,8 @@ abstract class Assert
     /**
      * Asserts that an array has a specified key.
      *
+     * @param array<mixed>|ArrayAccess<array-key, mixed> $array
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -169,6 +179,8 @@ abstract class Assert
 
     /**
      * Asserts that an array does not have a specified key.
+     *
+     * @param array<mixed>|ArrayAccess<array-key, mixed> $array
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -197,6 +209,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains a needle.
      *
+     * @param iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -208,6 +222,8 @@ abstract class Assert
     }
 
     /**
+     * @param iterable<mixed> $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
@@ -219,6 +235,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack does not contain a needle.
+     *
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -233,6 +251,8 @@ abstract class Assert
     }
 
     /**
+     * @param iterable<mixed> $haystack
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertNotContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
@@ -244,6 +264,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of a given type.
+     *
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -267,6 +289,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @param iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -284,6 +308,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack does not contain only values of a given type.
+     *
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -309,6 +335,8 @@ abstract class Assert
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
+     * @param Countable|iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws GeneratorNotSupportedException
@@ -328,6 +356,8 @@ abstract class Assert
 
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
+     *
+     * @param Countable|iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -1595,6 +1625,9 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
+     * @param Countable|iterable<mixed> $expected
+     * @param Countable|iterable<mixed> $actual
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws GeneratorNotSupportedException
@@ -1619,6 +1652,9 @@ abstract class Assert
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
+     *
+     * @param Countable|iterable<mixed> $expected
+     * @param Countable|iterable<mixed> $actual
      *
      * @throws Exception
      * @throws ExpectationFailedException

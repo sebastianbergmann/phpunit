@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestSuite;
 final class Factory
 {
     /**
-     * @var list<array{className: class-string, argument: array|string}>
+     * @var list<array{className: class-string, argument: list<non-empty-string>|non-empty-string}>
      */
     private array $filters = [];
 

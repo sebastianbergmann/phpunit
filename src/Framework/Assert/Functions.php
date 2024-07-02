@@ -73,6 +73,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayOnlyConsidering
     /**
      * Asserts that two arrays are equal while only considering a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
@@ -92,6 +94,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsEqualToArrayIgnoringListOfK
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
@@ -111,6 +115,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayOnlyConside
     /**
      * Asserts that two arrays are identical while only considering a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeConsidered
      *
      * @throws Exception
@@ -130,6 +136,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsIdenticalToArrayIgnoringLis
     /**
      * Asserts that two arrays are equal while ignoring a list of keys.
      *
+     * @param array<mixed>              $expected
+     * @param array<mixed>              $actual
      * @param non-empty-list<array-key> $keysToBeIgnored
      *
      * @throws Exception
@@ -149,6 +157,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
     /**
      * Asserts that an array has a specified key.
      *
+     * @param array<mixed>|ArrayAccess<array-key, mixed> $array
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -165,6 +175,8 @@ if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
 if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     /**
      * Asserts that an array does not have a specified key.
+     *
+     * @param array<mixed>|ArrayAccess<array-key, mixed> $array
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -197,6 +209,8 @@ if (!function_exists('PHPUnit\Framework\assertContains')) {
     /**
      * Asserts that a haystack contains a needle.
      *
+     * @param iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -212,6 +226,8 @@ if (!function_exists('PHPUnit\Framework\assertContains')) {
 
 if (!function_exists('PHPUnit\Framework\assertContainsEquals')) {
     /**
+     * @param iterable<mixed> $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -228,6 +244,8 @@ if (!function_exists('PHPUnit\Framework\assertNotContains')) {
     /**
      * Asserts that a haystack does not contain a needle.
      *
+     * @param iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -243,6 +261,8 @@ if (!function_exists('PHPUnit\Framework\assertNotContains')) {
 
 if (!function_exists('PHPUnit\Framework\assertNotContainsEquals')) {
     /**
+     * @param iterable<mixed> $haystack
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -258,6 +278,8 @@ if (!function_exists('PHPUnit\Framework\assertNotContainsEquals')) {
 if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
     /**
      * Asserts that a haystack contains only values of a given type.
+     *
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -276,6 +298,8 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @param iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      *
@@ -292,6 +316,8 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
 if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
     /**
      * Asserts that a haystack does not contain only values of a given type.
+     *
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -310,6 +336,8 @@ if (!function_exists('PHPUnit\Framework\assertCount')) {
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
+     * @param Countable|iterable<mixed> $haystack
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws GeneratorNotSupportedException
@@ -327,6 +355,8 @@ if (!function_exists('PHPUnit\Framework\assertCount')) {
 if (!function_exists('PHPUnit\Framework\assertNotCount')) {
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
+     *
+     * @param Countable|iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -1830,6 +1860,9 @@ if (!function_exists('PHPUnit\Framework\assertSameSize')) {
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
+     * @param Countable|iterable<mixed> $expected
+     * @param Countable|iterable<mixed> $actual
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws GeneratorNotSupportedException
@@ -1848,6 +1881,9 @@ if (!function_exists('PHPUnit\Framework\assertNotSameSize')) {
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
+     *
+     * @param Countable|iterable<mixed> $expected
+     * @param Countable|iterable<mixed> $actual
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -2748,6 +2784,9 @@ if (!function_exists('PHPUnit\Framework\returnValue')) {
 }
 
 if (!function_exists('PHPUnit\Framework\returnValueMap')) {
+    /**
+     * @param array<mixed> $valueMap
+     */
     function returnValueMap(array $valueMap): ReturnValueMapStub
     {
         return new ReturnValueMapStub($valueMap);

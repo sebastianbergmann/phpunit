@@ -317,7 +317,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Parse --INI-- section key value pairs and return as array.
+     * @param array<string>|string                                              $content
+     * @param array<non-empty-string, array<non-empty-string>|non-empty-string> $ini
+     *
+     * @return array<non-empty-string, array<non-empty-string>|non-empty-string>
      */
     private function parseIniSection(array|string $content, array $ini = []): array
     {
@@ -350,6 +353,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $ini;
     }
 
+    /**
+     * @return array<non-empty-string, non-empty-string>
+     */
     private function parseEnvSection(string $content): array
     {
         $env = [];
@@ -366,6 +372,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     *
      * @throws Exception
      * @throws ExpectationFailedException
      */
@@ -393,6 +401,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         throw new InvalidPhptFileException;
     }
 
+    /**
+     * @param array<non-empty-string, non-empty-string>                         $sections
+     * @param array<non-empty-string, array<non-empty-string>|non-empty-string> $settings
+     */
     private function shouldTestBeSkipped(array $sections, array $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {
@@ -426,6 +438,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return false;
     }
 
+    /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     */
     private function runClean(array $sections, bool $collectCoverage): void
     {
         if (!isset($sections['CLEAN'])) {
@@ -442,6 +457,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * @throws Exception
+     *
+     * @return array<non-empty-string, non-empty-string>
      */
     private function parse(): array
     {
@@ -506,6 +523,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     *
      * @throws Exception
      */
     private function parseExternal(array &$sections): void
@@ -535,6 +554,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
     }
 
+    /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     */
     private function validate(array $sections): bool
     {
         $requiredSections = [
@@ -593,6 +615,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         );
     }
 
+    /**
+     * @return array{coverage: non-empty-string, job: non-empty-string}
+     */
     private function getCoverageFiles(): array
     {
         $baseDir  = dirname(realpath($this->filename)) . DIRECTORY_SEPARATOR;
@@ -688,6 +713,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $coverage;
     }
 
+    /**
+     * @param array<non-empty-string, array<non-empty-string>|non-empty-string> $ini
+     *
+     * @return list<non-empty-string>
+     */
     private function stringifyIni(array $ini): array
     {
         $settings = [];
@@ -707,6 +737,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $settings;
     }
 
+    /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     *
+     * @return non-empty-list<array{file: non-empty-string, line: int}>
+     */
     private function getLocationHintFromDiff(string $message, array $sections): array
     {
         $needle       = '';
@@ -755,6 +790,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $line;
     }
 
+    /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     *
+     * @return non-empty-list<array{file: non-empty-string, line: int}>
+     */
     private function getLocationHint(string $needle, array $sections): array
     {
         $needle = trim($needle);

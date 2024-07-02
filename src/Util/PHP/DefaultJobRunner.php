@@ -202,6 +202,8 @@ final readonly class DefaultJobRunner implements JobRunner
     }
 
     /**
+     * @param list<string> $settings
+     *
      * @return list<string>
      */
     private function settingsToParameters(array $settings): array

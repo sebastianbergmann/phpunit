@@ -38,11 +38,17 @@ final readonly class MockObjectFromWsdlCreated implements Event
      */
     private array $methods;
     private bool $callOriginalConstructor;
+
+    /**
+     * @var list<mixed>
+     */
     private array $options;
 
     /**
      * @param class-string $originalClassName
      * @param class-string $mockClassName
+     * @param list<string> $methods
+     * @param list<mixed>  $options
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options)
     {
@@ -94,6 +100,9 @@ final readonly class MockObjectFromWsdlCreated implements Event
         return $this->callOriginalConstructor;
     }
 
+    /**
+     * @return list<mixed>
+     */
     public function options(): array
     {
         return $this->options;

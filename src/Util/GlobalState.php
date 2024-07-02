@@ -261,6 +261,9 @@ final readonly class GlobalState
         return 'unserialize(' . var_export(serialize($variable), true) . ')';
     }
 
+    /**
+     * @param array<mixed> $array
+     */
     private static function arrayOnlyContainsScalars(array $array): bool
     {
         $result = true;

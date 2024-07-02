@@ -54,7 +54,11 @@ final class MockBuilder
     /**
      * @var ?class-string
      */
-    private ?string $mockClassName         = null;
+    private ?string $mockClassName = null;
+
+    /**
+     * @var array<mixed>
+     */
     private array $constructorArgs         = [];
     private bool $originalConstructor      = true;
     private bool $originalClone            = true;
@@ -289,6 +293,8 @@ final class MockBuilder
 
     /**
      * Specifies the arguments for the constructor.
+     *
+     * @param array<mixed> $arguments
      *
      * @return $this
      */

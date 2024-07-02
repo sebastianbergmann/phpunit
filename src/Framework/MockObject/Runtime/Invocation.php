@@ -34,6 +34,10 @@ final readonly class Invocation implements SelfDescribing
      * @var non-empty-string
      */
     private string $methodName;
+
+    /**
+     * @var array<mixed>
+     */
     private array $parameters;
     private string $returnType;
     private bool $isReturnTypeNullable;
@@ -43,6 +47,7 @@ final readonly class Invocation implements SelfDescribing
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     * @param array<mixed>     $parameters
      */
     public function __construct(string $className, string $methodName, array $parameters, string $returnType, MockObjectInternal|StubInternal $object, bool $cloneObjects = false, bool $proxiedCall = false)
     {
@@ -95,6 +100,9 @@ final readonly class Invocation implements SelfDescribing
         return $this->methodName;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parameters(): array
     {
         return $this->parameters;

@@ -89,6 +89,9 @@ use Throwable;
  */
 final readonly class Application
 {
+    /**
+     * @param list<string> $argv
+     */
     public function run(array $argv): int
     {
         try {
@@ -342,6 +345,9 @@ final readonly class Application
         EventFacade::emitter()->testRunnerBootstrapFinished($filename);
     }
 
+    /**
+     * @param list<string> $argv
+     */
     private function buildCliConfiguration(array $argv): CliConfiguration
     {
         try {

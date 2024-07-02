@@ -534,6 +534,8 @@ final class DispatchingEmitter implements Emitter
     /**
      * @param class-string $originalClassName
      * @param class-string $mockClassName
+     * @param list<string> $methods
+     * @param list<mixed>  $options
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -572,6 +574,7 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @param class-string $className
+     * @param list<mixed>  $constructorArguments
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
