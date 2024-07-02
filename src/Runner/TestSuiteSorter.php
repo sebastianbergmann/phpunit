@@ -169,6 +169,8 @@ final class TestSuiteSorter
         if ($resolveDependencies && !($suite instanceof DataProviderTestSuite)) {
             $tests = $suite->tests();
 
+            /** @noinspection PhpParamsInspection */
+            /** @phpstan-ignore argument.type */
             $suite->setTests($this->resolveDependencies($tests));
         }
     }
