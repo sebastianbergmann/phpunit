@@ -304,6 +304,7 @@ final class ErrorHandler
             foreach ($this->deprecationTriggers['methods'] as $method) {
                 if (isset($trace[$frame]['class']) &&
                     $trace[$frame]['class'] === $method['className'] &&
+                    /** @phpstan-ignore isset.offset */
                     isset($trace[$frame]['function']) &&
                     $trace[$frame]['function'] === $method['methodName']) {
                     unset($trace[$frame]);
