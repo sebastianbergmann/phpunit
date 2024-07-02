@@ -17,21 +17,15 @@ F                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 failure:
+There were 2 failures:
 
 1) PHPUnit\TestFixture\Issue5342Test::testFailure
 Failed asserting that false is true.
 
 %sIssue5342Test.php:%i
 
---
-
-There was 1 risky test:
-
-1) PHPUnit\TestFixture\Issue5342Test::testFailure
-Test code or tested code closed output buffers other than its own
-
-%sIssue5342Test.php:%i
+2) PHPUnit\TestFixture\Issue5342Test::testFailure
+PHPUnit\Framework\Exception: Test code or tested code first closed output buffers other than its own and later started output buffers it did not close
 
 FAILURES!
-Tests: 1, Assertions: 1, Failures: 1, Risky: 1.
+Tests: 1, Assertions: 1, Failures: 2.
