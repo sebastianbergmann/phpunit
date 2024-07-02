@@ -73,12 +73,6 @@ Due to time constraints, we are not always able to respond as quickly as we woul
 
 ## Coding Guidelines
 
-This project comes with a configuration file (located at `/.psalm/config.xml` in the repository) and an executable for [Psalm](https://psalm.dev/) (located at `/tools/psalm` in the repository) that you can use to perform static analysis (with a focus on type checking):
-
-```bash
-$ ./tools/psalm --config=.psalm/config.xml
-```
-
 This project comes with a configuration file (located at `/.php-cs-fixer.dist.php` in the repository) and an executable for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (located at `/tools/php-cs-fixer` in the repository) that you can use to (re)format your source code for compliance with this project's coding guidelines:
 
 ```bash
@@ -87,6 +81,13 @@ $ ./tools/php-cs-fixer fix
 
 Please understand that we will not accept a pull request when its changes violate this project's coding guidelines.
 
+## Static Analysis
+
+This project comes with a configuration file (located at `/phpstan.neon` in the repository) and an executable for [PHPStan](https://phpstan.org/) (located at `/tools/phpstan` in the repository) that you can use to perform static analysis:
+
+```bash
+$ ./tools/phpstan
+```
 
 ## Using PHPUnit from a Git checkout
 
