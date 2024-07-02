@@ -580,6 +580,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         try {
             $this->mockObjects = [];
+
+            /** @phpstan-ignore catch.neverThrown */
         } catch (Throwable $t) {
             Event\Facade::emitter()->testErrored(
                 $this->valueObjectForEvents(),

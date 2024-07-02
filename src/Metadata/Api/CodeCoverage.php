@@ -90,6 +90,7 @@ final class CodeCoverage
                 continue;
             }
 
+            /** @phpstan-ignore booleanOr.alwaysTrue */
             assert($metadata instanceof CoversClass || $metadata instanceof CoversTrait || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction || $metadata instanceof Covers);
 
             if ($metadata->isCoversClass() || $metadata->isCoversTrait() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
@@ -168,6 +169,7 @@ final class CodeCoverage
                 continue;
             }
 
+            /** @phpstan-ignore booleanOr.alwaysTrue */
             assert($metadata instanceof UsesClass || $metadata instanceof UsesTrait || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction || $metadata instanceof Uses);
 
             if ($metadata->isUsesClass() || $metadata->isUsesTrait() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {

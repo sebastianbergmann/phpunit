@@ -1069,7 +1069,9 @@ final class Generator
     {
         try {
             $class = new ReflectionClass($className);
+
             // @codeCoverageIgnoreStart
+            /** @phpstan-ignore catch.neverThrown */
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),

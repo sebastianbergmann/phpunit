@@ -67,6 +67,7 @@ final class Groups
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
+                /** @phpstan-ignore booleanOr.alwaysTrue */
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
                 $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
@@ -83,6 +84,7 @@ final class Groups
             }
 
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
+                /** @phpstan-ignore booleanOr.alwaysTrue */
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
                 $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());

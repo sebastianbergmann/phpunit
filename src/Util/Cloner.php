@@ -27,6 +27,8 @@ final readonly class Cloner
     {
         try {
             return clone $original;
+
+            /** @phpstan-ignore catch.neverThrown */
         } catch (Throwable) {
             return $original;
         }

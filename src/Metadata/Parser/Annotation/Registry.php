@@ -54,7 +54,9 @@ final class Registry
 
         try {
             $reflection = new ReflectionClass($class);
+
             // @codeCoverageIgnoreStart
+            /** @phpstan-ignore catch.neverThrown */
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),

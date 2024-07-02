@@ -213,7 +213,9 @@ final class MockBuilder
 
         try {
             $reflector = new ReflectionClass($this->type);
+
             // @codeCoverageIgnoreStart
+            /** @phpstan-ignore catch.neverThrown */
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
@@ -262,7 +264,9 @@ final class MockBuilder
 
         try {
             $reflector = new ReflectionClass($this->type);
+
             // @codeCoverageIgnoreStart
+            /** @phpstan-ignore catch.neverThrown */
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),
