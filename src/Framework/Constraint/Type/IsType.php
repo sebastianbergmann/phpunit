@@ -122,7 +122,7 @@ final class IsType extends Constraint
     private readonly string $type;
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param non-empty-string $type
      *
      * @throws UnknownTypeException
      */
