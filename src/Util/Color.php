@@ -89,7 +89,7 @@ final class Color
 
         foreach ($codes as $code) {
             if (isset(self::$ansiCodes[$code])) {
-                $styles[] = self::$ansiCodes[$code] ?? '';
+                $styles[] = self::$ansiCodes[$code];
             }
         }
 
