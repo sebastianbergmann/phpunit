@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event;
 
-use function gc_status;
+use function version_compare;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
 use PHPUnit\Event\Telemetry\Php83GarbageCollectorStatusProvider;
@@ -250,12 +250,10 @@ final class Facade
 
     private function garbageCollectorStatusProvider(): Telemetry\GarbageCollectorStatusProvider
     {
-        if (!isset(gc_status()['running'])) {
-            // @codeCoverageIgnoreStart
-            return new Php81GarbageCollectorStatusProvider;
-            // @codeCoverageIgnoreEnd
+        if (version_compare(PHP_VERSION, '8.3.0', '>=')) {
+            return new Php83GarbageCollectorStatusProvider;
         }
 
-        return new Php83GarbageCollectorStatusProvider;
+        return new Php81GarbageCollectorStatusProvider;
     }
 }
