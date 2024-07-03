@@ -89,6 +89,7 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
+use PHPUnit\Metadata\Api\HookMethodsCollection;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
@@ -2294,7 +2295,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
      *
      * @throws Throwable
      *
@@ -2311,7 +2312,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2326,7 +2327,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2341,7 +2342,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2356,7 +2357,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2371,7 +2372,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
+     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
      *
      * @throws Throwable
      *
@@ -2388,18 +2389,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>} $hookMethods
-     * @param 'testAfterLastTestMethodCalled'|'testAfterTestMethodCalled'|'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPostConditionCalled'|'testPreConditionCalled'                                              $calledMethod
-     * @param 'testAfterLastTestMethodFinished'|'testAfterTestMethodFinished'|'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPostConditionFinished'|'testPreConditionFinished'                                  $finishedMethod
-     * @param list<non-empty-string>                                                                                                                                                                                                     $hookMethods
+     * @param 'testAfterLastTestMethodCalled'|'testAfterTestMethodCalled'|'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPostConditionCalled'|'testPreConditionCalled'             $calledMethod
+     * @param 'testAfterLastTestMethodFinished'|'testAfterTestMethodFinished'|'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPostConditionFinished'|'testPreConditionFinished' $finishedMethod
      *
      * @throws Throwable
      */
-    private function invokeHookMethods(array $hookMethods, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
+    private function invokeHookMethods(HookMethodsCollection $hookMethodsCollection, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
     {
         $methodsInvoked = [];
 
-        foreach ($hookMethods as $methodName) {
+        foreach ($hookMethodsCollection as $methodName) {
             if ($this->methodDoesNotExistOrIsDeclaredInTestCase($methodName)) {
                 continue;
             }
