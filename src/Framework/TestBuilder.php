@@ -138,6 +138,9 @@ final readonly class TestBuilder
         }
 
         $test->setBackupStaticPropertiesExcludeList($backupSettings['backupStaticPropertiesExcludeList']);
+
+        $test->setShouldBackupGlobalErrorHandlers(ConfigurationRegistry::get()->backupGlobalErrorHandlers());
+        $test->setShouldBackupGlobalExceptionHandlers(ConfigurationRegistry::get()->backupGlobalExceptionHandlers());
     }
 
     /**

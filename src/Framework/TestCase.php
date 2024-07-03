@@ -135,20 +135,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var list<callable>
      */
-    private ?array $backupGlobalErrorHandlers = null;
+    private ?array $backupGlobalErrorHandlers      = null;
+    private ?bool $shouldBackupGlobalErrorHandlers = null;
 
     /**
      * @var list<callable>
      */
-    private ?array $backupGlobalExceptionHandlers   = null;
-    private ?bool $runClassInSeparateProcess        = null;
-    private ?bool $runTestInSeparateProcess         = null;
-    private bool $preserveGlobalState               = false;
-    private bool $inIsolation                       = false;
-    private ?string $expectedException              = null;
-    private ?string $expectedExceptionMessage       = null;
-    private ?string $expectedExceptionMessageRegExp = null;
-    private null|int|string $expectedExceptionCode  = null;
+    private ?array $backupGlobalExceptionHandlers      = null;
+    private ?bool $shouldBackupGlobalExceptionHandlers = null;
+    private ?bool $runClassInSeparateProcess           = null;
+    private ?bool $runTestInSeparateProcess            = null;
+    private bool $preserveGlobalState                  = false;
+    private bool $inIsolation                          = false;
+    private ?string $expectedException                 = null;
+    private ?string $expectedExceptionMessage          = null;
+    private ?string $expectedExceptionMessageRegExp    = null;
+    private null|int|string $expectedExceptionCode     = null;
 
     /**
      * @var list<ExecutionOrderDependency>
@@ -945,6 +947,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setShouldBackupGlobalErrorHandlers(bool $shouldBackupGlobalErrorHandlers): void
+    {
+        $this->shouldBackupGlobalErrorHandlers = $shouldBackupGlobalErrorHandlers;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setShouldBackupGlobalExceptionHandlers(bool $shouldBackupGlobalExceptionHandlers): void
+    {
+        $this->shouldBackupGlobalExceptionHandlers = $shouldBackupGlobalExceptionHandlers;
     }
 
     /**
@@ -1897,8 +1915,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function snapshotGlobalErrorExceptionHandlers(): void
     {
-        $this->backupGlobalErrorHandlers     = $this->getActiveErrorHandlers();
-        $this->backupGlobalExceptionHandlers = $this->getActiveExceptionHandlers();
+        if ($this->shouldBackupGlobalErrorHandlers) {
+            $this->backupGlobalErrorHandlers = $this->getActiveErrorHandlers();
+        }
+
+        if ($this->shouldBackupGlobalExceptionHandlers) {
+            $this->backupGlobalExceptionHandlers = $this->getActiveExceptionHandlers();
+        }
     }
 
     private function restoreGlobalErrorExceptionHandlers(): void
