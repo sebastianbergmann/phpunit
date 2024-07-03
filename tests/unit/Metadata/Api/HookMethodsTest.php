@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use function array_keys;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestWithHookMethodsPrioritizedTest;
 use PHPUnit\TestFixture\TestWithHookMethodsTest;
 use PHPUnit\TestFixture\TestWithoutHookMethodsTest;
 
@@ -23,26 +25,14 @@ final class HookMethodsTest extends TestCase
 {
     public function testReturnsDefaultHookMethodsForClassThatDoesNotExist(): void
     {
-        $this->assertSame(
+        $this->assertEquals(
             [
-                'beforeClass' => [
-                    'setUpBeforeClass',
-                ],
-                'before' => [
-                    'setUp',
-                ],
-                'preCondition' => [
-                    'assertPreConditions',
-                ],
-                'postCondition' => [
-                    'assertPostConditions',
-                ],
-                'after' => [
-                    'tearDown',
-                ],
-                'afterClass' => [
-                    'tearDownAfterClass',
-                ],
+                'beforeClass'   => HookMethodsCollection::defaultBeforeClass(),
+                'before'        => HookMethodsCollection::defaultBefore(),
+                'preCondition'  => HookMethodsCollection::defaultPreCondition(),
+                'postCondition' => HookMethodsCollection::defaultPostCondition(),
+                'after'         => HookMethodsCollection::defaultAfter(),
+                'afterClass'    => HookMethodsCollection::defaultAfterClass(),
             ],
             (new HookMethods)->hookMethods('does not exist'),
         );
@@ -50,26 +40,14 @@ final class HookMethodsTest extends TestCase
 
     public function testReturnsDefaultHookMethodsInTestClassWithoutHookMethods(): void
     {
-        $this->assertSame(
+        $this->assertEquals(
             [
-                'beforeClass' => [
-                    'setUpBeforeClass',
-                ],
-                'before' => [
-                    'setUp',
-                ],
-                'preCondition' => [
-                    'assertPreConditions',
-                ],
-                'postCondition' => [
-                    'assertPostConditions',
-                ],
-                'after' => [
-                    'tearDown',
-                ],
-                'afterClass' => [
-                    'tearDownAfterClass',
-                ],
+                'beforeClass'   => HookMethodsCollection::defaultBeforeClass(),
+                'before'        => HookMethodsCollection::defaultBefore(),
+                'preCondition'  => HookMethodsCollection::defaultPreCondition(),
+                'postCondition' => HookMethodsCollection::defaultPostCondition(),
+                'after'         => HookMethodsCollection::defaultAfter(),
+                'afterClass'    => HookMethodsCollection::defaultAfterClass(),
             ],
             (new HookMethods)->hookMethods(TestWithoutHookMethodsTest::class),
         );
@@ -77,40 +55,67 @@ final class HookMethodsTest extends TestCase
 
     public function testFindsHookMethodsInTestClassWithHookMethods(): void
     {
-        $this->assertSame(
-            [
-                'beforeClass' => [
-                    'beforeFirstTestWithAnnotation',
-                    'beforeFirstTestWithAttribute',
-                    'setUpBeforeClass',
-                ],
-                'before' => [
-                    'beforeEachTestWithAnnotation',
-                    'beforeEachTestWithAttribute',
-                    'setUp',
-                ],
-                'preCondition' => [
-                    'preConditionsWithAnnotation',
-                    'preConditionsWithAttribute',
-                    'assertPreConditions',
-                ],
-                'postCondition' => [
-                    'assertPostConditions',
-                    'postConditionsWithAttribute',
-                    'postConditionsWithAnnotation',
-                ],
-                'after' => [
-                    'tearDown',
-                    'afterEachTestWithAttribute',
-                    'afterEachTestWithAnnotation',
-                ],
-                'afterClass' => [
-                    'tearDownAfterClass',
-                    'afterLastTestWithAttribute',
-                    'afterLastTestWithAnnotation',
-                ],
-            ],
-            (new HookMethods)->hookMethods(TestWithHookMethodsTest::class),
-        );
+        $hookMethods = (new HookMethods)->hookMethods(TestWithHookMethodsTest::class);
+        $this->assertSame(['beforeClass', 'before', 'preCondition', 'postCondition', 'after', 'afterClass'], array_keys($hookMethods));
+
+        $beforeClassHooks = HookMethodsCollection::defaultBeforeClass();
+        $beforeClassHooks->add(new HookMethod('beforeFirstTestWithAttribute'));
+        $beforeClassHooks->add(new HookMethod('beforeFirstTestWithAnnotation'));
+        $this->assertEquals($beforeClassHooks, $hookMethods['beforeClass']);
+
+        $beforeHooks = HookMethodsCollection::defaultBefore();
+        $beforeHooks->add(new HookMethod('beforeEachTestWithAttribute'));
+        $beforeHooks->add(new HookMethod('beforeEachTestWithAnnotation'));
+        $this->assertEquals($beforeHooks, $hookMethods['before']);
+
+        $preConditionHooks = HookMethodsCollection::defaultPreCondition();
+        $preConditionHooks->add(new HookMethod('preConditionsWithAttribute'));
+        $preConditionHooks->add(new HookMethod('preConditionsWithAnnotation'));
+        $this->assertEquals($preConditionHooks, $hookMethods['preCondition']);
+
+        $postConditionHooks = HookMethodsCollection::defaultPostCondition();
+        $postConditionHooks->add(new HookMethod('postConditionsWithAttribute'));
+        $postConditionHooks->add(new HookMethod('postConditionsWithAnnotation'));
+        $this->assertEquals($postConditionHooks, $hookMethods['postCondition']);
+
+        $afterHooks = HookMethodsCollection::defaultAfter();
+        $afterHooks->add(new HookMethod('afterEachTestWithAttribute'));
+        $afterHooks->add(new HookMethod('afterEachTestWithAnnotation'));
+        $this->assertEquals($afterHooks, $hookMethods['after']);
+
+        $afterClassHooks = HookMethodsCollection::defaultAfterClass();
+        $afterClassHooks->add(new HookMethod('afterLastTestWithAttribute'));
+        $afterClassHooks->add(new HookMethod('afterLastTestWithAnnotation'));
+        $this->assertEquals($afterClassHooks, $hookMethods['afterClass']);
+    }
+
+    public function testFindsHookMethodsInTestClassWithHookMethodsPrioritized(): void
+    {
+        $hookMethods = (new HookMethods)->hookMethods(TestWithHookMethodsPrioritizedTest::class);
+        $this->assertSame(['beforeClass', 'before', 'preCondition', 'postCondition', 'after', 'afterClass'], array_keys($hookMethods));
+
+        $beforeClassHooks = HookMethodsCollection::defaultBeforeClass();
+        $beforeClassHooks->add(new HookMethod('beforeFirstTest', priority: 1));
+        $this->assertEquals($beforeClassHooks, $hookMethods['beforeClass']);
+
+        $beforeHooks = HookMethodsCollection::defaultBefore();
+        $beforeHooks->add(new HookMethod('beforeEachTest', priority: 2));
+        $this->assertEquals($beforeHooks, $hookMethods['before']);
+
+        $preConditionHooks = HookMethodsCollection::defaultPreCondition();
+        $preConditionHooks->add(new HookMethod('preConditions', priority: 3));
+        $this->assertEquals($preConditionHooks, $hookMethods['preCondition']);
+
+        $postConditionHooks = HookMethodsCollection::defaultPostCondition();
+        $postConditionHooks->add(new HookMethod('postConditions', priority: 4));
+        $this->assertEquals($postConditionHooks, $hookMethods['postCondition']);
+
+        $afterHooks = HookMethodsCollection::defaultAfter();
+        $afterHooks->add(new HookMethod('afterEachTest', priority: 5));
+        $this->assertEquals($afterHooks, $hookMethods['after']);
+
+        $afterClassHooks = HookMethodsCollection::defaultAfterClass();
+        $afterClassHooks->add(new HookMethod('afterLastTest', priority: 6));
+        $this->assertEquals($afterClassHooks, $hookMethods['afterClass']);
     }
 }

@@ -19,4 +19,15 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 final readonly class BeforeClass
 {
+    private int $priority;
+
+    public function __construct(int $priority = 0)
+    {
+        $this->priority = $priority;
+    }
+
+    public function priority(): int
+    {
+        return $this->priority;
+    }
 }

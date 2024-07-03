@@ -26,14 +26,14 @@ abstract readonly class Metadata
      */
     private int $level;
 
-    public static function after(): After
+    public static function after(int $priority = 0): After
     {
-        return new After(self::METHOD_LEVEL);
+        return new After(self::METHOD_LEVEL, $priority);
     }
 
-    public static function afterClass(): AfterClass
+    public static function afterClass(int $priority = 0): AfterClass
     {
-        return new AfterClass(self::METHOD_LEVEL);
+        return new AfterClass(self::METHOD_LEVEL, $priority);
     }
 
     public static function backupGlobalsOnClass(bool $enabled): BackupGlobals
@@ -56,14 +56,14 @@ abstract readonly class Metadata
         return new BackupStaticProperties(self::METHOD_LEVEL, $enabled);
     }
 
-    public static function before(): Before
+    public static function before(int $priority = 0): Before
     {
-        return new Before(self::METHOD_LEVEL);
+        return new Before(self::METHOD_LEVEL, $priority);
     }
 
-    public static function beforeClass(): BeforeClass
+    public static function beforeClass(int $priority = 0): BeforeClass
     {
-        return new BeforeClass(self::METHOD_LEVEL);
+        return new BeforeClass(self::METHOD_LEVEL, $priority);
     }
 
     /**
@@ -250,14 +250,14 @@ abstract readonly class Metadata
         return new IgnorePhpunitDeprecations(self::METHOD_LEVEL);
     }
 
-    public static function postCondition(): PostCondition
+    public static function postCondition(int $priority = 0): PostCondition
     {
-        return new PostCondition(self::METHOD_LEVEL);
+        return new PostCondition(self::METHOD_LEVEL, $priority);
     }
 
-    public static function preCondition(): PreCondition
+    public static function preCondition(int $priority = 0): PreCondition
     {
-        return new PreCondition(self::METHOD_LEVEL);
+        return new PreCondition(self::METHOD_LEVEL, $priority);
     }
 
     public static function preserveGlobalStateOnClass(bool $enabled): PreserveGlobalState

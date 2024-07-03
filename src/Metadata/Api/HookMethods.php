@@ -9,11 +9,16 @@
  */
 namespace PHPUnit\Metadata\Api;
 
-use function array_unshift;
 use function assert;
 use function class_exists;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\After;
+use PHPUnit\Metadata\AfterClass;
+use PHPUnit\Metadata\Before;
+use PHPUnit\Metadata\BeforeClass;
 use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\PostCondition;
+use PHPUnit\Metadata\PreCondition;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;
 
@@ -23,14 +28,14 @@ use ReflectionClass;
 final class HookMethods
 {
     /**
-     * @var array<class-string, array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}>
+     * @var array<class-string, array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection}>
      */
     private static array $hookMethods = [];
 
     /**
      * @param class-string<TestCase> $className
      *
-     * @return array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}
+     * @return array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection}
      */
     public function hookMethods(string $className): array
     {
@@ -53,37 +58,58 @@ final class HookMethods
 
             if ($method->isStatic()) {
                 if ($metadata->isBeforeClass()->isNotEmpty()) {
-                    array_unshift(
-                        self::$hookMethods[$className]['beforeClass'],
-                        $methodName,
+                    $beforeClass = $metadata->isBeforeClass()->asArray()[0];
+                    assert($beforeClass instanceof BeforeClass);
+
+                    self::$hookMethods[$className]['beforeClass']->add(
+                        new HookMethod($methodName, $beforeClass->priority()),
                     );
                 }
 
                 if ($metadata->isAfterClass()->isNotEmpty()) {
-                    self::$hookMethods[$className]['afterClass'][] = $methodName;
+                    $afterClass = $metadata->isAfterClass()->asArray()[0];
+                    assert($afterClass instanceof AfterClass);
+
+                    self::$hookMethods[$className]['afterClass']->add(
+                        new HookMethod($methodName, $afterClass->priority()),
+                    );
                 }
             }
 
             if ($metadata->isBefore()->isNotEmpty()) {
-                array_unshift(
-                    self::$hookMethods[$className]['before'],
-                    $methodName,
+                $before = $metadata->isBefore()->asArray()[0];
+                assert($before instanceof Before);
+
+                self::$hookMethods[$className]['before']->add(
+                    new HookMethod($methodName, $before->priority()),
                 );
             }
 
             if ($metadata->isPreCondition()->isNotEmpty()) {
-                array_unshift(
-                    self::$hookMethods[$className]['preCondition'],
-                    $methodName,
+                $preCondition = $metadata->isPreCondition()->asArray()[0];
+                assert($preCondition instanceof PreCondition);
+
+                self::$hookMethods[$className]['preCondition']->add(
+                    new HookMethod($methodName, $preCondition->priority()),
                 );
             }
 
             if ($metadata->isPostCondition()->isNotEmpty()) {
-                self::$hookMethods[$className]['postCondition'][] = $methodName;
+                $postCondition = $metadata->isPostCondition()->asArray()[0];
+                assert($postCondition instanceof PostCondition);
+
+                self::$hookMethods[$className]['postCondition']->add(
+                    new HookMethod($methodName, $postCondition->priority()),
+                );
             }
 
             if ($metadata->isAfter()->isNotEmpty()) {
-                self::$hookMethods[$className]['after'][] = $methodName;
+                $after = $metadata->isAfter()->asArray()[0];
+                assert($after instanceof After);
+
+                self::$hookMethods[$className]['after']->add(
+                    new HookMethod($methodName, $after->priority()),
+                );
             }
         }
 
@@ -91,17 +117,17 @@ final class HookMethods
     }
 
     /**
-     * @return array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}
+     * @return array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection}
      */
     private function emptyHookMethodsArray(): array
     {
         return [
-            'beforeClass'   => ['setUpBeforeClass'],
-            'before'        => ['setUp'],
-            'preCondition'  => ['assertPreConditions'],
-            'postCondition' => ['assertPostConditions'],
-            'after'         => ['tearDown'],
-            'afterClass'    => ['tearDownAfterClass'],
+            'beforeClass'   => HookMethodsCollection::defaultBeforeClass(),
+            'before'        => HookMethodsCollection::defaultBefore(),
+            'preCondition'  => HookMethodsCollection::defaultPreCondition(),
+            'postCondition' => HookMethodsCollection::defaultPostCondition(),
+            'after'         => HookMethodsCollection::defaultAfter(),
+            'afterClass'    => HookMethodsCollection::defaultAfterClass(),
         ];
     }
 }
