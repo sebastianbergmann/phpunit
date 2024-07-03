@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event;
 
+use function assert;
+use function interface_exists;
 use function version_compare;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
@@ -241,10 +243,11 @@ final class Facade
         ];
 
         foreach ($defaultEvents as $eventClass) {
-            $typeMap->addMapping(
-                $eventClass . 'Subscriber',
-                $eventClass,
-            );
+            $subscriberInterface = $eventClass . 'Subscriber';
+
+            assert(interface_exists($subscriberInterface));
+
+            $typeMap->addMapping($subscriberInterface, $eventClass);
         }
     }
 
