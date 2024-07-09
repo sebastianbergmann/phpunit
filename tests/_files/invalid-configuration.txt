@@ -2,6 +2,7 @@
   Line 10:
   - Element 'phpunit', attribute 'forceCoversAnnotation': The attribute 'forceCoversAnnotation' is not allowed.
   - Element 'phpunit', attribute 'beStrictAboutCoversAnnotation': The attribute 'beStrictAboutCoversAnnotation' is not allowed.
+  - Element 'phpunit', attribute 'beStrictAboutTodoAnnotatedTests': The attribute 'beStrictAboutTodoAnnotatedTests' is not allowed.
   - Element 'phpunit', attribute 'verbose': The attribute 'verbose' is not allowed.
 
   Line 17:
