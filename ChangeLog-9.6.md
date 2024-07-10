@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.20] - 2024-07-10
+
+### Changed
+
+* Updated dependencies (so that users that install using Composer's `--prefer-lowest` CLI option also get recent versions)
+
 ## [9.6.19] - 2024-04-05
 
 ### Changed
@@ -143,6 +149,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.20]: https://github.com/sebastianbergmann/phpunit/compare/9.6.19...9.6.20
 [9.6.19]: https://github.com/sebastianbergmann/phpunit/compare/9.6.18...9.6.19
 [9.6.18]: https://github.com/sebastianbergmann/phpunit/compare/9.6.17...9.6.18
 [9.6.17]: https://github.com/sebastianbergmann/phpunit/compare/9.6.16...9.6.17
