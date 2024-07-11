@@ -30,21 +30,69 @@ ok 5 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithWarning
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
 not ok 6 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
+  ---
+  severity: failure
+  message: |
+    Failed asserting that false is true.
+
+  stackTrace: |
+    %sOutcomesAndIssuesTest.php:55
+  ...
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
 not ok 7 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
+  ---
+  severity: failure
+  message: |
+    Failed asserting that false is true.
+
+  stackTrace: |
+    %sOutcomesAndIssuesTest.php:62
+  ...
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
 not ok 8 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
+  ---
+  severity: failure
+  message: |
+    Failed asserting that false is true.
+
+  stackTrace: |
+    %sOutcomesAndIssuesTest.php:69
+  ...
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
 not ok 9 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
+  ---
+  severity: error
+  message: |
+    exception message
+
+  stackTrace: |
+    %sOutcomesAndIssuesTest.php:76
+  ...
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithNotice
 not ok 10 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithNotice
+  ---
+  severity: error
+  message: |
+    exception message
+
+  stackTrace: |
+    %sOutcomesAndIssuesTest.php:83
+  ...
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithWarning
 not ok 11 - PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithWarning
+  ---
+  severity: error
+  message: |
+    exception message
+
+  stackTrace: |
+    %sOutcomesAndIssuesTest.php:90
+  ...
 
 # successfully prepared PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithDeprecation
 

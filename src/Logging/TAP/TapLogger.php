@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Logging\Tap;
 
+use function preg_split;
+use function rtrim;
 use function sprintf;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Errored;
@@ -31,7 +34,8 @@ final class TapLogger
     /**
      * @var non-negative-int
      */
-    private int $numberOfTests = 0;
+    private int $numberOfTests      = 0;
+    private bool $yamlHeaderPrinted = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -101,6 +105,8 @@ final class TapLogger
                 $event->test()->id(),
             ),
         );
+
+        $this->printThrowable($event->throwable(), 'error');
     }
 
     public function testFailed(Failed $event): void
@@ -112,6 +118,8 @@ final class TapLogger
                 $event->test()->id(),
             ),
         );
+
+        $this->printThrowable($event->throwable(), 'failure');
     }
 
     /**
@@ -130,5 +138,53 @@ final class TapLogger
             new TestFailedSubscriber($this),
             new TestPassedSubscriber($this),
         );
+    }
+
+    private function printThrowable(Throwable $throwable, string $severity): void
+    {
+        $this->printYamlHeader();
+
+        $this->printer->print('  severity: ' . $severity . PHP_EOL);
+
+        $this->printer->print('  message: |' . PHP_EOL);
+        $this->printer->print($this->indentMultilineString($throwable->message()) . PHP_EOL);
+
+        $this->printer->print('  stackTrace: |' . PHP_EOL);
+        $this->printer->print($this->indentMultilineString(rtrim($throwable->stackTrace())));
+
+        $this->printYamlFooter();
+    }
+
+    private function printYamlHeader(): void
+    {
+        if ($this->yamlHeaderPrinted) {
+            return;
+        }
+
+        $this->printer->print('  ---' . PHP_EOL);
+
+        $this->yamlHeaderPrinted = true;
+    }
+
+    private function printYamlFooter(): void
+    {
+        if (!$this->yamlHeaderPrinted) {
+            return;
+        }
+
+        $this->printer->print('  ...' . PHP_EOL);
+
+        $this->yamlHeaderPrinted = false;
+    }
+
+    private function indentMultilineString(string $string): string
+    {
+        $result = '';
+
+        foreach (preg_split('/[\r\n]+/', $string) as $line) {
+            $result .= '    ' . rtrim($line) . PHP_EOL;
+        }
+
+        return $result;
     }
 }
