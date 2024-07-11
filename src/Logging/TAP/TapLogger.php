@@ -9,9 +9,12 @@
  */
 namespace PHPUnit\Logging\Tap;
 
+use function sprintf;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\PreparationFailed;
 use PHPUnit\Event\Test\PreparationStarted;
+use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TextUI\Output\Printer;
 
@@ -55,6 +58,26 @@ final class TapLogger
         $this->numberOfTests++;
     }
 
+    public function testPrepared(Prepared $event): void
+    {
+        $this->printer->print(
+            sprintf(
+                '# successfully prepared %s' . PHP_EOL,
+                $event->test()->id(),
+            ),
+        );
+    }
+
+    public function testPreparationFailed(PreparationFailed $event): void
+    {
+        $this->printer->print(
+            sprintf(
+                '# failed to prepare %s' . PHP_EOL,
+                $event->test()->id(),
+            ),
+        );
+    }
+
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -65,6 +88,8 @@ final class TapLogger
             new TestRunnerExecutionStartedSubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
             new TestPreparationStartedSubscriber($this),
+            new TestPreparedSubscriber($this),
+            new TestPreparationFailedSubscriber($this),
         );
     }
 }
