@@ -37,6 +37,11 @@ final class TapLogger
         $this->printer->flush();
     }
 
+    public function executionStarted(): void
+    {
+        $this->printer->print('TAP version 14' . PHP_EOL);
+    }
+
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -44,6 +49,7 @@ final class TapLogger
     private function registerSubscribers(Facade $facade): void
     {
         $facade->registerSubscribers(
+            new TestRunnerExecutionStartedSubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
         );
     }
