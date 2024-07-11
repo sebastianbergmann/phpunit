@@ -246,6 +246,7 @@ final class Help
                 ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
                 ['spacer' => ''],
 
+                ['arg'    => '--tap', 'desc' => 'Replace default progress and result output with TAP format'],
                 ['arg'    => '--teamcity', 'desc' => 'Replace default progress and result output with TeamCity format'],
                 ['arg'    => '--testdox', 'desc' => 'Replace default result output with TestDox format'],
                 ['arg'    => '--testdox-summary', 'desc' => 'Repeat TestDox output for tests with errors, failures, or issues'],
@@ -256,6 +257,7 @@ final class Help
 
             'Logging' => [
                 ['arg' => '--log-junit <file>', 'desc' => 'Write test results in JUnit XML format to file'],
+                ['arg' => '--log-tap <file>', 'desc' => 'Write test results in TAP format to file'],
                 ['arg' => '--log-teamcity <file>', 'desc' => 'Write test results in TeamCity format to file'],
                 ['arg' => '--testdox-html <file>', 'desc' => 'Write test results in TestDox format (HTML) to file'],
                 ['arg' => '--testdox-text <file>', 'desc' => 'Write test results in TestDox format (plain text) to file'],

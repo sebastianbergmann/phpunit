@@ -82,6 +82,7 @@ final class Builder
         'list-tests',
         'list-tests-xml=',
         'log-junit=',
+        'log-tap=',
         'log-teamcity=',
         'migrate-configuration',
         'no-configuration',
@@ -119,6 +120,7 @@ final class Builder
         'strict-coverage',
         'disable-coverage-ignore',
         'strict-global-state',
+        'tap',
         'teamcity',
         'testdox',
         'testdox-summary',
@@ -244,6 +246,7 @@ final class Builder
         $reverseList                       = null;
         $stderr                            = null;
         $strictCoverage                    = null;
+        $tapLogfile                        = null;
         $teamcityLogfile                   = null;
         $testdoxHtmlFile                   = null;
         $testdoxTextFile                   = null;
@@ -254,6 +257,7 @@ final class Builder
         $version                           = false;
         $logEventsText                     = null;
         $logEventsVerboseText              = null;
+        $printerTap                        = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
@@ -560,6 +564,11 @@ final class Builder
 
                     break;
 
+                case '--log-tap':
+                    $tapLogfile = $option[1];
+
+                    break;
+
                 case '--log-teamcity':
                     $teamcityLogfile = $option[1];
 
@@ -709,6 +718,11 @@ final class Builder
 
                 case '--stop-on-warning':
                     $stopOnWarning = true;
+
+                    break;
+
+                case '--tap':
+                    $printerTap = true;
 
                     break;
 
@@ -1027,6 +1041,8 @@ final class Builder
             $reverseList,
             $stderr,
             $strictCoverage,
+            $tapLogfile,
+            $printerTap,
             $teamcityLogfile,
             $testdoxHtmlFile,
             $testdoxTextFile,

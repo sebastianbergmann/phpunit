@@ -21,13 +21,15 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
 final readonly class Logging
 {
     private ?Junit $junit;
+    private ?Tap $tap;
     private ?TeamCity $teamCity;
     private ?TestDoxHtml $testDoxHtml;
     private ?TestDoxText $testDoxText;
 
-    public function __construct(?Junit $junit, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
+    public function __construct(?Junit $junit, ?Tap $tap, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
     {
         $this->junit       = $junit;
+        $this->tap         = $tap;
         $this->teamCity    = $teamCity;
         $this->testDoxHtml = $testDoxHtml;
         $this->testDoxText = $testDoxText;
@@ -48,6 +50,23 @@ final readonly class Logging
         }
 
         return $this->junit;
+    }
+
+    public function hasTap(): bool
+    {
+        return $this->tap !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function tap(): Tap
+    {
+        if ($this->tap === null) {
+            throw new Exception('Logger "TAP" is not configured');
+        }
+
+        return $this->tap;
     }
 
     public function hasTeamCity(): bool

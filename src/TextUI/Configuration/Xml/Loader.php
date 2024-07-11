@@ -66,6 +66,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text as CodeCoverageText
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Xml as CodeCoverageXml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Junit;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
+use PHPUnit\TextUI\XmlConfiguration\Logging\Tap;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
@@ -183,8 +184,23 @@ final readonly class Loader
             );
         }
 
+        $tap     = null;
+        $element = $this->element($xpath, 'logging/tap');
+
+        if ($element) {
+            $tap = new Tap(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile'),
+                    ),
+                ),
+            );
+        }
+
         return new Logging(
             $junit,
+            $tap,
             $teamCity,
             $testDoxHtml,
             $testDoxText,
