@@ -48,7 +48,7 @@ final class TapLogger
 
     public function executionFinished(): void
     {
-        $this->printer->print('1..' . $this->numberOfTests . PHP_EOL);
+        $this->printer->print(PHP_EOL . '1..' . $this->numberOfTests . PHP_EOL);
 
         $this->printer->flush();
     }
@@ -62,7 +62,7 @@ final class TapLogger
     {
         $this->printer->print(
             sprintf(
-                '# successfully prepared %s' . PHP_EOL,
+                PHP_EOL . '# successfully prepared %s' . PHP_EOL,
                 $event->test()->id(),
             ),
         );
@@ -72,7 +72,7 @@ final class TapLogger
     {
         $this->printer->print(
             sprintf(
-                '# failed to prepare %s' . PHP_EOL,
+                PHP_EOL . '# failed to prepare %s' . PHP_EOL,
                 $event->test()->id(),
             ),
         );
