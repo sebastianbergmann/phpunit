@@ -12,3 +12,4 @@ require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 TAP version 14
+1..17

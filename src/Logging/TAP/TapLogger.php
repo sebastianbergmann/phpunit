@@ -11,6 +11,7 @@ namespace PHPUnit\Logging\Tap;
 
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TextUI\Output\Printer;
 
@@ -20,6 +21,11 @@ use PHPUnit\TextUI\Output\Printer;
 final class TapLogger
 {
     private readonly Printer $printer;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfTests = 0;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -32,14 +38,21 @@ final class TapLogger
         $this->registerSubscribers($facade);
     }
 
-    public function flush(): void
-    {
-        $this->printer->flush();
-    }
-
     public function executionStarted(): void
     {
         $this->printer->print('TAP version 14' . PHP_EOL);
+    }
+
+    public function executionFinished(): void
+    {
+        $this->printer->print('1..' . $this->numberOfTests . PHP_EOL);
+
+        $this->printer->flush();
+    }
+
+    public function testPreparationStarted(PreparationStarted $event): void
+    {
+        $this->numberOfTests++;
     }
 
     /**
@@ -51,6 +64,7 @@ final class TapLogger
         $facade->registerSubscribers(
             new TestRunnerExecutionStartedSubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
+            new TestPreparationStartedSubscriber($this),
         );
     }
 }

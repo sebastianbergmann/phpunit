@@ -19,6 +19,6 @@ final readonly class TestRunnerExecutionFinishedSubscriber extends Subscriber im
 {
     public function notify(ExecutionFinished $event): void
     {
-        $this->logger()->flush();
+        $this->logger()->executionFinished();
     }
 }
