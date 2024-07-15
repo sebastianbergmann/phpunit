@@ -199,6 +199,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             );
         }
 
+        $passed = true;
+
         try {
             $this->assertPhptExpectation($sections, $this->output);
         } catch (AssertionFailedError $e) {
@@ -232,8 +234,16 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             } else {
                 $emitter->testFailed($this->valueObjectForEvents(), ThrowableBuilder::from($failure), null);
             }
+
+            $passed = false;
         } catch (Throwable $t) {
             $emitter->testErrored($this->valueObjectForEvents(), ThrowableBuilder::from($t));
+
+            $passed = false;
+        }
+
+        if ($passed) {
+            $emitter->testPassed($this->valueObjectForEvents());
         }
 
         $this->runClean($sections, CodeCoverage::instance()->isActive());
