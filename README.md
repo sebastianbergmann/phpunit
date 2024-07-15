@@ -1,6 +1,6 @@
 # PHPUnit
 
-[![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit/v/stable.png)](https://packagist.org/packages/phpunit/phpunit)
+[![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit/v)](https://packagist.org/packages/phpunit/phpunit)
 [![CI Status](https://github.com/sebastianbergmann/phpunit/workflows/CI/badge.svg)](https://github.com/sebastianbergmann/phpunit/actions)
 [![codecov](https://codecov.io/gh/sebastianbergmann/phpunit/branch/main/graph/badge.svg)](https://codecov.io/gh/sebastianbergmann/phpunit)
 
