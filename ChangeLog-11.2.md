@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.2.8] - 2024-MM-DD
+
+### Fixed
+
+* [#5898](https://github.com/sebastianbergmann/phpunit/issues/5898): `Test\Passed` event is not emitted for PHPT tests
+
 ## [11.2.7] - 2024-07-10
 
 ### Changed
@@ -65,6 +71,7 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 
 * [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 
+[11.2.8]: https://github.com/sebastianbergmann/phpunit/compare/11.2.7...11.2
 [11.2.7]: https://github.com/sebastianbergmann/phpunit/compare/11.2.6...11.2.7
 [11.2.6]: https://github.com/sebastianbergmann/phpunit/compare/11.2.5...11.2.6
 [11.2.5]: https://github.com/sebastianbergmann/phpunit/compare/11.2.4...11.2.5
