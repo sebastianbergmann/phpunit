@@ -48,7 +48,11 @@ final class MockBuilder
     /**
      * @psalm-var ?class-string
      */
-    private ?string $mockClassName      = null;
+    private ?string $mockClassName = null;
+
+    /**
+     * @var array<mixed>
+     */
     private array $constructorArgs      = [];
     private bool $originalConstructor   = true;
     private bool $originalClone         = true;

@@ -199,6 +199,8 @@ final class Generator
     }
 
     /**
+     * @param ?list<non-empty-string> $methods
+     *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws MethodNamedMethodException
