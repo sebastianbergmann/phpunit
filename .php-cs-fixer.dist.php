@@ -27,6 +27,7 @@ $finder = PhpCsFixer\Finder::create()
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
+    ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setRiskyAllowed(true)
     ->setRules([
         'align_multiline_comment' => true,
