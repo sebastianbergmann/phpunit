@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use const PHP_VERSION;
-use function version_compare;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -82,16 +80,10 @@ final class InfoTest extends TestCase
 
     private function telemetrySystem(): System
     {
-        if (version_compare('8.3.0', PHP_VERSION, '>')) {
-            $garbageCollectorStatusProvider = new Php81GarbageCollectorStatusProvider;
-        } else {
-            $garbageCollectorStatusProvider = new Php83GarbageCollectorStatusProvider;
-        }
-
         return new System(
             new SystemStopWatch,
             new SystemMemoryMeter,
-            $garbageCollectorStatusProvider,
+            new SystemGarbageCollectorStatusProvider,
         );
     }
 }
