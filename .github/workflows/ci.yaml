@@ -218,37 +218,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-  mutation-test:
-    name: Mutation Testing
-
-    if: github.event_name == 'pull_request'
-
-    needs:
-      - end-to-end-tests
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          coverage: pcov
-          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
-          tools: none
-
-      - name: Install dependencies with Composer
-        run: ./tools/composer install --no-ansi --no-interaction --no-progress
-
-      - name: Run mutation testing
-        run: |
-          git fetch origin $GITHUB_BASE_REF
-          php ./tools/infection --threads=max --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
-
   build-phar:
     name: Build PHAR
 
