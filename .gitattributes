@@ -10,7 +10,6 @@
 /.gitignore             export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /build.xml              export-ignore
-/infection.json5.dist   export-ignore
 /phpunit.xml            export-ignore
 
 *.php diff=php
