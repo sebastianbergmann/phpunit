@@ -257,6 +257,8 @@ final class Facade
             return new Php83GarbageCollectorStatusProvider;
         }
 
+        // @codeCoverageIgnoreStart
         return new Php81GarbageCollectorStatusProvider;
+        // @codeCoverageIgnoreEnd
     }
 }
