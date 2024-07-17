@@ -142,7 +142,9 @@ final readonly class GlobalState
         $result      = '';
 
         if (defined('__PHPUNIT_PHAR__')) {
+            // @codeCoverageIgnoreStart
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
+            // @codeCoverageIgnoreEnd
         }
 
         // Do not process bootstrap script
