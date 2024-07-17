@@ -182,7 +182,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
-          coverage: pcov
           tools: none
 
       - name: Install dependencies with Composer
