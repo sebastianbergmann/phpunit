@@ -89,7 +89,9 @@ final readonly class Filter
         if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
         } else {
+            // @codeCoverageIgnoreStart
             $script = '';
+            // @codeCoverageIgnoreEnd
         }
 
         return $fileIsNotPrefixed &&
