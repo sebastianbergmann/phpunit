@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Fixed
 
 * [#5898](https://github.com/sebastianbergmann/phpunit/issues/5898): `Test\Passed` event is not emitted for PHPT tests
+* `--coverage-filter` CLI option could not be used multiple times
 
 ## [10.5.27] - 2024-07-10
 
