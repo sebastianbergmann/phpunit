@@ -874,6 +874,8 @@ final class Builder
 
                     $coverageFilter[] = $option[1];
 
+                    $optionAllowedMultipleTimes = true;
+
                     break;
 
                 case '--random-order':
