@@ -491,6 +491,26 @@ final class BuilderTest extends TestCase
         $configuration->filter();
     }
 
+    #[TestDox('--exclude-filter string')]
+    public function testExcludeFilter(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--exclude-filter', 'string']);
+
+        $this->assertTrue($configuration->hasExcludeFilter());
+        $this->assertSame('string', $configuration->excludeFilter());
+    }
+
+    public function testExcludeFilterMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasExcludeFilter());
+
+        $this->expectException(Exception::class);
+
+        $configuration->excludeFilter();
+    }
+
     #[TestDox('--testsuite string')]
     public function testTestSuite(): void
     {
@@ -774,6 +794,14 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--list-suites']);
 
         $this->assertTrue($configuration->listSuites());
+    }
+
+    #[TestDox('--list-test-files')]
+    public function testListTestFiles(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--list-test-files']);
+
+        $this->assertTrue($configuration->listTestFiles());
     }
 
     #[TestDox('--list-tests')]
