@@ -622,10 +622,10 @@ final class BuilderTest extends TestCase
         $this->assertSame(['string'], $configuration->groups());
     }
 
-    #[TestDox('--group string,another-string')]
+    #[TestDox('--group string --group another-string')]
     public function testGroups(): void
     {
-        $configuration = (new Builder)->fromParameters(['--group', 'string,another-string']);
+        $configuration = (new Builder)->fromParameters(['--group', 'string', '--group', 'another-string']);
 
         $this->assertTrue($configuration->hasGroups());
         $this->assertSame(['string', 'another-string'], $configuration->groups());
@@ -651,10 +651,10 @@ final class BuilderTest extends TestCase
         $this->assertSame(['string'], $configuration->excludeGroups());
     }
 
-    #[TestDox('--exclude-group string,another-string')]
+    #[TestDox('--exclude-group string --exclude-group another-string')]
     public function testExcludeGroups(): void
     {
-        $configuration = (new Builder)->fromParameters(['--exclude-group', 'string,another-string']);
+        $configuration = (new Builder)->fromParameters(['--exclude-group', 'string', '--exclude-group', 'another-string']);
 
         $this->assertTrue($configuration->hasExcludeGroups());
         $this->assertSame(['string', 'another-string'], $configuration->excludeGroups());
@@ -720,10 +720,10 @@ final class BuilderTest extends TestCase
         $this->assertSame(['string'], $configuration->testSuffixes());
     }
 
-    #[TestDox('--test-suffix string,another-string')]
+    #[TestDox('--test-suffix string --test-suffix another-string')]
     public function testTestSuffixes(): void
     {
-        $configuration = (new Builder)->fromParameters(['--test-suffix', 'string,another-string']);
+        $configuration = (new Builder)->fromParameters(['--test-suffix', 'string', '--test-suffix', 'another-string']);
 
         $this->assertTrue($configuration->hasTestSuffixes());
         $this->assertSame(['string', 'another-string'], $configuration->testSuffixes());
