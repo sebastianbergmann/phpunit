@@ -137,46 +137,6 @@ final class BuilderTest extends TestCase
         $configuration->cacheResult();
     }
 
-    #[TestDox('--cache-result file')]
-    public function testCacheResultFile(): void
-    {
-        $configuration = (new Builder)->fromParameters(['--cache-result-file', 'file']);
-
-        $this->assertTrue($configuration->hasCacheResultFile());
-        $this->assertSame('file', $configuration->cacheResultFile());
-    }
-
-    public function testCacheResultFileMayNotBeConfigured(): void
-    {
-        $configuration = (new Builder)->fromParameters([]);
-
-        $this->assertFalse($configuration->hasCacheResultFile());
-
-        $this->expectException(Exception::class);
-
-        $configuration->cacheResultFile();
-    }
-
-    #[TestDox('--coverage-cache directory')]
-    public function testCoverageCacheDirectory(): void
-    {
-        $configuration = (new Builder)->fromParameters(['--coverage-cache', 'directory']);
-
-        $this->assertTrue($configuration->hasCoverageCacheDirectory());
-        $this->assertSame('directory', $configuration->coverageCacheDirectory());
-    }
-
-    public function testCoverageCacheDirectoryMayNotBeConfigured(): void
-    {
-        $configuration = (new Builder)->fromParameters([]);
-
-        $this->assertFalse($configuration->hasCoverageCacheDirectory());
-
-        $this->expectException(Exception::class);
-
-        $configuration->coverageCacheDirectory();
-    }
-
     #[TestDox('--columns <n>')]
     public function testColumnsNumber(): void
     {
