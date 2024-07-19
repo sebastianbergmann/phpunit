@@ -1065,78 +1065,72 @@ final class BuilderTest extends TestCase
     #[TestDox('--order-by no-depends')]
     public function testOrderByNoDepends(): void
     {
-        $this->markTestIncomplete('Handling of no-depends appears to be broken');
-
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends']);
 
         $this->assertFalse($configuration->hasExecutionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertTrue($configuration->hasResolveDependencies());
+        $this->assertFalse($configuration->resolveDependencies());
     }
 
     #[TestDox('--order-by no-depends,defects')]
     public function testOrderByNoDependsDefects(): void
     {
-        $this->markTestIncomplete('Handling of no-depends appears to be broken');
-
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,defects']);
 
         $this->assertFalse($configuration->hasExecutionOrder());
         $this->assertTrue($configuration->hasExecutionOrderDefects());
         $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configuration->executionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertTrue($configuration->hasResolveDependencies());
+        $this->assertFalse($configuration->resolveDependencies());
     }
 
     #[TestDox('--order-by no-depends,duration')]
     public function testOrderByNoDependsDuration(): void
     {
-        $this->markTestIncomplete('Handling of no-depends appears to be broken');
-
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,duration']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
         $this->assertSame(TestSuiteSorter::ORDER_DURATION, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertTrue($configuration->hasResolveDependencies());
+        $this->assertFalse($configuration->resolveDependencies());
     }
 
     #[TestDox('--order-by no-depends,random')]
     public function testOrderByNoDependsRandom(): void
     {
-        $this->markTestIncomplete('Handling of no-depends appears to be broken');
-
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,random']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
         $this->assertSame(TestSuiteSorter::ORDER_RANDOMIZED, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertTrue($configuration->hasResolveDependencies());
+        $this->assertFalse($configuration->resolveDependencies());
     }
 
     #[TestDox('--order-by no-depends,reverse')]
     public function testOrderByNoDependsReverse(): void
     {
-        $this->markTestIncomplete('Handling of no-depends appears to be broken');
-
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,reverse']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
         $this->assertSame(TestSuiteSorter::ORDER_REVERSED, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertTrue($configuration->hasResolveDependencies());
+        $this->assertFalse($configuration->resolveDependencies());
     }
 
     #[TestDox('--order-by no-depends,size')]
     public function testOrderByNoDependsSize(): void
     {
-        $this->markTestIncomplete('Handling of no-depends appears to be broken');
-
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,size']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
         $this->assertSame(TestSuiteSorter::ORDER_SIZE, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertTrue($configuration->hasResolveDependencies());
+        $this->assertFalse($configuration->resolveDependencies());
     }
 
     #[TestDox('--order-by invalid')]
