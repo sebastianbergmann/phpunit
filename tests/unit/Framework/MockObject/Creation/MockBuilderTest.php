@@ -13,7 +13,6 @@ use function md5;
 use function mt_rand;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
@@ -68,7 +67,6 @@ final class MockBuilderTest extends TestCase
         $this->assertTrue($double->doSomething());
     }
 
-    #[IgnorePhpunitDeprecations]
     public function testDefaultBehaviourCanBeConfiguredExplicitly(): void
     {
         $double = $this->getMockBuilder(ExtendableClass::class)
