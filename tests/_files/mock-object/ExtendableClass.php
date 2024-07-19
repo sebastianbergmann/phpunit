@@ -11,6 +11,13 @@ namespace PHPUnit\TestFixture\MockObject;
 
 class ExtendableClass
 {
+    public bool $constructorCalled = false;
+
+    public function __construct()
+    {
+        $this->constructorCalled = true;
+    }
+
     public function __destruct()
     {
     }
