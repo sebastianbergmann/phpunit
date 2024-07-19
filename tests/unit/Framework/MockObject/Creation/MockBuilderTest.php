@@ -166,6 +166,7 @@ final class MockBuilderTest extends TestCase
         $this->assertInstanceOf(MockObject::class, $double);
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testDefaultBehaviourCanBeConfiguredExplicitly(): void
     {
         $double = $this->getMockBuilder(ExtendableClass::class)
