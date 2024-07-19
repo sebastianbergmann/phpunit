@@ -154,6 +154,5 @@ final class MockBuilderTest extends TestCase
 
         $this->assertInstanceOf($type, $double);
         $this->assertInstanceOf(MockObject::class, $double);
-
     }
 }
