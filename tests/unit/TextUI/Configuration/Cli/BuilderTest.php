@@ -1142,6 +1142,39 @@ final class BuilderTest extends TestCase
         (new Builder)->fromParameters(['--order-by', 'invalid']);
     }
 
+    public function testExecutionOrderMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasExecutionOrder());
+
+        $this->expectException(Exception::class);
+
+        $configuration->executionOrder();
+    }
+
+    public function testExecutionOrderDefectsMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+
+        $this->expectException(Exception::class);
+
+        $configuration->executionOrderDefects();
+    }
+
+    public function testResolveDependenciesMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasResolveDependencies());
+
+        $this->expectException(Exception::class);
+
+        $configuration->resolveDependencies();
+    }
+
     #[TestDox('--process-isolation')]
     public function testProcessIsolation(): void
     {
