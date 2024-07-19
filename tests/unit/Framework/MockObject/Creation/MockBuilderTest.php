@@ -137,7 +137,6 @@ final class MockBuilderTest extends TestCase
         $this->assertTrue($double->concreteMethod());
     }
 
-    #[IgnorePhpunitDeprecations]
     #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
     public function testCreatesPartialMockObjectForExtendableClass(): void
     {
