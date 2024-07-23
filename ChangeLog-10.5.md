@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.29] - 2024-MM-DD
+
+### Fixed
+
+* [#5887](https://github.com/sebastianbergmann/phpunit/pull/5887): Issue baseline generator does not correctly handle ignoring suppressed issues
+
 ## [10.5.28] - 2024-07-18
 
 ### Fixed
@@ -258,6 +264,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.29]: https://github.com/sebastianbergmann/phpunit/compare/10.5.28...10.5
 [10.5.28]: https://github.com/sebastianbergmann/phpunit/compare/10.5.27...10.5.28
 [10.5.27]: https://github.com/sebastianbergmann/phpunit/compare/10.5.26...10.5.27
 [10.5.26]: https://github.com/sebastianbergmann/phpunit/compare/10.5.25...10.5.26
