@@ -16,7 +16,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'ClassWithMethodWithTypehintedVariadicArguments',
     true,
-    true,
     [],
     'MockFoo',
     true,
@@ -29,10 +28,8 @@ declare(strict_types=1);
 
 class MockFoo extends ClassWithMethodWithTypehintedVariadicArguments implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use PHPUnit\Framework\MockObject\%SStubApi;
+    use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function methodWithTypehintedVariadicArguments($a, string ...$parameters)
@@ -65,7 +62,7 @@ class MockFoo extends ClassWithMethodWithTypehintedVariadicArguments implements 
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithMethodWithTypehintedVariadicArguments', 'methodWithTypehintedVariadicArguments', $__phpunit_arguments, '', $this, true
+                'ClassWithMethodWithTypehintedVariadicArguments', 'methodWithTypehintedVariadicArguments', $__phpunit_arguments, '', $this
             )
         );
 

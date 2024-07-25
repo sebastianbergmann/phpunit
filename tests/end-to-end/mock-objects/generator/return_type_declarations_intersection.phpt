@@ -24,7 +24,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     Foo::class,
     true,
-    true,
     [],
     'MockFoo',
     true,
@@ -37,10 +36,8 @@ declare(strict_types=1);
 
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use PHPUnit\Framework\MockObject\%SStubApi;
+    use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function bar(): AnInterface&AnotherInterface
@@ -73,7 +70,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'AnInterface&AnotherInterface', $this, true
+                'Foo', 'bar', $__phpunit_arguments, 'AnInterface&AnotherInterface', $this
             )
         );
 

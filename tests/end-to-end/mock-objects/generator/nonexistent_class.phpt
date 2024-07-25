@@ -9,7 +9,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'NonExistentClass',
     true,
-    true,
     [],
     'MockFoo',
     true,
@@ -26,9 +25,7 @@ class NonExistentClass
 
 class MockFoo extends NonExistentClass implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use PHPUnit\Framework\MockObject\%SStubApi;
+    use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 }

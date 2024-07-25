@@ -14,7 +14,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     'Foo',
     true,
-    true,
     [],
     'MockFoo',
     true,
@@ -27,10 +26,8 @@ declare(strict_types=1);
 
 class MockFoo implements PHPUnit\Framework\MockObject\MockObjectInternal, Foo
 {
-    use PHPUnit\Framework\MockObject\%SStubApi;
+    use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-    use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public function bar(false $baz): void
@@ -63,7 +60,7 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObjectInternal, Foo
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'void', $this, true
+                'Foo', 'bar', $__phpunit_arguments, 'void', $this
             )
         );
     }
