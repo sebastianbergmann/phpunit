@@ -9,6 +9,13 @@
         </testsuite>
     </testsuites>
 
-    <source baseline="baseline.xml">
+    <source baseline="baseline.xml"
+            ignoreSuppressionOfDeprecations="true"
+            ignoreSuppressionOfPhpDeprecations="true"
+            ignoreSuppressionOfNotices="true"
+            ignoreSuppressionOfPhpNotices="true"
+            ignoreSuppressionOfWarnings="true"
+            ignoreSuppressionOfPhpWarnings="true"
+    >
     </source>
 </phpunit>
