@@ -2394,11 +2394,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Throwable
      */
-    private function invokeHookMethods(HookMethodCollection $hookMethodsCollection, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
+    private function invokeHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
     {
         $methodsInvoked = [];
 
-        foreach ($hookMethodsCollection as $methodName) {
+        foreach ($hookMethods as $methodName) {
             if ($this->methodDoesNotExistOrIsDeclaredInTestCase($methodName)) {
                 continue;
             }
