@@ -32,8 +32,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
- * @template MockedType
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class MockBuilder
@@ -93,8 +91,6 @@ final class MockBuilder
      * @throws ReflectionException
      * @throws RuntimeException
      * @throws UnknownTypeException
-     *
-     * @return MockedType&MockObject
      */
     public function getMock(): MockObject
     {
@@ -130,8 +126,6 @@ final class MockBuilder
      * @throws ReflectionException
      * @throws RuntimeException
      *
-     * @return MockedType&MockObject
-     *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5305
      */
     public function getMockForAbstractClass(): MockObject
@@ -165,8 +159,6 @@ final class MockBuilder
      * @throws Exception
      * @throws ReflectionException
      * @throws RuntimeException
-     *
-     * @return MockedType&MockObject
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5306
      */
