@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class Test extends Metadata
 {
-    public function isTest(): bool
+    public function isTest(): true
     {
         return true;
     }

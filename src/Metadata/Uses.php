@@ -32,7 +32,7 @@ final readonly class Uses extends Metadata
         $this->target = $target;
     }
 
-    public function isUses(): bool
+    public function isUses(): true
     {
         return true;
     }

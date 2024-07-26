@@ -32,7 +32,7 @@ final readonly class Group extends Metadata
         $this->groupName = $groupName;
     }
 
-    public function isGroup(): bool
+    public function isGroup(): true
     {
         return true;
     }

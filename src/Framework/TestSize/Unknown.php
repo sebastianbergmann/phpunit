@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestSize;
  */
 final readonly class Unknown extends TestSize
 {
-    public function isUnknown(): bool
+    public function isUnknown(): true
     {
         return true;
     }

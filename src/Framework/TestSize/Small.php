@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestSize;
  */
 final readonly class Small extends Known
 {
-    public function isSmall(): bool
+    public function isSmall(): true
     {
         return true;
     }

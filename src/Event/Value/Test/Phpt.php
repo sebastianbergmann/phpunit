@@ -16,7 +16,7 @@ namespace PHPUnit\Event\Code;
  */
 final readonly class Phpt extends Test
 {
-    public function isPhpt(): bool
+    public function isPhpt(): true
     {
         return true;
     }

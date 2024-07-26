@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class CoversNothing extends Metadata
 {
-    public function isCoversNothing(): bool
+    public function isCoversNothing(): true
     {
         return true;
     }

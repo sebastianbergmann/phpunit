@@ -96,7 +96,7 @@ final readonly class TestMethod extends Test
         return $this->testData;
     }
 
-    public function isTestMethod(): bool
+    public function isTestMethod(): true
     {
         return true;
     }

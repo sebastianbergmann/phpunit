@@ -32,7 +32,7 @@ final readonly class ExcludeGlobalVariableFromBackup extends Metadata
         $this->globalVariableName = $globalVariableName;
     }
 
-    public function isExcludeGlobalVariableFromBackup(): bool
+    public function isExcludeGlobalVariableFromBackup(): true
     {
         return true;
     }

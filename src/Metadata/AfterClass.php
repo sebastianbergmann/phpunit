@@ -32,7 +32,7 @@ final readonly class AfterClass extends Metadata
         $this->priority = $priority;
     }
 
-    public function isAfterClass(): bool
+    public function isAfterClass(): true
     {
         return true;
     }

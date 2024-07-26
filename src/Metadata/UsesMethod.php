@@ -39,7 +39,7 @@ final readonly class UsesMethod extends Metadata
         $this->methodName = $methodName;
     }
 
-    public function isUsesMethod(): bool
+    public function isUsesMethod(): true
     {
         return true;
     }

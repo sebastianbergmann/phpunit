@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestSize;
  */
 final readonly class Large extends Known
 {
-    public function isLarge(): bool
+    public function isLarge(): true
     {
         return true;
     }

@@ -30,7 +30,7 @@ final readonly class RequiresPhp extends Metadata
         $this->versionRequirement = $versionRequirement;
     }
 
-    public function isRequiresPhp(): bool
+    public function isRequiresPhp(): true
     {
         return true;
     }

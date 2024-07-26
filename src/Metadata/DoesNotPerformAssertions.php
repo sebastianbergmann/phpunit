@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class DoesNotPerformAssertions extends Metadata
 {
-    public function isDoesNotPerformAssertions(): bool
+    public function isDoesNotPerformAssertions(): true
     {
         return true;
     }

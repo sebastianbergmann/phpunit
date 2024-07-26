@@ -32,7 +32,7 @@ final readonly class UsesTrait extends Metadata
         $this->traitName = $traitName;
     }
 
-    public function isUsesTrait(): bool
+    public function isUsesTrait(): true
     {
         return true;
     }

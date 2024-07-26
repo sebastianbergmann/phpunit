@@ -32,7 +32,7 @@ final readonly class PreCondition extends Metadata
         $this->priority = $priority;
     }
 
-    public function isPreCondition(): bool
+    public function isPreCondition(): true
     {
         return true;
     }

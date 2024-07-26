@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class DisableReturnValueGenerationForTestDoubles extends Metadata
 {
-    public function isDisableReturnValueGenerationForTestDoubles(): bool
+    public function isDisableReturnValueGenerationForTestDoubles(): true
     {
         return true;
     }

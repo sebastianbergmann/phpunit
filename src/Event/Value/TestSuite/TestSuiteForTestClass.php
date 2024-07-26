@@ -55,7 +55,7 @@ final readonly class TestSuiteForTestClass extends TestSuite
         return $this->line;
     }
 
-    public function isForTestClass(): bool
+    public function isForTestClass(): true
     {
         return true;
     }

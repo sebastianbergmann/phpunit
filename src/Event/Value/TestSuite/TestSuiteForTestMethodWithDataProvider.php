@@ -71,7 +71,7 @@ final readonly class TestSuiteForTestMethodWithDataProvider extends TestSuite
         return $this->line;
     }
 
-    public function isForTestMethodWithDataProvider(): bool
+    public function isForTestMethodWithDataProvider(): true
     {
         return true;
     }

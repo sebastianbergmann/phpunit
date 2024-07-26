@@ -32,7 +32,7 @@ final readonly class RequiresFunction extends Metadata
         $this->functionName = $functionName;
     }
 
-    public function isRequiresFunction(): bool
+    public function isRequiresFunction(): true
     {
         return true;
     }

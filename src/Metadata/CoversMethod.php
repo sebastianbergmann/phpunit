@@ -39,7 +39,7 @@ final readonly class CoversMethod extends Metadata
         $this->methodName = $methodName;
     }
 
-    public function isCoversMethod(): bool
+    public function isCoversMethod(): true
     {
         return true;
     }

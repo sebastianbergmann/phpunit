@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class IgnorePhpunitDeprecations extends Metadata
 {
-    public function isIgnorePhpunitDeprecations(): bool
+    public function isIgnorePhpunitDeprecations(): true
     {
         return true;
     }

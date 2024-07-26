@@ -36,7 +36,7 @@ final readonly class DependsOnClass extends Metadata
         $this->shallowClone = $shallowClone;
     }
 
-    public function isDependsOnClass(): bool
+    public function isDependsOnClass(): true
     {
         return true;
     }

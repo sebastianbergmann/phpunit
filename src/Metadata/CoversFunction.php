@@ -32,7 +32,7 @@ final readonly class CoversFunction extends Metadata
         $this->functionName = $functionName;
     }
 
-    public function isCoversFunction(): bool
+    public function isCoversFunction(): true
     {
         return true;
     }

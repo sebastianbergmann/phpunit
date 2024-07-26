@@ -21,7 +21,7 @@ final readonly class DataFromTestDependency extends TestData
         return new self($data);
     }
 
-    public function isFromTestDependency(): bool
+    public function isFromTestDependency(): true
     {
         return true;
     }

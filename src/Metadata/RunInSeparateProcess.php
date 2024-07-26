@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class RunInSeparateProcess extends Metadata
 {
-    public function isRunInSeparateProcess(): bool
+    public function isRunInSeparateProcess(): true
     {
         return true;
     }

@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Incomplete extends Known
 {
-    public function isIncomplete(): bool
+    public function isIncomplete(): true
     {
         return true;
     }

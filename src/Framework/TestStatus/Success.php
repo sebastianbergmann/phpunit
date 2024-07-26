@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Success extends Known
 {
-    public function isSuccess(): bool
+    public function isSuccess(): true
     {
         return true;
     }

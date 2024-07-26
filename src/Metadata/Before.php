@@ -32,7 +32,7 @@ final readonly class Before extends Metadata
         $this->priority = $priority;
     }
 
-    public function isBefore(): bool
+    public function isBefore(): true
     {
         return true;
     }

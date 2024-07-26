@@ -28,7 +28,7 @@ final readonly class PreserveGlobalState extends Metadata
         $this->enabled = $enabled;
     }
 
-    public function isPreserveGlobalState(): bool
+    public function isPreserveGlobalState(): true
     {
         return true;
     }

@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Notice extends Known
 {
-    public function isNotice(): bool
+    public function isNotice(): true
     {
         return true;
     }

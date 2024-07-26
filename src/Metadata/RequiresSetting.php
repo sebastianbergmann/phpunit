@@ -39,7 +39,7 @@ final readonly class RequiresSetting extends Metadata
         $this->value   = $value;
     }
 
-    public function isRequiresSetting(): bool
+    public function isRequiresSetting(): true
     {
         return true;
     }

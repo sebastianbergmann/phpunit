@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Warning extends Known
 {
-    public function isWarning(): bool
+    public function isWarning(): true
     {
         return true;
     }

@@ -16,7 +16,7 @@ namespace PHPUnit\Event\TestSuite;
  */
 final readonly class TestSuiteWithName extends TestSuite
 {
-    public function isWithName(): bool
+    public function isWithName(): true
     {
         return true;
     }

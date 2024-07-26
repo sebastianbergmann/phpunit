@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 abstract readonly class Known extends TestStatus
 {
-    public function isKnown(): bool
+    public function isKnown(): true
     {
         return true;
     }

@@ -30,7 +30,7 @@ final readonly class RequiresPhpunit extends Metadata
         $this->versionRequirement = $versionRequirement;
     }
 
-    public function isRequiresPhpunit(): bool
+    public function isRequiresPhpunit(): true
     {
         return true;
     }

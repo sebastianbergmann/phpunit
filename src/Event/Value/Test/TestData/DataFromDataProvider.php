@@ -45,7 +45,7 @@ final readonly class DataFromDataProvider extends TestData
         return $this->dataAsStringForResultOutput;
     }
 
-    public function isFromDataProvider(): bool
+    public function isFromDataProvider(): true
     {
         return true;
     }

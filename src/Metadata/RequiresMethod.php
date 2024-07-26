@@ -39,7 +39,7 @@ final readonly class RequiresMethod extends Metadata
         $this->methodName = $methodName;
     }
 
-    public function isRequiresMethod(): bool
+    public function isRequiresMethod(): true
     {
         return true;
     }

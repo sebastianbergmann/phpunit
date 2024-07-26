@@ -32,7 +32,7 @@ final readonly class UsesDefaultClass extends Metadata
         $this->className = $className;
     }
 
-    public function isUsesDefaultClass(): bool
+    public function isUsesDefaultClass(): true
     {
         return true;
     }

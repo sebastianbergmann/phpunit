@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Skipped extends Known
 {
-    public function isSkipped(): bool
+    public function isSkipped(): true
     {
         return true;
     }

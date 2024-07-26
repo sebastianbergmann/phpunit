@@ -32,7 +32,7 @@ final readonly class CoversDefaultClass extends Metadata
         $this->className = $className;
     }
 
-    public function isCoversDefaultClass(): bool
+    public function isCoversDefaultClass(): true
     {
         return true;
     }

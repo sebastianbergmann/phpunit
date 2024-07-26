@@ -28,7 +28,7 @@ final readonly class BackupStaticProperties extends Metadata
         $this->enabled = $enabled;
     }
 
-    public function isBackupStaticProperties(): bool
+    public function isBackupStaticProperties(): true
     {
         return true;
     }

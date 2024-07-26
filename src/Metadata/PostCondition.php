@@ -32,7 +32,7 @@ final readonly class PostCondition extends Metadata
         $this->priority = $priority;
     }
 
-    public function isPostCondition(): bool
+    public function isPostCondition(): true
     {
         return true;
     }

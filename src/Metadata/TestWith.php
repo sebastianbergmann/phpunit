@@ -39,7 +39,7 @@ final readonly class TestWith extends Metadata
         $this->name = $name;
     }
 
-    public function isTestWith(): bool
+    public function isTestWith(): true
     {
         return true;
     }

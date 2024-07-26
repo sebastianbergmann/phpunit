@@ -39,7 +39,7 @@ final readonly class ExcludeStaticPropertyFromBackup extends Metadata
         $this->propertyName = $propertyName;
     }
 
-    public function isExcludeStaticPropertyFromBackup(): bool
+    public function isExcludeStaticPropertyFromBackup(): true
     {
         return true;
     }

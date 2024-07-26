@@ -32,7 +32,7 @@ final readonly class CoversTrait extends Metadata
         $this->traitName = $traitName;
     }
 
-    public function isCoversTrait(): bool
+    public function isCoversTrait(): true
     {
         return true;
     }

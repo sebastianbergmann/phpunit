@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Deprecation extends Known
 {
-    public function isDeprecation(): bool
+    public function isDeprecation(): true
     {
         return true;
     }

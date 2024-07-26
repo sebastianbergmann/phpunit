@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Unknown extends TestStatus
 {
-    public function isUnknown(): bool
+    public function isUnknown(): true
     {
         return true;
     }

@@ -39,7 +39,7 @@ final readonly class DataProvider extends Metadata
         $this->methodName = $methodName;
     }
 
-    public function isDataProvider(): bool
+    public function isDataProvider(): true
     {
         return true;
     }

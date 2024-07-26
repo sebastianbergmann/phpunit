@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class WithoutErrorHandler extends Metadata
 {
-    public function isWithoutErrorHandler(): bool
+    public function isWithoutErrorHandler(): true
     {
         return true;
     }

@@ -32,7 +32,7 @@ final readonly class UsesFunction extends Metadata
         $this->functionName = $functionName;
     }
 
-    public function isUsesFunction(): bool
+    public function isUsesFunction(): true
     {
         return true;
     }

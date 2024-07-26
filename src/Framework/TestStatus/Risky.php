@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Risky extends Known
 {
-    public function isRisky(): bool
+    public function isRisky(): true
     {
         return true;
     }

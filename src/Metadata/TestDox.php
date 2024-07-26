@@ -32,7 +32,7 @@ final readonly class TestDox extends Metadata
         $this->text = $text;
     }
 
-    public function isTestDox(): bool
+    public function isTestDox(): true
     {
         return true;
     }

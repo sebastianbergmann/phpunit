@@ -43,7 +43,7 @@ final readonly class DependsOnMethod extends Metadata
         $this->shallowClone = $shallowClone;
     }
 
-    public function isDependsOnMethod(): bool
+    public function isDependsOnMethod(): true
     {
         return true;
     }

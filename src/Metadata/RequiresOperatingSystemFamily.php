@@ -32,7 +32,7 @@ final readonly class RequiresOperatingSystemFamily extends Metadata
         $this->operatingSystemFamily = $operatingSystemFamily;
     }
 
-    public function isRequiresOperatingSystemFamily(): bool
+    public function isRequiresOperatingSystemFamily(): true
     {
         return true;
     }

@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestSize;
  */
 final readonly class Medium extends Known
 {
-    public function isMedium(): bool
+    public function isMedium(): true
     {
         return true;
     }

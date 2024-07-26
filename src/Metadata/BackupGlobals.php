@@ -28,7 +28,7 @@ final readonly class BackupGlobals extends Metadata
         $this->enabled = $enabled;
     }
 
-    public function isBackupGlobals(): bool
+    public function isBackupGlobals(): true
     {
         return true;
     }

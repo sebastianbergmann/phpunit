@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Failure extends Known
 {
-    public function isFailure(): bool
+    public function isFailure(): true
     {
         return true;
     }

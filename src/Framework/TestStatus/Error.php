@@ -16,7 +16,7 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final readonly class Error extends Known
 {
-    public function isError(): bool
+    public function isError(): true
     {
         return true;
     }
