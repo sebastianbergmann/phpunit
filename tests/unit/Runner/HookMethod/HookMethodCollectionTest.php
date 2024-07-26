@@ -7,21 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace unit\Metadata\Api;
+namespace PHPUnit\Runner;
 
 use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Api\HookMethod;
-use PHPUnit\Metadata\Api\HookMethodCollection;
 
 #[CoversClass(HookMethodCollection::class)]
 #[Small]
-#[Group('metadata')]
-final class HookMethodsCollectionTest extends TestCase
+final class HookMethodCollectionTest extends TestCase
 {
     public static function provider(): iterable
     {

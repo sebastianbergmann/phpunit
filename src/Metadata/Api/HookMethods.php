@@ -19,6 +19,8 @@ use PHPUnit\Metadata\BeforeClass;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\PostCondition;
 use PHPUnit\Metadata\PreCondition;
+use PHPUnit\Runner\HookMethod;
+use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;
 
