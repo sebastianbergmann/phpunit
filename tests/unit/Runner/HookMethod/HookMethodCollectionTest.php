@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -68,6 +67,6 @@ final class HookMethodCollectionTest extends TestCase
     #[DataProvider('provider')]
     public function testIterator(HookMethodCollection $hookMethodsCollection, array $expected): void
     {
-        $this->assertSame($expected, iterator_to_array($hookMethodsCollection));
+        $this->assertSame($expected, $hookMethodsCollection->methodNamesSortedByPriority());
     }
 }

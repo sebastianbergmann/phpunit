@@ -639,7 +639,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $beforeClassMethods = (new HookMethods)->hookMethods($this->name)['beforeClass'];
 
         try {
-            foreach ($beforeClassMethods as $beforeClassMethod) {
+            foreach ($beforeClassMethods->methodNamesSortedByPriority() as $beforeClassMethod) {
                 if ($this->methodDoesNotExistOrIsDeclaredInTestCase($beforeClassMethod)) {
                     continue;
                 }
@@ -708,7 +708,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $afterClassMethods = (new HookMethods)->hookMethods($this->name)['afterClass'];
 
-        foreach ($afterClassMethods as $afterClassMethod) {
+        foreach ($afterClassMethods->methodNamesSortedByPriority() as $afterClassMethod) {
             if ($this->methodDoesNotExistOrIsDeclaredInTestCase($afterClassMethod)) {
                 continue;
             }

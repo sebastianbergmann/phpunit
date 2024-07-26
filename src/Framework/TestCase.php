@@ -2398,7 +2398,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $methodsInvoked = [];
 
-        foreach ($hookMethods as $methodName) {
+        foreach ($hookMethods->methodNamesSortedByPriority() as $methodName) {
             if ($this->methodDoesNotExistOrIsDeclaredInTestCase($methodName)) {
                 continue;
             }

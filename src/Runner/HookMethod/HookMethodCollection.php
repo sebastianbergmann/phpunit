@@ -11,16 +11,11 @@ namespace PHPUnit\Runner;
 
 use function array_map;
 use function usort;
-use ArrayObject;
-use IteratorAggregate;
-use Traversable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @implements IteratorAggregate<int, string>
  */
-final class HookMethodCollection implements IteratorAggregate
+final class HookMethodCollection
 {
     private readonly bool $shouldPrepend;
 
@@ -76,14 +71,18 @@ final class HookMethodCollection implements IteratorAggregate
         return $this;
     }
 
-    public function getIterator(): Traversable
+    /**
+     * @return list<non-empty-string>
+     */
+    public function methodNamesSortedByPriority(): array
     {
         $hookMethods = $this->hookMethods;
 
         usort($hookMethods, static fn (HookMethod $a, HookMethod $b) => $b->priority() <=> $a->priority());
 
-        return new ArrayObject(
-            array_map(static fn (HookMethod $hookMethod) => $hookMethod->methodName(), $hookMethods),
+        return array_map(
+            static fn (HookMethod $hookMethod) => $hookMethod->methodName(),
+            $hookMethods,
         );
     }
 }
