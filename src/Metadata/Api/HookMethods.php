@@ -28,14 +28,14 @@ use ReflectionClass;
 final class HookMethods
 {
     /**
-     * @var array<class-string, array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection}>
+     * @var array<class-string, array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection}>
      */
     private static array $hookMethods = [];
 
     /**
      * @param class-string<TestCase> $className
      *
-     * @return array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection}
+     * @return array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection}
      */
     public function hookMethods(string $className): array
     {
@@ -117,17 +117,17 @@ final class HookMethods
     }
 
     /**
-     * @return array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection}
+     * @return array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection}
      */
     private function emptyHookMethodsArray(): array
     {
         return [
-            'beforeClass'   => HookMethodsCollection::defaultBeforeClass(),
-            'before'        => HookMethodsCollection::defaultBefore(),
-            'preCondition'  => HookMethodsCollection::defaultPreCondition(),
-            'postCondition' => HookMethodsCollection::defaultPostCondition(),
-            'after'         => HookMethodsCollection::defaultAfter(),
-            'afterClass'    => HookMethodsCollection::defaultAfterClass(),
+            'beforeClass'   => HookMethodCollection::defaultBeforeClass(),
+            'before'        => HookMethodCollection::defaultBefore(),
+            'preCondition'  => HookMethodCollection::defaultPreCondition(),
+            'postCondition' => HookMethodCollection::defaultPostCondition(),
+            'after'         => HookMethodCollection::defaultAfter(),
+            'afterClass'    => HookMethodCollection::defaultAfterClass(),
         ];
     }
 }

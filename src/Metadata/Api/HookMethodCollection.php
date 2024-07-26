@@ -22,7 +22,7 @@ use Traversable;
  *
  * @implements IteratorAggregate<int, string>
  */
-final class HookMethodsCollection implements IteratorAggregate
+final class HookMethodCollection implements IteratorAggregate
 {
     /**
      * @var non-empty-list<HookMethod>

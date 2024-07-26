@@ -88,8 +88,8 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\Api\HookMethodCollection;
 use PHPUnit\Metadata\Api\HookMethods;
-use PHPUnit\Metadata\Api\HookMethodsCollection;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
@@ -2295,7 +2295,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
+     * @param array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection} $hookMethods
      *
      * @throws Throwable
      *
@@ -2312,7 +2312,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
+     * @param array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2327,7 +2327,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
+     * @param array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2342,7 +2342,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
+     * @param array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2357,7 +2357,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
+     * @param array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection} $hookMethods
      *
      * @throws Throwable
      */
@@ -2372,7 +2372,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array{beforeClass: HookMethodsCollection, before: HookMethodsCollection, preCondition: HookMethodsCollection, postCondition: HookMethodsCollection, after: HookMethodsCollection, afterClass: HookMethodsCollection} $hookMethods
+     * @param array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection} $hookMethods
      *
      * @throws Throwable
      *
@@ -2394,7 +2394,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Throwable
      */
-    private function invokeHookMethods(HookMethodsCollection $hookMethodsCollection, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
+    private function invokeHookMethods(HookMethodCollection $hookMethodsCollection, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
     {
         $methodsInvoked = [];
 
