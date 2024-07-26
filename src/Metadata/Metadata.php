@@ -26,12 +26,12 @@ abstract readonly class Metadata
      */
     private int $level;
 
-    public static function after(int $priority = 0): After
+    public static function after(int $priority): After
     {
         return new After(self::METHOD_LEVEL, $priority);
     }
 
-    public static function afterClass(int $priority = 0): AfterClass
+    public static function afterClass(int $priority): AfterClass
     {
         return new AfterClass(self::METHOD_LEVEL, $priority);
     }
@@ -56,12 +56,12 @@ abstract readonly class Metadata
         return new BackupStaticProperties(self::METHOD_LEVEL, $enabled);
     }
 
-    public static function before(int $priority = 0): Before
+    public static function before(int $priority): Before
     {
         return new Before(self::METHOD_LEVEL, $priority);
     }
 
-    public static function beforeClass(int $priority = 0): BeforeClass
+    public static function beforeClass(int $priority): BeforeClass
     {
         return new BeforeClass(self::METHOD_LEVEL, $priority);
     }
@@ -250,12 +250,12 @@ abstract readonly class Metadata
         return new IgnorePhpunitDeprecations(self::METHOD_LEVEL);
     }
 
-    public static function postCondition(int $priority = 0): PostCondition
+    public static function postCondition(int $priority): PostCondition
     {
         return new PostCondition(self::METHOD_LEVEL, $priority);
     }
 
-    public static function preCondition(int $priority = 0): PreCondition
+    public static function preCondition(int $priority): PreCondition
     {
         return new PreCondition(self::METHOD_LEVEL, $priority);
     }

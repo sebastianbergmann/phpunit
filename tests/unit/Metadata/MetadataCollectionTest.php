@@ -104,8 +104,8 @@ final class MetadataCollectionTest extends TestCase
 
     public function testCanBeMerged(): void
     {
-        $a = MetadataCollection::fromArray([Metadata::before()]);
-        $b = MetadataCollection::fromArray([Metadata::after()]);
+        $a = MetadataCollection::fromArray([Metadata::before(0)]);
+        $b = MetadataCollection::fromArray([Metadata::after(0)]);
         $c = $a->mergeWith($b);
 
         $this->assertCount(2, $c);
@@ -520,12 +520,12 @@ final class MetadataCollectionTest extends TestCase
     {
         return MetadataCollection::fromArray(
             [
-                Metadata::afterClass(),
-                Metadata::after(),
+                Metadata::afterClass(0),
+                Metadata::after(0),
                 Metadata::backupGlobalsOnClass(true),
                 Metadata::backupStaticPropertiesOnClass(true),
-                Metadata::beforeClass(),
-                Metadata::before(),
+                Metadata::beforeClass(0),
+                Metadata::before(0),
                 Metadata::coversOnClass(''),
                 Metadata::coversClass(''),
                 Metadata::coversDefaultClass(''),
@@ -543,8 +543,8 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::groupOnClass(''),
                 Metadata::ignoreDeprecationsOnClass(),
                 Metadata::ignorePhpunitDeprecationsOnClass(),
-                Metadata::postCondition(),
-                Metadata::preCondition(),
+                Metadata::postCondition(0),
+                Metadata::preCondition(0),
                 Metadata::preserveGlobalStateOnClass(true),
                 Metadata::requiresMethodOnClass('', ''),
                 Metadata::requiresFunctionOnClass(''),

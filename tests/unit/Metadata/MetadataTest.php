@@ -71,7 +71,7 @@ final class MetadataTest extends TestCase
 {
     public function testCanBeAfter(): void
     {
-        $metadata = Metadata::after();
+        $metadata = Metadata::after(0);
 
         $this->assertTrue($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -127,7 +127,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeAfterClass(): void
     {
-        $metadata = Metadata::afterClass();
+        $metadata = Metadata::afterClass(0);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertTrue($metadata->isAfterClass());
@@ -411,7 +411,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBeforeClass(): void
     {
-        $metadata = Metadata::beforeClass();
+        $metadata = Metadata::beforeClass(0);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -467,7 +467,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBefore(): void
     {
-        $metadata = Metadata::before();
+        $metadata = Metadata::before(0);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2187,7 +2187,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBePreCondition(): void
     {
-        $metadata = Metadata::preCondition();
+        $metadata = Metadata::preCondition(0);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2243,7 +2243,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBePostCondition(): void
     {
-        $metadata = Metadata::postCondition();
+        $metadata = Metadata::postCondition(0);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());

@@ -209,12 +209,12 @@ final class AnnotationParser implements Parser
         foreach (AnnotationRegistry::getInstance()->forMethod($className, $methodName)->symbolAnnotations() as $annotation => $values) {
             switch ($annotation) {
                 case 'after':
-                    $result[] = Metadata::after();
+                    $result[] = Metadata::after(0);
 
                     break;
 
                 case 'afterClass':
-                    $result[] = Metadata::afterClass();
+                    $result[] = Metadata::afterClass(0);
 
                     break;
 
@@ -230,12 +230,12 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'before':
-                    $result[] = Metadata::before();
+                    $result[] = Metadata::before(0);
 
                     break;
 
                 case 'beforeClass':
-                    $result[] = Metadata::beforeClass();
+                    $result[] = Metadata::beforeClass(0);
 
                     break;
 
@@ -354,12 +354,12 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'postCondition':
-                    $result[] = Metadata::postCondition();
+                    $result[] = Metadata::postCondition(0);
 
                     break;
 
                 case 'preCondition':
-                    $result[] = Metadata::preCondition();
+                    $result[] = Metadata::preCondition(0);
 
                     break;
 
