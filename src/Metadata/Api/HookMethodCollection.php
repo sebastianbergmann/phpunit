@@ -29,32 +29,32 @@ final class HookMethodCollection implements IteratorAggregate
      */
     private array $hookMethods;
 
-    public static function defaultBeforeClass(): static
+    public static function defaultBeforeClass(): self
     {
         return new self(new HookMethod('setUpBeforeClass', priority: 0), shouldPrepend: true);
     }
 
-    public static function defaultBefore(): static
+    public static function defaultBefore(): self
     {
         return new self(new HookMethod('setUp', priority: 0), shouldPrepend: true);
     }
 
-    public static function defaultPreCondition(): static
+    public static function defaultPreCondition(): self
     {
         return new self(new HookMethod('assertPreConditions', priority: 0), shouldPrepend: true);
     }
 
-    public static function defaultPostCondition(): static
+    public static function defaultPostCondition(): self
     {
         return new self(new HookMethod('assertPostConditions', priority: 0));
     }
 
-    public static function defaultAfter(): static
+    public static function defaultAfter(): self
     {
         return new self(new HookMethod('tearDown', priority: 0));
     }
 
-    public static function defaultAfterClass(): static
+    public static function defaultAfterClass(): self
     {
         return new self(new HookMethod('tearDownAfterClass', priority: 0));
     }
@@ -64,7 +64,7 @@ final class HookMethodCollection implements IteratorAggregate
         $this->hookMethods = [$default];
     }
 
-    public function add(HookMethod $hookMethod): static
+    public function add(HookMethod $hookMethod): self
     {
         if ($this->shouldPrepend) {
             $this->hookMethods = [$hookMethod, ...$this->hookMethods];
