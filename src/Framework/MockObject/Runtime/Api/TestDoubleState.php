@@ -78,11 +78,17 @@ final class TestDoubleState
         return $this->proxyTarget;
     }
 
+    /**
+     * @param non-empty-string $testId
+     */
     public function deprecationWasEmittedFor(string $testId): void
     {
         self::$deprecationEmittedForTest[$testId] = true;
     }
 
+    /**
+     * @param non-empty-string $testId
+     */
     public function wasDeprecationAlreadyEmittedFor(string $testId): bool
     {
         return isset(self::$deprecationEmittedForTest[$testId]);

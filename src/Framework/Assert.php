@@ -265,7 +265,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param iterable<mixed> $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param iterable<mixed>                                                                                                                                                   $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -289,6 +290,7 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @param class-string    $className
      * @param iterable<mixed> $haystack
      *
      * @throws Exception
@@ -309,7 +311,8 @@ abstract class Assert
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @param iterable<mixed> $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param iterable<mixed>                                                                                                                                                   $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -2227,6 +2230,8 @@ abstract class Assert
     }
 
     /**
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     *
      * @throws Exception
      */
     final public static function containsOnly(string $type): TraversableContainsOnly
@@ -2235,6 +2240,8 @@ abstract class Assert
     }
 
     /**
+     * @param class-string $className
+     *
      * @throws Exception
      */
     final public static function containsOnlyInstancesOf(string $className): TraversableContainsOnly
