@@ -140,4 +140,4 @@ Failed asserting that two arrays are equal.
 %s:%d
 
 FAILURES!
-Tests: 13, Assertions: 14, Failures: 13.
+Tests: 13, Assertions: 15, Failures: 13.

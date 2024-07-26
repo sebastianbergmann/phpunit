@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use function assert;
+use function class_exists;
 use function explode;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
@@ -72,6 +74,9 @@ final class DataProviderTestSuite extends TestSuite
     public function size(): TestSize
     {
         [$className, $methodName] = explode('::', $this->name());
+
+        assert(class_exists($className));
+        assert($methodName !== '');
 
         return (new Groups)->size($className, $methodName);
     }

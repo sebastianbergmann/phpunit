@@ -1726,9 +1726,13 @@ abstract class Assert
         static::assertFileExists($formatFile, $message);
         static::assertFileExists($actualFile, $message);
 
+        $formatDescription = file_get_contents($formatFile);
+
+        static::assertIsString($formatDescription);
+
         static::assertThat(
             file_get_contents($actualFile),
-            new StringMatchesFormatDescription(file_get_contents($formatFile)),
+            new StringMatchesFormatDescription($formatDescription),
             $message,
         );
     }
@@ -1775,10 +1779,14 @@ abstract class Assert
     {
         static::assertFileExists($formatFile, $message);
 
+        $formatDescription = file_get_contents($formatFile);
+
+        static::assertIsString($formatDescription);
+
         static::assertThat(
             $string,
             new StringMatchesFormatDescription(
-                file_get_contents($formatFile),
+                $formatDescription,
             ),
             $message,
         );
@@ -1800,11 +1808,15 @@ abstract class Assert
 
         static::assertFileExists($formatFile, $message);
 
+        $formatDescription = file_get_contents($formatFile);
+
+        static::assertIsString($formatDescription);
+
         static::assertThat(
             $string,
             new LogicalNot(
                 new StringMatchesFormatDescription(
-                    file_get_contents($formatFile),
+                    $formatDescription,
                 ),
             ),
             $message,
@@ -2062,8 +2074,10 @@ abstract class Assert
     final public static function assertJsonStringEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
+
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson);
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
@@ -2078,8 +2092,10 @@ abstract class Assert
     final public static function assertJsonStringNotEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
+
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson);
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
@@ -2100,12 +2116,17 @@ abstract class Assert
     final public static function assertJsonFileEqualsJsonFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
-        static::assertFileExists($actualFile, $message);
 
-        $actualJson   = file_get_contents($actualFile);
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson);
         static::assertJson($expectedJson, $message);
+
+        static::assertFileExists($actualFile, $message);
+
+        $actualJson = file_get_contents($actualFile);
+
+        static::assertIsString($actualJson);
         static::assertJson($actualJson, $message);
 
         $constraintExpected = new JsonMatches(
@@ -2126,12 +2147,17 @@ abstract class Assert
     final public static function assertJsonFileNotEqualsJsonFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
-        static::assertFileExists($actualFile, $message);
 
-        $actualJson   = file_get_contents($actualFile);
         $expectedJson = file_get_contents($expectedFile);
 
+        static::assertIsString($expectedJson);
         static::assertJson($expectedJson, $message);
+
+        static::assertFileExists($actualFile, $message);
+
+        $actualJson = file_get_contents($actualFile);
+
+        static::assertIsString($actualJson);
         static::assertJson($actualJson, $message);
 
         $constraintExpected = new JsonMatches(

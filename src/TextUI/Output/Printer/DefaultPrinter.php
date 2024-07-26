@@ -98,7 +98,11 @@ final class DefaultPrinter implements Printer
             throw new DirectoryDoesNotExistException(dirname($out));
         }
 
-        $this->stream = fopen($out, 'wb');
+        $stream = fopen($out, 'wb');
+
+        assert($stream !== false);
+
+        $this->stream = $stream;
         $this->isOpen = true;
     }
 

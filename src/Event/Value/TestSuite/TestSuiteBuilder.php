@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use function assert;
+use function class_exists;
 use function explode;
+use function method_exists;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\RuntimeException;
@@ -18,7 +21,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -38,49 +40,48 @@ final readonly class TestSuiteBuilder
         if ($testSuite instanceof DataProviderTestSuite) {
             [$className, $methodName] = explode('::', $testSuite->name());
 
-            try {
-                $reflector = new ReflectionMethod($className, $methodName);
+            assert(class_exists($className));
+            assert($methodName !== '' && method_exists($className, $methodName));
 
-                return new TestSuiteForTestMethodWithDataProvider(
-                    $testSuite->name(),
-                    $testSuite->count(),
-                    TestCollection::fromArray($tests),
-                    $className,
-                    $methodName,
-                    $reflector->getFileName(),
-                    $reflector->getStartLine(),
-                );
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new RuntimeException(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e,
-                );
-            }
-            // @codeCoverageIgnoreEnd
+            $reflector = new ReflectionMethod($className, $methodName);
+
+            $file = $reflector->getFileName();
+            $line = $reflector->getStartLine();
+
+            assert($file !== false);
+            assert($line !== false);
+
+            return new TestSuiteForTestMethodWithDataProvider(
+                $testSuite->name(),
+                $testSuite->count(),
+                TestCollection::fromArray($tests),
+                $className,
+                $methodName,
+                $file,
+                $line,
+            );
         }
 
         if ($testSuite->isForTestClass()) {
-            try {
-                $reflector = new ReflectionClass($testSuite->name());
+            $testClassName = $testSuite->name();
 
-                return new TestSuiteForTestClass(
-                    $testSuite->name(),
-                    $testSuite->count(),
-                    TestCollection::fromArray($tests),
-                    $reflector->getFileName(),
-                    $reflector->getStartLine(),
-                );
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new RuntimeException(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e,
-                );
-            }
-            // @codeCoverageIgnoreEnd
+            assert(class_exists($testClassName));
+
+            $reflector = new ReflectionClass($testClassName);
+
+            $file = $reflector->getFileName();
+            $line = $reflector->getStartLine();
+
+            assert($file !== false);
+            assert($line !== false);
+
+            return new TestSuiteForTestClass(
+                $testClassName,
+                $testSuite->count(),
+                TestCollection::fromArray($tests),
+                $file,
+                $line,
+            );
         }
 
         return new TestSuiteWithName(

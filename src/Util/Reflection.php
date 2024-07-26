@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use function array_keys;
 use function array_merge;
 use function array_reverse;
+use function assert;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -40,6 +41,9 @@ final readonly class Reflection
             $file = 'unknown';
             $line = 0;
         }
+
+        assert($file !== false && $file !== '');
+        assert($line !== false && $line >= 0);
 
         return [
             'file' => $file,

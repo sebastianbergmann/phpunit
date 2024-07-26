@@ -14,6 +14,7 @@ use const PHP_MINOR_VERSION;
 use function array_keys;
 use function array_reverse;
 use function array_shift;
+use function assert;
 use function defined;
 use function get_defined_constants;
 use function get_included_files;
@@ -184,7 +185,11 @@ final readonly class GlobalState
     {
         $result = '';
 
-        foreach (ini_get_all(null, false) as $key => $value) {
+        $iniSettings = ini_get_all(null, false);
+
+        assert($iniSettings !== false);
+
+        foreach ($iniSettings as $key => $value) {
             if (self::isIniSettingDeprecated($key)) {
                 continue;
             }

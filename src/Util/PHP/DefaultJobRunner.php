@@ -145,6 +145,9 @@ final readonly class DefaultJobRunner implements JobRunner
             unlink($temporaryFile);
         }
 
+        assert($stdout !== false);
+        assert($stderr !== false);
+
         return new Result($stdout, $stderr);
     }
 
@@ -158,17 +161,25 @@ final readonly class DefaultJobRunner implements JobRunner
         $phpSettings = $job->phpSettings();
 
         if ($runtime->hasPCOV()) {
+            $pcovSettings = ini_get_all('pcov');
+
+            assert($pcovSettings !== false);
+
             $phpSettings = array_merge(
                 $phpSettings,
                 $runtime->getCurrentSettings(
-                    array_keys(ini_get_all('pcov')),
+                    array_keys($pcovSettings),
                 ),
             );
         } elseif ($runtime->hasXdebug()) {
+            $xdebugSettings = ini_get_all('xdebug');
+
+            assert($xdebugSettings !== false);
+
             $phpSettings = array_merge(
                 $phpSettings,
                 $runtime->getCurrentSettings(
-                    array_keys(ini_get_all('xdebug')),
+                    array_keys($xdebugSettings),
                 ),
             );
         }

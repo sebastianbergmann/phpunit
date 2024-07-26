@@ -28,6 +28,7 @@ final class TraversableContainsOnly extends Constraint
     public function __construct(string $type, bool $isNativeType = true)
     {
         if ($isNativeType) {
+            /** @phpstan-ignore argument.type */
             $this->constraint = new IsType($type);
         } else {
             $this->constraint = new IsInstanceOf($type);
