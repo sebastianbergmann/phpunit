@@ -16,9 +16,39 @@ namespace PHPUnit\Metadata\Api;
  */
 final readonly class HookMethod
 {
-    public function __construct(
-        public string $methodName,
-        public int $priority = 0,
-    ) {
+    /**
+     * @var non-empty-string
+     */
+    private string $methodName;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $priority;
+
+    /**
+     * @param non-empty-string $methodName
+     * @param non-negative-int $priority
+     */
+    public function __construct(string $methodName, int $priority)
+    {
+        $this->methodName = $methodName;
+        $this->priority   = $priority;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function methodName(): string
+    {
+        return $this->methodName;
+    }
+
+    /**
+     * @return non-negative-int
+     */
+    public function priority(): int
+    {
+        return $this->priority;
     }
 }

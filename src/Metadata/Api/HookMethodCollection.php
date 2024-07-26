@@ -24,6 +24,8 @@ use Traversable;
  */
 final class HookMethodCollection implements IteratorAggregate
 {
+    private readonly bool $shouldPrepend;
+
     /**
      * @var non-empty-list<HookMethod>
      */
@@ -31,37 +33,38 @@ final class HookMethodCollection implements IteratorAggregate
 
     public static function defaultBeforeClass(): self
     {
-        return new self(new HookMethod('setUpBeforeClass', priority: 0), shouldPrepend: true);
+        return new self(new HookMethod('setUpBeforeClass', 0), true);
     }
 
     public static function defaultBefore(): self
     {
-        return new self(new HookMethod('setUp', priority: 0), shouldPrepend: true);
+        return new self(new HookMethod('setUp', 0), true);
     }
 
     public static function defaultPreCondition(): self
     {
-        return new self(new HookMethod('assertPreConditions', priority: 0), shouldPrepend: true);
+        return new self(new HookMethod('assertPreConditions', 0), true);
     }
 
     public static function defaultPostCondition(): self
     {
-        return new self(new HookMethod('assertPostConditions', priority: 0));
+        return new self(new HookMethod('assertPostConditions', 0), false);
     }
 
     public static function defaultAfter(): self
     {
-        return new self(new HookMethod('tearDown', priority: 0));
+        return new self(new HookMethod('tearDown', 0), false);
     }
 
     public static function defaultAfterClass(): self
     {
-        return new self(new HookMethod('tearDownAfterClass', priority: 0));
+        return new self(new HookMethod('tearDownAfterClass', 0), false);
     }
 
-    private function __construct(HookMethod $default, private bool $shouldPrepend = false)
+    private function __construct(HookMethod $default, bool $shouldPrepend)
     {
-        $this->hookMethods = [$default];
+        $this->hookMethods   = [$default];
+        $this->shouldPrepend = $shouldPrepend;
     }
 
     public function add(HookMethod $hookMethod): self
@@ -79,10 +82,10 @@ final class HookMethodCollection implements IteratorAggregate
     {
         $hookMethods = $this->hookMethods;
 
-        usort($hookMethods, static fn (HookMethod $hookMethod1, HookMethod $hookMethod2) => $hookMethod2->priority <=> $hookMethod1->priority);
+        usort($hookMethods, static fn (HookMethod $a, HookMethod $b) => $b->priority() <=> $a->priority());
 
         return new ArrayObject(
-            array_map(static fn (HookMethod $hookMethod) => $hookMethod->methodName, $hookMethods),
+            array_map(static fn (HookMethod $hookMethod) => $hookMethod->methodName(), $hookMethods),
         );
     }
 }

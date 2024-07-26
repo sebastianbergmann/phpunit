@@ -29,27 +29,27 @@ final class HookMethodsCollectionTest extends TestCase
     {
         return [
             [
-                HookMethodCollection::defaultBeforeClass()->add(new HookMethod('someMethod')),
+                HookMethodCollection::defaultBeforeClass()->add(new HookMethod('someMethod', 0)),
                 ['someMethod', 'setUpBeforeClass'],
             ],
             [
-                HookMethodCollection::defaultBefore()->add(new HookMethod('someMethod')),
+                HookMethodCollection::defaultBefore()->add(new HookMethod('someMethod', 0)),
                 ['someMethod', 'setUp'],
             ],
             [
-                HookMethodCollection::defaultPreCondition()->add(new HookMethod('someMethod')),
+                HookMethodCollection::defaultPreCondition()->add(new HookMethod('someMethod', 0)),
                 ['someMethod', 'assertPreConditions'],
             ],
             [
-                HookMethodCollection::defaultPostCondition()->add(new HookMethod('someMethod')),
+                HookMethodCollection::defaultPostCondition()->add(new HookMethod('someMethod', 0)),
                 ['assertPostConditions', 'someMethod'],
             ],
             [
-                HookMethodCollection::defaultAfter()->add(new HookMethod('someMethod')),
+                HookMethodCollection::defaultAfter()->add(new HookMethod('someMethod', 0)),
                 ['tearDown', 'someMethod'],
             ],
             [
-                HookMethodCollection::defaultAfterClass()->add(new HookMethod('someMethod')),
+                HookMethodCollection::defaultAfterClass()->add(new HookMethod('someMethod', 0)),
                 ['tearDownAfterClass', 'someMethod'],
             ],
             [
@@ -58,7 +58,7 @@ final class HookMethodsCollectionTest extends TestCase
                     ->add(new HookMethod('methodWithVeryLowPriority', priority: -10))
                     ->add(new HookMethod('methodWithLowPriority', priority: -1))
                     ->add(new HookMethod('methodWithVeryHighPriority', priority: 10))
-                    ->add(new HookMethod('methodWithoutPriority')),
+                    ->add(new HookMethod('methodWithoutPriority', 0)),
                 [
                     'methodWithVeryHighPriority',
                     'methodWithHighPriority',
