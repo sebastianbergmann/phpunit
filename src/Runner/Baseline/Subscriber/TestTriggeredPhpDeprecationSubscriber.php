@@ -14,6 +14,8 @@ use PHPUnit\Event\Test\PhpDeprecationTriggeredSubscriber;
 use PHPUnit\Runner\FileDoesNotExistException;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestTriggeredPhpDeprecationSubscriber extends Subscriber implements PhpDeprecationTriggeredSubscriber

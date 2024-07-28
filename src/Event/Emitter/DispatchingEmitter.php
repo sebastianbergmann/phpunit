@@ -26,6 +26,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\Util\Exporter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class DispatchingEmitter implements Emitter

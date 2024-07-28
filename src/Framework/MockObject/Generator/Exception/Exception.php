@@ -12,6 +12,8 @@ namespace PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\MockObject\Exception as BaseException;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface Exception extends BaseException
