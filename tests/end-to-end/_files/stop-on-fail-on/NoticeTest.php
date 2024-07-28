@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\TestRunnerStopping;
 
+use const E_USER_NOTICE;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 

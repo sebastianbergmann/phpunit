@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const PHP_EOL;
+use const STDIN;
 use function fgets;
 use function file_put_contents;
 use function getcwd;

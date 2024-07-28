@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
 use function realpath;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;

@@ -141,7 +141,7 @@ $config->setFinder($finder)
         'modernize_types_casting' => true,
         'multiline_comment_opening_closing' => true,
         'multiline_whitespace_before_semicolons' => true,
-        'native_constant_invocation' => false,
+        'native_constant_invocation' => true,
         'native_function_casing' => false,
         'native_function_invocation' => [
             'include' => [

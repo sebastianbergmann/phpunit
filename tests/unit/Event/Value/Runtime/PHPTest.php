@@ -15,6 +15,7 @@ use const PHP_MINOR_VERSION;
 use const PHP_RELEASE_VERSION;
 use const PHP_SAPI;
 use const PHP_VERSION;
+use const PHP_VERSION_ID;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;

@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+use const PHP_VERSION;
 use function is_file;
 use function is_readable;
 use function printf;

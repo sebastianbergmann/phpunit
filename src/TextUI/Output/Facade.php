@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Output;
 
+use const PHP_EOL;
 use function assert;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;

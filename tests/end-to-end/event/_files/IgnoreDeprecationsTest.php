@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use const E_USER_DEPRECATED;
 use function error_get_last;
 use function trigger_error;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const PHP_EOL;
 use function file_get_contents;
 use function sprintf;
 use function version_compare;

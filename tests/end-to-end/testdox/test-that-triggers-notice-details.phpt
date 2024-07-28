@@ -25,13 +25,13 @@ Notice (PHPUnit\TestFixture\TestDox\Notice)
 
 1 test triggered 1 notice:
 
-1) %sNoticeTest.php:19
+1) %sNoticeTest.php:20
 notice
 
 Triggered by:
 
 * PHPUnit\TestFixture\TestDox\NoticeTest::testNotice
-  %sNoticeTest.php:17
+  %sNoticeTest.php:18
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Notices: 1.

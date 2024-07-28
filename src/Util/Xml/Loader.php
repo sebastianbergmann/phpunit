@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use const PHP_OS_FAMILY;
 use function chdir;
 use function dirname;
 use function error_reporting;

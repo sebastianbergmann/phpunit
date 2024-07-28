@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use const FILE_IGNORE_NEW_LINES;
 use function assert;
 use function file;
 use function is_file;

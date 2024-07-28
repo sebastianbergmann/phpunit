@@ -36,19 +36,19 @@ Baseline written to %sbaseline.xml.
 <?xml version="1.0"?>
 <files version="1">
  <file path="tests/Test.php">
-  <line number="20" hash="a1022fb62c4705938dd2c6df5ff35b2621f9e97d">
+  <line number="23" hash="a1022fb62c4705938dd2c6df5ff35b2621f9e97d">
    <issue><![CDATA[deprecation]]></issue>
   </line>
-  <line number="27" hash="fff8be75c2fbcbc4d395247e58fbbe6541189cf0">
+  <line number="30" hash="fff8be75c2fbcbc4d395247e58fbbe6541189cf0">
    <issue><![CDATA[notice]]></issue>
   </line>
-  <line number="34" hash="a5b91c0a182bedb089007e5bc0d0f462637bc904">
+  <line number="37" hash="a5b91c0a182bedb089007e5bc0d0f462637bc904">
    <issue><![CDATA[warning]]></issue>
   </line>
-  <line number="41" hash="76474d8e27ebd1f5fd11fcf0cbb60a777576df9a">
+  <line number="44" hash="76474d8e27ebd1f5fd11fcf0cbb60a777576df9a">
    <issue><![CDATA[Serializable@anonymous implements the Serializable interface, which is deprecated. Implement __serialize() and __unserialize() instead (or in addition, if support for old PHP versions is necessary)]]></issue>
   </line>
-  <line number="62" hash="653ed54b2a16d4fa980fde9f70c38edbab099477">
+  <line number="65" hash="653ed54b2a16d4fa980fde9f70c38edbab099477">
    <issue><![CDATA[Accessing static property class@anonymous::$a as non static]]></issue>
    <issue><![CDATA[Undefined property: class@anonymous::$a]]></issue>
   </line>
