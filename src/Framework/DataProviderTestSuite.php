@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class DataProviderTestSuite extends TestSuite

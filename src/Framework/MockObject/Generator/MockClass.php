@@ -13,6 +13,8 @@ use function class_exists;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class MockClass implements MockType

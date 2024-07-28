@@ -23,6 +23,8 @@ use PHPUnit\Util\Reflection;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestMethodBuilder
