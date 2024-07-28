@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use const PHP_EOL;
 use function array_key_exists;
 use function dirname;
 use function sprintf;

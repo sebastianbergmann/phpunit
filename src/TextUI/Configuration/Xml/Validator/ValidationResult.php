@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use const PHP_EOL;
 use function sprintf;
 use function trim;
 use LibXMLError;

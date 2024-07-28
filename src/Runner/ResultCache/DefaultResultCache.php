@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\ResultCache;
 
 use const DIRECTORY_SEPARATOR;
+use const LOCK_EX;
 use function array_keys;
 use function assert;
 use function dirname;

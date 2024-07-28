@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\SelfDirectIndirect;
 
+use const E_USER_DEPRECATED;
 use function trigger_error;
 
 final class FirstPartyClass

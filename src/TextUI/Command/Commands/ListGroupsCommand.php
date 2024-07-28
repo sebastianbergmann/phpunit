@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const PHP_EOL;
 use function array_merge;
 use function array_unique;
 use function sort;

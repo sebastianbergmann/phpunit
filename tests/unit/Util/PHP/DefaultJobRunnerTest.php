@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use const PHP_VERSION;
 use function version_compare;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;

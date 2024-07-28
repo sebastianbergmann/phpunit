@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+use const PHP_VERSION;
 use function class_exists;
 use function explode;
 use function function_exists;

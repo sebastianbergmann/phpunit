@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
+use const PHP_EOL;
 use function assert;
 use function basename;
 use function is_int;

@@ -25,13 +25,13 @@ Deprecation (PHPUnit\TestFixture\TestDox\Deprecation)
 
 1 test triggered 1 deprecation:
 
-1) %sDeprecationTest.php:19
+1) %sDeprecationTest.php:20
 deprecation
 
 Triggered by:
 
 * PHPUnit\TestFixture\TestDox\DeprecationTest::testDeprecation
-  %sDeprecationTest.php:17
+  %sDeprecationTest.php:18
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const PHP_EOL;
 use function copy;
 use function file_put_contents;
 use function sprintf;

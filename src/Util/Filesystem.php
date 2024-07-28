@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
 use function basename;
 use function dirname;
 use function is_dir;

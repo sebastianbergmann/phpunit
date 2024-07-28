@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
+use const DIRECTORY_SEPARATOR;
 use function array_map;
 use function array_merge;
 use function assert;

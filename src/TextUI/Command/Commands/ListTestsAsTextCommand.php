@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const PHP_EOL;
 use function sprintf;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
