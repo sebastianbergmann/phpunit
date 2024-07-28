@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\TestFixture\Baseline;
 
+use const E_USER_DEPRECATED;
+use const E_USER_NOTICE;
+use const E_USER_WARNING;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 use Serializable;

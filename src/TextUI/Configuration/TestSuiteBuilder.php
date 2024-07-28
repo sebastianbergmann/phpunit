@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const PHP_EOL;
 use function assert;
 use function count;
 use function is_dir;

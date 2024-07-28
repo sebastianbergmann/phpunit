@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use const DIRECTORY_SEPARATOR;
 use function assert;
 use function dirname;
 use function file_exists;

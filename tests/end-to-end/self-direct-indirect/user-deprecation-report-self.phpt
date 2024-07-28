@@ -22,7 +22,7 @@ Time: %s, Memory: %s
 
 1 test triggered 1 deprecation:
 
-1) %sFirstPartyClass.php:20
+1) %sFirstPartyClass.php:21
 deprecation in first-party code
 
 Triggered by:

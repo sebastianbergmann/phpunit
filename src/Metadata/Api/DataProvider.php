@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use const JSON_ERROR_NONE;
+use const PREG_OFFSET_CAPTURE;
 use function array_key_exists;
 use function assert;
 use function explode;

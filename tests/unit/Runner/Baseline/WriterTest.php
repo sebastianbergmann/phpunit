@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use const DIRECTORY_SEPARATOR;
 use function realpath;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;

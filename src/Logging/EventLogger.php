@@ -12,6 +12,7 @@ namespace PHPUnit\Logging;
 use const FILE_APPEND;
 use const LOCK_EX;
 use const PHP_EOL;
+use const PHP_OS_FAMILY;
 use function file_put_contents;
 use function implode;
 use function preg_split;

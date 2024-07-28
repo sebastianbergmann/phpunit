@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use const PHP_VERSION;
 use function version_compare;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;

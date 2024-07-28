@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\TestDox;
 
+use const E_USER_WARNING;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 

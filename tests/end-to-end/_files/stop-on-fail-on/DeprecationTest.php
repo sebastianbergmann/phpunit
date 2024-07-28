@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\TestRunnerStopping;
 
+use const E_USER_DEPRECATED;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 

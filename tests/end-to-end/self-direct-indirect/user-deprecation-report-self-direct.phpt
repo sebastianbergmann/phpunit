@@ -33,7 +33,7 @@ Triggered by:
 * PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo
   %s:21
 
-2) %sFirstPartyClass.php:20
+2) %sFirstPartyClass.php:21
 deprecation in first-party code
 
 Triggered by:

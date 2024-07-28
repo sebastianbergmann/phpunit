@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
 use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

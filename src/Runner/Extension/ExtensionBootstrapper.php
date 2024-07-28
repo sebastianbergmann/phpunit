@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function class_implements;
