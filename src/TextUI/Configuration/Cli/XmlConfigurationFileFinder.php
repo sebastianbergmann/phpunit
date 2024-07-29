@@ -40,10 +40,14 @@ final readonly class XmlConfigurationFileFinder
         }
 
         if ($useDefaultConfiguration) {
-            $candidate = $this->configurationFileInDirectory(getcwd());
+            $directory = getcwd();
 
-            if ($candidate !== false) {
-                return $candidate;
+            if ($directory !== false) {
+                $candidate = $this->configurationFileInDirectory($directory);
+
+                if ($candidate !== false) {
+                    return $candidate;
+                }
             }
         }
 

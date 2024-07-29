@@ -216,8 +216,12 @@ final readonly class Loader
                 $parameters[$parameter->getAttribute('name')] = $parameter->getAttribute('value');
             }
 
+            $className = $bootstrap->getAttribute('class');
+
+            assert($className !== '');
+
             $extensionBootstrappers[] = new ExtensionBootstrap(
-                $bootstrap->getAttribute('class'),
+                $className,
                 $parameters,
             );
         }

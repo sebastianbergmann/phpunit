@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
 use const STDIN;
+use function assert;
 use function fgets;
 use function file_put_contents;
 use function getcwd;
@@ -98,6 +99,10 @@ final readonly class GenerateConfigurationCommand implements Command
 
     private function read(): string
     {
-        return trim(fgets(STDIN));
+        $buffer = fgets(STDIN);
+
+        assert($buffer !== false);
+
+        return trim($buffer);
     }
 }
