@@ -30,6 +30,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
+use PHPUnit\Logging\Tap\TapLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
@@ -160,7 +161,9 @@ final readonly class Application
                 $extensionReplacesResultOutput,
             );
 
-            if (!$configuration->debug() && !$extensionReplacesOutput) {
+            if (!$configuration->debug() &&
+                !$extensionReplacesOutput &&
+                !$configuration->outputIsTap()) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
@@ -254,7 +257,9 @@ final readonly class Application
 
             $result = TestResultFacade::result();
 
-            if (!$extensionReplacesResultOutput && !$configuration->debug()) {
+            if (!$extensionReplacesResultOutput &&
+                !$configuration->debug() &&
+                !$configuration->outputIsTap()) {
                 OutputFacade::printResult($result, $testDoxResult, $duration);
             }
 
@@ -605,6 +610,23 @@ final readonly class Application
                     sprintf(
                         'Cannot log test results in JUnit XML format to "%s": %s',
                         $configuration->logfileJunit(),
+                        $e->getMessage(),
+                    ),
+                );
+            }
+        }
+
+        if ($configuration->hasLogfileTap()) {
+            try {
+                new TapLogger(
+                    OutputFacade::printerFor($configuration->logfileTap()),
+                    EventFacade::instance(),
+                );
+            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot log test results in TAP format to "%s": %s',
+                        $configuration->logfileTap(),
                         $e->getMessage(),
                     ),
                 );

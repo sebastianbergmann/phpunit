@@ -499,6 +499,7 @@ final readonly class Merger
             $colors = true;
         }
 
+        $logfileTap                  = null;
         $logfileTeamcity             = null;
         $logfileJunit                = null;
         $logfileTestdoxHtml          = null;
@@ -507,6 +508,12 @@ final readonly class Merger
 
         if ($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging()) {
             $loggingFromXmlConfiguration = false;
+        }
+
+        if ($cliConfiguration->hasTapLogfile()) {
+            $logfileTap = $cliConfiguration->tapLogfile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTap()) {
+            $logfileTap = $xmlConfiguration->logging()->tap()->target()->path();
         }
 
         if ($cliConfiguration->hasTeamcityLogfile()) {
@@ -543,6 +550,12 @@ final readonly class Merger
 
         if ($cliConfiguration->hasLogEventsVerboseText()) {
             $logEventsVerboseText = $cliConfiguration->logEventsVerboseText();
+        }
+
+        $tapOutput = false;
+
+        if ($cliConfiguration->hasTapPrinter() && $cliConfiguration->tapPrinter()) {
+            $tapOutput = true;
         }
 
         $teamCityOutput = false;
@@ -835,12 +848,14 @@ final readonly class Merger
             $executionOrder,
             $executionOrderDefects,
             $resolveDependencies,
+            $logfileTap,
             $logfileTeamcity,
             $logfileJunit,
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logEventsText,
             $logEventsVerboseText,
+            $tapOutput,
             $teamCityOutput,
             $testDoxOutput,
             $testDoxOutputSummary,

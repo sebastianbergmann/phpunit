@@ -14,6 +14,7 @@ use function assert;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Logging\Tap\TapLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
@@ -66,7 +67,12 @@ final class Facade
             self::createSummaryPrinter($configuration);
         }
 
-        if ($configuration->outputIsTeamCity()) {
+        if ($configuration->outputIsTap()) {
+            new TapLogger(
+                DefaultPrinter::standardOutput(),
+                EventFacade::instance(),
+            );
+        } elseif ($configuration->outputIsTeamCity()) {
             new TeamCityLogger(
                 DefaultPrinter::standardOutput(),
                 EventFacade::instance(),
@@ -130,6 +136,10 @@ final class Facade
             $printerNeeded = true;
         }
 
+        if ($configuration->outputIsTap()) {
+            $printerNeeded = true;
+        }
+
         if ($configuration->outputIsTeamCity()) {
             $printerNeeded = true;
         }
@@ -187,6 +197,10 @@ final class Facade
         }
 
         if ($configuration->noProgress()) {
+            return false;
+        }
+
+        if ($configuration->outputIsTap()) {
             return false;
         }
 
@@ -260,7 +274,7 @@ final class Facade
         assert(self::$printer !== null);
 
         if (($configuration->noOutput() || $configuration->noResults()) &&
-            !($configuration->outputIsTeamCity() || $configuration->outputIsTestDox())) {
+            !($configuration->outputIsTap() || $configuration->outputIsTeamCity() || $configuration->outputIsTestDox())) {
             return;
         }
 

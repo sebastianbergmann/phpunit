@@ -121,6 +121,8 @@
                                      tests
   [32m--reverse-list                    [0m Print defects in reverse order
 
+  [32m--tap                             [0m Replace default progress and result output
+                                     with TAP format
   [32m--teamcity                        [0m Replace default progress and result output
                                      with TeamCity format
   [32m--testdox                         [0m Replace default result output with TestDox
@@ -135,6 +137,7 @@
 
   [32m--log-junit [36m<file>[0m                [0m Write test results in JUnit XML format to
                                      file
+  [32m--log-tap [36m<file>[0m                  [0m Write test results in TAP format to file
   [32m--log-teamcity [36m<file>[0m             [0m Write test results in TeamCity format to
                                      file
   [32m--testdox-html [36m<file>[0m             [0m Write test results in TestDox format
