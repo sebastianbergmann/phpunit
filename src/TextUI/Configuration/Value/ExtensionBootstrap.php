@@ -17,7 +17,7 @@ namespace PHPUnit\TextUI\Configuration;
 final readonly class ExtensionBootstrap
 {
     /**
-     * @var class-string
+     * @var non-empty-string
      */
     private string $className;
 
@@ -27,7 +27,7 @@ final readonly class ExtensionBootstrap
     private array $parameters;
 
     /**
-     * @param class-string         $className
+     * @param non-empty-string     $className
      * @param array<string,string> $parameters
      */
     public function __construct(string $className, array $parameters)
@@ -37,7 +37,7 @@ final readonly class ExtensionBootstrap
     }
 
     /**
-     * @return class-string
+     * @return non-empty-string
      */
     public function className(): string
     {
