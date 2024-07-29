@@ -25,7 +25,7 @@ final class Version
     private static string $version     = '';
 
     /**
-     * Returns the current version of PHPUnit.
+     * @return non-empty-string
      */
     public static function id(): string
     {
@@ -40,6 +40,9 @@ final class Version
         return self::$version;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public static function series(): string
     {
         if (str_contains(self::id(), '-')) {
@@ -51,11 +54,17 @@ final class Version
         return implode('.', array_slice(explode('.', $version), 0, 2));
     }
 
+    /**
+     * @return positive-int
+     */
     public static function majorVersionNumber(): int
     {
         return (int) explode('.', self::series())[0];
     }
 
+    /**
+     * @return non-empty-string
+     */
     public static function getVersionString(): string
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
