@@ -8,7 +8,8 @@ Configuration:
   --bootstrap <file>                 A PHP script that is included before the tests run
   -c|--configuration <file>          Read configuration from XML file
   --no-configuration                 Ignore default configuration file (phpunit.xml)
-  --no-extensions                    Do not load PHPUnit extensions
+  --extension <class>                Register test runner extension with bootstrap <class>
+  --no-extensions                    Do not register test runner extensions
   --include-path <path(s)>           Prepend PHP's include_path with given path(s)
   -d <key[=value]>                   Sets a php.ini value
   --cache-directory <dir>            Specify cache directory

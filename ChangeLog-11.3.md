@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 11.3 release series are documented in this fi
 * [#5869](https://github.com/sebastianbergmann/phpunit/pull/5869): `shortenArraysForExportThreshold` attribute on the `<phpunit>` element of the XML configuration file to limit the export of arrays to a specified number of elements (default: `0` / do not limit the export of arrays)
 * [#5885](https://github.com/sebastianbergmann/phpunit/pull/5885): Optionally repeat TestDox output for non-successful tests after the regular TestDox output
 * [#5890](https://github.com/sebastianbergmann/phpunit/pull/5890): Priority for hook methods
+* [#5906](https://github.com/sebastianbergmann/phpunit/issues/5906): `--extension` CLI option to register a test runner extension
 
 ### Changed
 

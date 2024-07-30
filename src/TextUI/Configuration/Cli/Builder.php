@@ -134,6 +134,7 @@ final class Builder
         'log-events-verbose-text=',
         'version',
         'debug',
+        'extension=',
     ];
     private const SHORT_OPTIONS = 'd:c:h';
 
@@ -261,6 +262,7 @@ final class Builder
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
         $debug                             = false;
+        $extensions                        = [];
 
         foreach ($options[0] as $option) {
             $optionAllowedMultipleTimes = false;
@@ -938,6 +940,13 @@ final class Builder
                     $debug = true;
 
                     break;
+
+                case '--extension':
+                    $extensions[] = $option[1];
+
+                    $optionAllowedMultipleTimes = true;
+
+                    break;
             }
 
             if (!$optionAllowedMultipleTimes) {
@@ -951,6 +960,10 @@ final class Builder
 
         if (empty($coverageFilter)) {
             $coverageFilter = null;
+        }
+
+        if (empty($extensions)) {
+            $extensions = null;
         }
 
         return new Configuration(
@@ -1053,6 +1066,7 @@ final class Builder
             $printerTestDox,
             $printerTestDoxSummary,
             $debug,
+            $extensions,
         );
     }
 

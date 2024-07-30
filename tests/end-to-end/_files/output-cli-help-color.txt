@@ -8,7 +8,9 @@
   [32m-c|--configuration [36m<file>[0m         [0m Read configuration from XML file
   [32m--no-configuration                [0m Ignore default configuration file
                                      (phpunit.xml)
-  [32m--no-extensions                   [0m Do not load PHPUnit extensions
+  [32m--extension [36m<class>[0m               [0m Register test runner extension with
+                                     bootstrap <class>
+  [32m--no-extensions                   [0m Do not register test runner extensions
   [32m--include-path [36m<path(s)>[0m          [0m Prepend PHP's include_path with given
                                      path(s)
   [32m-d [36m<key[=value]>[0m                  [0m Sets a php.ini value

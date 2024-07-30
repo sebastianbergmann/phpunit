@@ -18,7 +18,8 @@
             <directory suffix=".phpt">tests/end-to-end/data-provider</directory>
             <directory suffix=".phpt">tests/end-to-end/event</directory>
             <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
-            <directory suffix=".phpt">tests/end-to-end/extension</directory>
+            <directory suffix=".phpt">tests/end-to-end/extension-cli</directory>
+            <directory suffix=".phpt">tests/end-to-end/extension-xml</directory>
             <directory suffix=".phpt">tests/end-to-end/generic</directory>
             <directory suffix=".phpt">tests/end-to-end/groups-from-configuration</directory>
             <directory suffix=".phpt">tests/end-to-end/logging</directory>

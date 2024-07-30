@@ -237,6 +237,15 @@ final readonly class Merger
 
         $extensionBootstrappers = [];
 
+        if ($cliConfiguration->hasExtensions()) {
+            foreach ($cliConfiguration->extensions() as $extension) {
+                $extensionBootstrappers[] = [
+                    'className'  => $extension,
+                    'parameters' => [],
+                ];
+            }
+        }
+
         foreach ($xmlConfiguration->extensions() as $extension) {
             $extensionBootstrappers[] = [
                 'className'  => $extension->className(),
