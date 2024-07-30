@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.2 release series are documented in this fi
 ### Fixed
 
 * [#5887](https://github.com/sebastianbergmann/phpunit/pull/5887): Issue baseline generator does not correctly handle ignoring suppressed issues
+* [#5908](https://github.com/sebastianbergmann/phpunit/issues/5908): `--list-tests` and `--list-tests-xml` CLI options do not report error when data provider method throws exception
 
 ## [11.2.8] - 2024-07-18
 
