@@ -1,11 +1,10 @@
 --TEST--
-phpunit --list-test-files --configuration ../../../_files/basic/configuration.basic.xml
+phpunit --list-test-files ../../_files/listing-tests-and-groups
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--list-test-files';
-$_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__.'/../../_files/basic/configuration.basic.xml';
+$_SERVER['argv'][] = __DIR__.'/../../_files/listing-tests-and-groups';
 
 require_once __DIR__ . '/../../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
@@ -13,7 +12,5 @@ require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Available test files:
- - %send-to-end%sSetUpBeforeClassTest.php
- - %send-to-end%sSetUpTest.php
- - %send-to-end%sStatusTest.php
- - %send-to-end%sTearDownAfterClassTest.php
+ - %slisting-tests-and-groups%sExampleTest.php
+ - %slisting-tests-and-groups%sexample.phpt

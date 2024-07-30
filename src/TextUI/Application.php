@@ -295,15 +295,40 @@ final readonly class Application
         // @codeCoverageIgnoreEnd
     }
 
-    private function execute(Command\Command $command): never
+    private function execute(Command\Command $command, bool $requiresResultCollectedFromEvents = false): never
     {
+        if ($requiresResultCollectedFromEvents) {
+            try {
+                TestResultFacade::init();
+                EventFacade::instance()->seal();
+
+                $resultCollectedFromEvents = TestResultFacade::result();
+            } catch (EventFacadeIsSealedException|UnknownSubscriberTypeException) {
+            }
+        }
+
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $result = $command->execute();
 
         print $result->output();
 
-        exit($result->shellExitCode());
+        $shellExitCode = $result->shellExitCode();
+
+        if (isset($resultCollectedFromEvents) &&
+            $resultCollectedFromEvents->hasTestTriggeredPhpunitErrorEvents()) {
+            $shellExitCode = Result::EXCEPTION;
+
+            print PHP_EOL . PHP_EOL . 'There were errors:' . PHP_EOL;
+
+            foreach ($resultCollectedFromEvents->testTriggeredPhpunitErrorEvents() as $events) {
+                foreach ($events as $event) {
+                    print PHP_EOL . trim($event->message()) . PHP_EOL;
+                }
+            }
+        }
+
+        exit($shellExitCode);
     }
 
     private function loadBootstrapScript(string $filename): void
@@ -463,6 +488,7 @@ final readonly class Application
                         $testSuite,
                     ),
                 ),
+                true,
             );
         }
 
@@ -474,6 +500,7 @@ final readonly class Application
                         $testSuite,
                     ),
                 ),
+                true,
             );
         }
 
@@ -486,6 +513,7 @@ final readonly class Application
                     ),
                     $cliConfiguration->listTestsXml(),
                 ),
+                true,
             );
         }
 
@@ -497,6 +525,7 @@ final readonly class Application
                         $testSuite,
                     ),
                 ),
+                true,
             );
         }
     }
