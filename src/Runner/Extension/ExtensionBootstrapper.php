@@ -37,7 +37,7 @@ final readonly class ExtensionBootstrapper
     }
 
     /**
-     * @param class-string          $className
+     * @param non-empty-string      $className
      * @param array<string, string> $parameters
      */
     public function bootstrap(string $className, array $parameters): void
