@@ -290,15 +290,40 @@ final class Application
         // @codeCoverageIgnoreEnd
     }
 
-    private function execute(Command\Command $command): never
+    private function execute(Command\Command $command, bool $requiresResultCollectedFromEvents = false): never
     {
+        if ($requiresResultCollectedFromEvents) {
+            try {
+                TestResultFacade::init();
+                EventFacade::instance()->seal();
+
+                $resultCollectedFromEvents = TestResultFacade::result();
+            } catch (EventFacadeIsSealedException|UnknownSubscriberTypeException) {
+            }
+        }
+
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $result = $command->execute();
 
         print $result->output();
 
-        exit($result->shellExitCode());
+        $shellExitCode = $result->shellExitCode();
+
+        if (isset($resultCollectedFromEvents) &&
+            $resultCollectedFromEvents->hasTestTriggeredPhpunitErrorEvents()) {
+            $shellExitCode = Result::EXCEPTION;
+
+            print PHP_EOL . PHP_EOL . 'There were errors:' . PHP_EOL;
+
+            foreach ($resultCollectedFromEvents->testTriggeredPhpunitErrorEvents() as $events) {
+                foreach ($events as $event) {
+                    print PHP_EOL . trim($event->message()) . PHP_EOL;
+                }
+            }
+        }
+
+        exit($shellExitCode);
     }
 
     private function loadBootstrapScript(string $filename): void
@@ -438,11 +463,11 @@ final class Application
     private function executeCommandsThatRequireCliConfigurationAndTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
         if ($cliConfiguration->listGroups()) {
-            $this->execute(new ListGroupsCommand($testSuite));
+            $this->execute(new ListGroupsCommand($testSuite), true);
         }
 
         if ($cliConfiguration->listTests()) {
-            $this->execute(new ListTestsAsTextCommand($testSuite));
+            $this->execute(new ListTestsAsTextCommand($testSuite), true);
         }
 
         if ($cliConfiguration->hasListTestsXml()) {
@@ -451,6 +476,7 @@ final class Application
                     $cliConfiguration->listTestsXml(),
                     $testSuite,
                 ),
+                true,
             );
         }
     }
@@ -458,11 +484,11 @@ final class Application
     private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration): void
     {
         if ($cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
+            $this->execute(new ListTestSuitesCommand($configuration->testSuite()), true);
         }
 
         if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
+            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()), true);
         }
     }
 
