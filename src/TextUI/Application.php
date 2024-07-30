@@ -484,11 +484,11 @@ final class Application
     private function executeCommandsThatRequireCompleteConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration): void
     {
         if ($cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($configuration->testSuite()), true);
+            $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
         }
 
         if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()), true);
+            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }
     }
 
