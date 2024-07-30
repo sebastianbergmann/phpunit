@@ -263,6 +263,7 @@ final class Help
                 ['arg' => '--testdox-text <file>', 'desc' => 'Write test results in TestDox format (plain text) to file'],
                 ['arg' => '--log-events-text <file>', 'desc' => 'Stream events as plain text to file'],
                 ['arg' => '--log-events-verbose-text <file>', 'desc' => 'Stream events as plain text with extended information to file'],
+                ['arg' => '--log-external <class>', 'desc' => 'Write test results to an external logger'],
                 ['arg' => '--no-logging', 'desc' => 'Ignore logging configured in the XML configuration file'],
             ],
 

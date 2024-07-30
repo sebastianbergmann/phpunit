@@ -144,6 +144,7 @@
   [32m--log-events-text [36m<file>[0m          [0m Stream events as plain text to file
   [32m--log-events-verbose-text [36m<file>[0m  [0m Stream events as plain text with extended
                                      information to file
+  [32m--log-external [36m<class>[0m            [0m Write test results to an external logger
   [32m--no-logging                      [0m Ignore logging configured in the XML
                                      configuration file
 

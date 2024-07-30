@@ -64,6 +64,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Html as CodeCoverageHtml
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php as CodeCoveragePhp;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text as CodeCoverageText;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Xml as CodeCoverageXml;
+use PHPUnit\TextUI\XmlConfiguration\Logging\External;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Junit;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
@@ -185,11 +186,19 @@ final readonly class Loader
             );
         }
 
+        $externalLogger = null;
+        $element  = $this->element($xpath, 'logging/externalLogger');
+        
+        if ($element) {
+            $externalLogger = new External((string) $this->getStringAttribute($element, 'class'));
+        }
+        
         return new Logging(
             $junit,
             $teamCity,
             $testDoxHtml,
             $testDoxText,
+            $externalLogger,
         );
     }
 

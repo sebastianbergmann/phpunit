@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation source="https://phpunit.de/documentation.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 11.3 may be structured.
+            This Schema file defines the rules by which the XML configuration file of PHPUnit 11.2 may be structured.
         </xs:documentation>
         <xs:appinfo source="https://phpunit.de/documentation.html"/>
     </xs:annotation>
@@ -172,6 +172,7 @@
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
         <xs:attribute name="cacheDirectory" type="xs:anyURI"/>
         <xs:attribute name="cacheResult" type="xs:boolean" default="true"/>
+        <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
         <xs:attribute name="controlGarbageCollector" type="xs:boolean" default="false"/>
@@ -197,6 +198,7 @@
         <xs:attribute name="beStrictAboutChangesToGlobalState" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="true"/>
+        <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="defaultTimeLimit" type="xs:integer" default="0"/>
         <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
@@ -205,7 +207,6 @@
         <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
         <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
         <xs:attribute name="testdox" type="xs:boolean" default="false"/>
-        <xs:attribute name="testdoxSummary" type="xs:boolean" default="false"/>
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
         <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
@@ -217,7 +218,6 @@
         <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
-        <xs:attribute name="shortenArraysForExportThreshold" type="xs:integer" default="0"/>
     </xs:attributeGroup>
     <xs:group name="configGroup">
         <xs:all>

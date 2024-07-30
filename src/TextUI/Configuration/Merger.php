@@ -504,7 +504,8 @@ final readonly class Merger
         $logfileTestdoxHtml          = null;
         $logfileTestdoxText          = null;
         $loggingFromXmlConfiguration = true;
-
+        $externalLogger              = null;
+        
         if ($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging()) {
             $loggingFromXmlConfiguration = false;
         }
@@ -533,6 +534,12 @@ final readonly class Merger
             $logfileTestdoxText = $xmlConfiguration->logging()->testDoxText()->target()->path();
         }
 
+        if ($cliConfiguration->hasExternalLogger()) {
+            $externalLogger = $cliConfiguration->externalLogger();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasExternal()) {
+            $externalLogger = $xmlConfiguration->logging()->external()->target();
+        }
+        
         $logEventsText = null;
 
         if ($cliConfiguration->hasLogEventsText()) {
@@ -875,6 +882,7 @@ final readonly class Merger
             $generateBaseline,
             $cliConfiguration->debug(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
+            $externalLogger,
         );
     }
 }

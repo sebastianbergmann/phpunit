@@ -22,5 +22,6 @@
         <teamcity outputFile="php://stdout"/>
         <testdoxHtml outputFile="php://stdout"/>
         <testdoxText outputFile="php://stdout"/>
+        <external class="\PHPUnit\TestFixture\ExternalLogger"/>
     </logging>
 </phpunit>

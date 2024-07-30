@@ -105,6 +105,7 @@ Logging:
   --testdox-text <file>              Write test results in TestDox format (plain text) to file
   --log-events-text <file>           Stream events as plain text to file
   --log-events-verbose-text <file>   Stream events as plain text with extended information to file
+  --log-external <class>             Write test results to an external logger
   --no-logging                       Ignore logging configured in the XML configuration file
 
 Code Coverage:

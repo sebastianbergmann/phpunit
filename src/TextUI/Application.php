@@ -84,6 +84,7 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
+use PHPUnit\Runner\ClassCannotBeFoundException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -627,6 +628,33 @@ final readonly class Application
                         $e->getMessage(),
                     ),
                 );
+            }
+        }
+        
+        if ($configuration->hasExternalLogger()) {
+            try {
+                $className = $configuration->externalLogger();
+
+                if (class_exists($className)) {
+                    $interfaces = class_implements($className);
+                    
+                    if (isset($interfaces[\PHPUnit\Logging\ExternalLogger::class])) {
+                        $className::createInstance(
+                            EventFacade::instance(),
+                        );
+                    } else {
+                        throw new InvalidExternalLoggerException($className, false);
+                    }
+                } else {
+                    throw new InvalidExternalLoggerException($className);
+                }
+            } catch (InvalidExternalLoggerException $e) {
+                EventFacade::emitter()->testRunnerTriggeredWarning(
+                    sprintf(
+                        'Cannot log test results to external logger: %s',
+                        $e->getMessage(),
+                        ),
+                    );
             }
         }
     }

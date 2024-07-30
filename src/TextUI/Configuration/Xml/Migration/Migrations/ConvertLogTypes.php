@@ -33,6 +33,7 @@ final readonly class ConvertLogTypes implements Migration
             'testdox-text' => 'testdoxText',
             'testdox-xml'  => 'testdoxXml',
             'plain'        => 'text',
+            'external'     => 'external',
         ];
 
         $logNodes = [];

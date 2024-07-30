@@ -86,6 +86,7 @@ final class Builder
         'list-tests-xml=',
         'log-junit=',
         'log-teamcity=',
+        'log-external=',
         'migrate-configuration',
         'no-configuration',
         'no-coverage',
@@ -250,6 +251,7 @@ final class Builder
         $teamcityLogfile                   = null;
         $testdoxHtmlFile                   = null;
         $testdoxTextFile                   = null;
+        $externalLogger                    = null;
         $testSuffixes                      = null;
         $testSuite                         = null;
         $excludeTestSuite                  = null;
@@ -568,6 +570,11 @@ final class Builder
 
                     break;
 
+                case '--log-external':
+                    $externalLogger = $option[1];
+                    
+                    break;
+                    
                 case '--order-by':
                     foreach (explode(',', $option[1]) as $order) {
                         switch ($order) {
@@ -1053,6 +1060,7 @@ final class Builder
             $printerTestDox,
             $printerTestDoxSummary,
             $debug,
+            $externalLogger,
         );
     }
 

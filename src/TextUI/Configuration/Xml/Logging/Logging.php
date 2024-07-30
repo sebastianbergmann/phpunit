@@ -26,13 +26,15 @@ final readonly class Logging
     private ?TeamCity $teamCity;
     private ?TestDoxHtml $testDoxHtml;
     private ?TestDoxText $testDoxText;
-
-    public function __construct(?Junit $junit, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText)
+    private ?External $external;
+    
+    public function __construct(?Junit $junit, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?External $external)
     {
         $this->junit       = $junit;
         $this->teamCity    = $teamCity;
         $this->testDoxHtml = $testDoxHtml;
         $this->testDoxText = $testDoxText;
+        $this->external    = $external;
     }
 
     public function hasJunit(): bool
@@ -101,5 +103,22 @@ final readonly class Logging
         }
 
         return $this->testDoxText;
+    }
+    
+    public function hasExternal(): bool
+    {
+        return $this->external !== null;
+    }
+    
+    /**
+     * @throws Exception
+     */
+    public function external(): External
+    {
+        if ($this->external === null) {
+            throw new Exception('Logger "External" is not configured');
+        }
+        
+        return $this->external;
     }
 }

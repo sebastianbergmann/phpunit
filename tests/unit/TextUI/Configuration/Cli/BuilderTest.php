@@ -930,6 +930,26 @@ final class BuilderTest extends TestCase
         $configuration->teamcityLogfile();
     }
 
+    #[TestDox('--log-external class')]
+    public function testLogExternal(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--log-external', '\PHPUnit\TestFixture\ExternalLogger']);
+        
+        $this->assertTrue($configuration->hasExternalLogger());
+        $this->assertSame('\PHPUnit\TestFixture\ExternalLogger', $configuration->externalLogger());
+    }
+
+    public function testLogExternalMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+        
+        $this->assertFalse($configuration->hasExternalLogger());
+        
+        $this->expectException(Exception::class);
+        
+        $configuration->externalLogger();
+    }
+
     #[TestDox('--order-by default')]
     public function testOrderByDefault(): void
     {
