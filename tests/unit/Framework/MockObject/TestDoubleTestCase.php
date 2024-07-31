@@ -196,6 +196,21 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertTrue($double->doSomething());
     }
 
+    final public function testMethodConfiguredToReturnDifferentValuesOnConsecutiveCallsCannotBeCalledMoreOftenThanReturnValuesHaveBeenConfigured(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomething')->willReturn(false, true);
+
+        $this->assertFalse($double->doSomething());
+        $this->assertTrue($double->doSomething());
+
+        $this->expectException(NoMoreReturnValuesConfiguredException::class);
+        $this->expectExceptionMessage('Only 2 return values have been configured for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomething()');
+
+        $double->doSomething();
+    }
+
     final public function testMethodCanBeConfiguredToReturnDifferentValuesAndThrowExceptionsOnConsecutiveCalls(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
