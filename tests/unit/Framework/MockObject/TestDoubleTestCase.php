@@ -18,7 +18,6 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterVal
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
-use TypeError;
 
 abstract class TestDoubleTestCase extends TestCase
 {
@@ -198,7 +197,8 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertFalse($double->doSomething());
         $this->assertTrue($double->doSomething());
 
-        $this->expectException(TypeError::class);
+        $this->expectException(NoMoreReturnValuesConfiguredException::class);
+        $this->expectExceptionMessage('Only 2 return values have been configured for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomething()');
 
         $double->doSomething();
     }
