@@ -22,6 +22,7 @@ use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnInterfaceForIssue5593;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterfaceForIssue5593;
+use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\YetAnotherInterface;
 use stdClass;
 
@@ -199,6 +200,22 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(Stub::class, $value);
         $this->assertInstanceOf(AnInterface::class, $value);
         $this->assertInstanceOf(AnotherInterface::class, $value);
+    }
+
+    public function test_Does_not_handle_union_of_extendable_class_and_interface(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is a union, please configure a return value for this method');
+
+        $this->generate(ExtendableClass::class . '|' . AnInterface::class);
+    }
+
+    public function test_Does_not_handle_intersection_of_extendable_class_and_interface(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is an intersection, please configure a return value for this method');
+
+        $this->generate(ExtendableClass::class . '&' . AnInterface::class);
     }
 
     public function test_Generates_test_stub_for_unknown_type(): void
