@@ -18,6 +18,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterVal
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
+use TypeError;
 
 abstract class TestDoubleTestCase extends TestCase
 {
@@ -186,6 +187,20 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertTrue($double->doSomething());
         $this->assertFalse($double->doSomething());
         $this->assertTrue($double->doSomething());
+    }
+
+    final public function testMethodConfiguredToReturnDifferentValuesOnConsecutiveCallsCannotBeCalledMoreOftenThanReturnValuesHaveBeenConfigured(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomething')->willReturn(false, true);
+
+        $this->assertFalse($double->doSomething());
+        $this->assertTrue($double->doSomething());
+
+        $this->expectException(TypeError::class);
+
+        $double->doSomething();
     }
 
     final public function testMethodCanBeConfiguredToReturnDifferentValuesAndThrowExceptionsOnConsecutiveCalls(): void
