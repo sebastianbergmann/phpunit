@@ -184,6 +184,7 @@ final class ReturnValueGenerator
     {
         try {
             return (new ReflectionClass($stubClassName))->newInstanceWithoutConstructor();
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
@@ -193,6 +194,7 @@ final class ReturnValueGenerator
                     $t->getMessage(),
                 ),
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -207,6 +209,7 @@ final class ReturnValueGenerator
     {
         try {
             return (new Generator)->testDouble($type, false, false, [], [], '', false);
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
@@ -216,6 +219,7 @@ final class ReturnValueGenerator
                     $t->getMessage(),
                 ),
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -230,6 +234,7 @@ final class ReturnValueGenerator
     {
         try {
             return (new Generator)->testDoubleForInterfaceIntersection($types, false);
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
@@ -239,6 +244,7 @@ final class ReturnValueGenerator
                     $t->getMessage(),
                 ),
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 }
