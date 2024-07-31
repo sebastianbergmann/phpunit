@@ -120,17 +120,35 @@ final class ReturnValueGeneratorTest extends TestCase
 
     public function test_Generates_Generator_for_Generator(): void
     {
-        $this->assertInstanceOf(Generator::class, $this->generate('Generator'));
+        $value = $this->generate('Generator');
+
+        $this->assertInstanceOf(Generator::class, $value);
+
+        foreach ($value as $element) {
+            $this->assertSame([], $element);
+        }
     }
 
     public function test_Generates_Generator_for_Traversable(): void
     {
-        $this->assertInstanceOf(Generator::class, $this->generate('Traversable'));
+        $value = $this->generate('Traversable');
+
+        $this->assertInstanceOf(Generator::class, $value);
+
+        foreach ($value as $element) {
+            $this->assertSame([], $element);
+        }
     }
 
     public function test_Generates_Generator_for_iterable(): void
     {
-        $this->assertInstanceOf(Generator::class, $this->generate('iterable'));
+        $value = $this->generate('iterable');
+
+        $this->assertInstanceOf(Generator::class, $value);
+
+        foreach ($value as $element) {
+            $this->assertSame([], $element);
+        }
     }
 
     public function test_Generates_test_stub_for_class_or_interface_name(): void
