@@ -16,4 +16,4 @@ All notable changes of the PHPUnit 11.3 release series are documented in this fi
 * [#5856](https://github.com/sebastianbergmann/phpunit/issues/5856): When the test runner is configured to fail on deprecations, notices, warnings, incomplete tests, or skipped tests then details for tests that triggered deprecations, notices, or warnings as well as tests that were marked as incomplete or skipped are always shown, respectively
 * [#5869](https://github.com/sebastianbergmann/phpunit/pull/5869): The configuration file generated using `--generate-configuration` now limits the export of arrays to 10 elements in order to improve performance
 
-[11.3.0]: https://github.com/sebastianbergmann/phpunit/compare/11.2...main
+[11.3.0]: https://github.com/sebastianbergmann/phpunit/compare/11.2.9...11.3.0
