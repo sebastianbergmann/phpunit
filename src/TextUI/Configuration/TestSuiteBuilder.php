@@ -88,7 +88,6 @@ final readonly class TestSuiteBuilder
     /**
      * @param non-empty-string       $path
      * @param list<non-empty-string> $suffixes
-     * @param ?TestSuite             $suite
      *
      * @throws \PHPUnit\Framework\Exception
      */
