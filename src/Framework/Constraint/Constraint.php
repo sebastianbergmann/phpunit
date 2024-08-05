@@ -247,7 +247,7 @@ abstract class Constraint implements Countable, SelfDescribing
         }
 
         return match ($type) {
-            'array', 'integer', 'object' => 'an ' . $type . ' ',
+            'array', 'integer', 'object' => 'an ' . get_debug_type($type) . ' ',
             'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ',
             'null'  => 'null ',
             default => 'a value of ' . $type . ' ',
