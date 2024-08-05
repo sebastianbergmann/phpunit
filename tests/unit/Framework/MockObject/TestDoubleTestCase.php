@@ -278,7 +278,7 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[TestDox('Original __clone() method is not called by default when test double object is cloned (readonly class)')]
-    #[RequiresPhp('8.3')]
+    #[RequiresPhp('^8.3')]
     final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
     {
         $double = clone $this->createTestDouble(ExtendableReadonlyClassWithCloneMethod::class);
@@ -287,7 +287,7 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[TestDox('Original __clone() method can optionally be called when test double object is cloned (readonly class)')]
-    #[RequiresPhp('8.3')]
+    #[RequiresPhp('^8.3')]
     final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
     {
         $double = $this->getMockBuilder(ExtendableReadonlyClassWithCloneMethod::class)->enableOriginalClone()->getMock();
