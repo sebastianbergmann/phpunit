@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function get_debug_type;
 use function gettype;
 use function sprintf;
 use function strtolower;
@@ -247,7 +248,8 @@ abstract class Constraint implements Countable, SelfDescribing
         }
 
         return match ($type) {
-            'array', 'integer', 'object' => 'an ' . get_debug_type($type) . ' ',
+            'object' => get_debug_type($value) . ' ',
+            'array', 'integer' => 'an ' . $type . ' ',
             'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ',
             'null'  => 'null ',
             default => 'a value of ' . $type . ' ',
