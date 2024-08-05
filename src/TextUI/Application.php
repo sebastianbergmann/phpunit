@@ -70,7 +70,6 @@ use PHPUnit\TextUI\Command\Result;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
-use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -471,10 +470,6 @@ final readonly class Application
     {
         if ($cliConfiguration->listSuites()) {
             $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
-        }
-
-        if ($cliConfiguration->warmCoverageCache()) {
-            $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }
     }
 

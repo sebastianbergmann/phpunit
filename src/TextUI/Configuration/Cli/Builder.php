@@ -43,7 +43,6 @@ final class Builder
         'colors==',
         'columns=',
         'configuration=',
-        'warm-coverage-cache',
         'coverage-filter=',
         'coverage-clover=',
         'coverage-cobertura=',
@@ -175,7 +174,6 @@ final class Builder
         $colors                            = null;
         $columns                           = null;
         $configuration                     = null;
-        $warmCoverageCache                 = false;
         $coverageFilter                    = null;
         $coverageClover                    = null;
         $coverageCobertura                 = null;
@@ -305,11 +303,6 @@ final class Builder
                 case 'c':
                 case '--configuration':
                     $configuration = $option[1];
-
-                    break;
-
-                case '--warm-coverage-cache':
-                    $warmCoverageCache = true;
 
                     break;
 
@@ -989,7 +982,6 @@ final class Builder
             $coverageTextShowOnlySummary,
             $coverageXml,
             $pathCoverage,
-            $warmCoverageCache,
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,
             $disallowTestOutput,

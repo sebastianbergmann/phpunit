@@ -277,7 +277,6 @@ final class Help
                 ['arg' => '--only-summary-for-coverage-text', 'desc' => 'Option for code coverage report in text format: only show summary'],
                 ['arg' => '--show-uncovered-for-coverage-text', 'desc' => 'Option for code coverage report in text format: show uncovered files'],
                 ['arg' => '--coverage-xml <dir>', 'desc' => 'Write code coverage report in XML format to directory'],
-                ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],
                 ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage reporting'],
                 ['arg' => '--path-coverage', 'desc' => 'Report path coverage in addition to line coverage'],
                 ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable metadata for ignoring code coverage'],

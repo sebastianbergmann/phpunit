@@ -195,21 +195,6 @@ final class BuilderTest extends TestCase
         $configuration->configurationFile();
     }
 
-    #[TestDox('--warm-coverage-cache')]
-    public function testWarmCoverageCache(): void
-    {
-        $configuration = (new Builder)->fromParameters(['--warm-coverage-cache']);
-
-        $this->assertTrue($configuration->warmCoverageCache());
-    }
-
-    public function testWarmCoverageCacheMayNotBeConfigured(): void
-    {
-        $configuration = (new Builder)->fromParameters([]);
-
-        $this->assertFalse($configuration->warmCoverageCache());
-    }
-
     #[TestDox('--coverage-clover file')]
     public function testCoverageClover(): void
     {
