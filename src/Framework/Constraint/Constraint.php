@@ -10,7 +10,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function gettype;
+use function is_object;
 use function sprintf;
+use function str_replace;
 use function strtolower;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;

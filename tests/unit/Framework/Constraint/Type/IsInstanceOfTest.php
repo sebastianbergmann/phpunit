@@ -39,7 +39,8 @@ final class IsInstanceOfTest extends TestCase
                 false,
                 'Failed asserting that an instance of anonymous class created at',
                 stdClass::class,
-                new class {},
+                new class
+                {},
             ],
 
             [
