@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 
 ## [11.4.0] - 2024-10-04
 
+### Changed
+
+* [#5915](https://github.com/sebastianbergmann/phpunit/pull/5915): Bootstrap extensions before building test suite
+
 [11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3...main
