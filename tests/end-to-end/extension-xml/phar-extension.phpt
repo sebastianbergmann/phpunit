@@ -21,9 +21,9 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
 Extension Loaded from PHAR (phpunit/phpunit-test-extension 1.0.0)
 Extension Bootstrapped (PHPUnit\TestFixture\MyExtension\MyExtensionBootstrap)
+Test Suite Loaded (1 test)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
