@@ -21,9 +21,9 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Event Facade Sealed
 Test Runner Triggered Deprecation (Metadata found in doc-comment for class PHPUnit\DeprecatedAnnotationsTestFixture\TestSizeConfiguredWithAnnotationTest. Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.)
 Test Suite Loaded (1 test)
-Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)

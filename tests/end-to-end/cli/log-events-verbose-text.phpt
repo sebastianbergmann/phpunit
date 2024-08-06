@@ -21,8 +21,8 @@ unlink($traceFile);
 --EXPECTF--
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] PHPUnit Started (%s)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Configured
-[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Loaded (7 tests)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Event Facade Sealed
+[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Loaded (7 tests)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Started
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Sorted
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Execution Started (7 tests)

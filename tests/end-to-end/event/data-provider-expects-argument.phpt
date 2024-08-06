@@ -21,6 +21,7 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Event\ArgumentDataProviderTest::values for test method PHPUnit\TestFixture\Event\ArgumentDataProviderTest::testSuccess)
 Data Provider Method Finished for PHPUnit\TestFixture\Event\ArgumentDataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\ArgumentDataProviderTest::values
@@ -29,7 +30,6 @@ The data provider specified for PHPUnit\TestFixture\Event\ArgumentDataProviderTe
 Data Provider method PHPUnit\TestFixture\Event\ArgumentDataProviderTest::values() expects an argument
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\ArgumentDataProviderTest".)
 Test Suite Loaded (0 tests)
-Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (0 tests)

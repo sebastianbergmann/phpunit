@@ -23,8 +23,8 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Bootstrap Finished (%sbootstrap.php)
-Test Suite Loaded (1 test)
 Event Facade Sealed
+Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
