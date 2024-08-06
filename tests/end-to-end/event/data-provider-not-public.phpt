@@ -21,6 +21,7 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Event\PrivateDataProviderTest::values for test method PHPUnit\TestFixture\Event\PrivateDataProviderTest::testSuccess)
 Data Provider Method Finished for PHPUnit\TestFixture\Event\PrivateDataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\PrivateDataProviderTest::values
@@ -29,7 +30,6 @@ The data provider specified for PHPUnit\TestFixture\Event\PrivateDataProviderTes
 Data Provider method PHPUnit\TestFixture\Event\PrivateDataProviderTest::values() is not public
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\PrivateDataProviderTest".)
 Test Suite Loaded (0 tests)
-Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (0 tests)

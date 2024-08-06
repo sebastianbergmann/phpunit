@@ -140,6 +140,41 @@ final readonly class Application
                 $extensionReplacesResultOutput           = $bootstrappedExtensions['replacesResultOutput'];
             }
 
+            $printer = OutputFacade::init(
+                $configuration,
+                $extensionReplacesProgressOutput,
+                $extensionReplacesResultOutput,
+            );
+
+            if ($configuration->debug()) {
+                EventFacade::instance()->registerTracer(
+                    new EventLogger(
+                        'php://stdout',
+                        false,
+                    ),
+                );
+            }
+
+            TestResultFacade::init();
+            DeprecationCollector::init();
+
+            $this->registerLogfileWriters($configuration);
+
+            $testDoxResultCollector = $this->testDoxResultCollector($configuration);
+
+            $resultCache = $this->initializeTestResultCache($configuration);
+
+            if ($configuration->controlGarbageCollector()) {
+                new GarbageCollectionHandler(
+                    EventFacade::instance(),
+                    $configuration->numberOfTestsBeforeGarbageCollection(),
+                );
+            }
+
+            $baselineGenerator = $this->configureBaseline($configuration);
+
+            EventFacade::instance()->seal();
+
             $testSuite = $this->buildTestSuite($configuration);
 
             $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
@@ -154,12 +189,6 @@ final readonly class Application
                 $extensionRequiresCodeCoverageCollection,
             );
 
-            $printer = OutputFacade::init(
-                $configuration,
-                $extensionReplacesProgressOutput,
-                $extensionReplacesResultOutput,
-            );
-
             if (!$configuration->debug() && !$extensionReplacesOutput) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
@@ -168,36 +197,7 @@ final readonly class Application
                 $printer->print(PHP_EOL);
             }
 
-            if ($configuration->debug()) {
-                EventFacade::instance()->registerTracer(
-                    new EventLogger(
-                        'php://stdout',
-                        false,
-                    ),
-                );
-            }
-
-            $this->registerLogfileWriters($configuration);
-
-            $testDoxResultCollector = $this->testDoxResultCollector($configuration);
-
-            TestResultFacade::init();
-            DeprecationCollector::init();
-
-            $resultCache = $this->initializeTestResultCache($configuration);
-
-            if ($configuration->controlGarbageCollector()) {
-                new GarbageCollectionHandler(
-                    EventFacade::instance(),
-                    $configuration->numberOfTestsBeforeGarbageCollection(),
-                );
-            }
-
-            $baselineGenerator = $this->configureBaseline($configuration);
-
             $this->configureDeprecationTriggers($configuration);
-
-            EventFacade::instance()->seal();
 
             $timer = new Timer;
             $timer->start();

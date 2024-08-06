@@ -28,8 +28,8 @@ unlink($traceFile);
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Triggered Warning (Option --filter cannot be used more than once)
 Test Runner Configured
-Test Suite Loaded (1 test)
 Event Facade Sealed
+Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted
 Test Suite Filtered (0 tests)

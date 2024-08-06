@@ -22,8 +22,8 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (2 tests)
 Event Facade Sealed
+Test Suite Loaded (2 tests)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)

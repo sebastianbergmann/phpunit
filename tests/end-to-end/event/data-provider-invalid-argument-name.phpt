@@ -21,11 +21,11 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::values for test method PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess)
 Data Provider Method Finished for PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::values
 Test Suite Loaded (2 tests)
-Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
