@@ -16,6 +16,7 @@ use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Exporter;
+use ReflectionObject;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -236,6 +237,16 @@ abstract class Constraint implements Countable, SelfDescribing
      */
     protected function valueToTypeStringFragment(mixed $value): string
     {
+        if (is_object($value)) {
+            $reflector = new ReflectionObject($value);
+
+            if ($reflector->isAnonymous()) {
+                return 'an instance of anonymous class created at ' . str_replace('class@anonymous', '', $reflector->getName()) . ' ';
+            }
+
+            return 'an instance of class ' . $reflector->getName() . ' ';
+        }
+
         $type = strtolower(gettype($value));
 
         if ($type === 'double') {
@@ -248,7 +259,6 @@ abstract class Constraint implements Countable, SelfDescribing
 
         return match ($type) {
             'array', 'integer' => 'an ' . $type . ' ',
-            'object' => 'an instance of class ' . $value::class . ' ',
             'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ',
             'null'  => 'null ',
             default => 'a value of ' . $type . ' ',
