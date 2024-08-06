@@ -13,7 +13,9 @@ use function gettype;
 use function is_object;
 use function sprintf;
 use function str_replace;
+use function strpos;
 use function strtolower;
+use function substr;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
@@ -243,7 +245,10 @@ abstract class Constraint implements Countable, SelfDescribing
             $reflector = new ReflectionObject($value);
 
             if ($reflector->isAnonymous()) {
-                return 'an instance of anonymous class created at ' . str_replace('class@anonymous', '', $reflector->getName()) . ' ';
+                $name = str_replace('class@anonymous', '', $reflector->getName());
+                $name = substr($name, 0, strpos($name, '$'));
+
+                return 'an instance of anonymous class created at ' . $name . ' ';
             }
 
             return 'an instance of class ' . $reflector->getName() . ' ';
