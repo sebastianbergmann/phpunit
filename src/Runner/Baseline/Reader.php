@@ -13,9 +13,11 @@ use const DIRECTORY_SEPARATOR;
 use function assert;
 use function dirname;
 use function file_exists;
+use function preg_match;
 use function realpath;
 use function sprintf;
 use function str_replace;
+use function str_starts_with;
 use function trim;
 use DOMElement;
 use DOMXPath;
@@ -75,7 +77,11 @@ final readonly class Reader
         foreach ($xpath->query('file') as $fileElement) {
             assert($fileElement instanceof DOMElement);
 
-            $file = $baselineDirectory . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $fileElement->getAttribute('path'));
+            $file = str_replace('/', DIRECTORY_SEPARATOR, $fileElement->getAttribute('path'));
+
+            if (!$this->isAbsolutePath($file)) {
+                $file = $baselineDirectory . DIRECTORY_SEPARATOR . $file;
+            }
 
             foreach ($xpath->query('line', $fileElement) as $lineElement) {
                 assert($lineElement instanceof DOMElement);
@@ -98,5 +104,23 @@ final readonly class Reader
         }
 
         return $baseline;
+    }
+
+    private function isAbsolutePath(string $path): bool
+    {
+        if (str_starts_with($path, '/')) {
+            // path is absolute in unix systems
+            return true;
+        }
+
+        if (
+            // path is absolute in windows
+            str_starts_with($path, '\\\\') ||
+            preg_match('/^[A-Z]:\\\\/i', $path)
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

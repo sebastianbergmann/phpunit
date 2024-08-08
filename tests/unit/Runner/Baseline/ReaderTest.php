@@ -9,7 +9,13 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use const DIRECTORY_SEPARATOR;
+use function dirname;
+use function file_get_contents;
+use function file_put_contents;
 use function realpath;
+use function str_replace;
+use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -18,9 +24,36 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class ReaderTest extends TestCase
 {
-    public function testReadsBaselineFromFileWithValidXml(): void
+    private string $baseline;
+    private string $baselineWithAbsolutePath;
+
+    protected function setUp(): void
     {
-        $baseline = (new Reader)->read(__DIR__ . '/../../../_files/baseline/expected.xml');
+        $this->baseline                 = str_replace('/', DIRECTORY_SEPARATOR, realpath(__DIR__ . '/../../../_files/baseline/expected.xml'));
+        $this->baselineWithAbsolutePath = str_replace('/', DIRECTORY_SEPARATOR, realpath(dirname($this->baseline)) . DIRECTORY_SEPARATOR . 'baseline-with-absolute-path.xml');
+    }
+
+    protected function tearDown(): void
+    {
+        @unlink($this->baselineWithAbsolutePath);
+    }
+
+    public function testReadsBaselineFromFileWithValidXmlWithRelativePath(): void
+    {
+        $baseline = (new Reader)->read($this->baseline);
+
+        $this->assertTrue($baseline->has($this->issue()));
+        $this->assertTrue($baseline->has($this->anotherIssue()));
+        $this->assertTrue($baseline->has($this->yetAnotherIssue()));
+    }
+
+    public function testReadsBaselineFromFileWithValidXmlWithAbsolutePath(): void
+    {
+        file_put_contents(
+            $this->baselineWithAbsolutePath,
+            str_replace('FileWithIssues.php', dirname($this->baseline) . DIRECTORY_SEPARATOR . 'FileWithIssues.php', file_get_contents($this->baseline)),
+        );
+        $baseline = (new Reader)->read($this->baselineWithAbsolutePath);
 
         $this->assertTrue($baseline->has($this->issue()));
         $this->assertTrue($baseline->has($this->anotherIssue()));
