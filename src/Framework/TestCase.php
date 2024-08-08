@@ -78,6 +78,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMa
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Stub\ClosureMock;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls as ConsecutiveCallsStub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument as ReturnArgumentStub;
@@ -1441,6 +1442,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         return $partialMock;
+    }
+
+    /**
+     * Creates mock of a closure.
+     *
+     * @throws InvalidArgumentException
+     * @throws MockObjectException
+     */
+    final protected function createClosureMock(): ClosureMock|MockObject
+    {
+        return $this->createPartialMock(ClosureMock::class, ['__invoke']);
     }
 
     /**
