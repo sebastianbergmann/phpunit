@@ -155,11 +155,13 @@ final class ErrorHandler
                 break;
 
             case E_USER_DEPRECATED:
+                $deprecationFrame = $this->guessDeprecationFrame();
+
                 Event\Facade::emitter()->testTriggeredDeprecation(
                     $test,
                     $errorString,
-                    $errorFile,
-                    $errorLine,
+                    $deprecationFrame['file'] ?? $errorFile,
+                    $deprecationFrame['line'] ?? $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
@@ -282,14 +284,11 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class: string, function: string, type: string}>
+     * @return list<array{file: string, line: int, class?: string, function?: string, type: string}>
      */
     private function filteredStackTrace(bool $filterDeprecationTriggers): array
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-
-        // self::filteredStackTrace(), self::trigger(), self::__invoke()
-        unset($trace[0], $trace[1], $trace[2]);
+        $trace = $this->errorStackTrace();
 
         if ($this->deprecationTriggers === null || !$filterDeprecationTriggers) {
             return array_values($trace);
@@ -297,9 +296,7 @@ final class ErrorHandler
 
         foreach (array_keys($trace) as $frame) {
             foreach ($this->deprecationTriggers['functions'] as $function) {
-                if (!isset($trace[$frame]['class']) &&
-                    isset($trace[$frame]['function']) &&
-                    $trace[$frame]['function'] === $function) {
+                if ($this->frameIsFunction($trace[$frame], $function)) {
                     unset($trace[$frame]);
 
                     continue 2;
@@ -307,11 +304,7 @@ final class ErrorHandler
             }
 
             foreach ($this->deprecationTriggers['methods'] as $method) {
-                if (isset($trace[$frame]['class']) &&
-                    $trace[$frame]['class'] === $method['className'] &&
-                    /** @phpstan-ignore isset.offset */
-                    isset($trace[$frame]['function']) &&
-                    $trace[$frame]['function'] === $method['methodName']) {
+                if ($this->frameIsMethod($trace[$frame], $method)) {
                     unset($trace[$frame]);
 
                     continue 2;
@@ -320,5 +313,70 @@ final class ErrorHandler
         }
 
         return array_values($trace);
+    }
+
+    /**
+     * @return null|array{file: string, line: int}
+     */
+    private function guessDeprecationFrame(): null|array
+    {
+        if ($this->deprecationTriggers === null) {
+            return null;
+        }
+
+        $trace = $this->errorStackTrace();
+
+        foreach ($trace as $frame) {
+            foreach ($this->deprecationTriggers['functions'] as $function) {
+                if ($this->frameIsFunction($frame, $function)) {
+                    return $frame;
+                }
+            }
+
+            foreach ($this->deprecationTriggers['methods'] as $method) {
+                if ($this->frameIsMethod($frame, $method)) {
+                    return $frame;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return list<array{file: string, line: int, class?: class-string, function?: string, type: string}>
+     */
+    private function errorStackTrace(): array
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+
+        $i = 0;
+
+        do {
+            unset($trace[$i]);
+        } while (self::class === ($trace[++$i]['class'] ?? null));
+
+        return array_values($trace);
+    }
+
+    /**
+     * @param array{class? : class-string, function?: non-empty-string} $frame
+     * @param non-empty-string                                          $function
+     */
+    private function frameIsFunction(array $frame, string $function): bool
+    {
+        return !isset($frame['class']) && isset($frame['function']) && $frame['function'] === $function;
+    }
+
+    /**
+     * @param array{class? : class-string, function?: non-empty-string}    $frame
+     * @param array{className: class-string, methodName: non-empty-string} $method
+     */
+    private function frameIsMethod(array $frame, array $method): bool
+    {
+        return isset($frame['class']) &&
+            $frame['class'] === $method['className'] &&
+            isset($frame['function']) &&
+            $frame['function'] === $method['methodName'];
     }
 }
