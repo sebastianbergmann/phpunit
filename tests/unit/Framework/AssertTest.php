@@ -1580,6 +1580,16 @@ XML;
         $this->assertFileEqualsCanonicalizing(TEST_FILES_PATH . 'foo.txt', TEST_FILES_PATH . 'foo.xml');
     }
 
+    public function testAssertStringEqualsFileCanonicalizing(): void
+    {
+        $contents = file_get_contents(TEST_FILES_PATH . 'foo.txt');
+
+        $this->assertStringEqualsFileCanonicalizing(TEST_FILES_PATH . 'foo.txt', $contents);
+
+        $this->expectException(AssertionFailedError::class);
+        $this->assertStringEqualsFileCanonicalizing(TEST_FILES_PATH . 'foo.txt', $contents . 'BAR');
+    }
+
     public function testAssertStringNotEqualsFileCanonicalizing(): void
     {
         $contents = file_get_contents(TEST_FILES_PATH . 'foo.xml');
