@@ -1,13 +1,13 @@
 --TEST--
-TestDox: Test triggers deprecation and --display-deprecations is used
+Configured deprecation triggers are filtered when displaying deprecation details
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/deprecation-trigger/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/_files/details/phpunit.xml';
 $_SERVER['argv'][] = '--display-deprecations';
 
-require_once __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
