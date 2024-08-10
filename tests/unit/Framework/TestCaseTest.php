@@ -1247,6 +1247,9 @@ final class TestCaseTest extends TestCase
         trigger_error('foo', E_USER_WARNING);
     }
 
+    /**
+     * @requires PHP 8
+     */
     public function testErrorCanBeExpected(): void
     {
         $this->expectError();
