@@ -2,7 +2,7 @@
 The right events are emitted in the right order for a test that runs code which triggers E_USER_ERROR
 --SKIPIF--
 <?php declare(strict_types=1);
-if (!version_compare('8.4.0-dev', PHP_VERSION)) {
+if (version_compare('8.4.0-dev', PHP_VERSION)) {
     print 'skip: PHP 8.4 is required.';
 }
 --FILE--
@@ -35,6 +35,8 @@ Test Suite Started (PHPUnit\TestFixture\Event\UserErrorTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Assertion Succeeded (Constraint: is true, Value: true)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 message
 Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
@@ -42,6 +44,8 @@ E_USER_ERROR was triggered
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 message
 Test Errored (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
