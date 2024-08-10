@@ -316,9 +316,9 @@ final class ErrorHandler
     }
 
     /**
-     * @return null|array{file: string, line: int}
+     * @return ?array{file: non-empty-string, line: positive-int}
      */
-    private function guessDeprecationFrame(): null|array
+    private function guessDeprecationFrame(): ?array
     {
         if ($this->deprecationTriggers === null) {
             return null;
