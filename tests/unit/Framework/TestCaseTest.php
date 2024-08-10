@@ -1253,7 +1253,7 @@ final class TestCaseTest extends TestCase
         $this->expectErrorMessage('foo');
         $this->expectErrorMessageMatches('/foo/');
 
-        trigger_error('foo', E_USER_ERROR);
+        @trigger_error('foo', E_USER_ERROR);
     }
 
     /**
