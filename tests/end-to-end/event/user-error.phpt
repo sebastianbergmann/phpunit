@@ -3,7 +3,7 @@ The right events are emitted in the right order for a test that runs code which 
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!version_compare('8.4.0-dev', PHP_VERSION)) {
-    print 'skip: PHP 8.4 is required.';
+    print 'skip: PHP < 8.4 is required.';
 }
 --FILE--
 <?php declare(strict_types=1);
