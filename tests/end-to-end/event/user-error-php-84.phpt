@@ -34,8 +34,7 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\UserErrorTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
-Assertion Succeeded (Constraint: is true, Value: true)
-Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\UserErrorTest::testUserError, unknown if issue was triggered in first-party code or third-party code)
 Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 message
@@ -44,7 +43,7 @@ E_USER_ERROR was triggered
 Test Finished (PHPUnit\TestFixture\Event\UserErrorTest::testUserError)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 Test Prepared (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
-Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution, unknown if issue was triggered in first-party code or third-party code)
 Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead
 Test Triggered Error (PHPUnit\TestFixture\Event\UserErrorTest::testUserErrorMustAbortExecution)
 message
