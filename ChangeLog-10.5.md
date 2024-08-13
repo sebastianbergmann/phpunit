@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.30] - 2024-08-13
+
+### Changed
+
+* Improved error message when stubbed method is called more often than return values were configured for it
+
 ## [10.5.29] - 2024-07-30
 
 ### Fixed
@@ -265,6 +271,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.30]: https://github.com/sebastianbergmann/phpunit/compare/10.5.29...10.5.30
 [10.5.29]: https://github.com/sebastianbergmann/phpunit/compare/10.5.28...10.5.29
 [10.5.28]: https://github.com/sebastianbergmann/phpunit/compare/10.5.27...10.5.28
 [10.5.27]: https://github.com/sebastianbergmann/phpunit/compare/10.5.26...10.5.27
