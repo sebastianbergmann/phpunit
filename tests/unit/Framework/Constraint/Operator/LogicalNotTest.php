@@ -82,7 +82,7 @@ final class LogicalNotTest extends TestCase
             ['dinner ends with desert', 'dinner ends not with desert'],
             ['it ends with', 'it ends with'],
             ['you reference me', 'you don\'t reference me'],
-            ['it\'s not not false', 'it\'s not false'],
+            ['it\'s not false', 'it\'s not false'],
         ];
     }
 
