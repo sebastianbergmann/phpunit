@@ -107,7 +107,7 @@ abstract class UnaryOperator extends Operator
     }
 
     /**
-     * Transforms string returned by the memeber constraint's toString() or
+     * Transforms string returned by the member constraint's toString() or
      * failureDescription() such that it reflects constraint's participation in
      * this expression.
      *
