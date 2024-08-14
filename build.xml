@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpunit" default="setup">
-    <target name="setup" depends="install-dependencies"/>
+    <target name="setup" depends="clean-build-artifacts,install-dependencies"/>
 
-    <target name="clean" description="Cleanup build artifacts">
+    <target name="clean" description="Cleanup build artifacts and vendor directory" depends="clean-build-artifacts,clean-vendor">
+    </target>
+
+    <target name="clean-build-artifacts" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/tmp"/>
+    </target>
+
+    <target name="clean-vendor" description="Cleanup vendor directory">
         <delete dir="${basedir}/vendor"/>
     </target>
 
