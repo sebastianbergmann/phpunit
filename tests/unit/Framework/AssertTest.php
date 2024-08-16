@@ -1026,6 +1026,21 @@ XML;
         $this->assertThat([], $this->isEmpty());
     }
 
+    public function testAssertThatFileIsReadable(): void
+    {
+        $this->assertThat(__FILE__, $this->isReadable());
+    }
+
+    public function testAssertThatFileIsWritable(): void
+    {
+        $this->assertThat(__FILE__, $this->isWritable());
+    }
+
+    public function testAssertThatDirectoryExists(): void
+    {
+        $this->assertThat(__DIR__, $this->directoryExists());
+    }
+
     public function testAssertThatFileExists(): void
     {
         $this->assertThat(__FILE__, $this->fileExists());
@@ -1094,6 +1109,21 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileNotEquals(
+            TEST_FILES_PATH . 'foo.xml',
+            TEST_FILES_PATH . 'foo.xml',
+        );
+    }
+
+    public function testAssertFileNotEqualsCanonicalizing(): void
+    {
+        $this->assertFileNotEqualsCanonicalizing(
+            TEST_FILES_PATH . 'foo.xml',
+            TEST_FILES_PATH . 'bar.xml',
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileNotEqualsCanonicalizing(
             TEST_FILES_PATH . 'foo.xml',
             TEST_FILES_PATH . 'foo.xml',
         );
