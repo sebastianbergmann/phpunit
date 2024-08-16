@@ -928,14 +928,39 @@ XML;
         );
     }
 
-    public function testAssertThatContains(): void
+    public function testAssertThatContainsEqual(): void
+    {
+        $this->assertThat(['foo'], $this->containsEqual('foo'));
+    }
+
+    public function testAssertThatContainsIdentical(): void
     {
         $this->assertThat(['foo'], $this->containsIdentical('foo'));
+    }
+
+    public function testAssertThatStringMatchesFormatDescription(): void
+    {
+        $this->assertThat('foo', $this->matches('%s'));
     }
 
     public function testAssertThatStringContains(): void
     {
         $this->assertThat('barfoobar', $this->stringContains('foo'));
+    }
+
+    public function testAssertThatStringStartsWith(): void
+    {
+        $this->assertThat('foobar', $this->stringStartsWith('foo'));
+    }
+
+    public function testAssertThatStringEndsWith(): void
+    {
+        $this->assertThat('foobar', $this->stringEndsWith('bar'));
+    }
+
+    public function testAssertThatStringEqualsStringIgnoringLineEndings(): void
+    {
+        $this->assertThat('foo' . "\r\n", $this->stringEqualsStringIgnoringLineEndings('foo' . "\n"));
     }
 
     public function testAssertThatContainsOnly(): void
@@ -961,6 +986,21 @@ XML;
     public function testAssertThatEqualTo(): void
     {
         $this->assertThat('foo', $this->equalTo('foo'));
+    }
+
+    public function testAssertThatEqualToCanonicalizing(): void
+    {
+        $this->assertThat(['foo', 'bar'], $this->equalToCanonicalizing(['bar', 'foo']));
+    }
+
+    public function testAssertThatEqualToIgnoringCase(): void
+    {
+        $this->assertThat('foo', $this->equalToIgnoringCase('FOO'));
+    }
+
+    public function testAssertThatEqualToWithDelta(): void
+    {
+        $this->assertThat(1.0, $this->equalToWithDelta(1.09, 0.1));
     }
 
     public function testAssertThatIdenticalTo(): void
