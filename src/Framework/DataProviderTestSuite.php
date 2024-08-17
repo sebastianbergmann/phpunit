@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Framework;
 
+use function assert;
+use function class_exists;
+use function explode;
+use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Metadata\Api\Groups;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -34,7 +40,9 @@ final class DataProviderTestSuite extends TestSuite
         $this->dependencies = $dependencies;
 
         foreach ($this->tests() as $test) {
-            assert($test instanceof TestCase);
+            if (!$test instanceof TestCase) {
+                continue;
+            }
 
             $test->setDependencies($dependencies);
         }
@@ -60,5 +68,18 @@ final class DataProviderTestSuite extends TestSuite
         // A DataProviderTestSuite does not have to traverse its child tests
         // as these are inherited and cannot reference dataProvider rows directly
         return $this->dependencies;
+    }
+
+    /**
+     * Returns the size of each test created using the data provider(s).
+     */
+    public function size(): TestSize
+    {
+        [$className, $methodName] = explode('::', $this->name());
+
+        assert(class_exists($className));
+        assert($methodName !== '');
+
+        return (new Groups)->size($className, $methodName);
     }
 }
