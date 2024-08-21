@@ -7,12 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\CoversUsesFiltering;
+namespace PHPUnit\TestFixture\AttributeBasedFiltering;
 
-final class Foo
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+
+#[UsesClass(Foo::class)]
+final class UsesTest extends TestCase
 {
-    public function bar(): bool
+    public function testOne(): void
     {
-        return true;
+        $this->assertTrue(true);
     }
 }

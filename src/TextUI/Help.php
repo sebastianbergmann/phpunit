@@ -178,6 +178,7 @@ final class Help
                 ['arg' => '--exclude-group <name>', 'desc' => 'Exclude tests from the specified group(s)'],
                 ['arg' => '--covers <name>', 'desc' => 'Only run tests that intend to cover <name>'],
                 ['arg' => '--uses <name>', 'desc' => 'Only run tests that intend to use <name>'],
+                ['arg' => '--requires-php-extension <name>', 'desc' => 'Only run tests that require PHP extension <name>'],
                 ['arg' => '--list-test-files', 'desc' => 'List available test files'],
                 ['arg' => '--list-tests', 'desc' => 'List available tests'],
                 ['arg' => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],

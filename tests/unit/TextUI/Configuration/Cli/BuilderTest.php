@@ -731,6 +731,26 @@ final class BuilderTest extends TestCase
         $configuration->testsUsing();
     }
 
+    #[TestDox('--requires-php-extension extension')]
+    public function testRequiresPhpExtension(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--requires-php-extension', 'extension']);
+
+        $this->assertTrue($configuration->hasTestsRequiringPhpExtension());
+        $this->assertSame(['extension'], $configuration->testsRequiringPhpExtension());
+    }
+
+    public function testRequiresPhpExtensionMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTestsRequiringPhpExtension());
+
+        $this->expectException(Exception::class);
+
+        $configuration->testsRequiringPhpExtension();
+    }
+
     #[TestDox('--test-suffix string')]
     public function testTestSuffix(): void
     {

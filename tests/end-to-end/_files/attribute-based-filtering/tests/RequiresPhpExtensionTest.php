@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\CoversUsesFiltering;
+namespace PHPUnit\TestFixture\AttributeBasedFiltering;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Foo::class)]
-final class CoversTest extends TestCase
+#[RequiresPhpExtension('standard')]
+final class RequiresPhpExtensionTest extends TestCase
 {
     public function testOne(): void
     {

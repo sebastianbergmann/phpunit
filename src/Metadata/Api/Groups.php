@@ -21,6 +21,7 @@ use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\Group;
 use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
@@ -98,6 +99,12 @@ final class Groups
                 assert($metadata instanceof Uses);
 
                 $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->target());
+            }
+
+            if ($metadata->isRequiresPhpExtension()) {
+                assert($metadata instanceof RequiresPhpExtension);
+
+                $groups[] = '__phpunit_requires_php_extension' . $this->canonicalizeName($metadata->extension());
             }
         }
 

@@ -29,6 +29,7 @@ Selection:
   --exclude-group <name>             Exclude tests from the specified group(s)
   --covers <name>                    Only run tests that intend to cover <name>
   --uses <name>                      Only run tests that intend to use <name>
+  --requires-php-extension <name>    Only run tests that require PHP extension <name>
   --list-test-files                  List available test files
   --list-tests                       List available tests
   --list-tests-xml <file>            List available tests in XML format
