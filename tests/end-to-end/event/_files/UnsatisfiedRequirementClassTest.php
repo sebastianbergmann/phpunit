@@ -12,9 +12,9 @@ namespace PHPUnit\TestFixture\Event;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\TestCase;
 
-final class UnsatisfiedRequirementTest extends TestCase
+#[RequiresPhp('100')]
+final class UnsatisfiedRequirementClassTest extends TestCase
 {
-    #[RequiresPhp('100')]
     public function testOne(): void
     {
         $this->assertTrue(true);
