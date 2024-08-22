@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test that has an unsatisfied requirement
+The right events are emitted in the right order for a test that has an unsatisfied requirement (method level)
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = __DIR__ . '/_files/UnsatisfiedRequirementTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/UnsatisfiedRequirementMethodTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -26,11 +26,11 @@ Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest::testOne)
-Test Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest::testOne)
+Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest::testOne)
+Test Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest::testOne)
 PHP 100 is required.
-Test Suite Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest, 1 test)
+Test Suite Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
