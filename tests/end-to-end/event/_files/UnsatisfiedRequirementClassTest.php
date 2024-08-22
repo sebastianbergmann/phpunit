@@ -11,11 +11,11 @@ namespace PHPUnit\TestFixture\Event;
 
 use PHPUnit\Framework\TestCase;
 
-final class UnsatisfiedRequirementTest extends TestCase
+/**
+ * @requires PHP 100
+ */
+final class UnsatisfiedRequirementClassTest extends TestCase
 {
-    /**
-     * @requires PHP 100
-     */
     public function testOne(): void
     {
         $this->assertTrue(true);
