@@ -41,7 +41,7 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
 
         $groupTests = [];
 
-        foreach ($suite->groupDetails() as $group => $tests) {
+        foreach ($suite->groups() as $group => $tests) {
             if (in_array($group, $groups, true)) {
                 $groupTests = array_merge($groupTests, $tests);
 

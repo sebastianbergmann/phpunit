@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
-use function array_keys;
 use function array_merge;
 use function array_pop;
 use function array_reverse;
@@ -302,19 +301,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Returns the test groups of the suite.
-     *
-     * @return list<non-empty-string>
-     */
-    public function groups(): array
-    {
-        return array_keys($this->groups);
-    }
-
-    /**
      * @return array<non-empty-string, list<non-empty-string>>
      */
-    public function groupDetails(): array
+    public function groups(): array
     {
         return $this->groups;
     }
