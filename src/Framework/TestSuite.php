@@ -635,7 +635,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     continue;
                 }
 
-                if ($missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod)) {
+                $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod);
+
+                if ($missingRequirements !== []) {
                     $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
                 }
 
