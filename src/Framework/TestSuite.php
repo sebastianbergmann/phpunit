@@ -56,7 +56,7 @@ use Throwable;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
+class TestSuite implements IteratorAggregate, Reorderable, Test
 {
     /**
      * @var non-empty-string
@@ -127,14 +127,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     final private function __construct(string $name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * Returns a string representation of the test suite.
-     */
-    public function toString(): string
-    {
-        return $this->name();
     }
 
     /**
