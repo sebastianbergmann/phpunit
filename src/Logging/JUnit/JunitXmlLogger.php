@@ -309,6 +309,7 @@ final class JunitXmlLogger
         $this->document->formatOutput = true;
 
         $this->root = $this->document->createElement('testsuites');
+        $this->root->setAttribute('name', 'PHPUnit tests');
         $this->document->appendChild($this->root);
     }
 
