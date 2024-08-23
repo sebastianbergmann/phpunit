@@ -29,6 +29,31 @@ use ReflectionProperty;
 #[Medium]
 final class MockObjectTest extends TestDoubleTestCase
 {
+    public function testExpecationThatUnconfiguredMethodCallFailsWhenMethodIsCalled(): void
+    {
+        $mock = $this->createMock(AnInterface::class);
+        $this->assertThatMockObjectExpectationFails(
+            AnInterface::class . '::doSomething() is unconfigured, but was called. Unconfigured method name must not be '
+            . 'called. To configure methods, use the `method` method on the mock object.',
+            $mock,
+            'doSomething',
+        );
+    }
+
+    public function testExpecationThatUnconfiguredMethodCallFailsButConfiguredMethodsExistWhenMethodIsCalled(): void
+    {
+        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $mock->expects($this->once())->method('two');
+        $mock->two();
+
+        $this->assertThatMockObjectExpectationFails(
+            InterfaceWithImplicitProtocol::class . '::one() is unconfigured, but was called. Unconfigured method name must not be '
+            . 'called. To configure methods, use the `method` method on the mock object.',
+            $mock,
+            'one',
+        );
+    }
+
     public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
     {
         $mock = $this->createMock(AnInterface::class);
@@ -472,7 +497,7 @@ EOT,
     {
         try {
             call_user_func_array([$mock, $methodName], $arguments);
-        } catch (ExpectationFailedException|MatchBuilderNotFoundException $e) {
+        } catch (ExpectationFailedException|MatchBuilderNotFoundException|UnconfiguredMethodsMustNotBeCalledException $e) {
             $this->assertSame($expectationFailureMessage, $e->getMessage());
 
             return;

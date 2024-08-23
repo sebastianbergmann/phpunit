@@ -100,10 +100,12 @@ final class InvocationHandler
         $exception      = null;
         $hasReturnValue = false;
         $returnValue    = null;
+        $matchFound = false;
 
         foreach ($this->matchers as $match) {
             try {
                 if ($match->matches($invocation)) {
+                    $matchFound = true;
                     $value = $match->invoked($invocation);
 
                     if (!$hasReturnValue) {
@@ -114,6 +116,10 @@ final class InvocationHandler
             } catch (Exception $e) {
                 $exception = $e;
             }
+        }
+
+        if(!$matchFound) {
+            throw new UnconfiguredMethodsMustNotBeCalledException($invocation->className(), $invocation->methodName());
         }
 
         if ($exception !== null) {
