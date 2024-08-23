@@ -111,6 +111,7 @@ final class InvocationHandler
                     if (!$hasReturnValue) {
                         $returnValue    = $value;
                         $hasReturnValue = true;
+                        break;
                     }
                 }
             } catch (Exception $e) {
