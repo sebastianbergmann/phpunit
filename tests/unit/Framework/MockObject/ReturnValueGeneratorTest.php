@@ -169,15 +169,17 @@ final class ReturnValueGeneratorTest extends TestCase
     public function test_Generates_new_instance_of_test_stub_for_static_when_used_recursively(): void
     {
         $a = $this->createStub(AnInterfaceForIssue5593::class);
-
+        $a->method('doSomething');
         $this->assertInstanceOf(AnInterfaceForIssue5593::class, $a);
 
+        /** @var MockObject&AnotherInterfaceForIssue5593 $b */
         $b = $a->doSomething();
-
+        $b->method('doSomethingElse');
         $this->assertInstanceOf(AnotherInterfaceForIssue5593::class, $b);
 
+        /** @var MockObject&AnotherInterfaceForIssue5593 $c */
         $c = $b->doSomethingElse();
-
+        $c->method('doSomethingElse');
         $this->assertInstanceOf(AnotherInterfaceForIssue5593::class, $c);
     }
 

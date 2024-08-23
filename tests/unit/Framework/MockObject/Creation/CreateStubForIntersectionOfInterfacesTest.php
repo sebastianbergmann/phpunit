@@ -38,7 +38,8 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
     public function testReturnValueGenerationIsEnabledByDefault(): void
     {
         $double = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
-
+        $double->method('doSomething');
+        $double->method('doSomethingElse');
         $this->assertFalse($double->doSomething());
         $this->assertNull($double->doSomethingElse());
     }

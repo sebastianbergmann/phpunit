@@ -49,7 +49,7 @@ final class CreateStubTest extends TestCase
     public function testReturnValueGenerationIsEnabledByDefault(): void
     {
         $double = $this->createStub(AnInterface::class);
-
+        $double->method('doSomething');
         $this->assertFalse($double->doSomething());
     }
 

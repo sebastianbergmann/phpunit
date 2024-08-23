@@ -25,14 +25,14 @@ abstract class TestDoubleTestCase extends TestCase
     final public function testMethodReturnsNullWhenReturnValueIsNullableAndNoReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
+        $double->method('returnsNullOrString');
         $this->assertNull($double->returnsNullOrString());
     }
 
     final public function testMethodReturnsGeneratedValueWhenReturnValueGenerationIsEnabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
+        $double->method('doSomething');
         $this->assertFalse($double->doSomething());
     }
 
@@ -43,7 +43,7 @@ abstract class TestDoubleTestCase extends TestCase
         $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
             ->disableAutoReturnValueGeneration()
             ->getMock();
-
+        $double->method('__toString');
         $this->assertSame('', $double->__toString());
     }
 
@@ -232,7 +232,7 @@ abstract class TestDoubleTestCase extends TestCase
     final public function testMethodWithNeverReturnTypeDeclarationThrowsException(): void
     {
         $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
-
+        $double->method('m');
         $this->expectException(NeverReturningMethodException::class);
         $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
 
@@ -243,7 +243,7 @@ abstract class TestDoubleTestCase extends TestCase
     final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectIsCloned(): void
     {
         $double = clone $this->createTestDouble(ExtendableClassWithCloneMethod::class);
-
+        $double->method('doSomething');
         $this->assertFalse($double->doSomething());
     }
 

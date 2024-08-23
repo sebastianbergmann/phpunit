@@ -49,7 +49,7 @@ final class CreateMockTest extends TestCase
     public function testReturnValueGenerationIsEnabledByDefault(): void
     {
         $double = $this->createMock(AnInterface::class);
-
+        $double->method('doSomething');
         $this->assertFalse($double->doSomething());
     }
 
