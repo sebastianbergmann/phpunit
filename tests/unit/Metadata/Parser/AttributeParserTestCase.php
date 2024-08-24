@@ -17,6 +17,7 @@ use PHPUnit\Metadata\DependsOnMethod;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
+use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
@@ -45,6 +46,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresSettingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
@@ -313,6 +315,22 @@ abstract class AttributeParserTestCase extends TestCase
         assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
+    }
+
+    #[TestDox('Parses #[RequiresPhpunitExtension] attribute on class')]
+    public function test_parses_RequiresPhpunitExtension_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(RequiresPhpunitExtensionTest::class)->isRequiresPhpunitExtension();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpunitExtension());
+
+        assert($requirement instanceof RequiresPhpunitExtension);
+
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\SomeExtension', $requirement->extensionClass());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on class')]
@@ -865,6 +883,24 @@ abstract class AttributeParserTestCase extends TestCase
         assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('^10.0', $versionRequirement->asString());
+    }
+
+    #[TestDox('Parses #[RequiresPhpunitExtension] attribute on method')]
+    public function test_parses_RequiresPhpunitExtension_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RequiresPhpunitExtensionTest::class, 'testOne')->isRequiresPhpunitExtension();
+
+        $this->assertCount(2, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+        $this->assertTrue($requirement->isRequiresPhpunitExtension());
+        assert($requirement instanceof RequiresPhpunitExtension);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\SomeExtension', $requirement->extensionClass());
+
+        $requirement = $metadata->asArray()[1];
+        $this->assertTrue($requirement->isRequiresPhpunitExtension());
+        assert($requirement instanceof RequiresPhpunitExtension);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\SomeOtherExtension', $requirement->extensionClass());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on method')]

@@ -123,6 +123,10 @@ final class RequirementsTest extends TestCase
                 'PHP ^1.0 is required.',
                 'PHPUnit ^2.0 is required.',
             ]],
+            ['testPHPUnitExtensionRequired', [
+                'PHPUnit extension "PHPUnit\TestFixture\SomeExtension" is required.',
+                'PHPUnit extension "PHPUnit\TestFixture\SomeOtherExtension" is required.',
+            ]],
         ];
     }
 

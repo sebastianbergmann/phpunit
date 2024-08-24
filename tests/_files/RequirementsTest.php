@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
+use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\Ticket;
@@ -361,6 +362,12 @@ final class RequirementsTest extends TestCase
 
     #[RequiresSetting('display_errors', 'On')]
     public function testSettingDisplayErrorsOn(): void
+    {
+    }
+
+    #[RequiresPhpunitExtension(SomeExtension::class)]
+    #[RequiresPhpunitExtension(SomeOtherExtension::class)]
+    public function testPHPUnitExtensionRequired(): void
     {
     }
 }
