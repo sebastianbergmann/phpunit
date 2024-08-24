@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Util\VersionComparisonOperator;
+use stdClass;
 
 #[CoversClass(MetadataCollection::class)]
 #[CoversClass(MetadataCollectionIterator::class)]
@@ -48,6 +49,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[UsesClass(RequiresPhp::class)]
 #[UsesClass(RequiresPhpExtension::class)]
 #[UsesClass(RequiresPhpunit::class)]
+#[UsesClass(RequiresPhpunitExtension::class)]
 #[UsesClass(RequiresSetting::class)]
 #[UsesClass(RunClassInSeparateProcess::class)]
 #[UsesClass(RunInSeparateProcess::class)]
@@ -404,6 +406,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresPhpunit());
     }
 
+    public function test_Can_be_filtered_for_RequiresPhpunitExtension(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresPhpunitExtension();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresPhpunitExtension());
+    }
+
     public function test_Can_be_filtered_for_RequiresSetting(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresSetting();
@@ -563,6 +573,7 @@ final class MetadataCollectionTest extends TestCase
                         new VersionComparisonOperator('>='),
                     ),
                 ),
+                Metadata::requiresPhpunitExtensionOnClass(stdClass::class),
                 Metadata::requiresSettingOnClass('foo', 'bar'),
                 Metadata::runClassInSeparateProcess(),
                 Metadata::runInSeparateProcess(),

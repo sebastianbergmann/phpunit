@@ -52,6 +52,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(RequiresPhp::class)]
 #[CoversClass(RequiresPhpExtension::class)]
 #[CoversClass(RequiresPhpunit::class)]
+#[CoversClass(RequiresPhpunitExtension::class)]
 #[CoversClass(RequiresSetting::class)]
 #[CoversClass(RunClassInSeparateProcess::class)]
 #[CoversClass(RunInSeparateProcess::class)]
@@ -110,6 +111,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -166,6 +169,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -222,6 +226,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -279,6 +284,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -336,6 +342,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -393,6 +400,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -450,6 +458,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -506,6 +515,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -562,6 +572,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -619,6 +630,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -676,6 +688,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -735,6 +748,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -793,6 +807,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -851,6 +866,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -910,6 +926,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -970,6 +987,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1026,6 +1044,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1082,6 +1101,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1141,6 +1161,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1201,6 +1222,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1262,6 +1284,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1318,6 +1341,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1374,6 +1398,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1430,6 +1455,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1487,6 +1513,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1544,6 +1571,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1603,6 +1631,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1662,6 +1691,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1720,6 +1750,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1776,6 +1807,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1832,6 +1864,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1888,6 +1921,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -1944,6 +1978,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2002,6 +2037,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2058,6 +2094,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2114,6 +2151,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2170,6 +2208,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2226,6 +2265,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2282,6 +2322,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2337,6 +2378,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2394,6 +2436,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2452,6 +2495,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2511,6 +2555,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2570,6 +2615,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2628,6 +2674,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2686,6 +2733,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2744,6 +2792,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2802,6 +2851,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2860,6 +2910,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2923,6 +2974,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -2986,6 +3038,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3044,6 +3097,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertTrue($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3112,6 +3166,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertTrue($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3172,6 +3227,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertTrue($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3240,6 +3296,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertTrue($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3305,6 +3362,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertTrue($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3317,6 +3375,65 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('>= 10.0.0', $metadata->versionRequirement()->asString());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
+    }
+
+    public function testCanBeRequiresPhpunitExtensionOnClass(): void
+    {
+        $metadata = Metadata::requiresPhpunitExtensionOnClass(SomeExtension::class);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertTrue($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(SomeExtension::class, $metadata->extensionClass());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -3368,6 +3485,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertTrue($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3380,6 +3498,65 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('>= 10.0.0', $metadata->versionRequirement()->asString());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
+    }
+
+    public function testCanBeRequiresPhpunitExtensionOnMethod(): void
+    {
+        $metadata = Metadata::requiresPhpunitExtensionOnMethod(SomeExtension::class);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertTrue($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(SomeExtension::class, $metadata->extensionClass());
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
@@ -3426,6 +3603,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertTrue($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3485,6 +3663,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertTrue($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3544,6 +3723,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertTrue($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3602,6 +3782,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertTrue($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3660,6 +3841,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertTrue($metadata->isTestWith());
@@ -3720,6 +3902,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3778,6 +3961,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3836,6 +4020,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3895,6 +4080,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -3953,6 +4139,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -4012,6 +4199,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -4070,6 +4258,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
@@ -4130,6 +4319,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresPhp());
         $this->assertFalse($metadata->isRequiresPhpExtension());
         $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());

@@ -13,9 +13,11 @@ use const PHP_OS;
 use const PHP_OS_FAMILY;
 use const PHP_VERSION;
 use function addcslashes;
+use function array_column;
 use function assert;
 use function extension_loaded;
 use function function_exists;
+use function in_array;
 use function ini_get;
 use function method_exists;
 use function phpversion;
@@ -29,8 +31,10 @@ use PHPUnit\Metadata\RequiresOperatingSystemFamily;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
+use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Runner\Version;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -82,6 +86,21 @@ final readonly class Requirements
                     $notSatisfied[] = sprintf(
                         'PHPUnit %s is required.',
                         $metadata->versionRequirement()->asString(),
+                    );
+                }
+            }
+
+            if ($metadata->isRequiresPhpunitExtension()) {
+                assert($metadata instanceof RequiresPhpunitExtension);
+
+                $configuration = ConfigurationRegistry::get();
+
+                $extensionBootstrappers = array_column($configuration->extensionBootstrappers(), 'className');
+
+                if ($configuration->noExtensions() || !in_array($metadata->extensionClass(), $extensionBootstrappers, true)) {
+                    $notSatisfied[] = sprintf(
+                        'PHPUnit extension "%s" is required.',
+                        $metadata->extensionClass(),
                     );
                 }
             }
