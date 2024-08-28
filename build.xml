@@ -23,6 +23,21 @@
         </exec>
     </target>
 
+    <target name="update-dependencies" description="Update (and bump) dependencies with Composer">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="bump"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-ansi"/>
+        </exec>
+    </target>
+
     <target name="update-tools">
         <exec executable="${basedir}/tools/phive">
             <arg value="--no-progress"/>
