@@ -46,7 +46,11 @@ final readonly class ListTestSuitesCommand implements Command
         ksort($suites);
 
         $buffer = $this->warnAboutConflictingOptions();
-        $buffer .= 'Available test suite(s):' . PHP_EOL;
+
+        $buffer .= sprintf(
+            'Available test suite%s:' . PHP_EOL,
+            count($suites) > 1 ? 's' : '',
+        );
 
         foreach ($suites as $suite => $numberOfTests) {
             $buffer .= sprintf(
