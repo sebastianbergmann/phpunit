@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function count;
 use function sprintf;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +38,10 @@ final readonly class ListTestsAsTextCommand implements Command
 
     public function execute(): Result
     {
-        $buffer = 'Available test(s):' . PHP_EOL;
+        $buffer = sprintf(
+            'Available test%s:' . PHP_EOL,
+            count($this->tests) > 1 ? 's' : '',
+        );
 
         foreach ($this->tests as $test) {
             if ($test instanceof TestCase) {
