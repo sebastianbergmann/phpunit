@@ -7,7 +7,7 @@
         </testsuite>
 
         <testsuite name="end-to-end">
-            <directory>tests/unit</directory>
+            <directory>tests/end-to-end</directory>
         </testsuite>
     </testsuites>
 </phpunit>
