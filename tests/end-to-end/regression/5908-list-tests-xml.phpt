@@ -18,9 +18,6 @@ unlink($file);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Wrote list of tests that would have been run to %s
-
-
 There were errors:
 
 The data provider specified for PHPUnit\TestFixture\Issue5908\Issue5908Test::testOne is invalid

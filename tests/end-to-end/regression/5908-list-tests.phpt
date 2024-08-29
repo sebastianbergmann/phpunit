@@ -13,9 +13,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Available test:
-
-
 There were errors:
 
 The data provider specified for PHPUnit\TestFixture\Issue5908\Issue5908Test::testOne is invalid

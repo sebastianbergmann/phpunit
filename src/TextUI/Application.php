@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
 use const PHP_VERSION;
+use function assert;
 use function class_exists;
 use function explode;
 use function function_exists;
@@ -297,38 +298,41 @@ final readonly class Application
 
     private function execute(Command\Command $command, bool $requiresResultCollectedFromEvents = false): never
     {
+        $errored = false;
+
         if ($requiresResultCollectedFromEvents) {
             try {
                 TestResultFacade::init();
                 EventFacade::instance()->seal();
 
                 $resultCollectedFromEvents = TestResultFacade::result();
+
+                $errored = $resultCollectedFromEvents->hasTestTriggeredPhpunitErrorEvents();
             } catch (EventFacadeIsSealedException|UnknownSubscriberTypeException) {
             }
         }
 
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
-        $result = $command->execute();
+        if (!$errored) {
+            $result = $command->execute();
 
-        print $result->output();
+            print $result->output();
 
-        $shellExitCode = $result->shellExitCode();
+            exit($result->shellExitCode());
+        }
 
-        if (isset($resultCollectedFromEvents) &&
-            $resultCollectedFromEvents->hasTestTriggeredPhpunitErrorEvents()) {
-            $shellExitCode = Result::EXCEPTION;
+        assert(isset($resultCollectedFromEvents));
 
-            print PHP_EOL . PHP_EOL . 'There were errors:' . PHP_EOL;
+        print 'There were errors:' . PHP_EOL;
 
-            foreach ($resultCollectedFromEvents->testTriggeredPhpunitErrorEvents() as $events) {
-                foreach ($events as $event) {
-                    print PHP_EOL . trim($event->message()) . PHP_EOL;
-                }
+        foreach ($resultCollectedFromEvents->testTriggeredPhpunitErrorEvents() as $events) {
+            foreach ($events as $event) {
+                print PHP_EOL . trim($event->message()) . PHP_EOL;
             }
         }
 
-        exit($shellExitCode);
+        exit(Result::EXCEPTION);
     }
 
     private function loadBootstrapScript(string $filename): void
