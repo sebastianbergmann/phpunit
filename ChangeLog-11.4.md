@@ -12,5 +12,6 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 * [#5927](https://github.com/sebastianbergmann/phpunit/pull/5927): `#[RequiresPhpunitExtension]` attribute
 * [#5928](https://github.com/sebastianbergmann/phpunit/issues/5928): Filter tests based on the PHP extensions they require
 * The output of `--list-groups` now shows how many tests a group contains
+* The output of `--list-suites` now shows how many tests a test suite contains
 
 [11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3...main

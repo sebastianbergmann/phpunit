@@ -10,9 +10,11 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function count;
+use function ksort;
 use function sprintf;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -21,22 +23,37 @@ use PHPUnit\TextUI\Configuration\TestSuiteCollection;
  */
 final readonly class ListTestSuitesCommand implements Command
 {
-    private TestSuiteCollection $suites;
+    private TestSuite $testSuite;
 
-    public function __construct(TestSuiteCollection $suites)
+    public function __construct(TestSuite $testSuite)
     {
-        $this->suites = $suites;
+        $this->testSuite = $testSuite;
     }
 
     public function execute(): Result
     {
+        /** @var array<non-empty-string, positive-int> $suites */
+        $suites = [];
+
+        foreach ($this->testSuite->tests() as $test) {
+            if (!$test instanceof TestSuite) {
+                continue;
+            }
+
+            $suites[$test->name()] = count($test->collect());
+        }
+
+        ksort($suites);
+
         $buffer = $this->warnAboutConflictingOptions();
         $buffer .= 'Available test suite(s):' . PHP_EOL;
 
-        foreach ($this->suites as $suite) {
+        foreach ($suites as $suite => $numberOfTests) {
             $buffer .= sprintf(
-                ' - %s' . PHP_EOL,
-                $suite->name(),
+                ' - %s (%d test%s)' . PHP_EOL,
+                $suite,
+                $numberOfTests,
+                $numberOfTests > 1 ? 's' : '',
             );
         }
 

@@ -469,10 +469,6 @@ final readonly class Application
 
     private function executeCommandsThatDoNotRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration): void
     {
-        if ($cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($configuration->testSuite()));
-        }
-
         if ($cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }
@@ -480,6 +476,10 @@ final readonly class Application
 
     private function executeCommandsThatRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
+        if ($cliConfiguration->listSuites()) {
+            $this->execute(new ListTestSuitesCommand($testSuite));
+        }
+
         if ($cliConfiguration->listGroups()) {
             $this->execute(
                 new ListGroupsCommand(
