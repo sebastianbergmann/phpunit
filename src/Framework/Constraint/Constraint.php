@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function assert;
 use function gettype;
+use function is_int;
 use function is_object;
 use function sprintf;
 use function str_replace;
@@ -246,7 +248,12 @@ abstract class Constraint implements Countable, SelfDescribing
 
             if ($reflector->isAnonymous()) {
                 $name = str_replace('class@anonymous', '', $reflector->getName());
-                $name = substr($name, 0, strpos($name, '$'));
+
+                $length = strpos($name, '$');
+
+                assert(is_int($length));
+
+                $name = substr($name, 0, $length);
 
                 return 'an instance of anonymous class created at ' . $name . ' ';
             }
