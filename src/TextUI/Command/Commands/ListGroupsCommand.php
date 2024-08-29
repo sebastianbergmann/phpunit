@@ -10,9 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
-use function array_merge;
-use function array_unique;
-use function sort;
+use function ksort;
 use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\TestCase;
@@ -40,32 +38,43 @@ final readonly class ListGroupsCommand implements Command
 
     public function execute(): Result
     {
+        /** @var array<non-empty-string, positive-int> $groups */
         $groups = [];
 
         foreach ($this->tests as $test) {
             if ($test instanceof PhptTestCase) {
-                $groups[] = 'default';
+                if (!isset($groups['default'])) {
+                    $groups['default'] = 1;
+                } else {
+                    $groups['default']++;
+                }
 
                 continue;
             }
 
-            $groups = array_merge($groups, $test->groups());
+            foreach ($test->groups() as $group) {
+                if (!isset($groups[$group])) {
+                    $groups[$group] = 1;
+                } else {
+                    $groups[$group]++;
+                }
+            }
         }
 
-        $groups = array_unique($groups);
-
-        sort($groups);
+        ksort($groups);
 
         $buffer = 'Available test group(s):' . PHP_EOL;
 
-        foreach ($groups as $group) {
+        foreach ($groups as $group => $numberOfTests) {
             if (str_starts_with($group, '__phpunit_')) {
                 continue;
             }
 
             $buffer .= sprintf(
-                ' - %s' . PHP_EOL,
+                ' - %s (%d test%s)' . PHP_EOL,
                 $group,
+                $numberOfTests,
+                $numberOfTests > 1 ? 's' : '',
             );
         }
 

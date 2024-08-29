@@ -11,5 +11,6 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 * [#5923](https://github.com/sebastianbergmann/phpunit/pull/5923): Filter configured deprecation triggers when displaying deprecation details
 * [#5927](https://github.com/sebastianbergmann/phpunit/pull/5927): `#[RequiresPhpunitExtension]` attribute
 * [#5928](https://github.com/sebastianbergmann/phpunit/issues/5928): Filter tests based on the PHP extensions they require
+* The output of `--list-groups` now shows how many tests a group contains
 
 [11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3...main
