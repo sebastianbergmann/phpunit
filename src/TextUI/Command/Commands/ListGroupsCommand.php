@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function count;
 use function ksort;
 use function sprintf;
 use function str_starts_with;
@@ -63,7 +64,10 @@ final readonly class ListGroupsCommand implements Command
 
         ksort($groups);
 
-        $buffer = 'Available test group(s):' . PHP_EOL;
+        $buffer = sprintf(
+            'Available test group%s:' . PHP_EOL,
+            count($groups) > 1 ? 's' : '',
+        );
 
         foreach ($groups as $group => $numberOfTests) {
             if (str_starts_with($group, '__phpunit_')) {
