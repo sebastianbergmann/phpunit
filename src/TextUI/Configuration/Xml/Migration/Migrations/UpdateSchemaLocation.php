@@ -21,15 +21,23 @@ use PHPUnit\Runner\Version;
  */
 final readonly class UpdateSchemaLocation implements Migration
 {
+    private const NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance';
+    private const LOCAL_NAME_SCHEMA_LOCATION = 'noNamespaceSchemaLocation';
+
     public function migrate(DOMDocument $document): void
     {
         $root = $document->documentElement;
 
         assert($root instanceof DOMElement);
 
+        $existingSchemaLocation = $root->getAttributeNodeNS(self::NAMESPACE, self::LOCAL_NAME_SCHEMA_LOCATION)?->value;
+        if ($existingSchemaLocation === implode(DIRECTORY_SEPARATOR, ['vendor', 'bin', 'phpunit', 'phpunit', 'phpunit.xsd'])) {
+            return;
+        }
+
         $root->setAttributeNS(
-            'http://www.w3.org/2001/XMLSchema-instance',
-            'xsi:noNamespaceSchemaLocation',
+            self::NAMESPACE,
+            'xsi:'. self::LOCAL_NAME_SCHEMA_LOCATION,
             'https://schema.phpunit.de/' . Version::series() . '/phpunit.xsd',
         );
     }
