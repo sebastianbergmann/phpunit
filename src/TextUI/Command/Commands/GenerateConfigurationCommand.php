@@ -62,12 +62,17 @@ final readonly class GenerateConfigurationCommand implements Command
             $cacheDirectory = '.phpunit.cache';
         }
 
+        $vendorSchemaLocation = implode(DIRECTORY_SEPARATOR, ['vendor', 'bin', 'phpunit', 'phpunit', 'phpunit.xsd']);
+        $schemaLocation = file_exists($vendorSchemaLocation)
+            ? $vendorSchemaLocation
+            : sprintf('https://schema.phpunit.de/%s/phpunit.xsd', Version::series());
+
         $generator = new Generator;
 
         $result = @file_put_contents(
             'phpunit.xml',
             $generator->generateDefaultConfiguration(
-                Version::series(),
+                $schemaLocation,
                 $bootstrapScript,
                 $testsDirectory,
                 $src,

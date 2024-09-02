@@ -48,7 +48,7 @@ final class GeneratorTest extends TestCase
 </phpunit>
 ',
             $generator->generateDefaultConfiguration(
-                'X.Y.Z',
+                'https://schema.phpunit.de/X.Y.Z/phpunit.xsd',
                 'vendor/autoload.php',
                 'tests',
                 'src',
