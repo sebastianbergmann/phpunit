@@ -4,6 +4,8 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ## [8.5.40] - 2024-MM-DD
 
+### Changed
+
 * Removed `.phpstorm.meta.php` file as methods such as `TestCase::createStub()` use generics / template types for their return types and PhpStorm, for example, uses that information
 
 ## [8.5.39] - 2024-07-10
