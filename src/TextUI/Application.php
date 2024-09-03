@@ -54,6 +54,7 @@ use PHPUnit\Runner\ResultCache\ResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
+use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
@@ -675,7 +676,7 @@ final readonly class Application
             $configuration->outputIsTestDox()) {
             return new TestDoxResultCollector(
                 EventFacade::instance(),
-                $configuration->source(),
+                new IssueFilter($configuration->source()),
             );
         }
 

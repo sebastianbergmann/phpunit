@@ -42,9 +42,8 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
-use PHPUnit\TextUI\Configuration\Source;
-use PHPUnit\TextUI\Configuration\SourceFilter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -53,7 +52,7 @@ use PHPUnit\TextUI\Configuration\SourceFilter;
  */
 final class Collector
 {
-    private readonly Source $source;
+    private readonly IssueFilter $issueFilter;
     private int $numberOfTests                       = 0;
     private int $numberOfTestsRun                    = 0;
     private int $numberOfAssertions                  = 0;
@@ -159,7 +158,7 @@ final class Collector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Facade $facade, Source $source)
+    public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
         $facade->registerSubscribers(
             new ExecutionStartedSubscriber($this),
@@ -188,7 +187,7 @@ final class Collector
             new TestRunnerTriggeredWarningSubscriber($this),
         );
 
-        $this->source = $source;
+        $this->issueFilter = $issueFilter;
     }
 
     public function result(): TestResult
@@ -346,33 +345,13 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($event->ignoredByTest()) {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
             return;
         }
 
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
-            return;
-        }
-
-        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
-            return;
-        }
-
-        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
-            return;
-        }
-
-        if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
-            return;
-        }
-
-        if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -394,33 +373,13 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($event->ignoredByTest()) {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
             return;
         }
 
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
-            return;
-        }
-
-        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
-            return;
-        }
-
-        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
-            return;
-        }
-
-        if (!$this->source->ignoreSuppressionOfPhpDeprecations() && $event->wasSuppressed()) {
-            return;
-        }
-
-        if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -451,7 +410,7 @@ final class Collector
 
     public function testTriggeredError(ErrorTriggered $event): void
     {
-        if (!$this->source->ignoreSuppressionOfErrors() && $event->wasSuppressed()) {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
             return;
         }
 
@@ -473,17 +432,13 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
+            return;
+        }
+
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if (!$this->source->ignoreSuppressionOfNotices() && $event->wasSuppressed()) {
-            return;
-        }
-
-        if ($this->source->restrictNotices() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -505,17 +460,13 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
+            return;
+        }
+
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if (!$this->source->ignoreSuppressionOfPhpNotices() && $event->wasSuppressed()) {
-            return;
-        }
-
-        if ($this->source->restrictNotices() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -537,17 +488,13 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
+            return;
+        }
+
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if (!$this->source->ignoreSuppressionOfWarnings() && $event->wasSuppressed()) {
-            return;
-        }
-
-        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -569,17 +516,13 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
+            return;
+        }
+
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if (!$this->source->ignoreSuppressionOfPhpWarnings() && $event->wasSuppressed()) {
-            return;
-        }
-
-        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
