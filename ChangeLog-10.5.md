@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.31] - 2024-MM-DD
 
+### Fixed
+
+* [#5884](https://github.com/sebastianbergmann/phpunit/issues/5884): TestDox printer does not consider that issues can be suppressed by attribute, baseline, source location, or `@` operator
+
 ### Changed
 
 * [#5931](https://github.com/sebastianbergmann/phpunit/pull/5931): `name` property on `<testsuites>` element in JUnit XML logfile
