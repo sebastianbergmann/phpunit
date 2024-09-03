@@ -4,13 +4,14 @@ All notable changes of the PHPUnit 11.3 release series are documented in this fi
 
 ## [11.3.2] - 2024-MM-DD
 
-### Fixed
-
-* [#5884](https://github.com/sebastianbergmann/phpunit/issues/5884): TestDox printer does not consider that issues can be suppressed by attribute, baseline, source location, or `@` operator
-
 ### Changed
 
 * [#5931](https://github.com/sebastianbergmann/phpunit/pull/5931): `name` property on `<testsuites>` element in JUnit XML logfile
+* Removed `.phpstorm.meta.php` file as methods such as `TestCase::createStub()` use generics / template types for their return types and PhpStorm, for example, uses that information
+
+### Fixed
+
+* [#5884](https://github.com/sebastianbergmann/phpunit/issues/5884): TestDox printer does not consider that issues can be suppressed by attribute, baseline, source location, or `@` operator
 
 ## [11.3.1] - 2024-08-13
 
