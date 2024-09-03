@@ -41,6 +41,8 @@ use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
+use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\SourceFilter;
 use ReflectionMethod;
 
 /**
@@ -50,6 +52,8 @@ use ReflectionMethod;
  */
 final class TestResultCollector
 {
+    private readonly Source $source;
+
     /**
      * @var array<string, list<TestDoxTestMethod>>
      */
@@ -62,8 +66,10 @@ final class TestResultCollector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Facade $facade)
+    public function __construct(Facade $facade, Source $source)
     {
+        $this->source = $source;
+
         $this->registerSubscribers($facade);
     }
 
@@ -214,12 +220,40 @@ final class TestResultCollector
             return;
         }
 
+        if ($event->ignoredByTest()) {
+            return;
+        }
+
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
+        if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
+            return;
+        }
+
+        if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
         $this->updateTestStatus(TestStatus::deprecation());
     }
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
         if (!$event->test()->isTestMethod()) {
+            return;
+        }
+
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
+        if (!$this->source->ignoreSuppressionOfNotices() && $event->wasSuppressed()) {
+            return;
+        }
+
+        if ($this->source->restrictNotices() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -232,12 +266,40 @@ final class TestResultCollector
             return;
         }
 
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
+        if (!$this->source->ignoreSuppressionOfWarnings() && $event->wasSuppressed()) {
+            return;
+        }
+
+        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
         $this->updateTestStatus(TestStatus::warning());
     }
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
         if (!$event->test()->isTestMethod()) {
+            return;
+        }
+
+        if ($event->ignoredByTest()) {
+            return;
+        }
+
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
+        if (!$this->source->ignoreSuppressionOfPhpDeprecations() && $event->wasSuppressed()) {
+            return;
+        }
+
+        if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
@@ -250,12 +312,36 @@ final class TestResultCollector
             return;
         }
 
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
+        if (!$this->source->ignoreSuppressionOfPhpNotices() && $event->wasSuppressed()) {
+            return;
+        }
+
+        if ($this->source->restrictNotices() && !(new SourceFilter)->includes($this->source, $event->file())) {
+            return;
+        }
+
         $this->updateTestStatus(TestStatus::notice());
     }
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
         if (!$event->test()->isTestMethod()) {
+            return;
+        }
+
+        if ($event->ignoredByBaseline()) {
+            return;
+        }
+
+        if (!$this->source->ignoreSuppressionOfPhpWarnings() && $event->wasSuppressed()) {
+            return;
+        }
+
+        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
             return;
         }
 
