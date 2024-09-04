@@ -40,4 +40,4 @@ Triggered by:
   %sDeprecationTest.php:%d
 
 OK, but there were issues!
-Tests: 3, Assertions: 3, Deprecations: 2.
+Tests: 3, Assertions: 3, Deprecations: 1, PHPUnit Deprecations: 1.

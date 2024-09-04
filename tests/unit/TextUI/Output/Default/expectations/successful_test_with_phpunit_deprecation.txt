@@ -12,4 +12,4 @@ message
 %s:%i
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Deprecations: 2.
+Tests: 1, Assertions: 1, PHPUnit Deprecations: 2.
