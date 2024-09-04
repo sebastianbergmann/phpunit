@@ -494,12 +494,24 @@ final class TestResult
 
     public function hasPhpOrUserDeprecations(): bool
     {
-        return count($this->phpDeprecations) > 0 || count($this->deprecations) > 0;
+        return $this->numberOfPhpOrUserDeprecations() > 0;
+    }
+
+    public function numberOfPhpOrUserDeprecations(): int
+    {
+        return count($this->deprecations) +
+               count($this->phpDeprecations);
     }
 
     public function hasPhpunitDeprecations(): bool
     {
-        return count($this->testTriggeredPhpunitDeprecationEvents) > 0 || count($this->testRunnerTriggeredDeprecationEvents) > 0;
+        return $this->numberOfPhpunitDeprecations() > 0;
+    }
+
+    public function numberOfPhpunitDeprecations(): int
+    {
+        return count($this->testTriggeredPhpunitDeprecationEvents) +
+               count($this->testRunnerTriggeredDeprecationEvents);
     }
 
     public function numberOfDeprecations(): int
