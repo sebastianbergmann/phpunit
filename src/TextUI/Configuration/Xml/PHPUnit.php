@@ -27,6 +27,7 @@ final class PHPUnit
     private readonly bool $displayDetailsOnIncompleteTests;
     private readonly bool $displayDetailsOnSkippedTests;
     private readonly bool $displayDetailsOnTestsThatTriggerDeprecations;
+    private readonly bool $displayDetailsOnPhpunitDeprecations;
     private readonly bool $displayDetailsOnTestsThatTriggerErrors;
     private readonly bool $displayDetailsOnTestsThatTriggerNotices;
     private readonly bool $displayDetailsOnTestsThatTriggerWarnings;
@@ -79,7 +80,7 @@ final class PHPUnit
     /**
      * @psalm-param ?non-empty-string $extensionsDirectory
      */
-    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection)
     {
         $this->cacheDirectory                                  = $cacheDirectory;
         $this->cacheResult                                     = $cacheResult;
@@ -90,6 +91,7 @@ final class PHPUnit
         $this->displayDetailsOnIncompleteTests                 = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                    = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations    = $displayDetailsOnTestsThatTriggerDeprecations;
+        $this->displayDetailsOnPhpunitDeprecations             = $displayDetailsOnPhpunitDeprecations;
         $this->displayDetailsOnTestsThatTriggerErrors          = $displayDetailsOnTestsThatTriggerErrors;
         $this->displayDetailsOnTestsThatTriggerNotices         = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings        = $displayDetailsOnTestsThatTriggerWarnings;
@@ -213,6 +215,11 @@ final class PHPUnit
     public function displayDetailsOnTestsThatTriggerDeprecations(): bool
     {
         return $this->displayDetailsOnTestsThatTriggerDeprecations;
+    }
+
+    public function displayDetailsOnPhpunitDeprecations(): bool
+    {
+        return $this->displayDetailsOnPhpunitDeprecations;
     }
 
     public function displayDetailsOnTestsThatTriggerErrors(): bool

@@ -31,6 +31,7 @@ final class GeneratorTest extends TestCase
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
+         displayDetailsOnPhpunitDeprecations="true"
          failOnPhpunitDeprecation="true"
          failOnRisky="true"
          failOnWarning="true">

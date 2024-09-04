@@ -818,6 +818,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnIncompleteTests', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnSkippedTests', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnTestsThatTriggerDeprecations', false),
+            $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnPhpunitDeprecations', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnTestsThatTriggerErrors', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnTestsThatTriggerNotices', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnTestsThatTriggerWarnings', false),

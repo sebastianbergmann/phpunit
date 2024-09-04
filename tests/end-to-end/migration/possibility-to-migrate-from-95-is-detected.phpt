@@ -3,6 +3,7 @@ Possibility to migrate XML configuration file from PHPUnit 9.5 format is detecte
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--display-phpunit-deprecations';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/possibility-to-migrate-from-95-is-detected/phpunit.xml';
 

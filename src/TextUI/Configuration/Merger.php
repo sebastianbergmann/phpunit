@@ -456,6 +456,12 @@ final class Merger
             $displayDetailsOnTestsThatTriggerDeprecations = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerDeprecations();
         }
 
+        if ($cliConfiguration->hasDisplayDetailsOnPhpunitDeprecations()) {
+            $displayDetailsOnPhpunitDeprecations = $cliConfiguration->displayDetailsOnPhpunitDeprecations();
+        } else {
+            $displayDetailsOnPhpunitDeprecations = $xmlConfiguration->phpunit()->displayDetailsOnPhpunitDeprecations();
+        }
+
         if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerErrors()) {
             $displayDetailsOnTestsThatTriggerErrors = $cliConfiguration->displayDetailsOnTestsThatTriggerErrors();
         } else {
@@ -818,6 +824,7 @@ final class Merger
             $displayDetailsOnIncompleteTests,
             $displayDetailsOnSkippedTests,
             $displayDetailsOnTestsThatTriggerDeprecations,
+            $displayDetailsOnPhpunitDeprecations,
             $displayDetailsOnTestsThatTriggerErrors,
             $displayDetailsOnTestsThatTriggerNotices,
             $displayDetailsOnTestsThatTriggerWarnings,
