@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Added
 
-* [#5937](https://github.com/sebastianbergmann/phpunit/issues/5937): Optionally ignore PHPUnit deprecations when determining the test runner's shell exit code
+* [#5937](https://github.com/sebastianbergmann/phpunit/issues/5937): `failOnPhpunitDeprecation` attribute on the `<phpunit>` element of the XML configuration file and `--fail-on-phpunit-deprecation` CLI option for controlling whether PHPUnit deprecations should be considered when determining the test runner's shell exit code (default: do not consider)
 
 ## [10.5.31] - 2024-09-03
 
