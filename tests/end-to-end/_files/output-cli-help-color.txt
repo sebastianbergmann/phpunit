@@ -84,6 +84,8 @@
                                      a test was considered risky
   [32m--fail-on-deprecation             [0m Signal failure using shell exit code when
                                      a deprecation was triggered
+  [32m--fail-on-phpunit-deprecation     [0m Signal failure using shell exit code when
+                                     a PHPUnit deprecation was triggered
   [32m--fail-on-notice                  [0m Signal failure using shell exit code when
                                      a notice was triggered
   [32m--fail-on-skipped                 [0m Signal failure using shell exit code when

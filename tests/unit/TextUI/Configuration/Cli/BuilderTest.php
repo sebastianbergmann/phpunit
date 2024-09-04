@@ -1255,6 +1255,26 @@ final class BuilderTest extends TestCase
         $configuration->failOnDeprecation();
     }
 
+    #[TestDox('--fail-on-phpunit-deprecation')]
+    public function testFailOnPhpunitDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-phpunit-deprecation']);
+
+        $this->assertTrue($configuration->hasFailOnPhpunitDeprecation());
+        $this->assertTrue($configuration->failOnPhpunitDeprecation());
+    }
+
+    public function testFailOnPhpunitDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnPhpunitDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnPhpunitDeprecation();
+    }
+
     #[TestDox('--fail-on-empty-test-suite')]
     public function testFailOnEmptyTestSuite(): void
     {

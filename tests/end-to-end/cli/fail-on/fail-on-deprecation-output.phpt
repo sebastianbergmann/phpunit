@@ -15,9 +15,18 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-D.                                                                  2 / 2 (100%)
+D.D                                                                 3 / 3 (100%)
 
 Time: %s, Memory: %s
+
+1 test triggered 1 PHPUnit deprecation:
+
+1) PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testThree
+message
+
+%sDeprecationTest.php:%d
+
+--
 
 1 test triggered 1 deprecation:
 
@@ -30,4 +39,4 @@ Triggered by:
   %sDeprecationTest.php:%d
 
 OK, but there were issues!
-Tests: 2, Assertions: 2, Deprecations: 1.
+Tests: 3, Assertions: 3, Deprecations: 2.
