@@ -55,4 +55,17 @@ final class MigratorTest extends TestCase
             ),
         );
     }
+
+    #[TestDox('Keep relative schema path when present')]
+    public function testKeepRelativeSchema(): void
+    {
+        $this->assertEquals(
+            (new XmlLoader)->loadFile(__DIR__ . '/../../../../_files/XmlConfigurationMigration/output-relative-schema-path.xml'),
+            (new XmlLoader)->load(
+                (new Migrator)->migrate(
+                    __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-relative-schema-path.xml',
+                ),
+            ),
+        );
+    }
 }

@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function assert;
+use function str_contains;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Runner\Version;
@@ -21,7 +22,7 @@ use PHPUnit\Runner\Version;
  */
 final readonly class UpdateSchemaLocation implements Migration
 {
-    private const NAMESPACE = 'http://www.w3.org/2001/XMLSchema-instance';
+    private const NAMESPACE                  = 'http://www.w3.org/2001/XMLSchema-instance';
     private const LOCAL_NAME_SCHEMA_LOCATION = 'noNamespaceSchemaLocation';
 
     public function migrate(DOMDocument $document): void
@@ -30,14 +31,15 @@ final readonly class UpdateSchemaLocation implements Migration
 
         assert($root instanceof DOMElement);
 
-        $existingSchemaLocation = $root->getAttributeNodeNS(self::NAMESPACE, self::LOCAL_NAME_SCHEMA_LOCATION)?->value;
-        if ($existingSchemaLocation === implode(DIRECTORY_SEPARATOR, ['vendor', 'bin', 'phpunit', 'phpunit', 'phpunit.xsd'])) {
+        $existingSchemaLocation = $root->getAttributeNodeNS(self::NAMESPACE, self::LOCAL_NAME_SCHEMA_LOCATION)->value;
+
+        if (str_contains($existingSchemaLocation, '://') === false) { // If the current schema location is a relative path, don't update it
             return;
         }
 
         $root->setAttributeNS(
             self::NAMESPACE,
-            'xsi:'. self::LOCAL_NAME_SCHEMA_LOCATION,
+            'xsi:' . self::LOCAL_NAME_SCHEMA_LOCATION,
             'https://schema.phpunit.de/' . Version::series() . '/phpunit.xsd',
         );
     }
