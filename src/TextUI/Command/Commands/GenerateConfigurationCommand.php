@@ -9,12 +9,15 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const STDIN;
 use function assert;
 use function fgets;
+use function file_exists;
 use function file_put_contents;
 use function getcwd;
+use function implode;
 use function sprintf;
 use function trim;
 use PHPUnit\Runner\Version;
@@ -63,7 +66,7 @@ final readonly class GenerateConfigurationCommand implements Command
         }
 
         $vendorSchemaLocation = implode(DIRECTORY_SEPARATOR, ['vendor', 'bin', 'phpunit', 'phpunit', 'phpunit.xsd']);
-        $schemaLocation = file_exists($vendorSchemaLocation)
+        $schemaLocation       = file_exists($vendorSchemaLocation)
             ? $vendorSchemaLocation
             : sprintf('https://schema.phpunit.de/%s/phpunit.xsd', Version::series());
 
