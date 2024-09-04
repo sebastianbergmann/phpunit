@@ -119,6 +119,7 @@
   [32m--display-skipped                 [0m Display details for skipped tests
   [32m--display-deprecations            [0m Display details for deprecations triggered
                                      by tests
+  [32m--display-phpunit-deprecations    [0m Display details for PHPUnit deprecations
   [32m--display-errors                  [0m Display details for errors triggered by
                                      tests
   [32m--display-notices                 [0m Display details for notices triggered by

@@ -60,6 +60,7 @@ final class Builder
         'display-incomplete',
         'display-skipped',
         'display-deprecations',
+        'display-phpunit-deprecations',
         'display-errors',
         'display-notices',
         'display-warnings',
@@ -196,6 +197,7 @@ final class Builder
         $displayIncomplete                 = null;
         $displaySkipped                    = null;
         $displayDeprecations               = null;
+        $displayPhpunitDeprecations        = null;
         $displayErrors                     = null;
         $displayNotices                    = null;
         $displayWarnings                   = null;
@@ -858,6 +860,11 @@ final class Builder
 
                     break;
 
+                case '--display-phpunit-deprecations':
+                    $displayPhpunitDeprecations = true;
+
+                    break;
+
                 case '--display-errors':
                     $displayErrors = true;
 
@@ -1078,6 +1085,7 @@ final class Builder
             $displayIncomplete,
             $displaySkipped,
             $displayDeprecations,
+            $displayPhpunitDeprecations,
             $displayErrors,
             $displayNotices,
             $displayWarnings,
