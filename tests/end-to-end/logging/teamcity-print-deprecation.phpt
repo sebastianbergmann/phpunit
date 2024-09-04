@@ -31,6 +31,6 @@ require realpath($parentDirectory . '/../bootstrap.php');
 
 ##teamcity[testStarted name='testThree' locationHint='php_qn:%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testThree' flowId='%d']
 
-##teamcity[testFinished name='testThree' duration='0' flowId='%d']
+##teamcity[testFinished name='testThree' duration='%d' flowId='%d']
 
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' flowId='%d']
