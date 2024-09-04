@@ -1991,6 +1991,26 @@ final class BuilderTest extends TestCase
         $configuration->displayDetailsOnTestsThatTriggerDeprecations();
     }
 
+    #[TestDox('--display-phpunit-deprecations')]
+    public function testDisplayPhpunitDeprecations(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--display-phpunit-deprecations']);
+
+        $this->assertTrue($configuration->hasDisplayDetailsOnPhpunitDeprecations());
+        $this->assertTrue($configuration->displayDetailsOnPhpunitDeprecations());
+    }
+
+    public function testDisplayPhpunitDeprecationsMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDisplayDetailsOnPhpunitDeprecations());
+
+        $this->expectException(Exception::class);
+
+        $configuration->displayDetailsOnPhpunitDeprecations();
+    }
+
     #[TestDox('--display-errors')]
     public function testDisplayErrors(): void
     {

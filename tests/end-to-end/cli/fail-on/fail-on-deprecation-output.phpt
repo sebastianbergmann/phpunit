@@ -5,6 +5,7 @@ Details for deprecations are displayed when --fail-on-deprecation is used
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--fail-on-deprecation';
+$_SERVER['argv'][] = '--fail-on-phpunit-deprecation';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/DeprecationTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
