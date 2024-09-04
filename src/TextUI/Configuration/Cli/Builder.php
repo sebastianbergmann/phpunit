@@ -101,6 +101,7 @@ final class Builder
         'static-backup',
         'stderr',
         'fail-on-deprecation',
+        'fail-on-phpunit-deprecation',
         'fail-on-empty-test-suite',
         'fail-on-incomplete',
         'fail-on-notice',
@@ -196,6 +197,7 @@ final class Builder
         $executionOrder                    = null;
         $executionOrderDefects             = null;
         $failOnDeprecation                 = null;
+        $failOnPhpunitDeprecation          = null;
         $failOnEmptyTestSuite              = null;
         $failOnIncomplete                  = null;
         $failOnNotice                      = null;
@@ -569,6 +571,11 @@ final class Builder
 
                     break;
 
+                case '--fail-on-phpunit-deprecation':
+                    $failOnPhpunitDeprecation = true;
+
+                    break;
+
                 case '--fail-on-empty-test-suite':
                     $failOnEmptyTestSuite = true;
 
@@ -911,6 +918,7 @@ final class Builder
             $executionOrder,
             $executionOrderDefects,
             $failOnDeprecation,
+            $failOnPhpunitDeprecation,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnNotice,

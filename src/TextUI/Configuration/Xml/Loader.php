@@ -826,6 +826,7 @@ final class Loader
             $bootstrap,
             $this->getBooleanAttribute($document->documentElement, 'processIsolation', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnDeprecation', false),
+            $this->getBooleanAttribute($document->documentElement, 'failOnPhpunitDeprecation', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnEmptyTestSuite', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnIncomplete', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnNotice', false),

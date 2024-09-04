@@ -20,3 +20,4 @@ require realpath($parentDirectory . '/../bootstrap.php');
 Deprecation (PHPUnit\TestFixture\TestRunnerStopping\Deprecation)
  [x] One
  [x] Two
+ [x] Three

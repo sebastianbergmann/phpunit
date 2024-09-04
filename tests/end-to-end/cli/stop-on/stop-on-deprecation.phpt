@@ -22,12 +22,12 @@ unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (2 tests)
+Test Suite Loaded (3 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 2 tests)
+Test Runner Execution Started (3 tests)
+Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
@@ -36,7 +36,7 @@ Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Runner Execution Aborted
-Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

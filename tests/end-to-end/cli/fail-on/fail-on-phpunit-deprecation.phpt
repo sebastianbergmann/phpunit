@@ -1,5 +1,5 @@
 --TEST--
-Test Runner exits with shell exit code indicating failure when all tests are successful but at least one test triggered a deprecation
+Test Runner exits with shell exit code indicating failure when all tests are successful but at least one test triggered a PHPUnit deprecation
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = '--fail-on-deprecation';
+$_SERVER['argv'][] = '--fail-on-phpunit-deprecation';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/stop-on-fail-on/DeprecationTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
