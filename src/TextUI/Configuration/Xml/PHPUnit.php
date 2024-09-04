@@ -253,7 +253,7 @@ final readonly class PHPUnit
 
     public function failOnPhpunitDeprecation(): bool
     {
-        return $this->failOnDeprecation;
+        return $this->failOnPhpunitDeprecation;
     }
 
     public function failOnEmptyTestSuite(): bool
