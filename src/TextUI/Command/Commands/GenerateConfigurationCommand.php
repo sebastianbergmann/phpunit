@@ -12,7 +12,9 @@ namespace PHPUnit\TextUI\Command;
 use const PHP_EOL;
 use const STDIN;
 use function assert;
+use function defined;
 use function fgets;
+use function file_exists;
 use function file_put_contents;
 use function getcwd;
 use function sprintf;
@@ -64,12 +66,22 @@ final readonly class GenerateConfigurationCommand implements Command
             $cacheDirectory = '.phpunit.cache';
         }
 
+        if (defined('PHPUNIT_COMPOSER_INSTALL') &&
+            file_exists($directory . '/vendor/phpunit/phpunit/phpunit.xsd')) {
+            $schemaLocation = 'vendor/phpunit/phpunit/phpunit.xsd';
+        } else {
+            $schemaLocation = sprintf(
+                'https://schema.phpunit.de/%s/phpunit.xsd',
+                Version::series(),
+            );
+        }
+
         $generator = new Generator;
 
         $result = @file_put_contents(
             $directory . '/phpunit.xml',
             $generator->generateDefaultConfiguration(
-                Version::series(),
+                $schemaLocation,
                 $bootstrapScript,
                 $testsDirectory,
                 $src,
