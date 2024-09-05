@@ -29,7 +29,9 @@ final readonly class GenerateConfigurationCommand implements Command
 {
     public function execute(): Result
     {
-        print 'Generating phpunit.xml in ' . getcwd() . PHP_EOL . PHP_EOL;
+        $directory = getcwd();
+
+        print 'Generating phpunit.xml in ' . $directory . PHP_EOL . PHP_EOL;
         print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
 
         $bootstrapScript = $this->read();
@@ -80,7 +82,7 @@ final readonly class GenerateConfigurationCommand implements Command
                 sprintf(
                     PHP_EOL . 'Generated phpunit.xml in %s.' . PHP_EOL .
                     'Make sure to exclude the %s directory from version control.' . PHP_EOL,
-                    getcwd(),
+                    $directory,
                     $cacheDirectory,
                 ),
             );
@@ -90,7 +92,7 @@ final readonly class GenerateConfigurationCommand implements Command
         return Result::from(
             sprintf(
                 PHP_EOL . 'Could not write phpunit.xml in %s.' . PHP_EOL,
-                getcwd(),
+                $directory,
             ),
             Result::EXCEPTION,
         );
