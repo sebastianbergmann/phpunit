@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use const PHP_VERSION;
 use function array_map;
 use function array_values;
 use function explode;

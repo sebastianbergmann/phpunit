@@ -10,8 +10,6 @@
 namespace PHPUnit\Framework\MockObject\Generator;
 
 use const PHP_EOL;
-use const PHP_MAJOR_VERSION;
-use const PHP_MINOR_VERSION;
 use function array_merge;
 use function array_pop;
 use function array_unique;

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use const PHP_VERSION;
 use function assert;
 use function interface_exists;
 use PHPUnit\Event\Telemetry\HRTime;
