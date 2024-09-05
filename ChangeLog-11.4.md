@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 * [#5927](https://github.com/sebastianbergmann/phpunit/pull/5927): `#[RequiresPhpunitExtension]` attribute
 * [#5928](https://github.com/sebastianbergmann/phpunit/issues/5928): Filter tests based on the PHP extensions they require
 * The XML configuration file generator now references `vendor/phpunit/phpunit/phpunit.xsd` (instead of `https://schema.phpunit.de/X.Y/phpunit.xsd`) when PHPUnit was installed using Composer and `phpunit --generate-configuration` was invoked in the directory where `vendor` is located
+* The `--migrate-configuration` command no longer replaces `vendor/phpunit/phpunit/phpunit.xsd` with `https://schema.phpunit.de/X.Y/phpunit.xsd`
 * The output of `--list-groups` now shows how many tests a group contains
 * The output of `--list-suites` now shows how many tests a test suite contains
 
