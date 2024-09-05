@@ -67,7 +67,7 @@ final readonly class GenerateConfigurationCommand implements Command
         $generator = new Generator;
 
         $result = @file_put_contents(
-            'phpunit.xml',
+            $directory . '/phpunit.xml',
             $generator->generateDefaultConfiguration(
                 Version::series(),
                 $bootstrapScript,
