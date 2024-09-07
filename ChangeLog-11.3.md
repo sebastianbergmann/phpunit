@@ -6,6 +6,8 @@ All notable changes of the PHPUnit 11.3 release series are documented in this fi
 
 ### Fixed
 
+* [#4674](https://github.com/sebastianbergmann/phpunit/issues/4674): JSON assertions should treat objects as unordered
+* [#4584](https://github.com/sebastianbergmann/phpunit/issues/4584): `assertJsonStringEqualsJsonString()` considers objects with sequential numeric keys equal to arrays
 * [#5929](https://github.com/sebastianbergmann/phpunit/issues/5929): TestDox output containing `$` at the beginning gets truncated when used with a data provider
 
 ## [11.3.3] - 2024-09-04
