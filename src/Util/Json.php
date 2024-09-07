@@ -12,9 +12,9 @@ namespace PHPUnit\Util;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
-use function count;
-use function is_array;
+use const SORT_STRING;
 use function is_object;
+use function is_scalar;
 use function json_decode;
 use function json_encode;
 use function json_last_error;
@@ -71,24 +71,31 @@ final readonly class Json
      */
     private static function recursiveSort(mixed &$json): void
     {
-        if (!is_array($json)) {
-            // If the object is not empty, change it to an associative array
-            // so we can sort the keys (and we will still re-encode it
-            // correctly, since PHP encodes associative arrays as JSON objects.)
-            // But EMPTY objects MUST remain empty objects. (Otherwise we will
-            // re-encode it as a JSON array rather than a JSON object.)
-            // See #2919.
-            if (is_object($json) && count((array) $json) > 0) {
-                $json = (array) $json;
-            } else {
-                return;
-            }
+        // Nulls, empty arrays, and scalars need no further handling.
+        if (!$json || is_scalar($json)) {
+            return;
         }
 
-        ksort($json);
+        $isObject = is_object($json);
+
+        if ($isObject) {
+            // Objects need to be sorted during canonicalization to ensure
+            // correct comparsion since JSON objects are unordered. It must be
+            // kept as an object so that the value correctly stays as a JSON
+            // object instead of potentially being converted to an array. This
+            // approach ensures that numeric string JSON keys are preserved and
+            // don't risk being flattened due to PHP's array semantics.
+            // See #2919, #4584, #4674
+            $json = (array) $json;
+            ksort($json, SORT_STRING);
+        }
 
         foreach ($json as &$value) {
             self::recursiveSort($value);
+        }
+
+        if ($isObject) {
+            $json = (object) $json;
         }
     }
 }
