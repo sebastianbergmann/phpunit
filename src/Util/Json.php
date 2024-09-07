@@ -19,7 +19,6 @@ use function json_decode;
 use function json_encode;
 use function json_last_error;
 use function ksort;
-use PHPUnit\Framework\Exception;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
