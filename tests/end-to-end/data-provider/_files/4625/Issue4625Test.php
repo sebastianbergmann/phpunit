@@ -24,8 +24,13 @@ class Issue4625Test extends TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testSomething(int $x): void
+    public function testOne(int $x): void
     {
         $this->assertGreaterThan(0, $x);
+    }
+
+    public function testTwo(): void
+    {
+        $this->assertTrue(true);
     }
 }
