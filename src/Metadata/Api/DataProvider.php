@@ -197,6 +197,7 @@ final class DataProvider
                             ),
                         );
                     }
+
                     $result[$key] = $value;
                 } else {
                     throw new InvalidDataProviderException(
