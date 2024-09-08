@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use ReflectionFunction;
+
 /**
  * @psalm-template CallbackInput of mixed
  *
@@ -38,13 +40,31 @@ final class Callback extends Constraint
     }
 
     /**
+     * @psalm-suppress ArgumentTypeCoercion
+     */
+    public function hasVariadicParam(): bool
+    {
+        foreach ((new ReflectionFunction($this->callback))->getParameters() as $parameter) {
+            if ($parameter->isVariadic()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Evaluates the constraint for parameter $value. Returns true if the
      * constraint is met, false otherwise.
      *
      * @psalm-param CallbackInput $other
+     *
+     * @psalm-suppress InvalidArgument
      */
     protected function matches(mixed $other): bool
     {
-        return ($this->callback)($other);
+        return $this->hasVariadicParam()
+            ? ($this->callback)(...$other)
+            : ($this->callback)($other);
     }
 }
