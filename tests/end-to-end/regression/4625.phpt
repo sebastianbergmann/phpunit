@@ -22,7 +22,7 @@ There was 1 PHPUnit error:
 
 1) PHPUnit\TestFixture\Issue4625\Issue4625Test::testOne
 The data provider specified for PHPUnit\TestFixture\Issue4625\Issue4625Test::testOne is invalid
-The key must be int or string, array given
+The key must be an integer or a string, array given
 
 %s:%d
 

@@ -202,7 +202,7 @@ final class DataProvider
                 } else {
                     throw new InvalidDataProviderException(
                         sprintf(
-                            'The key must be int or string, %s given',
+                            'The key must be an integer or a string, %s given',
                             get_debug_type($key),
                         ),
                     );
