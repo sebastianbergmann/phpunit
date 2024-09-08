@@ -4,9 +4,10 @@ https://github.com/sebastianbergmann/phpunit/issues/4625
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/4625';
+$_SERVER['argv'][] = __DIR__ . '/4625';
 
 require_once __DIR__ . '/../../bootstrap.php';
+
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
