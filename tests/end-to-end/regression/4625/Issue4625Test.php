@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture\Issue4625;
 
 use PHPUnit\Framework\TestCase;
 
-class Issue4625Test extends TestCase
+final class Issue4625Test extends TestCase
 {
     public static function dataProvider(): iterable
     {
