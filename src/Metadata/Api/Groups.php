@@ -59,10 +59,6 @@ final class Groups
             $groups[] = $group->groupName();
         }
 
-        if ($groups === []) {
-            $groups[] = 'default';
-        }
-
         if (!$includeVirtual) {
             return self::$groupCache[$key] = array_unique($groups);
         }

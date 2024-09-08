@@ -30,7 +30,6 @@ final class GroupsTest extends TestCase
         return [
             [
                 [
-                    'default',
                 ],
                 NoGroupsMetadataTest::class,
                 'testOne',
