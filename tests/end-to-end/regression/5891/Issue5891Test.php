@@ -15,8 +15,8 @@ final class Issue5891Test extends TestCase
 {
     public function testVariadicParam(): void
     {
-        $variadicParam = $this->createMock(VariadicParam::class);
-        $variadicParam
+        $mock = $this->createMock(ArgumentList::class);
+        $mock
             ->method('foo')
             ->with($this->callback(static function (...$items): bool
             {
@@ -25,31 +25,31 @@ final class Issue5891Test extends TestCase
                 return true;
             }));
 
-        $variadicParam->foo(1, 2, 3);
+        $mock->foo(1, 2, 3);
     }
 
     public function testTwoParametersAndVariadicParam(): void
     {
-        $twoParametersAndVariadicParam = $this->createMock(TwoParametersAndVariadicParam::class);
-        $twoParametersAndVariadicParam
+        $mock = $this->createMock(TwoParametersAndArgumentList::class);
+        $mock
             ->method('foo')
-            ->with($this->callback(static function ($head, ...$tail): bool
+            ->with($this->callback(static function (...$items): bool
             {
-                self::assertSame('1st', $head);
-                self::assertSame(['2nd', '3rd', '4th'], $tail);
+                self::assertSame(['1st', '2nd', '3rd', '4th'], $items);
 
                 return true;
             }));
 
-        $twoParametersAndVariadicParam->foo('1st', '2nd', '3rd', '4th');
+        $mock->foo('1st', '2nd', '3rd', '4th');
     }
 }
 
-interface VariadicParam
+interface ArgumentList
 {
     public function foo(int ...$items): void;
 }
-interface TwoParametersAndVariadicParam
+
+interface TwoParametersAndArgumentList
 {
     public function foo(string $first, string $second, string ...$rest): void;
 }
