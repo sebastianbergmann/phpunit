@@ -20,7 +20,7 @@ final class Issue5891Test extends TestCase
             ->method('foo')
             ->with($this->callback(static function (...$items): bool
             {
-                self::assertSame([1], $items); // should be "self::assertSame([1, 2, 3], $items);"
+                self::assertSame([1, 2, 3], $items);
 
                 return true;
             }));
@@ -36,7 +36,7 @@ final class Issue5891Test extends TestCase
             ->with($this->callback(static function ($head, ...$tail): bool
             {
                 self::assertSame('1st', $head);
-                self::assertSame([], $tail); // should be "self::assertSame(['2nd', '3rd', '4th'], $tail);"
+                self::assertSame(['2nd', '3rd', '4th'], $tail);
 
                 return true;
             }));
