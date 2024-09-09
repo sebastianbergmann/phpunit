@@ -67,7 +67,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         $__phpunit_arguments = [$i, $j, $v, $z];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 4) {
+        if (4 !== null && $__phpunit_count > 4) {
             $__phpunit_arguments_tmp = func_get_args();
 
             for ($__phpunit_i = 4; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
