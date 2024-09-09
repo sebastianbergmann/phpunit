@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 11.3 release series are documented in this fi
 
 ### Fixed
 
-* [#4584](https://github.com/sebastianbergmann/phpunit/issues/4584): `assertJsonStringEqualsJsonString()` considers objects with sequential numeric keys equal to arrays
+* [#4584](https://github.com/sebastianbergmann/phpunit/issues/4584): `assertJsonStringEqualsJsonString()` considers objects with sequential numeric keys equal to be arrays
 * [#4625](https://github.com/sebastianbergmann/phpunit/issues/4625): Generator yielding keys that are neither integer or string leads to hard-to-understand error message when used as data provider
 * [#4674](https://github.com/sebastianbergmann/phpunit/issues/4674): JSON assertions should treat objects as unordered
 * [#5891](https://github.com/sebastianbergmann/phpunit/issues/5891): `Callback` constraint does not handle variadic arguments correctly when used for mock object expectations
