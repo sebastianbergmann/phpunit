@@ -109,7 +109,7 @@ final class Parameters implements ParametersRule
         }
 
         foreach ($this->parameters as $i => $parameter) {
-            if ($parameter instanceof Callback && $parameter->hasVariadicParam()) {
+            if ($parameter instanceof Callback && $parameter->isVariadic()) {
                 $other = $this->invocation->parameters();
             } else {
                 $other = $this->invocation->parameters()[$i];
