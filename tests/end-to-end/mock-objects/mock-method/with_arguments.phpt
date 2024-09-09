@@ -39,7 +39,7 @@ private function bar($arg1, $arg2)
         $__phpunit_arguments = [$arg1, $arg2];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 2) {
+        if (2 !== null && $__phpunit_count > 2) {
             $__phpunit_arguments_tmp = func_get_args();
 
             for ($__phpunit_i = 2; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
