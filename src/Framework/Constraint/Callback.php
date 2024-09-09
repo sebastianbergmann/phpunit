@@ -42,7 +42,7 @@ final class Callback extends Constraint
     /**
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public function hasVariadicParam(): bool
+    public function isVariadic(): bool
     {
         foreach ((new ReflectionFunction($this->callback))->getParameters() as $parameter) {
             if ($parameter->isVariadic()) {
@@ -63,8 +63,10 @@ final class Callback extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return $this->hasVariadicParam()
-            ? ($this->callback)(...$other)
-            : ($this->callback)($other);
+        if ($this->isVariadic()) {
+            return ($this->callback)(...$other);
+        }
+
+        return ($this->callback)($other);
     }
 }
