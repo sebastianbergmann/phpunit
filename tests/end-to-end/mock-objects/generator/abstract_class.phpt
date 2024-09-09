@@ -55,7 +55,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 0) {
+        if (0 !== null && $__phpunit_count > 0) {
             $__phpunit_arguments_tmp = func_get_args();
 
             for ($__phpunit_i = 0; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
@@ -92,7 +92,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 0) {
+        if (0 !== null && $__phpunit_count > 0) {
             $__phpunit_arguments_tmp = func_get_args();
 
             for ($__phpunit_i = 0; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
@@ -129,7 +129,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInte
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 0) {
+        if (0 !== null && $__phpunit_count > 0) {
             $__phpunit_arguments_tmp = func_get_args();
 
             for ($__phpunit_i = 0; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {

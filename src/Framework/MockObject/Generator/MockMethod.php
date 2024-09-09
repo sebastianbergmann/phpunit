@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Generator;
 
-use const PHP_INT_MAX;
 use function count;
 use function explode;
 use function implode;
@@ -216,7 +215,7 @@ EOT;
         $argumentsCount = 0;
 
         if (str_contains($this->argumentsForCall, '...')) {
-            $argumentsCount = PHP_INT_MAX; // @todo: change it to null and update end-to-end tests
+            $argumentsCount = null;
         } elseif (!empty($this->argumentsForCall)) {
             $argumentsCount = substr_count($this->argumentsForCall, ',') + 1;
         }
