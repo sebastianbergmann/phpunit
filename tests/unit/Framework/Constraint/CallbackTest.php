@@ -48,10 +48,6 @@ final class CallbackTest extends TestCase
     public function testIsVariadic(): void
     {
         $class = new class {
-            public function __construct()
-            {
-            }
-
             public function __invoke(string ...$values): void
             {
             }
@@ -63,10 +59,6 @@ final class CallbackTest extends TestCase
     public function testIsNotVariadic(): void
     {
         $class = new class {
-            public function __construct()
-            {
-            }
-
             public function __invoke(string $value): void
             {
             }
