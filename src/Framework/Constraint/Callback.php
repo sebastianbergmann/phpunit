@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use Closure;
 use ReflectionFunction;
 
 /**
@@ -44,7 +45,7 @@ final class Callback extends Constraint
      */
     public function isVariadic(): bool
     {
-        foreach ((new ReflectionFunction($this->callback))->getParameters() as $parameter) {
+        foreach ((new ReflectionFunction(Closure::fromCallable($this->callback)))->getParameters() as $parameter) {
             if ($parameter->isVariadic()) {
                 return true;
             }
