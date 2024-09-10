@@ -313,8 +313,6 @@ abstract class TestDoubleTestCase extends TestCase
     #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5874')]
     public function testDoubledMethodsCanBeCalledFromDestructorOnTestDoubleCreatedByTheReturnValueGenerator(): void
     {
-        $this->markTestIncomplete('https://github.com/sebastianbergmann/phpunit/issues/5874');
-
         $double = $this->createTestDouble(ExtendableClassCallingMethodInDestructor::class);
 
         $this->assertInstanceOf(
