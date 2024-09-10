@@ -34,4 +34,9 @@ class TestStubFoo implements PHPUnit\Framework\MockObject\StubInternal, Foo
     use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
+
+    public string $bar {
+        get {
+        }
+    }
 }

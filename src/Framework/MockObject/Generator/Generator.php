@@ -28,6 +28,7 @@ use function interface_exists;
 use function is_array;
 use function is_object;
 use function md5;
+use function method_exists;
 use function mt_rand;
 use function preg_match;
 use function preg_match_all;
@@ -66,6 +67,7 @@ use PHPUnit\Framework\MockObject\TestDoubleState;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
+use ReflectionProperty;
 use SoapClient;
 use SoapFault;
 use Throwable;
@@ -656,16 +658,20 @@ final class Generator
      */
     private function generateCodeForTestDoubleClass(string $type, bool $mockObject, bool $markAsMockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
-        $classTemplate         = $this->loadTemplate('test_double_class.tpl');
-        $additionalInterfaces  = [];
-        $doubledCloneMethod    = false;
-        $proxiedCloneMethod    = false;
-        $isClass               = false;
-        $isReadonly            = false;
-        $isInterface           = false;
-        $class                 = null;
-        $mockMethods           = new MockMethodSet;
-        $testDoubleClassPrefix = $mockObject ? 'MockObject_' : 'TestStub_';
+        $classTemplate        = $this->loadTemplate('test_double_class.tpl');
+        $additionalInterfaces = [];
+        $doubledCloneMethod   = false;
+        $proxiedCloneMethod   = false;
+        $isClass              = false;
+        $isReadonly           = false;
+        $isInterface          = false;
+        $class                = null;
+        $mockMethods          = new MockMethodSet;
+
+        /** @var list<Property> $properties */
+        $properties             = [];
+        $propertyHooksSupported = method_exists(ReflectionProperty::class, 'getHooks');
+        $testDoubleClassPrefix  = $mockObject ? 'MockObject_' : 'TestStub_';
 
         $_mockClassName = $this->generateClassName(
             $type,
@@ -759,6 +765,28 @@ final class Generator
                 }
             } else {
                 $doubledCloneMethod = true;
+            }
+
+            if ($propertyHooksSupported && $isInterface) {
+                foreach ($class->getProperties() as $property) {
+                    if (!$property->isPublic()) {
+                        continue;
+                    }
+
+                    /** @phpstan-ignore method.notFound */
+                    $propertyHooks = $property->getHooks();
+
+                    if ($propertyHooks === []) {
+                        continue;
+                    }
+
+                    $properties[] = new Property(
+                        $property->getName(),
+                        $property->getType()->__toString(),
+                        isset($propertyHooks['get']),
+                        isset($propertyHooks['set']),
+                    );
+                }
             }
         }
 
@@ -877,6 +905,47 @@ final class Generator
 
         unset($traits);
 
+        $propertyHooks = '';
+
+        foreach ($properties as $property) {
+            $propertyHooks .= sprintf(
+                <<<'EOT'
+
+    public %s $%s {
+EOT,
+                $property->type(),
+                $property->name(),
+            );
+
+            if ($property->hasGetHook()) {
+                $propertyHooks .=
+                    <<<'EOT'
+
+        get {
+        }
+
+EOT;
+            }
+
+            if ($property->hasSetHook()) {
+                $propertyHooks .= sprintf(
+                    <<<'EOT'
+
+        set (%s $value) {
+        }
+
+EOT,
+                    $property->type(),
+                );
+            }
+
+            $propertyHooks .= <<<'EOT'
+    }
+
+EOT;
+
+        }
+
         $classTemplate->setVar(
             [
                 'prologue'          => $prologue ?? '',
@@ -891,6 +960,7 @@ final class Generator
                 'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
                 'methods'         => $mockedMethods,
+                'property_hooks'  => $propertyHooks,
             ],
         );
 
