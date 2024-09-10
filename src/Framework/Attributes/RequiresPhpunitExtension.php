@@ -23,14 +23,14 @@ final readonly class RequiresPhpunitExtension
     /**
      * @var class-string<Extension>
      */
-    private string $extensionClasses;
+    private string $extensionClass;
 
     /**
-     * @param class-string<Extension> $extensionClas
+     * @param class-string<Extension> $extensionClass
      */
-    public function __construct(string $extensionClas)
+    public function __construct(string $extensionClass)
     {
-        $this->extensionClasses = $extensionClas;
+        $this->extensionClass = $extensionClass;
     }
 
     /**
@@ -38,6 +38,6 @@ final readonly class RequiresPhpunitExtension
      */
     public function extensionClass(): string
     {
-        return $this->extensionClasses;
+        return $this->extensionClass;
     }
 }
