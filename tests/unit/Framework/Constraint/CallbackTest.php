@@ -52,7 +52,7 @@ final class CallbackTest extends TestCase
             {
             }
 
-            public function __invoke(string ...$values)
+            public function __invoke(string ...$values): void
             {
             }
         };
@@ -67,7 +67,7 @@ final class CallbackTest extends TestCase
             {
             }
 
-            public function __invoke(string $value)
+            public function __invoke(string $value): void
             {
             }
         };
