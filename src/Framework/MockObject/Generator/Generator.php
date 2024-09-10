@@ -890,7 +890,7 @@ final class Generator
                 ),
                 'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
-                'mocked_methods'  => $mockedMethods,
+                'methods'         => $mockedMethods,
             ],
         );
 
