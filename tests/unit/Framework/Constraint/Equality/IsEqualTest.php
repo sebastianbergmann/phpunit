@@ -15,6 +15,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\EnumerationEquals\Example;
+use PHPUnit\TestFixture\EnumerationEquals\ExampleInt;
+use PHPUnit\TestFixture\EnumerationEquals\ExampleString;
 use stdClass;
 
 #[CoversClass(IsEqual::class)]
@@ -139,6 +142,33 @@ EOT,
                 '',
                 'string' . PHP_EOL . 'string',
                 'string' . PHP_EOL . 'string',
+            ],
+
+            [
+                true,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\Example Enum %s (Foo)',
+                '',
+                '',
+                Example::Foo,
+                Example::Foo,
+            ],
+
+            [
+                true,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleString Enum %s (Foo, \'foo\')',
+                '',
+                '',
+                ExampleString::Foo,
+                ExampleString::Foo,
+            ],
+
+            [
+                true,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleInt Enum %s (Foo, 0)',
+                '',
+                '',
+                ExampleInt::Foo,
+                ExampleInt::Foo,
             ],
 
             [
@@ -292,6 +322,33 @@ Failed asserting that two strings are equal.
 EOT,
                 "string\nstring",
                 "another-string\nanother-string",
+            ],
+
+            [
+                false,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\Example Enum %s (Foo)',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\Example are equal, Bar does not match expected Foo.',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\Example are equal, Bar does not match expected Foo.',
+                Example::Foo,
+                Example::Bar,
+            ],
+
+            [
+                false,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleString Enum %s (Foo, \'foo\')',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleString are equal, Bar does not match expected Foo.',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleString are equal, Bar does not match expected Foo.',
+                ExampleString::Foo,
+                ExampleString::Bar,
+            ],
+
+            [
+                false,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleInt Enum %s (Foo, 0)',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleInt are equal, Bar does not match expected Foo.',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleInt are equal, Bar does not match expected Foo.',
+                ExampleInt::Foo,
+                ExampleInt::Bar,
             ],
         ];
     }
