@@ -15,6 +15,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\EnumerationEquals\Example;
+use PHPUnit\TestFixture\EnumerationEquals\ExampleInt;
+use PHPUnit\TestFixture\EnumerationEquals\ExampleString;
 use stdClass;
 
 #[CoversClass(IsEqual::class)]
@@ -139,6 +142,33 @@ EOT,
                 '',
                 'string' . PHP_EOL . 'string',
                 'string' . PHP_EOL . 'string',
+            ],
+
+            [
+                true,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\Example Enum %s (Foo)',
+                '',
+                '',
+                Example::Foo,
+                Example::Foo,
+            ],
+
+            [
+                true,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleString Enum %s (Foo, \'foo\')',
+                '',
+                '',
+                ExampleString::Foo,
+                ExampleString::Foo,
+            ],
+
+            [
+                true,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleInt Enum %s (Foo, 0)',
+                '',
+                '',
+                ExampleInt::Foo,
+                ExampleInt::Foo,
             ],
 
             [
@@ -292,6 +322,67 @@ Failed asserting that two strings are equal.
 EOT,
                 "string\nstring",
                 "another-string\nanother-string",
+            ],
+
+            [
+                false,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\Example Enum %s (Foo)',
+                'Failed asserting that two objects are equal.',
+                <<<'EOT'
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+ PHPUnit\TestFixture\EnumerationEquals\Example Object (
+-    'name' => 'Foo'
++    'name' => 'Bar'
+ )
+
+EOT,
+                Example::Foo,
+                Example::Bar,
+            ],
+
+            [
+                false,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleString Enum %s (Foo, \'foo\')',
+                'Failed asserting that two objects are equal.',
+                <<<'EOT'
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+ PHPUnit\TestFixture\EnumerationEquals\ExampleString Object (
+-    'name' => 'Foo'
+-    'value' => 'foo'
++    'name' => 'Bar'
++    'value' => 'bar'
+ )
+
+EOT,
+                ExampleString::Foo,
+                ExampleString::Bar,
+            ],
+
+            [
+                false,
+                'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleInt Enum %s (Foo, 0)',
+                'Failed asserting that two objects are equal.',
+                <<<'EOT'
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+ PHPUnit\TestFixture\EnumerationEquals\ExampleInt Object (
+-    'name' => 'Foo'
+-    'value' => 0
++    'name' => 'Bar'
++    'value' => 1
+ )
+
+EOT,
+                ExampleInt::Foo,
+                ExampleInt::Bar,
             ],
         ];
     }
