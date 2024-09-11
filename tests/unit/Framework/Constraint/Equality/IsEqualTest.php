@@ -327,18 +327,8 @@ EOT,
             [
                 false,
                 'is equal to PHPUnit\TestFixture\EnumerationEquals\Example Enum %s (Foo)',
-                'Failed asserting that two objects are equal.',
-                <<<'EOT'
-Failed asserting that two objects are equal.
---- Expected
-+++ Actual
-@@ @@
- PHPUnit\TestFixture\EnumerationEquals\Example Object (
--    'name' => 'Foo'
-+    'name' => 'Bar'
- )
-
-EOT,
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\Example are equal, Bar does not match expected Foo.',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\Example are equal, Bar does not match expected Foo.',
                 Example::Foo,
                 Example::Bar,
             ],
@@ -346,20 +336,8 @@ EOT,
             [
                 false,
                 'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleString Enum %s (Foo, \'foo\')',
-                'Failed asserting that two objects are equal.',
-                <<<'EOT'
-Failed asserting that two objects are equal.
---- Expected
-+++ Actual
-@@ @@
- PHPUnit\TestFixture\EnumerationEquals\ExampleString Object (
--    'name' => 'Foo'
--    'value' => 'foo'
-+    'name' => 'Bar'
-+    'value' => 'bar'
- )
-
-EOT,
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleString are equal, Bar does not match expected Foo.',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleString are equal, Bar does not match expected Foo.',
                 ExampleString::Foo,
                 ExampleString::Bar,
             ],
@@ -367,20 +345,8 @@ EOT,
             [
                 false,
                 'is equal to PHPUnit\TestFixture\EnumerationEquals\ExampleInt Enum %s (Foo, 0)',
-                'Failed asserting that two objects are equal.',
-                <<<'EOT'
-Failed asserting that two objects are equal.
---- Expected
-+++ Actual
-@@ @@
- PHPUnit\TestFixture\EnumerationEquals\ExampleInt Object (
--    'name' => 'Foo'
--    'value' => 0
-+    'name' => 'Bar'
-+    'value' => 1
- )
-
-EOT,
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleInt are equal, Bar does not match expected Foo.',
+                'Failed asserting that two values of enumeration PHPUnit\TestFixture\EnumerationEquals\ExampleInt are equal, Bar does not match expected Foo.',
                 ExampleInt::Foo,
                 ExampleInt::Bar,
             ],
