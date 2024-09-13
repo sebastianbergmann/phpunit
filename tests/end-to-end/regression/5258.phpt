@@ -29,7 +29,7 @@ Time: %s, Memory: %s MB
 OK, but some tests were skipped!
 Tests: 2, Assertions: 1, Skipped: 1.
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="PHPUnit\TestFixture\Issue5258\Issue5258Test" file="%sIssue5258Test.php" tests="2" assertions="1" errors="0" failures="0" skipped="1" time="%f">
     <testcase name="testOne" file="%sIssue5258Test.php" line="%d" class="PHPUnit\TestFixture\Issue5258\Issue5258Test" classname="PHPUnit.TestFixture.Issue5258.Issue5258Test" assertions="1" time="%f"/>
     <testcase name="testTwo" file="%sIssue5258Test.php" line="%d" class="PHPUnit\TestFixture\Issue5258\Issue5258Test" classname="PHPUnit.TestFixture.Issue5258.Issue5258Test" assertions="0" time="0.000000">

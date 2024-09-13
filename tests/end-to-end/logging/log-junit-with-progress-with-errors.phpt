@@ -42,7 +42,7 @@ TypeError: Cannot assign DateTime to property PHPUnit\TestFixture\TypeErrorTest:
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="PHPUnit\TestFixture\TypeErrorTest" file="%sTypeErrorTest.php" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="%f">
     <testcase name="testMe" file="%sTypeErrorTest.php" line="%d" class="PHPUnit\TestFixture\TypeErrorTest" classname="PHPUnit.TestFixture.TypeErrorTest" assertions="0" time="%f">
       <error type="TypeError">PHPUnit\TestFixture\TypeErrorTest::testMe
