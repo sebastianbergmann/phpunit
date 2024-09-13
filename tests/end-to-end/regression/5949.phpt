@@ -25,10 +25,12 @@ Issue5949 (PHPUnit\TestFixture\Issue5949\Issue5949)
  ✔ Test 2. No dollar sign.
 
  ✔ Test 3. Dollar sign ($).
+
  ✔ Test 4. No dollar sign.
 
  ✔ Test 5. Dollar $ sign.
            More text.
+
  ✔ Test 6. No dollar sign.
 
  ✔ Test 7. No dollar sign.
