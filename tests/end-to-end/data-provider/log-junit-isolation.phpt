@@ -21,7 +21,7 @@ print file_get_contents($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%f">
     <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%f">
       <testcase name="testAdd with data set #0" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%f"/>

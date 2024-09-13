@@ -22,7 +22,7 @@ print file_get_contents($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="PHPUnit\TestFixture\NoLogNoCcTest" file="%sNoLogNoCcTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="%f">
     <testcase name="testSuccess" file="%sNoLogNoCcTest.php" line="18" class="PHPUnit\TestFixture\NoLogNoCcTest" classname="PHPUnit.TestFixture.NoLogNoCcTest" assertions="1" time="%f"/>
   </testsuite>
