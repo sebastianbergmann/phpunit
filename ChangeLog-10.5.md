@@ -4,6 +4,9 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.34] - 2024-MM-DD
 
+### Fixed
+
+* [#5931](https://github.com/sebastianbergmann/phpunit/pull/5931): Reverted addition of `name` property on `<testsuites>` element in JUnit XML logfile
 * [#5946](https://github.com/sebastianbergmann/phpunit/issues/5946): `Callback` throws a `TypeError` when checking a `callable` has variadic parameters
 
 ## [10.5.33] - 2024-09-09
