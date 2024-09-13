@@ -20,7 +20,7 @@ print file_get_contents($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="PHPUnit\TestFixture\Basic\StatusTest" file="%sStatusTest.php" tests="13" assertions="4" errors="2" failures="2" skipped="5" time="%f">
     <testcase name="testSuccess" file="%sStatusTest.php" line="%d" class="PHPUnit\TestFixture\Basic\StatusTest" classname="PHPUnit.TestFixture.Basic.StatusTest" assertions="1" time="%f"/>
     <testcase name="testFailure" file="%sStatusTest.php" line="%d" class="PHPUnit\TestFixture\Basic\StatusTest" classname="PHPUnit.TestFixture.Basic.StatusTest" assertions="1" time="%f">

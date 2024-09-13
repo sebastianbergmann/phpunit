@@ -23,7 +23,7 @@ print file_get_contents($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="CLI Arguments" tests="10" assertions="10" errors="0" failures="3" skipped="0" time="%s">
     <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
       <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">

@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHPUnit tests">
+<testsuites>
   <testsuite name="PHPUnit\TestFixture\Issue5561\Issue5561Test" file="%sIssue5561Test.php" tests="1" assertions="0" errors="0" failures="1" skipped="0" time="%s">
     <testcase name="testOne" file="%sIssue5561Test.php" line="21" class="PHPUnit\TestFixture\Issue5561\Issue5561Test" classname="PHPUnit.TestFixture.Issue5561.Issue5561Test" assertions="0" time="%s">
       <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\Issue5561\Issue5561Test::testOne%A
