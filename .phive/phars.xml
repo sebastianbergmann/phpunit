@@ -3,6 +3,6 @@
   <phar name="phpab" version="^1.29" installed="1.29.1" location="./tools/phpab" copy="true"/>
   <phar name="php-cs-fixer" version="^3.59" installed="3.64.0" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.18" installed="0.18.15" location="./tools/php-scoper" copy="true"/>
-  <phar name="composer" version="^2.7" installed="2.7.8" location="./tools/composer" copy="true"/>
-  <phar name="phpstan" version="^1.12" installed="1.12.1" location="./tools/phpstan" copy="true"/>
+  <phar name="composer" version="^2.7" installed="2.7.9" location="./tools/composer" copy="true"/>
+  <phar name="phpstan" version="^1.12" installed="1.12.3" location="./tools/phpstan" copy="true"/>
 </phive>
