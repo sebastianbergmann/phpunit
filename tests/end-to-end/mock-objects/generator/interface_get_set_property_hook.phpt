@@ -37,9 +37,19 @@ class TestStubFoo implements PHPUnit\Framework\MockObject\StubInternal, Foo
 
     public string $bar {
         get {
+            return $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    'TestStubFoo', '$bar::get', [], 'string', $this, false
+                )
+            );
         }
 
         set (string $value) {
+            $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    'TestStubFoo', '$bar::set', [$value], 'void', $this, false
+                )
+            );
         }
     }
 }

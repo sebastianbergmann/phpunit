@@ -918,13 +918,22 @@ EOT,
             );
 
             if ($property->hasGetHook()) {
-                $propertyHooks .=
+                $propertyHooks .= sprintf(
                     <<<'EOT'
 
         get {
+            return $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    '%s', '$%s::get', [], '%s', $this, false
+                )
+            );
         }
 
-EOT;
+EOT,
+                    $_mockClassName['className'],
+                    $property->name(),
+                    $property->type(),
+                );
             }
 
             if ($property->hasSetHook()) {
@@ -932,10 +941,17 @@ EOT;
                     <<<'EOT'
 
         set (%s $value) {
+            $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    '%s', '$%s::set', [$value], 'void', $this, false
+                )
+            );
         }
 
 EOT,
                     $property->type(),
+                    $_mockClassName['className'],
+                    $property->name(),
                 );
             }
 
