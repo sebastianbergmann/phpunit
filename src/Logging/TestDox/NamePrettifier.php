@@ -194,7 +194,7 @@ final class NamePrettifier
                     array_keys($providedData),
                 );
 
-                $result = trim(preg_replace($variables, $providedData, $annotation));
+                $result = preg_replace($variables, $providedData, $annotation);
 
                 $annotationWithPlaceholders = true;
             }
