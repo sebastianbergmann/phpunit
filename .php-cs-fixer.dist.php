@@ -14,10 +14,10 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
+    // DeprecatedPhpFeatureTest.php must not use declare(strict_types=1);
     ->notName('DeprecatedPhpFeatureTest.php')
-    // don't mangle whitespaces in this test, which are required for the error reproduce
+    // Issue5795Test.php contains required whitespace that would be cleaned up
     ->notName('Issue5795Test.php')
-    ->notName('ReadonlyClass.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
