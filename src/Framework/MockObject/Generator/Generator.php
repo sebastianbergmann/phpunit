@@ -68,6 +68,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
 use ReflectionProperty;
+use SebastianBergmann\Type\Type;
 use SoapClient;
 use SoapFault;
 use Throwable;
@@ -836,6 +837,32 @@ final class Generator
                 $mockMethod->numberOfParameters(),
                 $mockMethod->returnType(),
             );
+        }
+
+        foreach ($properties as $property) {
+            if ($property->hasGetHook()) {
+                $configurable[] = new ConfigurableMethod(
+                    sprintf(
+                        '$%s::get',
+                        $property->name(),
+                    ),
+                    [],
+                    0,
+                    Type::fromName($property->type(), false),
+                );
+            }
+
+            if ($property->hasSetHook()) {
+                $configurable[] = new ConfigurableMethod(
+                    sprintf(
+                        '$%s::set',
+                        $property->name(),
+                    ),
+                    [],
+                    1,
+                    Type::fromName('void', false),
+                );
+            }
         }
 
         /** @var trait-string[] $traits */
