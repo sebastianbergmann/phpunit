@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
@@ -21,6 +22,7 @@ use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
+use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use stdClass;
 
@@ -319,6 +321,16 @@ abstract class TestDoubleTestCase extends TestCase
             ExtendableClassCallingMethodInDestructor::class,
             $double->doSomething(),
         );
+    }
+
+    #[RequiresPhp('^8.4')]
+    public function testGetHookForPropertyCanBeConfiguredToReturnValue(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithPropertyWithGetHook::class);
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
     }
 
     /**

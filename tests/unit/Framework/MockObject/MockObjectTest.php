@@ -14,11 +14,14 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
+use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables;
 use ReflectionProperty;
@@ -458,6 +461,16 @@ EOT,
         $this->assertFalse($clone->doSomething());
         $this->assertSame(1, $double->doSomethingElse(0));
         $this->assertSame(2, $clone->doSomethingElse(0));
+    }
+
+    #[RequiresPhp('^8.4')]
+    public function testExpectationThatSetHookForPropertyIsCalledOnceSucceedsWhenItIsCalledOnce(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithPropertyWithSetHook::class);
+
+        $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
+
+        $double->property = 'value';
     }
 
     /**
