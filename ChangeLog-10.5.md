@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Fixed
 
 * [#5950](https://github.com/sebastianbergmann/phpunit/pull/5950): TestDox text should not be `trim()`med when it contains `$` character
+* The attribute parser will no longer try to instantiate attribute classes that do not exist
 
 ## [10.5.34] - 2024-09-13
 

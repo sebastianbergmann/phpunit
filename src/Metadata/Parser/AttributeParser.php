@@ -95,6 +95,10 @@ final class AttributeParser implements Parser
                 continue;
             }
 
+            if (!class_exists($attribute->getName())) {
+                continue;
+            }
+
             $attributeInstance = $attribute->newInstance();
 
             switch ($attribute->getName()) {
@@ -346,6 +350,10 @@ final class AttributeParser implements Parser
 
         foreach ((new ReflectionMethod($className, $methodName))->getAttributes() as $attribute) {
             if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
+                continue;
+            }
+
+            if (!class_exists($attribute->getName())) {
                 continue;
             }
 
