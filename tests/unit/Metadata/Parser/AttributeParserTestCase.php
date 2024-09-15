@@ -37,6 +37,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
@@ -991,6 +992,13 @@ abstract class AttributeParserTestCase extends TestCase
     public function test_ignores_attributes_not_owned_by_PHPUnit(): void
     {
         $metadata = $this->parser()->forClassAndMethod(NonPhpunitAttributeTest::class, 'testOne');
+
+        $this->assertTrue($metadata->isEmpty());
+    }
+
+    public function test_ignores_attributes_in_PHPUnit_namespace_that_do_not_exist(): void
+    {
+        $metadata = $this->parser()->forClassAndMethod(PhpunitAttributeThatDoesNotExistTest::class, 'testOne');
 
         $this->assertTrue($metadata->isEmpty());
     }
