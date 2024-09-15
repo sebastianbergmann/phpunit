@@ -201,7 +201,7 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.3
           coverage: xdebug
           extensions: none, ctype, curl, dom, json, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
