@@ -17,7 +17,6 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('DeprecatedPhpFeatureTest.php')
     // don't mangle whitespaces in this test, which are required for the error reproduce
     ->notName('Issue5795Test.php')
-    ->notName('ReadonlyClass.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
