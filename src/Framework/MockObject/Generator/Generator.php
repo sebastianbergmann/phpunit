@@ -768,11 +768,15 @@ final class Generator
                 $doubledCloneMethod = true;
             }
 
-            if ($propertyHooksSupported && $isInterface) {
+            if ($propertyHooksSupported) {
                 foreach ($class->getProperties() as $property) {
                     if (!$property->isPublic()) {
                         continue;
                     }
+
+                    /**
+                     * @todo Do not generate doubled property when property is final
+                     */
 
                     /** @phpstan-ignore method.notFound */
                     $propertyHooks = $property->getHooks();

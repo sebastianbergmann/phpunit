@@ -18,6 +18,7 @@ use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
@@ -324,9 +325,19 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[RequiresPhp('^8.4')]
-    public function testGetHookForPropertyCanBeConfiguredToReturnValue(): void
+    public function testGetHookForPropertyOfInterfaceCanBeConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithPropertyWithGetHook::class);
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
+    }
+
+    #[RequiresPhp('^8.4')]
+    public function testGetHookForPropertyOfExtendableClassCanBeConfigured(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithGetHook::class);
 
         $double->method(PropertyHook::get('property'))->willReturn('value');
 

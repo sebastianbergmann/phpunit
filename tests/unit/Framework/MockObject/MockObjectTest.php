@@ -20,6 +20,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
@@ -464,9 +465,19 @@ EOT,
     }
 
     #[RequiresPhp('^8.4')]
-    public function testExpectationThatSetHookForPropertyIsCalledOnceSucceedsWhenItIsCalledOnce(): void
+    public function testExpectationCanBeConfiguredForSetHookForPropertyOfInterface(): void
     {
         $double = $this->createTestDouble(InterfaceWithPropertyWithSetHook::class);
+
+        $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
+
+        $double->property = 'value';
+    }
+
+    #[RequiresPhp('^8.4')]
+    public function testExpectationCanBeConfiguredForSetHookForPropertyOfExtendableClass(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithSetHook::class);
 
         $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
 
