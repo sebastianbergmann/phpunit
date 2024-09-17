@@ -64,6 +64,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
 use PHPUnit\Framework\MockObject\TestDoubleState;
+use PropertyHookType;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
@@ -1283,13 +1284,28 @@ EOT;
                 continue;
             }
 
-            $propertyHooks = $property->getHooks();
+            $hasGetHook = false;
+            $hasSetHook = false;
+
+            if ($property->hasHook(PropertyHookType::Get) &&
+                !$property->getHook(PropertyHookType::Get)->isFinal()) {
+                $hasGetHook = true;
+            }
+
+            if ($property->hasHook(PropertyHookType::Set) &&
+                !$property->getHook(PropertyHookType::Set)->isFinal()) {
+                $hasSetHook = true;
+            }
+
+            if (!$hasGetHook && !$hasSetHook) {
+                continue;
+            }
 
             $properties[] = new Property(
                 $property->getName(),
                 $property->getType()->__toString(),
-                isset($propertyHooks['get']),
-                isset($propertyHooks['set']),
+                $hasGetHook,
+                $hasSetHook,
             );
         }
 
