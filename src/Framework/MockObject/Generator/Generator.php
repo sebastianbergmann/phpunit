@@ -69,6 +69,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
 use ReflectionProperty;
+use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SoapClient;
 use SoapFault;
@@ -1222,6 +1223,7 @@ final class Generator
             return [];
         }
 
+        $mapper     = new ReflectionMapper;
         $properties = [];
 
         foreach ($class->getProperties() as $property) {
@@ -1262,10 +1264,7 @@ final class Generator
 
             $properties[] = new Property(
                 $property->getName(),
-                Type::fromName(
-                    $property->getType()->__toString(),
-                    $property->getType()->allowsNull(),
-                ),
+                $mapper->fromPropertyType($property),
                 $hasGetHook,
                 $hasSetHook,
             );
