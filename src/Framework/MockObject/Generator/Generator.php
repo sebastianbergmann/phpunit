@@ -876,63 +876,6 @@ final class Generator
 
         unset($traits);
 
-        $propertyHooks = '';
-
-        foreach ($propertiesWithHooks as $property) {
-            $propertyHooks .= sprintf(
-                <<<'EOT'
-
-    public %s $%s {
-EOT,
-                $property->type(),
-                $property->name(),
-            );
-
-            if ($property->hasGetHook()) {
-                $propertyHooks .= sprintf(
-                    <<<'EOT'
-
-        get {
-            return $this->__phpunit_getInvocationHandler()->invoke(
-                new \PHPUnit\Framework\MockObject\Invocation(
-                    '%s', '$%s::get', [], '%s', $this, false
-                )
-            );
-        }
-
-EOT,
-                    $_mockClassName['className'],
-                    $property->name(),
-                    $property->type(),
-                );
-            }
-
-            if ($property->hasSetHook()) {
-                $propertyHooks .= sprintf(
-                    <<<'EOT'
-
-        set (%s $value) {
-            $this->__phpunit_getInvocationHandler()->invoke(
-                new \PHPUnit\Framework\MockObject\Invocation(
-                    '%s', '$%s::set', [$value], 'void', $this, false
-                )
-            );
-        }
-
-EOT,
-                    $property->type(),
-                    $_mockClassName['className'],
-                    $property->name(),
-                );
-            }
-
-            $propertyHooks .= <<<'EOT'
-    }
-
-EOT;
-
-        }
-
         $classTemplate->setVar(
             [
                 'prologue'          => $prologue ?? '',
@@ -947,7 +890,7 @@ EOT;
                 'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
                 'methods'         => $mockedMethods,
-                'property_hooks'  => $propertyHooks,
+                'property_hooks'  => $this->codeForPropertyHooks($propertiesWithHooks, $_mockClassName['className']),
             ],
         );
 
@@ -1326,5 +1269,73 @@ EOT;
         }
 
         return $properties;
+    }
+
+    /**
+     * @param list<Property> $propertiesWithHooks
+     * @param class-string   $className
+     *
+     * @return non-empty-string
+     */
+    private function codeForPropertyHooks(array $propertiesWithHooks, string $className): string
+    {
+        $propertyHooks = '';
+
+        foreach ($propertiesWithHooks as $property) {
+            $propertyHooks .= sprintf(
+                <<<'EOT'
+
+    public %s $%s {
+EOT,
+                $property->type(),
+                $property->name(),
+            );
+
+            if ($property->hasGetHook()) {
+                $propertyHooks .= sprintf(
+                    <<<'EOT'
+
+        get {
+            return $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    '%s', '$%s::get', [], '%s', $this, false
+                )
+            );
+        }
+
+EOT,
+                    $className,
+                    $property->name(),
+                    $property->type(),
+                );
+            }
+
+            if ($property->hasSetHook()) {
+                $propertyHooks .= sprintf(
+                    <<<'EOT'
+
+        set (%s $value) {
+            $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    '%s', '$%s::set', [$value], 'void', $this, false
+                )
+            );
+        }
+
+EOT,
+                    $property->type(),
+                    $className,
+                    $property->name(),
+                );
+            }
+
+            $propertyHooks .= <<<'EOT'
+    }
+
+EOT;
+
+        }
+
+        return $propertyHooks;
     }
 }
