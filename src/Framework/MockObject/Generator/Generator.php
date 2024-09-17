@@ -1216,7 +1216,9 @@ final class Generator
     private function properties(?ReflectionClass $class): array
     {
         if (!method_exists(ReflectionProperty::class, 'isFinal')) {
+            // @codeCoverageIgnoreStart
             return [];
+            // @codeCoverageIgnoreEnd
         }
 
         if ($class === null) {
