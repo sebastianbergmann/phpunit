@@ -800,46 +800,13 @@ final class Generator
             }
         }
 
+        $propertiesWithHooks = $this->properties($class);
+        $configurableMethods = $this->configurableMethods($mockMethods, $propertiesWithHooks);
+
         $mockedMethods = '';
-        $configurable  = [];
 
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
-
-            $configurable[] = new ConfigurableMethod(
-                $mockMethod->methodName(),
-                $mockMethod->defaultParameterValues(),
-                $mockMethod->numberOfParameters(),
-                $mockMethod->returnType(),
-            );
-        }
-
-        $properties = $this->properties($class);
-
-        foreach ($properties as $property) {
-            if ($property->hasGetHook()) {
-                $configurable[] = new ConfigurableMethod(
-                    sprintf(
-                        '$%s::get',
-                        $property->name(),
-                    ),
-                    [],
-                    0,
-                    Type::fromName($property->type(), false),
-                );
-            }
-
-            if ($property->hasSetHook()) {
-                $configurable[] = new ConfigurableMethod(
-                    sprintf(
-                        '$%s::set',
-                        $property->name(),
-                    ),
-                    [],
-                    1,
-                    Type::fromName('void', false),
-                );
-            }
         }
 
         /** @var trait-string[] $traits */
@@ -911,7 +878,7 @@ final class Generator
 
         $propertyHooks = '';
 
-        foreach ($properties as $property) {
+        foreach ($propertiesWithHooks as $property) {
             $propertyHooks .= sprintf(
                 <<<'EOT'
 
@@ -987,7 +954,7 @@ EOT;
         return new MockClass(
             $classTemplate->render(),
             $_mockClassName['className'],
-            $configurable,
+            $configurableMethods,
         );
     }
 
@@ -1248,6 +1215,48 @@ EOT;
         }
 
         return $methods;
+    }
+
+    private function configurableMethods(MockMethodSet $methods, array $propertiesWithHooks): array
+    {
+        $configurable = [];
+
+        foreach ($methods->asArray() as $method) {
+            $configurable[] = new ConfigurableMethod(
+                $method->methodName(),
+                $method->defaultParameterValues(),
+                $method->numberOfParameters(),
+                $method->returnType(),
+            );
+        }
+
+        foreach ($propertiesWithHooks as $property) {
+            if ($property->hasGetHook()) {
+                $configurable[] = new ConfigurableMethod(
+                    sprintf(
+                        '$%s::get',
+                        $property->name(),
+                    ),
+                    [],
+                    0,
+                    Type::fromName($property->type(), false),
+                );
+            }
+
+            if ($property->hasSetHook()) {
+                $configurable[] = new ConfigurableMethod(
+                    sprintf(
+                        '$%s::set',
+                        $property->name(),
+                    ),
+                    [],
+                    1,
+                    Type::fromName('void', false),
+                );
+            }
+        }
+
+        return $configurable;
     }
 
     /**
