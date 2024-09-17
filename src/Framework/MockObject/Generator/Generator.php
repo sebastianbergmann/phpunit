@@ -1217,6 +1217,11 @@ EOT;
         return $methods;
     }
 
+    /**
+     * @param list<Property> $propertiesWithHooks
+     *
+     * @return list<ConfigurableMethod>
+     */
     private function configurableMethods(MockMethodSet $methods, array $propertiesWithHooks): array
     {
         $configurable = [];
