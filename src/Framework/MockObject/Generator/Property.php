@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject\Generator;
 
+use SebastianBergmann\Type\Type;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -20,19 +22,14 @@ final class Property
      * @var non-empty-string
      */
     private string $name;
-
-    /**
-     * @var non-empty-string
-     */
-    private string $type;
+    private Type $type;
     private bool $getHook;
     private bool $setHook;
 
     /**
      * @param non-empty-string $name
-     * @param non-empty-string $type
      */
-    public function __construct(string $name, string $type, bool $getHook, bool $setHook)
+    public function __construct(string $name, Type $type, bool $getHook, bool $setHook)
     {
         $this->name    = $name;
         $this->type    = $type;
@@ -45,7 +42,7 @@ final class Property
         return $this->name;
     }
 
-    public function type(): string
+    public function type(): Type
     {
         return $this->type;
     }

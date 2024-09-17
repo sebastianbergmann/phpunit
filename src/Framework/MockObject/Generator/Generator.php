@@ -1187,7 +1187,7 @@ final class Generator
                     ),
                     [],
                     0,
-                    Type::fromName($property->type(), false),
+                    $property->type(),
                 );
             }
 
@@ -1262,7 +1262,10 @@ final class Generator
 
             $properties[] = new Property(
                 $property->getName(),
-                $property->getType()->__toString(),
+                Type::fromName(
+                    $property->getType()->__toString(),
+                    $property->getType()->allowsNull(),
+                ),
                 $hasGetHook,
                 $hasSetHook,
             );
@@ -1287,7 +1290,7 @@ final class Generator
 
     public %s $%s {
 EOT,
-                $property->type(),
+                $property->type()->asString(),
                 $property->name(),
             );
 
@@ -1306,7 +1309,7 @@ EOT,
 EOT,
                     $className,
                     $property->name(),
-                    $property->type(),
+                    $property->type()->asString(),
                 );
             }
 
@@ -1323,7 +1326,7 @@ EOT,
         }
 
 EOT,
-                    $property->type(),
+                    $property->type()->asString(),
                     $className,
                     $property->name(),
                 );

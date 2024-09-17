@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Type\Type;
 
 #[CoversClass(Property::class)]
 #[Group('test-doubles')]
@@ -23,44 +24,44 @@ final class PropertyTest extends TestCase
     {
         $name = 'property-name';
 
-        $property = new Property($name, 'property-type', false, false);
+        $property = new Property($name, Type::fromName('string', false), false, false);
 
         $this->assertSame($name, $property->name());
     }
 
     public function testHasType(): void
     {
-        $type = 'property-type';
+        $type = Type::fromName('string', false);
 
-        $property = new Property('property-type', $type, false, false);
+        $property = new Property('property-name', $type, false, false);
 
         $this->assertSame($type, $property->type());
     }
 
     public function testMayHaveGetHook(): void
     {
-        $property = new Property('property-name', 'property-type', true, false);
+        $property = new Property('property-name', Type::fromName('string', false), true, false);
 
         $this->assertTrue($property->hasGetHook());
     }
 
     public function testMayNotHaveGetHook(): void
     {
-        $property = new Property('property-name', 'property-type', false, false);
+        $property = new Property('property-name', Type::fromName('string', false), false, false);
 
         $this->assertFalse($property->hasGetHook());
     }
 
     public function testMayHaveSetHook(): void
     {
-        $property = new Property('property-name', 'property-type', false, true);
+        $property = new Property('property-name', Type::fromName('string', false), false, true);
 
         $this->assertTrue($property->hasSetHook());
     }
 
     public function testMayNotHaveSetHook(): void
     {
-        $property = new Property('property-name', 'property-type', false, false);
+        $property = new Property('property-name', Type::fromName('string', false), false, false);
 
         $this->assertFalse($property->hasSetHook());
     }
