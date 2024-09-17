@@ -659,20 +659,16 @@ final class Generator
      */
     private function generateCodeForTestDoubleClass(string $type, bool $mockObject, bool $markAsMockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
-        $classTemplate        = $this->loadTemplate('test_double_class.tpl');
-        $additionalInterfaces = [];
-        $doubledCloneMethod   = false;
-        $proxiedCloneMethod   = false;
-        $isClass              = false;
-        $isReadonly           = false;
-        $isInterface          = false;
-        $class                = null;
-        $mockMethods          = new MockMethodSet;
-
-        /** @var list<Property> $properties */
-        $properties             = [];
-        $propertyHooksSupported = method_exists(ReflectionProperty::class, 'isFinal');
-        $testDoubleClassPrefix  = $mockObject ? 'MockObject_' : 'TestStub_';
+        $classTemplate         = $this->loadTemplate('test_double_class.tpl');
+        $additionalInterfaces  = [];
+        $doubledCloneMethod    = false;
+        $proxiedCloneMethod    = false;
+        $isClass               = false;
+        $isReadonly            = false;
+        $isInterface           = false;
+        $class                 = null;
+        $mockMethods           = new MockMethodSet;
+        $testDoubleClassPrefix = $mockObject ? 'MockObject_' : 'TestStub_';
 
         $_mockClassName = $this->generateClassName(
             $type,
@@ -767,35 +763,6 @@ final class Generator
             } else {
                 $doubledCloneMethod = true;
             }
-
-            if ($propertyHooksSupported) {
-                foreach ($class->getProperties() as $property) {
-                    assert(method_exists($property, 'getHooks'));
-                    assert(method_exists($property, 'hasHooks'));
-                    assert(method_exists($property, 'isFinal'));
-
-                    if (!$property->isPublic()) {
-                        continue;
-                    }
-
-                    if ($property->isFinal()) {
-                        continue;
-                    }
-
-                    if (!$property->hasHooks()) {
-                        continue;
-                    }
-
-                    $propertyHooks = $property->getHooks();
-
-                    $properties[] = new Property(
-                        $property->getName(),
-                        $property->getType()->__toString(),
-                        isset($propertyHooks['get']),
-                        isset($propertyHooks['set']),
-                    );
-                }
-            }
         }
 
         if ($isClass && $explicitMethods === []) {
@@ -845,6 +812,8 @@ final class Generator
                 $mockMethod->returnType(),
             );
         }
+
+        $properties = $this->properties($class);
 
         foreach ($properties as $property) {
             if ($property->hasGetHook()) {
@@ -1278,5 +1247,52 @@ EOT;
         }
 
         return $methods;
+    }
+
+    /**
+     * @param ?ReflectionClass<object> $class
+     *
+     * @return list<Property>
+     */
+    private function properties(?ReflectionClass $class): array
+    {
+        if (!method_exists(ReflectionProperty::class, 'isFinal')) {
+            return [];
+        }
+
+        if ($class === null) {
+            return [];
+        }
+
+        $properties = [];
+
+        foreach ($class->getProperties() as $property) {
+            assert(method_exists($property, 'getHooks'));
+            assert(method_exists($property, 'hasHooks'));
+            assert(method_exists($property, 'isFinal'));
+
+            if (!$property->isPublic()) {
+                continue;
+            }
+
+            if ($property->isFinal()) {
+                continue;
+            }
+
+            if (!$property->hasHooks()) {
+                continue;
+            }
+
+            $propertyHooks = $property->getHooks();
+
+            $properties[] = new Property(
+                $property->getName(),
+                $property->getType()->__toString(),
+                isset($propertyHooks['get']),
+                isset($propertyHooks['set']),
+            );
+        }
+
+        return $properties;
     }
 }
