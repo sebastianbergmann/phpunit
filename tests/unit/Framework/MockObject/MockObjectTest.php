@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
-use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
@@ -464,7 +464,7 @@ EOT,
         $this->assertSame(2, $clone->doSomethingElse(0));
     }
 
-    #[RequiresPhp('^8.4')]
+    #[RequiresMethod(ReflectionProperty::class, 'isFinal')]
     public function testExpectationCanBeConfiguredForSetHookForPropertyOfInterface(): void
     {
         $double = $this->createTestDouble(InterfaceWithPropertyWithSetHook::class);
@@ -474,7 +474,7 @@ EOT,
         $double->property = 'value';
     }
 
-    #[RequiresPhp('^8.4')]
+    #[RequiresMethod(ReflectionProperty::class, 'isFinal')]
     public function testExpectationCanBeConfiguredForSetHookForPropertyOfExtendableClass(): void
     {
         $double = $this->createTestDouble(ExtendableClassWithPropertyWithSetHook::class);

@@ -671,7 +671,7 @@ final class Generator
 
         /** @var list<Property> $properties */
         $properties             = [];
-        $propertyHooksSupported = method_exists(ReflectionProperty::class, 'getHooks');
+        $propertyHooksSupported = method_exists(ReflectionProperty::class, 'isFinal');
         $testDoubleClassPrefix  = $mockObject ? 'MockObject_' : 'TestStub_';
 
         $_mockClassName = $this->generateClassName(
