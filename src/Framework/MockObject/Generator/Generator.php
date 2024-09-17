@@ -770,21 +770,22 @@ final class Generator
 
             if ($propertyHooksSupported) {
                 foreach ($class->getProperties() as $property) {
+                    assert(method_exists($property, 'getHooks'));
+                    assert(method_exists($property, 'hasHooks'));
+                    assert(method_exists($property, 'isFinal'));
+
                     if (!$property->isPublic()) {
                         continue;
                     }
 
-                    /** @phpstan-ignore method.notFound */
                     if ($property->isFinal()) {
                         continue;
                     }
 
-                    /** @phpstan-ignore method.notFound */
                     if (!$property->hasHooks()) {
                         continue;
                     }
 
-                    /** @phpstan-ignore method.notFound */
                     $propertyHooks = $property->getHooks();
 
                     $properties[] = new Property(
