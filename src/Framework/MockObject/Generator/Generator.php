@@ -1277,9 +1277,11 @@ EOT;
         $properties = [];
 
         foreach ($class->getProperties() as $property) {
-            assert(method_exists($property, 'getHooks'));
+            assert(method_exists($property, 'getHook'));
             assert(method_exists($property, 'hasHooks'));
+            assert(method_exists($property, 'hasHook'));
             assert(method_exists($property, 'isFinal'));
+            assert(class_exists(PropertyHookType::class));
 
             if (!$property->isPublic()) {
                 continue;
