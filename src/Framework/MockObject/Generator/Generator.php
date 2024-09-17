@@ -774,16 +774,18 @@ final class Generator
                         continue;
                     }
 
-                    /**
-                     * @todo Do not generate doubled property when property is final
-                     */
+                    /** @phpstan-ignore method.notFound */
+                    if ($property->isFinal()) {
+                        continue;
+                    }
+
+                    /** @phpstan-ignore method.notFound */
+                    if (!$property->hasHooks()) {
+                        continue;
+                    }
 
                     /** @phpstan-ignore method.notFound */
                     $propertyHooks = $property->getHooks();
-
-                    if ($propertyHooks === []) {
-                        continue;
-                    }
 
                     $properties[] = new Property(
                         $property->getName(),
