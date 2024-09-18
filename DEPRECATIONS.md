@@ -58,3 +58,4 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#5214](https://github.com/sebastianbergmann/phpunit/issues/5214) | `TestCase::iniSet()`                                      | 10.3.0 |                                     |
 | [#5216](https://github.com/sebastianbergmann/phpunit/issues/5216) | `TestCase::setLocale()`                                   | 10.3.0 |                                     |
 | [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800) | Targeting traits with `#[CoversClass]` and `#[UsesClass]` | 11.2.0 | `#[CoversClass]` and `#[UsesTrait]` |
+| [#5951](https://github.com/sebastianbergmann/phpunit/issues/5951) | `includeUncoveredFiles` configuration option              | 11.4.0 |                                     |

@@ -3,8 +3,7 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.4/phpunit.xsd"
          cacheDirectory=".phpunit.cache">
 
-    <coverage includeUncoveredFiles="true"
-              ignoreDeprecatedCodeUnits="true"
+    <coverage ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
         <report>
             <clover outputFile="clover.xml"/>

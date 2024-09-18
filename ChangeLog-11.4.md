@@ -16,4 +16,8 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 * The output of `--list-groups` now shows how many tests a group contains
 * The output of `--list-suites` now shows how many tests a test suite contains
 
+### Deprecated
+
+* [#5951](https://github.com/sebastianbergmann/phpunit/issues/5951): `includeUncoveredFiles` configuration option
+
 [11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3...main

@@ -76,6 +76,10 @@ final readonly class MigrationBuilder
             RemoveCacheResultFileAttribute::class,
             RemoveCoverageElementCacheDirectoryAttribute::class,
         ],
+
+        '11.4' => [
+            RemoveCoverageElementIncludeUncoveredFilesAttribute::class,
+        ],
     ];
 
     /**
