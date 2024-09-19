@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Changed
 
+* [#5956](https://github.com/sebastianbergmann/phpunit/issues/5956): Deprecation of the `E_STRICT` constant in PHP 8.4
 * Removed `.phpstorm.meta.php` file as methods such as `TestCase::createStub()` use generics / template types for their return types and PhpStorm, for example, uses that information
 
 ## [8.5.39] - 2024-07-10
