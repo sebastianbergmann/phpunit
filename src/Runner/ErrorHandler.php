@@ -59,7 +59,7 @@ final class ErrorHandler
     private readonly SourceFilter $sourceFilter;
 
     /**
-     * @var array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
      */
     private ?array $deprecationTriggers = null;
 
