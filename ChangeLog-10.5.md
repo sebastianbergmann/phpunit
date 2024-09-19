@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.35] - 2024-MM-DD
 
+### Changed
+
+* [#5956](https://github.com/sebastianbergmann/phpunit/issues/5956): Deprecation of the `E_STRICT` constant in PHP 8.4
+
 ### Fixed
 
 * [#5950](https://github.com/sebastianbergmann/phpunit/pull/5950): TestDox text should not be `trim()`med when it contains `$` character
