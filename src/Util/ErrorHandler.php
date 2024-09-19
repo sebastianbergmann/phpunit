@@ -16,6 +16,7 @@ use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function defined;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
@@ -93,10 +94,18 @@ final class ErrorHandler
             return false;
         }
 
+        /**
+         * E_STRICT is deprecated since PHP 8.4.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/5956
+         */
+        if (defined('E_STRICT') && $errorNumber === @E_STRICT) {
+            $errorNumber = E_NOTICE;
+        }
+
         switch ($errorNumber) {
             case E_NOTICE:
             case E_USER_NOTICE:
-            case E_STRICT:
                 if (!$this->convertNoticesToExceptions) {
                     return false;
                 }
