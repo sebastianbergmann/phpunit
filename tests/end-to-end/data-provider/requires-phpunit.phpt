@@ -14,34 +14,21 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-SSD.                                                                4 / 4 (100%)
+S..SS                                                               5 / 5 (100%)
 
 Time: %s, Memory: %s
 
-There were 2 PHPUnit errors:
+There were 3 skipped tests:
 
-1) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderThatThrows
-The data provider specified for PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderThatThrows is invalid
-Should have been skipped.
-
-%s:%d
-
-2) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderExternalThatThrows
-The data provider specified for PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderExternalThatThrows is invalid
-Should have been skipped.
-
-%s:%d
-
---
-
-There were 2 skipped tests:
-
-1) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithInvalidDataProvider with data set #0 (true)
+1) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithInvalidDataProvider
 PHPUnit < 10 is required.
 
-2) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithInvalidDataProvider with data set #1 (true)
+2) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderThatThrows
 PHPUnit < 10 is required.
 
-ERRORS!
-Tests: 4, Assertions: 2, Errors: 2, PHPUnit Deprecations: 1, Skipped: 2.
+3) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderExternalThatThrows
+PHPUnit < 10 is required.
+
+OK, but some tests were skipped!
+Tests: 5, Assertions: 2, Skipped: 3.
 
