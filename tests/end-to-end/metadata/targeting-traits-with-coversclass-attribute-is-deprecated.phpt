@@ -37,7 +37,7 @@ Test Suite Started (PHPUnit\DeprecatedAnnotationsTestFixture\TraitTargetedWithCo
 Test Preparation Started (PHPUnit\DeprecatedAnnotationsTestFixture\TraitTargetedWithCoversClassTest::testSomething)
 Test Prepared (PHPUnit\DeprecatedAnnotationsTestFixture\TraitTargetedWithCoversClassTest::testSomething)
 Test Passed (PHPUnit\DeprecatedAnnotationsTestFixture\TraitTargetedWithCoversClassTest::testSomething)
-Test Runner Triggered Deprecation (Targeting a trait such as PHPUnit\TestFixture\CoveredTrait with #[CoversClass] is deprecated, please refactor your test to use #[CoversTrait] instead.)
+Test Runner Triggered Deprecation (Targeting a trait such as PHPUnit\TestFixture\CoveredTrait with #[CoversClass] is deprecated. The traits used by the class(es) you target with #[CoversClass] will be targeted as well.)
 Test Finished (PHPUnit\DeprecatedAnnotationsTestFixture\TraitTargetedWithCoversClassTest::testSomething)
 Test Suite Finished (PHPUnit\DeprecatedAnnotationsTestFixture\TraitTargetedWithCoversClassTest, 1 test)
 Test Runner Execution Finished

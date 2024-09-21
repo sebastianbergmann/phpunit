@@ -35,7 +35,6 @@ use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
 use PHPUnit\TestFixture\CoverageTraitMethodTest;
-use PHPUnit\TestFixture\CoverageTraitTest;
 use PHPUnit\TestFixture\CoveredClassUsingCoveredTraitTest;
 use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
 use PHPUnit\TestFixture\InterfaceTargetTest;
@@ -223,14 +222,6 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
-                ],
-                CoverageTraitTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
                     TEST_FILES_PATH . 'CoveredTrait.php' => range(14, 17),
                 ],
                 CoverageTraitMethodTest::class,
@@ -361,14 +352,6 @@ final class CodeCoverageTest extends TestCase
                 ],
                 CoverageNamespacedFunctionTest::class,
                 'testFunc',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredTrait.php' => range(12, 18),
-                ],
-                CoverageTraitTest::class,
-                'testSomething',
             ],
 
             [
