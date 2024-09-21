@@ -36,6 +36,7 @@ use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
 use PHPUnit\TestFixture\CoverageTraitMethodTest;
 use PHPUnit\TestFixture\CoverageTraitTest;
+use PHPUnit\TestFixture\CoveredClassUsingCoveredTraitTest;
 use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
 use PHPUnit\TestFixture\InterfaceTargetTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAnnotationTest;
@@ -65,7 +66,8 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(12, 27), range(29, 46)),
+                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(12, 29)),
+                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(12, 27)),
                 ],
                 CoverageClassTest::class,
                 'testSomething',
@@ -73,7 +75,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodTest::class,
                 'testSomething',
@@ -81,7 +83,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodAnnotationTest::class,
                 'testSomething',
@@ -89,7 +91,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodOneLineAnnotationTest::class,
                 'testSomething',
@@ -97,15 +99,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(29, 46),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(12, 29),
                 ],
                 NamespaceCoverageClassTest::class,
                 'testSomething',
@@ -113,7 +107,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 NamespaceCoverageMethodTest::class,
                 'testSomething',
@@ -121,7 +115,8 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
+                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(14, 18), range(20, 24), range(26, 28)),
+                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(14, 17), range(19, 22), range(24, 26)),
                 ],
                 NamespaceCoverageCoversClassTest::class,
                 'testSomething',
@@ -129,9 +124,34 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 NamespaceCoverageCoversClassPublicTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClassUsingCoveredTrait.php' => range(12, 27),
+                    TEST_FILES_PATH . 'CoveredTrait.php'                  => range(12, 18),
+                ],
+                CoveredClassUsingCoveredTraitTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
+                ],
+                CoverageMethodParenthesesTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
+                ],
+                CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething',
             ],
 
@@ -149,7 +169,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageCoversOverridesCoversNothingTest::class,
                 'testSomething',
@@ -158,6 +178,14 @@ final class CodeCoverageTest extends TestCase
             [
                 false,
                 CoverageMethodNothingCoversMethod::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
+                ],
+                CoverageFunctionTest::class,
                 'testSomething',
             ],
 
@@ -174,22 +202,6 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
                 ],
                 CoverageFunctionParenthesesWhitespaceTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
-                ],
-                CoverageMethodParenthesesTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
-                ],
-                CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething',
             ],
 
@@ -238,7 +250,8 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(12, 27), range(29, 46)),
+                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(12, 29)),
+                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(12, 27)),
                 ],
                 CoverageClassTest::class,
                 'testSomething',
@@ -246,7 +259,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodTest::class,
                 'testSomething',
@@ -254,9 +267,51 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodAnnotationTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(12, 29),
+                ],
+                NamespaceCoverageClassTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
+                ],
+                NamespaceCoverageMethodTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(14, 18), range(20, 24), range(26, 28)),
+                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(14, 17), range(19, 22), range(24, 26)),
+                ],
+                NamespaceCoverageCoversClassTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
+                ],
+                NamespaceCoverageCoversClassPublicTest::class,
+                'testSomething',
+            ],
+
+            [
+                [
+                    TEST_FILES_PATH . 'CoveredClassUsingCoveredTrait.php' => range(12, 27),
+                    TEST_FILES_PATH . 'CoveredTrait.php'                  => range(12, 18),
+                ],
+                CoveredClassUsingCoveredTraitTest::class,
                 'testSomething',
             ],
 
@@ -265,38 +320,6 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
                 ],
                 CoverageFunctionTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(29, 46),
-                ],
-                NamespaceCoverageClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
-                ],
-                NamespaceCoverageMethodTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
-                ],
-                NamespaceCoverageCoversClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
-                ],
-                NamespaceCoverageCoversClassPublicTest::class,
                 'testSomething',
             ],
 
@@ -318,7 +341,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodParenthesesTest::class,
                 'testSomething',
@@ -326,7 +349,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
                 ],
                 CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething',
