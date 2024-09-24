@@ -79,8 +79,9 @@ final readonly class DataProvider
             if (!is_array($value)) {
                 throw new InvalidDataProviderException(
                     sprintf(
-                        'Data set %s is invalid',
+                        'Data set %s is invalid, expected array but got %s',
                         is_int($key) ? '#' . $key : '"' . $key . '"',
+                        get_debug_type($value),
                     ),
                 );
             }
