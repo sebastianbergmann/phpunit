@@ -513,7 +513,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        if (!$this->shouldRunInSeparateProcess()) {
+        if (!$this->shouldRunInSeparateProcess() || (new Requirements)->requirementsNotSatisfiedFor(static::class, $this->name) !== []) {
             (new TestRunner)->run($this);
         } else {
             (new TestRunner)->runInSeparateProcess(

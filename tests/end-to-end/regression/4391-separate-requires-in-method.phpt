@@ -23,11 +23,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
+S                                                                   1 / 1 (100%)
 
+Time: %s, Memory: %s
 
-An error occurred inside PHPUnit.
-
-Message:  Call to undefined function proc_open()
-Location: %s:%d
-
-%a
+OK, but some tests were skipped!
+Tests: 1, Assertions: 0, Skipped: 1.
