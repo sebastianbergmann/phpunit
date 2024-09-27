@@ -513,7 +513,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        if (!$this->shouldRunInSeparateProcess() || (new Requirements)->requirementsNotSatisfiedFor(static::class, $this->name) !== []) {
+        if (!$this->shouldRunInSeparateProcess() || $this->requirementsNotSatisfied()) {
             (new TestRunner)->run($this);
         } else {
             (new TestRunner)->runInSeparateProcess(
@@ -2308,6 +2308,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function hasExpectationOnOutput(): bool
     {
         return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex);
+    }
+
+    private function requirementsNotSatisfied(): bool
+    {
+        return (new Requirements)->requirementsNotSatisfiedFor(static::class, $this->name) !== [];
     }
 
     /**
