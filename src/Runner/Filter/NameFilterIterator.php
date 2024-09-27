@@ -13,6 +13,7 @@ use function end;
 use function preg_match;
 use function sprintf;
 use function str_replace;
+use function substr;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
@@ -84,7 +85,7 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
         $dataSetMinimum = null;
         $dataSetMaximum = null;
 
-        if (@preg_match($filter, '') === false) {
+        if (preg_match('/[a-zA-Z0-9]/', substr($filter, 0, 1)) === 1 || @preg_match($filter, '') === false) {
             // Handles:
             //  * testAssertEqualsSucceeds#4
             //  * testAssertEqualsSucceeds#4-8
