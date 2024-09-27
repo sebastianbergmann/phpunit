@@ -20,16 +20,16 @@ There were 7 PHPUnit test runner warnings:
 
 1) Using comma-separated values with --group is deprecated and will no longer work in PHPUnit 12. You can use --group multiple times instead.
 
-2) Group name "small" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
+2) Group name "small" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
 
-3) Group name "medium" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
+3) Group name "medium" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
 
-4) Group name "large" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
+4) Group name "large" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
 
-5) Group name "small" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
+5) Group name "small" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
-6) Group name "medium" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
+6) Group name "medium" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
-7) Group name "large" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
+7) Group name "large" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
 No tests executed!

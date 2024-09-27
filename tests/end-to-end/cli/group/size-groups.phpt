@@ -22,16 +22,16 @@ Runtime: %s
 
 There were 6 PHPUnit test runner warnings:
 
-1) Group name "small" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
+1) Group name "small" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
 
-2) Group name "medium" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
+2) Group name "medium" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
 
-3) Group name "large" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
+3) Group name "large" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
 
-4) Group name "small" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
+4) Group name "small" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
-5) Group name "medium" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
+5) Group name "medium" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
-6) Group name "large" is not allowed for class PHPUnit\TestFixture\SizeGroups\SizeGroupsTest
+6) Group name "large" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
 No tests executed!
