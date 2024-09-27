@@ -18,6 +18,21 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 When you submit code changes, your submissions are understood to be under the same [BSD-3-Clause License](https://github.com/sebastianbergmann/phpunit/blob/main/LICENSE) that covers the project. By contributing to this project, you agree that your contributions will be licensed under its BSD-3-Clause License.
 
+### Do Not Violate Copyright
+
+Only submit a pull request with your own original code. Do NOT submit a pull request containing code which you have largely copied from
+another project, unless you wrote the respective code yourself.
+
+Open Source does not mean that copyright does not apply. Copyright infringements will not be tolerated and can lead to you being banned from this project and repository.
+
+### Do Not Submit AI-Generated Pull Requests
+
+The same goes for (largely) AI-generated pull requests. These are not welcome as they will be based on copyrighted code from others
+without accreditation and without taking the license of the original code into account, let alone getting permission
+for the use of the code or for re-licensing.
+
+Aside from that, the experience is that AI-generated pull requests will be incorrect 100% of the time and cost reviewers too much time.
+Submitting a (largely) AI-generated pull request will lead to you being banned from this project and repository.
 
 ## Write bug reports with detail, background, and sample code
 
