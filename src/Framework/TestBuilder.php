@@ -43,7 +43,7 @@ final readonly class TestBuilder
 
         $data = null;
 
-        if ((new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === []) {
+        if ($this->requirementsSatisfied($className, $methodName)) {
             $data = (new DataProvider)->providedData($className, $methodName);
         }
 
@@ -274,5 +274,14 @@ final readonly class TestBuilder
     private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
     {
         return MetadataRegistry::parser()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     */
+    private function requirementsSatisfied(string $className, string $methodName): bool
+    {
+        return (new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === [];
     }
 }
