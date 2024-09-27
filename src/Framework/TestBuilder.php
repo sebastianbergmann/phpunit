@@ -40,7 +40,7 @@ final class TestBuilder
 
         $data = null;
 
-        if ((new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === []) {
+        if ($this->requirementsSatisfied($className, $methodName)) {
             $data = (new DataProvider)->providedData($className, $methodName);
         }
 
@@ -269,5 +269,14 @@ final class TestBuilder
     private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
     {
         return MetadataRegistry::parser()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
+    }
+
+    /**
+     * @psalm-param class-string     $className
+     * @psalm-param non-empty-string $methodName
+     */
+    private function requirementsSatisfied(string $className, string $methodName): bool
+    {
+        return (new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === [];
     }
 }
