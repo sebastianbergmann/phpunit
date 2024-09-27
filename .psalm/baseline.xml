@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.24.0@462c80e31c34e58cc4f750c656be3927e80e550e">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <UndefinedInterfaceMethod>
       <code><![CDATA[notify]]></code>
@@ -217,11 +217,6 @@
       <code><![CDATA[Assert::isTrue(...func_get_args())]]></code>
       <code><![CDATA[Assert::isWritable(...func_get_args())]]></code>
     </TooManyArguments>
-  </file>
-  <file src="src/Framework/Constraint/Cardinality/Count.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$e->getCode()]]></code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Framework/Constraint/Cardinality/GreaterThan.php">
     <DeprecatedClass>
@@ -620,9 +615,6 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$e->getCode()]]></code>
-    </PossiblyInvalidArgument>
     <RedundantCast>
       <code><![CDATA[(int) $matches[0][1]]]></code>
     </RedundantCast>
