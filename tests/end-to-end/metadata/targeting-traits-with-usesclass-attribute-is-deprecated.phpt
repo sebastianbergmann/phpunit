@@ -25,6 +25,7 @@ require __DIR__ . '/../../bootstrap.php';
 print file_get_contents($traceFile);
 
 unlink($traceFile);
+unlink($coverageFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
