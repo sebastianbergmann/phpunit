@@ -13,6 +13,7 @@ use function array_merge;
 use function assert;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
 use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
@@ -40,10 +41,11 @@ final readonly class TestBuilder
     {
         $className = $theClass->getName();
 
-        $data = (new DataProvider)->providedData(
-            $className,
-            $methodName,
-        );
+        $data = null;
+
+        if ((new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === []) {
+            $data = (new DataProvider)->providedData($className, $methodName);
+        }
 
         if ($data !== null) {
             return $this->buildDataProviderTestSuite(

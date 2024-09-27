@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.3.7] - 2024-MM-DD
+
+### Changed
+
+* [#5957](https://github.com/sebastianbergmann/phpunit/pull/5957): Skip data provider build when requirements are not satisfied
+
 ## [11.3.6] - 2024-09-19
 
 ### Changed
@@ -75,6 +81,7 @@ All notable changes of the PHPUnit 11.3 release series are documented in this fi
 * [#5856](https://github.com/sebastianbergmann/phpunit/issues/5856): When the test runner is configured to fail on deprecations, notices, warnings, incomplete tests, or skipped tests then details for tests that triggered deprecations, notices, or warnings as well as tests that were marked as incomplete or skipped are always shown, respectively
 * [#5869](https://github.com/sebastianbergmann/phpunit/pull/5869): The configuration file generated using `--generate-configuration` now limits the export of arrays to 10 elements in order to improve performance
 
+[11.3.7]: https://github.com/sebastianbergmann/phpunit/compare/11.3.6...11.3
 [11.3.6]: https://github.com/sebastianbergmann/phpunit/compare/11.3.5...11.3.6
 [11.3.5]: https://github.com/sebastianbergmann/phpunit/compare/11.3.4...11.3.5
 [11.3.4]: https://github.com/sebastianbergmann/phpunit/compare/11.3.3...11.3.4
