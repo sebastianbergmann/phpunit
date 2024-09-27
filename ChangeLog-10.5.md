@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Changed
 
 * [#5957](https://github.com/sebastianbergmann/phpunit/pull/5957): Skip data provider build when requirements are not satisfied
+* [#5969](https://github.com/sebastianbergmann/phpunit/pull/5969): Check for requirements before creating a separate process
 
 ## [10.5.35] - 2024-09-19
 
