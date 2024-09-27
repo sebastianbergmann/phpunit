@@ -1,5 +1,10 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/5965
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pdo')) {
+    print 'skip: Extension PDO must be loaded.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
