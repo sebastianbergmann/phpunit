@@ -27,6 +27,8 @@ use function is_file;
 use function is_readable;
 use function is_string;
 use function ltrim;
+use function ob_get_clean;
+use function ob_start;
 use function preg_match;
 use function preg_replace;
 use function preg_split;
@@ -66,6 +68,8 @@ use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 use SebastianBergmann\CodeCoverage\TestIdMissingException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Template\Template;
+use staabm\SideEffectsDetector\SideEffect;
+use staabm\SideEffectsDetector\SideEffectsDetector;
 use Throwable;
 
 /**
@@ -423,17 +427,24 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             return false;
         }
 
-        $jobResult = JobRunnerRegistry::run(
-            new Job(
-                $this->render($sections['SKIPIF']),
-                $this->stringifyIni($settings),
-            ),
-        );
+        $skipIfCode = $this->render($sections['SKIPIF']);
 
-        if (!strncasecmp('skip', ltrim($jobResult->stdout()), 4)) {
+        if ($this->shouldRunSkipIfInSubprocess($sections, $skipIfCode)) {
+            $jobResult = JobRunnerRegistry::run(
+                new Job(
+                    $skipIfCode,
+                    $this->stringifyIni($settings),
+                ),
+            );
+            $output = $jobResult->stdout();
+        } else {
+            $output = $this->runCodeInLocalSandbox($skipIfCode);
+        }
+
+        if (!strncasecmp('skip', ltrim($output), 4)) {
             $message = '';
 
-            if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult->stdout(), $skipMatch)) {
+            if (preg_match('/^\s*skip\s*(.+)\s*/i', $output, $skipMatch)) {
                 $message = substr($skipMatch[1], 2);
             }
 
@@ -448,6 +459,48 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         return false;
+    }
+
+    /**
+     * @param array<non-empty-string, non-empty-string> $sections
+     */
+    private function shouldRunSkipIfInSubprocess(array $sections, string $skipIfCode): bool
+    {
+        if (isset($sections['INI'])) {
+            // to get per-test INI settings, we need a dedicated subprocess
+            return true;
+        }
+
+        $detector    = new SideEffectsDetector;
+        $sideEffects = $detector->getSideEffects($skipIfCode);
+
+        if ($sideEffects === []) {
+            return false; // no side-effects
+        }
+
+        foreach ($sideEffects as $sideEffect) {
+            if ($sideEffect === SideEffect::STANDARD_OUTPUT) {
+                // stdout is fine, we will catch it using output-buffering
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function runCodeInLocalSandbox(string $code): string
+    {
+        $code = preg_replace('/^<\?(php)?/', '', $code);
+        $code = preg_replace('/declare\S?\([^)]+\)\S?;/', '', $code);
+
+        // wrap in immediately invoked function to isolate local-side-effects of $code from our own process
+        $code = '(function() {' . $code . '})();';
+        ob_start();
+        @eval($code);
+
+        return ob_get_clean();
     }
 
     /**
