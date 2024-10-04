@@ -21,5 +21,6 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 
 * [#5951](https://github.com/sebastianbergmann/phpunit/issues/5951): `includeUncoveredFiles` configuration option
 * [#5958](https://github.com/sebastianbergmann/phpunit/issues/5958): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes
+* [#5960](https://github.com/sebastianbergmann/phpunit/issues/5960): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes (and respective annotations)
 
 [11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3...main

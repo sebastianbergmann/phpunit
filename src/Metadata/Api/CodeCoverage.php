@@ -291,6 +291,24 @@ final class CodeCoverage
             );
         }
 
+        if ($metadata->isCoversMethod() && trait_exists($metadata->className())) {
+            EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                sprintf(
+                    'Targeting a trait such as %s with #[CoversMethod] is deprecated.',
+                    $metadata->className(),
+                ),
+            );
+        }
+
+        if ($metadata->isUsesMethod() && trait_exists($metadata->className())) {
+            EventFacade::emitter()->testRunnerTriggeredDeprecation(
+                sprintf(
+                    'Targeting a trait such as %s with #[UsesMethod] is deprecated.',
+                    $metadata->className(),
+                ),
+            );
+        }
+
         if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
             if (isset($this->withParents[$name])) {
                 return $this->withParents[$name];
