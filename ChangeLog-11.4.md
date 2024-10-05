@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 11.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [11.4.0] - 2024-10-04
+## [11.4.0] - 2024-10-05
 
 ### Changed
 
@@ -23,4 +23,4 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 * [#5958](https://github.com/sebastianbergmann/phpunit/issues/5958): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes
 * [#5960](https://github.com/sebastianbergmann/phpunit/issues/5960): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes (and respective annotations)
 
-[11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3...main
+[11.4.0]: https://github.com/sebastianbergmann/phpunit/compare/11.3.6...11.4.0
