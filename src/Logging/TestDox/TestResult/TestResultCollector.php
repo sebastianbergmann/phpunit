@@ -258,7 +258,7 @@ final class TestResultCollector
             return;
         }
 
-        if ($event->ignoredByTest()) {
+        if ($event->ignoredByBaseline()) {
             return;
         }
 
