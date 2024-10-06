@@ -7,7 +7,6 @@ This is the top-level directory structure of the `tests` directory:
 * `tests/unit` holds tests that are "regular" PHPUnit tests (implemented using `PHPUnit\Framework\TestCase`)
 * `tests/end-to-end` holds tests in the [PHPT](https://qa.php.net/phpt_details.php) format
 * `tests/end-to-end/phar` holds PHAR-specific tests that are not part of the regular `end-to-end` tests
-* `tests/static-analysis` holds test fixture that is used for static analysis of PHPUnit's API using Psalm
 * `tests/_files` holds test fixture that is used by tests in `tests/unit` and/or `tests/end-to-end`
 
 ## Running the Test Suite
@@ -16,4 +15,3 @@ This is the top-level directory structure of the `tests` directory:
 * `./phpunit --testsuite unit` will run all tests from `tests/unit`
 * `./phpunit --testsuite end-to-end` will run all tests from `tests/end-to-end` (except the PHAR-specific tests)
 * `ant phar-snapshot run-phar-specific-tests` will build a PHAR and run the PHAR-specific tests
-* `./tools/psalm --config=.psalm/static-analysis.xml` will run the static analysis of PHPUnit's API using Psalm
