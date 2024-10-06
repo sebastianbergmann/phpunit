@@ -1539,32 +1539,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $mockObject;
     }
 
-    /**
-     * Creates an object that uses the specified trait.
-     *
-     * @param trait-string $traitName
-     * @param array<mixed> $arguments
-     *
-     * @throws MockObjectException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5244
-     */
-    final protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'getObjectForTrait() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        return (new MockGenerator)->objectForTrait(
-            $traitName,
-            $traitClassName,
-            $callAutoload,
-            $callOriginalConstructor,
-            $arguments,
-        );
-    }
-
     protected function transformException(Throwable $t): Throwable
     {
         return $t;

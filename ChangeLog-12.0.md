@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 * [#5247](https://github.com/sebastianbergmann/phpunit/issues/5247): `TestCase::getMockForAbstractClass()`
 * [#5249](https://github.com/sebastianbergmann/phpunit/issues/5249): `TestCase::getMockForTrait()`
+* [#5250](https://github.com/sebastianbergmann/phpunit/issues/5250): `TestCase::getObjectForTrait()`
 * [#5313](https://github.com/sebastianbergmann/phpunit/issues/5313): `MockBuilder::getMockForTrait()`
 * [#5314](https://github.com/sebastianbergmann/phpunit/issues/5314): `MockBuilder::getMockForAbstractClass()`
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2

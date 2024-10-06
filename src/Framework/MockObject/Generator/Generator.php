@@ -234,51 +234,6 @@ final class Generator
     }
 
     /**
-     * Returns an object for the specified trait.
-     *
-     * @param trait-string $traitName
-     * @param list<mixed>  $arguments
-     *
-     * @throws ReflectionException
-     * @throws RuntimeException
-     * @throws UnknownTraitException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5244
-     */
-    public function objectForTrait(string $traitName, string $traitClassName = '', bool $callAutoload = true, bool $callOriginalConstructor = false, array $arguments = []): object
-    {
-        if (!trait_exists($traitName, $callAutoload)) {
-            throw new UnknownTraitException($traitName);
-        }
-
-        $className = $this->generateClassName(
-            $traitName,
-            $traitClassName,
-            'Trait_',
-        );
-
-        $classTemplate = $this->loadTemplate('trait_class.tpl');
-
-        $classTemplate->setVar(
-            [
-                'prologue'   => '',
-                'class_name' => $className['className'],
-                'trait_name' => $traitName,
-            ],
-        );
-
-        return $this->getObject(
-            new MockTrait(
-                $classTemplate->render(),
-                $className['className'],
-            ),
-            '',
-            $callOriginalConstructor,
-            $arguments,
-        );
-    }
-
-    /**
      * @param ?list<non-empty-string> $methods
      *
      * @throws ClassIsEnumerationException
