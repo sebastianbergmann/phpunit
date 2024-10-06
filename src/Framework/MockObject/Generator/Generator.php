@@ -46,7 +46,6 @@ use IteratorAggregate;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
@@ -232,120 +231,6 @@ final class Generator
             $mockObject,
             returnValueGeneration: $returnValueGeneration,
         );
-    }
-
-    /**
-     * Returns a mock object for the specified abstract class with all abstract
-     * methods of the class mocked.
-     *
-     * Concrete methods to mock can be specified with the $mockedMethods parameter.
-     *
-     * @param list<mixed>             $arguments
-     * @param ?list<non-empty-string> $mockedMethods
-     *
-     * @throws ClassIsEnumerationException
-     * @throws ClassIsFinalException
-     * @throws DuplicateMethodException
-     * @throws InvalidArgumentException
-     * @throws InvalidMethodNameException
-     * @throws NameAlreadyInUseException
-     * @throws OriginalConstructorInvocationRequiredException
-     * @throws ReflectionException
-     * @throws RuntimeException
-     * @throws UnknownClassException
-     * @throws UnknownTypeException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
-     */
-    public function mockObjectForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, ?array $mockedMethods = null, bool $cloneArguments = true): MockObject
-    {
-        if (class_exists($originalClassName, $callAutoload) ||
-            interface_exists($originalClassName, $callAutoload)) {
-            $reflector = $this->reflectClass($originalClassName);
-            $methods   = $mockedMethods;
-
-            foreach ($reflector->getMethods() as $method) {
-                if ($method->isAbstract() && !in_array($method->getName(), $methods ?? [], true)) {
-                    $methods[] = $method->getName();
-                }
-            }
-
-            if (empty($methods)) {
-                $methods = null;
-            }
-
-            $mockObject = $this->testDouble(
-                $originalClassName,
-                true,
-                true,
-                $methods,
-                $arguments,
-                $mockClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
-                $callAutoload,
-                $cloneArguments,
-            );
-
-            assert($mockObject instanceof $originalClassName);
-            assert($mockObject instanceof MockObject);
-
-            return $mockObject;
-        }
-
-        throw new UnknownClassException($originalClassName);
-    }
-
-    /**
-     * Returns a mock object for the specified trait with all abstract methods
-     * of the trait mocked. Concrete methods to mock can be specified with the
-     * `$mockedMethods` parameter.
-     *
-     * @param trait-string            $traitName
-     * @param list<mixed>             $arguments
-     * @param ?list<non-empty-string> $mockedMethods
-     *
-     * @throws ClassIsEnumerationException
-     * @throws ClassIsFinalException
-     * @throws DuplicateMethodException
-     * @throws InvalidArgumentException
-     * @throws InvalidMethodNameException
-     * @throws NameAlreadyInUseException
-     * @throws OriginalConstructorInvocationRequiredException
-     * @throws ReflectionException
-     * @throws RuntimeException
-     * @throws UnknownClassException
-     * @throws UnknownTraitException
-     * @throws UnknownTypeException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
-     */
-    public function mockObjectForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, ?array $mockedMethods = null, bool $cloneArguments = true): MockObject
-    {
-        if (!trait_exists($traitName, $callAutoload)) {
-            throw new UnknownTraitException($traitName);
-        }
-
-        $className = $this->generateClassName(
-            $traitName,
-            '',
-            'Trait_',
-        );
-
-        $classTemplate = $this->loadTemplate('trait_class.tpl');
-
-        $classTemplate->setVar(
-            [
-                'prologue'   => 'abstract ',
-                'class_name' => $className['className'],
-                'trait_name' => $traitName,
-            ],
-        );
-
-        $mockTrait = new MockTrait($classTemplate->render(), $className['className']);
-        $mockTrait->generate();
-
-        return $this->mockObjectForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
     }
 
     /**

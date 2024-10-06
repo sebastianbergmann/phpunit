@@ -29,7 +29,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInConstructor;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
-use PHPUnit\TestFixture\MockObject\TraitWithConcreteAndAbstractMethod;
 
 #[CoversClass(MockBuilder::class)]
 #[CoversClass(CannotUseAddMethodsException::class)]
@@ -110,18 +109,6 @@ final class MockBuilderTest extends TestCase
         $this->getMockBuilder(ExtendableClass::class)
             ->addMethods(['1234'])
             ->getMock();
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('getMockForTrait() can be used to create a mock object for a trait')]
-    public function testCreatesMockObjectForTraitAndAllowsConfigurationOfMethods(): void
-    {
-        $double = $this->getMockBuilder(TraitWithConcreteAndAbstractMethod::class)
-            ->getMockForTrait();
-
-        $double->method('abstractMethod')->willReturn(true);
-
-        $this->assertTrue($double->concreteMethod());
     }
 
     #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
