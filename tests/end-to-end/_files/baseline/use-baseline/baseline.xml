@@ -1,8 +1,23 @@
 <?xml version="1.0"?>
 <files version="1">
-    <file path="tests/Test.php">
-        <line number="20" hash="a1022fb62c4705938dd2c6df5ff35b2621f9e97d">
-            <issue><![CDATA[deprecation]]></issue>
-        </line>
-    </file>
+ <file path="tests/UseBaselineTest.php">
+  <line number="23" hash="dba225b56a963ec1cb91eff6711e51d9e3df6c6e">
+   <issue><![CDATA[strlen(): Passing null to parameter #1 ($string) of type string is deprecated]]></issue>
+  </line>
+  <line number="29" hash="b8af300020a6744a3774f463a41339c21bef5648">
+   <issue><![CDATA[Only variables should be assigned by reference]]></issue>
+  </line>
+  <line number="31" hash="1144713f7825a9ca87b378ce41789cf994e627e6">
+   <issue><![CDATA[Undefined variable $b]]></issue>
+  </line>
+  <line number="33" hash="a1022fb62c4705938dd2c6df5ff35b2621f9e97d">
+   <issue><![CDATA[deprecation]]></issue>
+  </line>
+  <line number="34" hash="fff8be75c2fbcbc4d395247e58fbbe6541189cf0">
+   <issue><![CDATA[notice]]></issue>
+  </line>
+  <line number="35" hash="a5b91c0a182bedb089007e5bc0d0f462637bc904">
+   <issue><![CDATA[warning]]></issue>
+  </line>
+ </file>
 </files>
