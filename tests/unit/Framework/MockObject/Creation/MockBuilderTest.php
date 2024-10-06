@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\MockObject\Generator\CannotUseAddMethodsException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
@@ -31,7 +30,6 @@ use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInConstructor;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
 #[CoversClass(MockBuilder::class)]
-#[CoversClass(CannotUseAddMethodsException::class)]
 #[CoversClass(DuplicateMethodException::class)]
 #[CoversClass(InvalidMethodNameException::class)]
 #[CoversClass(NameAlreadyInUseException::class)]
