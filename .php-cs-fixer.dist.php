@@ -16,6 +16,8 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/unit')
     // DeprecatedPhpFeatureTest.php must not use declare(strict_types=1);
     ->notName('DeprecatedPhpFeatureTest.php')
+    // UseBaselineTest.php must not use declare(strict_types=1);
+    ->notName('UseBaselineTest.php')
     // Issue5795Test.php contains required whitespace that would be cleaned up
     ->notName('Issue5795Test.php')
     ->notName('*.phpt');

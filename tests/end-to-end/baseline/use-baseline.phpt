@@ -21,4 +21,4 @@ Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)
 
-1 issue was ignored by baseline.
+6 issues were ignored by baseline.
