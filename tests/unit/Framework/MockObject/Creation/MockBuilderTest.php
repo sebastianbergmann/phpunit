@@ -63,54 +63,6 @@ final class MockBuilderTest extends TestCase
             ->getMock();
     }
 
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('addMethods() can be used to configure an additional method for the mock object class when the original class does not have a method of the same name')]
-    public function testCanCreateMockObjectForExtendableClassWhileAddingMethodsToIt(): void
-    {
-        $double = $this->getMockBuilder(ExtendableClass::class)
-            ->addMethods(['additionalMethod'])
-            ->getMock();
-
-        $value = 'value';
-
-        $double->method('additionalMethod')->willReturn($value);
-
-        $this->assertSame($value, $double->additionalMethod());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class when the original class has a method of the same name')]
-    public function testCannotCreateMockObjectForExtendableClassAddingMethodToItThatItAlreadyHas(): void
-    {
-        $this->expectException(CannotUseAddMethodsException::class);
-
-        $this->getMockBuilder(ExtendableClass::class)
-            ->addMethods(['doSomething'])
-            ->getMock();
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class multiple times using the same name')]
-    public function testCannotCreateMockObjectForExtendableClassAddingMultipleMethodsWithSameNameToIt(): void
-    {
-        $this->expectException(DuplicateMethodException::class);
-
-        $this->getMockBuilder(ExtendableClass::class)
-            ->addMethods(['additionalMethod', 'additionalMethod'])
-            ->getMock();
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('addMethods() cannot be used to configure an additional method for the mock object class with invalid name')]
-    public function testCannotCreateMockObjectForExtendableClassAddingMethodToItWithInvalidName(): void
-    {
-        $this->expectException(InvalidMethodNameException::class);
-
-        $this->getMockBuilder(ExtendableClass::class)
-            ->addMethods(['1234'])
-            ->getMock();
-    }
-
     #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
     public function testCreatesPartialMockObjectForExtendableClass(): void
     {

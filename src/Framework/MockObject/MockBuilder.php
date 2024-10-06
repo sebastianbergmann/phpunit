@@ -15,7 +15,6 @@ use function assert;
 use function debug_backtrace;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
-use PHPUnit\Framework\MockObject\Generator\CannotUseAddMethodsException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
@@ -156,57 +155,6 @@ final class MockBuilder
         foreach ($methods as $method) {
             if (!$reflector->hasMethod($method)) {
                 throw new CannotUseOnlyMethodsException($this->type, $method);
-            }
-        }
-
-        $this->methods = array_merge($this->methods, $methods);
-
-        return $this;
-    }
-
-    /**
-     * Specifies methods that don't exist in the class which you want to mock.
-     *
-     * @param list<non-empty-string> $methods
-     *
-     * @throws CannotUseAddMethodsException
-     * @throws ReflectionException
-     * @throws RuntimeException
-     *
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5320
-     */
-    public function addMethods(array $methods): self
-    {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::addMethods() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        if (empty($methods)) {
-            $this->emptyMethodsArray = true;
-
-            return $this;
-        }
-
-        try {
-            $reflector = new ReflectionClass($this->type);
-
-            // @codeCoverageIgnoreStart
-            /** @phpstan-ignore catch.neverThrown */
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e,
-            );
-            // @codeCoverageIgnoreEnd
-        }
-
-        foreach ($methods as $method) {
-            if ($reflector->hasMethod($method)) {
-                throw new CannotUseAddMethodsException($this->type, $method);
             }
         }
 
