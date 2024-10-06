@@ -28,6 +28,7 @@ use function interface_exists;
 use function is_array;
 use function is_object;
 use function md5;
+use function method_exists;
 use function mt_rand;
 use function preg_match;
 use function preg_match_all;
@@ -63,9 +64,13 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
 use PHPUnit\Framework\MockObject\StubInternal;
 use PHPUnit\Framework\MockObject\TestDoubleState;
+use PropertyHookType;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
+use ReflectionProperty;
+use SebastianBergmann\Type\ReflectionMapper;
+use SebastianBergmann\Type\Type;
 use SoapClient;
 use SoapFault;
 use Throwable;
@@ -796,18 +801,13 @@ final class Generator
             }
         }
 
+        $propertiesWithHooks = $this->properties($class);
+        $configurableMethods = $this->configurableMethods($mockMethods, $propertiesWithHooks);
+
         $mockedMethods = '';
-        $configurable  = [];
 
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
-
-            $configurable[] = new ConfigurableMethod(
-                $mockMethod->methodName(),
-                $mockMethod->defaultParameterValues(),
-                $mockMethod->numberOfParameters(),
-                $mockMethod->returnType(),
-            );
         }
 
         /** @var trait-string[] $traits */
@@ -890,14 +890,15 @@ final class Generator
                 ),
                 'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
-                'mocked_methods'  => $mockedMethods,
+                'methods'         => $mockedMethods,
+                'property_hooks'  => $this->codeForPropertyHooks($propertiesWithHooks, $_mockClassName['className']),
             ],
         );
 
         return new MockClass(
             $classTemplate->render(),
             $_mockClassName['className'],
-            $configurable,
+            $configurableMethods,
         );
     }
 
@@ -1158,5 +1159,187 @@ final class Generator
         }
 
         return $methods;
+    }
+
+    /**
+     * @param list<Property> $propertiesWithHooks
+     *
+     * @return list<ConfigurableMethod>
+     */
+    private function configurableMethods(MockMethodSet $methods, array $propertiesWithHooks): array
+    {
+        $configurable = [];
+
+        foreach ($methods->asArray() as $method) {
+            $configurable[] = new ConfigurableMethod(
+                $method->methodName(),
+                $method->defaultParameterValues(),
+                $method->numberOfParameters(),
+                $method->returnType(),
+            );
+        }
+
+        foreach ($propertiesWithHooks as $property) {
+            if ($property->hasGetHook()) {
+                $configurable[] = new ConfigurableMethod(
+                    sprintf(
+                        '$%s::get',
+                        $property->name(),
+                    ),
+                    [],
+                    0,
+                    $property->type(),
+                );
+            }
+
+            if ($property->hasSetHook()) {
+                $configurable[] = new ConfigurableMethod(
+                    sprintf(
+                        '$%s::set',
+                        $property->name(),
+                    ),
+                    [],
+                    1,
+                    Type::fromName('void', false),
+                );
+            }
+        }
+
+        return $configurable;
+    }
+
+    /**
+     * @param ?ReflectionClass<object> $class
+     *
+     * @return list<Property>
+     */
+    private function properties(?ReflectionClass $class): array
+    {
+        if (!method_exists(ReflectionProperty::class, 'isFinal')) {
+            // @codeCoverageIgnoreStart
+            return [];
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($class === null) {
+            return [];
+        }
+
+        $mapper     = new ReflectionMapper;
+        $properties = [];
+
+        foreach ($class->getProperties() as $property) {
+            assert(method_exists($property, 'getHook'));
+            assert(method_exists($property, 'hasHooks'));
+            assert(method_exists($property, 'hasHook'));
+            assert(method_exists($property, 'isFinal'));
+            assert(class_exists(PropertyHookType::class));
+
+            if (!$property->isPublic()) {
+                continue;
+            }
+
+            if ($property->isFinal()) {
+                continue;
+            }
+
+            if (!$property->hasHooks()) {
+                continue;
+            }
+
+            $hasGetHook = false;
+            $hasSetHook = false;
+
+            if ($property->hasHook(PropertyHookType::Get) &&
+                !$property->getHook(PropertyHookType::Get)->isFinal()) {
+                $hasGetHook = true;
+            }
+
+            if ($property->hasHook(PropertyHookType::Set) &&
+                !$property->getHook(PropertyHookType::Set)->isFinal()) {
+                $hasSetHook = true;
+            }
+
+            if (!$hasGetHook && !$hasSetHook) {
+                continue;
+            }
+
+            $properties[] = new Property(
+                $property->getName(),
+                $mapper->fromPropertyType($property),
+                $hasGetHook,
+                $hasSetHook,
+            );
+        }
+
+        return $properties;
+    }
+
+    /**
+     * @param list<Property> $propertiesWithHooks
+     * @param class-string   $className
+     *
+     * @return non-empty-string
+     */
+    private function codeForPropertyHooks(array $propertiesWithHooks, string $className): string
+    {
+        $propertyHooks = '';
+
+        foreach ($propertiesWithHooks as $property) {
+            $propertyHooks .= sprintf(
+                <<<'EOT'
+
+    public %s $%s {
+EOT,
+                $property->type()->asString(),
+                $property->name(),
+            );
+
+            if ($property->hasGetHook()) {
+                $propertyHooks .= sprintf(
+                    <<<'EOT'
+
+        get {
+            return $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    '%s', '$%s::get', [], '%s', $this, false
+                )
+            );
+        }
+
+EOT,
+                    $className,
+                    $property->name(),
+                    $property->type()->asString(),
+                );
+            }
+
+            if ($property->hasSetHook()) {
+                $propertyHooks .= sprintf(
+                    <<<'EOT'
+
+        set (%s $value) {
+            $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    '%s', '$%s::set', [$value], 'void', $this, false
+                )
+            );
+        }
+
+EOT,
+                    $property->type()->asString(),
+                    $className,
+                    $property->name(),
+                );
+            }
+
+            $propertyHooks .= <<<'EOT'
+    }
+
+EOT;
+
+        }
+
+        return $propertyHooks;
     }
 }

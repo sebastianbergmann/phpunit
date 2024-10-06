@@ -31,6 +31,7 @@ use PHPUnit\Framework\MockObject\MethodNameAlreadyConfiguredException;
 use PHPUnit\Framework\MockObject\MethodNameNotConfiguredException;
 use PHPUnit\Framework\MockObject\MethodParametersAlreadyConfiguredException;
 use PHPUnit\Framework\MockObject\Rule;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls;
 use PHPUnit\Framework\MockObject\Stub\Exception;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
@@ -246,10 +247,14 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
      *
      * @return $this
      */
-    public function method(Constraint|string $constraint): self
+    public function method(Constraint|PropertyHook|string $constraint): self
     {
         if ($this->matcher->hasMethodNameRule()) {
             throw new MethodNameAlreadyConfiguredException;
+        }
+
+        if ($constraint instanceof PropertyHook) {
+            $constraint = $constraint->asString();
         }
 
         if (is_string($constraint)) {

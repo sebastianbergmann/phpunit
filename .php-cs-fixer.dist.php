@@ -14,6 +14,11 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
+    // *WithPropertyWith*Hook.php use PHP 8.4 syntax that currently leads to PHP-CS-Fixer errors
+    ->notName('ExtendableClassWithPropertyWithGetHook.php')
+    ->notName('ExtendableClassWithPropertyWithSetHook.php')
+    ->notName('InterfaceWithPropertyWithGetHook.php')
+    ->notName('InterfaceWithPropertyWithSetHook.php')
     // DeprecatedPhpFeatureTest.php must not use declare(strict_types=1);
     ->notName('DeprecatedPhpFeatureTest.php')
     // UseBaselineTest.php must not use declare(strict_types=1);
