@@ -1146,47 +1146,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($methodNames, $event->methodNames());
     }
 
-    public function testTestTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
-    {
-        $className            = self::class;
-        $constructorArguments = ['foo'];
-
-        $subscriber = new class extends RecordingSubscriber implements Test\TestProxyCreatedSubscriber
-        {
-            public function notify(Test\TestProxyCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\TestProxyCreatedSubscriber::class,
-            Test\TestProxyCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedTestProxy(
-            $className,
-            $constructorArguments,
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\TestProxyCreated::class, $event);
-
-        $this->assertSame($className, $event->className());
-        $this->assertSame("Array &0 [\n    0 => 'foo',\n]", $event->constructorArguments());
-    }
-
     public function testTestTestStubCreatedDispatchesTestDoubleTestStubCreatedEvent(): void
     {
         $className = self::class;

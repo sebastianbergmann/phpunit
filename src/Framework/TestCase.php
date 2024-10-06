@@ -1437,41 +1437,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $partialMock;
     }
 
-    /**
-     * Creates a test proxy for the specified class.
-     *
-     * @template RealInstanceType of object
-     *
-     * @param class-string<RealInstanceType> $originalClassName
-     * @param array<mixed>                   $constructorArguments
-     *
-     * @throws InvalidArgumentException
-     * @throws MockObjectException
-     *
-     * @return MockObject&RealInstanceType
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
-     */
-    final protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'createTestProxy() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $testProxy = $this->getMockBuilder($originalClassName)
-            ->setConstructorArgs($constructorArguments)
-            ->enableProxyingToOriginalMethods()
-            ->getMock();
-
-        Event\Facade::emitter()->testCreatedTestProxy(
-            $originalClassName,
-            $constructorArguments,
-        );
-
-        return $testProxy;
-    }
-
     protected function transformException(Throwable $t): Throwable
     {
         return $t;

@@ -211,7 +211,6 @@ final class Facade
             Test\MockObjectCreated::class,
             Test\MockObjectForIntersectionOfInterfacesCreated::class,
             Test\PartialMockObjectCreated::class,
-            Test\TestProxyCreated::class,
             Test\TestStubCreated::class,
             Test\TestStubForIntersectionOfInterfacesCreated::class,
 

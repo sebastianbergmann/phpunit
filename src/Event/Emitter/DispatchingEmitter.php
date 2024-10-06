@@ -27,7 +27,6 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
-use PHPUnit\Util\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -514,24 +513,6 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $className,
                 ...$methodNames,
-            ),
-        );
-    }
-
-    /**
-     * @param class-string $className
-     * @param list<mixed>  $constructorArguments
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedTestProxy(string $className, array $constructorArguments): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\TestProxyCreated(
-                $this->telemetryInfo(),
-                $className,
-                Exporter::export($constructorArguments),
             ),
         );
     }

@@ -124,12 +124,6 @@ interface Emitter
 
     /**
      * @param class-string $className
-     * @param list<mixed>  $constructorArguments
-     */
-    public function testCreatedTestProxy(string $className, array $constructorArguments): void;
-
-    /**
-     * @param class-string $className
      */
     public function testCreatedStub(string $className): void;
 
