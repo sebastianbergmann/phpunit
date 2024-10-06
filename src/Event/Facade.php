@@ -9,13 +9,10 @@
  */
 namespace PHPUnit\Event;
 
-use const PHP_VERSION;
 use function assert;
 use function interface_exists;
-use function version_compare;
 use PHPUnit\Event\Telemetry\HRTime;
-use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
-use PHPUnit\Event\Telemetry\Php83GarbageCollectorStatusProvider;
+use PHPUnit\Event\Telemetry\SystemGarbageCollectorStatusProvider;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -99,7 +96,7 @@ final class Facade
             new Telemetry\System(
                 new Telemetry\SystemStopWatchWithOffset($offset),
                 new Telemetry\SystemMemoryMeter,
-                $this->garbageCollectorStatusProvider(),
+                new SystemGarbageCollectorStatusProvider,
             ),
         );
 
@@ -139,7 +136,7 @@ final class Facade
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
             new Telemetry\SystemMemoryMeter,
-            $this->garbageCollectorStatusProvider(),
+            new SystemGarbageCollectorStatusProvider,
         );
     }
 
@@ -252,16 +249,5 @@ final class Facade
 
             $typeMap->addMapping($subscriberInterface, $eventClass);
         }
-    }
-
-    private function garbageCollectorStatusProvider(): Telemetry\GarbageCollectorStatusProvider
-    {
-        if (version_compare(PHP_VERSION, '8.3.0', '>=')) {
-            return new Php83GarbageCollectorStatusProvider;
-        }
-
-        // @codeCoverageIgnoreStart
-        return new Php81GarbageCollectorStatusProvider;
-        // @codeCoverageIgnoreEnd
     }
 }

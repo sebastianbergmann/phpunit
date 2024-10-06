@@ -10,8 +10,6 @@
 namespace PHPUnit\Framework\MockObject\Generator;
 
 use const PHP_EOL;
-use const PHP_MAJOR_VERSION;
-use const PHP_MINOR_VERSION;
 use const PREG_OFFSET_CAPTURE;
 use const WSDL_CACHE_NONE;
 use function array_merge;
@@ -51,14 +49,12 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
-use PHPUnit\Framework\MockObject\ErrorCloneMethod;
 use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
 use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 use PHPUnit\Framework\MockObject\Method;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
-use PHPUnit\Framework\MockObject\MutableStubApi;
 use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\StubApi;
@@ -811,16 +807,7 @@ final class Generator
         }
 
         /** @var trait-string[] $traits */
-        $traits  = [];
-        $isPhp82 = PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2;
-
-        if (!$isReadonly && $isPhp82) {
-            // @codeCoverageIgnoreStart
-            $traits[] = MutableStubApi::class;
-            // @codeCoverageIgnoreEnd
-        } else {
-            $traits[] = StubApi::class;
-        }
+        $traits = [StubApi::class];
 
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
@@ -854,16 +841,10 @@ final class Generator
             $traits[] = Method::class;
         }
 
-        if ($isPhp82 && $isReadonly) {
-            // @codeCoverageIgnoreStart
-            $traits[] = ErrorCloneMethod::class;
-            // @codeCoverageIgnoreEnd
-        } else {
-            if ($doubledCloneMethod) {
-                $traits[] = DoubledCloneMethod::class;
-            } elseif ($proxiedCloneMethod) {
-                $traits[] = ProxiedCloneMethod::class;
-            }
+        if ($doubledCloneMethod) {
+            $traits[] = DoubledCloneMethod::class;
+        } elseif ($proxiedCloneMethod) {
+            $traits[] = ProxiedCloneMethod::class;
         }
 
         $useStatements = '';

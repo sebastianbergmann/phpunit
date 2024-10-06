@@ -110,7 +110,6 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
           - "8.5"
@@ -158,7 +157,6 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
           - "8.5"
@@ -293,7 +291,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
           - "8.5"

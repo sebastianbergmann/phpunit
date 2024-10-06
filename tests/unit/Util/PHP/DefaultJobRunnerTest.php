@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use const PHP_VERSION;
-use function version_compare;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -26,53 +24,51 @@ final class DefaultJobRunnerTest extends TestCase
 {
     public static function provider(): Generator
     {
-        if (version_compare(PHP_VERSION, '8.3.0', '>')) {
-            yield 'output to stdout' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+        yield 'output to stdout' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test');
 
 EOT
-                ),
-            ];
+            ),
+        ];
 
-            yield 'output to stderr' => [
-                new Result('', 'test'),
-                new Job(
-                    <<<'EOT'
+        yield 'output to stderr' => [
+            new Result('', 'test'),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
 EOT
-                ),
-            ];
+            ),
+        ];
 
-            yield 'output to stdout and stderr' => [
-                new Result('test-stdout', 'test-stderr'),
-                new Job(
-                    <<<'EOT'
+        yield 'output to stdout and stderr' => [
+            new Result('test-stdout', 'test-stderr'),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test-stdout');
 fwrite(STDERR, 'test-stderr');
 
 EOT
-                ),
-            ];
+            ),
+        ];
 
-            yield 'stderr redirected to stdout' => [
-                new Result('test', ''),
-                new Job(
-                    <<<'EOT'
+        yield 'stderr redirected to stdout' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
 EOT,
-                    redirectErrors: true,
-                ),
-            ];
-        }
+                redirectErrors: true,
+            ),
+        ];
 
         yield 'configured environment variables' => [
             new Result('test', ''),
