@@ -124,42 +124,6 @@ final class MockBuilder
     }
 
     /**
-     * Creates a mock object for an abstract class using a fluent interface.
-     *
-     * @throws Exception
-     * @throws ReflectionException
-     * @throws RuntimeException
-     *
-     * @return MockedType&MockObject
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5305
-     */
-    public function getMockForAbstractClass(): MockObject
-    {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $object = $this->generator->mockObjectForAbstractClass(
-            $this->type,
-            $this->constructorArgs,
-            $this->mockClassName ?? '',
-            $this->originalConstructor,
-            $this->originalClone,
-            $this->autoload,
-            $this->methods,
-            $this->cloneArguments,
-        );
-
-        assert($object instanceof MockObject);
-
-        $this->testCase->registerMockObject($object);
-
-        return $object;
-    }
-
-    /**
      * Creates a mock object for a trait using a fluent interface.
      *
      * @throws Exception

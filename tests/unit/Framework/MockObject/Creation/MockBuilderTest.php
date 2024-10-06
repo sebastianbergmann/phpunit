@@ -26,7 +26,6 @@ use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\AbstractClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInConstructor;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
@@ -111,18 +110,6 @@ final class MockBuilderTest extends TestCase
         $this->getMockBuilder(ExtendableClass::class)
             ->addMethods(['1234'])
             ->getMock();
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('getMockForAbstractClass() can be used to create a mock object for an abstract class')]
-    public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void
-    {
-        $double = $this->getMockBuilder(AbstractClass::class)
-            ->getMockForAbstractClass();
-
-        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
-
-        $this->assertTrue($double->doSomething());
     }
 
     #[IgnorePhpunitDeprecations]
