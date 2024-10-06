@@ -1479,52 +1479,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Creates a mock object for the specified abstract class with all abstract
-     * methods of the class mocked. Concrete methods are not mocked by default.
-     * To mock concrete methods, use the 7th parameter ($mockedMethods).
-     *
-     * @template RealInstanceType of object
-     *
-     * @param class-string<RealInstanceType> $originalClassName
-     * @param array<mixed>                   $arguments
-     * @param list<non-empty-string>         $mockedMethods
-     *
-     * @throws InvalidArgumentException
-     * @throws MockObjectException
-     *
-     * @return MockObject&RealInstanceType
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
-     */
-    final protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'getMockForAbstractClass() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $mockObject = (new MockGenerator)->mockObjectForAbstractClass(
-            $originalClassName,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload,
-            $mockedMethods,
-            $cloneArguments,
-        );
-
-        $this->registerMockObject($mockObject);
-
-        Event\Facade::emitter()->testCreatedMockObjectForAbstractClass($originalClassName);
-
-        assert($mockObject instanceof $originalClassName);
-        assert($mockObject instanceof MockObject);
-
-        return $mockObject;
-    }
-
-    /**
      * Creates a mock object based on the given WSDL file.
      *
      * @param list<string> $methods

@@ -209,7 +209,6 @@ final class Facade
             Test\WarningTriggered::class,
 
             Test\MockObjectCreated::class,
-            Test\MockObjectForAbstractClassCreated::class,
             Test\MockObjectForIntersectionOfInterfacesCreated::class,
             Test\MockObjectForTraitCreated::class,
             Test\MockObjectFromWsdlCreated::class,

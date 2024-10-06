@@ -123,11 +123,6 @@ interface Emitter
     public function testCreatedMockObjectForTrait(string $traitName): void;
 
     /**
-     * @param class-string $className
-     */
-    public function testCreatedMockObjectForAbstractClass(string $className): void;
-
-    /**
      * @param class-string $originalClassName
      * @param class-string $mockClassName
      * @param list<string> $methods

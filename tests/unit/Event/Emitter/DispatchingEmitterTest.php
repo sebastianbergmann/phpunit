@@ -1138,42 +1138,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($traitName, $event->traitName());
     }
 
-    public function testTestMockObjectCreatedForAbstractClassDispatchesTestDoubleMockObjectCreatedForAbstractClassEvent(): void
-    {
-        $className = stdClass::class;
-
-        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectForAbstractClassCreatedSubscriber
-        {
-            public function notify(Test\MockObjectForAbstractClassCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\MockObjectForAbstractClassCreatedSubscriber::class,
-            Test\MockObjectForAbstractClassCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedMockObjectForAbstractClass($className);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\MockObjectForAbstractClassCreated::class, $event);
-
-        $this->assertSame($className, $event->className());
-    }
-
     public function testTestMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void
     {
         $wsdlFile          = __FILE__;
