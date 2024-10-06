@@ -31,7 +31,6 @@ use function explode;
 use function getcwd;
 use function implode;
 use function in_array;
-use function ini_set;
 use function is_array;
 use function is_callable;
 use function is_int;
@@ -175,11 +174,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var array<non-empty-string, array<mixed>>
      */
     private array $dependencyInput = [];
-
-    /**
-     * @var array<string,string>
-     */
-    private array $iniSettings = [];
 
     /**
      * @var array<int, non-empty-string>
@@ -645,7 +639,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->restoreGlobalErrorExceptionHandlers();
         $this->restoreGlobalState();
         $this->unregisterCustomComparators();
-        $this->cleanupIniSettings();
         $this->cleanupLocaleSettings();
         libxml_clear_errors();
 
@@ -1239,39 +1232,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedExceptionWasNotRaised();
 
         return $testResult;
-    }
-
-    /**
-     * This method is a wrapper for the ini_set() function that automatically
-     * resets the modified php.ini setting to its original value after the
-     * test is run.
-     *
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5214
-     *
-     * @codeCoverageIgnore
-     */
-    final protected function iniSet(string $varName, string $newValue): void
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'iniSet() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $currentValue = ini_set($varName, $newValue);
-
-        if ($currentValue !== false) {
-            $this->iniSettings[$varName] = $currentValue;
-        } else {
-            throw new Exception(
-                sprintf(
-                    'INI setting "%s" could not be set to "%s".',
-                    $varName,
-                    $newValue,
-                ),
-            );
-        }
     }
 
     /**
@@ -1957,15 +1917,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->customComparators = [];
-    }
-
-    private function cleanupIniSettings(): void
-    {
-        foreach ($this->iniSettings as $varName => $oldValue) {
-            ini_set($varName, $oldValue);
-        }
-
-        $this->iniSettings = [];
     }
 
     private function cleanupLocaleSettings(): void
