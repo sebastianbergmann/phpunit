@@ -9,12 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use const LC_ALL;
-use const LC_COLLATE;
-use const LC_CTYPE;
-use const LC_MONETARY;
-use const LC_NUMERIC;
-use const LC_TIME;
 use const PHP_EOL;
 use function array_keys;
 use function array_merge;
@@ -48,7 +42,6 @@ use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
 use function set_exception_handler;
-use function setlocale;
 use function sprintf;
 use function str_contains;
 use function trim;
@@ -111,8 +104,7 @@ use Throwable;
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
-    private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
-    private ?bool $backupGlobals    = null;
+    private ?bool $backupGlobals = null;
 
     /**
      * @var list<string>
@@ -174,11 +166,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var array<non-empty-string, array<mixed>>
      */
     private array $dependencyInput = [];
-
-    /**
-     * @var array<int, non-empty-string>
-     */
-    private array $locale = [];
 
     /**
      * @var list<MockObjectInternal>
@@ -639,7 +626,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->restoreGlobalErrorExceptionHandlers();
         $this->restoreGlobalState();
         $this->unregisterCustomComparators();
-        $this->cleanupLocaleSettings();
         libxml_clear_errors();
 
         $this->testValueObjectForEvents = null;
@@ -1232,50 +1218,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedExceptionWasNotRaised();
 
         return $testResult;
-    }
-
-    /**
-     * This method is a wrapper for the setlocale() function that automatically
-     * resets the locale to its original value after the test is run.
-     *
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5216
-     *
-     * @codeCoverageIgnore
-     */
-    final protected function setLocale(mixed ...$arguments): void
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'setLocale() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        if (count($arguments) < 2) {
-            throw new Exception;
-        }
-
-        [$category, $locale] = $arguments;
-
-        if (!in_array($category, self::LOCALE_CATEGORIES, true)) {
-            throw new Exception;
-        }
-
-        if (!is_array($locale) && !is_string($locale)) {
-            throw new Exception;
-        }
-
-        $this->locale[$category] = setlocale($category, '0');
-
-        $result = setlocale(...$arguments);
-
-        if ($result === false) {
-            throw new Exception(
-                'The locale functionality is not implemented on your platform, ' .
-                'the specified locale does not exist or the category name is ' .
-                'invalid.',
-            );
-        }
     }
 
     /**
@@ -1917,15 +1859,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->customComparators = [];
-    }
-
-    private function cleanupLocaleSettings(): void
-    {
-        foreach ($this->locale as $category => $locale) {
-            setlocale($category, $locale);
-        }
-
-        $this->locale = [];
     }
 
     /**
