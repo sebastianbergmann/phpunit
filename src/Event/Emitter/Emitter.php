@@ -118,11 +118,6 @@ interface Emitter
     public function testCreatedMockObjectForIntersectionOfInterfaces(array $interfaces): void;
 
     /**
-     * @param trait-string $traitName
-     */
-    public function testCreatedMockObjectForTrait(string $traitName): void;
-
-    /**
      * @param class-string $originalClassName
      * @param class-string $mockClassName
      * @param list<string> $methods

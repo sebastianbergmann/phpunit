@@ -502,22 +502,6 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param trait-string $traitName
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedMockObjectForTrait(string $traitName): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\MockObjectForTraitCreated(
-                $this->telemetryInfo(),
-                $traitName,
-            ),
-        );
-    }
-
-    /**
      * @param class-string $originalClassName
      * @param class-string $mockClassName
      * @param list<string> $methods

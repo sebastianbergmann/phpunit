@@ -33,7 +33,6 @@ use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\TestFixture;
 use PHPUnit\TestFixture\RecordingSubscriber;
 use stdClass;
 
@@ -1101,41 +1100,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\MockObjectCreated::class, $event);
 
         $this->assertSame($className, $event->className());
-    }
-
-    public function testTestMockObjectCreatedForTraitDispatchesTestDoubleMockObjectCreatedForTraitEvent(): void
-    {
-        $traitName = TestFixture\MockObject\ExampleTrait::class;
-
-        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectForTraitCreatedSubscriber
-        {
-            public function notify(Test\MockObjectForTraitCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\MockObjectForTraitCreatedSubscriber::class,
-            Test\MockObjectForTraitCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedMockObjectForTrait($traitName);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\MockObjectForTraitCreated::class, $event);
-
-        $this->assertSame($traitName, $event->traitName());
     }
 
     public function testTestMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void

@@ -1540,45 +1540,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Creates a mock object for the specified trait with all abstract methods
-     * of the trait mocked. Concrete methods to mock can be specified with the
-     * `$mockedMethods` parameter.
-     *
-     * @param trait-string           $traitName
-     * @param array<mixed>           $arguments
-     * @param list<non-empty-string> $mockedMethods
-     *
-     * @throws InvalidArgumentException
-     * @throws MockObjectException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
-     */
-    final protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'getMockForTrait() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $mockObject = (new MockGenerator)->mockObjectForTrait(
-            $traitName,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload,
-            $mockedMethods,
-            $cloneArguments,
-        );
-
-        $this->registerMockObject($mockObject);
-
-        Event\Facade::emitter()->testCreatedMockObjectForTrait($traitName);
-
-        return $mockObject;
-    }
-
-    /**
      * Creates an object that uses the specified trait.
      *
      * @param trait-string $traitName
