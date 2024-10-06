@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -10,14 +10,29 @@
 namespace PHPUnit\TestFixture\Baseline;
 
 use const E_USER_DEPRECATED;
+use const E_USER_NOTICE;
+use const E_USER_WARNING;
+use function strlen;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
-final class Test extends TestCase
+final class UseBaselineTest extends TestCase
 {
     public function testOne(): void
     {
+        strlen(null);
+
+        $f = static function (): void
+        {
+        };
+
+        $a  = &$f();
+
+        $a = $b;
+
         trigger_error('deprecation', E_USER_DEPRECATED);
+        trigger_error('notice', E_USER_NOTICE);
+        trigger_error('warning', E_USER_WARNING);
 
         $this->assertTrue(true);
     }
