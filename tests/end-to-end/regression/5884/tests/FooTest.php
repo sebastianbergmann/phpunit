@@ -25,7 +25,6 @@ use PHPUnit\Framework\TestCase;
 
 final class FooTest extends TestCase
 {
-    #[RequiresPhpunit('^11.0')]
     public function testExpectUserDeprecationMessageNOTIgnoringDeprecations(): void
     {
         $this->expectUserDeprecationMessage('foo');
@@ -33,7 +32,6 @@ final class FooTest extends TestCase
         trigger_error('foo', E_USER_DEPRECATED);
     }
 
-    #[RequiresPhpunit('^11.0')]
     #[IgnoreDeprecations]
     public function testExpectUserDeprecationMessageANDIgnoringDeprecations(): void
     {
