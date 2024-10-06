@@ -502,30 +502,6 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $originalClassName
-     * @param class-string $mockClassName
-     * @param list<string> $methods
-     * @param list<mixed>  $options
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\MockObjectFromWsdlCreated(
-                $this->telemetryInfo(),
-                $wsdlFile,
-                $originalClassName,
-                $mockClassName,
-                $methods,
-                $callOriginalConstructor,
-                $options,
-            ),
-        );
-    }
-
-    /**
      * @param class-string $className
      *
      * @throws InvalidArgumentException

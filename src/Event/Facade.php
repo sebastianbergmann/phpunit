@@ -210,7 +210,6 @@ final class Facade
 
             Test\MockObjectCreated::class,
             Test\MockObjectForIntersectionOfInterfacesCreated::class,
-            Test\MockObjectFromWsdlCreated::class,
             Test\PartialMockObjectCreated::class,
             Test\TestProxyCreated::class,
             Test\TestStubCreated::class,

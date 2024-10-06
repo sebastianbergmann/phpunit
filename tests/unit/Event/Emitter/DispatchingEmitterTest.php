@@ -34,7 +34,6 @@ use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture\RecordingSubscriber;
-use stdClass;
 
 #[CoversClass(DispatchingEmitter::class)]
 final class DispatchingEmitterTest extends Framework\TestCase
@@ -1100,66 +1099,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\MockObjectCreated::class, $event);
 
         $this->assertSame($className, $event->className());
-    }
-
-    public function testTestMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void
-    {
-        $wsdlFile          = __FILE__;
-        $originalClassName = self::class;
-        $mockClassName     = stdClass::class;
-        $methods           = [
-            'foo',
-            'bar',
-        ];
-        $callOriginalConstructor = false;
-        $options                 = [
-            'foo' => 'bar',
-            'bar' => 'baz',
-            'baz' => 9000,
-        ];
-
-        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectFromWsdlCreatedSubscriber
-        {
-            public function notify(Test\MockObjectFromWsdlCreated $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\MockObjectFromWsdlCreatedSubscriber::class,
-            Test\MockObjectFromWsdlCreated::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testCreatedMockObjectFromWsdl(
-            $wsdlFile,
-            $originalClassName,
-            $mockClassName,
-            $methods,
-            $callOriginalConstructor,
-            $options,
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\MockObjectFromWsdlCreated::class, $event);
-
-        $this->assertSame($wsdlFile, $event->wsdlFile());
-        $this->assertSame($originalClassName, $event->originalClassName());
-        $this->assertSame($mockClassName, $event->mockClassName());
-        $this->assertSame($methods, $event->methods());
-        $this->assertSame($callOriginalConstructor, $event->callOriginalConstructor());
-        $this->assertSame($options, $event->options());
     }
 
     public function testTestPartialMockObjectCreatedDispatchesTestDoublePartialMockObjectCreatedEvent(): void

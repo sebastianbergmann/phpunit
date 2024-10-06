@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 ### Removed
 
 * [#5247](https://github.com/sebastianbergmann/phpunit/issues/5247): `TestCase::getMockForAbstractClass()`
+* [#5248](https://github.com/sebastianbergmann/phpunit/issues/5248): `TestCase::getMockFromWsdl()`
 * [#5249](https://github.com/sebastianbergmann/phpunit/issues/5249): `TestCase::getMockForTrait()`
 * [#5250](https://github.com/sebastianbergmann/phpunit/issues/5250): `TestCase::getObjectForTrait()`
 * [#5313](https://github.com/sebastianbergmann/phpunit/issues/5313): `MockBuilder::getMockForTrait()`
