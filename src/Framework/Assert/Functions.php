@@ -1977,24 +1977,6 @@ if (!function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormat')) {
-    /**
-     * Asserts that a string does not match a given format string.
-     *
-     * @throws ExpectationFailedException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertStringNotMatchesFormat
-     */
-    function assertStringNotMatchesFormat(string $format, string $string, string $message = ''): void
-    {
-        Assert::assertStringNotMatchesFormat(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
     /**
      * Asserts that a string matches a given format file.
@@ -2008,24 +1990,6 @@ if (!function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
     function assertStringMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
     {
         Assert::assertStringMatchesFormatFile(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormatFile')) {
-    /**
-     * Asserts that a string does not match a given format string.
-     *
-     * @throws ExpectationFailedException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertStringNotMatchesFormatFile
-     */
-    function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
-    {
-        Assert::assertStringNotMatchesFormatFile(...func_get_args());
     }
 }
 

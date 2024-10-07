@@ -19,7 +19,6 @@ use function is_bool;
 use ArrayAccess;
 use Countable;
 use Generator;
-use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -1748,29 +1747,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a string does not match a given format string.
-     *
-     * @throws ExpectationFailedException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
-     */
-    final public static function assertStringNotMatchesFormat(string $format, string $string, string $message = ''): void
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            null,
-            'assertStringNotMatchesFormat() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        self::assertThat(
-            $string,
-            new LogicalNot(
-                new StringMatchesFormatDescription($format),
-            ),
-            $message,
-        );
-    }
-
-    /**
      * Asserts that a string matches a given format file.
      *
      * @throws ExpectationFailedException
@@ -1787,37 +1763,6 @@ abstract class Assert
             $string,
             new StringMatchesFormatDescription(
                 $formatDescription,
-            ),
-            $message,
-        );
-    }
-
-    /**
-     * Asserts that a string does not match a given format string.
-     *
-     * @throws ExpectationFailedException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5472
-     */
-    final public static function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            null,
-            'assertStringNotMatchesFormatFile() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        self::assertFileExists($formatFile, $message);
-
-        $formatDescription = file_get_contents($formatFile);
-
-        self::assertIsString($formatDescription);
-
-        self::assertThat(
-            $string,
-            new LogicalNot(
-                new StringMatchesFormatDescription(
-                    $formatDescription,
-                ),
             ),
             $message,
         );
