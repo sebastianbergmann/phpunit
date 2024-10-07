@@ -48,7 +48,6 @@ final class MockMethod
      * @var non-empty-string
      */
     private readonly string $methodName;
-    private readonly bool $cloneArguments;
     private readonly string $modifier;
     private readonly string $argumentsForDeclaration;
     private readonly string $argumentsForCall;
@@ -72,7 +71,7 @@ final class MockMethod
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
+    public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod): self
     {
         if ($method->isPrivate()) {
             $modifier = 'private';
@@ -104,7 +103,6 @@ final class MockMethod
         return new self(
             $method->getDeclaringClass()->getName(),
             $method->getName(),
-            $cloneArguments,
             $modifier,
             self::methodParametersForDeclaration($method),
             self::methodParametersForCall($method),
@@ -122,12 +120,11 @@ final class MockMethod
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public static function fromName(string $className, string $methodName, bool $cloneArguments): self
+    public static function fromName(string $className, string $methodName): self
     {
         return new self(
             $className,
             $methodName,
-            $cloneArguments,
             'public',
             '',
             '',
@@ -147,11 +144,10 @@ final class MockMethod
      * @param array<int, mixed> $defaultParameterValues
      * @param non-negative-int  $numberOfParameters
      */
-    private function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, array $defaultParameterValues, int $numberOfParameters, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation)
+    private function __construct(string $className, string $methodName, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, array $defaultParameterValues, int $numberOfParameters, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation)
     {
         $this->className               = $className;
         $this->methodName              = $methodName;
-        $this->cloneArguments          = $cloneArguments;
         $this->modifier                = $modifier;
         $this->argumentsForDeclaration = $argumentsForDeclaration;
         $this->argumentsForCall        = $argumentsForCall;
@@ -231,7 +227,6 @@ EOT;
                 'method_name'        => $this->methodName,
                 'modifier'           => $this->modifier,
                 'reference'          => $this->reference,
-                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
                 'deprecation'        => $deprecation,
                 'return_result'      => $returnResult,
             ],

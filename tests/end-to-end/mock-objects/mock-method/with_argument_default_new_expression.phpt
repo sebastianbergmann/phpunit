@@ -58,7 +58,7 @@ public function method(Foo $foo = new \Foo(1, 2, 3))
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Bar', 'method', $__phpunit_arguments, '', $this, false
+                'Bar', 'method', $__phpunit_arguments, '', $this
             )
         );
 

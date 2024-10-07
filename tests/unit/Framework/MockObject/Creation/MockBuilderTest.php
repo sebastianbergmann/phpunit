@@ -75,7 +75,6 @@ final class MockBuilderTest extends TestCase
             ->enableOriginalConstructor()
             ->enableOriginalClone()
             ->enableAutoload()
-            ->enableArgumentCloning()
             ->disableProxyingToOriginalMethods()
             ->enableAutoReturnValueGeneration()
             ->getMock();

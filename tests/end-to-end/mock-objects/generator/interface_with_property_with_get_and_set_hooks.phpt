@@ -39,7 +39,7 @@ class TestStubFoo implements PHPUnit\Framework\MockObject\StubInternal, Foo
         get {
             return $this->__phpunit_getInvocationHandler()->invoke(
                 new \PHPUnit\Framework\MockObject\Invocation(
-                    'TestStubFoo', '$bar::get', [], 'string', $this, false
+                    'TestStubFoo', '$bar::get', [], 'string', $this
                 )
             );
         }
@@ -47,7 +47,7 @@ class TestStubFoo implements PHPUnit\Framework\MockObject\StubInternal, Foo
         set (string $value) {
             $this->__phpunit_getInvocationHandler()->invoke(
                 new \PHPUnit\Framework\MockObject\Invocation(
-                    'TestStubFoo', '$bar::set', [$value], 'void', $this, false
+                    'TestStubFoo', '$bar::set', [$value], 'void', $this
                 )
             );
         }

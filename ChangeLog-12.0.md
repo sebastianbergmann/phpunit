@@ -16,6 +16,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5311](https://github.com/sebastianbergmann/phpunit/issues/5311): `MockBuilder::allowMockingUnknownTypes()` and `MockBuilder::disallowMockingUnknownTypes()`
 * [#5313](https://github.com/sebastianbergmann/phpunit/issues/5313): `MockBuilder::getMockForTrait()`
 * [#5314](https://github.com/sebastianbergmann/phpunit/issues/5314): `MockBuilder::getMockForAbstractClass()`
+* [#5316](https://github.com/sebastianbergmann/phpunit/issues/5316): `MockBuilder::enableArgumentCloning()` and `MockBuilder::disableArgumentCloning()`
 * [#5321](https://github.com/sebastianbergmann/phpunit/issues/5321): `MockBuilder::addMethods()`
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 

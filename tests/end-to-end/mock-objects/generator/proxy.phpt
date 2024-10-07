@@ -68,7 +68,7 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
 
         $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, '', $this, true, true
+                'Foo', 'bar', $__phpunit_arguments, '', $this, true
             )
         );
 
@@ -107,7 +107,7 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObjectInt
 
         $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'baz', $__phpunit_arguments, '', $this, true, true
+                'Foo', 'baz', $__phpunit_arguments, '', $this, true
             )
         );
 
