@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 final class CaseWithDollarSignTest extends TestCase
@@ -24,11 +26,8 @@ final class CaseWithDollarSignTest extends TestCase
         yield ['Alone $ surrounded by spaces'];
     }
 
-    /**
-     * @testdox The "$x" is used for this test
-     *
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
+    #[TestDox('The "$x" is used for this test')]
     public function testSomething(string $x): void
     {
         $this->assertTrue(true);
