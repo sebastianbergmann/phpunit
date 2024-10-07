@@ -33,9 +33,6 @@ use function trait_exists;
 use Exception;
 use Iterator;
 use IteratorAggregate;
-use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
-use PHPUnit\Event\Code\TestMethodBuilder;
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
@@ -352,6 +349,7 @@ final class Generator
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
+     * @throws MethodNamedMethodException
      * @throws ReflectionException
      * @throws RuntimeException
      */
@@ -504,26 +502,10 @@ final class Generator
         }
 
         if ($mockMethods->hasMethod('method') || $class->hasMethod('method')) {
-            $message = sprintf(
-                '%s %s has a method named "method". Doubling %s that have a method named "method" is deprecated. Support for this will be removed in PHPUnit 12.',
-                $isInterface ? 'Interface' : 'Class',
-                $class->getName(),
-                $isInterface ? 'interfaces' : 'classes',
-            );
-
-            try {
-                EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-                    TestMethodBuilder::fromCallStack(),
-                    $message,
-                );
-            } catch (NoTestCaseObjectOnCallStackException) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
-            }
+            throw new MethodNamedMethodException;
         }
 
-        if (!$mockMethods->hasMethod('method') && !$class->hasMethod('method')) {
-            $traits[] = Method::class;
-        }
+        $traits[] = Method::class;
 
         if ($doubledCloneMethod) {
             $traits[] = DoubledCloneMethod::class;

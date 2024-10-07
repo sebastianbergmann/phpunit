@@ -24,6 +24,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5314](https://github.com/sebastianbergmann/phpunit/issues/5314): `MockBuilder::getMockForAbstractClass()`
 * [#5316](https://github.com/sebastianbergmann/phpunit/issues/5316): `MockBuilder::enableArgumentCloning()` and `MockBuilder::disableArgumentCloning()`
 * [#5321](https://github.com/sebastianbergmann/phpunit/issues/5321): `MockBuilder::addMethods()`
+* [#5416](https://github.com/sebastianbergmann/phpunit/issues/5416): Support for doubling interfaces (or classes) that have a method named `method`
 * [#5424](https://github.com/sebastianbergmann/phpunit/issues/5424): `TestCase` methods for creating return stub configuration objects
 * [#5473](https://github.com/sebastianbergmann/phpunit/issues/5473): `assertStringNotMatchesFormat()` and `assertStringNotMatchesFormatFile()`
 * [#5710](https://github.com/sebastianbergmann/phpunit/issues/5710): Support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options

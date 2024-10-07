@@ -10,7 +10,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                                                                    | Since  | Replacement                                                                             |
 |-------------------------------------------------------------------|--------------------------------------------------------------------------------|--------|-----------------------------------------------------------------------------------------|
-| [#5415](https://github.com/sebastianbergmann/phpunit/issues/5415) | Support for doubling interfaces (or classes) that have a method named `method` | 11.0.0 |                                                                                         |
 | [#5535](https://github.com/sebastianbergmann/phpunit/issues/5525) | Configuring expectations using `expects()` on test stubs                       | 11.0.0 | Create a mock object when you need to configure expectations on a test double           |
 
 ### Running Tests
