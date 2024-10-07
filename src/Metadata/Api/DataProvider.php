@@ -30,6 +30,7 @@ use function strlen;
 use function substr;
 use function trim;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
@@ -60,30 +61,32 @@ final readonly class DataProvider
         $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
 
         if ($dataProvider->isEmpty() && $testWith->isEmpty()) {
-            return $this->dataProvidedByTestWithAnnotation($className, $methodName);
+            return ['testWith' => $this->dataProvidedByTestWithAnnotation($className, $methodName)];
         }
 
         if ($dataProvider->isNotEmpty()) {
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
         } else {
-            $data = $this->dataProvidedByMetadata($testWith);
+            $data = ['testWith' => $this->dataProvidedByMetadata($testWith)];
         }
 
-        if ($data === []) {
+        if ($data === [] || $data === ['testWith' => []]) {
             throw new InvalidDataProviderException(
                 'Empty data set provided by data provider',
             );
         }
 
-        foreach ($data as $key => $value) {
-            if (!is_array($value)) {
-                throw new InvalidDataProviderException(
-                    sprintf(
-                        'Data set %s is invalid, expected array but got %s',
-                        is_int($key) ? '#' . $key : '"' . $key . '"',
-                        get_debug_type($value),
-                    ),
-                );
+        foreach ($data as $providedData) {
+            foreach ($providedData as $key => $value) {
+                if (!is_array($value)) {
+                    throw new InvalidDataProviderException(
+                        sprintf(
+                            'Data set %s is invalid, expected array but got %s',
+                            is_int($key) ? '#' . $key : '"' . $key . '"',
+                            get_debug_type($value),
+                        ),
+                    );
+                }
             }
         }
 
@@ -91,23 +94,26 @@ final readonly class DataProvider
     }
 
     /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
+     * @param class-string     $testClassName   Name of class with test
+     * @param non-empty-string $testMethodName  Name of method containing test
      *
      * @throws InvalidDataProviderException
      *
      * @return array<array<mixed>>
      */
-    private function dataProvidedByMethods(string $className, string $methodName, MetadataCollection $dataProvider): array
+    private function dataProvidedByMethods(string $testClassName, string $testMethodName, MetadataCollection $dataProvider): array
     {
-        $testMethod    = new Event\Code\ClassMethod($className, $methodName);
+        $testMethod    = new ClassMethod($testClassName, $testMethodName);
         $methodsCalled = [];
-        $result        = [];
+        $return        = [];
+        $caseNames     = [];
 
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
 
-            $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
+            $providerClassName = $_dataProvider->className();
+            $providerMethodName = $_dataProvider->methodName();
+            $dataProviderMethod = new ClassMethod($providerClassName, $providerMethodName);
 
             Event\Facade::emitter()->dataProviderMethodCalled(
                 $testMethod,
@@ -117,65 +123,42 @@ final readonly class DataProvider
             $methodsCalled[] = $dataProviderMethod;
 
             try {
-                $class  = new ReflectionClass($_dataProvider->className());
-                $method = $class->getMethod($_dataProvider->methodName());
+                $class  = new ReflectionClass($providerClassName);
+                $method = $class->getMethod($providerMethodName);
 
                 if (!$method->isPublic()) {
-                    throw new InvalidDataProviderException(
-                        sprintf(
-                            'Data Provider method %s::%s() is not public',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
-                        ),
-                    );
+                    $this->throwInvalid('is not public', $_dataProvider);
                 }
 
                 if (!$method->isStatic()) {
-                    throw new InvalidDataProviderException(
-                        sprintf(
-                            'Data Provider method %s::%s() is not static',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
-                        ),
-                    );
+                    $this->throwInvalid('is not static', $_dataProvider);
                 }
 
                 if ($method->getNumberOfParameters() > 0) {
-                    throw new InvalidDataProviderException(
-                        sprintf(
-                            'Data Provider method %s::%s() expects an argument',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
-                        ),
-                    );
+                    $this->throwInvalid('expects an argument', $_dataProvider);
                 }
 
-                $className  = $_dataProvider->className();
-                $methodName = $_dataProvider->methodName();
-                $data       = $className::$methodName();
+                $data = $providerClassName::$providerMethodName();
+                if (!is_iterable($data)) {
+                    $this->throwInvalid('does not provide iterable type', $_dataProvider);
+                }
             } catch (Throwable $e) {
-                Event\Facade::emitter()->dataProviderMethodFinished(
-                    $testMethod,
-                    ...$methodsCalled,
-                );
-
+                $this->finishMethods($testMethod, $methodsCalled);
                 throw new InvalidDataProviderException(
                     $e->getMessage(),
                     $e->getCode(),
                     $e,
+                    $providerMethodName
                 );
             }
 
+            $result = [];
             foreach ($data as $key => $value) {
                 if (is_int($key)) {
                     $result[] = $value;
                 } elseif (is_string($key)) {
-                    if (array_key_exists($key, $result)) {
-                        Event\Facade::emitter()->dataProviderMethodFinished(
-                            $testMethod,
-                            ...$methodsCalled,
-                        );
-
+                    if (isset($caseNames[$key])) {
+                        $this->finishMethods($testMethod, $methodsCalled);
                         throw new InvalidDataProviderException(
                             sprintf(
                                 'The key "%s" has already been defined by a previous data provider',
@@ -183,7 +166,7 @@ final readonly class DataProvider
                             ),
                         );
                     }
-
+                    $caseNames[$key] = 1;
                     $result[$key] = $value;
                 } else {
                     throw new InvalidDataProviderException(
@@ -194,14 +177,38 @@ final readonly class DataProvider
                     );
                 }
             }
+            $return[$providerMethodName] = $result;
         }
+        $this->finishMethods($testMethod, $methodsCalled);
 
+        return $return;
+    }
+
+    /**
+     * @param string $message
+     * @param DataProviderMetadata $dataProvider
+     * @return never
+     */
+    private function throwInvalid(string $message, DataProviderMetadata $dataProvider): never {
+        throw new InvalidDataProviderException(
+            sprintf(
+                'Data Provider method %s::%s() ',
+                $dataProvider->className(),
+                $dataProvider->methodName(),
+            ) . $message,
+        );
+    }
+
+    /**
+     * @param ClassMethod $method
+     * @param array $methodsCalled
+     * @return void
+     */
+    private function finishMethods(ClassMethod $method, array $methodsCalled): void {
         Event\Facade::emitter()->dataProviderMethodFinished(
-            $testMethod,
+            $method,
             ...$methodsCalled,
         );
-
-        return $result;
     }
 
     /**

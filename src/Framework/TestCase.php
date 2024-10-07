@@ -147,6 +147,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private string $methodName;
 
     /**
+     * @var non-empty-string
+     */
+    protected string $providerName;
+
+    /**
      * @var list<string>
      */
     private array $groups = [];
@@ -358,6 +363,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function setGroups(array $groups): void
     {
         $this->groups = $groups;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderName(): string
+    {
+        return $this->providerName;
+    }
+
+    /**
+     * @param string $providerName
+     * @return $this
+     */
+    public function setProviderName(string $providerName): TestCase
+    {
+        $this->providerName = $providerName;
+        return $this;
     }
 
     /**

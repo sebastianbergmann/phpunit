@@ -30,44 +30,12 @@ final class DataProviderTest extends TestCase
      */
     public function testMultipleDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testOne');
-
-        $this->assertCount(9, $dataSets);
-
-        $aCount = 0;
-        $bCount = 0;
-        $cCount = 0;
-
-        for ($i = 0; $i < 9; $i++) {
-            $aCount += $dataSets[$i][0] != null ? 1 : 0;
-            $bCount += $dataSets[$i][1] != null ? 1 : 0;
-            $cCount += $dataSets[$i][2] != null ? 1 : 0;
-        }
-
-        $this->assertEquals(3, $aCount);
-        $this->assertEquals(3, $bCount);
-        $this->assertEquals(3, $cCount);
+        $this->checkMultipleProviders('testOne');
     }
 
     public function testMultipleYieldIteratorDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testTwo');
-
-        $this->assertCount(9, $dataSets);
-
-        $aCount = 0;
-        $bCount = 0;
-        $cCount = 0;
-
-        for ($i = 0; $i < 9; $i++) {
-            $aCount += $dataSets[$i][0] != null ? 1 : 0;
-            $bCount += $dataSets[$i][1] != null ? 1 : 0;
-            $cCount += $dataSets[$i][2] != null ? 1 : 0;
-        }
-
-        $this->assertEquals(3, $aCount);
-        $this->assertEquals(3, $bCount);
-        $this->assertEquals(3, $cCount);
+        $this->checkMultipleProviders('testTwo');
     }
 
     public function testWithVariousIterableDataProvidersFromParent(): void
@@ -75,16 +43,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testFromParent');
 
         $this->assertEquals([
-            ['J'],
-            ['K'],
-            ['L'],
-            ['M'],
-            ['N'],
-            ['O'],
-            ['P'],
-            ['Q'],
-            ['R'],
-
+            'asArrayProviderInParent' => [['J'], ['K'], ['L'],],
+            'asIteratorProviderInParent' => [['M'], ['N'], ['O'],],
+            'asTraversableProviderInParent' => [['P'], ['Q'], ['R'],],
         ], $dataSets);
     }
 
@@ -93,16 +54,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testInParent');
 
         $this->assertEquals([
-            ['J'],
-            ['K'],
-            ['L'],
-            ['M'],
-            ['N'],
-            ['O'],
-            ['P'],
-            ['Q'],
-            ['R'],
-
+            'asArrayProviderInParent' => [['J'], ['K'], ['L'],],
+            'asIteratorProviderInParent' => [['M'], ['N'], ['O'],],
+            'asTraversableProviderInParent' => [['P'], ['Q'], ['R'],],
         ], $dataSets);
     }
 
@@ -111,16 +65,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testAbstract');
 
         $this->assertEquals([
-            ['S'],
-            ['T'],
-            ['U'],
-            ['V'],
-            ['W'],
-            ['X'],
-            ['Y'],
-            ['Z'],
-            ['P'],
-
+            'asArrayProvider' => [['S'], ['T'], ['U'],],
+            'asIteratorProvider' => [['V'], ['W'], ['X'],],
+            'asTraversableProvider' => [['Y'], ['Z'], ['P'],],
         ], $dataSets);
     }
 
@@ -129,15 +76,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
-            ['A'],
-            ['B'],
-            ['C'],
-            ['D'],
-            ['E'],
-            ['F'],
-            ['G'],
-            ['H'],
-            ['I'],
+            'asArrayStaticProvider' => [['A'], ['B'], ['C'],],
+            'asIteratorStaticProvider' => [['D'], ['E'], ['F'],],
+            'asTraversableStaticProvider' => [['G'], ['H'], ['I'],],
         ], $dataSets);
     }
 
@@ -146,15 +87,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testNonStatic');
 
         $this->assertEquals([
-            ['S'],
-            ['T'],
-            ['U'],
-            ['V'],
-            ['W'],
-            ['X'],
-            ['Y'],
-            ['Z'],
-            ['P'],
+            'asArrayProvider' => [['S'], ['T'], ['U'],],
+            'asIteratorProvider' => [['V'], ['W'], ['X'],],
+            'asTraversableProvider' => [['Y'], ['Z'], ['P'],],
         ], $dataSets);
     }
 
@@ -171,12 +106,12 @@ final class DataProviderTest extends TestCase
     {
         $dataSets = (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithAttribute');
 
-        $this->assertSame([
+        $this->assertSame(['testWith' => [
             'foo' => ['a', 'b'],
             'bar' => ['c', 'd'],
             0     => ['e', 'f'],
             1     => ['g', 'h'],
-        ], $dataSets);
+        ]], $dataSets);
     }
 
     public function testTestWithAttributeWithDuplicateKey(): void
@@ -195,5 +130,28 @@ final class DataProviderTest extends TestCase
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');
+    }
+
+    public function checkMultipleProviders(string $testMethodName): void
+    {
+        $dataSetsByProvider = (new DataProvider)->providedData(MultipleDataProviderTest::class, $testMethodName);
+        $this->assertCount(3, $dataSetsByProvider);
+
+        $counts = ['a' => 0, 'b' => 0, 'c' => 0];
+        $pos = ['a' => 0, 'b' => 1, 'c' => 2];
+
+        foreach ($dataSetsByProvider as $dataSet) {
+            for ($i = 0; $i < 3; $i++) {
+                foreach ($pos as $which => $where) {
+                    if ($dataSet[$i][$where] !== null){
+                        $counts[$which]++;
+                    }
+                }
+            }
+        }
+
+        $this->assertEquals(3, $counts['a']);
+        $this->assertEquals(3, $counts['b']);
+        $this->assertEquals(3, $counts['c']);
     }
 }
