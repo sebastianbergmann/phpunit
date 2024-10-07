@@ -88,14 +88,6 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param trait-string $traitName
-     */
-    public static function coversTrait(string $traitName): CoversTrait
-    {
-        return new CoversTrait(self::CLASS_LEVEL, $traitName);
-    }
-
-    /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
@@ -479,14 +471,6 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param trait-string $traitName
-     */
-    public static function UsesTrait(string $traitName): UsesTrait
-    {
-        return new UsesTrait(self::CLASS_LEVEL, $traitName);
-    }
-
-    /**
      * @param non-empty-string $functionName
      */
     public static function usesFunction(string $functionName): UsesFunction
@@ -618,14 +602,6 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true CoversDefaultClass $this
      */
     public function isCoversDefaultClass(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @phpstan-assert-if-true CoversTrait $this
-     */
-    public function isCoversTrait(): bool
     {
         return false;
     }
@@ -900,14 +876,6 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true UsesDefaultClass $this
      */
     public function isUsesDefaultClass(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @phpstan-assert-if-true UsesTrait $this
-     */
-    public function isUsesTrait(): bool
     {
         return false;
     }

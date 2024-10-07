@@ -29,7 +29,6 @@ use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DisableReturnValueGenerationForTestDoublesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
-use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
@@ -86,16 +85,6 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversClass());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
-    }
-
-    #[TestDox('Parses #[CoversTrait] attribute on class')]
-    public function test_parses_CoversTrait_attribute_on_class(): void
-    {
-        $metadata = $this->parser()->forClass(CoversTest::class)->isCoversTrait();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isCoversTrait());
-        $this->assertSame(ExampleTrait::class, $metadata->asArray()[0]->traitName());
     }
 
     #[TestDox('Parses #[CoversFunction] attribute on class')]
@@ -407,16 +396,6 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isUsesClass());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
-    }
-
-    #[TestDox('Parses #[UsesTrait] attribute on class')]
-    public function test_parses_UsesTrait_attribute_on_class(): void
-    {
-        $metadata = $this->parser()->forClass(UsesTest::class)->isUsesTrait();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isUsesTrait());
-        $this->assertSame(ExampleTrait::class, $metadata->asArray()[0]->traitName());
     }
 
     #[TestDox('Parses #[UsesFunction] attribute on class')]

@@ -205,14 +205,6 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCoversDefaultClass());
     }
 
-    public function test_Can_be_filtered_for_CoversTrait(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isCoversTrait();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isCoversTrait());
-    }
-
     public function test_Can_be_filtered_for_CoversFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversFunction();
@@ -494,14 +486,6 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesDefaultClass());
     }
 
-    public function test_Can_be_filtered_for_UsesTrait(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isUsesTrait();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isUsesTrait());
-    }
-
     public function test_Can_be_filtered_for_UsesFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesFunction();
@@ -539,7 +523,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversOnClass(''),
                 Metadata::coversClass(''),
                 Metadata::coversDefaultClass(''),
-                Metadata::coversTrait(''),
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
@@ -584,7 +567,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesOnClass(''),
                 Metadata::usesClass(''),
                 Metadata::usesDefaultClass(''),
-                Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
                 Metadata::withoutErrorHandler(),
