@@ -10,8 +10,6 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use const DIRECTORY_SEPARATOR;
-use function array_map;
-use function array_merge;
 use function assert;
 use function basename;
 use function explode;
@@ -19,7 +17,6 @@ use function getcwd;
 use function is_file;
 use function is_numeric;
 use function sprintf;
-use function str_contains;
 use function strtolower;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -453,68 +450,44 @@ final class Builder
                     break;
 
                 case '--group':
-                    if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
-                            'Using comma-separated values with --group is deprecated and will no longer work in PHPUnit 12. You can use --group multiple times instead.',
-                        );
-                    }
-
                     if ($groups === null) {
                         $groups = [];
                     }
 
-                    $groups = array_merge($groups, explode(',', $option[1]));
+                    $groups[] = $option[1];
 
                     $optionAllowedMultipleTimes = true;
 
                     break;
 
                 case '--exclude-group':
-                    if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
-                            'Using comma-separated values with --exclude-group is deprecated and will no longer work in PHPUnit 12. You can use --exclude-group multiple times instead.',
-                        );
-                    }
-
                     if ($excludeGroups === null) {
                         $excludeGroups = [];
                     }
 
-                    $excludeGroups = array_merge($excludeGroups, explode(',', $option[1]));
+                    $excludeGroups[] = $option[1];
 
                     $optionAllowedMultipleTimes = true;
 
                     break;
 
                 case '--covers':
-                    if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
-                            'Using comma-separated values with --covers is deprecated and will no longer work in PHPUnit 12. You can use --covers multiple times instead.',
-                        );
-                    }
-
                     if ($testsCovering === null) {
                         $testsCovering = [];
                     }
 
-                    $testsCovering = array_merge($testsCovering, array_map('strtolower', explode(',', $option[1])));
+                    $testsCovering[] = strtolower($option[1]);
 
                     $optionAllowedMultipleTimes = true;
 
                     break;
 
                 case '--uses':
-                    if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
-                            'Using comma-separated values with --uses is deprecated and will no longer work in PHPUnit 12. You can use --uses multiple times instead.',
-                        );
-                    }
-
                     if ($testsUsing === null) {
                         $testsUsing = [];
                     }
 
-                    $testsUsing = array_merge($testsUsing, array_map('strtolower', explode(',', $option[1])));
+                    $testsUsing[] = strtolower($option[1]);
 
                     $optionAllowedMultipleTimes = true;
 
@@ -532,17 +505,11 @@ final class Builder
                     break;
 
                 case '--test-suffix':
-                    if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
-                            'Using comma-separated values with --test-suffix is deprecated and will no longer work in PHPUnit 12. You can use --test-suffix multiple times instead.',
-                        );
-                    }
-
                     if ($testSuffixes === null) {
                         $testSuffixes = [];
                     }
 
-                    $testSuffixes = array_merge($testSuffixes, explode(',', $option[1]));
+                    $testSuffixes[] = $option[1];
 
                     $optionAllowedMultipleTimes = true;
 
