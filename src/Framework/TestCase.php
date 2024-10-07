@@ -1242,7 +1242,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             callOriginalConstructor: false,
             callOriginalClone: false,
             cloneArguments: false,
-            allowMockingUnknownTypes: false,
             returnValueGeneration: self::generateReturnValuesForTestDoubles(),
         );
 
@@ -1322,7 +1321,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
             ->onlyMethods($methods);
 
         if (!self::generateReturnValuesForTestDoubles()) {
@@ -2247,7 +2245,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             callOriginalConstructor: false,
             callOriginalClone: false,
             cloneArguments: false,
-            allowMockingUnknownTypes: false,
             returnValueGeneration: self::generateReturnValuesForTestDoubles(),
         );
 

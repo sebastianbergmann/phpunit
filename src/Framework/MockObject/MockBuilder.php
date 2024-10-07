@@ -56,15 +56,14 @@ final class MockBuilder
     /**
      * @var array<mixed>
      */
-    private array $constructorArgs         = [];
-    private bool $originalConstructor      = true;
-    private bool $originalClone            = true;
-    private bool $autoload                 = true;
-    private bool $cloneArguments           = false;
-    private bool $callOriginalMethods      = false;
-    private ?object $proxyTarget           = null;
-    private bool $allowMockingUnknownTypes = true;
-    private bool $returnValueGeneration    = true;
+    private array $constructorArgs      = [];
+    private bool $originalConstructor   = true;
+    private bool $originalClone         = true;
+    private bool $autoload              = true;
+    private bool $cloneArguments        = false;
+    private bool $callOriginalMethods   = false;
+    private ?object $proxyTarget        = null;
+    private bool $returnValueGeneration = true;
     private readonly Generator $generator;
 
     /**
@@ -108,7 +107,6 @@ final class MockBuilder
             $this->cloneArguments,
             $this->callOriginalMethods,
             $this->proxyTarget,
-            $this->allowMockingUnknownTypes,
             $this->returnValueGeneration,
         );
 
@@ -379,42 +377,6 @@ final class MockBuilder
         );
 
         $this->proxyTarget = $object;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5308
-     */
-    public function allowMockingUnknownTypes(): self
-    {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::allowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $this->allowMockingUnknownTypes = true;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5308
-     */
-    public function disallowMockingUnknownTypes(): self
-    {
-        if (!$this->calledFromTestCase()) {
-            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-                $this->testCase->valueObjectForEvents(),
-                'MockBuilder::disallowMockingUnknownTypes() is deprecated and will be removed in PHPUnit 12 without replacement.',
-            );
-        }
-
-        $this->allowMockingUnknownTypes = false;
 
         return $this;
     }

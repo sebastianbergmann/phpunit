@@ -251,11 +251,6 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->generate(ExtendableClass::class . '&' . AnInterface::class);
     }
 
-    public function test_Generates_test_stub_for_unknown_type(): void
-    {
-        $this->assertInstanceOf(Stub::class, $this->generate('ThisDoesNotExist'));
-    }
-
     private function generate(string $typeDeclaration, ?StubInternal $testStub = null): mixed
     {
         if ($testStub === null) {
