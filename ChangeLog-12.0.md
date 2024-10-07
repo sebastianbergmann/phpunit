@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5248](https://github.com/sebastianbergmann/phpunit/issues/5248): `TestCase::getMockFromWsdl()`
 * [#5249](https://github.com/sebastianbergmann/phpunit/issues/5249): `TestCase::getMockForTrait()`
 * [#5250](https://github.com/sebastianbergmann/phpunit/issues/5250): `TestCase::getObjectForTrait()`
+* [#5310](https://github.com/sebastianbergmann/phpunit/issues/5310): `MockBuilder::enableAutoload()` and `MockBuilder::disableAutoload()`
 * [#5311](https://github.com/sebastianbergmann/phpunit/issues/5311): `MockBuilder::allowMockingUnknownTypes()` and `MockBuilder::disallowMockingUnknownTypes()`
 * [#5313](https://github.com/sebastianbergmann/phpunit/issues/5313): `MockBuilder::getMockForTrait()`
 * [#5314](https://github.com/sebastianbergmann/phpunit/issues/5314): `MockBuilder::getMockForAbstractClass()`

@@ -106,13 +106,13 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDouble(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $callOriginalMethods = false, ?object $proxyTarget = null, bool $returnValueGeneration = true): MockObject|Stub
+    public function testDouble(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callOriginalMethods = false, ?object $proxyTarget = null, bool $returnValueGeneration = true): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
         }
 
-        $this->ensureKnownType($type, $callAutoload);
+        $this->ensureKnownType($type);
         $this->ensureValidMethods($methods);
         $this->ensureNameForTestDoubleClassIsAvailable($mockClassName);
 
@@ -127,7 +127,6 @@ final class Generator
             $methods,
             $mockClassName,
             $callOriginalClone,
-            $callAutoload,
             $callOriginalMethods,
         );
 
@@ -158,14 +157,14 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDoubleForInterfaceIntersection(array $interfaces, bool $mockObject, bool $callAutoload = true, bool $returnValueGeneration = true): MockObject|Stub
+    public function testDoubleForInterfaceIntersection(array $interfaces, bool $mockObject, bool $returnValueGeneration = true): MockObject|Stub
     {
         if (count($interfaces) < 2) {
             throw new RuntimeException('At least two interfaces must be specified');
         }
 
         foreach ($interfaces as $interface) {
-            if (!interface_exists($interface, $callAutoload)) {
+            if (!interface_exists($interface)) {
                 throw new UnknownTypeException($interface);
             }
         }
@@ -230,7 +229,7 @@ final class Generator
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/5476
      */
-    public function generate(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $callOriginalMethods = false): MockClass
+    public function generate(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callOriginalMethods = false): MockClass
     {
         if ($mockClassName !== '') {
             return $this->generateCodeForTestDoubleClass(
@@ -240,7 +239,6 @@ final class Generator
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
-                $callAutoload,
                 $callOriginalMethods,
             );
         }
@@ -262,7 +260,6 @@ final class Generator
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
-                $callAutoload,
                 $callOriginalMethods,
             );
         }
@@ -375,7 +372,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, bool $markAsMockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $callOriginalMethods): MockClass
+    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, bool $markAsMockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callOriginalMethods): MockClass
     {
         $classTemplate         = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces  = [];
@@ -394,9 +391,9 @@ final class Generator
             $testDoubleClassPrefix,
         );
 
-        if (class_exists($_mockClassName['fullClassName'], $callAutoload)) {
+        if (class_exists($_mockClassName['fullClassName'])) {
             $isClass = true;
-        } elseif (interface_exists($_mockClassName['fullClassName'], $callAutoload)) {
+        } elseif (interface_exists($_mockClassName['fullClassName'])) {
             $isInterface = true;
         }
 
@@ -715,9 +712,9 @@ final class Generator
     /**
      * @throws UnknownTypeException
      */
-    private function ensureKnownType(string $type, bool $callAutoload): void
+    private function ensureKnownType(string $type): void
     {
-        if (!class_exists($type, $callAutoload) && !interface_exists($type, $callAutoload)) {
+        if (!class_exists($type) && !interface_exists($type)) {
             throw new UnknownTypeException($type);
         }
     }

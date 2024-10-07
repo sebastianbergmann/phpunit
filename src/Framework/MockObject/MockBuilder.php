@@ -59,7 +59,6 @@ final class MockBuilder
     private array $constructorArgs      = [];
     private bool $originalConstructor   = true;
     private bool $originalClone         = true;
-    private bool $autoload              = true;
     private bool $callOriginalMethods   = false;
     private ?object $proxyTarget        = null;
     private bool $returnValueGeneration = true;
@@ -102,7 +101,6 @@ final class MockBuilder
             $this->mockClassName ?? '',
             $this->originalConstructor,
             $this->originalClone,
-            $this->autoload,
             $this->callOriginalMethods,
             $this->proxyTarget,
             $this->returnValueGeneration,
@@ -231,46 +229,6 @@ final class MockBuilder
     public function enableOriginalClone(): self
     {
         $this->originalClone = true;
-
-        return $this;
-    }
-
-    /**
-     * Disables the use of class autoloading while creating the mock object.
-     *
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5309
-     *
-     * @codeCoverageIgnore
-     */
-    public function disableAutoload(): self
-    {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::disableAutoload() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $this->autoload = false;
-
-        return $this;
-    }
-
-    /**
-     * Enables the use of class autoloading while creating the mock object.
-     *
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5309
-     */
-    public function enableAutoload(): self
-    {
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testCase->valueObjectForEvents(),
-            'MockBuilder::enableAutoload() is deprecated and will be removed in PHPUnit 12 without replacement.',
-        );
-
-        $this->autoload = true;
 
         return $this;
     }
