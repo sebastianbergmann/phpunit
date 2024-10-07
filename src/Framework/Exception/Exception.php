@@ -46,8 +46,9 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
      * @var list<array{file: string, line: int, function: string}>
      */
     protected array $serializableTrace;
+    public ?string $method;
 
-    public function __construct(string $message = '', int|string $code = 0, ?Throwable $previous = null)
+    public function __construct(string $message = '', int|string $code = 0, ?Throwable $previous = null, ?string $method = null)
     {
         /**
          * @see https://github.com/sebastianbergmann/phpunit/issues/5965
@@ -68,6 +69,7 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
         foreach (array_keys($this->serializableTrace) as $key) {
             unset($this->serializableTrace[$key]['args']);
         }
+        $this->method = $method;
     }
 
     public function __sleep(): array

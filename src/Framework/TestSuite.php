@@ -521,7 +521,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     Event\TestData\TestDataCollection::fromArray([]),
                 ),
                 sprintf(
-                    "The data provider specified for %s::%s is invalid\n%s",
+                    "The data provider %s specified for %s::%s is invalid\n%s",
+                    $e->method,
                     $className,
                     $methodName,
                     $this->throwableToString($e),

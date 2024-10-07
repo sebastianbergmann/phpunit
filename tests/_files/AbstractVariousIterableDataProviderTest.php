@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractVariousIterableDataProviderTest
 {
-    public static function asArrayProviderInParent()
+    public static function asArrayProviderInParent(): array
     {
         return [
             ['J'],
@@ -22,7 +22,7 @@ abstract class AbstractVariousIterableDataProviderTest
         ];
     }
 
-    public static function asIteratorProviderInParent()
+    public static function asIteratorProviderInParent(): \Generator
     {
         yield ['M'];
 
@@ -31,7 +31,7 @@ abstract class AbstractVariousIterableDataProviderTest
         yield ['O'];
     }
 
-    public static function asTraversableProviderInParent()
+    public static function asTraversableProviderInParent(): WrapperIteratorAggregate
     {
         return new WrapperIteratorAggregate([
             ['P'],

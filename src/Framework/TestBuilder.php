@@ -47,7 +47,7 @@ final readonly class TestBuilder
             $data = (new DataProvider)->providedData($className, $methodName);
         }
 
-        if ($data !== null) {
+        if ($data !== null && reset($data) !== null) {
             return $this->buildDataProviderTestSuite(
                 $methodName,
                 $className,
@@ -91,20 +91,23 @@ final readonly class TestBuilder
             (new Groups)->groups($className, $methodName),
         );
 
-        foreach ($data as $_dataName => $_data) {
-            $_test = new $className($methodName);
+        foreach ($data as $providerName => $providedData){
+            foreach ($providedData as $_dataName => $_data){
+                $_test = new $className($methodName);
 
-            $_test->setData($_dataName, $_data);
+                $_test->setData($_dataName, $_data);
 
-            $this->configureTestCase(
-                $_test,
-                $runTestInSeparateProcess,
-                $preserveGlobalState,
-                $runClassInSeparateProcess,
-                $backupSettings,
-            );
+                $this->configureTestCase(
+                    $_test,
+                    $runTestInSeparateProcess,
+                    $preserveGlobalState,
+                    $runClassInSeparateProcess,
+                    $backupSettings,
+                );
 
-            $dataProviderTestSuite->addTest($_test, $groups);
+                $_test->setProviderName($providerName);
+                $dataProviderTestSuite->addTest($_test, $groups);
+            }
         }
 
         return $dataProviderTestSuite;
