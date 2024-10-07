@@ -20,7 +20,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->testDouble(
     type: 'Foo',
     mockObject: false,
-    markAsMockObject: false
 );
 
 var_dump(iterator_to_array($mock->forTraversable()));

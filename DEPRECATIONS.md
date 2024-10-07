@@ -4,14 +4,6 @@
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):
 
-### Writing Tests
-
-#### Test Double API
-
-| Issue                                                             | Description                                                                    | Since  | Replacement                                                                             |
-|-------------------------------------------------------------------|--------------------------------------------------------------------------------|--------|-----------------------------------------------------------------------------------------|
-| [#5535](https://github.com/sebastianbergmann/phpunit/issues/5525) | Configuring expectations using `expects()` on test stubs                       | 11.0.0 | Create a mock object when you need to configure expectations on a test double           |
-
 ### Running Tests
 
 | Issue                                                             | Description                                                                                                                           | Since  | Replacement                                                                                        |

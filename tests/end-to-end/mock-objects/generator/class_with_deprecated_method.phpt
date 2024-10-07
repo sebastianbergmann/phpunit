@@ -20,7 +20,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
   type: 'ClassWithDeprecatedMethod',
   mockObject: true,
-  markAsMockObject: true,
   methods: [],
   mockClassName: 'MockFoo',
 );
@@ -33,7 +32,6 @@ class MockFoo extends ClassWithDeprecatedMethod implements PHPUnit\Framework\Moc
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

@@ -19,7 +19,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $testDoubleClass = $generator->generate(
     type: Foo::class,
     mockObject: false,
-    markAsMockObject: false,
     methods: [],
     mockClassName: 'TestStubFoo',
 );
@@ -31,7 +30,6 @@ declare(strict_types=1);
 class TestStubFoo implements PHPUnit\Framework\MockObject\StubInternal, Foo
 {
     use PHPUnit\Framework\MockObject\StubApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

@@ -13,7 +13,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     type: InterfaceWithConstructor::class,
     mockObject: true,
-    markAsMockObject: true
 );
 
 print $mock->classCode();
@@ -24,7 +23,6 @@ class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWi
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

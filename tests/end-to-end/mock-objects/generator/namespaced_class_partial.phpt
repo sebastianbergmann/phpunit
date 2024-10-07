@@ -22,7 +22,6 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 $mock = $generator->generate(
     type: 'NS\Foo',
     mockObject: true,
-    markAsMockObject: true,
     methods: ['bar'],
     mockClassName: 'MockFoo',
 );
@@ -35,7 +34,6 @@ class MockFoo extends NS\Foo implements PHPUnit\Framework\MockObject\MockObjectI
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 

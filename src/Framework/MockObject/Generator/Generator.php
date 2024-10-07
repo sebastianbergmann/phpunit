@@ -35,8 +35,6 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\DoubledCloneMethod;
-use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
-use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 use PHPUnit\Framework\MockObject\Method;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectApi;
@@ -101,7 +99,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDouble(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $returnValueGeneration = true): MockObject|Stub
+    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $returnValueGeneration = true): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -114,7 +112,6 @@ final class Generator
         $mock = $this->generate(
             $type,
             $mockObject,
-            $markAsMockObject,
             $methods,
             $mockClassName,
             $callOriginalClone,
@@ -199,7 +196,6 @@ final class Generator
         return $this->testDouble(
             $intersectionName,
             $mockObject,
-            $mockObject,
             returnValueGeneration: $returnValueGeneration,
         );
     }
@@ -216,13 +212,12 @@ final class Generator
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/5476
      */
-    public function generate(string $type, bool $mockObject, bool $markAsMockObject, ?array $methods = null, string $mockClassName = '', bool $callOriginalClone = true): MockClass
+    public function generate(string $type, bool $mockObject, ?array $methods = null, string $mockClassName = '', bool $callOriginalClone = true): MockClass
     {
         if ($mockClassName !== '') {
             return $this->generateCodeForTestDoubleClass(
                 $type,
                 $mockObject,
-                $markAsMockObject,
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
@@ -232,7 +227,6 @@ final class Generator
         $key = md5(
             $type .
             ($mockObject ? 'MockObject' : 'TestStub') .
-            ($markAsMockObject ? 'MockObject' : 'TestStub') .
             serialize($methods) .
             serialize($callOriginalClone),
         );
@@ -241,7 +235,6 @@ final class Generator
             self::$cache[$key] = $this->generateCodeForTestDoubleClass(
                 $type,
                 $mockObject,
-                $markAsMockObject,
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
@@ -353,7 +346,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, bool $markAsMockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone): MockClass
+    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone): MockClass
     {
         $classTemplate         = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces  = [];
@@ -493,12 +486,6 @@ final class Generator
 
         if ($mockObject) {
             $traits[] = MockObjectApi::class;
-        }
-
-        if ($markAsMockObject) {
-            $traits[] = GeneratedAsMockObject::class;
-        } else {
-            $traits[] = GeneratedAsTestStub::class;
         }
 
         if ($mockMethods->hasMethod('method') || $class->hasMethod('method')) {

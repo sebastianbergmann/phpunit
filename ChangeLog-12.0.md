@@ -27,6 +27,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5416](https://github.com/sebastianbergmann/phpunit/issues/5416): Support for doubling interfaces (or classes) that have a method named `method`
 * [#5424](https://github.com/sebastianbergmann/phpunit/issues/5424): `TestCase` methods for creating return stub configuration objects
 * [#5473](https://github.com/sebastianbergmann/phpunit/issues/5473): `assertStringNotMatchesFormat()` and `assertStringNotMatchesFormatFile()`
+* [#5536](https://github.com/sebastianbergmann/phpunit/issues/5536): Support for configuring expectations using `expects()` on test stubs
 * [#5710](https://github.com/sebastianbergmann/phpunit/issues/5710): Support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5952](https://github.com/sebastianbergmann/phpunit/issues/5952): `includeUncoveredFiles` configuration option
