@@ -29,7 +29,7 @@ $testDoubleClass = $generator->generate(
 );
 
 print $testDoubleClass->classCode();
---EXPECTF--
+--EXPECT--
 declare(strict_types=1);
 
 class TestStubFoo extends Foo implements PHPUnit\Framework\MockObject\StubInternal

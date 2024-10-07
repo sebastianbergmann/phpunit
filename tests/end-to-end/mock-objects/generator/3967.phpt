@@ -24,12 +24,12 @@ $mock = $generator->generate(
 );
 
 print $mock->classCode();
---EXPECTF--
+--EXPECT--
 declare(strict_types=1);
 
 class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\MockObjectInternal
 {
-    use PHPUnit\Framework\MockObject\%SStubApi;
+    use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
     use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;

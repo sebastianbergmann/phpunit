@@ -26,7 +26,7 @@ $mock = $generator->testDouble(
 var_dump(iterator_to_array($mock->forTraversable()));
 var_dump(iterator_to_array($mock->forGenerator()));
 var_dump(iterator_to_array($mock->forIterable()));
---EXPECTF--
+--EXPECT--
 array(0) {
 }
 array(0) {
