@@ -218,7 +218,7 @@
         <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
-        <xs:attribute name="shortenArraysForExportThreshold" type="xs:integer" default="0"/>
+        <xs:attribute name="shortenArraysForExportThreshold" type="xs:integer" default="10"/>
     </xs:attributeGroup>
     <xs:group name="configGroup">
         <xs:all>

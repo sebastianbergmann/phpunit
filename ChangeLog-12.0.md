@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 ## [12.0.0] - 2025-02-07
 
+### Changed
+
+* [#5872](https://github.com/sebastianbergmann/phpunit/issues/5872): The default value for `shortenArraysForExportThreshold` is now `10` (limit export of arrays to 10 levels) instead of `0` (do not limit export of arrays)
+
 ### Removed
 
 * [#5215](https://github.com/sebastianbergmann/phpunit/issues/5215): `TestCase::iniSet()`
