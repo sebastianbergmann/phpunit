@@ -125,7 +125,6 @@ final class Generator
 
         $object = $this->getObject(
             $mock,
-            $type,
             $callOriginalConstructor,
             $arguments,
             $returnValueGeneration,
@@ -303,7 +302,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function getObject(MockType $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 
@@ -365,7 +364,6 @@ final class Generator
         $isClass               = false;
         $isReadonly            = false;
         $isInterface           = false;
-        $class                 = null;
         $mockMethods           = new MockMethodSet;
         $testDoubleClassPrefix = $mockObject ? 'MockObject_' : 'TestStub_';
 
