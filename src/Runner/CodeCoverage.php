@@ -102,12 +102,6 @@ final class CodeCoverage
             $this->codeCoverage()->enableAnnotationsForIgnoringCode();
         }
 
-        if ($configuration->includeUncoveredFiles()) {
-            $this->codeCoverage()->includeUncoveredFiles();
-        } else {
-            $this->codeCoverage()->excludeUncoveredFiles();
-        }
-
         if ($codeCoverageFilterRegistry->get()->isEmpty()) {
             if (!$codeCoverageFilterRegistry->configured()) {
                 EventFacade::emitter()->testRunnerTriggeredWarning(

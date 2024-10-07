@@ -27,6 +27,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5424](https://github.com/sebastianbergmann/phpunit/issues/5424): `TestCase` methods for creating return stub configuration objects
 * [#5473](https://github.com/sebastianbergmann/phpunit/issues/5473): `assertStringNotMatchesFormat()` and `assertStringNotMatchesFormatFile()`
 * [#5710](https://github.com/sebastianbergmann/phpunit/issues/5710): Support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options
+* [#5952](https://github.com/sebastianbergmann/phpunit/issues/5952): `includeUncoveredFiles` configuration option
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 
 [12.0.0]: https://github.com/sebastianbergmann/phpunit/compare/11.5...main
