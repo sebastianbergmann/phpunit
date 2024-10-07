@@ -334,19 +334,11 @@ final class CodeCoverage
 
             assert(class_exists($names[0]) || trait_exists($names[0]));
 
-            if ($metadata->isCoversClass() && trait_exists($names[0])) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation(
+            if (trait_exists($names[0]) &&
+                ($metadata->isCoversClass() || $metadata->isUsesClass())) {
+                throw new InvalidCoversTargetException(
                     sprintf(
-                        'Targeting a trait such as %s with #[CoversClass] is deprecated. The traits used by the class(es) you target with #[CoversClass] will be targeted as well.',
-                        $names[0],
-                    ),
-                );
-            }
-
-            if ($metadata->isUsesClass() && trait_exists($names[0])) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                    sprintf(
-                        'Targeting a trait such as %s with #[UsesClass] is deprecated.  The traits used by the class(es) you target with #[UsesClass] will be targeted as well.',
+                        'Trait %s is not a valid target for code coverage',
                         $names[0],
                     ),
                 );
