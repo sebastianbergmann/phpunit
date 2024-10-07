@@ -397,87 +397,73 @@ final class Generator
             $isInterface = true;
         }
 
-        if (!$isClass && !$isInterface) {
-            $prologue = 'class ' . $_mockClassName['originalClassName'] . "\n{\n}\n\n";
+        $class = $this->reflectClass($_mockClassName['fullClassName']);
 
-            if (!empty($_mockClassName['namespaceName'])) {
-                $prologue = 'namespace ' . $_mockClassName['namespaceName'] .
-                            " {\n\n" . $prologue . "}\n\n" .
-                            "namespace {\n\n";
+        if ($class->isEnum()) {
+            throw new ClassIsEnumerationException($_mockClassName['fullClassName']);
+        }
 
-                $epilogue = "\n\n}";
-            }
+        if ($class->isFinal()) {
+            throw new ClassIsFinalException($_mockClassName['fullClassName']);
+        }
 
-            $doubledCloneMethod = true;
-        } else {
-            $class = $this->reflectClass($_mockClassName['fullClassName']);
+        if ($class->isReadOnly()) {
+            $isReadonly = true;
+        }
 
-            if ($class->isEnum()) {
-                throw new ClassIsEnumerationException($_mockClassName['fullClassName']);
-            }
+        // @see https://github.com/sebastianbergmann/phpunit/issues/2995
+        if ($isInterface && $class->implementsInterface(Throwable::class)) {
+            $actualClassName        = Exception::class;
+            $additionalInterfaces[] = $class->getName();
+            $isInterface            = false;
+            $class                  = $this->reflectClass($actualClassName);
 
-            if ($class->isFinal()) {
-                throw new ClassIsFinalException($_mockClassName['fullClassName']);
-            }
+            foreach ($this->userDefinedInterfaceMethods($_mockClassName['fullClassName']) as $method) {
+                $methodName = $method->getName();
 
-            if ($class->isReadOnly()) {
-                $isReadonly = true;
-            }
+                if ($class->hasMethod($methodName)) {
+                    $classMethod = $class->getMethod($methodName);
 
-            // @see https://github.com/sebastianbergmann/phpunit/issues/2995
-            if ($isInterface && $class->implementsInterface(Throwable::class)) {
-                $actualClassName        = Exception::class;
-                $additionalInterfaces[] = $class->getName();
-                $isInterface            = false;
-                $class                  = $this->reflectClass($actualClassName);
-
-                foreach ($this->userDefinedInterfaceMethods($_mockClassName['fullClassName']) as $method) {
-                    $methodName = $method->getName();
-
-                    if ($class->hasMethod($methodName)) {
-                        $classMethod = $class->getMethod($methodName);
-
-                        if (!$this->canMethodBeDoubled($classMethod)) {
-                            continue;
-                        }
+                    if (!$this->canMethodBeDoubled($classMethod)) {
+                        continue;
                     }
-
-                    $mockMethods->addMethods(
-                        MockMethod::fromReflection($method, $callOriginalMethods),
-                    );
                 }
-
-                $_mockClassName = $this->generateClassName(
-                    $actualClassName,
-                    $_mockClassName['className'],
-                    $testDoubleClassPrefix,
-                );
-            }
-
-            // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-            if ($isInterface && $class->implementsInterface(Traversable::class) &&
-                !$class->implementsInterface(Iterator::class) &&
-                !$class->implementsInterface(IteratorAggregate::class)) {
-                $additionalInterfaces[] = Iterator::class;
 
                 $mockMethods->addMethods(
-                    ...$this->mockClassMethods(Iterator::class, $callOriginalMethods),
+                    MockMethod::fromReflection($method, $callOriginalMethods),
                 );
             }
 
-            if ($class->hasMethod('__clone')) {
-                $cloneMethod = $class->getMethod('__clone');
+            $_mockClassName = $this->generateClassName(
+                $actualClassName,
+                $_mockClassName['className'],
+                $testDoubleClassPrefix,
+            );
+        }
 
-                if (!$cloneMethod->isFinal()) {
-                    if ($callOriginalClone && !$isInterface) {
-                        $proxiedCloneMethod = true;
-                    } else {
-                        $doubledCloneMethod = true;
-                    }
+        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
+        if ($isInterface && $class->implementsInterface(Traversable::class) &&
+            !$class->implementsInterface(Iterator::class) &&
+            !$class->implementsInterface(IteratorAggregate::class)) {
+            $additionalInterfaces[] = Iterator::class;
+
+            $mockMethods->addMethods(
+                ...$this->mockClassMethods(Iterator::class, $callOriginalMethods),
+            );
+        }
+
+        if ($class->hasMethod('__clone')) {
+            $cloneMethod = $class->getMethod('__clone');
+
+            if (!$cloneMethod->isFinal()) {
+                if ($callOriginalClone && !$isInterface) {
+                    $proxiedCloneMethod = true;
+                } else {
+                    $doubledCloneMethod = true;
                 }
-            } else {
-                $doubledCloneMethod = true;
             }
+        } else {
+            $doubledCloneMethod = true;
         }
 
         if ($isClass && $explicitMethods === []) {
@@ -535,12 +521,12 @@ final class Generator
             $traits[] = GeneratedAsTestStub::class;
         }
 
-        if ($mockMethods->hasMethod('method') || (isset($class) && $class->hasMethod('method'))) {
+        if ($mockMethods->hasMethod('method') || $class->hasMethod('method')) {
             $message = sprintf(
                 '%s %s has a method named "method". Doubling %s that have a method named "method" is deprecated. Support for this will be removed in PHPUnit 12.',
-                ($isInterface) ? 'Interface' : 'Class',
-                isset($class) ? $class->getName() : $type,
-                ($isInterface) ? 'interfaces' : 'classes',
+                $isInterface ? 'Interface' : 'Class',
+                $class->getName(),
+                $isInterface ? 'interfaces' : 'classes',
             );
 
             try {
@@ -553,7 +539,7 @@ final class Generator
             }
         }
 
-        if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
+        if (!$mockMethods->hasMethod('method') && !$class->hasMethod('method')) {
             $traits[] = Method::class;
         }
 
@@ -576,8 +562,6 @@ final class Generator
 
         $classTemplate->setVar(
             [
-                'prologue'          => $prologue ?? '',
-                'epilogue'          => $epilogue ?? '',
                 'class_declaration' => $this->generateTestDoubleClassDeclaration(
                     $mockObject,
                     $_mockClassName,
