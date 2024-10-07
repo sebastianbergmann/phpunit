@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function assert;
-
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -29,7 +27,6 @@ final class TestDoubleState
     private readonly array $configurableMethods;
     private readonly bool $generateReturnValues;
     private ?InvocationHandler $invocationHandler = null;
-    private ?object $proxyTarget                  = null;
 
     /**
      * @param list<ConfigurableMethod> $configurableMethods
@@ -66,18 +63,6 @@ final class TestDoubleState
     public function unsetInvocationHandler(): void
     {
         $this->invocationHandler = null;
-    }
-
-    public function setProxyTarget(object $proxyTarget): void
-    {
-        $this->proxyTarget = $proxyTarget;
-    }
-
-    public function proxyTarget(): object
-    {
-        assert($this->proxyTarget !== null);
-
-        return $this->proxyTarget;
     }
 
     /**
