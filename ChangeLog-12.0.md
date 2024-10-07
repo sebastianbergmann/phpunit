@@ -29,6 +29,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5710](https://github.com/sebastianbergmann/phpunit/issues/5710): Support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5952](https://github.com/sebastianbergmann/phpunit/issues/5952): `includeUncoveredFiles` configuration option
+* [#5961](https://github.com/sebastianbergmann/phpunit/issues/5961): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 
 [12.0.0]: https://github.com/sebastianbergmann/phpunit/compare/11.5...main
