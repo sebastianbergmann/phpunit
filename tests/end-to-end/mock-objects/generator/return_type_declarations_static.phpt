@@ -22,13 +22,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
-    'ClassWithStaticReturnTypes',
-    true,
-    true,
-    [],
-    'MockClassWithStaticReturnTypes',
-    true,
-    true
+    type: 'ClassWithStaticReturnTypes',
+    mockObject: true,
+    markAsMockObject: true,
+    methods: [],
+    mockClassName: 'MockClassWithStaticReturnTypes',
 );
 
 print $mock->classCode();

@@ -14,13 +14,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
-    'ClassWithMethodWithTypehintedVariadicArguments',
-    true,
-    true,
-    [],
-    'MockFoo',
-    true,
-    true
+    type: 'ClassWithMethodWithTypehintedVariadicArguments',
+    mockObject: true,
+    markAsMockObject: true,
+    methods: [],
+    mockClassName: 'MockFoo',
 );
 
 print $mock->classCode();

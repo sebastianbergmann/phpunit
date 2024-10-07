@@ -7,13 +7,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
-    'NonExistentClass',
-    true,
-    true,
-    [],
-    'MockFoo',
-    true,
-    true
+    type: 'NonExistentClass',
+    mockObject: true,
+    markAsMockObject: true,
+    methods: [],
+    mockClassName: 'MockFoo',
 );
 
 print $mock->classCode();

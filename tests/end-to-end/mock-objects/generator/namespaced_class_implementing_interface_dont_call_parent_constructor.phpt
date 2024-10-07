@@ -21,12 +21,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
-    'NS\Foo',
-    true,
-    true,
-    [],
-    'MockFoo',
-    true
+    type: 'NS\Foo',
+    mockObject: true,
+    markAsMockObject: true,
+    methods: [],
+    mockClassName: 'MockFoo',
 );
 
 print $mock->classCode();

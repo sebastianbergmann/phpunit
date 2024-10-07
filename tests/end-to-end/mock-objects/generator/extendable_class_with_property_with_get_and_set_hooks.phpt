@@ -25,11 +25,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $testDoubleClass = $generator->generate(
-    Foo::class,
-    false,
-    false,
-    [],
-    'TestStubFoo',
+    type: Foo::class,
+    mockObject: false,
+    markAsMockObject: false,
+    methods: [],
+    mockClassName: 'TestStubFoo',
 );
 
 print $testDoubleClass->classCode();
