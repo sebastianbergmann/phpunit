@@ -7,11 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\DeprecatedAnnotationsTestFixture;
+namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
-use PHPUnit\Framework\TestCase;
 
 final class HookMethodsOrderTest extends HookMethodsOrderTestCase
 {
@@ -55,29 +54,6 @@ final class HookMethodsOrderTest extends HookMethodsOrderTestCase
 
     #[After(priority: 1)]
     protected function afterWithPriority(): void
-    {
-    }
-}
-
-abstract class HookMethodsOrderTestCase extends TestCase
-{
-    #[Before]
-    protected function beforeInParent(): void
-    {
-    }
-
-    #[Before(priority: 1)]
-    protected function beforeWithPriorityInParent(): void
-    {
-    }
-
-    #[After]
-    protected function afterInParent(): void
-    {
-    }
-
-    #[After(priority: 1)]
-    protected function afterWithPriorityInParent(): void
     {
     }
 }
