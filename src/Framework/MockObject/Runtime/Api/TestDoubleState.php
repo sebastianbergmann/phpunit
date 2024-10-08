@@ -17,11 +17,6 @@ namespace PHPUnit\Framework\MockObject;
 final class TestDoubleState
 {
     /**
-     * @var array<non-empty-string, true>
-     */
-    private static array $deprecationEmittedForTest = [];
-
-    /**
      * @var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
@@ -63,22 +58,6 @@ final class TestDoubleState
     public function unsetInvocationHandler(): void
     {
         $this->invocationHandler = null;
-    }
-
-    /**
-     * @param non-empty-string $testId
-     */
-    public function deprecationWasEmittedFor(string $testId): void
-    {
-        self::$deprecationEmittedForTest[$testId] = true;
-    }
-
-    /**
-     * @param non-empty-string $testId
-     */
-    public function wasDeprecationAlreadyEmittedFor(string $testId): bool
-    {
-        return isset(self::$deprecationEmittedForTest[$testId]);
     }
 
     /**
