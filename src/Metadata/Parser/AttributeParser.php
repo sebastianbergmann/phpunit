@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Parser;
 
 use const JSON_THROW_ON_ERROR;
+use function array_pop;
 use function assert;
 use function class_exists;
 use function json_decode;
@@ -98,6 +99,7 @@ final readonly class AttributeParser implements Parser
         $classHierarchy = [];
 
         $i = $className;
+
         while ($i !== TestCase::class) {
             $reflectedClass = new ReflectionClass($i);
             $classHierarchy[] = $reflectedClass;
@@ -105,6 +107,7 @@ final readonly class AttributeParser implements Parser
         }
 
         $consolidatedMetadata = null;
+
         while ($reflectedClass = array_pop($classHierarchy)) {
 
             $result = [];
