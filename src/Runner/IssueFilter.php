@@ -59,10 +59,6 @@ final readonly class IssueFilter
             if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
                 return false;
             }
-
-            if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
-                return false;
-            }
         }
 
         if ($event instanceof NoticeTriggered) {

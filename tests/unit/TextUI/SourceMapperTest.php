@@ -50,7 +50,6 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
-                false,
                 [
                     'functions' => [],
                     'methods'   => [],
@@ -92,7 +91,6 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
-                false,
                 [
                     'functions' => [],
                     'methods'   => [],
@@ -121,7 +119,6 @@ final class SourceMapperTest extends TestCase
                         new File($fixtureDirectory . '/a/PrefixSuffix.php'),
                     ],
                 ),
-                false,
                 false,
                 false,
                 false,
@@ -180,7 +177,6 @@ final class SourceMapperTest extends TestCase
                 FileCollection::fromArray([]),
                 FilterDirectoryCollection::fromArray([]),
                 FileCollection::fromArray([]),
-                false,
                 false,
                 false,
                 false,
@@ -249,7 +245,6 @@ final class SourceMapperTest extends TestCase
                 false,
                 false,
                 false,
-                false,
                 [
                     'functions' => [],
                     'methods'   => [],
@@ -291,7 +286,6 @@ final class SourceMapperTest extends TestCase
                     ],
                 ),
                 FileCollection::fromArray([]),
-                false,
                 false,
                 false,
                 false,

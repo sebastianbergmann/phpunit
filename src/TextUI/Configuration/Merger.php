@@ -779,7 +779,6 @@ final readonly class Merger
                 $sourceIncludeFiles,
                 $sourceExcludeDirectories,
                 $sourceExcludeFiles,
-                $xmlConfiguration->source()->restrictDeprecations(),
                 $xmlConfiguration->source()->restrictNotices(),
                 $xmlConfiguration->source()->restrictWarnings(),
                 $xmlConfiguration->source()->ignoreSuppressionOfDeprecations(),

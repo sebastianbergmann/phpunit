@@ -264,7 +264,6 @@ final readonly class Loader
     private function source(string $filename, DOMXPath $xpath): Source
     {
         $baseline                           = null;
-        $restrictDeprecations               = false;
         $restrictNotices                    = false;
         $restrictWarnings                   = false;
         $ignoreSuppressionOfDeprecations    = false;
@@ -287,7 +286,6 @@ final readonly class Loader
                 $baseline = $this->toAbsolutePath($filename, $baseline);
             }
 
-            $restrictDeprecations               = $this->getBooleanAttribute($element, 'restrictDeprecations', false);
             $restrictNotices                    = $this->getBooleanAttribute($element, 'restrictNotices', false);
             $restrictWarnings                   = $this->getBooleanAttribute($element, 'restrictWarnings', false);
             $ignoreSuppressionOfDeprecations    = $this->getBooleanAttribute($element, 'ignoreSuppressionOfDeprecations', false);
@@ -334,7 +332,6 @@ final readonly class Loader
             $this->readFilterFiles($filename, $xpath, 'source/include/file'),
             $this->readFilterDirectories($filename, $xpath, 'source/exclude/directory'),
             $this->readFilterFiles($filename, $xpath, 'source/exclude/file'),
-            $restrictDeprecations,
             $restrictNotices,
             $restrictWarnings,
             $ignoreSuppressionOfDeprecations,

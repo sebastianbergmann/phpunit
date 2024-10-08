@@ -48,7 +48,6 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
-                    false,
                     [
                         'functions' => [],
                         'methods'   => [],
@@ -80,7 +79,6 @@ final class SourceFilterTest extends TestCase
                         ],
                     ),
                     FileCollection::fromArray([]),
-                    false,
                     false,
                     false,
                     false,
@@ -126,7 +124,6 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
-                    false,
                     [
                         'functions' => [],
                         'methods'   => [],
@@ -154,7 +151,6 @@ final class SourceFilterTest extends TestCase
                     FileCollection::fromArray([]),
                     FilterDirectoryCollection::fromArray([]),
                     FileCollection::fromArray([]),
-                    false,
                     false,
                     false,
                     false,
@@ -204,7 +200,6 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
-                    false,
                     [
                         'functions' => [],
                         'methods'   => [],
@@ -240,7 +235,6 @@ final class SourceFilterTest extends TestCase
                         ],
                     ),
                     FileCollection::fromArray([]),
-                    false,
                     false,
                     false,
                     false,

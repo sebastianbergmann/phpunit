@@ -30,6 +30,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5536](https://github.com/sebastianbergmann/phpunit/issues/5536): Support for configuring expectations using `expects()` on test stubs
 * [#5541](https://github.com/sebastianbergmann/phpunit/issues/5541): Support for metadata in doc-comments
 * [#5710](https://github.com/sebastianbergmann/phpunit/issues/5710): Support for using comma-separated values with the `--group`, `--exclude-group`, `--covers`, `--uses`, and `--test-suffix` CLI options
+* [#5756](https://github.com/sebastianbergmann/phpunit/issues/5756): Support for the `restrictDeprecations` attribute on the `<source>` element of the XML configuration file
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5952](https://github.com/sebastianbergmann/phpunit/issues/5952): `includeUncoveredFiles` configuration option
 * [#5959](https://github.com/sebastianbergmann/phpunit/issues/5959): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes

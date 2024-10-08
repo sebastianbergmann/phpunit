@@ -44,7 +44,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -68,7 +67,6 @@ final class SourceTest extends TestCase
             $includeFiles,
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -110,7 +108,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -134,7 +131,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             $excludeFiles,
-            false,
             false,
             false,
             false,
@@ -176,7 +172,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -209,7 +204,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -227,68 +221,6 @@ final class SourceTest extends TestCase
         $source->baseline();
     }
 
-    public function testRestrictionOfDeprecationsMayBeDisabled(): void
-    {
-        $source = new Source(
-            null,
-            false,
-            FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
-            FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            [
-                'functions' => [],
-                'methods'   => [],
-            ],
-            false,
-            false,
-            false,
-        );
-
-        $this->assertFalse($source->restrictDeprecations());
-    }
-
-    public function testRestrictionOfDeprecationsMayBeEnabled(): void
-    {
-        $source = new Source(
-            null,
-            false,
-            FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
-            FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            [
-                'functions' => [],
-                'methods'   => [],
-            ],
-            false,
-            false,
-            false,
-        );
-
-        $this->assertTrue($source->restrictDeprecations());
-    }
-
     public function testRestrictionOfNoticesMayBeDisabled(): void
     {
         $source = new Source(
@@ -298,7 +230,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -329,7 +260,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             true,
             false,
             false,
@@ -369,7 +299,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -391,7 +320,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             true,
             false,
@@ -431,7 +359,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -453,7 +380,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             true,
@@ -493,7 +419,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -515,7 +440,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -555,7 +479,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -577,7 +500,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -617,7 +539,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -639,7 +560,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -679,7 +599,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -701,7 +620,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -741,7 +659,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -763,7 +680,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -803,7 +719,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -825,7 +740,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
@@ -865,7 +779,6 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
-            false,
             [
                 'functions' => [],
                 'methods'   => [],
@@ -895,7 +808,6 @@ final class SourceTest extends TestCase
             FileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
-            false,
             false,
             false,
             false,
