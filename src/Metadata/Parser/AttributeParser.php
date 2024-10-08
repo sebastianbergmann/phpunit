@@ -74,6 +74,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
