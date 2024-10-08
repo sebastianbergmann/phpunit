@@ -234,10 +234,6 @@ final class TestRunner
     private function hasCoverageMetadata(string $className, string $methodName): bool
     {
         foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isCovers()) {
-                return true;
-            }
-
             if ($metadata->isCoversClass()) {
                 return true;
             }

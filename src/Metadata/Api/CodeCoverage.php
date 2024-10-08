@@ -17,19 +17,16 @@ use function sprintf;
 use function trait_exists;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
-use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\Parser\Registry;
-use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
 use ReflectionClass;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\Exception as CodeUnitException;
-use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
 
 /**
@@ -62,41 +59,15 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if (!$metadata->isCoversClass() && !$metadata->isCoversMethod() && !$metadata->isCoversFunction() && !$metadata->isCovers()) {
+            if (!$metadata->isCoversClass() && !$metadata->isCoversMethod() && !$metadata->isCoversFunction()) {
                 continue;
             }
 
             /** @phpstan-ignore booleanOr.alwaysTrue */
-            assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction || $metadata instanceof Covers);
+            assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
 
             if ($metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
                 $codeUnits = $codeUnits->mergeWith($this->mapToCodeUnits($metadata));
-            } elseif ($metadata->isCovers()) {
-                assert($metadata instanceof Covers);
-
-                $target = $metadata->target();
-
-                if (interface_exists($target)) {
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            'Trying to @cover interface "%s".',
-                            $target,
-                        ),
-                    );
-                }
-
-                try {
-                    $codeUnits = $codeUnits->mergeWith($mapper->stringToCodeUnits($target));
-                } catch (InvalidCodeUnitException $e) {
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            '"@covers %s" is invalid',
-                            $target,
-                        ),
-                        $e->getCode(),
-                        $e,
-                    );
-                }
             }
         }
 
@@ -117,32 +88,15 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if (!$metadata->isUsesClass() && !$metadata->isUsesMethod() && !$metadata->isUsesFunction() && !$metadata->isUses()) {
+            if (!$metadata->isUsesClass() && !$metadata->isUsesMethod() && !$metadata->isUsesFunction()) {
                 continue;
             }
 
             /** @phpstan-ignore booleanOr.alwaysTrue */
-            assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction || $metadata instanceof Uses);
+            assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
 
             if ($metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {
                 $codeUnits = $codeUnits->mergeWith($this->mapToCodeUnits($metadata));
-            } elseif ($metadata->isUses()) {
-                assert($metadata instanceof Uses);
-
-                $target = $metadata->target();
-
-                try {
-                    $codeUnits = $codeUnits->mergeWith($mapper->stringToCodeUnits($target));
-                } catch (InvalidCodeUnitException $e) {
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            '"@uses %s" is invalid',
-                            $target,
-                        ),
-                        $e->getCode(),
-                        $e,
-                    );
-                }
             }
         }
 
@@ -162,8 +116,7 @@ final class CodeCoverage
             return false;
         }
 
-        if ($metadataForMethod->isCovers()->isNotEmpty() ||
-            $metadataForMethod->isCoversClass()->isNotEmpty() ||
+        if ($metadataForMethod->isCoversClass()->isNotEmpty() ||
             $metadataForMethod->isCoversFunction()->isNotEmpty()) {
             return true;
         }
