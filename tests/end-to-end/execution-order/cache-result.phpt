@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--ignore-dependencies';   // keep coverage for legacy CLI 
 $_SERVER['argv'][] = '--order-by=reverse';
 $_SERVER['argv'][] = '--cache-result';
 $_SERVER['argv'][] = '--cache-directory=' . $cacheDirectory;
-$_SERVER['argv'][] = realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php');
+$_SERVER['argv'][] = __DIR__ . '/../../_files/MultiDependencyTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
