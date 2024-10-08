@@ -4,6 +4,8 @@ The right events are emitted in the right order for a successful test that has a
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__ . '/../_files/HookMethodsOrderTestCase.php';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/../_files/HookMethodsOrderTest.php';
 
@@ -13,6 +15,7 @@ require __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Bootstrap Finished (%sHookMethodsOrderTestCase.php)
 Event Facade Sealed
 Test Suite Loaded (1 test)
 Test Runner Started
