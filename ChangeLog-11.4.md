@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 
 ## [11.4.1] - 2024-MM-DD
 
+### Changed
+
+* Updated regular expressions used by `StringMatchesFormatDescription` constraint to be consistent with PHP's `run-tests.php`
+
 ### Fixed
 
 * [#5977](https://github.com/sebastianbergmann/phpunit/pull/5977): TestDox result collector does not correctly handle baseline-ignored `E_DEPRECATED` issues
