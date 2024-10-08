@@ -9,6 +9,8 @@ require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__ . '/ignore-function-using-attribute/src/CoveredFunction.php';
 $_SERVER['argv'][] = '--coverage-filter';
 $_SERVER['argv'][] = __DIR__ . '/ignore-function-using-attribute/src';
 $_SERVER['argv'][] = '--coverage-text';

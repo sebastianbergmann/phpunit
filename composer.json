@@ -72,9 +72,13 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/"
+            "tests/_files"
         ],
         "files": [
+            "tests/unit/Event/AbstractEventTestCase.php",
+            "tests/unit/Framework/MockObject/TestDoubleTestCase.php",
+            "tests/unit/Metadata/Parser/AnnotationParserTestCase.php",
+            "tests/unit/Metadata/Parser/AttributeParserTestCase.php",
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/Generator.php",

@@ -10,6 +10,8 @@ require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--process-isolation';
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__ . '/ignore-class-using-attribute/src/CoveredClass.php';
 $_SERVER['argv'][] = '--coverage-filter';
 $_SERVER['argv'][] = __DIR__ . '/ignore-class-using-attribute/src';
 $_SERVER['argv'][] = '--coverage-text';
