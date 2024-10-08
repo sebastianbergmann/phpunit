@@ -316,7 +316,9 @@ final class CodeCoverage
             $textReport = $processor->process($this->codeCoverage(), $configuration->colors());
 
             if ($configuration->coverageText() === 'php://stdout') {
-                $printer->print($textReport);
+                if (!$configuration->noOutput() && !$configuration->debug()) {
+                    $printer->print($textReport);
+                }
             } else {
                 file_put_contents($configuration->coverageText(), $textReport);
             }
