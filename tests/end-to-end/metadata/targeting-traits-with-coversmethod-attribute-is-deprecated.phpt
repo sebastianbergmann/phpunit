@@ -10,9 +10,7 @@ $coverageFile = tempnam(sys_get_temp_dir(), __FILE__);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--no-output';
-$_SERVER['argv'][] = '--log-events-text';
-$_SERVER['argv'][] = $traceFile;
+$_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--coverage-text=' . $coverageFile;
 $_SERVER['argv'][] = '--coverage-filter';
 $_SERVER['argv'][] = __DIR__ . '/../_files';
@@ -21,10 +19,6 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/TraitTargetedWithCoversMethodTest.php
 require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
-
-print file_get_contents($traceFile);
-
-unlink($traceFile);
 unlink($coverageFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)

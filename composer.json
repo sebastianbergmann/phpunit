@@ -71,10 +71,27 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/"
+            "tests/_files"
         ],
         "files": [
             "tests/_files/deprecation-trigger/trigger_deprecation.php",
+            "tests/unit/Event/AbstractEventTestCase.php",
+            "tests/unit/Framework/MockObject/TestDoubleTestCase.php",
+            "tests/unit/Metadata/Parser/AnnotationParserTestCase.php",
+            "tests/unit/Metadata/Parser/AttributeParserTestCase.php",
+            "tests/unit/Framework/Assert/assertDirectoryExistsTest.php",
+            "tests/unit/Framework/Assert/assertFileExistsTest.php",
+            "tests/unit/Framework/Assert/assertIsNumericTest.php",
+            "tests/unit/Framework/Assert/assertIsObjectTest.php",
+            "tests/unit/Framework/Assert/assertIsReadableTest.php",
+            "tests/unit/Framework/Assert/assertIsResourceTest.php",
+            "tests/unit/Framework/Assert/assertIsScalarTest.php",
+            "tests/unit/Framework/Assert/assertIsStringTest.php",
+            "tests/unit/Framework/Assert/assertIsWritableTest.php",
+            "tests/unit/Framework/Assert/assertMatchesRegularExpressionTest.php",
+            "tests/unit/Framework/Assert/assertNullTest.php",
+            "tests/unit/Framework/Assert/assertSameSizeTest.php",
+            "tests/unit/Framework/Assert/assertSameTest.php",
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/Generator.php",

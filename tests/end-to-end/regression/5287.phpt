@@ -2,25 +2,20 @@
 https://github.com/sebastianbergmann/phpunit/issues/5287
 --FILE--
 <?php declare(strict_types=1);
-$traceFile = tempnam(sys_get_temp_dir(), __FILE__);
-
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--no-output';
-$_SERVER['argv'][] = '--log-events-text';
-$_SERVER['argv'][] = $traceFile;
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__ . '/5287/C/MyClassTest.php';
+$_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/5287';
 
 require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
-
-print file_get_contents($traceFile);
-
-unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Bootstrap Finished (%sMyClassTest.php)
 Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::provide for test method PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::test)
 Data Provider Method Finished for PHPUnit\TestFixture\Issue5278\A\AnotherClassTest::test:

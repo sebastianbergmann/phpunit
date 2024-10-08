@@ -4,6 +4,8 @@ TestDox: Default output; Data Provider with string data set name; TestDox metada
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__ . '/_files/bootstrap.php';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=never';
