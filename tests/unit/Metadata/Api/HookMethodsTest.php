@@ -62,32 +62,26 @@ final class HookMethodsTest extends TestCase
 
         $beforeClassHooks = HookMethodCollection::defaultBeforeClass();
         $beforeClassHooks->add(new HookMethod('beforeFirstTestWithAttribute', 0));
-        $beforeClassHooks->add(new HookMethod('beforeFirstTestWithAnnotation', 0));
         $this->assertEquals($beforeClassHooks, $hookMethods['beforeClass']);
 
         $beforeHooks = HookMethodCollection::defaultBefore();
         $beforeHooks->add(new HookMethod('beforeEachTestWithAttribute', 0));
-        $beforeHooks->add(new HookMethod('beforeEachTestWithAnnotation', 0));
         $this->assertEquals($beforeHooks, $hookMethods['before']);
 
         $preConditionHooks = HookMethodCollection::defaultPreCondition();
         $preConditionHooks->add(new HookMethod('preConditionsWithAttribute', 0));
-        $preConditionHooks->add(new HookMethod('preConditionsWithAnnotation', 0));
         $this->assertEquals($preConditionHooks, $hookMethods['preCondition']);
 
         $postConditionHooks = HookMethodCollection::defaultPostCondition();
         $postConditionHooks->add(new HookMethod('postConditionsWithAttribute', 0));
-        $postConditionHooks->add(new HookMethod('postConditionsWithAnnotation', 0));
         $this->assertEquals($postConditionHooks, $hookMethods['postCondition']);
 
         $afterHooks = HookMethodCollection::defaultAfter();
         $afterHooks->add(new HookMethod('afterEachTestWithAttribute', 0));
-        $afterHooks->add(new HookMethod('afterEachTestWithAnnotation', 0));
         $this->assertEquals($afterHooks, $hookMethods['after']);
 
         $afterClassHooks = HookMethodCollection::defaultAfterClass();
         $afterClassHooks->add(new HookMethod('afterLastTestWithAttribute', 0));
-        $afterClassHooks->add(new HookMethod('afterLastTestWithAnnotation', 0));
         $this->assertEquals($afterClassHooks, $hookMethods['afterClass']);
     }
 

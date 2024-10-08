@@ -14,19 +14,16 @@ use function class_exists;
 use function count;
 use function interface_exists;
 use function sprintf;
-use function str_starts_with;
 use function trait_exists;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
-use PHPUnit\Metadata\CoversDefaultClass;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
-use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
 use ReflectionClass;
@@ -61,26 +58,6 @@ final class CodeCoverage
             return false;
         }
 
-        $metadataForClass = Registry::parser()->forClass($className);
-        $classShortcut    = null;
-
-        if ($metadataForClass->isCoversDefaultClass()->isNotEmpty()) {
-            if (count($metadataForClass->isCoversDefaultClass()) > 1) {
-                throw new CodeCoverageException(
-                    sprintf(
-                        'More than one @coversDefaultClass annotation for class or interface "%s"',
-                        $className,
-                    ),
-                );
-            }
-
-            $metadata = $metadataForClass->isCoversDefaultClass()->asArray()[0];
-
-            assert($metadata instanceof CoversDefaultClass);
-
-            $classShortcut = $metadata->className();
-        }
-
         $codeUnits = CodeUnitCollection::fromList();
         $mapper    = new Mapper;
 
@@ -106,10 +83,6 @@ final class CodeCoverage
                             $target,
                         ),
                     );
-                }
-
-                if ($classShortcut !== null && str_starts_with($target, '::')) {
-                    $target = $classShortcut . $target;
                 }
 
                 try {
@@ -140,26 +113,6 @@ final class CodeCoverage
      */
     public function linesToBeUsed(string $className, string $methodName): array
     {
-        $metadataForClass = Registry::parser()->forClass($className);
-        $classShortcut    = null;
-
-        if ($metadataForClass->isUsesDefaultClass()->isNotEmpty()) {
-            if (count($metadataForClass->isUsesDefaultClass()) > 1) {
-                throw new CodeCoverageException(
-                    sprintf(
-                        'More than one @usesDefaultClass annotation for class or interface "%s"',
-                        $className,
-                    ),
-                );
-            }
-
-            $metadata = $metadataForClass->isUsesDefaultClass()->asArray()[0];
-
-            assert($metadata instanceof UsesDefaultClass);
-
-            $classShortcut = $metadata->className();
-        }
-
         $codeUnits = CodeUnitCollection::fromList();
         $mapper    = new Mapper;
 
@@ -177,10 +130,6 @@ final class CodeCoverage
                 assert($metadata instanceof Uses);
 
                 $target = $metadata->target();
-
-                if ($classShortcut !== null && str_starts_with($target, '::')) {
-                    $target = $classShortcut . $target;
-                }
 
                 try {
                     $codeUnits = $codeUnits->mergeWith($mapper->stringToCodeUnits($target));

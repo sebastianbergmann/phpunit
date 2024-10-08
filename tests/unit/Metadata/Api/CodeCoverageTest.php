@@ -15,37 +15,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\CoverageClassNothingTest;
 use PHPUnit\TestFixture\CoverageClassTest;
 use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
-use PHPUnit\TestFixture\CoverageCoversOverridesCoversNothingTest;
-use PHPUnit\TestFixture\CoverageFunctionParenthesesTest;
-use PHPUnit\TestFixture\CoverageFunctionParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageFunctionTest;
-use PHPUnit\TestFixture\CoverageMethodAnnotationTest;
-use PHPUnit\TestFixture\CoverageMethodNothingCoversMethod;
 use PHPUnit\TestFixture\CoverageMethodNothingTest;
-use PHPUnit\TestFixture\CoverageMethodOneLineAnnotationTest;
-use PHPUnit\TestFixture\CoverageMethodParenthesesTest;
-use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
-use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
 use PHPUnit\TestFixture\CoveredClassUsingCoveredTraitTest;
 use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
-use PHPUnit\TestFixture\InterfaceTargetTest;
-use PHPUnit\TestFixture\InvalidClassTargetWithAnnotationTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAttributeTest;
 use PHPUnit\TestFixture\InvalidFunctionTargetTest;
-use PHPUnit\TestFixture\MoreThanOneCoversDefaultClassAnnotationTest;
-use PHPUnit\TestFixture\MoreThanOneUsesDefaultClassAnnotationTest;
-use PHPUnit\TestFixture\NamespaceCoverageClassTest;
-use PHPUnit\TestFixture\NamespaceCoverageCoversClassPublicTest;
-use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
-use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
 use PHPUnit\TestFixture\Test3194;
 
 #[CoversClass(CodeCoverage::class)]
@@ -81,81 +62,10 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodAnnotationTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodOneLineAnnotationTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(12, 29),
-                ],
-                NamespaceCoverageClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                NamespaceCoverageMethodTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(14, 18), range(20, 24), range(26, 28)),
-                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(14, 17), range(19, 22), range(24, 26)),
-                ],
-                NamespaceCoverageCoversClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                NamespaceCoverageCoversClassPublicTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
                     TEST_FILES_PATH . 'CoveredClassUsingCoveredTrait.php' => range(12, 27),
                     TEST_FILES_PATH . 'CoveredTrait.php'                  => range(12, 18),
                 ],
                 CoveredClassUsingCoveredTraitTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodParenthesesTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodParenthesesWhitespaceTest::class,
-                'testSomething',
-            ],
-
-            [
-                false,
-                CoverageClassNothingTest::class,
                 'testSomething',
             ],
 
@@ -167,48 +77,10 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageCoversOverridesCoversNothingTest::class,
-                'testSomething',
-            ],
-
-            [
-                false,
-                CoverageMethodNothingCoversMethod::class,
-                'testSomething',
-            ],
-
-            [
-                [
                     TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
                 ],
                 CoverageFunctionTest::class,
                 'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionParenthesesTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionParenthesesWhitespaceTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
-                ],
-                CoverageNamespacedFunctionTest::class,
-                'testFunc',
             ],
 
             [
@@ -249,47 +121,6 @@ final class CodeCoverageTest extends TestCase
 
             [
                 [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodAnnotationTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(12, 29),
-                ],
-                NamespaceCoverageClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                NamespaceCoverageMethodTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(14, 18), range(20, 24), range(26, 28)),
-                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(14, 17), range(19, 22), range(24, 26)),
-                ],
-                NamespaceCoverageCoversClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                NamespaceCoverageCoversClassPublicTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
                     TEST_FILES_PATH . 'CoveredClassUsingCoveredTrait.php' => range(12, 27),
                     TEST_FILES_PATH . 'CoveredTrait.php'                  => range(12, 18),
                 ],
@@ -304,46 +135,6 @@ final class CodeCoverageTest extends TestCase
                 CoverageFunctionTest::class,
                 'testSomething',
             ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionParenthesesTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionParenthesesWhitespaceTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodParenthesesTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodParenthesesWhitespaceTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
-                ],
-                CoverageNamespacedFunctionTest::class,
-                'testFunc',
-            ],
         ];
     }
 
@@ -352,8 +143,6 @@ final class CodeCoverageTest extends TestCase
         return [
             [CoverageClassTest::class, false],
             [CoverageClassWithoutAnnotationsTest::class, false],
-            [CoverageCoversOverridesCoversNothingTest::class, false],
-            [CoverageClassNothingTest::class, true],
             [CoverageMethodNothingTest::class, true],
         ];
     }
@@ -401,32 +190,6 @@ final class CodeCoverageTest extends TestCase
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
     }
 
-    #[TestDox('Rejects more than one @coversDefaultClass annotation')]
-    public function testRejectsMoreThanOneCoversDefaultClassAnnotation(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('More than one @coversDefaultClass annotation for class');
-
-        (new CodeCoverage)->linesToBeCovered(MoreThanOneCoversDefaultClassAnnotationTest::class, 'testOne');
-    }
-
-    #[TestDox('More than one @usesDefaultClass annotation')]
-    public function testRejectsMoreThanOneUsesDefaultClassAnnotation(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('More than one @usesDefaultClass annotation for class');
-
-        (new CodeCoverage)->linesToBeUsed(MoreThanOneUsesDefaultClassAnnotationTest::class, 'testOne');
-    }
-
-    public function testRejectsInterfaceClassTarget(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Trying to @cover interface "\Throwable".');
-
-        (new CodeCoverage)->linesToBeCovered(InterfaceTargetTest::class, 'testOne');
-    }
-
     public function testRejectsInterfaceAsCoversClassTargetWithAttribute(): void
     {
         $this->expectException(CodeCoverageException::class);
@@ -457,22 +220,6 @@ final class CodeCoverageTest extends TestCase
         $this->expectExceptionMessage('"InvalidClass" is not a valid target for code coverage');
 
         (new CodeCoverage)->linesToBeUsed(InvalidClassTargetWithAttributeTest::class, 'testOne');
-    }
-
-    public function testRejectsInvalidCoversClassTargetWithAnnotation(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('"@covers InvalidClass" is invalid');
-
-        (new CodeCoverage)->linesToBeCovered(InvalidClassTargetWithAnnotationTest::class, 'testOne');
-    }
-
-    public function testRejectsInvalidUsesClassTargetWithAnnotation(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('"@uses InvalidClass" is invalid');
-
-        (new CodeCoverage)->linesToBeUsed(InvalidClassTargetWithAnnotationTest::class, 'testOne');
     }
 
     public function testRejectsInvalidCoversFunctionTarget(): void

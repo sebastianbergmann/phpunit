@@ -29,20 +29,6 @@ final class TestWithHookMethodsTest extends TestCase
     {
     }
 
-    /**
-     * @beforeClass
-     */
-    public static function beforeFirstTestWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @afterClass
-     */
-    public static function afterLastTestWithAnnotation(): void
-    {
-    }
-
     #[Before]
     protected function beforeEachTestWithAttribute(): void
     {
@@ -60,34 +46,6 @@ final class TestWithHookMethodsTest extends TestCase
 
     #[PostCondition]
     protected function postConditionsWithAttribute(): void
-    {
-    }
-
-    /**
-     * @before
-     */
-    protected function beforeEachTestWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @after
-     */
-    protected function afterEachTestWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @preCondition
-     */
-    protected function preConditionsWithAnnotation(): void
-    {
-    }
-
-    /**
-     * @postCondition
-     */
-    protected function postConditionsWithAnnotation(): void
     {
     }
 }
