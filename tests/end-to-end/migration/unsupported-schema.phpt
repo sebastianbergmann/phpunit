@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Migration of %s failed:
-The file does not validate against any know schema
+The file does not validate against any known schema
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(sys_get_temp_dir() . '/phpunit.xml');
