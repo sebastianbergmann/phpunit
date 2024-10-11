@@ -9,10 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
-use function array_merge;
 use function assert;
 use PHPUnit\Metadata\Api\DataProvider;
-use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
@@ -36,8 +34,10 @@ final readonly class TestBuilder
      * @param list<non-empty-string>    $groups
      *
      * @throws InvalidDataProviderException
+     *
+     * @return list<Test>
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = []): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups = []): array
     {
         $className = $theClass->getName();
 
@@ -48,7 +48,7 @@ final readonly class TestBuilder
         }
 
         if ($data !== null) {
-            return $this->buildDataProviderTestSuite(
+            return $this->buildDataProviderTests(
                 $methodName,
                 $className,
                 $data,
@@ -70,7 +70,7 @@ final readonly class TestBuilder
             $this->backupSettings($className, $methodName),
         );
 
-        return $test;
+        return [$test];
     }
 
     /**
@@ -79,35 +79,30 @@ final readonly class TestBuilder
      * @param array<list<mixed>>                                                                                                                                                $data
      * @param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @param list<non-empty-string>                                                                                                                                            $groups
+     *
+     * @return list<Test>
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings, array $groups): DataProviderTestSuite
+    private function buildDataProviderTests(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings, array $groups): array
     {
-        $dataProviderTestSuite = DataProviderTestSuite::empty(
-            $className . '::' . $methodName,
-        );
+        $tests = [];
 
-        $groups = array_merge(
-            $groups,
-            (new Groups)->groups($className, $methodName),
-        );
+        foreach ($data as $dataName => $_data) {
+            $test = new $className($methodName);
 
-        foreach ($data as $_dataName => $_data) {
-            $_test = new $className($methodName);
-
-            $_test->setData($_dataName, $_data);
+            $test->setData($dataName, $_data);
 
             $this->configureTestCase(
-                $_test,
+                $test,
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $runClassInSeparateProcess,
                 $backupSettings,
             );
 
-            $dataProviderTestSuite->addTest($_test, $groups);
+            $tests[] = $test;
         }
 
-        return $dataProviderTestSuite;
+        return $tests;
     }
 
     /**

@@ -511,7 +511,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         assert(!empty($methodName));
 
         try {
-            $test = (new TestBuilder)->build($class, $methodName, $groups);
+            $tests = (new TestBuilder)->build($class, $methodName, $groups);
         } catch (InvalidDataProviderException $e) {
             Event\Facade::emitter()->testTriggeredPhpunitError(
                 new TestMethod(
@@ -537,19 +537,21 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
-            $test->setDependencies(
-                Dependencies::dependencies($class->getName(), $methodName),
+        foreach ($tests as $test) {
+            if ($test instanceof TestCase) {
+                $test->setDependencies(
+                    Dependencies::dependencies($class->getName(), $methodName),
+                );
+            }
+
+            $this->addTest(
+                $test,
+                array_merge(
+                    $groups,
+                    (new Groups)->groups($class->getName(), $methodName),
+                ),
             );
         }
-
-        $this->addTest(
-            $test,
-            array_merge(
-                $groups,
-                (new Groups)->groups($class->getName(), $methodName),
-            ),
-        );
     }
 
     private function clearCaches(): void

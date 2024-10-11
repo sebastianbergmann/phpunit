@@ -22,7 +22,6 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\DataProviderTest, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
 Test Prepared (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
 Test Passed (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#0)
@@ -31,7 +30,6 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DataProviderTest::testSucces
 Test Prepared (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
 Test Passed (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
 Test Finished (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess#1)
-Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderTest::testSuccess, 2 tests)
 Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

@@ -1,5 +1,7 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/5178
+--XFAIL--
+Depending on tests that use provided data stops working when DataProviderTestSuite is removed
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

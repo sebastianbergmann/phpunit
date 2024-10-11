@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\TestBuilder\TestWithClassLevelIsolationAttributes;
@@ -24,10 +23,14 @@ final class TestBuilderTest extends TestCase
 {
     public function testBuildsTestWithoutMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $tests = (new TestBuilder)->build(
             new ReflectionClass(TestWithoutIsolationAttributes::class),
             'testOne',
         );
+
+        $this->assertCount(1, $tests);
+
+        $test = $tests[0];
 
         $this->assertInstanceOf(TestWithoutIsolationAttributes::class, $test);
 
@@ -43,10 +46,14 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithClassLevelMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $tests = (new TestBuilder)->build(
             new ReflectionClass(TestWithClassLevelIsolationAttributes::class),
             'testOne',
         );
+
+        $this->assertCount(1, $tests);
+
+        $test = $tests[0];
 
         $this->assertInstanceOf(TestWithClassLevelIsolationAttributes::class, $test);
 
@@ -62,10 +69,14 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithMethodLevelMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $tests = (new TestBuilder)->build(
             new ReflectionClass(TestWithMethodLevelIsolationAttributes::class),
             'testOne',
         );
+
+        $this->assertCount(1, $tests);
+
+        $test = $tests[0];
 
         $this->assertInstanceOf(TestWithMethodLevelIsolationAttributes::class, $test);
 
@@ -80,14 +91,14 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithDataProvider(): void
     {
-        $test = (new TestBuilder)->build(
+        $tests = (new TestBuilder)->build(
             new ReflectionClass(TestWithDataProvider::class),
             'testOne',
         );
 
-        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
+        $this->assertCount(1, $tests);
 
-        $test = iterator_to_array($test)[0];
+        $test = $tests[0];
 
         $this->assertInstanceOf(TestWithDataProvider::class, $test);
 

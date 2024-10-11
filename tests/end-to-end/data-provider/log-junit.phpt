@@ -26,30 +26,26 @@ unlink($logfile);
 <testsuites>
   <testsuite name="CLI Arguments" tests="10" assertions="10" errors="0" failures="3" skipped="0" time="%s">
     <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
-      <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
-        <testcase name="testAdd with data set #0" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
-        <testcase name="testAdd with data set #1" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
-        <testcase name="testAdd with data set #2" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s">
-          <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2%A
+      <testcase name="testAdd with data set #0" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
+      <testcase name="testAdd with data set #1" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
+      <testcase name="testAdd with data set #2" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s">
+        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2%A
 Failed asserting that 2 matches expected 3.
 %A
 %sDataProviderTest.php:%d</failure>
-        </testcase>
-        <testcase name="testAdd with data set #3" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
-      </testsuite>
+      </testcase>
+      <testcase name="testAdd with data set #3" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
     </testsuite>
     <testsuite name="PHPUnit\TestFixture\DataProviderWithStringKeysTest" file="%sDataProviderWithStringKeysTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
-      <testsuite name="PHPUnit\TestFixture\DataProviderWithStringKeysTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%s">
-        <testcase name="testAdd with data set &quot;0 + 0 = 0&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
-        <testcase name="testAdd with data set &quot;0 + 1 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
-        <testcase name="testAdd with data set &quot;1 + 1 = 3&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s">
-          <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderWithStringKeysTest::testAdd with data set "1 + 1 = 3"%A
+      <testcase name="testAdd with data set &quot;0 + 0 = 0&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
+      <testcase name="testAdd with data set &quot;0 + 1 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
+      <testcase name="testAdd with data set &quot;1 + 1 = 3&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s">
+        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderWithStringKeysTest::testAdd with data set "1 + 1 = 3"%A
 Failed asserting that 2 matches expected 3.
 %A
 %sDataProviderWithStringKeysTest.php:%d</failure>
-        </testcase>
-        <testcase name="testAdd with data set &quot;1 + 0 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
-      </testsuite>
+      </testcase>
+      <testcase name="testAdd with data set &quot;1 + 0 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
     </testsuite>
     <testcase name="success.phpt" file="%ssuccess.phpt" assertions="1" time="%s"/>
     <testcase name="failure.phpt" file="%sfailure.phpt" assertions="1" time="%s">
