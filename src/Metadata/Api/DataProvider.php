@@ -149,7 +149,7 @@ final readonly class DataProvider
                             sprintf(
                                 'The key "%s" has already been defined by a previous data provider',
                                 $key,
-                            ),
+                            ), method: $providerMethodName
                         );
                     }
                     $caseNames[$key] = 1;
@@ -159,7 +159,7 @@ final readonly class DataProvider
                         sprintf(
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
-                        ),
+                        ), method: $providerMethodName
                     );
                 }
             }
