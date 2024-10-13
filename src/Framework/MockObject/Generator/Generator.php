@@ -891,7 +891,10 @@ final class Generator
                 'use_statements'  => $useStatements,
                 'mock_class_name' => $_mockClassName['className'],
                 'methods'         => $mockedMethods,
-                'property_hooks'  => $this->codeForPropertyHooks($propertiesWithHooks, $_mockClassName['className']),
+                'property_hooks'  => (new HookedPropertyGenerator)->generate(
+                    $_mockClassName['className'],
+                    $propertiesWithHooks,
+                ),
             ],
         );
 
@@ -1162,7 +1165,7 @@ final class Generator
     }
 
     /**
-     * @param list<Property> $propertiesWithHooks
+     * @param list<HookedProperty> $propertiesWithHooks
      *
      * @return list<ConfigurableMethod>
      */
@@ -1211,7 +1214,7 @@ final class Generator
     /**
      * @param ?ReflectionClass<object> $class
      *
-     * @return list<Property>
+     * @return list<HookedProperty>
      */
     private function properties(?ReflectionClass $class): array
     {
@@ -1264,7 +1267,7 @@ final class Generator
                 continue;
             }
 
-            $properties[] = new Property(
+            $properties[] = new HookedProperty(
                 $property->getName(),
                 $mapper->fromPropertyType($property),
                 $hasGetHook,
@@ -1273,73 +1276,5 @@ final class Generator
         }
 
         return $properties;
-    }
-
-    /**
-     * @param list<Property> $propertiesWithHooks
-     * @param class-string   $className
-     *
-     * @return non-empty-string
-     */
-    private function codeForPropertyHooks(array $propertiesWithHooks, string $className): string
-    {
-        $propertyHooks = '';
-
-        foreach ($propertiesWithHooks as $property) {
-            $propertyHooks .= sprintf(
-                <<<'EOT'
-
-    public %s $%s {
-EOT,
-                $property->type()->asString(),
-                $property->name(),
-            );
-
-            if ($property->hasGetHook()) {
-                $propertyHooks .= sprintf(
-                    <<<'EOT'
-
-        get {
-            return $this->__phpunit_getInvocationHandler()->invoke(
-                new \PHPUnit\Framework\MockObject\Invocation(
-                    '%s', '$%s::get', [], '%s', $this, false
-                )
-            );
-        }
-
-EOT,
-                    $className,
-                    $property->name(),
-                    $property->type()->asString(),
-                );
-            }
-
-            if ($property->hasSetHook()) {
-                $propertyHooks .= sprintf(
-                    <<<'EOT'
-
-        set (%s $value) {
-            $this->__phpunit_getInvocationHandler()->invoke(
-                new \PHPUnit\Framework\MockObject\Invocation(
-                    '%s', '$%s::set', [$value], 'void', $this, false
-                )
-            );
-        }
-
-EOT,
-                    $property->type()->asString(),
-                    $className,
-                    $property->name(),
-                );
-            }
-
-            $propertyHooks .= <<<'EOT'
-    }
-
-EOT;
-
-        }
-
-        return $propertyHooks;
     }
 }

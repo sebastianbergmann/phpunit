@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Type\Type;
 
-#[CoversClass(Property::class)]
+#[CoversClass(HookedProperty::class)]
 #[Group('test-doubles')]
 #[Small]
 final class PropertyTest extends TestCase
@@ -24,7 +24,7 @@ final class PropertyTest extends TestCase
     {
         $name = 'property-name';
 
-        $property = new Property($name, Type::fromName('string', false), false, false);
+        $property = new HookedProperty($name, Type::fromName('string', false), false, false);
 
         $this->assertSame($name, $property->name());
     }
@@ -33,35 +33,35 @@ final class PropertyTest extends TestCase
     {
         $type = Type::fromName('string', false);
 
-        $property = new Property('property-name', $type, false, false);
+        $property = new HookedProperty('property-name', $type, false, false);
 
         $this->assertSame($type, $property->type());
     }
 
     public function testMayHaveGetHook(): void
     {
-        $property = new Property('property-name', Type::fromName('string', false), true, false);
+        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false);
 
         $this->assertTrue($property->hasGetHook());
     }
 
     public function testMayNotHaveGetHook(): void
     {
-        $property = new Property('property-name', Type::fromName('string', false), false, false);
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false);
 
         $this->assertFalse($property->hasGetHook());
     }
 
     public function testMayHaveSetHook(): void
     {
-        $property = new Property('property-name', Type::fromName('string', false), false, true);
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true);
 
         $this->assertTrue($property->hasSetHook());
     }
 
     public function testMayNotHaveSetHook(): void
     {
-        $property = new Property('property-name', Type::fromName('string', false), false, false);
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false);
 
         $this->assertFalse($property->hasSetHook());
     }
