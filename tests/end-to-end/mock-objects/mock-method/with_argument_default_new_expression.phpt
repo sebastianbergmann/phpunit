@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $class = new ReflectionClass(Bar::class);
 
-$mockMethod = \PHPUnit\Framework\MockObject\Generator\MockMethod::fromReflection(
+$mockMethod = \PHPUnit\Framework\MockObject\Generator\DoubledMethod::fromReflection(
     $class->getMethod('method'),
     false,
     false
