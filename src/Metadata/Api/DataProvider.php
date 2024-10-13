@@ -188,6 +188,9 @@ final readonly class DataProvider
         );
     }
 
+    /**
+     * @param ClassMethod[] $methodsCalled
+     */
     private function finishMethods(ClassMethod $method, array $methodsCalled): void
     {
         Event\Facade::emitter()->dataProviderMethodFinished(
