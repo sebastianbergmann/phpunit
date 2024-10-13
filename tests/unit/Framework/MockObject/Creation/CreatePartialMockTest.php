@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use ReflectionProperty;
@@ -30,6 +31,14 @@ final class CreatePartialMockTest extends TestCase
         $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
         $this->assertTrue($mock->doSomething());
+    }
+
+    public function testCannotCreatePartialMockObjectForExtendableClassWithDuplicateMethods(): void
+    {
+        $this->expectException(DuplicateMethodException::class);
+        $this->expectExceptionMessage('Cannot double using a method list that contains duplicates: "doSomethingElse, doSomethingElse" (duplicate: "doSomethingElse")');
+
+        $this->createPartialMock(ExtendableClass::class, ['doSomethingElse', 'doSomethingElse']);
     }
 
     public function testMethodOfPartialMockThatIsNotConfigurableCannotBeConfigured(): void
