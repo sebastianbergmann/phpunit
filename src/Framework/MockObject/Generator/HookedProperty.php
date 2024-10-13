@@ -16,7 +16,7 @@ use SebastianBergmann\Type\Type;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Property
+final readonly class HookedProperty
 {
     /**
      * @var non-empty-string
