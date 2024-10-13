@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function array_merge;
 use function assert;
+use function reset;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\Requirements;
@@ -91,8 +92,8 @@ final readonly class TestBuilder
             (new Groups)->groups($className, $methodName),
         );
 
-        foreach ($data as $providerName => $providedData){
-            foreach ($providedData as $_dataName => $_data){
+        foreach ($data as $providerName => $providedData) {
+            foreach ($providedData as $_dataName => $_data) {
                 $_test = new $className($methodName);
 
                 $_test->setData($_dataName, $_data);

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
+use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractVariousIterableDataProviderTest
@@ -22,7 +23,7 @@ abstract class AbstractVariousIterableDataProviderTest
         ];
     }
 
-    public static function asIteratorProviderInParent(): \Generator
+    public static function asIteratorProviderInParent(): Generator
     {
         yield ['M'];
 

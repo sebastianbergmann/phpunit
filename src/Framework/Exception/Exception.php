@@ -42,11 +42,12 @@ use Throwable;
  */
 class Exception extends RuntimeException implements \PHPUnit\Exception
 {
+    public ?string $method;
+
     /**
      * @var list<array{file: string, line: int, function: string}>
      */
     protected array $serializableTrace;
-    public ?string $method;
 
     public function __construct(string $message = '', int|string $code = 0, ?Throwable $previous = null, ?string $method = null)
     {

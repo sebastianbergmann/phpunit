@@ -17,6 +17,7 @@ use function explode;
 use function get_debug_type;
 use function is_array;
 use function is_int;
+use function is_iterable;
 use function is_string;
 use function json_decode;
 use function json_last_error;
@@ -94,8 +95,8 @@ final readonly class DataProvider
     }
 
     /**
-     * @param class-string     $testClassName   Name of class with test
-     * @param non-empty-string $testMethodName  Name of method containing test
+     * @param class-string     $testClassName  Name of class with test
+     * @param non-empty-string $testMethodName Name of method containing test
      *
      * @throws InvalidDataProviderException
      *
@@ -111,7 +112,7 @@ final readonly class DataProvider
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
 
-            $providerClassName = $_dataProvider->className();
+            $providerClassName  = $_dataProvider->className();
             $providerMethodName = $_dataProvider->methodName();
             $dataProviderMethod = new ClassMethod($providerClassName, $providerMethodName);
 
@@ -139,41 +140,47 @@ final readonly class DataProvider
                 }
 
                 $data = $providerClassName::$providerMethodName();
+
                 if (!is_iterable($data)) {
                     $this->throwInvalid('does not provide iterable type', $_dataProvider);
                 }
             } catch (Throwable $e) {
                 $this->finishMethods($testMethod, $methodsCalled);
+
                 throw new InvalidDataProviderException(
                     $e->getMessage(),
                     $e->getCode(),
                     $e,
-                    $providerMethodName
+                    $providerMethodName,
                 );
             }
 
             $result = [];
+
             foreach ($data as $key => $value) {
                 if (is_int($key)) {
                     $result[] = $value;
                 } elseif (is_string($key)) {
                     if (isset($caseNames[$key])) {
                         $this->finishMethods($testMethod, $methodsCalled);
+
                         throw new InvalidDataProviderException(
                             sprintf(
                                 'The key "%s" has already been defined by a previous data provider',
                                 $key,
-                            ), method: $providerMethodName
+                            ),
+                            method: $providerMethodName,
                         );
                     }
                     $caseNames[$key] = 1;
-                    $result[$key] = $value;
+                    $result[$key]    = $value;
                 } else {
                     throw new InvalidDataProviderException(
                         sprintf(
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
-                        ), method: $providerMethodName
+                        ),
+                        method: $providerMethodName,
                     );
                 }
             }
@@ -184,12 +191,8 @@ final readonly class DataProvider
         return $return;
     }
 
-    /**
-     * @param string $message
-     * @param DataProviderMetadata $dataProvider
-     * @return never
-     */
-    private function throwInvalid(string $message, DataProviderMetadata $dataProvider): never {
+    private function throwInvalid(string $message, DataProviderMetadata $dataProvider): never
+    {
         throw new InvalidDataProviderException(
             sprintf(
                 'Data Provider method %s::%s() ',
@@ -199,12 +202,8 @@ final readonly class DataProvider
         );
     }
 
-    /**
-     * @param ClassMethod $method
-     * @param array $methodsCalled
-     * @return void
-     */
-    private function finishMethods(ClassMethod $method, array $methodsCalled): void {
+    private function finishMethods(ClassMethod $method, array $methodsCalled): void
+    {
         Event\Facade::emitter()->dataProviderMethodFinished(
             $method,
             ...$methodsCalled,

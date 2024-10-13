@@ -43,9 +43,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testFromParent');
 
         $this->assertEquals([
-            'asArrayProviderInParent' => [['J'], ['K'], ['L'],],
-            'asIteratorProviderInParent' => [['M'], ['N'], ['O'],],
-            'asTraversableProviderInParent' => [['P'], ['Q'], ['R'],],
+            'asArrayProviderInParent'       => [['J'], ['K'], ['L']],
+            'asIteratorProviderInParent'    => [['M'], ['N'], ['O']],
+            'asTraversableProviderInParent' => [['P'], ['Q'], ['R']],
         ], $dataSets);
     }
 
@@ -54,9 +54,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testInParent');
 
         $this->assertEquals([
-            'asArrayProviderInParent' => [['J'], ['K'], ['L'],],
-            'asIteratorProviderInParent' => [['M'], ['N'], ['O'],],
-            'asTraversableProviderInParent' => [['P'], ['Q'], ['R'],],
+            'asArrayProviderInParent'       => [['J'], ['K'], ['L']],
+            'asIteratorProviderInParent'    => [['M'], ['N'], ['O']],
+            'asTraversableProviderInParent' => [['P'], ['Q'], ['R']],
         ], $dataSets);
     }
 
@@ -65,9 +65,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testAbstract');
 
         $this->assertEquals([
-            'asArrayProvider' => [['S'], ['T'], ['U'],],
-            'asIteratorProvider' => [['V'], ['W'], ['X'],],
-            'asTraversableProvider' => [['Y'], ['Z'], ['P'],],
+            'asArrayProvider'       => [['S'], ['T'], ['U']],
+            'asIteratorProvider'    => [['V'], ['W'], ['X']],
+            'asTraversableProvider' => [['Y'], ['Z'], ['P']],
         ], $dataSets);
     }
 
@@ -76,9 +76,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
-            'asArrayStaticProvider' => [['A'], ['B'], ['C'],],
-            'asIteratorStaticProvider' => [['D'], ['E'], ['F'],],
-            'asTraversableStaticProvider' => [['G'], ['H'], ['I'],],
+            'asArrayStaticProvider'       => [['A'], ['B'], ['C']],
+            'asIteratorStaticProvider'    => [['D'], ['E'], ['F']],
+            'asTraversableStaticProvider' => [['G'], ['H'], ['I']],
         ], $dataSets);
     }
 
@@ -87,9 +87,9 @@ final class DataProviderTest extends TestCase
         $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testNonStatic');
 
         $this->assertEquals([
-            'asArrayProvider' => [['S'], ['T'], ['U'],],
-            'asIteratorProvider' => [['V'], ['W'], ['X'],],
-            'asTraversableProvider' => [['Y'], ['Z'], ['P'],],
+            'asArrayProvider'       => [['S'], ['T'], ['U']],
+            'asIteratorProvider'    => [['V'], ['W'], ['X']],
+            'asTraversableProvider' => [['Y'], ['Z'], ['P']],
         ], $dataSets);
     }
 
@@ -138,12 +138,12 @@ final class DataProviderTest extends TestCase
         $this->assertCount(3, $dataSetsByProvider);
 
         $counts = ['a' => 0, 'b' => 0, 'c' => 0];
-        $pos = ['a' => 0, 'b' => 1, 'c' => 2];
+        $pos    = ['a' => 0, 'b' => 1, 'c' => 2];
 
         foreach ($dataSetsByProvider as $dataSet) {
             for ($i = 0; $i < 3; $i++) {
                 foreach ($pos as $which => $where) {
-                    if ($dataSet[$i][$where] !== null){
+                    if ($dataSet[$i][$where] !== null) {
                         $counts[$which]++;
                     }
                 }
