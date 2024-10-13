@@ -292,7 +292,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function getObject(MockClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 
@@ -310,7 +310,7 @@ final class Generator
 
         $reflector = new ReflectionObject($object);
 
-        if ($object instanceof StubInternal && $mockClass instanceof MockClass) {
+        if ($object instanceof StubInternal) {
             /**
              * @noinspection PhpUnhandledExceptionInspection
              */
