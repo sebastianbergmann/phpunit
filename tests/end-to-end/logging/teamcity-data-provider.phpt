@@ -20,8 +20,6 @@ Runtime: %s
 
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TeamCity\DataProviderTest' locationHint='php_qn://%sDataProviderTest.php::\PHPUnit\TestFixture\TeamCity\DataProviderTest' flowId='%d']
 
-##teamcity[testSuiteStarted name='testOne' locationHint='php_qn://%sDataProviderTest.php::\PHPUnit\TestFixture\TeamCity\DataProviderTest::testOne' flowId='%d']
-
 ##teamcity[testStarted name='testOne with data set #0' locationHint='php_qn://%sDataProviderTest.php::\PHPUnit\TestFixture\TeamCity\DataProviderTest::testOne with data set #0' flowId='%d']
 
 ##teamcity[testFinished name='testOne with data set #0' duration='%d' flowId='%d']
@@ -31,8 +29,6 @@ Runtime: %s
 ##teamcity[testFailed name='testOne with data set #1' message='Failed asserting that false is true.' details='%sDataProviderTest.php:28|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testOne with data set #1' duration='%d' flowId='%d']
-
-##teamcity[testSuiteFinished name='testOne' flowId='%d']
 
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TeamCity\DataProviderTest' flowId='%d']
 Time: %s, Memory: %s
