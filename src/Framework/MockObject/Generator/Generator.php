@@ -310,15 +310,13 @@ final class Generator
 
         $reflector = new ReflectionObject($object);
 
-        if ($object instanceof StubInternal) {
-            /**
-             * @noinspection PhpUnhandledExceptionInspection
-             */
-            $reflector->getProperty('__phpunit_state')->setValue(
-                $object,
-                new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration),
-            );
-        }
+        /**
+         * @noinspection PhpUnhandledExceptionInspection
+         */
+        $reflector->getProperty('__phpunit_state')->setValue(
+            $object,
+            new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration),
+        );
 
         if ($callOriginalConstructor && $reflector->getConstructor() !== null) {
             try {
