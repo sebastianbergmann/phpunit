@@ -249,7 +249,7 @@ final class Generator
      *
      * @return list<MockMethod>
      */
-    public function mockClassMethods(string $className): array
+    private function mockClassMethods(string $className): array
     {
         $class   = $this->reflectClass($className);
         $methods = [];
