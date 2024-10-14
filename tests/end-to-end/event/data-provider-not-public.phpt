@@ -18,7 +18,7 @@ Data Provider Method Called (PHPUnit\TestFixture\Event\PrivateDataProviderTest::
 Data Provider Method Finished for PHPUnit\TestFixture\Event\PrivateDataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\PrivateDataProviderTest::values
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\PrivateDataProviderTest::testSuccess)
-The data provider specified for PHPUnit\TestFixture\Event\PrivateDataProviderTest::testSuccess is invalid
+The data provider values specified for PHPUnit\TestFixture\Event\PrivateDataProviderTest::testSuccess is invalid
 Data Provider method PHPUnit\TestFixture\Event\PrivateDataProviderTest::values() is not public
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\PrivateDataProviderTest".)
 Test Suite Loaded (0 tests)

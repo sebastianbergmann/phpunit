@@ -16,6 +16,8 @@ use function is_array;
 use function is_int;
 use function is_iterable;
 use function is_string;
+use function key;
+use function reset;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\ClassMethod;
@@ -57,13 +59,14 @@ final readonly class DataProvider
             $data = ['testWith' => $this->dataProvidedByMetadata($testWith)];
         }
 
-        if ($data === [] || $data === ['testWith' => []]) {
+        if ($data === [] || reset($data) === []) {
             throw new InvalidDataProviderException(
                 'Empty data set provided by data provider',
+                method: key($data),
             );
         }
 
-        foreach ($data as $providedData) {
+        foreach ($data as $providerMethodName => $providedData) {
             foreach ($providedData as $key => $value) {
                 if (!is_array($value)) {
                     throw new InvalidDataProviderException(
@@ -72,6 +75,7 @@ final readonly class DataProvider
                             is_int($key) ? '#' . $key : '"' . $key . '"',
                             get_debug_type($value),
                         ),
+                        method: $providerMethodName,
                     );
                 }
             }
