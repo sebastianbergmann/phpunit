@@ -26,7 +26,7 @@ Data Provider Method Called (PHPUnit\TestFixture\Event\EmptyDataProviderTest::pr
 Data Provider Method Finished for PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase:
 - PHPUnit\TestFixture\Event\EmptyDataProviderTest::providerMethod
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
-The data provider specified for PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase is invalid
+The data provider providerMethod specified for PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase is invalid
 Empty data set provided by data provider
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\EmptyDataProviderTest".)
 Test Suite Loaded (0 tests)

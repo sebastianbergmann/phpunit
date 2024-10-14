@@ -22,8 +22,10 @@ use function is_string;
 use function json_decode;
 use function json_last_error;
 use function json_last_error_msg;
+use function key;
 use function preg_match;
 use function preg_replace;
+use function reset;
 use function rtrim;
 use function sprintf;
 use function str_replace;
@@ -71,13 +73,14 @@ final readonly class DataProvider
             $data = ['testWith' => $this->dataProvidedByMetadata($testWith)];
         }
 
-        if ($data === [] || $data === ['testWith' => []]) {
+        if ($data === [] || reset($data) === []) {
             throw new InvalidDataProviderException(
                 'Empty data set provided by data provider',
+                method: key($data),
             );
         }
 
-        foreach ($data as $providedData) {
+        foreach ($data as $providerMethodName => $providedData) {
             foreach ($providedData as $key => $value) {
                 if (!is_array($value)) {
                     throw new InvalidDataProviderException(
@@ -86,6 +89,7 @@ final readonly class DataProvider
                             is_int($key) ? '#' . $key : '"' . $key . '"',
                             get_debug_type($value),
                         ),
+                        method: $providerMethodName,
                     );
                 }
             }
@@ -284,6 +288,7 @@ final readonly class DataProvider
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new InvalidDataProviderException(
                     'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg(),
+                    method: 'JSON',
                 );
             }
 
@@ -293,6 +298,7 @@ final readonly class DataProvider
         if (!$data) {
             throw new InvalidDataProviderException(
                 'The data set for the @testWith annotation cannot be parsed.',
+                method: 'testWithAnnotation',
             );
         }
 
