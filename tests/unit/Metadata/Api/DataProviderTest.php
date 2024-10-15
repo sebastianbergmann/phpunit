@@ -16,6 +16,7 @@ use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DuplicateKeyDataProvidersTest;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
+use PHPUnit\TestFixture\InvalidKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\TestWithAttributeDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
@@ -93,6 +94,15 @@ final class DataProviderTest extends TestCase
         ], $dataSets);
     }
 
+    public function testWithInvalidKeyDataProvider(): void
+    {
+        $this->expectException(InvalidDataProviderException::class);
+        $this->expectExceptionMessage('The key must be an integer or a string, bool given');
+
+        /* @noinspection UnusedFunctionResultInspection */
+        (new DataProvider)->providedData(InvalidKeyDataProviderTest::class, 'test');
+    }
+
     public function testWithDuplicateKeyDataProvider(): void
     {
         $this->expectException(InvalidDataProviderException::class);
@@ -132,7 +142,7 @@ final class DataProviderTest extends TestCase
         (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');
     }
 
-    public function checkMultipleProviders(string $testMethodName): void
+    private function checkMultipleProviders(string $testMethodName): void
     {
         $dataSetsByProvider = (new DataProvider)->providedData(MultipleDataProviderTest::class, $testMethodName);
         $this->assertCount(3, $dataSetsByProvider);
