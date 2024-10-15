@@ -20,11 +20,12 @@ final class ExceptionTest extends TestCase
     {
         $actual = (new Exception)->__sleep();
 
-        $this->assertCount(5, $actual);
+        $this->assertCount(6, $actual);
         $this->assertContains('serializableTrace', $actual);
         $this->assertContains('message', $actual);
         $this->assertContains('code', $actual);
         $this->assertContains('file', $actual);
         $this->assertContains('line', $actual);
+        $this->assertContains('method', $actual);
     }
 }

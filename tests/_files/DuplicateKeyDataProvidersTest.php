@@ -30,7 +30,7 @@ final class DuplicateKeyDataProvidersTest extends TestCase
 
     #[DataProvider('dataProvider1')]
     #[DataProvider('dataProvider2')]
-    public function test($value): void
+    public function test(int $value): void
     {
         $this->assertSame(2, $value);
     }
