@@ -22,7 +22,6 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess#0)
 Test Prepared (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess#0)
 Test Passed (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess#0)
@@ -32,7 +31,6 @@ Test Prepared (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::t
 Test Errored (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess#1)
 Unknown named parameter $value3
 Test Finished (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess#1)
-Test Suite Finished (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest::testSuccess, 2 tests)
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidParameterNameDataProviderTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
