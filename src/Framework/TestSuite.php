@@ -246,7 +246,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         try {
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
                 $this->addTest(new PhptTestCase($filename));
-
             } else {
                 $this->addTestSuite(
                     (new TestSuiteLoader)->load($filename),

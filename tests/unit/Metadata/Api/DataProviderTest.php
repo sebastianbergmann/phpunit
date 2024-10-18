@@ -83,7 +83,6 @@ final class DataProviderTest extends TestCase
             ['P'],
             ['Q'],
             ['R'],
-
         ], $dataSets);
     }
 
@@ -101,7 +100,6 @@ final class DataProviderTest extends TestCase
             ['P'],
             ['Q'],
             ['R'],
-
         ], $dataSets);
     }
 
@@ -119,7 +117,6 @@ final class DataProviderTest extends TestCase
             ['Y'],
             ['Z'],
             ['P'],
-
         ], $dataSets);
     }
 
