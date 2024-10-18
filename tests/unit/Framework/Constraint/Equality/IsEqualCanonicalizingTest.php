@@ -192,8 +192,8 @@ Failed asserting that two objects are equal.
 +++ Actual
 @@ @@
  stdClass Object (
--    'foo' => 'bar'
-+    'bar' => 'foo'
+-    0 => 'bar'
++    0 => 'foo'
  )
 
 EOT,
