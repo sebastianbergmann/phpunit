@@ -906,8 +906,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         if (extension_loaded('xdebug')) {
             if ($collectCoverage) {
                 $settings[] = 'xdebug.mode=coverage';
-            } else {
-                $settings[] = 'xdebug.mode=off';
             }
         }
 
