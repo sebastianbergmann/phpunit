@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 
 ## [11.4.2] - 2024-MM-DD
 
+### Changed
+
+* [#5989](https://github.com/sebastianbergmann/phpunit/pull/5989): Disable Xdebug in subprocesses when it is not used
+
 ### Fixed
 
 * [#5982](https://github.com/sebastianbergmann/phpunit/pull/5982): Typo in exception message
