@@ -272,6 +272,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/staabm/side-effects-detector/LICENSE" tofile="${basedir}/build/tmp/phar/staabm-side-effects-detector/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/staabm-side-effects-detector">
+            <fileset dir="${basedir}/vendor/staabm/side-effects-detector/lib">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/tmp/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
