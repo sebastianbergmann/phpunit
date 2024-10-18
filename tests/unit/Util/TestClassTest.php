@@ -983,7 +983,6 @@ final class TestClassTest extends TestCase
             ['P'],
             ['Q'],
             ['R'],
-
         ], $dataSets);
     }
 
@@ -1001,7 +1000,6 @@ final class TestClassTest extends TestCase
             ['P'],
             ['Q'],
             ['R'],
-
         ], $dataSets);
     }
 
@@ -1019,7 +1017,6 @@ final class TestClassTest extends TestCase
             ['Y'],
             ['Z'],
             ['P'],
-
         ], $dataSets);
     }
 
@@ -1411,7 +1408,6 @@ final class TestClassTest extends TestCase
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(37, 41),
                 ],
-
             ],
             [
                 CoveragePublicTest::class,
