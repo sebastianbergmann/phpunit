@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function gettype;
-
 use function is_array;
 use function is_bool;
 use function is_callable;

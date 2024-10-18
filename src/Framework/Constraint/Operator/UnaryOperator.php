@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function count;
-
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**

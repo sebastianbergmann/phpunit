@@ -11,7 +11,6 @@ namespace PHPUnit\TestFixture;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-
 use PHPUnit\Runner\BaseTestRunner;
 
 class ExceptionInTestDetectedInTeardown extends TestCase
