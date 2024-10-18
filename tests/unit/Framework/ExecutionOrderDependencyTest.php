@@ -120,6 +120,5 @@ class ExecutionOrderDependencyTest extends TestCase
         $this->assertFalse($empty->deepClone());
         $this->assertFalse($empty->targetIsClass());
         $this->assertSame('', $empty->getTargetClassName());
-
     }
 }
