@@ -96,7 +96,6 @@ final readonly class DefaultJobRunner implements JobRunner
             }
 
             unset($key, $value);
-
         }
 
         $pipeSpec = [

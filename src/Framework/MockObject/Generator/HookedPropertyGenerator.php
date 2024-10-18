@@ -80,7 +80,6 @@ EOT,
     }
 
 EOT;
-
         }
 
         return $code;
