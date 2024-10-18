@@ -7,5 +7,6 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Added
 
 * [#5948](https://github.com/sebastianbergmann/phpunit/pull/5948): Support for Property Hooks in Test Doubles
+* `TestRunner\ChildProcessStarted` and `TestRunner\ChildProcessFinished` events
 
 [11.5.0]: https://github.com/sebastianbergmann/phpunit/compare/11.4...11.5

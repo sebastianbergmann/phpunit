@@ -277,6 +277,10 @@ interface Emitter
 
     public function testSuiteFinished(TestSuite $testSuite): void;
 
+    public function testRunnerStartedChildProcess(): void;
+
+    public function testRunnerFinishedChildProcess(string $stdout, string $stderr): void;
+
     public function testRunnerTriggeredDeprecation(string $message): void;
 
     public function testRunnerTriggeredWarning(string $message): void;

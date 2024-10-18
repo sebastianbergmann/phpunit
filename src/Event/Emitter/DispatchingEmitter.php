@@ -262,6 +262,24 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testRunnerStartedChildProcess(): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\ChildProcessStarted($this->telemetryInfo()),
+        );
+    }
+
+    public function testRunnerFinishedChildProcess(string $stdout, string $stderr): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\ChildProcessFinished(
+                $this->telemetryInfo(),
+                $stdout,
+                $stderr,
+            ),
+        );
+    }
+
     /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException

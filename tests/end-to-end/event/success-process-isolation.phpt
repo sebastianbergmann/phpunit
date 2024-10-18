@@ -20,10 +20,12 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\SuccessTest, 1 test)
+Child Process Started
 Test Preparation Started (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 Test Prepared (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 Test Passed (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
 Test Finished (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+Child Process Finished
 Test Suite Finished (PHPUnit\TestFixture\Event\SuccessTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
