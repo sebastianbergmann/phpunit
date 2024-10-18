@@ -229,6 +229,8 @@ final class Facade
             TestRunner\GarbageCollectionDisabled::class,
             TestRunner\GarbageCollectionTriggered::class,
             TestRunner\GarbageCollectionEnabled::class,
+            TestRunner\ChildProcessFinished::class,
+            TestRunner\ChildProcessStarted::class,
 
             TestSuite\Filtered::class,
             TestSuite\Finished::class,

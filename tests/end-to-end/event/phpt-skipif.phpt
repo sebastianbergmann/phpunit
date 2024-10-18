@@ -21,6 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%s%ephpt-skipif-location-hint-example.phpt, 1 test)
 Test Preparation Started (%s%ephpt-skipif-location-hint-example.phpt)
 Test Prepared (%s%ephpt-skipif-location-hint-example.phpt)
+Child Process Started
+Child Process Finished
 Test Skipped (%s%ephpt-skipif-location-hint-example.phpt)
 something terrible happened
 Test Finished (%s%ephpt-skipif-location-hint-example.phpt)

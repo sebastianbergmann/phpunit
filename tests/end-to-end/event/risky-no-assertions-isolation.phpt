@@ -20,12 +20,14 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest, 1 test)
+Child Process Started
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
+Child Process Finished
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

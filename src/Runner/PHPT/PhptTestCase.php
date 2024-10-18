@@ -43,6 +43,7 @@ use function unserialize;
 use function var_export;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\ThrowableBuilder;
+use PHPUnit\Event\Facade;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Assert;
@@ -195,6 +196,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 true,
             ),
         );
+
+        Facade::emitter()->testRunnerFinishedChildProcess($jobResult->stdout(), $jobResult->stderr());
 
         $this->output = $jobResult->stdout();
 
@@ -430,6 +433,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             ),
         );
 
+        Facade::emitter()->testRunnerFinishedChildProcess($jobResult->stdout(), $jobResult->stderr());
+
         if (!strncasecmp('skip', ltrim($jobResult->stdout()), 4)) {
             $message = '';
 
@@ -459,12 +464,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             return;
         }
 
-        JobRunnerRegistry::run(
+        $result = JobRunnerRegistry::run(
             new Job(
                 $this->render($sections['CLEAN']),
                 $this->settings($collectCoverage),
             ),
         );
+
+        Facade::emitter()->testRunnerFinishedChildProcess($result->stdout(), $result->stderr());
     }
 
     /**
