@@ -10,7 +10,7 @@ assert.exception=1
 --SKIPIF--
 <?php
 for ($i = 0; $i < 390; $i++) {
-    trigger_error("error $i");
+    \trigger_error("error {$i}");
 }
 ?>
 --FILE--
