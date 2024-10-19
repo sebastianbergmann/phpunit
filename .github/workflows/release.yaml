@@ -42,6 +42,7 @@ jobs:
           tag: ${{ env.RELEASE_TAG }}
           name: PHPUnit ${{ env.RELEASE_TAG }}
           bodyFile: release-notes.md
+          commit: "11.5"
 
       - name: Announce release
         id: mastodon
