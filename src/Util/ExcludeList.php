@@ -44,6 +44,7 @@ use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
+use staabm\SideEffectsDetector\SideEffectsDetector;
 use TheSeer\Tokenizer\Tokenizer;
 
 /**
@@ -132,6 +133,9 @@ final class ExcludeList
 
         // sebastian/version
         Version::class => 1,
+
+        // staabm/side-effects-detector
+        SideEffectsDetector::class => 1,
 
         // theseer/tokenizer
         Tokenizer::class => 1,
