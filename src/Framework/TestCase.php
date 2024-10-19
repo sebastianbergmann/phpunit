@@ -1974,7 +1974,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function getActiveErrorHandlers(): array
     {
-        $res = [];
+        $activeErrorHandlers = [];
 
         while (true) {
             $previousHandler = set_error_handler(static fn () => false);
@@ -1985,18 +1985,37 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 break;
             }
 
-            $res[] = $previousHandler;
+            $activeErrorHandlers[] = $previousHandler;
 
             restore_error_handler();
         }
 
-        $res = array_reverse($res);
+        $activeErrorHandlers      = array_reverse($activeErrorHandlers);
+        $invalidErrorHandlerStack = false;
 
-        foreach ($res as $handler) {
+        foreach ($activeErrorHandlers as $handler) {
+            if (!is_callable($handler)) {
+                $invalidErrorHandlerStack = true;
+
+                continue;
+            }
+
             set_error_handler($handler);
         }
 
-        return $res;
+        /** @phpstan-ignore if.alwaysFalse */
+        if ($invalidErrorHandlerStack) {
+            $message = 'At least one error handler is not callable outside the scope it was registered in';
+
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                $message,
+            );
+
+            $this->status = TestStatus::risky($message);
+        }
+
+        return $activeErrorHandlers;
     }
 
     /**
