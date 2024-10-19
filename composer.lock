@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50bd4710de2feb2687ad2fe3bf35b74d",
+    "content-hash": "4975d3366b6b8ac7ca507403ee0fa364",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1490,16 +1490,16 @@
         },
         {
             "name": "staabm/side-effects-detector",
-            "version": "1.0.1",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staabm/side-effects-detector.git",
-                "reference": "863968bf57936b3de18be192545c0ca2c7d2b8ba"
+                "reference": "f449ed69364e4b6ed5a07debeb281d990e764977"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staabm/side-effects-detector/zipball/863968bf57936b3de18be192545c0ca2c7d2b8ba",
-                "reference": "863968bf57936b3de18be192545c0ca2c7d2b8ba",
+                "url": "https://api.github.com/repos/staabm/side-effects-detector/zipball/f449ed69364e4b6ed5a07debeb281d990e764977",
+                "reference": "f449ed69364e4b6ed5a07debeb281d990e764977",
                 "shasum": ""
             },
             "require": {
@@ -1530,7 +1530,7 @@
             ],
             "support": {
                 "issues": "https://github.com/staabm/side-effects-detector/issues",
-                "source": "https://github.com/staabm/side-effects-detector/tree/1.0.1"
+                "source": "https://github.com/staabm/side-effects-detector/tree/1.0.4"
             },
             "funding": [
                 {
@@ -1538,7 +1538,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-18T15:09:59+00:00"
+            "time": "2024-10-19T10:34:23+00:00"
         },
         {
             "name": "theseer/tokenizer",
