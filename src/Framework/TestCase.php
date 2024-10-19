@@ -1978,14 +1978,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         while (true) {
             $previousHandler = set_error_handler(static fn () => false);
+
             restore_error_handler();
 
             if ($previousHandler === null) {
                 break;
             }
+
             $res[] = $previousHandler;
+
             restore_error_handler();
         }
+
         $res = array_reverse($res);
 
         foreach ($res as $handler) {
