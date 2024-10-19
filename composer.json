@@ -49,6 +49,7 @@
         "sebastian/version": "^5.0.2"
     },
     "config": {
+        "bump-after-update": true,
         "platform": {
             "php": "8.3.0"
         },
