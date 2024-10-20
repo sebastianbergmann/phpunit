@@ -383,7 +383,6 @@ final class ResultPrinterTest extends TestCase
         );
 
         $resultPrinter->print($result);
-        $resultPrinter->flush();
 
         $summaryPrinter = new SummaryPrinter(
             $printer,
