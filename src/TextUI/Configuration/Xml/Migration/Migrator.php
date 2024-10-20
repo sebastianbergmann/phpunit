@@ -23,7 +23,6 @@ final readonly class Migrator
 {
     /**
      * @throws Exception
-     * @throws MigrationBuilderException
      * @throws MigrationException
      * @throws XmlException
      */
