@@ -83,8 +83,6 @@ final readonly class MigrationBuilder
     ];
 
     /**
-     * @throws MigrationBuilderException
-     *
      * @return non-empty-list<Migration>
      */
     public function build(string $fromVersion): array
