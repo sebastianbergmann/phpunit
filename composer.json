@@ -47,7 +47,7 @@
         "sebastian/object-enumerator": "^6.0.1",
         "sebastian/type": "^5.1.0",
         "sebastian/version": "^5.0.2",
-        "staabm/side-effects-detector": "^1.0.4"
+        "staabm/side-effects-detector": "^1.0.5"
     },
     "config": {
         "platform": {
