@@ -56,14 +56,14 @@ final class VersionCheckCommandTest extends TestCase
     }
 
     /**
-     * @param non-empty-string $expected
+     * @param non-empty-string $expectedMessage
      * @param positive-int     $majorVersionNumber
      * @param non-empty-string $versionId
      * @param non-empty-string $latestVersion
      * @param non-empty-string $latestCompatibleVersion
      */
     #[DataProvider('provider')]
-    public function testChecksVersion(string $expected, int $majorVersionNumber, string $versionId, string $latestVersion, string $latestCompatibleVersion): void
+    public function testChecksVersion(string $expectedMessage, int $majorVersionNumber, string $versionId, string $latestVersion, string $latestCompatibleVersion): void
     {
         $command = new VersionCheckCommand(
             $this->downloader($latestVersion, $latestCompatibleVersion),
@@ -73,7 +73,7 @@ final class VersionCheckCommandTest extends TestCase
 
         $result = $command->execute();
 
-        $this->assertSame($expected, trim($result->output()));
+        $this->assertSame($expectedMessage, $result->output());
     }
 
     private function downloader(string $latestVersion, string $latestCompatibleVersion): Downloader&Stub
