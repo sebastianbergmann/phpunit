@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function assert;
 use function sprintf;
 use function version_compare;
 use PHPUnit\Util\Http\Downloader;
@@ -34,8 +35,13 @@ final class VersionCheckCommand implements Command
 
     public function execute(): Result
     {
-        $latestVersion           = $this->downloader->download('https://phar.phpunit.de/latest-version-of/phpunit');
+        $latestVersion = $this->downloader->download('https://phar.phpunit.de/latest-version-of/phpunit');
+
+        assert($latestVersion !== false);
+
         $latestCompatibleVersion = $this->downloader->download('https://phar.phpunit.de/latest-version-of/phpunit-' . $this->majorVersionNumber);
+
+        assert($latestCompatibleVersion !== false);
 
         $notLatest           = version_compare($latestVersion, $this->versionId, '>');
         $notLatestCompatible = version_compare($latestCompatibleVersion, $this->versionId, '>');
