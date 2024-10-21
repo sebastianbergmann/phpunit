@@ -576,7 +576,7 @@ if (!function_exists('PHPUnit\Framework\assertGreaterThan')) {
      *
      * @see Assert::assertGreaterThan
      */
-    function assertGreaterThan(mixed $expected, mixed $actual, string $message = ''): void
+    function assertGreaterThan(mixed $minimum, mixed $actual, string $message = ''): void
     {
         Assert::assertGreaterThan(...func_get_args());
     }
@@ -592,7 +592,7 @@ if (!function_exists('PHPUnit\Framework\assertGreaterThanOrEqual')) {
      *
      * @see Assert::assertGreaterThanOrEqual
      */
-    function assertGreaterThanOrEqual(mixed $expected, mixed $actual, string $message = ''): void
+    function assertGreaterThanOrEqual(mixed $minimum, mixed $actual, string $message = ''): void
     {
         Assert::assertGreaterThanOrEqual(...func_get_args());
     }
@@ -608,7 +608,7 @@ if (!function_exists('PHPUnit\Framework\assertLessThan')) {
      *
      * @see Assert::assertLessThan
      */
-    function assertLessThan(mixed $expected, mixed $actual, string $message = ''): void
+    function assertLessThan(mixed $maximum, mixed $actual, string $message = ''): void
     {
         Assert::assertLessThan(...func_get_args());
     }
@@ -624,7 +624,7 @@ if (!function_exists('PHPUnit\Framework\assertLessThanOrEqual')) {
      *
      * @see Assert::assertLessThanOrEqual
      */
-    function assertLessThanOrEqual(mixed $expected, mixed $actual, string $message = ''): void
+    function assertLessThanOrEqual(mixed $maximum, mixed $actual, string $message = ''): void
     {
         Assert::assertLessThanOrEqual(...func_get_args());
     }
