@@ -22,13 +22,14 @@ use PHPUnit\Util\Http\Downloader;
 final class VersionCheckCommandTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{0: non-empty-string, 1: positive-int, 2: non-empty-string, 3: non-empty-string, 4: non-empty-string}>
+     * @return non-empty-list<array{0: non-empty-string, 1: non-negative-int, 2: positive-int, 3: non-empty-string, 4: non-empty-string, 5: non-empty-string}>
      */
     public static function provider(): array
     {
         return [
             [
                 'You are using the latest version of PHPUnit.',
+                Result::SUCCESS,
                 10,
                 '10.5.0',
                 '10.5.0',
@@ -38,6 +39,7 @@ final class VersionCheckCommandTest extends TestCase
                 'You are not using the latest version of PHPUnit.
 The latest version compatible with PHPUnit 10.5.0 is PHPUnit 10.5.1.
 The latest version is PHPUnit 10.5.1.',
+                Result::FAILURE,
                 10,
                 '10.5.0',
                 '10.5.1',
@@ -47,6 +49,7 @@ The latest version is PHPUnit 10.5.1.',
                 'You are not using the latest version of PHPUnit.
 The latest version compatible with PHPUnit 10.5.0 is PHPUnit 10.5.1.
 The latest version is PHPUnit 11.0.0.',
+                Result::FAILURE,
                 10,
                 '10.5.0',
                 '11.0.0',
@@ -56,14 +59,15 @@ The latest version is PHPUnit 11.0.0.',
     }
 
     /**
-     * @param non-empty-string $expected
+     * @param non-empty-string $expectedMessage
+     * @param non-negative-int $expectedShellExitCode
      * @param positive-int     $majorVersionNumber
      * @param non-empty-string $versionId
      * @param non-empty-string $latestVersion
      * @param non-empty-string $latestCompatibleVersion
      */
     #[DataProvider('provider')]
-    public function testChecksVersion(string $expected, int $majorVersionNumber, string $versionId, string $latestVersion, string $latestCompatibleVersion): void
+    public function testChecksVersion(string $expectedMessage, int $expectedShellExitCode, int $majorVersionNumber, string $versionId, string $latestVersion, string $latestCompatibleVersion): void
     {
         $command = new VersionCheckCommand(
             $this->downloader($latestVersion, $latestCompatibleVersion),
@@ -73,7 +77,8 @@ The latest version is PHPUnit 11.0.0.',
 
         $result = $command->execute();
 
-        $this->assertSame($expected, trim($result->output()));
+        $this->assertSame($expectedMessage, trim($result->output()));
+        $this->assertSame($expectedShellExitCode, $result->shellExitCode());
     }
 
     private function downloader(string $latestVersion, string $latestCompatibleVersion): Downloader&Stub
