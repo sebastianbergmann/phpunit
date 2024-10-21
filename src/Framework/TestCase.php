@@ -32,10 +32,13 @@ use function is_object;
 use function is_string;
 use function libxml_clear_errors;
 use function method_exists;
+use function ob_clean;
 use function ob_end_clean;
-use function ob_get_clean;
+use function ob_end_flush;
+use function ob_flush;
 use function ob_get_contents;
 use function ob_get_level;
+use function ob_get_status;
 use function ob_start;
 use function preg_match;
 use function restore_error_handler;
@@ -173,6 +176,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?string $outputExpectedString    = null;
     private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
+    private ?int $outputBufferingFlushed      = null;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
 
@@ -544,11 +548,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $outputBufferingStopped = false;
 
         if (!isset($e) &&
-            $this->hasExpectationOnOutput() &&
-            $this->stopOutputBuffering()) {
+            $this->hasExpectationOnOutput()) {
+            // if it fails now, we shouldn't try again later either
             $outputBufferingStopped = true;
 
-            $this->performAssertionsOnOutput();
+            if ($this->stopOutputBuffering()) {
+                $this->performAssertionsOnOutput();
+            }
         }
 
         if ($this->status->isSuccess()) {
@@ -1434,43 +1440,235 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::skipped($message);
     }
 
+    private function outputBufferingCallback(string $output, int $phase): string
+    {
+        // assign it here to not get output from uncleanable children at the end
+        // as well as to ensure we have all output available to check
+        // if any children buffers have a low chunk size and already returned data
+        // or ob_flush was called
+        if ($this->outputBufferingActive) {
+            $this->output .= $output;
+
+            if (($phase & PHP_OUTPUT_HANDLER_FINAL) === PHP_OUTPUT_HANDLER_FINAL) {
+                // don't handle, since we report an error already if our handler is missing
+                // since it's inconsistent here with ob_end_flush/ob_end_clean
+                return '';
+            }
+
+            if (($phase & PHP_OUTPUT_HANDLER_CLEAN) === PHP_OUTPUT_HANDLER_CLEAN) {
+                $this->outputBufferingFlushed = PHP_OUTPUT_HANDLER_CLEAN;
+            } elseif (($phase & PHP_OUTPUT_HANDLER_FLUSH) === PHP_OUTPUT_HANDLER_FLUSH) {
+                $this->outputBufferingFlushed = PHP_OUTPUT_HANDLER_FLUSH;
+            }
+        }
+
+        return '';
+    }
+
+    // private to ensure it cannot be restarted after ending it from outside this class
     private function startOutputBuffering(): void
     {
-        ob_start();
+        ob_start([$this, 'outputBufferingCallback']);
 
         $this->outputBufferingActive = true;
         $this->outputBufferingLevel  = ob_get_level();
     }
 
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     */
     private function stopOutputBuffering(): bool
     {
-        $bufferingLevel = ob_get_level();
+        $bufferingLevel            = ob_get_level();
+        $bufferingStatus           = ob_get_status();
+        $bufferingCallbackName     = $bufferingStatus['name'] ?? '';
+        $expectedBufferingCallable = static::class . '::outputBufferingCallback';
 
-        if ($bufferingLevel !== $this->outputBufferingLevel) {
+        if ($bufferingLevel !== $this->outputBufferingLevel ||
+            ($this->outputBufferingActive && $bufferingCallbackName !== $expectedBufferingCallable) ||
+            $this->outputBufferingFlushed !== null) {
+            $asFailure = true;
+
             if ($bufferingLevel > $this->outputBufferingLevel) {
                 $message = 'Test code or tested code did not close its own output buffers';
-            } else {
+            } elseif ($bufferingLevel < $this->outputBufferingLevel) {
                 $message = 'Test code or tested code closed output buffers other than its own';
+            } elseif ($this->outputBufferingActive && $bufferingCallbackName !== $expectedBufferingCallable) {
+                $message = 'Test code or tested code first closed output buffers other than its own and later started output buffers it did not close';
+            } elseif ($this->outputBufferingFlushed !== null) {
+                // if we weren't in phpunit this would lead to a PHP notice
+                $message = 'Test code or tested code flushed or cleaned global output buffers other than its own';
+            } else {
+                $this->outputBufferingLevel = ob_get_level();
+
+                return true;
+            }
+
+            $hasExpectedCallable = false;
+
+            if ($this->outputBufferingActive) {
+                $fullObStatus               = ob_get_status(true);
+                $bufferingCallbackNameLevel = $fullObStatus[$this->outputBufferingLevel - 1]['name'] ?? '';
+                $bufferingCallbackSizeUsed  = $fullObStatus[$this->outputBufferingLevel - 1]['buffer_used'] ?? PHP_INT_MAX;
+
+                if ($bufferingCallbackNameLevel === $expectedBufferingCallable) {
+                    $hasExpectedCallable = true;
+
+                    foreach ($fullObStatus as $index => $obStatus) {
+                        if ($index < $this->outputBufferingLevel) {
+                            continue;
+                        }
+
+                        if (($obStatus['flags'] & PHP_OUTPUT_HANDLER_REMOVABLE) === PHP_OUTPUT_HANDLER_REMOVABLE) {
+                            continue;
+                        }
+
+                        if (!$this->inIsolation && !$this->shouldRunInSeparateProcess()) {
+                            $message             = 'Test code contains a non-removable output buffer - run test in separate process to avoid side-effects';
+                            $hasExpectedCallable = false;
+
+                            break;
+                        }
+
+                        // allow non-removable handler 1 level deeper than our handler to allow unit tests for non-removable handlers
+                        // however only if our own handler is empty, as we cannot retrieve that from our handler if we are in a non-removable handler in a level deeper
+                        if ($index === $this->outputBufferingLevel && $bufferingCallbackSizeUsed === 0) {
+                            continue;
+                        }
+
+                        if ($index === $this->outputBufferingLevel) {
+                            $message = 'Tests with non-removable output buffer handlers must not call flush on them and the chunk size must be bigger than the expected output';
+                        } else {
+                            // we cannot get the data from the handlers between our handler and the topmost non-removable handler
+                            $message = 'Tests with multiple output buffers where any, except the first, are non-removable are not supported';
+                        }
+
+                        $hasExpectedCallable = false;
+
+                        break;
+                    }
+
+                    if ($hasExpectedCallable && $this->outputBufferingFlushed === null) {
+                        $asFailure = false;
+                    }
+                } else {
+                    // the original buffer doesn't exist anymore at that level, which means it was closed
+                    $message = 'Test code or tested code first closed output buffers other than its own and later started output buffers it did not close';
+                }
+            } else {
+                $asFailure = false;
             }
 
             while (ob_get_level() >= $this->outputBufferingLevel) {
-                ob_end_clean();
+                $obStatus = ob_get_status();
+
+                if ($obStatus === []) {
+                    break;
+                }
+
+                // 'level' is off by 1 because 0-indexed
+                if ($hasExpectedCallable && $obStatus['name'] === $expectedBufferingCallable && $obStatus['level'] + 1 === $this->outputBufferingLevel) {
+                    // our own handler
+                    ob_end_clean();
+
+                    continue;
+                }
+
+                if (($obStatus['flags'] & PHP_OUTPUT_HANDLER_REMOVABLE) === PHP_OUTPUT_HANDLER_REMOVABLE) {
+                    // bubble it up
+                    ob_end_flush();
+
+                    continue;
+                }
+
+                if ($hasExpectedCallable && $obStatus['level'] === $this->outputBufferingLevel) {
+                    $fullObStatus              = ob_get_status(true);
+                    $bufferingCallbackSizeUsed = $fullObStatus[$this->outputBufferingLevel - 1]['buffer_used'] ?? PHP_INT_MAX;
+
+                    // we are 1 level deeper than our buffer
+                    // check again to be sure, as we cannot retrieve what's in the buffer
+                    if ($bufferingCallbackSizeUsed !== 0) {
+                        $hasExpectedCallable = false;
+                        $asFailure           = true;
+                        $message             = 'Tests with non-removable output buffer handlers must not call flush on them and the chunk size must be bigger than the expected output';
+                    } else {
+                        // assign it since we cannot trigger our callback
+                        // this is the reason why it's risky even then, since the ob callback of the non-removable buffer isn't called
+                        // which could modify the output
+                        $this->output .= (string) ob_get_contents();
+
+                        // if we have the default output handler which doesn't modify output
+                        // this isn't even risky
+                        if ($obStatus['name'] === 'default output handler' && $this->outputBufferingFlushed === null) {
+                            $message = null;
+                        } elseif ($this->outputBufferingFlushed === null) {
+                            $message = 'Non-removable output handler callback was not called, which could alter output';
+                        } else {
+                            $asFailure = true;
+                        }
+                    }
+                } elseif (($obStatus['flags'] & PHP_OUTPUT_HANDLER_FLUSHABLE) === PHP_OUTPUT_HANDLER_FLUSHABLE) {
+                    // bubble it up
+                    ob_flush();
+                }
+
+                if (($obStatus['flags'] & PHP_OUTPUT_HANDLER_CLEANABLE) === PHP_OUTPUT_HANDLER_CLEANABLE) {
+                    // make sure it's empty for subsequent runs to reduce unrelated errors
+                    ob_clean();
+                }
+
+                // can't end any parents either
+                break;
             }
 
-            Event\Facade::emitter()->testConsideredRisky(
+            // reset it to stop adding more output
+            $this->outputBufferingActive  = false;
+            $this->outputBufferingFlushed = null;
+            $this->outputBufferingLevel   = ob_get_level();
+
+            if ($message === null) {
+                return true;
+            }
+
+            if (!$asFailure) {
+                Event\Facade::emitter()->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    $message,
+                );
+
+                $this->status = TestStatus::risky($message);
+
+                return true;
+            }
+
+            // it's impossible to tell if there were any PHP errors or failed assertions
+            $this->status = TestStatus::failure($message);
+
+            Event\Facade::emitter()->testFailed(
                 $this->valueObjectForEvents(),
-                $message,
+                Event\Code\ThrowableBuilder::from(new Exception($message)),
+                null,
             );
 
-            $this->status = TestStatus::risky($message);
+            if ($this->numberOfAssertionsPerformed() === 0 &&
+                $this->hasExpectationOnOutput()) {
+                // no error that no assertions were performed
+                $this->addToAssertionCount(1);
+            }
 
             return false;
         }
 
-        $this->output = ob_get_clean();
+        if (!$this->outputBufferingActive) {
+            return true;
+        }
 
-        $this->outputBufferingActive = false;
-        $this->outputBufferingLevel  = ob_get_level();
+        ob_end_clean();
+
+        $this->outputBufferingActive  = false;
+        $this->outputBufferingFlushed = null;
+        $this->outputBufferingLevel   = ob_get_level();
 
         return true;
     }
