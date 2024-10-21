@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
-use function trim;
+use const PHP_EOL;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -28,25 +28,25 @@ final class VersionCheckCommandTest extends TestCase
     {
         return [
             [
-                'You are using the latest version of PHPUnit.',
+                'You are using the latest version of PHPUnit.' . PHP_EOL,
                 10,
                 '10.5.0',
                 '10.5.0',
                 '10.5.0',
             ],
             [
-                'You are not using the latest version of PHPUnit.
-The latest version compatible with PHPUnit 10.5.0 is PHPUnit 10.5.1.
-The latest version is PHPUnit 10.5.1.',
+                'You are not using the latest version of PHPUnit.' . PHP_EOL .
+                'The latest version compatible with PHPUnit 10.5.0 is PHPUnit 10.5.1.' . PHP_EOL .
+                'The latest version is PHPUnit 10.5.1.' . PHP_EOL,
                 10,
                 '10.5.0',
                 '10.5.1',
                 '10.5.1',
             ],
             [
-                'You are not using the latest version of PHPUnit.
-The latest version compatible with PHPUnit 10.5.0 is PHPUnit 10.5.1.
-The latest version is PHPUnit 11.0.0.',
+                'You are not using the latest version of PHPUnit.' . PHP_EOL .
+                'The latest version compatible with PHPUnit 10.5.0 is PHPUnit 10.5.1.' . PHP_EOL .
+                'The latest version is PHPUnit 11.0.0.' . PHP_EOL,
                 10,
                 '10.5.0',
                 '11.0.0',
