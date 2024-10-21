@@ -18,7 +18,6 @@ use function in_array;
 use function max;
 use function shuffle;
 use function usort;
-use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -174,7 +173,7 @@ final class TestSuiteSorter
             $suite->setTests($this->sortDefectsFirst($suite->tests()));
         }
 
-        if ($resolveDependencies && !($suite instanceof DataProviderTestSuite)) {
+        if ($resolveDependencies) {
             $tests = $suite->tests();
 
             /** @noinspection PhpParamsInspection */
@@ -314,10 +313,10 @@ final class TestSuiteSorter
      */
     private function cmpSize(Test $a, Test $b): int
     {
-        $sizeA = ($a instanceof TestCase || $a instanceof DataProviderTestSuite)
+        $sizeA = $a instanceof TestCase
             ? $a->size()->asString()
             : 'unknown';
-        $sizeB = ($b instanceof TestCase || $b instanceof DataProviderTestSuite)
+        $sizeB = $b instanceof TestCase
             ? $b->size()->asString()
             : 'unknown';
 
@@ -335,9 +334,9 @@ final class TestSuiteSorter
      * 3. If the test has dependencies but none left to do: mark done, start again from the top
      * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
-     * @param array<DataProviderTestSuite|TestCase> $tests
+     * @param array<TestCase> $tests
      *
-     * @return array<DataProviderTestSuite|TestCase>
+     * @return array<TestCase>
      */
     private function resolveDependencies(array $tests): array
     {
