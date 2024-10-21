@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3fa87443b3379da232c8f4885ba070e",
+    "content-hash": "4a1f50fab365f0977c837666c97794d9",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1490,16 +1490,16 @@
         },
         {
             "name": "staabm/side-effects-detector",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staabm/side-effects-detector.git",
-                "reference": "f449ed69364e4b6ed5a07debeb281d990e764977"
+                "reference": "d8334211a140ce329c13726d4a715adbddd0a163"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staabm/side-effects-detector/zipball/f449ed69364e4b6ed5a07debeb281d990e764977",
-                "reference": "f449ed69364e4b6ed5a07debeb281d990e764977",
+                "url": "https://api.github.com/repos/staabm/side-effects-detector/zipball/d8334211a140ce329c13726d4a715adbddd0a163",
+                "reference": "d8334211a140ce329c13726d4a715adbddd0a163",
                 "shasum": ""
             },
             "require": {
@@ -1530,7 +1530,7 @@
             ],
             "support": {
                 "issues": "https://github.com/staabm/side-effects-detector/issues",
-                "source": "https://github.com/staabm/side-effects-detector/tree/1.0.4"
+                "source": "https://github.com/staabm/side-effects-detector/tree/1.0.5"
             },
             "funding": [
                 {
@@ -1538,7 +1538,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-19T10:34:23+00:00"
+            "time": "2024-10-20T05:08:20+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -1594,7 +1594,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -1606,7 +1606,7 @@
         "ext-xml": "*",
         "ext-xmlwriter": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3.0"
     },
