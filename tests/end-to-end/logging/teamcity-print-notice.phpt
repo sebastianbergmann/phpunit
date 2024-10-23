@@ -18,15 +18,9 @@ require realpath($parentDirectory . '/../bootstrap.php');
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 ##teamcity[testCount count='2' flowId='%d']
-
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' locationHint='%sNoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' flowId='%d']
-
 ##teamcity[testStarted name='testOne' locationHint='%sNoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne' flowId='%d']
-
 ##teamcity[testFinished name='testOne' duration='%d' flowId='%d']
-
 ##teamcity[testStarted name='testTwo' locationHint='%sNoticeTest.php::\PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testTwo' flowId='%d']
-
 ##teamcity[testFinished name='testTwo' duration='%d' flowId='%d']
-
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TestRunnerStopping\NoticeTest' flowId='%d']
