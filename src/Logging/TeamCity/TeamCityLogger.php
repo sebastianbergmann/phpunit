@@ -299,7 +299,7 @@ final class TeamCityLogger
     {
         $this->printer->print(
             sprintf(
-                "##teamcity[%s",
+                '##teamcity[%s',
                 $eventName,
             ),
         );
