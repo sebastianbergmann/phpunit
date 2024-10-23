@@ -18,19 +18,11 @@ require realpath($parentDirectory . '/../bootstrap.php');
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 ##teamcity[testCount count='%d' flowId='%d']
-
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' locationHint='%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' flowId='%d']
-
 ##teamcity[testStarted name='testOne' locationHint='%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne' flowId='%d']
-
 ##teamcity[testFinished name='testOne' duration='%d' flowId='%d']
-
 ##teamcity[testStarted name='testTwo' locationHint='%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testTwo' flowId='%d']
-
 ##teamcity[testFinished name='testTwo' duration='%d' flowId='%d']
-
 ##teamcity[testStarted name='testThree' locationHint='php_qn:%sDeprecationTest.php::\PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testThree' flowId='%d']
-
 ##teamcity[testFinished name='testThree' duration='%d' flowId='%d']
-
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest' flowId='%d']
