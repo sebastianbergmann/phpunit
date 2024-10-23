@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 ### Changed
 
 * [#6010](https://github.com/sebastianbergmann/phpunit/pull/6010): Improve parameter name for `assertGreaterThan()`, `assertGreaterThanOrEqual()`, `assertLessThan()`, and `assertLessThanOrEqual()`
+* [#6012](https://github.com/sebastianbergmann/phpunit/pull/6012): Remove empty lines between TeamCity events
 
 ## [11.4.2] - 2024-10-19
 
