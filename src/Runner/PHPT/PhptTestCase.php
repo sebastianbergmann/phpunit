@@ -528,7 +528,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function runCodeInLocalSandbox(string $code): string
     {
-        $code = preg_replace('/^<\?(php)?/', '', $code);
+        $code = preg_replace('/^<\?(?:php)?|\?>\s*+$/', '', $code);
         $code = preg_replace('/declare\S?\([^)]+\)\S?;/', '', $code);
 
         // wrap in immediately invoked function to isolate local-side-effects of $code from our own process
