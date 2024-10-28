@@ -11,7 +11,7 @@ All notable changes of the PHPUnit 11.4 release series are documented in this fi
 
 ### Fixed
 
-[#6017](https://github.com/sebastianbergmann/phpunit/pull/6017): Deprecation Triggers are not registered when Process Isolation is used
+* [#6017](https://github.com/sebastianbergmann/phpunit/pull/6017): Deprecation Triggers are not registered when Process Isolation is used
 
 ## [11.4.2] - 2024-10-19
 
