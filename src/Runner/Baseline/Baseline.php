@@ -16,7 +16,7 @@ namespace PHPUnit\Runner\Baseline;
  */
 final class Baseline
 {
-    public const VERSION = 1;
+    public const int VERSION = 1;
 
     /**
      * @var array<non-empty-string, array<positive-int, list<Issue>>>

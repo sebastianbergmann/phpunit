@@ -33,37 +33,17 @@ use PHPUnit\Runner\ResultCache\ResultCache;
  */
 final class TestSuiteSorter
 {
-    /**
-     * @var int
-     */
-    public const ORDER_DEFAULT = 0;
+    public const int ORDER_DEFAULT       = 0;
+    public const int ORDER_RANDOMIZED    = 1;
+    public const int ORDER_REVERSED      = 2;
+    public const int ORDER_DEFECTS_FIRST = 3;
+    public const int ORDER_DURATION      = 4;
+    public const int ORDER_SIZE          = 5;
 
     /**
-     * @var int
+     * @var non-empty-array<non-empty-string, positive-int>
      */
-    public const ORDER_RANDOMIZED = 1;
-
-    /**
-     * @var int
-     */
-    public const ORDER_REVERSED = 2;
-
-    /**
-     * @var int
-     */
-    public const ORDER_DEFECTS_FIRST = 3;
-
-    /**
-     * @var int
-     */
-    public const ORDER_DURATION = 4;
-
-    /**
-     * @var int
-     */
-    public const ORDER_SIZE = 5;
-
-    private const SIZE_SORT_WEIGHT = [
+    private const array SIZE_SORT_WEIGHT = [
         'small'   => 1,
         'medium'  => 2,
         'large'   => 3,

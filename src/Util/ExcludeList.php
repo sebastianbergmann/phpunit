@@ -53,9 +53,9 @@ use TheSeer\Tokenizer\Tokenizer;
 final class ExcludeList
 {
     /**
-     * @var array<string,int>
+     * @var non-empty-array<class-string, positive-int>
      */
-    private const EXCLUDED_CLASS_NAMES = [
+    private const array EXCLUDED_CLASS_NAMES = [
         // composer
         ClassLoader::class => 1,
 

@@ -31,7 +31,10 @@ use SebastianBergmann\CliParser\Parser as CliParser;
  */
 final class Builder
 {
-    private const LONG_OPTIONS = [
+    /**
+     * @var non-empty-list<non-empty-string>
+     */
+    private const array LONG_OPTIONS = [
         'atleast-version=',
         'bootstrap=',
         'cache-result',
@@ -137,7 +140,8 @@ final class Builder
         'debug',
         'extension=',
     ];
-    private const SHORT_OPTIONS = 'd:c:h';
+
+    private const string SHORT_OPTIONS = 'd:c:h';
 
     /**
      * @var array<string, non-negative-int>

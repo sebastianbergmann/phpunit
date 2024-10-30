@@ -18,9 +18,9 @@ use PHPUnit\TestRunner\TestResult\TestResult;
  */
 final readonly class ShellExitCodeCalculator
 {
-    private const SUCCESS_EXIT   = 0;
-    private const FAILURE_EXIT   = 1;
-    private const EXCEPTION_EXIT = 2;
+    private const int SUCCESS_EXIT   = 0;
+    private const int FAILURE_EXIT   = 1;
+    private const int EXCEPTION_EXIT = 2;
 
     public function calculate(bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, TestResult $result): int
     {

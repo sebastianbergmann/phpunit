@@ -28,75 +28,24 @@ use PHPUnit\Framework\UnknownTypeException;
  */
 final class IsType extends Constraint
 {
-    /**
-     * @var string
-     */
-    public const TYPE_ARRAY = 'array';
+    public const string TYPE_ARRAY           = 'array';
+    public const string TYPE_BOOL            = 'bool';
+    public const string TYPE_FLOAT           = 'float';
+    public const string TYPE_INT             = 'int';
+    public const string TYPE_NULL            = 'null';
+    public const string TYPE_NUMERIC         = 'numeric';
+    public const string TYPE_OBJECT          = 'object';
+    public const string TYPE_RESOURCE        = 'resource';
+    public const string TYPE_CLOSED_RESOURCE = 'resource (closed)';
+    public const string TYPE_STRING          = 'string';
+    public const string TYPE_SCALAR          = 'scalar';
+    public const string TYPE_CALLABLE        = 'callable';
+    public const string TYPE_ITERABLE        = 'iterable';
 
     /**
-     * @var string
+     * @var non-empty-array<non-empty-string, bool>
      */
-    public const TYPE_BOOL = 'bool';
-
-    /**
-     * @var string
-     */
-    public const TYPE_FLOAT = 'float';
-
-    /**
-     * @var string
-     */
-    public const TYPE_INT = 'int';
-
-    /**
-     * @var string
-     */
-    public const TYPE_NULL = 'null';
-
-    /**
-     * @var string
-     */
-    public const TYPE_NUMERIC = 'numeric';
-
-    /**
-     * @var string
-     */
-    public const TYPE_OBJECT = 'object';
-
-    /**
-     * @var string
-     */
-    public const TYPE_RESOURCE = 'resource';
-
-    /**
-     * @var string
-     */
-    public const TYPE_CLOSED_RESOURCE = 'resource (closed)';
-
-    /**
-     * @var string
-     */
-    public const TYPE_STRING = 'string';
-
-    /**
-     * @var string
-     */
-    public const TYPE_SCALAR = 'scalar';
-
-    /**
-     * @var string
-     */
-    public const TYPE_CALLABLE = 'callable';
-
-    /**
-     * @var string
-     */
-    public const TYPE_ITERABLE = 'iterable';
-
-    /**
-     * @var array<string,bool>
-     */
-    private const KNOWN_TYPES = [
+    private const array KNOWN_TYPES = [
         'array'             => true,
         'boolean'           => true,
         'bool'              => true,

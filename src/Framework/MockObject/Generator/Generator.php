@@ -64,9 +64,9 @@ final class Generator
     use TemplateLoader;
 
     /**
-     * @var array<non-empty-string, true>
+     * @var non-empty-array<non-empty-string, true>
      */
-    private const EXCLUDED_METHOD_NAMES = [
+    private const array EXCLUDED_METHOD_NAMES = [
         '__CLASS__'       => true,
         '__DIR__'         => true,
         '__FILE__'        => true,

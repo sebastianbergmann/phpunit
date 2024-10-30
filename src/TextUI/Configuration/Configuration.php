@@ -16,10 +16,10 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final readonly class Configuration
 {
-    public const COLOR_NEVER   = 'never';
-    public const COLOR_AUTO    = 'auto';
-    public const COLOR_ALWAYS  = 'always';
-    public const COLOR_DEFAULT = self::COLOR_NEVER;
+    public const string COLOR_NEVER   = 'never';
+    public const string COLOR_AUTO    = 'auto';
+    public const string COLOR_ALWAYS  = 'always';
+    public const string COLOR_DEFAULT = self::COLOR_NEVER;
 
     /**
      * @var list<non-empty-string>

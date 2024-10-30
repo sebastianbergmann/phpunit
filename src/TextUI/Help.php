@@ -29,7 +29,7 @@ use SebastianBergmann\Environment\Console;
  */
 final class Help
 {
-    private const LEFT_MARGIN              = '  ';
+    private const string LEFT_MARGIN       = '  ';
     private int $lengthOfLongestOptionName = 0;
     private readonly int $columnsAvailableForDescription;
     private ?bool $hasColor;
