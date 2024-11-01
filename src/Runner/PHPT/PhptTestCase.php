@@ -486,7 +486,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         foreach ($sideEffects as $sideEffect) {
             if (
                 $sideEffect === SideEffect::STANDARD_OUTPUT || // stdout is fine, we will catch it using output-buffering
-                $sideEffect === SideEffect::INPUT_OUTPUT // IO is fine while cleanup, as it doesn't pollute the main process
+                $sideEffect === SideEffect::INPUT_OUTPUT // IO is fine, as it doesn't pollute the main process
             ) {
                 continue;
             }
