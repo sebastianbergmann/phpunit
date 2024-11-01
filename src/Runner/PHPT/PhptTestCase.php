@@ -432,7 +432,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $skipIfCode = $this->render($sections['SKIPIF']);
 
-        if ($this->shouldRunSkipIfInSubprocess($sections, $skipIfCode)) {
+        if ($this->shouldRunInSubprocess($sections, $skipIfCode)) {
             $jobResult = JobRunnerRegistry::run(
                 new Job(
                     $skipIfCode,
@@ -469,7 +469,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     /**
      * @param array<non-empty-string, non-empty-string> $sections
      */
-    private function shouldRunCleanInSubprocess(array $sections, string $cleanCode): bool
+    private function shouldRunInSubprocess(array $sections, string $cleanCode): bool
     {
         if (isset($sections['INI'])) {
             // to get per-test INI settings, we need a dedicated subprocess
@@ -488,35 +488,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $sideEffect === SideEffect::STANDARD_OUTPUT || // stdout is fine, we will catch it using output-buffering
                 $sideEffect === SideEffect::INPUT_OUTPUT // IO is fine while cleanup, as it doesn't pollute the main process
             ) {
-                continue;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param array<non-empty-string, non-empty-string> $sections
-     */
-    private function shouldRunSkipIfInSubprocess(array $sections, string $skipIfCode): bool
-    {
-        if (isset($sections['INI'])) {
-            // to get per-test INI settings, we need a dedicated subprocess
-            return true;
-        }
-
-        $detector    = new SideEffectsDetector;
-        $sideEffects = $detector->getSideEffects($skipIfCode);
-
-        if ($sideEffects === []) {
-            return false; // no side-effects
-        }
-
-        foreach ($sideEffects as $sideEffect) {
-            if ($sideEffect === SideEffect::STANDARD_OUTPUT) {
-                // stdout is fine, we will catch it using output-buffering
                 continue;
             }
 
@@ -550,7 +521,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $cleanCode = $this->render($sections['CLEAN']);
 
-        if ($this->shouldRunCleanInSubprocess($sections, $cleanCode)) {
+        if ($this->shouldRunInSubprocess($sections, $cleanCode)) {
             $result = JobRunnerRegistry::run(
                 new Job(
                     $cleanCode,
