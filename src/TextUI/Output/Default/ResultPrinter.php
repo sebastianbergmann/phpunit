@@ -83,7 +83,7 @@ final class ResultPrinter
         $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
     }
 
-    public function print(TestResult $result): void
+    public function print(TestResult $result, bool $stackTraceForDeprecations = false): void
     {
         if ($this->displayPhpunitErrors) {
             $this->printPhpunitErrors($result);
@@ -142,7 +142,7 @@ final class ResultPrinter
 
         if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
             $this->printIssueList('PHP deprecation', $result->phpDeprecations());
-            $this->printIssueList('deprecation', $result->deprecations());
+            $this->printIssueList('deprecation', $result->deprecations(), $stackTraceForDeprecations);
         }
     }
 
@@ -353,7 +353,7 @@ final class ResultPrinter
      * @param non-empty-string $type
      * @param list<Issue>      $issues
      */
-    private function printIssueList(string $type, array $issues): void
+    private function printIssueList(string $type, array $issues, bool $stackTrace = false): void
     {
         if (empty($issues)) {
             return;
@@ -389,7 +389,13 @@ final class ResultPrinter
                 $issue->line(),
             );
 
-            $body = trim($issue->description()) . PHP_EOL . PHP_EOL . 'Triggered by:';
+            $body = trim($issue->description()) . PHP_EOL . PHP_EOL;
+
+            if ($stackTrace && $issue->hasStackTrace()) {
+                $body .= trim($issue->stackTrace()) . PHP_EOL . PHP_EOL;
+            }
+
+            $body .= 'Triggered by:';
 
             $triggeringTests = $issue->triggeringTests();
 
