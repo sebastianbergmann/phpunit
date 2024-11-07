@@ -47,11 +47,17 @@ final readonly class DeprecationTriggered implements Event
     private IssueTrigger $trigger;
 
     /**
+     * @var non-empty-string
+     */
+    private string $stackTrace;
+
+    /**
      * @param non-empty-string $message
      * @param non-empty-string $file
      * @param positive-int     $line
+     * @param non-empty-string $stackTrace
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, IssueTrigger $trigger)
+    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, IssueTrigger $trigger, string $stackTrace)
     {
         $this->telemetryInfo     = $telemetryInfo;
         $this->test              = $test;
@@ -62,6 +68,7 @@ final readonly class DeprecationTriggered implements Event
         $this->ignoredByBaseline = $ignoredByBaseline;
         $this->ignoredByTest     = $ignoredByTest;
         $this->trigger           = $trigger;
+        $this->stackTrace        = $stackTrace;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -116,6 +123,14 @@ final readonly class DeprecationTriggered implements Event
     public function trigger(): IssueTrigger
     {
         return $this->trigger;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function stackTrace(): string
+    {
+        return $this->stackTrace;
     }
 
     public function asString(): string
