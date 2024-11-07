@@ -353,7 +353,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class?: class-string, function?: string, type: string}>
+     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string}>
      */
     private function errorStackTrace(): array
     {
