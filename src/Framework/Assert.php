@@ -195,6 +195,8 @@ abstract class Assert
     }
 
     /**
+     * @phpstan-assert list $array
+     *
      * @throws ExpectationFailedException
      */
     final public static function assertIsList(mixed $array, string $message = ''): void
