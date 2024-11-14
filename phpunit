@@ -71,7 +71,7 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
 
 require PHPUNIT_COMPOSER_INSTALL;
 
-$requiredExtensions = ['dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'];
+$requiredExtensions = ['dom', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'];
 
 $unavailableExtensions = array_filter(
     $requiredExtensions,
