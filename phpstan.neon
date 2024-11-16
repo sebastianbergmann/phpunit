@@ -13,5 +13,8 @@ parameters:
         - '#Strict comparison using !== between .*non-falsy-string.* and .* will always evaluate to true.#'
         - '#Call to function is_array\(\) with array will always evaluate to true.#'
 
+    excludePaths:
+        - src/Framework/MockObject/Runtime/Api # exclude partial traits, which are only used in runtime generated code
+
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
