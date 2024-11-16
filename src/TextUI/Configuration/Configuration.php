@@ -141,12 +141,12 @@ final readonly class Configuration
     /**
      * @var list<non-empty-string>
      */
-    private ?array $groups;
+    private array $groups;
 
     /**
      * @var list<non-empty-string>
      */
-    private ?array $excludeGroups;
+    private array $excludeGroups;
     private int $randomOrderSeed;
     private bool $includeUncoveredFiles;
     private TestSuiteCollection $testSuite;
