@@ -30,7 +30,7 @@
         "ext-xml": "*",
         "ext-xmlwriter": "*",
         "doctrine/instantiator": "^1.5.0 || ^2",
-        "myclabs/deep-copy": "^1.12.0",
+        "myclabs/deep-copy": "^1.12.1",
         "phar-io/manifest": "^2.0.4",
         "phar-io/version": "^3.2.1",
         "phpunit/php-code-coverage": "^9.2.32",
