@@ -112,11 +112,11 @@ $buffer .= $constraintMethods;
 $buffer .= <<<'EOT'
 if (!function_exists('PHPUnit\Framework\callback')) {
     /**
-     * @psalm-template CallbackInput of mixed
+     * @template CallbackInput of mixed
      *
-     * @psalm-param callable(CallbackInput $callback): bool $callback
+     * @param callable(CallbackInput $callback): bool $callback
      *
-     * @psalm-return Callback<CallbackInput>
+     * @return Callback<CallbackInput>
      */
     function callback(callable $callback): Callback
     {
