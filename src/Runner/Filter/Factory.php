@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use PHPUnit\Framework\Test;
 use function assert;
 use FilterIterator;
 use Iterator;
@@ -22,9 +23,9 @@ use PHPUnit\Framework\TestSuite;
 final class Factory
 {
     /**
-     * @var list<array{className: class-string<FilterIterator>, argument: list<non-empty-string>|non-empty-string}>
+     * @var list<array{className: class-string<FilterIterator<int, Test, Iterator<int, Test>>>, argument: list<non-empty-string>|non-empty-string}>
      */
-    private array $filters = []; // @phpstan-ignore missingType.generics
+    private array $filters = [];
 
     /**
      * @param list<non-empty-string> $testIds
@@ -81,7 +82,11 @@ final class Factory
         ];
     }
 
-    public function factory(Iterator $iterator, TestSuite $suite): FilterIterator // @phpstan-ignore missingType.generics
+    /**
+     * @param Iterator<int, Test> $iterator
+     * @return FilterIterator<int, Test, Iterator<int, Test>>
+     */
+    public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {
             $iterator = new $filter['className'](
