@@ -1773,7 +1773,7 @@ final readonly class Configuration
     }
 
     /**
-     * @phpstan-assert-if-true !null $this->teamcityPrinter
+     * @phpstan-assert-if-true !null $this->teamCityPrinter
      */
     public function hasTeamCityPrinter(): bool
     {
@@ -1915,7 +1915,7 @@ final readonly class Configuration
     }
 
     /**
-     * @phpstan-assert-if-true !null $this->excludedTestSuite
+     * @phpstan-assert-if-true !null $this->excludeTestSuite
      */
     public function hasExcludedTestSuite(): bool
     {
