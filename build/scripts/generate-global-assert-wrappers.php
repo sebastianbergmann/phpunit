@@ -200,65 +200,10 @@ if (!function_exists('PHPUnit\Framework\atMost')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\returnValue')) {
-    function returnValue(mixed $value): ReturnStub
-    {
-        return new ReturnStub($value);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnValueMap')) {
-    /**
-     * @param array<mixed> $valueMap
-     */
-    function returnValueMap(array $valueMap): ReturnValueMapStub
-    {
-        return new ReturnValueMapStub($valueMap);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnArgument')) {
-    function returnArgument(int $argumentIndex): ReturnArgumentStub
-    {
-        return new ReturnArgumentStub($argumentIndex);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnCallback')) {
-    function returnCallback(callable $callback): ReturnCallbackStub
-    {
-        return new ReturnCallbackStub($callback);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnSelf')) {
-    /**
-     * Returns the current object.
-     *
-     * This method is useful when mocking a fluent interface.
-     */
-    function returnSelf(): ReturnSelfStub
-    {
-        return new ReturnSelfStub;
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\throwException')) {
     function throwException(\Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
-    /**
-     * @param mixed $value , ...
-     */
-    function onConsecutiveCalls(): ConsecutiveCallsStub
-    {
-        $arguments = \func_get_args();
-
-        return new ConsecutiveCallsStub($arguments);
     }
 }
 
