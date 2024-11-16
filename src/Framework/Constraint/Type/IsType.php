@@ -77,7 +77,6 @@ final class IsType extends Constraint
      */
     public function __construct(string $type)
     {
-        /** @phpstan-ignore isset.offset */
         if (!isset(self::KNOWN_TYPES[$type])) {
             throw new UnknownTypeException($type);
         }
