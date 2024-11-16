@@ -179,7 +179,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers deprecation' => [
+            'successful test that triggers deprecation (do not display stack trace)' => [
                 __DIR__ . '/expectations/successful_test_with_deprecation.txt',
                 self::createTestResult(
                     deprecations: [
@@ -191,6 +191,22 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+            ],
+
+            'successful test that triggers deprecation (display stack trace)' => [
+                __DIR__ . '/expectations/successful_test_with_deprecation_with_stack_trace.txt',
+                self::createTestResult(
+                    deprecations: [
+                        Issue::from(
+                            'Foo.php',
+                            1,
+                            'message',
+                            self::testMethod(),
+                            '/path/to/file.php:1234',
+                        ),
+                    ],
+                ),
+                true,
             ],
 
             'successful test that triggers PHP deprecation' => [
@@ -361,7 +377,7 @@ final class ResultPrinterTest extends TestCase
     }
 
     #[DataProvider('provider')]
-    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result): void
+    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result, bool $stackTraceForDeprecations = false): void
     {
         $printer = $this->printer();
 
@@ -382,7 +398,7 @@ final class ResultPrinterTest extends TestCase
             false,
         );
 
-        $resultPrinter->print($result);
+        $resultPrinter->print($result, $stackTraceForDeprecations);
 
         $summaryPrinter = new SummaryPrinter(
             $printer,

@@ -1424,6 +1424,17 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->stopOnDeprecation());
     }
 
+    #[TestDox('--stop-on-deprecation=message')]
+    public function testStopOnDeprecationMessage(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--stop-on-deprecation=message']);
+
+        $this->assertTrue($configuration->hasStopOnDeprecation());
+        $this->assertTrue($configuration->stopOnDeprecation());
+        $this->assertTrue($configuration->hasSpecificDeprecationToStopOn());
+        $this->assertSame('message', $configuration->specificDeprecationToStopOn());
+    }
+
     public function testStopOnDeprecationMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);

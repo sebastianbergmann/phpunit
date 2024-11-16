@@ -258,7 +258,12 @@ final readonly class Application
             $result = TestResultFacade::result();
 
             if (!$extensionReplacesResultOutput && !$configuration->debug()) {
-                OutputFacade::printResult($result, $testDoxResult, $duration);
+                OutputFacade::printResult(
+                    $result,
+                    $testDoxResult,
+                    $duration,
+                    $configuration->hasSpecificDeprecationToStopOn(),
+                );
             }
 
             CodeCoverage::instance()->generateReports($printer, $configuration);

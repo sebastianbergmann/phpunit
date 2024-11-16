@@ -589,7 +589,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return sprintf(
                 "%s\n%s",
                 $message,
-                Filter::getFilteredStacktrace($t),
+                Filter::stackTraceFromThrowableAsString($t),
             );
         }
 
@@ -597,7 +597,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             "%s: %s\n%s",
             $t::class,
             $message,
-            Filter::getFilteredStacktrace($t),
+            Filter::stackTraceFromThrowableAsString($t),
         );
     }
 
