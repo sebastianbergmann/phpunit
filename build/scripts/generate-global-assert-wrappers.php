@@ -208,6 +208,9 @@ if (!function_exists('PHPUnit\Framework\returnValue')) {
 }
 
 if (!function_exists('PHPUnit\Framework\returnValueMap')) {
+    /**
+     * @param array<mixed> $valueMap
+     */
     function returnValueMap(array $valueMap): ReturnValueMapStub
     {
         return new ReturnValueMapStub($valueMap);
