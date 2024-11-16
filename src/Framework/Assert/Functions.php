@@ -187,7 +187,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
 
 if (!function_exists('PHPUnit\Framework\assertIsList')) {
     /**
-     * @phpstan-assert list $array
+     * @phpstan-assert list<mixed> $array
      *
      * @throws ExpectationFailedException
      *
@@ -1373,7 +1373,7 @@ if (!function_exists('PHPUnit\Framework\assertIsArray')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @phpstan-assert array $actual
+     * @phpstan-assert array<mixed> $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1582,7 +1582,7 @@ if (!function_exists('PHPUnit\Framework\assertIsIterable')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @phpstan-assert iterable $actual
+     * @phpstan-assert iterable<mixed> $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1601,7 +1601,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotArray')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @phpstan-assert !array $actual
+     * @phpstan-assert !array<mixed> $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1810,7 +1810,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotIterable')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
-     * @phpstan-assert !iterable $actual
+     * @phpstan-assert !iterable<mixed> $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *

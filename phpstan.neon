@@ -12,9 +12,6 @@ parameters:
         - '#Strict comparison using !== between .*non-empty-string.* and .* will always evaluate to true.#'
         - '#Strict comparison using !== between .*non-falsy-string.* and .* will always evaluate to true.#'
         - '#Call to function is_array\(\) with array will always evaluate to true.#'
-        # see https://github.com/phpstan/phpstan/issues/12061
-        - '#PHPDoc tag @phpstan-assert for \$actual has no value type specified in iterable type.*#'
-        - '#PHPDoc tag @phpstan-assert for \$array has no value type specified in iterable type.*#'
 
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
