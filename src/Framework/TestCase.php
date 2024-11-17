@@ -2003,7 +2003,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             set_error_handler($handler);
         }
 
-        /** @phpstan-ignore if.alwaysFalse */
         if ($invalidErrorHandlerStack) {
             $message = 'At least one error handler is not callable outside the scope it was registered in';
 
