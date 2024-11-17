@@ -41,8 +41,6 @@ final readonly class VersionCheckCommand implements Command
 
         $latestCompatibleVersion = $this->downloader->download('https://phar.phpunit.de/latest-version-of/phpunit-' . $this->majorVersionNumber);
 
-        assert($latestCompatibleVersion !== false);
-
         $notLatest           = version_compare($latestVersion, $this->versionId, '>');
         $notLatestCompatible = false;
 
