@@ -32,7 +32,7 @@ final class Help
     private const LEFT_MARGIN              = '  ';
     private int $lengthOfLongestOptionName = 0;
     private readonly int $columnsAvailableForDescription;
-    private ?bool $hasColor;
+    private bool $hasColor;
 
     public function __construct(?int $width = null, ?bool $withColor = null)
     {
