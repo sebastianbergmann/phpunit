@@ -611,6 +611,12 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return true;
         }
 
+        foreach ($this->tests as $test) {
+            if ($test instanceof TestCase && ($test->isTestRunInSeparateProcess() || $test->isClassRunInSeparateProcess())) {
+                return true;
+            }
+        }
+
         $methodsCalledBeforeFirstTest = [];
 
         $beforeClassMethods = (new HookMethods)->hookMethods($this->name)['beforeClass'];
@@ -681,6 +687,12 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     {
         if (!$this->isForTestClass()) {
             return;
+        }
+
+        foreach ($this->tests as $test) {
+            if ($test instanceof TestCase && ($test->isTestRunInSeparateProcess() || $test->isClassRunInSeparateProcess())) {
+                return;
+            }
         }
 
         $methodsCalledAfterLastTest = [];
