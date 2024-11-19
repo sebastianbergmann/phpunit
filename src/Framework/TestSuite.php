@@ -84,6 +84,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
     private bool $wasRun             = false;
+    private bool $isInProcess        = false;
 
     /**
      * @param non-empty-string $name
@@ -613,7 +614,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         foreach ($this->tests as $test) {
             if ($test instanceof TestCase && ($test->isTestRunInSeparateProcess() || $test->isClassRunInSeparateProcess())) {
-                return true;
+                return ($this->isInProcess = true);
             }
         }
 
@@ -685,14 +686,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
     private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
     {
-        if (!$this->isForTestClass()) {
+        if (!$this->isForTestClass() || $this->isInProcess) {
             return;
-        }
-
-        foreach ($this->tests as $test) {
-            if ($test instanceof TestCase && ($test->isTestRunInSeparateProcess() || $test->isClassRunInSeparateProcess())) {
-                return;
-            }
         }
 
         $methodsCalledAfterLastTest = [];
