@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
+use PHPUnit\Event;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -31,7 +34,7 @@ if ($composerAutoload) {
     require $phar;
 }
 
-function __phpunit_run_isolated_test()
+function __phpunit_run_isolated_class()
 {
     $dispatcher = Facade::instance()->initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
@@ -69,52 +72,67 @@ function __phpunit_run_isolated_test()
 
     ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
 
-    $test = new {className}('{name}');
-
-    $test->setData('{dataName}', unserialize('{data}'));
-    $test->setDependencyInput(unserialize('{dependencyInput}'));
-    $test->setInIsolation(true);
-
-    ob_end_clean();
-
-    $test->run();
-
-    $output = '';
-
-    if (!$test->expectsOutput()) {
-        $output = $test->output();
-    }
-
     ini_set('xdebug.scream', '0');
 
-    // Not every STDOUT target stream is rewindable
-    @rewind(STDOUT);
-
-    if ($stdout = @stream_get_contents(STDOUT)) {
-        $output         = $stdout . $output;
-        $streamMetaData = stream_get_meta_data(STDOUT);
-
-        if (!empty($streamMetaData['stream_type']) && 'STDIO' === $streamMetaData['stream_type']) {
-            @ftruncate(STDOUT, 0);
-            @rewind(STDOUT);
-        }
+    try {
+        $testClass = (new TestSuiteLoader)->load('{filename}');
+    } catch (Exception $e) {
+        print $e->getMessage() . PHP_EOL;
+        exit(1);
     }
+
+    $output = '';
+    $results = [];
+
+    $suite = TestSuite::fromClassReflector($testClass);
+    $suite->setIsInSeparatedProcess(false);
+
+    $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($suite);
+
+    if (!$suite->invokeMethodsBeforeFirstTest(Facade::emitter(), $testSuiteValueObjectForEvents)) {
+        return;
+    }
+
+    foreach($suite->tests() as $test) {
+        $test->setRunClassInSeparateProcess(false);
+        $test->run();
+
+        $testOutput = '';
+
+        if (!$test->expectsOutput()) {
+            $testOutput = $test->output();
+        }
+
+        // Not every STDOUT target stream is rewindable
+        @rewind(STDOUT);
+
+        if ($stdout = @stream_get_contents(STDOUT)) {
+            $testOutput     = $stdout . $testOutput;
+            $streamMetaData = stream_get_meta_data(STDOUT);
+
+            if (!empty($streamMetaData['stream_type']) && 'STDIO' === $streamMetaData['stream_type']) {
+                @ftruncate(STDOUT, 0);
+                @rewind(STDOUT);
+            }
+        }
+
+        $results[] = (object)[
+            'testResult'    => $test->result(),
+            'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
+            'numAssertions' => $test->numberOfAssertionsPerformed(),
+            'output'        => $testOutput,
+            'events'        => $dispatcher->flush(),
+            'passedTests'   => PassedTests::instance()
+        ];
+
+        $output .= $testOutput;
+    }
+
+    $suite->invokeMethodsAfterLastTest(Facade::emitter());
 
     Facade::emitter()->testRunnerFinishedChildProcess($output, '');
 
-    file_put_contents(
-        '{processResultFile}',
-        serialize(
-            [
-                'testResult'    => $test->result(),
-                'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
-                'numAssertions' => $test->numberOfAssertionsPerformed(),
-                'output'        => $output,
-                'events'        => $dispatcher->flush(),
-                'passedTests'   => PassedTests::instance()
-            ]
-        )
-    );
+    file_put_contents('{processResultFile}', serialize($results));
 }
 
 function __phpunit_error_handler($errno, $errstr, $errfile, $errline)
@@ -137,4 +155,4 @@ if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';
 }
 
-__phpunit_run_isolated_test();
+__phpunit_run_isolated_class();

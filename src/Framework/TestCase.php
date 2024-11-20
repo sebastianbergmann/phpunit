@@ -718,25 +718,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function isTestRunInSeparateProcess(): ?bool
-    {
-        return $this->runTestInSeparateProcess;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     final public function setRunClassInSeparateProcess(bool $runClassInSeparateProcess): void
     {
         $this->runClassInSeparateProcess = $runClassInSeparateProcess;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function isClassRunInSeparateProcess(): ?bool
-    {
-        return $this->runClassInSeparateProcess;
     }
 
     /**
