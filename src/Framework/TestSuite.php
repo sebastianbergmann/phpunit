@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use const PHP_EOL;
 use function array_merge;
 use function array_pop;
@@ -36,6 +35,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
@@ -121,9 +121,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $registry = MetadataRegistry::parser()->forClass($class->name);
+        $registry                             = MetadataRegistry::parser()->forClass($class->name);
         $testSuite->isTestsInSeparatedProcess = $registry->isRunTestsInSeparateProcesses()->isNotEmpty();
-        $testSuite->isInSeparatedProcess = $registry->isRunClassInSeparateProcess()->isNotEmpty() || $testSuite->isTestsInSeparatedProcess;
+        $testSuite->isInSeparatedProcess      = $registry->isRunClassInSeparateProcess()->isNotEmpty() || $testSuite->isTestsInSeparatedProcess;
 
         return $testSuite;
     }
@@ -323,18 +323,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         return $tests;
     }
 
-    /**
-     * @return bool
-     */
     public function isInSeparatedProcess(): bool
     {
         return $this->isInSeparatedProcess;
     }
 
-    /**
-     * @param bool $isInSeparatedProcess
-     * @return void
-     */
     public function setIsInSeparatedProcess(bool $isInSeparatedProcess): void
     {
         $this->isInSeparatedProcess = $isInSeparatedProcess;
@@ -598,10 +591,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         return true;
     }
 
-    /**
-     * @param Event\Emitter $emitter
-     * @return void
-     */
     public function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
     {
         if (!$this->isForTestClass() || $this->isInSeparatedProcess) {
