@@ -172,12 +172,14 @@ final readonly class DataProvider
 
                     $result[$key] = $value;
                 } else {
+                    // @codeCoverageIgnoreStart
                     throw new InvalidDataProviderException(
                         sprintf(
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
                         ),
                     );
+                    // @codeCoverageIgnoreEnd
                 }
             }
         }
