@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use Exception;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
-use PHPUnit\Framework\Attributes\RequiresMethod;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
@@ -25,7 +25,6 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterVal
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
-use ReflectionProperty;
 use stdClass;
 
 abstract class TestDoubleTestCase extends TestCase
@@ -309,7 +308,7 @@ abstract class TestDoubleTestCase extends TestCase
         );
     }
 
-    #[RequiresMethod(ReflectionProperty::class, 'isFinal')]
+    #[RequiresPhp('^8.4')]
     public function testGetHookForPropertyOfInterfaceCanBeConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithPropertyWithGetHook::class);
@@ -319,7 +318,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame('value', $double->property);
     }
 
-    #[RequiresMethod(ReflectionProperty::class, 'isFinal')]
+    #[RequiresPhp('^8.4')]
     public function testGetHookForPropertyOfExtendableClassCanBeConfigured(): void
     {
         $double = $this->createTestDouble(ExtendableClassWithPropertyWithGetHook::class);
