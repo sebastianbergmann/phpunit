@@ -451,7 +451,7 @@ final class Generator
 
         if (is_array($explicitMethods)) {
             foreach ($explicitMethods as $methodName) {
-                if ($class !== null && $class->hasMethod($methodName)) {
+                if ($class->hasMethod($methodName)) {
                     $method = $class->getMethod($methodName);
 
                     if ($this->canMethodBeDoubled($method)) {

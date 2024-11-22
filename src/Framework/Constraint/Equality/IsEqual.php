@@ -42,7 +42,7 @@ final class IsEqual extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): bool
     {
         // If $this->value and $other are identical, they are also equal.
         // This is the most common path and will allow us to skip

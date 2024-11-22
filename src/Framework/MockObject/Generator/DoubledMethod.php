@@ -214,7 +214,7 @@ EOT;
                 'arguments_call'     => $this->argumentsForCall,
                 'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
                 'return_type'        => $this->returnType->asString(),
-                'arguments_count'    => $argumentsCount,
+                'arguments_count'    => (string) $argumentsCount,
                 'class_name'         => $this->className,
                 'method_name'        => $this->methodName,
                 'modifier'           => $this->modifier,
