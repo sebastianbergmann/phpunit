@@ -2,3 +2,19 @@ parameters:
     level: 6
     paths:
         - src
+
+    treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        # ignore errors caused by defensive programming
+        - '#Call to function assert\(\) with true will always evaluate to true.#'
+        - '#Instanceof between .* and .* will always evaluate to true.#'
+        - '#Strict comparison using !== between .*non-empty-string.* and .* will always evaluate to true.#'
+        - '#Strict comparison using !== between .*non-falsy-string.* and .* will always evaluate to true.#'
+        - identifier: argument.named
+
+    excludePaths:
+        - src/Framework/MockObject/Runtime/Api # exclude partial traits, which are only used in runtime generated code
+
+includes:
+	- phar://phpstan.phar/conf/bleedingEdge.neon

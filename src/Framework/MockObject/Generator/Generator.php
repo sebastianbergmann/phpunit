@@ -473,7 +473,7 @@ final class Generator
 
         try {
             $client   = new SoapClient($wsdlFile, $options);
-            $_methods = array_unique($client->__getFunctions());
+            $_methods = array_unique($client->__getFunctions() ?? []);
 
             unset($client);
         } catch (SoapFault $e) {
@@ -781,7 +781,7 @@ final class Generator
 
         if (is_array($explicitMethods)) {
             foreach ($explicitMethods as $methodName) {
-                if ($class !== null && $class->hasMethod($methodName)) {
+                if ($class->hasMethod($methodName)) {
                     $method = $class->getMethod($methodName);
 
                     if ($this->canMethodBeDoubled($method)) {
