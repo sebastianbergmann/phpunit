@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use PHPUnit\Framework\Test;
 use function assert;
 use FilterIterator;
 use Iterator;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 
 /**
@@ -84,6 +84,7 @@ final class Factory
 
     /**
      * @param Iterator<int, Test> $iterator
+     *
      * @return FilterIterator<int, Test, Iterator<int, Test>>
      */
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
