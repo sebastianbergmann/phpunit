@@ -184,17 +184,11 @@ final class JunitXmlLogger
         $this->createTestCase($event);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function testPreparationFailed(): void
     {
         $this->preparationFailed = true;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function testPrepared(): void
     {
         $this->prepared = true;

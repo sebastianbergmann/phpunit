@@ -16,7 +16,7 @@ if (!\extension_loaded('xdebug')) {
     print 'skip: This test requires a code coverage driver';
 }
 
-if (\version_compare(\phpversion('xdebug'), '3.1', '>=') && \in_array('coverage', xdebug_info('mode'), true)) {
+if (\version_compare(\phpversion('xdebug'), '3.1', '>=') && \in_array('coverage', \xdebug_info('mode'), true)) {
     return;
 }
 

@@ -811,7 +811,9 @@ final class Generator
         }
 
         /** @var trait-string[] $traits */
-        $traits  = [];
+        $traits = [];
+
+        /** @phpstan-ignore identical.alwaysTrue */
         $isPhp82 = PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2;
 
         if (!$isReadonly && $isPhp82) {
@@ -1103,7 +1105,7 @@ final class Generator
      *
      * @throws ReflectionException
      *
-     * @phpstan-ignore missingType.generics
+     * @phpstan-ignore missingType.generics, throws.unusedType
      */
     private function reflectClass(string $className): ReflectionClass
     {

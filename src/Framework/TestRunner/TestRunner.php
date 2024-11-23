@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function assert;
 use function extension_loaded;
 use function sprintf;
+use function xdebug_is_debugger_active;
 use AssertionError;
 use PHPUnit\Event\Facade;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
