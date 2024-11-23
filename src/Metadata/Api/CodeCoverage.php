@@ -116,11 +116,6 @@ final class CodeCoverage
             return false;
         }
 
-        if ($metadataForMethod->isCoversClass()->isNotEmpty() ||
-            $metadataForMethod->isCoversFunction()->isNotEmpty()) {
-            return true;
-        }
-
         if ($metadataForClass->isCoversNothing()->isNotEmpty()) {
             return false;
         }
