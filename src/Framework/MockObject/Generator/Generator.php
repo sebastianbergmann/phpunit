@@ -1101,7 +1101,7 @@ final class Generator
      *
      * @throws ReflectionException
      *
-     * @phpstan-ignore missingType.generics
+     * @phpstan-ignore missingType.generics, throws.unusedType
      */
     private function reflectClass(string $className): ReflectionClass
     {
