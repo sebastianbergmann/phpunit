@@ -811,7 +811,9 @@ final class Generator
         }
 
         /** @var trait-string[] $traits */
-        $traits  = [];
+        $traits = [];
+
+        /** @phpstan-ignore identical.alwaysTrue */
         $isPhp82 = PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 2;
 
         if (!$isReadonly && $isPhp82) {
