@@ -17,16 +17,17 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\CoverageClassTest;
-use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
 use PHPUnit\TestFixture\CoverageFunctionTest;
-use PHPUnit\TestFixture\CoverageMethodNothingTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
 use PHPUnit\TestFixture\CoveredClassUsingCoveredTraitTest;
+use PHPUnit\TestFixture\CoversClassOnClassTest;
+use PHPUnit\TestFixture\CoversNothingOnClassTest;
+use PHPUnit\TestFixture\CoversNothingOnMethodTest;
 use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
 use PHPUnit\TestFixture\InvalidClassTargetWithAttributeTest;
 use PHPUnit\TestFixture\InvalidFunctionTargetTest;
+use PHPUnit\TestFixture\NoCoverageAttributesTest;
 use PHPUnit\TestFixture\Test3194;
 
 #[CoversClass(CodeCoverage::class)]
@@ -48,7 +49,7 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(12, 29)),
                     TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(12, 27)),
                 ],
-                CoverageClassTest::class,
+                CoversClassOnClassTest::class,
                 'testSomething',
             ],
 
@@ -71,7 +72,7 @@ final class CodeCoverageTest extends TestCase
 
             [
                 false,
-                CoverageMethodNothingTest::class,
+                CoversNothingOnClassTest::class,
                 'testSomething',
             ],
 
@@ -107,7 +108,7 @@ final class CodeCoverageTest extends TestCase
                     TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(12, 29)),
                     TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(12, 27)),
                 ],
-                CoverageClassTest::class,
+                CoversClassOnClassTest::class,
                 'testSomething',
             ],
 
@@ -141,9 +142,10 @@ final class CodeCoverageTest extends TestCase
     public static function canSkipCoverageProvider(): array
     {
         return [
-            [CoverageClassTest::class, false],
-            [CoverageClassWithoutAnnotationsTest::class, false],
-            [CoverageMethodNothingTest::class, true],
+            [NoCoverageAttributesTest::class, false],
+            [CoversClassOnClassTest::class, false],
+            [CoversNothingOnClassTest::class, true],
+            [CoversNothingOnMethodTest::class, true],
         ];
     }
 

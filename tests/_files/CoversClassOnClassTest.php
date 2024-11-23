@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversNothing]
-final class CoverageMethodNothingTest extends TestCase
+#[CoversClass(CoveredClass::class)]
+#[UsesClass(CoveredClass::class)]
+final class CoversClassOnClassTest extends TestCase
 {
     public function testSomething(): void
     {
