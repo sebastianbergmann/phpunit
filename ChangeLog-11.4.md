@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.4.4] - 2024-MM-DD
+
+### Fixed
+
+* [#6028](https://github.com/sebastianbergmann/phpunit/issues/6028): `ignoreIndirectDeprecations=true` suppresses deprecations triggered in test code
+
 ## [11.4.3] - 2024-10-28
 
 ### Changed
