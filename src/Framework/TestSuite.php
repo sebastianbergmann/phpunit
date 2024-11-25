@@ -385,11 +385,18 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
             $test->run();
 
-            // Separated process loads its own TestSuite, skip all the remaining tests.
-            // When all tests are run in a separated process, this TestSuit loads method
-            // template for the process to execute (continue).
+            // When all tests are run in a separated process, the primary process loads
+            // all the test methods. After executing the first test, TestRunner spawns
+            // a separated process which loads all the tests again in the process.
+            // Skip primary process tests expect the first which initiates
+            // the separated process TestSuite.
             if ($this->isInSeparatedProcess && !$this->isTestsInSeparatedProcess) {
-                break;
+                // TestSuite statuses are returned from the separated process.
+                // Skipped and incomplete tests should continue processing, otherwise
+                // only a single test result is outputted to the console.
+                if ($test->status()->isUnknown()) {
+                    break;
+                }
             }
         }
 

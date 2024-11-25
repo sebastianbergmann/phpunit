@@ -61,10 +61,11 @@ final class FooTest extends TestCase
 
         // Now verify the original file is unchanged.
         $contents = file_get_contents($filename);
-        $this->assertSame('foo', $contents);
 
         chmod($filename, 0o755);
         unlink($filename);
+
+        $this->assertSame('foo', $contents);
     }
 
     #[WithoutErrorHandler]
@@ -85,10 +86,11 @@ final class FooTest extends TestCase
 
         // Now verify the original file is unchanged.
         $contents = file_get_contents($filename);
-        $this->assertSame('foo', $contents);
 
         chmod($filename, 0o755);
         unlink($filename);
+
+        $this->assertSame('foo', $contents);
     }
 
     public function testStreamToInvalidFile(): void
