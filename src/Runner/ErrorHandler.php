@@ -400,6 +400,13 @@ final class ErrorHandler
         $excludeList = new ExcludeList(true);
 
         foreach ($this->errorStackTrace() as $frame) {
+            /**
+             * @see https://github.com/sebastianbergmann/phpunit/issues/6043
+             */
+            if (!isset($frame['file'])) {
+                continue;
+            }
+
             if ($excludeList->isExcluded($frame['file'])) {
                 continue;
             }
