@@ -26,7 +26,7 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::test();
 
         $this->assertTrue($trigger->isTest());
-        $this->assertTrue($trigger->isSelf());
+        $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
