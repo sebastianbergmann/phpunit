@@ -88,7 +88,7 @@ final class Parameters implements ParametersRule
         }
 
         if ($this->invocation === null) {
-            throw new ExpectationFailedException('Mocked method does not exist.');
+            throw new ExpectationFailedException('Doubled method does not exist.');
         }
 
         if (count($this->invocation->parameters()) < count($this->parameters)) {
