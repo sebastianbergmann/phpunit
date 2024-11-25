@@ -599,7 +599,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @psalm-param class-string<\Throwable> $exception
+     * @psalm-param class-string<Throwable> $exception
      */
     public function expectException(string $exception): void
     {
