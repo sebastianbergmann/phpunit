@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(TestTrigger::class)]
 #[CoversClass(SelfTrigger::class)]
 #[CoversClass(DirectTrigger::class)]
 #[CoversClass(IndirectTrigger::class)]
