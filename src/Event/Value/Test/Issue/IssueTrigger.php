@@ -16,6 +16,11 @@ namespace PHPUnit\Event\Code\IssueTrigger;
  */
 abstract class IssueTrigger
 {
+    public static function test(): TestTrigger
+    {
+        return new TestTrigger;
+    }
+
     public static function self(): SelfTrigger
     {
         return new SelfTrigger;
@@ -38,6 +43,16 @@ abstract class IssueTrigger
 
     final private function __construct()
     {
+    }
+
+    /**
+     * Your test code triggers an issue.
+     *
+     * @phpstan-assert-if-true TestTrigger $this
+     */
+    public function isTest(): bool
+    {
+        return false;
     }
 
     /**
