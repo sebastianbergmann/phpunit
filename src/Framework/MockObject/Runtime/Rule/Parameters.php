@@ -117,8 +117,7 @@ final class Parameters implements ParametersRule
             $parameter->evaluate(
                 $other,
                 sprintf(
-                    'Parameter %s for invocation %s does not match expected ' .
-                    'value.',
+                    'Parameter %s for invocation %s does not match expected value.',
                     $i,
                     $this->invocation->toString(),
                 ),
