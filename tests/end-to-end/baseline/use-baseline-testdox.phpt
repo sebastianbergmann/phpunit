@@ -16,13 +16,17 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
-.                                                                   1 / 1 (100%)
+.....                                                               5 / 5 (100%)
 
 Time: %s, Memory: %s
 
-Use Baseline (PHPUnit\TestFixture\Baseline\UseBaseline)
- ✔ One
+Source (PHPUnit\TestFixture\Baseline\Source)
+ ✔ Deprecation
+ ✔ Notice
+ ✔ Warning
+ ✔ Php deprecation
+ ✔ Php notice and warning
 
-OK (1 test, 1 assertion)
+OK (5 tests, 5 assertions)
 
 6 issues were ignored by baseline.

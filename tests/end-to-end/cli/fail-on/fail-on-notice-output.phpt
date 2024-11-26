@@ -24,10 +24,5 @@ Time: %s, Memory: %s
 1) %sNoticeTest.php:%d
 message
 
-Triggered by:
-
-* PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne
-  %sNoticeTest.php:%d
-
 OK, but there were issues!
 Tests: 2, Assertions: 2, Notices: 1.

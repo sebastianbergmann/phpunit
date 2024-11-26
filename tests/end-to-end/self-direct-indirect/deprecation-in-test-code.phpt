@@ -1,13 +1,13 @@
 --TEST--
-https://github.com/sebastianbergmann/phpunit/issues/6028
+Deprecation in test code is reported when it is configured to be reported
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--display-deprecations';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/6028';
+$_SERVER['argv'][] = __DIR__ . '/_files/deprecation-in-test-code';
 
-require_once __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
@@ -22,13 +22,8 @@ Time: %s, Memory: %s
 
 1 test triggered 1 deprecation:
 
-1) %sIssue6028Test.php:20
+1) %sDeprecationInTestCodeTest.php:20
 message
-
-Triggered by:
-
-* PHPUnit\TestFixture\Issue6028\Issue6028Test::testOne
-  %sIssue6028Test.php:18
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.

@@ -141,7 +141,8 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
+        if ($this->source->ignoreSelfDeprecations() &&
+            ($event->trigger()->isTest() || $event->trigger()->isSelf())) {
             return;
         }
 
@@ -171,7 +172,8 @@ final class ProgressPrinter
             return;
         }
 
-        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
+        if ($this->source->ignoreSelfDeprecations() &&
+            ($event->trigger()->isTest() || $event->trigger()->isSelf())) {
             return;
         }
 

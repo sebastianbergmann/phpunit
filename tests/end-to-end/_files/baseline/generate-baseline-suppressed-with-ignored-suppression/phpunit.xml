@@ -2,6 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
          cacheResult="false"
+         bootstrap="src/Source.php"
 >
     <testsuites>
         <testsuite name="default">
@@ -15,7 +16,9 @@
             ignoreSuppressionOfNotices="true"
             ignoreSuppressionOfPhpNotices="true"
             ignoreSuppressionOfWarnings="true"
-            ignoreSuppressionOfPhpWarnings="true"
-    >
+            ignoreSuppressionOfPhpWarnings="true">
+        <include>
+            <directory>src</directory>
+        </include>
     </source>
 </phpunit>
