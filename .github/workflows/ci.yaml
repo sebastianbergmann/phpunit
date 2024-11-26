@@ -28,7 +28,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
           coverage: none
           tools: none
@@ -80,8 +80,9 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           coverage: none
+          tools: none
 
       - name: Install dependencies with Composer
         run: ./tools/composer update --no-interaction --no-ansi --no-progress
