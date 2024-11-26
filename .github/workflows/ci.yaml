@@ -82,6 +82,7 @@ jobs:
         with:
           php-version: 8.4
           coverage: none
+          tools: none
 
       - name: Install dependencies with Composer
         run: ./tools/composer update --no-interaction --no-ansi --no-progress
