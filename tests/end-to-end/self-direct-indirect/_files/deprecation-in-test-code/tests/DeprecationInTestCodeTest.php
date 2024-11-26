@@ -7,17 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Baseline;
+namespace PHPUnit\TestFixture\SelfDirectIndirect;
 
 use const E_USER_DEPRECATED;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
-final class Test extends TestCase
+final class DeprecationInTestCodeTest extends TestCase
 {
     public function testOne(): void
     {
-        trigger_error('deprecation', E_USER_DEPRECATED);
+        trigger_error('message', E_USER_DEPRECATED);
 
         $this->assertTrue(true);
     }

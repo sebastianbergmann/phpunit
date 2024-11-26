@@ -395,24 +395,26 @@ final class ResultPrinter
                 $body .= trim($issue->stackTrace()) . PHP_EOL . PHP_EOL;
             }
 
-            $body .= 'Triggered by:';
+            if (!$issue->triggeredInTest()) {
+                $body .= 'Triggered by:';
 
-            $triggeringTests = $issue->triggeringTests();
+                $triggeringTests = $issue->triggeringTests();
 
-            ksort($triggeringTests);
+                ksort($triggeringTests);
 
-            foreach ($triggeringTests as $triggeringTest) {
-                $body .= PHP_EOL . PHP_EOL . '* ' . $triggeringTest['test']->id();
+                foreach ($triggeringTests as $triggeringTest) {
+                    $body .= PHP_EOL . PHP_EOL . '* ' . $triggeringTest['test']->id();
 
-                if ($triggeringTest['count'] > 1) {
-                    $body .= sprintf(
-                        ' (%d times)',
-                        $triggeringTest['count'],
-                    );
-                }
+                    if ($triggeringTest['count'] > 1) {
+                        $body .= sprintf(
+                            ' (%d times)',
+                            $triggeringTest['count'],
+                        );
+                    }
 
-                if ($triggeringTest['test']->isTestMethod()) {
-                    $body .= PHP_EOL . '  ' . $triggeringTest['test']->file() . ':' . $triggeringTest['test']->line();
+                    if ($triggeringTest['test']->isTestMethod()) {
+                        $body .= PHP_EOL . '  ' . $triggeringTest['test']->file() . ':' . $triggeringTest['test']->line();
+                    }
                 }
             }
 

@@ -24,14 +24,6 @@ final class TestTrigger extends IssueTrigger
         return true;
     }
 
-    /**
-     * Your own code triggers an issue in your own code.
-     */
-    public function isSelf(): true
-    {
-        return true;
-    }
-
     public function asString(): string
     {
         return 'issue triggered by test code';

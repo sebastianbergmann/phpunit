@@ -32,10 +32,5 @@ Foo (PHPUnit\TestFixture\Issue5884\Foo)
 1) %sFooTest.php:31
 foo
 
-Triggered by:
-
-* PHPUnit\TestFixture\Issue5884\FooTest::testExpectUserDeprecationMessageNOTIgnoringDeprecations
-  %sFooTest.php:27
-
 OK, but there were issues!
 Tests: 6, Assertions: 7, Deprecations: 1.

@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture\Baseline;
 
 use PHPUnit\Framework\TestCase;
 
-final class Test extends TestCase
+final class SourceTest extends TestCase
 {
     public function testDeprecation(): void
     {
