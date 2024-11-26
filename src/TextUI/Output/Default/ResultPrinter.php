@@ -389,24 +389,28 @@ final class ResultPrinter
                 $issue->line(),
             );
 
-            $body = trim($issue->description()) . PHP_EOL . PHP_EOL . 'Triggered by:';
+            $body = trim($issue->description()) . PHP_EOL . PHP_EOL;
 
-            $triggeringTests = $issue->triggeringTests();
+            if (!$issue->triggeredInTest()) {
+                $body .= 'Triggered by:';
 
-            ksort($triggeringTests);
+                $triggeringTests = $issue->triggeringTests();
 
-            foreach ($triggeringTests as $triggeringTest) {
-                $body .= PHP_EOL . PHP_EOL . '* ' . $triggeringTest['test']->id();
+                ksort($triggeringTests);
 
-                if ($triggeringTest['count'] > 1) {
-                    $body .= sprintf(
-                        ' (%d times)',
-                        $triggeringTest['count'],
-                    );
-                }
+                foreach ($triggeringTests as $triggeringTest) {
+                    $body .= PHP_EOL . PHP_EOL . '* ' . $triggeringTest['test']->id();
 
-                if ($triggeringTest['test']->isTestMethod()) {
-                    $body .= PHP_EOL . '  ' . $triggeringTest['test']->file() . ':' . $triggeringTest['test']->line();
+                    if ($triggeringTest['count'] > 1) {
+                        $body .= sprintf(
+                            ' (%d times)',
+                            $triggeringTest['count'],
+                        );
+                    }
+
+                    if ($triggeringTest['test']->isTestMethod()) {
+                        $body .= PHP_EOL . '  ' . $triggeringTest['test']->file() . ':' . $triggeringTest['test']->line();
+                    }
                 }
             }
 

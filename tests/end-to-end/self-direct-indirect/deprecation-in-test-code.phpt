@@ -25,10 +25,5 @@ Time: %s, Memory: %s
 1) %sDeprecationInTestCodeTest.php:20
 message
 
-Triggered by:
-
-* PHPUnit\TestFixture\SelfDirectIndirect\DeprecationInTestCodeTest::testOne
-  %sDeprecationInTestCodeTest.php:18
-
 OK, but there were issues!
 Tests: 1, Assertions: 1, Deprecations: 1.
