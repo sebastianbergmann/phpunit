@@ -28,7 +28,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
           coverage: none
           tools: none
