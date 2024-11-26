@@ -9,60 +9,41 @@
  */
 namespace PHPUnit\TestFixture\Baseline;
 
-use const E_USER_DEPRECATED;
-use const E_USER_NOTICE;
-use const E_USER_WARNING;
-use function trigger_error;
 use PHPUnit\Framework\TestCase;
-use Serializable;
 
 final class Test extends TestCase
 {
     public function testDeprecation(): void
     {
-        trigger_error('deprecation', E_USER_DEPRECATED);
+        (new Source)->triggerDeprecation();
 
         $this->assertTrue(true);
     }
 
     public function testNotice(): void
     {
-        trigger_error('notice', E_USER_NOTICE);
+        (new Source)->triggerNotice();
 
         $this->assertTrue(true);
     }
 
     public function testWarning(): void
     {
-        trigger_error('warning', E_USER_WARNING);
+        (new Source)->triggerWarning();
 
         $this->assertTrue(true);
     }
 
     public function testPhpDeprecation(): void
     {
-        $o = new class implements Serializable
-        {
-            public function serialize(): void
-            {
-            }
-
-            public function unserialize(string $data): void
-            {
-            }
-        };
+        (new Source)->triggerPhpDeprecation();
 
         $this->assertTrue(true);
     }
 
     public function testPhpNoticeAndWarning(): void
     {
-        $o = new class
-        {
-            public static $a = 'b';
-        };
-
-        $o->a;
+        (new Source)->triggerPhpNoticeAndWarning();
 
         $this->assertTrue(true);
     }
