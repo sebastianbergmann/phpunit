@@ -101,7 +101,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+      PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -148,7 +148,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+      PHP_INI_VALUES: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -205,7 +205,7 @@ jobs:
           php-version: 8.4
           coverage: xdebug
           extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+          ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
       - name: Install dependencies with Composer
@@ -238,7 +238,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     steps:
       - name: Checkout
@@ -286,7 +286,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     strategy:
       fail-fast: false
