@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class NamePrettifierTest extends TestCase
 {
-    public function testTitleHasSensibleDefaults(): void
+    public function testNameOfTestClassCanBePrettified(): void
     {
         $this->assertEquals('Foo', (new NamePrettifier)->prettifyTestClassName('FooTest'));
         $this->assertEquals('Foo', (new NamePrettifier)->prettifyTestClassName('TestFoo'));
@@ -32,7 +32,7 @@ final class NamePrettifierTest extends TestCase
         $this->assertEquals('Expression Évaluée', (new NamePrettifier)->prettifyTestClassName('ExpressionÉvaluéeTest'));
     }
 
-    public function testTestNameIsConvertedToASentence(): void
+    public function testNameOfTestMethodCanBePrettified(): void
     {
         $this->assertEquals('', (new NamePrettifier)->prettifyTestMethodName(''));
         $this->assertEquals('This is a test', (new NamePrettifier)->prettifyTestMethodName('testThisIsATest'));
