@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -21,19 +20,25 @@ final class TraversableContainsOnly extends Constraint
     private readonly string $type;
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|class-string $type
-     *
-     * @throws Exception
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
      */
-    public function __construct(string $type, bool $isNativeType = true)
+    public static function forNativeType(string $type): self
     {
-        if ($isNativeType) {
-            $this->constraint = new IsType($type);
-        } else {
-            $this->constraint = new IsInstanceOf($type);
-        }
+        return new self(new IsType($type), $type);
+    }
 
-        $this->type = $type;
+    /**
+     * @param class-string $type
+     */
+    public static function forClassOrInterface(string $type): self
+    {
+        return new self(new IsInstanceOf($type), $type);
+    }
+
+    private function __construct(IsInstanceOf|IsType $constraint, string $type)
+    {
+        $this->constraint = $constraint;
+        $this->type       = $type;
     }
 
     /**

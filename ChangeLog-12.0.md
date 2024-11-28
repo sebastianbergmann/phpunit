@@ -36,5 +36,6 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5959](https://github.com/sebastianbergmann/phpunit/issues/5959): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes
 * [#5961](https://github.com/sebastianbergmann/phpunit/issues/5961): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
+* [#6047](https://github.com/sebastianbergmann/phpunit/issues/6047): Support for using `assertContainsOnly()` (and `assertNotContainsOnly()`) with classes and interfaces
 
 [12.0.0]: https://github.com/sebastianbergmann/phpunit/compare/11.5...main

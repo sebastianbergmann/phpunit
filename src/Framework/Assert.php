@@ -272,25 +272,11 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    final public static function assertContainsOnly(string $type, iterable $haystack, string $message = ''): void
     {
-        if ($isNativeType === null) {
-            $isNativeType = self::isNativeType($type);
-        }
-
-        if (!$isNativeType || class_exists($type) || interface_exists($type)) {
-            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                null,
-                'Using assertContainsOnly() with classes or interfaces is deprecated. Support for this will be removed in PHPUnit 12. Please use assertContainsOnlyInstancesOf() instead.',
-            );
-        }
-
         self::assertThat(
             $haystack,
-            new TraversableContainsOnly(
-                $type,
-                $isNativeType,
-            ),
+            TraversableContainsOnly::forNativeType($type),
             $message,
         );
     }
@@ -308,10 +294,7 @@ abstract class Assert
     {
         self::assertThat(
             $haystack,
-            new TraversableContainsOnly(
-                $className,
-                false,
-            ),
+            TraversableContainsOnly::forClassOrInterface($className),
             $message,
         );
     }
@@ -325,26 +308,12 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    final public static function assertNotContainsOnly(string $type, iterable $haystack, string $message = ''): void
     {
-        if ($isNativeType === null) {
-            $isNativeType = self::isNativeType($type);
-        }
-
-        if (!$isNativeType || class_exists($type) || interface_exists($type)) {
-            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                null,
-                'Using assertNotContainsOnly() with classes or interfaces is deprecated. Support for this will be removed in PHPUnit 12. Please use assertContainsOnlyInstancesOf() instead.',
-            );
-        }
-
         self::assertThat(
             $haystack,
             new LogicalNot(
-                new TraversableContainsOnly(
-                    $type,
-                    $isNativeType,
-                ),
+                TraversableContainsOnly::forNativeType($type),
             ),
             $message,
         );
@@ -2223,7 +2192,7 @@ abstract class Assert
      */
     final public static function containsOnly(string $type): TraversableContainsOnly
     {
-        return new TraversableContainsOnly($type);
+        return TraversableContainsOnly::forNativeType($type);
     }
 
     /**
@@ -2233,7 +2202,7 @@ abstract class Assert
      */
     final public static function containsOnlyInstancesOf(string $className): TraversableContainsOnly
     {
-        return new TraversableContainsOnly($className, false);
+        return TraversableContainsOnly::forClassOrInterface($className);
     }
 
     final public static function arrayHasKey(int|string $key): ArrayHasKey
@@ -2436,13 +2405,5 @@ abstract class Assert
     final public static function resetCount(): void
     {
         self::$count = 0;
-    }
-
-    private static function isNativeType(string $type): bool
-    {
-        return match ($type) {
-            'numeric', 'integer', 'int', 'iterable', 'float', 'string', 'boolean', 'bool', 'null', 'array', 'object', 'resource', 'scalar' => true,
-            default => false,
-        };
     }
 }

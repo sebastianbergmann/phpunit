@@ -12,16 +12,13 @@ namespace PHPUnit\Framework;
 use function fopen;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use stdClass;
 
 #[CoversMethod(Assert::class, 'assertContainsOnly')]
-#[CoversMethod(Assert::class, 'isNativeType')]
 #[TestDox('assertContainsOnly()')]
 #[Small]
-#[IgnorePhpunitDeprecations]
 final class assertContainsOnlyTest extends TestCase
 {
     /**
@@ -42,7 +39,6 @@ final class assertContainsOnlyTest extends TestCase
             ['resource', [fopen(__FILE__, 'r')]],
             ['scalar', [true, 1.0, 1, 'string']],
             ['string', ['string']],
-            [stdClass::class, [new stdClass]],
         ];
     }
 
@@ -64,7 +60,6 @@ final class assertContainsOnlyTest extends TestCase
             ['resource', [fopen(__FILE__, 'r'), null]],
             ['scalar', [true, 1.0, 1, 'string', null]],
             ['string', ['string', null]],
-            [stdClass::class, [new stdClass, null]],
         ];
     }
 
