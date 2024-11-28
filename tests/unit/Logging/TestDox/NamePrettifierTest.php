@@ -10,7 +10,6 @@
 namespace PHPUnit\Logging\TestDox;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -21,62 +20,32 @@ use PHPUnit\TestFixture\TestDox\TestDoxAttributeOnTestClassTest;
 #[Small]
 final class NamePrettifierTest extends TestCase
 {
-    /**
-     * @return non-empty-list<array{0: non-empty-string, 1: non-empty-string}>
-     */
-    public static function classNameProvider(): array
+    public function testNameOfTestClassCanBePrettified(): void
     {
-        return [
-            ['Foo', 'FooTest'],
-            ['Foo', 'TestFoo'],
-            ['Foo', 'TestsFoo'],
-            ['Foo', 'TestFooTest'],
-            ['Foo (Test\Foo)', 'Test\FooTest'],
-            ['Foo (Tests\Foo)', 'Tests\FooTest'],
-            ['Unnamed Tests', 'TestTest'],
-            ['Système Testé', 'SystèmeTestéTest'],
-            ['Expression Évaluée', 'ExpressionÉvaluéeTest'],
-            ['Custom Title', TestDoxAttributeOnTestClassTest::class],
-        ];
+        $this->assertSame('Foo', (new NamePrettifier)->prettifyTestClassName('FooTest'));
+        $this->assertSame('Foo', (new NamePrettifier)->prettifyTestClassName('TestFoo'));
+        $this->assertSame('Foo', (new NamePrettifier)->prettifyTestClassName('TestsFoo'));
+        $this->assertSame('Foo', (new NamePrettifier)->prettifyTestClassName('TestFooTest'));
+        $this->assertSame('Foo (Test\Foo)', (new NamePrettifier)->prettifyTestClassName('Test\FooTest'));
+        $this->assertSame('Foo (Tests\Foo)', (new NamePrettifier)->prettifyTestClassName('Tests\FooTest'));
+        $this->assertSame('Unnamed Tests', (new NamePrettifier)->prettifyTestClassName('TestTest'));
+        $this->assertSame('Système Testé', (new NamePrettifier)->prettifyTestClassName('SystèmeTestéTest'));
+        $this->assertSame('Expression Évaluée', (new NamePrettifier)->prettifyTestClassName('ExpressionÉvaluéeTest'));
+        $this->assertSame('Custom Title', (new NamePrettifier)->prettifyTestClassName(TestDoxAttributeOnTestClassTest::class));
     }
 
-    /**
-     * @return non-empty-list<array{0: non-empty-string, 1: non-empty-string}>
-     */
-    public static function methodNameProvider(): array
+    public function testNameOfTestMethodCanBePrettified(): void
     {
-        return [
-            ['', ''],
-            ['', 'test'],
-            ['This is a test', 'testThisIsATest'],
-            ['This is a test', 'testThisIsATest2'],
-            ['This is a test', 'this_is_a_test'],
-            ['This is a test', 'test_this_is_a_test'],
-            ['Foo for bar is 0', 'testFooForBarIs0'],
-            ['Foo for baz is 1', 'testFooForBazIs1'],
-            ['This has a 123 in its name', 'testThisHasA123InItsName'],
-            ['Sets redirect header on 301', 'testSetsRedirectHeaderOn301'],
-            ['Sets redirect header on 302', 'testSetsRedirectHeaderOn302'],
-        ];
-    }
-
-    /**
-     * @param non-empty-string $expected
-     * @param non-empty-string $className
-     */
-    #[DataProvider('classNameProvider')]
-    public function testNameOfTestClassCanBePrettified(string $expected, string $className): void
-    {
-        $this->assertSame($expected, (new NamePrettifier)->prettifyTestClassName($className));
-    }
-
-    /**
-     * @param non-empty-string $expected
-     * @param non-empty-string $methodName
-     */
-    #[DataProvider('methodNameProvider')]
-    public function testNameOfTestMethodCanBePrettified(string $expected, string $methodName): void
-    {
-        $this->assertSame($expected, (new NamePrettifier)->prettifyTestMethodName($methodName));
+        $this->assertSame('', (new NamePrettifier)->prettifyTestMethodName(''));
+        $this->assertSame('', (new NamePrettifier)->prettifyTestMethodName('test'));
+        $this->assertSame('This is a test', (new NamePrettifier)->prettifyTestMethodName('testThisIsATest'));
+        $this->assertSame('This is a test', (new NamePrettifier)->prettifyTestMethodName('testThisIsATest2'));
+        $this->assertSame('This is a test', (new NamePrettifier)->prettifyTestMethodName('this_is_a_test'));
+        $this->assertSame('This is a test', (new NamePrettifier)->prettifyTestMethodName('test_this_is_a_test'));
+        $this->assertSame('Foo for bar is 0', (new NamePrettifier)->prettifyTestMethodName('testFooForBarIs0'));
+        $this->assertSame('Foo for baz is 1', (new NamePrettifier)->prettifyTestMethodName('testFooForBazIs1'));
+        $this->assertSame('This has a 123 in its name', (new NamePrettifier)->prettifyTestMethodName('testThisHasA123InItsName'));
+        $this->assertSame('Sets redirect header on 301', (new NamePrettifier)->prettifyTestMethodName('testSetsRedirectHeaderOn301'));
+        $this->assertSame('Sets redirect header on 302', (new NamePrettifier)->prettifyTestMethodName('testSetsRedirectHeaderOn302'));
     }
 }
