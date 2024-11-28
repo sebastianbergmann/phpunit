@@ -279,6 +279,13 @@ abstract class Assert
             $isNativeType = self::isNativeType($type);
         }
 
+        if (!$isNativeType || class_exists($type) || interface_exists($type)) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                'Using assertContainsOnly() with classes or interfaces is deprecated. Support for this will be removed in PHPUnit 12. Please use assertContainsOnlyInstancesOf() instead.',
+            );
+        }
+
         self::assertThat(
             $haystack,
             new TraversableContainsOnly(
@@ -323,6 +330,13 @@ abstract class Assert
     {
         if ($isNativeType === null) {
             $isNativeType = self::isNativeType($type);
+        }
+
+        if (!$isNativeType || class_exists($type) || interface_exists($type)) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                'Using assertNotContainsOnly() with classes or interfaces is deprecated. Support for this will be removed in PHPUnit 12. Please use assertContainsOnlyInstancesOf() instead.',
+            );
         }
 
         self::assertThat(
