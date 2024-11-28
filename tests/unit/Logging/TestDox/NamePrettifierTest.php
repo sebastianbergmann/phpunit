@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestDox\TestDoxAttributeOnTestClassTest;
 
 #[CoversClass(NamePrettifier::class)]
 #[Group('testdox')]
@@ -35,6 +36,7 @@ final class NamePrettifierTest extends TestCase
             ['Unnamed Tests', 'TestTest'],
             ['Système Testé', 'SystèmeTestéTest'],
             ['Expression Évaluée', 'ExpressionÉvaluéeTest'],
+            ['Custom Title', TestDoxAttributeOnTestClassTest::class],
         ];
     }
 
