@@ -23,6 +23,7 @@ final class NamePrettifierTest extends TestCase
     {
         $this->assertEquals('Foo', (new NamePrettifier)->prettifyTestClassName('FooTest'));
         $this->assertEquals('Foo', (new NamePrettifier)->prettifyTestClassName('TestFoo'));
+        $this->assertEquals('Foo', (new NamePrettifier)->prettifyTestClassName('TestsFoo'));
         $this->assertEquals('Foo', (new NamePrettifier)->prettifyTestClassName('TestFooTest'));
         $this->assertEquals('Foo (Test\Foo)', (new NamePrettifier)->prettifyTestClassName('Test\FooTest'));
         $this->assertEquals('Foo (Tests\Foo)', (new NamePrettifier)->prettifyTestClassName('Tests\FooTest'));
