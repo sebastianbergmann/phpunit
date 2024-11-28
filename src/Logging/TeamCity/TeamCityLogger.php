@@ -146,7 +146,9 @@ final class TeamCityLogger
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             $this->time = $event->telemetryInfo()->time();
+            // @codeCoverageIgnoreEnd
         }
 
         $this->writeMessage(
@@ -205,7 +207,9 @@ final class TeamCityLogger
     public function testFailed(Failed $event): void
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             $this->time = $event->telemetryInfo()->time();
+            // @codeCoverageIgnoreEnd
         }
 
         $parameters = [
@@ -230,7 +234,9 @@ final class TeamCityLogger
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             $this->time = $event->telemetryInfo()->time();
+            // @codeCoverageIgnoreEnd
         }
 
         $this->writeMessage(
@@ -327,7 +333,9 @@ final class TeamCityLogger
     private function duration(Event $event): int
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             return 0;
+            // @codeCoverageIgnoreEnd
         }
 
         return (int) round($event->telemetryInfo()->time()->duration($this->time)->asFloat() * 1000);
