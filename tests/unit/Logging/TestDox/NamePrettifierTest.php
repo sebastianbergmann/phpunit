@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestDox\TestDoxAttributeOnTestClassTest;
 
 #[CoversClass(NamePrettifier::class)]
 #[Group('testdox')]
@@ -30,6 +31,7 @@ final class NamePrettifierTest extends TestCase
         $this->assertSame('Unnamed Tests', (new NamePrettifier)->prettifyTestClassName('TestTest'));
         $this->assertSame('Système Testé', (new NamePrettifier)->prettifyTestClassName('SystèmeTestéTest'));
         $this->assertSame('Expression Évaluée', (new NamePrettifier)->prettifyTestClassName('ExpressionÉvaluéeTest'));
+        $this->assertSame('Custom Title', (new NamePrettifier)->prettifyTestClassName(TestDoxAttributeOnTestClassTest::class));
     }
 
     public function testNameOfTestMethodCanBePrettified(): void
