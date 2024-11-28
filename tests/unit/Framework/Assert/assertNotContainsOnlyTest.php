@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
@@ -18,6 +19,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[CoversMethod(Assert::class, 'isNativeType')]
 #[TestDox('assertNotContainsOnly()')]
 #[Small]
+#[IgnorePhpunitDeprecations]
 final class assertNotContainsOnlyTest extends TestCase
 {
     #[DataProviderExternal(assertContainsOnlyTest::class, 'failureProvider')]
