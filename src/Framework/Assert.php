@@ -16,6 +16,8 @@ use function count;
 use function file_get_contents;
 use function interface_exists;
 use function is_bool;
+use function is_string;
+use function sprintf;
 use ArrayAccess;
 use Countable;
 use Generator;
@@ -267,19 +269,35 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
+     * @param iterable<mixed>                                                                                                                                                              $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    final public static function assertContainsOnly(NativeType|string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
     {
+        if (is_string($type)) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'Using assertContainsOnly() with string value "%s" for the $type parameter is deprecated. ' .
+                    'Please use the PHPUnit\Framework\NativeType enumeration instead. ' .
+                    'Support for string values for the $type parameter will be removed in PHPUnit 12.',
+                    $type,
+                ),
+            );
+        } else {
+            $type         = $type->value;
+            $isNativeType = true;
+        }
+
         if ($isNativeType === null) {
             $isNativeType = self::isNativeType($type);
         }
 
-        if (!$isNativeType || class_exists($type) || interface_exists($type)) {
+        if (!$isNativeType ||
+            (is_string($type) && (class_exists($type) || interface_exists($type)))) {
             Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
                 null,
                 'Using assertContainsOnly() with classes or interfaces is deprecated. Support for this will be removed in PHPUnit 12. Please use assertContainsOnlyInstancesOf() instead.',
@@ -320,19 +338,35 @@ abstract class Assert
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
+     * @param iterable<mixed>                                                                                                                                                              $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    final public static function assertNotContainsOnly(NativeType|string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
     {
+        if (is_string($type)) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'Using assertNotContainsOnly() with string value "%s" for the $type parameter is deprecated. ' .
+                    'Please use the PHPUnit\Framework\NativeType enumeration instead. ' .
+                    'Support for string values for the $type parameter will be removed in PHPUnit 12.',
+                    $type,
+                ),
+            );
+        } else {
+            $type         = $type->value;
+            $isNativeType = true;
+        }
+
         if ($isNativeType === null) {
             $isNativeType = self::isNativeType($type);
         }
 
-        if (!$isNativeType || class_exists($type) || interface_exists($type)) {
+        if (!$isNativeType ||
+            (is_string($type) && (class_exists($type) || interface_exists($type)))) {
             Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
                 null,
                 'Using assertNotContainsOnly() with classes or interfaces is deprecated. Support for this will be removed in PHPUnit 12. Please use assertContainsOnlyInstancesOf() instead.',
@@ -2272,12 +2306,26 @@ abstract class Assert
     }
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
      *
      * @throws Exception
      */
-    final public static function containsOnly(string $type): TraversableContainsOnly
+    final public static function containsOnly(NativeType|string $type): TraversableContainsOnly
     {
+        if (is_string($type)) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'Using containsOnly() with string value "%s" for the $type parameter is deprecated. ' .
+                    'Please use the PHPUnit\Framework\NativeType enumeration instead. ' .
+                    'Support for string values for the $type parameter will be removed in PHPUnit 12.',
+                    $type,
+                ),
+            );
+        } else {
+            $type = $type->value;
+        }
+
         return new TraversableContainsOnly($type);
     }
 

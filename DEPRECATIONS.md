@@ -8,11 +8,12 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 #### Assertions, Constraints, and Expectations
 
-| Issue                                                             | Description                                                                            | Since  | Replacement                                                                |
-|-------------------------------------------------------------------|----------------------------------------------------------------------------------------|--------|----------------------------------------------------------------------------|
-| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormat()`                                             | 10.4.0 |                                                                            |
-| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormatFile()`                                         | 10.4.0 |                                                                            |
-| [#6046](https://github.com/sebastianbergmann/phpunit/issues/6046) | Using `assertContainsOnly()` and `assertNotContainsOnly()` with classes and interfaces | 11.5.0 | `assertContainsOnlyInstancesOf()` and `assertNotContainsOnlyInstancesOf()` |
+| Issue                                                             | Description                                                                                                                                       | Since  | Replacement                                                                |
+|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------------------------------------------------------------------------|
+| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormat()`                                                                                                        | 10.4.0 |                                                                            |
+| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormatFile()`                                                                                                    | 10.4.0 |                                                                            |
+| [#6046](https://github.com/sebastianbergmann/phpunit/issues/6046) | Using `assertContainsOnly()` and `assertNotContainsOnly()` with classes and interfaces                                                            | 11.5.0 | `assertContainsOnlyInstancesOf()` and `assertNotContainsOnlyInstancesOf()` |
+|                                                                   | Passing a value of type `string` for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, and `containsOnly()` methods | 11.5.0 | Use `NativeType` instead                                                   |
 
 #### Test Double API
 

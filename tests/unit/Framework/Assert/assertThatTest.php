@@ -118,7 +118,7 @@ final class assertThatTest extends TestCase
 
     public function testAssertThatContainsOnly(): void
     {
-        $this->assertThat(['foo'], $this->containsOnly('string'));
+        $this->assertThat(['foo'], $this->containsOnly(NativeType::String));
     }
 
     public function testAssertThatContainsOnlyInstancesOf(): void

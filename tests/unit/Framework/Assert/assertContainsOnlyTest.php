@@ -30,6 +30,16 @@ final class assertContainsOnlyTest extends TestCase
     public static function successProvider(): array
     {
         return [
+            [NativeType::Array, [[1, 2, 3]]],
+            [NativeType::Boolean, [true, false]],
+            [NativeType::Float, [1.0, 2.0, 3.0]],
+            [NativeType::Integer, [1, 2, 3]],
+            [NativeType::Null, [null]],
+            [NativeType::Numeric, [1, 2.0, '3', '4.0']],
+            [NativeType::Object, [new stdClass]],
+            [NativeType::Resource, [fopen(__FILE__, 'r')]],
+            [NativeType::Scalar, [true, 1.0, 1, 'string']],
+            [NativeType::String, ['string']],
             ['array', [[1, 2, 3]]],
             ['boolean', [true, false]],
             ['bool', [true, false]],
@@ -52,6 +62,16 @@ final class assertContainsOnlyTest extends TestCase
     public static function failureProvider(): array
     {
         return [
+            [NativeType::Array, [[1, 2, 3], null]],
+            [NativeType::Boolean, [true, false, null]],
+            [NativeType::Float, [1.0, 2.0, 3.0, null]],
+            [NativeType::Integer, [1, 2, 3, null]],
+            [NativeType::Numeric, [null, 0]],
+            [NativeType::Numeric, [1, 2.0, '3', '4.0', null]],
+            [NativeType::Object, [new stdClass, null]],
+            [NativeType::Resource, [fopen(__FILE__, 'r'), null]],
+            [NativeType::Scalar, [true, 1.0, 1, 'string', null]],
+            [NativeType::String, ['string', null]],
             ['array', [[1, 2, 3], null]],
             ['boolean', [true, false, null]],
             ['bool', [true, false, null]],
@@ -69,13 +89,13 @@ final class assertContainsOnlyTest extends TestCase
     }
 
     #[DataProvider('successProvider')]
-    public function testSucceedsWhenConstraintEvaluatesToTrue(string $type, iterable $haystack): void
+    public function testSucceedsWhenConstraintEvaluatesToTrue(NativeType|string $type, iterable $haystack): void
     {
         $this->assertContainsOnly($type, $haystack);
     }
 
     #[DataProvider('failureProvider')]
-    public function testFailsWhenConstraintEvaluatesToFalse(string $type, iterable $haystack): void
+    public function testFailsWhenConstraintEvaluatesToFalse(NativeType|string $type, iterable $haystack): void
     {
         $this->expectException(AssertionFailedError::class);
 
