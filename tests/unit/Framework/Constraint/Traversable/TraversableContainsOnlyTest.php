@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TraversableContainsOnly::class)]
@@ -26,7 +27,7 @@ final class TraversableContainsOnlyTest extends TestCase
             [
                 true,
                 '',
-                'integer',
+                NativeType::Integer,
                 [0, 1, 2],
             ],
 
@@ -39,14 +40,14 @@ Failed asserting that Array &0 [
     2 => 2,
 ] contains only values of type "integer".
 EOT,
-                'integer',
+                NativeType::Integer,
                 [0, '1', 2],
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    public function testCanBeEvaluated(bool $result, string $failureDescription, string $expected, mixed $actual): void
+    public function testCanBeEvaluated(bool $result, string $failureDescription, NativeType $expected, mixed $actual): void
     {
         $constraint = TraversableContainsOnly::forNativeType($expected);
 
@@ -64,11 +65,11 @@ EOT,
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('contains only values of type "integer"', TraversableContainsOnly::forNativeType('integer')->toString());
+        $this->assertSame('contains only values of type "integer"', TraversableContainsOnly::forNativeType(NativeType::Integer)->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(1, TraversableContainsOnly::forNativeType('integer'));
+        $this->assertCount(1, TraversableContainsOnly::forNativeType(NativeType::Integer));
     }
 }

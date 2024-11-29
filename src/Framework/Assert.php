@@ -275,7 +275,7 @@ abstract class Assert
     {
         self::assertThat(
             $haystack,
-            TraversableContainsOnly::forNativeType($type->value),
+            TraversableContainsOnly::forNativeType($type),
             $message,
         );
     }
@@ -311,7 +311,7 @@ abstract class Assert
         self::assertThat(
             $haystack,
             new LogicalNot(
-                TraversableContainsOnly::forNativeType($type->value),
+                TraversableContainsOnly::forNativeType($type),
             ),
             $message,
         );
@@ -2188,7 +2188,7 @@ abstract class Assert
      */
     final public static function containsOnly(NativeType $type): TraversableContainsOnly
     {
-        return TraversableContainsOnly::forNativeType($type->value);
+        return TraversableContainsOnly::forNativeType($type);
     }
 
     /**
