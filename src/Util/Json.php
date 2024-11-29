@@ -13,6 +13,7 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 use const SORT_STRING;
+use function assert;
 use function is_object;
 use function is_scalar;
 use function json_decode;
