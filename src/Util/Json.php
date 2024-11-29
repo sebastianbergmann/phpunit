@@ -38,7 +38,11 @@ final readonly class Json
             throw new InvalidJsonException;
         }
 
-        return json_encode($decodedJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $result = json_encode($decodedJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        assert($result !== false);
+
+        return $result;
     }
 
     /**
