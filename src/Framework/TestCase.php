@@ -1120,7 +1120,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @template RealInstanceType of object
      *
-     * @param class-string<RealInstanceType> $originalClassName
+     * @param class-string<RealInstanceType> $type
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException
@@ -1128,22 +1128,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @return MockObject&RealInstanceType
      */
-    final protected function createMock(string $originalClassName): MockObject
+    final protected function createMock(string $type): MockObject
     {
         $mock = (new MockGenerator)->testDouble(
-            $originalClassName,
+            $type,
             true,
             callOriginalConstructor: false,
             callOriginalClone: false,
             returnValueGeneration: self::generateReturnValuesForTestDoubles(),
         );
 
-        assert($mock instanceof $originalClassName);
+        assert($mock instanceof $type);
         assert($mock instanceof MockObject);
 
         $this->registerMockObject($mock);
 
-        Event\Facade::emitter()->testCreatedMockObject($originalClassName);
+        Event\Facade::emitter()->testCreatedMockObject($type);
 
         return $mock;
     }
@@ -1175,7 +1175,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @template RealInstanceType of object
      *
-     * @param class-string<RealInstanceType> $originalClassName
+     * @param class-string<RealInstanceType> $type
      * @param array<non-empty-string, mixed> $configuration
      *
      * @throws InvalidArgumentException
@@ -1184,9 +1184,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @return MockObject&RealInstanceType
      */
-    final protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
+    final protected function createConfiguredMock(string $type, array $configuration): MockObject
     {
-        $o = $this->createMock($originalClassName);
+        $o = $this->createMock($type);
 
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);
@@ -1198,7 +1198,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Creates a partial mock object for the specified interface or class.
      *
-     * @param class-string<RealInstanceType> $originalClassName
+     * @param class-string<RealInstanceType> $type
      * @param list<non-empty-string>         $methods
      *
      * @template RealInstanceType of object
@@ -1208,9 +1208,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @return MockObject&RealInstanceType
      */
-    final protected function createPartialMock(string $originalClassName, array $methods): MockObject
+    final protected function createPartialMock(string $type, array $methods): MockObject
     {
-        $mockBuilder = $this->getMockBuilder($originalClassName)
+        $mockBuilder = $this->getMockBuilder($type)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->onlyMethods($methods);
@@ -1222,7 +1222,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $partialMock = $mockBuilder->getMock();
 
         Event\Facade::emitter()->testCreatedPartialMockObject(
-            $originalClassName,
+            $type,
             ...$methods,
         );
 
@@ -2142,7 +2142,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @template RealInstanceType of object
      *
-     * @param class-string<RealInstanceType> $originalClassName
+     * @param class-string<RealInstanceType> $type
      *
      * @throws InvalidArgumentException
      * @throws MockObjectException
@@ -2150,19 +2150,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @return RealInstanceType&Stub
      */
-    final protected static function createStub(string $originalClassName): Stub
+    final protected static function createStub(string $type): Stub
     {
         $stub = (new MockGenerator)->testDouble(
-            $originalClassName,
+            $type,
             false,
             callOriginalConstructor: false,
             callOriginalClone: false,
             returnValueGeneration: self::generateReturnValuesForTestDoubles(),
         );
 
-        Event\Facade::emitter()->testCreatedStub($originalClassName);
+        Event\Facade::emitter()->testCreatedStub($type);
 
-        assert($stub instanceof $originalClassName);
+        assert($stub instanceof $type);
         assert($stub instanceof Stub);
 
         return $stub;
@@ -2191,7 +2191,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @template RealInstanceType of object
      *
-     * @param class-string<RealInstanceType> $originalClassName
+     * @param class-string<RealInstanceType> $type
      * @param array<non-empty-string, mixed> $configuration
      *
      * @throws InvalidArgumentException
@@ -2200,9 +2200,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @return RealInstanceType&Stub
      */
-    final protected static function createConfiguredStub(string $originalClassName, array $configuration): Stub
+    final protected static function createConfiguredStub(string $type, array $configuration): Stub
     {
-        $o = self::createStub($originalClassName);
+        $o = self::createStub($type);
 
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);
