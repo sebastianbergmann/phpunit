@@ -159,7 +159,11 @@ final class ExcludeList
             throw new InvalidDirectoryException($directory);
         }
 
-        self::$directories[] = realpath($directory);
+        $directory = realpath($directory);
+
+        assert($directory !== false);
+
+        self::$directories[] = $directory;
     }
 
     public function __construct(?bool $enabled = null)
