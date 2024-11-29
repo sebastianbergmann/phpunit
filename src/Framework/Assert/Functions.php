@@ -275,8 +275,8 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
+     * @param iterable<mixed>                                                                                                                                                              $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -285,7 +285,7 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
      *
      * @see Assert::assertContainsOnly
      */
-    function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    function assertContainsOnly(NativeType|string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
     {
         Assert::assertContainsOnly(...func_get_args());
     }
@@ -315,8 +315,8 @@ if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
+     * @param iterable<mixed>                                                                                                                                                              $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -325,7 +325,7 @@ if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
      *
      * @see Assert::assertNotContainsOnly
      */
-    function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    function assertNotContainsOnly(NativeType|string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
     {
         Assert::assertNotContainsOnly(...func_get_args());
     }

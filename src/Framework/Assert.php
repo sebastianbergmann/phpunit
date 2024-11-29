@@ -266,17 +266,16 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertContainsOnly(string $type, iterable $haystack, string $message = ''): void
+    final public static function assertContainsOnly(NativeType $type, iterable $haystack, string $message = ''): void
     {
         self::assertThat(
             $haystack,
-            TraversableContainsOnly::forNativeType($type),
+            TraversableContainsOnly::forNativeType($type->value),
             $message,
         );
     }
@@ -302,18 +301,17 @@ abstract class Assert
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertNotContainsOnly(string $type, iterable $haystack, string $message = ''): void
+    final public static function assertNotContainsOnly(NativeType $type, iterable $haystack, string $message = ''): void
     {
         self::assertThat(
             $haystack,
             new LogicalNot(
-                TraversableContainsOnly::forNativeType($type),
+                TraversableContainsOnly::forNativeType($type->value),
             ),
             $message,
         );
@@ -2186,13 +2184,11 @@ abstract class Assert
     }
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     *
      * @throws Exception
      */
-    final public static function containsOnly(string $type): TraversableContainsOnly
+    final public static function containsOnly(NativeType $type): TraversableContainsOnly
     {
-        return TraversableContainsOnly::forNativeType($type);
+        return TraversableContainsOnly::forNativeType($type->value);
     }
 
     /**
