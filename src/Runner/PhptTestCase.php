@@ -89,10 +89,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      */
     public function __construct(string $filename, ?AbstractPhpProcess $phpUtil = null)
     {
-        if (!is_file($filename)) {
-            throw new FileDoesNotExistException($filename);
-        }
-
         $this->filename = $filename;
         $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
     }
