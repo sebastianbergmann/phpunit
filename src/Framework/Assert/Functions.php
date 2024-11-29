@@ -2496,7 +2496,7 @@ if (!function_exists('PHPUnit\Framework\containsIdentical')) {
 }
 
 if (!function_exists('PHPUnit\Framework\containsOnly')) {
-    function containsOnly(string $type): TraversableContainsOnly
+    function containsOnly(NativeType|string $type): TraversableContainsOnly
     {
         return Assert::containsOnly(...func_get_args());
     }
