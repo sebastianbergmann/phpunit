@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(LogicalXor::class)]
@@ -49,10 +50,10 @@ final class LogicalXorTest extends TestCase
 
             [
                 true,
-                'is of type bool xor is true',
+                'is of type boolean xor is true',
                 '',
                 self::logicalXor(
-                    self::isType('bool'),
+                    self::isType(NativeType::Boolean),
                     self::isTrue(),
                 ),
                 false,
@@ -60,10 +61,10 @@ final class LogicalXorTest extends TestCase
 
             [
                 false,
-                'is of type bool xor is true',
-                'Failed asserting that true is of type bool xor is true.',
+                'is of type boolean xor is true',
+                'Failed asserting that true is of type boolean xor is true.',
                 self::logicalXor(
-                    self::isType('bool'),
+                    self::isType(NativeType::Boolean),
                     self::isTrue(),
                 ),
                 true,
@@ -71,15 +72,15 @@ final class LogicalXorTest extends TestCase
 
             [
                 false,
-                'is of type bool and is true xor is of type bool and is true',
-                'Failed asserting that true is of type bool and is true xor is of type bool and is true.',
+                'is of type boolean and is true xor is of type boolean and is true',
+                'Failed asserting that true is of type boolean and is true xor is of type boolean and is true.',
                 self::logicalXor(
                     self::logicalAnd(
-                        self::isType('bool'),
+                        self::isType(NativeType::Boolean),
                         self::isTrue(),
                     ),
                     self::logicalAnd(
-                        self::isType('bool'),
+                        self::isType(NativeType::Boolean),
                         self::isTrue(),
                     ),
                 ),
@@ -112,7 +113,7 @@ final class LogicalXorTest extends TestCase
     public function testIsCountable(): void
     {
         $constraint = $this->logicalXor(
-            $this->isType('bool'),
+            $this->isType(NativeType::Boolean),
             true,
         );
 
