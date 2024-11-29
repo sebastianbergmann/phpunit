@@ -22,7 +22,7 @@ final class TraversableContainsOnly extends Constraint
 
     public static function forNativeType(NativeType $type): self
     {
-        return new self(new IsType($type->value), $type->value);
+        return new self(new IsType($type), $type->value);
     }
 
     /**
