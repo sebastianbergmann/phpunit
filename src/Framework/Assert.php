@@ -2421,12 +2421,26 @@ abstract class Assert
     }
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
      *
      * @throws Exception
      */
-    final public static function isType(string $type): IsType
+    final public static function isType(NativeType|string $type): IsType
     {
+        if (is_string($type)) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'Using isType() with string value "%s" for the $type parameter is deprecated. ' .
+                    'Please use the PHPUnit\Framework\NativeType enumeration instead. ' .
+                    'Support for string values for the $type parameter will be removed in PHPUnit 12.',
+                    $type,
+                ),
+            );
+        } else {
+            $type = $type->value;
+        }
+
         return new IsType($type);
     }
 

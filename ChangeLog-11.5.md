@@ -14,11 +14,11 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Changed
 
-* The type of the value passed for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, and `containsOnly()` methods can now be `NativeType`
+* The type of the value passed for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, `isType()`, and `containsOnly()` methods can now be `NativeType`
 
 ### Deprecated
 
 * [#6046](https://github.com/sebastianbergmann/phpunit/issues/6046): Support for using `assertContainsOnly()` (and `assertNotContainsOnly()`) with classes and interfaces
-* Support for passing a value of type `string` for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, and `containsOnly()` methods (use `NativeType` instead)
+* Support for passing a value of type `string` for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, `isType()`, and `containsOnly()` methods (use `NativeType` instead)
 
 [11.5.0]: https://github.com/sebastianbergmann/phpunit/compare/11.4...11.5

@@ -171,7 +171,7 @@ final class assertThatTest extends TestCase
 
     public function testAssertThatIsType(): void
     {
-        $this->assertThat('string', $this->isType('string'));
+        $this->assertThat('string', $this->isType(NativeType::String));
     }
 
     public function testAssertThatIsEmpty(): void
