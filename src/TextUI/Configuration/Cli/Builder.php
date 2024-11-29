@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\TextUI\CliArguments;
 
 use const DIRECTORY_SEPARATOR;
@@ -41,7 +44,7 @@ final class Builder
         'do-not-cache-result',
         'cache-directory=',
         'check-version',
-        'colors==',
+        'colors=',
         'columns=',
         'configuration=',
         'warm-coverage-cache',
@@ -51,7 +54,7 @@ final class Builder
         'coverage-crap4j=',
         'coverage-html=',
         'coverage-php=',
-        'coverage-text==',
+        'coverage-text=',
         'only-summary-for-coverage-text',
         'show-uncovered-for-coverage-text',
         'coverage-xml=',
@@ -115,7 +118,7 @@ final class Builder
         'fail-on-skipped',
         'fail-on-warning',
         'stop-on-defect',
-        'stop-on-deprecation==',
+        'stop-on-deprecation=',
         'stop-on-error',
         'stop-on-failure',
         'stop-on-incomplete',
