@@ -2744,6 +2744,8 @@ abstract class Assert
      * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
      *
      * @throws Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6055
      */
     final public static function containsOnly(string $type): TraversableContainsOnly
     {
