@@ -16,8 +16,6 @@ use function count;
 use function file_get_contents;
 use function interface_exists;
 use function is_bool;
-use function is_string;
-use function sprintf;
 use ArrayAccess;
 use Countable;
 use Generator;
@@ -2743,26 +2741,12 @@ abstract class Assert
     }
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string'|NativeType $type
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
      *
      * @throws Exception
      */
-    final public static function containsOnly(NativeType|string $type): TraversableContainsOnly
+    final public static function containsOnly(string $type): TraversableContainsOnly
     {
-        if (is_string($type)) {
-            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                null,
-                sprintf(
-                    'Using containsOnly() with string value "%s" for the $type parameter is deprecated. ' .
-                    'Please use the PHPUnit\Framework\NativeType enumeration instead. ' .
-                    'Support for string values for the $type parameter will be removed in PHPUnit 12.',
-                    $type,
-                ),
-            );
-        } else {
-            $type = $type->value;
-        }
-
         return new TraversableContainsOnly($type);
     }
 
