@@ -11,10 +11,10 @@ namespace PHPUnit\Framework;
 
 use function assert;
 use function defined;
-use function file_exists;
 use function file_get_contents;
 use function get_include_path;
 use function hrtime;
+use function is_file;
 use function restore_error_handler;
 use function serialize;
 use function set_error_handler;
@@ -172,7 +172,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
 
         $processResult = '';
 
-        if (file_exists($processResultFile)) {
+        if (is_file($processResultFile)) {
             $processResult = file_get_contents($processResultFile);
 
             assert($processResult !== false);
