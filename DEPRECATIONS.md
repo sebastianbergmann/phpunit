@@ -8,10 +8,10 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 #### Assertions, Constraints, and Expectations
 
-| Issue                                                             | Description                                    | Since  | Replacement |
-|-------------------------------------------------------------------|------------------------------------------------|--------|-------------|
-| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormat()`     | 10.4.0 |             |
-| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `TestCase::assertStringNotMatchesFormatFile()` | 10.4.0 |             |
+| Issue                                                             | Description                                  | Since  | Replacement |
+|-------------------------------------------------------------------|----------------------------------------------|--------|-------------|
+| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `Assert::assertStringNotMatchesFormat()`     | 10.4.0 |             |
+| [#5472](https://github.com/sebastianbergmann/phpunit/issues/5472) | `Assert::assertStringNotMatchesFormatFile()` | 10.4.0 |             |
 
 #### Test Double API
 
