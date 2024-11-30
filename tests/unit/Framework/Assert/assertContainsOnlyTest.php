@@ -31,9 +31,9 @@ final class assertContainsOnlyTest extends TestCase
     {
         return [
             [NativeType::Array, [[1, 2, 3]]],
-            [NativeType::Boolean, [true, false]],
+            [NativeType::Bool, [true, false]],
             [NativeType::Float, [1.0, 2.0, 3.0]],
-            [NativeType::Integer, [1, 2, 3]],
+            [NativeType::Int, [1, 2, 3]],
             [NativeType::Null, [null]],
             [NativeType::Numeric, [1, 2.0, '3', '4.0']],
             [NativeType::Object, [new stdClass]],
@@ -63,9 +63,9 @@ final class assertContainsOnlyTest extends TestCase
     {
         return [
             [NativeType::Array, [[1, 2, 3], null]],
-            [NativeType::Boolean, [true, false, null]],
+            [NativeType::Bool, [true, false, null]],
             [NativeType::Float, [1.0, 2.0, 3.0, null]],
-            [NativeType::Integer, [1, 2, 3, null]],
+            [NativeType::Int, [1, 2, 3, null]],
             [NativeType::Numeric, [null, 0]],
             [NativeType::Numeric, [1, 2.0, '3', '4.0', null]],
             [NativeType::Object, [new stdClass, null]],
