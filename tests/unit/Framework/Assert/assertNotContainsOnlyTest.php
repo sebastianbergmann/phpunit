@@ -23,13 +23,13 @@ use PHPUnit\Framework\Attributes\TestDox;
 final class assertNotContainsOnlyTest extends TestCase
 {
     #[DataProviderExternal(assertContainsOnlyTest::class, 'failureProvider')]
-    public function testSucceedsWhenConstraintEvaluatesToTrue(NativeType|string $type, iterable $haystack): void
+    public function testSucceedsWhenConstraintEvaluatesToTrue(string $type, iterable $haystack): void
     {
         $this->assertNotContainsOnly($type, $haystack);
     }
 
     #[DataProviderExternal(assertContainsOnlyTest::class, 'successProvider')]
-    public function testFailsWhenConstraintEvaluatesToFalse(NativeType|string $type, iterable $haystack): void
+    public function testFailsWhenConstraintEvaluatesToFalse(string $type, iterable $haystack): void
     {
         $this->expectException(AssertionFailedError::class);
 

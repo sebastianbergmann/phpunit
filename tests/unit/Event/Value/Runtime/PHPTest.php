@@ -18,7 +18,6 @@ use const PHP_VERSION;
 use const PHP_VERSION_ID;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(PHP::class)]
@@ -64,6 +63,6 @@ final class PHPTest extends TestCase
     {
         $this->assertNotEmpty((new PHP)->extensions());
         $this->assertIsList((new PHP)->extensions());
-        $this->assertContainsOnly(NativeType::String, (new PHP)->extensions());
+        $this->assertContainsOnlyString((new PHP)->extensions());
     }
 }
