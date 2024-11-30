@@ -2750,6 +2750,71 @@ abstract class Assert
         return new TraversableContainsOnly($type);
     }
 
+    final public static function containsOnlyArray(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Array->value);
+    }
+
+    final public static function containsOnlyBool(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Bool->value);
+    }
+
+    final public static function containsOnlyCallable(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Callable->value);
+    }
+
+    final public static function containsOnlyFloat(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Float->value);
+    }
+
+    final public static function containsOnlyInt(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Int->value);
+    }
+
+    final public static function containsOnlyIterable(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Iterable->value);
+    }
+
+    final public static function containsOnlyNull(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Null->value);
+    }
+
+    final public static function containsOnlyNumeric(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Numeric->value);
+    }
+
+    final public static function containsOnlyObject(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Object->value);
+    }
+
+    final public static function containsOnlyResource(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Resource->value);
+    }
+
+    final public static function containsOnlyClosedResource(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::ClosedResource->value);
+    }
+
+    final public static function containsOnlyScalar(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::Scalar->value);
+    }
+
+    final public static function containsOnlyString(): TraversableContainsOnly
+    {
+        return new TraversableContainsOnly(NativeType::String->value);
+    }
+
     /**
      * @param class-string $className
      *
