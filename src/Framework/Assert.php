@@ -2764,11 +2764,80 @@ abstract class Assert
     }
 
     /**
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     *
      * @throws Exception
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6060
      */
-    final public static function containsOnly(NativeType $type): TraversableContainsOnly
+    final public static function containsOnly(string $type): TraversableContainsOnly
     {
-        return TraversableContainsOnly::forNativeType($type);
+        return TraversableContainsOnly::forNativeType(self::mapNativeType($type));
+    }
+
+    final public static function containsOnlyArray(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Array);
+    }
+
+    final public static function containsOnlyBool(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Bool);
+    }
+
+    final public static function containsOnlyCallable(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Callable);
+    }
+
+    final public static function containsOnlyFloat(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Float);
+    }
+
+    final public static function containsOnlyInt(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Int);
+    }
+
+    final public static function containsOnlyIterable(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Iterable);
+    }
+
+    final public static function containsOnlyNull(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Null);
+    }
+
+    final public static function containsOnlyNumeric(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Numeric);
+    }
+
+    final public static function containsOnlyObject(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Object);
+    }
+
+    final public static function containsOnlyResource(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Resource);
+    }
+
+    final public static function containsOnlyClosedResource(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::ClosedResource);
+    }
+
+    final public static function containsOnlyScalar(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::Scalar);
+    }
+
+    final public static function containsOnlyString(): TraversableContainsOnly
+    {
+        return TraversableContainsOnly::forNativeType(NativeType::String);
     }
 
     /**

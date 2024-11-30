@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#6053](https://github.com/sebastianbergmann/phpunit/issues/6053): `Assert::isType()` (was soft-deprecated in PHPUnit 11.5)
 * [#6056](https://github.com/sebastianbergmann/phpunit/issues/6056): `assertContainsOnly()` (was soft-deprecated in PHPUnit 11.5)
 * [#6056](https://github.com/sebastianbergmann/phpunit/issues/6056): `assertNotContainsOnly()` (was soft-deprecated in PHPUnit 11.5)
+* [#6060](https://github.com/sebastianbergmann/phpunit/issues/6060): `containsOnly()` (was soft-deprecated in PHPUnit 11.5)
 
 ### Removed
 

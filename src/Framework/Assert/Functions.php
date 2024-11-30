@@ -2910,9 +2910,100 @@ if (!function_exists('PHPUnit\Framework\containsIdentical')) {
 }
 
 if (!function_exists('PHPUnit\Framework\containsOnly')) {
-    function containsOnly(NativeType $type): TraversableContainsOnly
+    function containsOnly(string $type): TraversableContainsOnly
     {
         return Assert::containsOnly(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyArray')) {
+    function containsOnlyArray(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyArray(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyBool')) {
+    function containsOnlyBool(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyBool(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyCallable')) {
+    function containsOnlyCallable(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyCallable(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyFloat')) {
+    function containsOnlyFloat(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyFloat(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyInt')) {
+    function containsOnlyInt(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyInt(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyIterable')) {
+    function containsOnlyIterable(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyIterable(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyNull')) {
+    function containsOnlyNull(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyNull(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyNumeric')) {
+    function containsOnlyNumeric(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyNumeric(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyObject')) {
+    function containsOnlyObject(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyObject(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyResource')) {
+    function containsOnlyResource(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyResource(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyClosedResource')) {
+    function containsOnlyClosedResource(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyClosedResource(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyScalar')) {
+    function containsOnlyScalar(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyScalar(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\containsOnlyString')) {
+    function containsOnlyString(): TraversableContainsOnly
+    {
+        return Assert::containsOnlyString(...func_get_args());
     }
 }
 

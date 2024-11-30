@@ -121,7 +121,81 @@ final class assertThatTest extends TestCase
 
     public function testAssertThatContainsOnly(): void
     {
-        $this->assertThat(['foo'], $this->containsOnly(NativeType::String));
+        $this->assertThat(['foo'], $this->containsOnly('string'));
+    }
+
+    public function testAssertThatContainsOnlyArray(): void
+    {
+        $this->assertThat([[]], $this->containsOnlyArray());
+    }
+
+    public function testAssertThatContainsOnlyBool(): void
+    {
+        $this->assertThat([true], $this->containsOnlyBool());
+    }
+
+    public function testAssertThatContainsOnlyCallable(): void
+    {
+        $callable = static function (): void
+        {};
+
+        $this->assertThat([$callable], $this->containsOnlyCallable());
+    }
+
+    public function testAssertThatContainsOnlyFloat(): void
+    {
+        $this->assertThat([0.0], $this->containsOnlyFloat());
+    }
+
+    public function testAssertThatContainsOnlyInt(): void
+    {
+        $this->assertThat([0], $this->containsOnlyInt());
+    }
+
+    public function testAssertThatContainsOnlyIterable(): void
+    {
+        $this->assertThat([[]], $this->containsOnlyIterable());
+    }
+
+    public function testAssertThatContainsOnlyNull(): void
+    {
+        $this->assertThat([null], $this->containsOnlyNull());
+    }
+
+    public function testAssertThatContainsOnlyNumeric(): void
+    {
+        $this->assertThat(['0.0'], $this->containsOnlyNumeric());
+    }
+
+    public function testAssertThatContainsOnlyObject(): void
+    {
+        $this->assertThat([new stdClass], $this->containsOnlyObject());
+    }
+
+    public function testAssertThatContainsOnlyResource(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+
+        $this->assertThat([$resource], $this->containsOnlyResource());
+    }
+
+    public function testAssertThatContainsOnlyClosedResource(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+
+        fclose($resource);
+
+        $this->assertThat([$resource], $this->containsOnlyClosedResource());
+    }
+
+    public function testAssertThatContainsOnlyScalar(): void
+    {
+        $this->assertThat(['string'], $this->containsOnlyScalar());
+    }
+
+    public function testAssertThatContainsOnlyString(): void
+    {
+        $this->assertThat(['string'], $this->containsOnlyString());
     }
 
     public function testAssertThatContainsOnlyInstancesOf(): void
