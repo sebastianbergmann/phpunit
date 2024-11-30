@@ -19,7 +19,13 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Deprecated
 
+#### Hard Deprecations
+
 * [#6046](https://github.com/sebastianbergmann/phpunit/issues/6046): Support for using `assertContainsOnly()` (and `assertNotContainsOnly()`) with classes and interfaces
 * Support for passing a value of type `string` for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, and `containsOnly()` methods (use `NativeType` instead)
+
+#### Soft Deprecations
+
+* `isType()` (use `isArray()`, `isBool()`, `isCallable()`, `isFloat()`, `isInt()`, `isIterable()`, `isNull()`, `isNumeric()`, `isObject()`, `isResource()`, `isClosedResource()`, `isScalar()`, or `isString()` instead)
 
 [11.5.0]: https://github.com/sebastianbergmann/phpunit/compare/11.4...11.5
