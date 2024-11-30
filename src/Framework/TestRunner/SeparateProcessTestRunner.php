@@ -14,6 +14,7 @@ use function defined;
 use function file_get_contents;
 use function get_include_path;
 use function hrtime;
+use function is_array;
 use function is_file;
 use function restore_error_handler;
 use function serialize;
@@ -252,22 +253,28 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         }
 
         if ($childResult !== false) {
-            if (!empty($childResult['output'])) {
-                $output = $childResult['output'];
+            if (!is_array($childResult)) {
+                $childResult = [$childResult];
             }
 
-            Facade::instance()->forward($childResult['events']);
-            PassedTests::instance()->import($childResult['passedTests']);
+            foreach ($childResult as $result) {
+                if (!empty($result->output)) {
+                    $output = $result->output;
+                }
 
-            assert($test instanceof TestCase);
+                Facade::instance()->forward($result->events);
+                PassedTests::instance()->import($result->passedTests);
 
-            $test->setResult($childResult['testResult']);
-            $test->addToAssertionCount($childResult['numAssertions']);
+                assert($test instanceof TestCase);
 
-            if (CodeCoverage::instance()->isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-                CodeCoverage::instance()->codeCoverage()->merge(
-                    $childResult['codeCoverage'],
-                );
+                $test->setResult($result->testResult);
+                $test->addToAssertionCount($result->numAssertions);
+
+                if (CodeCoverage::instance()->isActive() && $result->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+                    CodeCoverage::instance()->codeCoverage()->merge(
+                        $result->codeCoverage,
+                    );
+                }
             }
         }
 
