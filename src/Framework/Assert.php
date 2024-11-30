@@ -325,6 +325,7 @@ abstract class Assert
                 ),
             );
 
+            /** @phpstan-ignore argument.type */
             $constraint = TraversableContainsOnly::forClassOrInterface($type);
         }
 
@@ -625,6 +626,7 @@ abstract class Assert
                 ),
             );
 
+            /** @phpstan-ignore argument.type */
             $constraint = TraversableContainsOnly::forClassOrInterface($type);
         }
 
@@ -3105,6 +3107,7 @@ abstract class Assert
             throw new UnknownNativeTypeException($type);
         }
 
+        /** @phpstan-ignore match.unhandled */
         return match ($type) {
             'array'             => NativeType::Array,
             'bool'              => NativeType::Bool,
