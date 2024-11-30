@@ -2570,8 +2570,92 @@ if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\isArray')) {
+    function isArray(): IsType
+    {
+        return Assert::isArray(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isBool')) {
+    function isBool(): IsType
+    {
+        return Assert::isBool(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isCallable')) {
+    function isCallable(): IsType
+    {
+        return Assert::isCallable(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isFloat')) {
+    function isFloat(): IsType
+    {
+        return Assert::isFloat(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isInt')) {
+    function isInt(): IsType
+    {
+        return Assert::isInt(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isIterable')) {
+    function isIterable(): IsType
+    {
+        return Assert::isIterable(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isNumeric')) {
+    function isNumeric(): IsType
+    {
+        return Assert::isNumeric(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isObject')) {
+    function isObject(): IsType
+    {
+        return Assert::isObject(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isResource')) {
+    function isResource(): IsType
+    {
+        return Assert::isResource(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isClosedResource')) {
+    function isClosedResource(): IsType
+    {
+        return Assert::isClosedResource(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isScalar')) {
+    function isScalar(): IsType
+    {
+        return Assert::isScalar(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\isString')) {
+    function isString(): IsType
+    {
+        return Assert::isString(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\isType')) {
-    function isType(NativeType $type): IsType
+    function isType(string $type): IsType
     {
         return Assert::isType(...func_get_args());
     }

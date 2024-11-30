@@ -16,9 +16,11 @@ use function count;
 use function file_get_contents;
 use function interface_exists;
 use function is_bool;
+use function sprintf;
 use ArrayAccess;
 use Countable;
 use Generator;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -1201,7 +1203,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(NativeType::Boolean),
+            new IsType(NativeType::Bool),
             $message,
         );
     }
@@ -1235,7 +1237,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(NativeType::Integer),
+            new IsType(NativeType::Int),
             $message,
         );
     }
@@ -1405,7 +1407,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(NativeType::Boolean)),
+            new LogicalNot(new IsType(NativeType::Bool)),
             $message,
         );
     }
@@ -1439,7 +1441,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(NativeType::Integer)),
+            new LogicalNot(new IsType(NativeType::Int)),
             $message,
         );
     }
@@ -2282,12 +2284,146 @@ abstract class Assert
         return new IsInstanceOf($className);
     }
 
-    /**
-     * @throws Exception
-     */
-    final public static function isType(NativeType $type): IsType
+    final public static function isArray(): IsType
     {
-        return new IsType($type);
+        return new IsType(NativeType::Array);
+    }
+
+    final public static function isBool(): IsType
+    {
+        return new IsType(NativeType::Bool);
+    }
+
+    final public static function isCallable(): IsType
+    {
+        return new IsType(NativeType::Callable);
+    }
+
+    final public static function isFloat(): IsType
+    {
+        return new IsType(NativeType::Float);
+    }
+
+    final public static function isInt(): IsType
+    {
+        return new IsType(NativeType::Int);
+    }
+
+    final public static function isIterable(): IsType
+    {
+        return new IsType(NativeType::Iterable);
+    }
+
+    final public static function isNumeric(): IsType
+    {
+        return new IsType(NativeType::Numeric);
+    }
+
+    final public static function isObject(): IsType
+    {
+        return new IsType(NativeType::Object);
+    }
+
+    final public static function isResource(): IsType
+    {
+        return new IsType(NativeType::Resource);
+    }
+
+    final public static function isClosedResource(): IsType
+    {
+        return new IsType(NativeType::ClosedResource);
+    }
+
+    final public static function isScalar(): IsType
+    {
+        return new IsType(NativeType::Scalar);
+    }
+
+    final public static function isString(): IsType
+    {
+        return new IsType(NativeType::String);
+    }
+
+    /**
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     *
+     * @throws UnknownNativeTypeException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6053
+     */
+    final public static function isType(string $type): IsType
+    {
+        if ($type !== 'array' &&
+            $type !== 'bool' &&
+            $type !== 'boolean' &&
+            $type !== 'callable' &&
+            $type !== 'double' &&
+            $type !== 'float' &&
+            $type !== 'int' &&
+            $type !== 'integer' &&
+            $type !== 'iterable' &&
+            $type !== 'null' &&
+            $type !== 'numeric' &&
+            $type !== 'object' &&
+            $type !== 'real' &&
+            $type !== 'resource' &&
+            $type !== 'resource (closed)' &&
+            $type !== 'scalar' &&
+            $type !== 'string') {
+            throw new UnknownNativeTypeException($type);
+        }
+
+        $constraint = match ($type) {
+            'array'             => new IsType(NativeType::Array),
+            'bool'              => new IsType(NativeType::Bool),
+            'boolean'           => new IsType(NativeType::Bool),
+            'callable'          => new IsType(NativeType::Callable),
+            'double'            => new IsType(NativeType::Float),
+            'float'             => new IsType(NativeType::Float),
+            'int'               => new IsType(NativeType::Int),
+            'integer'           => new IsType(NativeType::Int),
+            'iterable'          => new IsType(NativeType::Iterable),
+            'null'              => new IsType(NativeType::Null),
+            'numeric'           => new IsType(NativeType::Numeric),
+            'object'            => new IsType(NativeType::Object),
+            'real'              => new IsType(NativeType::Float),
+            'resource'          => new IsType(NativeType::Resource),
+            'resource (closed)' => new IsType(NativeType::ClosedResource),
+            'scalar'            => new IsType(NativeType::Scalar),
+            'string'            => new IsType(NativeType::String),
+        };
+
+        $replacement = match ($type) {
+            'array'             => 'isArray',
+            'bool'              => 'isBool',
+            'boolean'           => 'isBool',
+            'callable'          => 'isCallable',
+            'double'            => 'isFloat',
+            'float'             => 'isFloat',
+            'int'               => 'isInt',
+            'integer'           => 'isInt',
+            'iterable'          => 'isIterable',
+            'null'              => 'isNull',
+            'numeric'           => 'isNumeric',
+            'object'            => 'isObject',
+            'real'              => 'isFloat',
+            'resource'          => 'isResource',
+            'resource (closed)' => 'isClosedResource',
+            'scalar'            => 'isScalar',
+            'string'            => 'isString',
+        };
+
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            sprintf(
+                'isType(\'%s\') is deprecated and will be removed in PHPUnit 12. ' .
+                'Please use the %s() method instead.',
+                $type,
+                $replacement,
+            ),
+        );
+
+        return $constraint;
     }
 
     final public static function lessThan(mixed $value): LessThan
