@@ -11,6 +11,8 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 ### Deprecated
 
 * [#6053](https://github.com/sebastianbergmann/phpunit/issues/6053): `Assert::isType()` (was soft-deprecated in PHPUnit 11.5)
+* [#6056](https://github.com/sebastianbergmann/phpunit/issues/6056): `assertContainsOnly()` (was soft-deprecated in PHPUnit 11.5)
+* [#6056](https://github.com/sebastianbergmann/phpunit/issues/6056): `assertNotContainsOnly()` (was soft-deprecated in PHPUnit 11.5)
 
 ### Removed
 
@@ -40,7 +42,5 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5959](https://github.com/sebastianbergmann/phpunit/issues/5959): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes
 * [#5961](https://github.com/sebastianbergmann/phpunit/issues/5961): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
-* [#6047](https://github.com/sebastianbergmann/phpunit/issues/6047): Support for using `assertContainsOnly()` (and `assertNotContainsOnly()`) with classes and interfaces
-* Support for passing a value of type `string` for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, and `containsOnly()` methods (use `NativeType` instead)
 
 [12.0.0]: https://github.com/sebastianbergmann/phpunit/compare/11.5...main

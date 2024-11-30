@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use function fopen;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use stdClass;
@@ -19,6 +20,7 @@ use stdClass;
 #[CoversMethod(Assert::class, 'assertContainsOnly')]
 #[TestDox('assertContainsOnly()')]
 #[Small]
+#[IgnorePhpunitDeprecations]
 final class assertContainsOnlyTest extends TestCase
 {
     /**
@@ -27,16 +29,19 @@ final class assertContainsOnlyTest extends TestCase
     public static function successProvider(): array
     {
         return [
-            [NativeType::Array, [[1, 2, 3]]],
-            [NativeType::Bool, [true, false]],
-            [NativeType::Float, [1.0, 2.0, 3.0]],
-            [NativeType::Int, [1, 2, 3]],
-            [NativeType::Null, [null]],
-            [NativeType::Numeric, [1, 2.0, '3', '4.0']],
-            [NativeType::Object, [new stdClass]],
-            [NativeType::Resource, [fopen(__FILE__, 'r')]],
-            [NativeType::Scalar, [true, 1.0, 1, 'string']],
-            [NativeType::String, ['string']],
+            ['array', [[1, 2, 3]]],
+            ['boolean', [true, false]],
+            ['bool', [true, false]],
+            ['float', [1.0, 2.0, 3.0]],
+            ['integer', [1, 2, 3]],
+            ['int', [1, 2, 3]],
+            ['null', [null]],
+            ['numeric', [1, 2.0, '3', '4.0']],
+            ['object', [new stdClass]],
+            ['resource', [fopen(__FILE__, 'r')]],
+            ['scalar', [true, 1.0, 1, 'string']],
+            ['string', ['string']],
+            [stdClass::class, [new stdClass]],
         ];
     }
 
@@ -46,27 +51,30 @@ final class assertContainsOnlyTest extends TestCase
     public static function failureProvider(): array
     {
         return [
-            [NativeType::Array, [[1, 2, 3], null]],
-            [NativeType::Bool, [true, false, null]],
-            [NativeType::Float, [1.0, 2.0, 3.0, null]],
-            [NativeType::Int, [1, 2, 3, null]],
-            [NativeType::Numeric, [null, 0]],
-            [NativeType::Numeric, [1, 2.0, '3', '4.0', null]],
-            [NativeType::Object, [new stdClass, null]],
-            [NativeType::Resource, [fopen(__FILE__, 'r'), null]],
-            [NativeType::Scalar, [true, 1.0, 1, 'string', null]],
-            [NativeType::String, ['string', null]],
+            ['array', [[1, 2, 3], null]],
+            ['boolean', [true, false, null]],
+            ['bool', [true, false, null]],
+            ['float', [1.0, 2.0, 3.0, null]],
+            ['integer', [1, 2, 3, null]],
+            ['int', [1, 2, 3, null]],
+            ['null', [null, 0]],
+            ['numeric', [1, 2.0, '3', '4.0', null]],
+            ['object', [new stdClass, null]],
+            ['resource', [fopen(__FILE__, 'r'), null]],
+            ['scalar', [true, 1.0, 1, 'string', null]],
+            ['string', ['string', null]],
+            [stdClass::class, [new stdClass, null]],
         ];
     }
 
     #[DataProvider('successProvider')]
-    public function testSucceedsWhenConstraintEvaluatesToTrue(NativeType $type, iterable $haystack): void
+    public function testSucceedsWhenConstraintEvaluatesToTrue(string $type, iterable $haystack): void
     {
         $this->assertContainsOnly($type, $haystack);
     }
 
     #[DataProvider('failureProvider')]
-    public function testFailsWhenConstraintEvaluatesToFalse(NativeType $type, iterable $haystack): void
+    public function testFailsWhenConstraintEvaluatesToFalse(string $type, iterable $haystack): void
     {
         $this->expectException(AssertionFailedError::class);
 

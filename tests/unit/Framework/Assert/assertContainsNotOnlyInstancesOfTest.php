@@ -11,27 +11,25 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
-#[CoversMethod(Assert::class, 'assertNotContainsOnly')]
-#[TestDox('assertNotContainsOnly()')]
+#[CoversMethod(Assert::class, 'assertContainsNotOnlyInstancesOf')]
+#[TestDox('assertContainsNotOnlyInstancesOf()')]
 #[Small]
-#[IgnorePhpunitDeprecations]
-final class assertNotContainsOnlyTest extends TestCase
+final class assertContainsNotOnlyInstancesOfTest extends TestCase
 {
-    #[DataProviderExternal(assertContainsOnlyTest::class, 'failureProvider')]
+    #[DataProviderExternal(assertContainsOnlyInstancesOfTest::class, 'failureProvider')]
     public function testSucceedsWhenConstraintEvaluatesToTrue(string $type, iterable $haystack): void
     {
-        $this->assertNotContainsOnly($type, $haystack);
+        $this->assertContainsNotOnlyInstancesOf($type, $haystack);
     }
 
-    #[DataProviderExternal(assertContainsOnlyTest::class, 'successProvider')]
+    #[DataProviderExternal(assertContainsOnlyInstancesOfTest::class, 'successProvider')]
     public function testFailsWhenConstraintEvaluatesToFalse(string $type, iterable $haystack): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotContainsOnly($type, $haystack);
+        $this->assertContainsNotOnlyInstancesOf($type, $haystack);
     }
 }

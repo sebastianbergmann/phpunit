@@ -13,44 +13,46 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
-use stdClass;
 
-#[CoversMethod(Assert::class, 'assertContainsOnlyInstancesOf')]
-#[TestDox('assertContainsOnlyInstancesOf()')]
+#[CoversMethod(Assert::class, 'assertContainsOnlyCallable')]
+#[TestDox('assertContainsOnlyCallable()')]
 #[Small]
-final class assertContainsOnlyInstancesOfTest extends TestCase
+final class assertContainsOnlyCallableTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{0: class-string, 1: iterable}>
+     * @return non-empty-list<array{0: iterable}>
      */
     public static function successProvider(): array
     {
+        $callable = static function (): void
+        {};
+
         return [
-            [stdClass::class, [new stdClass]],
+            [[$callable]],
         ];
     }
 
     /**
-     * @return non-empty-list<array{0: class-string, 1: iterable}>
+     * @return non-empty-list<array{0: iterable}>
      */
     public static function failureProvider(): array
     {
         return [
-            [stdClass::class, [null]],
+            [[null]],
         ];
     }
 
     #[DataProvider('successProvider')]
-    public function testSucceedsWhenConstraintEvaluatesToTrue(string $type, iterable $haystack): void
+    public function testSucceedsWhenConstraintEvaluatesToTrue(iterable $haystack): void
     {
-        $this->assertContainsOnlyInstancesOf($type, $haystack);
+        $this->assertContainsOnlyCallable($haystack);
     }
 
     #[DataProvider('failureProvider')]
-    public function testFailsWhenConstraintEvaluatesToFalse(string $type, iterable $haystack): void
+    public function testFailsWhenConstraintEvaluatesToFalse(iterable $haystack): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertContainsOnlyInstancesOf($type, $haystack);
+        $this->assertContainsOnlyCallable($haystack);
     }
 }

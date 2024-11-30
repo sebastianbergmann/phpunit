@@ -268,22 +268,287 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param iterable<mixed> $haystack
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param iterable<mixed>                                                                                                                                                   $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6056
      */
-    final public static function assertContainsOnly(NativeType $type, iterable $haystack, string $message = ''): void
+    final public static function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    {
+        if ($isNativeType === null) {
+            $isNativeType = self::isNativeType($type);
+        }
+
+        if ($isNativeType) {
+            $replacement = match ($type) {
+                'array'             => 'assertContainsOnlyArray',
+                'bool'              => 'assertContainsOnlyBool',
+                'boolean'           => 'assertContainsOnlyBool',
+                'callable'          => 'assertContainsOnlyCallable',
+                'double'            => 'assertContainsOnlyFloat',
+                'float'             => 'assertContainsOnlyFloat',
+                'int'               => 'assertContainsOnlyInt',
+                'integer'           => 'assertContainsOnlyInt',
+                'iterable'          => 'assertContainsOnlyIterable',
+                'null'              => 'assertContainsOnlyNull',
+                'numeric'           => 'assertContainsOnlyNumeric',
+                'object'            => 'assertContainsOnlyObject',
+                'real'              => 'assertContainsOnlyFloat',
+                'resource'          => 'assertContainsOnlyResource',
+                'resource (closed)' => 'assertContainsOnlyClosedResource',
+                'scalar'            => 'assertContainsOnlyScalar',
+                'string'            => 'assertContainsOnlyString',
+            };
+
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'assertContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'Please use %s($haystack) instead of assertContainsOnly(\'%s\', $haystack).',
+                    $replacement,
+                    $type,
+                ),
+            );
+
+            $constraint = TraversableContainsOnly::forNativeType(self::mapNativeType($type));
+        } else {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'assertContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'Please use assertContainsOnlyInstancesOf(\'%s\', $haystack) instead of assertContainsOnly(\'%s\', $haystack).',
+                    $type,
+                    $type,
+                ),
+            );
+
+            $constraint = TraversableContainsOnly::forClassOrInterface($type);
+        }
+
+        self::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type array.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyArray(iterable $haystack, string $message = ''): void
     {
         self::assertThat(
             $haystack,
-            TraversableContainsOnly::forNativeType($type),
+            TraversableContainsOnly::forNativeType(
+                NativeType::Array,
+            ),
             $message,
         );
     }
 
     /**
-     * Asserts that a haystack contains only instances of a given class name.
+     * Asserts that a haystack contains only values of type bool.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyBool(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Bool,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type callable.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyCallable(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Callable,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type float.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyFloat(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Float,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type int.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyInt(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Int,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type iterable.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyIterable(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Iterable,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type numeric.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyNumeric(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Numeric,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type object.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyObject(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Object,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type resource.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyResource(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Resource,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type closed resource.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyClosedResource(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::ClosedResource,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type scalar.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyScalar(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Scalar,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of type string.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyString(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::String,
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only instances of a specified interface or class name.
      *
      * @param class-string    $className
      * @param iterable<mixed> $haystack
@@ -303,17 +568,328 @@ abstract class Assert
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
+     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
+     * @param iterable<mixed>                                                                                                                                                   $haystack
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6056
+     */
+    final public static function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
+    {
+        if ($isNativeType === null) {
+            $isNativeType = self::isNativeType($type);
+        }
+
+        if ($isNativeType) {
+            $replacement = match ($type) {
+                'array'             => 'assertContainsNotOnlyArray',
+                'bool'              => 'assertContainsNotOnlyBool',
+                'boolean'           => 'assertContainsNotOnlyBool',
+                'callable'          => 'assertContainsNotOnlyCallable',
+                'double'            => 'assertContainsNotOnlyFloat',
+                'float'             => 'assertContainsNotOnlyFloat',
+                'int'               => 'assertContainsNotOnlyInt',
+                'integer'           => 'assertContainsNotOnlyInt',
+                'iterable'          => 'assertContainsNotOnlyIterable',
+                'null'              => 'assertContainsNotOnlyNull',
+                'numeric'           => 'assertContainsNotOnlyNumeric',
+                'object'            => 'assertContainsNotOnlyObject',
+                'real'              => 'assertContainsNotOnlyFloat',
+                'resource'          => 'assertContainsNotOnlyResource',
+                'resource (closed)' => 'assertContainsNotOnlyClosedResource',
+                'scalar'            => 'assertContainsNotOnlyScalar',
+                'string'            => 'assertContainsNotOnlyString',
+            };
+
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'assertNotContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'Please use %s($haystack) instead of assertNotContainsOnly(\'%s\', $haystack).',
+                    $replacement,
+                    $type,
+                ),
+            );
+
+            $constraint = TraversableContainsOnly::forNativeType(self::mapNativeType($type));
+        } else {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                sprintf(
+                    'assertNotContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'Please use assertContainsNotOnlyInstancesOf(\'%s\', $haystack) instead of assertNotContainsOnly(\'%s\', $haystack).',
+                    $type,
+                    $type,
+                ),
+            );
+
+            $constraint = TraversableContainsOnly::forClassOrInterface($type);
+        }
+
+        self::assertThat(
+            $haystack,
+            new LogicalNot($constraint),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type array.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyArray(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Array,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type bool.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyBool(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Bool,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type callable.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyCallable(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Callable,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type float.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyFloat(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Float,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type int.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyInt(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Int,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type iterable.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyIterable(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Iterable,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type numeric.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyNumeric(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Numeric,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type object.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyObject(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Object,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type resource.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyResource(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Resource,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type closed resource.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyClosedResource(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::ClosedResource,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type scalar.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyScalar(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Scalar,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type string.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyString(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::String,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only instances of a specified interface or class name.
+     *
+     * @param class-string    $className
      * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertNotContainsOnly(NativeType $type, iterable $haystack, string $message = ''): void
+    final public static function assertContainsNotOnlyInstancesOf(string $className, iterable $haystack, string $message = ''): void
     {
         self::assertThat(
             $haystack,
             new LogicalNot(
-                TraversableContainsOnly::forNativeType($type),
+                TraversableContainsOnly::forClassOrInterface($className),
             ),
             $message,
         );
@@ -2353,45 +2929,7 @@ abstract class Assert
      */
     final public static function isType(string $type): IsType
     {
-        if ($type !== 'array' &&
-            $type !== 'bool' &&
-            $type !== 'boolean' &&
-            $type !== 'callable' &&
-            $type !== 'double' &&
-            $type !== 'float' &&
-            $type !== 'int' &&
-            $type !== 'integer' &&
-            $type !== 'iterable' &&
-            $type !== 'null' &&
-            $type !== 'numeric' &&
-            $type !== 'object' &&
-            $type !== 'real' &&
-            $type !== 'resource' &&
-            $type !== 'resource (closed)' &&
-            $type !== 'scalar' &&
-            $type !== 'string') {
-            throw new UnknownNativeTypeException($type);
-        }
-
-        $constraint = match ($type) {
-            'array'             => new IsType(NativeType::Array),
-            'bool'              => new IsType(NativeType::Bool),
-            'boolean'           => new IsType(NativeType::Bool),
-            'callable'          => new IsType(NativeType::Callable),
-            'double'            => new IsType(NativeType::Float),
-            'float'             => new IsType(NativeType::Float),
-            'int'               => new IsType(NativeType::Int),
-            'integer'           => new IsType(NativeType::Int),
-            'iterable'          => new IsType(NativeType::Iterable),
-            'null'              => new IsType(NativeType::Null),
-            'numeric'           => new IsType(NativeType::Numeric),
-            'object'            => new IsType(NativeType::Object),
-            'real'              => new IsType(NativeType::Float),
-            'resource'          => new IsType(NativeType::Resource),
-            'resource (closed)' => new IsType(NativeType::ClosedResource),
-            'scalar'            => new IsType(NativeType::Scalar),
-            'string'            => new IsType(NativeType::String),
-        };
+        $constraint = new IsType(self::mapNativeType($type));
 
         $replacement = match ($type) {
             'array'             => 'isArray',
@@ -2535,5 +3073,56 @@ abstract class Assert
     final public static function resetCount(): void
     {
         self::$count = 0;
+    }
+
+    private static function isNativeType(string $type): bool
+    {
+        return $type === 'array' ||
+               $type === 'bool' ||
+               $type === 'boolean' ||
+               $type === 'callable' ||
+               $type === 'double' ||
+               $type === 'float' ||
+               $type === 'int' ||
+               $type === 'integer' ||
+               $type === 'iterable' ||
+               $type === 'null' ||
+               $type === 'numeric' ||
+               $type === 'object' ||
+               $type === 'real' ||
+               $type === 'resource' ||
+               $type === 'resource (closed)' ||
+               $type === 'scalar' ||
+               $type === 'string';
+    }
+
+    /**
+     * @throws UnknownNativeTypeException
+     */
+    private static function mapNativeType(string $type): NativeType
+    {
+        if (!self::isNativeType($type)) {
+            throw new UnknownNativeTypeException($type);
+        }
+
+        return match ($type) {
+            'array'             => NativeType::Array,
+            'bool'              => NativeType::Bool,
+            'boolean'           => NativeType::Bool,
+            'callable'          => NativeType::Callable,
+            'double'            => NativeType::Float,
+            'float'             => NativeType::Float,
+            'int'               => NativeType::Int,
+            'integer'           => NativeType::Int,
+            'iterable'          => NativeType::Iterable,
+            'null'              => NativeType::Null,
+            'numeric'           => NativeType::Numeric,
+            'object'            => NativeType::Object,
+            'real'              => NativeType::Float,
+            'resource'          => NativeType::Resource,
+            'resource (closed)' => NativeType::ClosedResource,
+            'scalar'            => NativeType::Scalar,
+            'string'            => NativeType::String,
+        };
     }
 }
