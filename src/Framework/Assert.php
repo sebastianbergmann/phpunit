@@ -2420,62 +2420,62 @@ abstract class Assert
         return new IsInstanceOf($className);
     }
 
-    public static function isArray(): IsType
+    final public static function isArray(): IsType
     {
         return new IsType(NativeType::Array->value);
     }
 
-    public static function isBool(): IsType
+    final public static function isBool(): IsType
     {
         return new IsType(NativeType::Bool->value);
     }
 
-    public static function isCallable(): IsType
+    final public static function isCallable(): IsType
     {
         return new IsType(NativeType::Callable->value);
     }
 
-    public static function isFloat(): IsType
+    final public static function isFloat(): IsType
     {
         return new IsType(NativeType::Float->value);
     }
 
-    public static function isInt(): IsType
+    final public static function isInt(): IsType
     {
         return new IsType(NativeType::Int->value);
     }
 
-    public static function isIterable(): IsType
+    final public static function isIterable(): IsType
     {
         return new IsType(NativeType::Iterable->value);
     }
 
-    public static function isNumeric(): IsType
+    final public static function isNumeric(): IsType
     {
         return new IsType(NativeType::Numeric->value);
     }
 
-    public static function isObject(): IsType
+    final public static function isObject(): IsType
     {
         return new IsType(NativeType::Object->value);
     }
 
-    public static function isResource(): IsType
+    final public static function isResource(): IsType
     {
         return new IsType(NativeType::Resource->value);
     }
 
-    public static function isClosedResource(): IsType
+    final public static function isClosedResource(): IsType
     {
         return new IsType(NativeType::ClosedResource->value);
     }
 
-    public static function isScalar(): IsType
+    final public static function isScalar(): IsType
     {
         return new IsType(NativeType::Scalar->value);
     }
 
-    public static function isString(): IsType
+    final public static function isString(): IsType
     {
         return new IsType(NativeType::String->value);
     }
