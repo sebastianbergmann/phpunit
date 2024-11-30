@@ -83,6 +83,7 @@
             "tests/unit/Framework/Assert/assertContainsOnlyInstancesOfTest.php",
             "tests/unit/Framework/Assert/assertContainsOnlyIntTest.php",
             "tests/unit/Framework/Assert/assertContainsOnlyIterableTest.php",
+            "tests/unit/Framework/Assert/assertContainsOnlyNullTest.php",
             "tests/unit/Framework/Assert/assertContainsOnlyNumericTest.php",
             "tests/unit/Framework/Assert/assertContainsOnlyObjectTest.php",
             "tests/unit/Framework/Assert/assertContainsOnlyResourceTest.php",

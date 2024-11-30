@@ -441,6 +441,24 @@ abstract class Assert
     }
 
     /**
+     * Asserts that a haystack contains only values of type null.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsOnlyNull(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            TraversableContainsOnly::forNativeType(
+                NativeType::Null,
+            ),
+            $message,
+        );
+    }
+
+    /**
      * Asserts that a haystack contains only values of type numeric.
      *
      * @param iterable<mixed> $haystack
@@ -751,6 +769,26 @@ abstract class Assert
             new LogicalNot(
                 TraversableContainsOnly::forNativeType(
                     NativeType::Iterable,
+                ),
+            ),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of type null.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertContainsNotOnlyNull(iterable $haystack, string $message = ''): void
+    {
+        self::assertThat(
+            $haystack,
+            new LogicalNot(
+                TraversableContainsOnly::forNativeType(
+                    NativeType::Null,
                 ),
             ),
             $message,

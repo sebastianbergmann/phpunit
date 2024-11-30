@@ -401,6 +401,24 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyIterable')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertContainsOnlyNull')) {
+    /**
+     * Asserts that a haystack contains only values of type null.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertContainsOnlyNull
+     */
+    function assertContainsOnlyNull(iterable $haystack, string $message = ''): void
+    {
+        Assert::assertContainsOnlyNull(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertContainsOnlyNumeric')) {
     /**
      * Asserts that a haystack contains only values of type numeric.
@@ -656,6 +674,24 @@ if (!function_exists('PHPUnit\Framework\assertContainsNotOnlyIterable')) {
     function assertContainsNotOnlyIterable(iterable $haystack, string $message = ''): void
     {
         Assert::assertContainsNotOnlyIterable(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertContainsNotOnlyNull')) {
+    /**
+     * Asserts that a haystack does not contain only values of type null.
+     *
+     * @param iterable<mixed> $haystack
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertContainsNotOnlyNull
+     */
+    function assertContainsNotOnlyNull(iterable $haystack, string $message = ''): void
+    {
+        Assert::assertContainsNotOnlyNull(...func_get_args());
     }
 }
 
