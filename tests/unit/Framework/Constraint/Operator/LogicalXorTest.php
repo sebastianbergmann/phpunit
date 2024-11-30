@@ -52,7 +52,7 @@ final class LogicalXorTest extends TestCase
                 'is of type bool xor is true',
                 '',
                 self::logicalXor(
-                    self::isType('bool'),
+                    self::isBool(),
                     self::isTrue(),
                 ),
                 false,
@@ -63,7 +63,7 @@ final class LogicalXorTest extends TestCase
                 'is of type bool xor is true',
                 'Failed asserting that true is of type bool xor is true.',
                 self::logicalXor(
-                    self::isType('bool'),
+                    self::isBool(),
                     self::isTrue(),
                 ),
                 true,
@@ -75,11 +75,11 @@ final class LogicalXorTest extends TestCase
                 'Failed asserting that true is of type bool and is true xor is of type bool and is true.',
                 self::logicalXor(
                     self::logicalAnd(
-                        self::isType('bool'),
+                        self::isBool(),
                         self::isTrue(),
                     ),
                     self::logicalAnd(
-                        self::isType('bool'),
+                        self::isBool(),
                         self::isTrue(),
                     ),
                 ),
@@ -112,7 +112,7 @@ final class LogicalXorTest extends TestCase
     public function testIsCountable(): void
     {
         $constraint = $this->logicalXor(
-            $this->isType('bool'),
+            $this->isBool(),
             true,
         );
 
