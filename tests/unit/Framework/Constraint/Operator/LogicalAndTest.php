@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(LogicalAnd::class)]
@@ -30,7 +31,7 @@ final class LogicalAndTest extends TestCase
                 'is of type boolean and is true',
                 '',
                 self::logicalAnd(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     self::isTrue(),
                 ),
                 true,
@@ -41,7 +42,7 @@ final class LogicalAndTest extends TestCase
                 'is of type boolean and is equal to true',
                 '',
                 self::logicalAnd(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     true,
                 ),
                 true,
@@ -52,7 +53,7 @@ final class LogicalAndTest extends TestCase
                 'is of type boolean and ( is true or is false )',
                 '',
                 self::logicalAnd(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     self::logicalOr(
                         self::isTrue(),
                         self::isFalse(),
@@ -66,7 +67,7 @@ final class LogicalAndTest extends TestCase
                 'is of type boolean and is true',
                 'Failed asserting that false is of type boolean and is true.',
                 self::logicalAnd(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     self::isTrue(),
                 ),
                 false,
@@ -77,7 +78,7 @@ final class LogicalAndTest extends TestCase
                 'is of type boolean and ( is true or is false )',
                 'Failed asserting that \'string\' is of type boolean and ( is true or is false ).',
                 self::logicalAnd(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     self::logicalOr(
                         self::isTrue(),
                         self::isFalse(),
@@ -112,7 +113,7 @@ final class LogicalAndTest extends TestCase
     public function testIsCountable(): void
     {
         $constraint = $this->logicalAnd(
-            $this->isType('bool'),
+            $this->isType(NativeType::Boolean),
             true,
         );
 

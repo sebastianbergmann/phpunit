@@ -266,13 +266,12 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertContainsOnly(string $type, iterable $haystack, string $message = ''): void
+    final public static function assertContainsOnly(NativeType $type, iterable $haystack, string $message = ''): void
     {
         self::assertThat(
             $haystack,
@@ -302,13 +301,12 @@ abstract class Assert
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
+     * @param iterable<mixed> $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertNotContainsOnly(string $type, iterable $haystack, string $message = ''): void
+    final public static function assertNotContainsOnly(NativeType $type, iterable $haystack, string $message = ''): void
     {
         self::assertThat(
             $haystack,
@@ -1186,7 +1184,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_ARRAY),
+            new IsType(NativeType::Array),
             $message,
         );
     }
@@ -1203,7 +1201,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_BOOL),
+            new IsType(NativeType::Boolean),
             $message,
         );
     }
@@ -1220,7 +1218,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_FLOAT),
+            new IsType(NativeType::Float),
             $message,
         );
     }
@@ -1237,7 +1235,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_INT),
+            new IsType(NativeType::Integer),
             $message,
         );
     }
@@ -1254,7 +1252,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_NUMERIC),
+            new IsType(NativeType::Numeric),
             $message,
         );
     }
@@ -1271,7 +1269,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_OBJECT),
+            new IsType(NativeType::Object),
             $message,
         );
     }
@@ -1288,7 +1286,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_RESOURCE),
+            new IsType(NativeType::Resource),
             $message,
         );
     }
@@ -1305,7 +1303,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_CLOSED_RESOURCE),
+            new IsType(NativeType::ClosedResource),
             $message,
         );
     }
@@ -1322,7 +1320,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_STRING),
+            new IsType(NativeType::String),
             $message,
         );
     }
@@ -1339,7 +1337,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_SCALAR),
+            new IsType(NativeType::Scalar),
             $message,
         );
     }
@@ -1356,7 +1354,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_CALLABLE),
+            new IsType(NativeType::Callable),
             $message,
         );
     }
@@ -1373,7 +1371,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new IsType(IsType::TYPE_ITERABLE),
+            new IsType(NativeType::Iterable),
             $message,
         );
     }
@@ -1390,7 +1388,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_ARRAY)),
+            new LogicalNot(new IsType(NativeType::Array)),
             $message,
         );
     }
@@ -1407,7 +1405,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_BOOL)),
+            new LogicalNot(new IsType(NativeType::Boolean)),
             $message,
         );
     }
@@ -1424,7 +1422,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_FLOAT)),
+            new LogicalNot(new IsType(NativeType::Float)),
             $message,
         );
     }
@@ -1441,7 +1439,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_INT)),
+            new LogicalNot(new IsType(NativeType::Integer)),
             $message,
         );
     }
@@ -1458,7 +1456,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_NUMERIC)),
+            new LogicalNot(new IsType(NativeType::Numeric)),
             $message,
         );
     }
@@ -1475,7 +1473,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_OBJECT)),
+            new LogicalNot(new IsType(NativeType::Object)),
             $message,
         );
     }
@@ -1492,7 +1490,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_RESOURCE)),
+            new LogicalNot(new IsType(NativeType::Resource)),
             $message,
         );
     }
@@ -1509,7 +1507,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_CLOSED_RESOURCE)),
+            new LogicalNot(new IsType(NativeType::ClosedResource)),
             $message,
         );
     }
@@ -1526,7 +1524,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_STRING)),
+            new LogicalNot(new IsType(NativeType::String)),
             $message,
         );
     }
@@ -1543,7 +1541,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_SCALAR)),
+            new LogicalNot(new IsType(NativeType::Scalar)),
             $message,
         );
     }
@@ -1560,7 +1558,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_CALLABLE)),
+            new LogicalNot(new IsType(NativeType::Callable)),
             $message,
         );
     }
@@ -1577,7 +1575,7 @@ abstract class Assert
     {
         self::assertThat(
             $actual,
-            new LogicalNot(new IsType(IsType::TYPE_ITERABLE)),
+            new LogicalNot(new IsType(NativeType::Iterable)),
             $message,
         );
     }
@@ -2186,11 +2184,9 @@ abstract class Assert
     }
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     *
      * @throws Exception
      */
-    final public static function containsOnly(string $type): TraversableContainsOnly
+    final public static function containsOnly(NativeType $type): TraversableContainsOnly
     {
         return TraversableContainsOnly::forNativeType($type);
     }
@@ -2287,11 +2283,9 @@ abstract class Assert
     }
 
     /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     *
      * @throws Exception
      */
-    final public static function isType(string $type): IsType
+    final public static function isType(NativeType $type): IsType
     {
         return new IsType($type);
     }

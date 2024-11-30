@@ -15,13 +15,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\UnknownTypeException;
 use stdClass;
 
 #[CoversClass(IsType::class)]
 #[CoversClass(Constraint::class)]
-#[CoversClass(UnknownTypeException::class)]
 #[Small]
 final class IsTypeTest extends TestCase
 {
@@ -31,126 +30,98 @@ final class IsTypeTest extends TestCase
             [
                 true,
                 '',
-                'numeric',
+                NativeType::Numeric,
                 0,
             ],
 
             [
                 true,
                 '',
-                'int',
+                NativeType::Integer,
                 0,
             ],
 
             [
                 true,
                 '',
-                'integer',
-                0,
-            ],
-
-            [
-                true,
-                '',
-                'double',
+                NativeType::Float,
                 0.0,
             ],
 
             [
                 true,
                 '',
-                'float',
-                0.0,
-            ],
-
-            [
-                true,
-                '',
-                'real',
-                0.0,
-            ],
-
-            [
-                true,
-                '',
-                'string',
+                NativeType::String,
                 'string',
             ],
 
             [
                 true,
                 '',
-                'boolean',
+                NativeType::Boolean,
                 false,
             ],
 
             [
                 true,
                 '',
-                'bool',
-                false,
-            ],
-
-            [
-                true,
-                '',
-                'null',
+                NativeType::Null,
                 null,
             ],
 
             [
                 true,
                 '',
-                'array',
+                NativeType::Array,
                 [],
             ],
 
             [
                 true,
                 '',
-                'object',
+                NativeType::Object,
                 new stdClass,
             ],
 
             [
                 true,
                 '',
-                'resource',
+                NativeType::Resource,
                 fopen(__FILE__, 'r'),
             ],
 
             [
                 true,
                 '',
-                'resource (closed)',
+                NativeType::ClosedResource,
                 self::closedResource(),
             ],
 
             [
                 true,
                 '',
-                'scalar',
+                NativeType::Scalar,
                 0,
             ],
 
             [
                 true,
                 '',
-                'callable',
+                NativeType::Callable,
                 static fn () => true,
             ],
 
             [
                 true,
                 '',
-                'iterable',
+                NativeType::Iterable,
                 [],
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    public function testCanBeEvaluated(bool $result, string $failureDescription, string $expected, mixed $actual): void
+    public function testCanBeEvaluated(bool $result, string $failureDescription, NativeType $expected, mixed $actual): void
     {
         $constraint = new IsType($expected);
 
@@ -168,19 +139,12 @@ final class IsTypeTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is of type array', (new IsType('array'))->toString());
+        $this->assertSame('is of type array', (new IsType(NativeType::Array))->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(1, new IsType('array'));
-    }
-
-    public function testRejectsUnknownTypes(): void
-    {
-        $this->expectException(UnknownTypeException::class);
-
-        new IsType('does-not-exist');
+        $this->assertCount(1, new IsType(NativeType::Array));
     }
 
     private static function closedResource()

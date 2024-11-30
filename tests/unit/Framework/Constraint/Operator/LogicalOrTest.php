@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(LogicalOr::class)]
@@ -30,7 +31,7 @@ final class LogicalOrTest extends TestCase
                 'is of type boolean or is true',
                 '',
                 self::logicalOr(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     self::isTrue(),
                 ),
                 true,
@@ -41,7 +42,7 @@ final class LogicalOrTest extends TestCase
                 'is of type boolean or is equal to true',
                 '',
                 self::logicalOr(
-                    self::isType('boolean'),
+                    self::isType(NativeType::Boolean),
                     true,
                 ),
                 true,
@@ -54,7 +55,7 @@ final class LogicalOrTest extends TestCase
                 self::logicalOr(
                     self::isTrue(),
                     self::logicalAnd(
-                        self::isType('boolean'),
+                        self::isType(NativeType::Boolean),
                         self::isFalse(),
                     ),
                 ),
@@ -66,8 +67,8 @@ final class LogicalOrTest extends TestCase
                 'is of type boolean or is of type string',
                 'Failed asserting that 0 is of type boolean or is of type string.',
                 self::logicalOr(
-                    self::isType('boolean'),
-                    self::isType('string'),
+                    self::isType(NativeType::Boolean),
+                    self::isType(NativeType::String),
                 ),
                 0,
             ],
@@ -98,7 +99,7 @@ final class LogicalOrTest extends TestCase
     public function testIsCountable(): void
     {
         $constraint = $this->logicalOr(
-            $this->isType('bool'),
+            $this->isType(NativeType::Boolean),
             true,
         );
 
