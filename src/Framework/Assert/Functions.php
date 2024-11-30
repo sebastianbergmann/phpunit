@@ -2615,7 +2615,7 @@ if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
 }
 
 if (!function_exists('PHPUnit\Framework\isType')) {
-    function isType(NativeType|string $type): IsType
+    function isType(string $type): IsType
     {
         return Assert::isType(...func_get_args());
     }
