@@ -90,8 +90,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * Constructs a test case with the given filename.
      *
      * @param non-empty-string $filename
-     *
-     * @throws Exception
      */
     public function __construct(string $filename)
     {
