@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TeamCity;
 
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use function assert;
 use function getmypid;
 use function ini_get;
@@ -182,7 +183,7 @@ final class TeamCityLogger
         $this->writeMessage('testIgnored', $parameters);
     }
 
-    public function testSuiteSkipped(TestSuiteSkipped $event)
+    public function testSuiteSkipped(TestSuiteSkipped $event): void
     {
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
@@ -196,6 +197,22 @@ final class TeamCityLogger
         $parameters['duration'] = $this->duration($event);
 
         $this->writeMessage('testIgnored', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
+    }
+
+    public function beforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): void
+    {
+        if ($this->time === null) {
+            $this->time = $event->telemetryInfo()->time();
+        }
+
+        $parameters = [
+            'name' => $event->testClassName(),
+            'message' => $this->message($event->throwable()),
+            'details' => $this->details($event->throwable()),
+            'duration' => $this->duration($event),
+        ];
+        $this->writeMessage('testFailed', $parameters);
         $this->writeMessage('testSuiteFinished', $parameters);
     }
 
@@ -307,6 +324,7 @@ final class TeamCityLogger
             new TestSuiteSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
+            new TestSuiteBeforeFirstTestMethodErroredSubscriber($this),
         );
     }
 
