@@ -33,6 +33,7 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -181,6 +182,23 @@ final class TeamCityLogger
         $this->writeMessage('testIgnored', $parameters);
     }
 
+    public function testSuiteSkipped(TestSuiteSkipped $event)
+    {
+        if ($this->time === null) {
+            $this->time = $event->telemetryInfo()->time();
+        }
+
+        $parameters = [
+            'name'    => $event->testSuite()->name(),
+            'message' => $event->message(),
+        ];
+
+        $parameters['duration'] = $this->duration($event);
+
+        $this->writeMessage('testIgnored', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
+    }
+
     /**
      * @throws InvalidArgumentException
      */
@@ -286,6 +304,7 @@ final class TeamCityLogger
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
+            new TestSuiteSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
         );
