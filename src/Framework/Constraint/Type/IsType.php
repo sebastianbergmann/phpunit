@@ -56,7 +56,7 @@ final class IsType extends Constraint
             case NativeType::Numeric:
                 return is_numeric($other);
 
-            case NativeType::Integer:
+            case NativeType::Int:
                 return is_int($other);
 
             case NativeType::Float:
@@ -65,7 +65,7 @@ final class IsType extends Constraint
             case NativeType::String:
                 return is_string($other);
 
-            case NativeType::Boolean:
+            case NativeType::Bool:
                 return is_bool($other);
 
             case NativeType::Null:

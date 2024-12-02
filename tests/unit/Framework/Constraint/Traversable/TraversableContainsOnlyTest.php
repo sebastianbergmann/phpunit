@@ -27,7 +27,7 @@ final class TraversableContainsOnlyTest extends TestCase
             [
                 true,
                 '',
-                NativeType::Integer,
+                NativeType::Int,
                 [0, 1, 2],
             ],
 
@@ -38,9 +38,9 @@ Failed asserting that Array &0 [
     0 => 0,
     1 => '1',
     2 => 2,
-] contains only values of type "integer".
+] contains only values of type "int".
 EOT,
-                NativeType::Integer,
+                NativeType::Int,
                 [0, '1', 2],
             ],
         ];
@@ -65,11 +65,11 @@ EOT,
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('contains only values of type "integer"', TraversableContainsOnly::forNativeType(NativeType::Integer)->toString());
+        $this->assertSame('contains only values of type "int"', TraversableContainsOnly::forNativeType(NativeType::Int)->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(1, TraversableContainsOnly::forNativeType(NativeType::Integer));
+        $this->assertCount(1, TraversableContainsOnly::forNativeType(NativeType::Int));
     }
 }

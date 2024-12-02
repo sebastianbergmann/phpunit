@@ -14,9 +14,9 @@ use const STDIN;
 use function assert;
 use function defined;
 use function fgets;
-use function file_exists;
 use function file_put_contents;
 use function getcwd;
+use function is_file;
 use function sprintf;
 use function trim;
 use PHPUnit\Runner\Version;
@@ -67,7 +67,7 @@ final readonly class GenerateConfigurationCommand implements Command
         }
 
         if (defined('PHPUNIT_COMPOSER_INSTALL') &&
-            file_exists($directory . '/vendor/phpunit/phpunit/phpunit.xsd')) {
+            is_file($directory . '/vendor/phpunit/phpunit/phpunit.xsd')) {
             $schemaLocation = 'vendor/phpunit/phpunit/phpunit.xsd';
         } else {
             $schemaLocation = sprintf(

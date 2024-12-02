@@ -15,11 +15,11 @@ namespace PHPUnit\Framework;
 enum NativeType: string
 {
     case Array          = 'array';
-    case Boolean        = 'boolean';
+    case Bool           = 'bool';
     case Callable       = 'callable';
     case ClosedResource = 'resource (closed)';
     case Float          = 'float';
-    case Integer        = 'integer';
+    case Int            = 'int';
     case Iterable       = 'iterable';
     case Null           = 'null';
     case Numeric        = 'numeric';

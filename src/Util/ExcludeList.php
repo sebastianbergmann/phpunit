@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use const PHP_OS_FAMILY;
+use function assert;
 use function class_exists;
 use function defined;
 use function dirname;
@@ -159,7 +160,11 @@ final class ExcludeList
             throw new InvalidDirectoryException($directory);
         }
 
-        self::$directories[] = realpath($directory);
+        $directory = realpath($directory);
+
+        assert($directory !== false);
+
+        self::$directories[] = $directory;
     }
 
     public function __construct(?bool $enabled = null)

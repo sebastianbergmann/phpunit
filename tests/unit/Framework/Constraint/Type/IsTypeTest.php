@@ -37,7 +37,7 @@ final class IsTypeTest extends TestCase
             [
                 true,
                 '',
-                NativeType::Integer,
+                NativeType::Int,
                 0,
             ],
 
@@ -58,7 +58,7 @@ final class IsTypeTest extends TestCase
             [
                 true,
                 '',
-                NativeType::Boolean,
+                NativeType::Bool,
                 false,
             ],
 

@@ -87,6 +87,7 @@ final class Generator
     /**
      * Returns a test double for the specified class.
      *
+     * @param class-string            $type
      * @param ?list<non-empty-string> $methods
      * @param list<mixed>             $arguments
      *
@@ -193,6 +194,8 @@ final class Generator
 
         eval($template->render());
 
+        assert(interface_exists($intersectionName));
+
         return $this->testDouble(
             $intersectionName,
             $mockObject,
@@ -201,6 +204,7 @@ final class Generator
     }
 
     /**
+     * @param class-string            $type
      * @param ?list<non-empty-string> $methods
      *
      * @throws ClassIsEnumerationException
@@ -245,6 +249,8 @@ final class Generator
     }
 
     /**
+     * @param class-string $className
+     *
      * @throws ReflectionException
      *
      * @return list<DoubledMethod>
@@ -336,6 +342,7 @@ final class Generator
     }
 
     /**
+     * @param class-string            $type
      * @param ?list<non-empty-string> $explicitMethods
      *
      * @throws ClassIsEnumerationException
@@ -536,7 +543,9 @@ final class Generator
     }
 
     /**
-     * @return array{className: non-empty-string, originalClassName: non-empty-string, fullClassName: non-empty-string, namespaceName: string}
+     * @param class-string $type
+     *
+     * @return array{className: class-string, originalClassName: class-string, fullClassName: class-string, namespaceName: string}
      */
     private function generateClassName(string $type, string $className, string $prefix): array
     {
