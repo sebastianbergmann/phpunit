@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Logging\TeamCity;
 
-use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use function assert;
 use function getmypid;
 use function ini_get;
@@ -25,6 +25,7 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -42,16 +43,20 @@ use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\TextUI\Output\Printer;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for
+ *                     PHPUnit
  *
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal           This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TeamCityLogger
 {
     private readonly Printer $printer;
+
     private bool $isSummaryTestCountPrinted = false;
-    private ?HRTime $time                   = null;
-    private ?int $flowId                    = null;
+
+    private ?HRTime $time = null;
+
+    private ?int $flowId = null;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -156,9 +161,9 @@ final class TeamCityLogger
         $this->writeMessage(
             'testIgnored',
             [
-                'name'     => $event->test()->name(),
-                'message'  => $event->throwable()->message(),
-                'details'  => $this->details($event->throwable()),
+                'name' => $event->test()->name(),
+                'message' => $event->throwable()->message(),
+                'details' => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ],
         );
@@ -174,7 +179,7 @@ final class TeamCityLogger
         }
 
         $parameters = [
-            'name'    => $event->test()->name(),
+            'name' => $event->test()->name(),
             'message' => $event->message(),
         ];
 
@@ -190,7 +195,7 @@ final class TeamCityLogger
         }
 
         $parameters = [
-            'name'    => $event->testSuite()->name(),
+            'name' => $event->testSuite()->name(),
             'message' => $event->message(),
         ];
 
@@ -228,9 +233,9 @@ final class TeamCityLogger
         $this->writeMessage(
             'testFailed',
             [
-                'name'     => $event->test()->name(),
-                'message'  => $this->message($event->throwable()),
-                'details'  => $this->details($event->throwable()),
+                'name' => $event->test()->name(),
+                'message' => $this->message($event->throwable()),
+                'details' => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ],
         );
@@ -248,9 +253,9 @@ final class TeamCityLogger
         }
 
         $parameters = [
-            'name'     => $event->test()->name(),
-            'message'  => $this->message($event->throwable()),
-            'details'  => $this->details($event->throwable()),
+            'name' => $event->test()->name(),
+            'message' => $this->message($event->throwable()),
+            'details' => $this->details($event->throwable()),
             'duration' => $this->duration($event),
         ];
 
@@ -277,9 +282,9 @@ final class TeamCityLogger
         $this->writeMessage(
             'testFailed',
             [
-                'name'     => $event->test()->name(),
-                'message'  => $event->message(),
-                'details'  => '',
+                'name' => $event->test()->name(),
+                'message' => $event->message(),
+                'details' => '',
                 'duration' => $this->duration($event),
             ],
         );
@@ -293,7 +298,7 @@ final class TeamCityLogger
         $this->writeMessage(
             'testFinished',
             [
-                'name'     => $event->test()->name(),
+                'name' => $event->test()->name(),
                 'duration' => $this->duration($event),
             ],
         );
