@@ -523,6 +523,116 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * @param ReflectionClass<TestCase> $class
+     * @param list<non-empty-string>    $groups
+     *
+     * @throws Exception
+     */
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups): void
+    {
+        $className  = $class->getName();
+        $methodName = $method->getName();
+
+        assert(!empty($methodName));
+
+        try {
+            $test = (new TestBuilder)->build($class, $methodName, $groups);
+        } catch (InvalidDataProviderException $e) {
+            Event\Facade::emitter()->testTriggeredPhpunitError(
+                new TestMethod(
+                    $className,
+                    $methodName,
+                    $class->getFileName(),
+                    $method->getStartLine(),
+                    Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                        $className,
+                        $methodName,
+                    ),
+                    MetadataCollection::fromArray([]),
+                    Event\TestData\TestDataCollection::fromArray([]),
+                ),
+                sprintf(
+                    "The data provider specified for %s::%s is invalid\n%s",
+                    $className,
+                    $methodName,
+                    $this->throwableToString($e),
+                ),
+            );
+
+            return;
+        }
+
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
+            $test->setDependencies(
+                Dependencies::dependencies($class->getName(), $methodName),
+            );
+        }
+
+        $this->addTest(
+            $test,
+            array_merge(
+                $groups,
+                (new Groups)->groups($class->getName(), $methodName),
+            ),
+        );
+    }
+
+    private function clearCaches(): void
+    {
+        $this->providedTests = null;
+        $this->requiredTests = null;
+    }
+
+    /**
+     * @param list<non-empty-string> $groups
+     */
+    private function containsOnlyVirtualGroups(array $groups): bool
+    {
+        foreach ($groups as $group) {
+            if (!str_starts_with($group, '__phpunit_')) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
+    {
+        $reflector = new ReflectionClass($this->name);
+
+        return !$reflector->hasMethod($methodName) ||
+            $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function throwableToString(Throwable $t): string
+    {
+        $message = $t->getMessage();
+
+        if (empty(trim($message))) {
+            $message = '<no message>';
+        }
+
+        if ($t instanceof InvalidDataProviderException) {
+            return sprintf(
+                "%s\n%s",
+                $message,
+                Filter::stackTraceFromThrowableAsString($t),
+            );
+        }
+
+        return sprintf(
+            "%s: %s\n%s",
+            $t::class,
+            $message,
+            Filter::stackTraceFromThrowableAsString($t),
+        );
+    }
+
+    /**
      * @throws Exception
      * @throws NoPreviousThrowableException
      */
@@ -638,115 +748,5 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 ...$methodsCalledAfterLastTest,
             );
         }
-    }
-
-    /**
-     * @param ReflectionClass<TestCase> $class
-     * @param list<non-empty-string>    $groups
-     *
-     * @throws Exception
-     */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups): void
-    {
-        $className  = $class->getName();
-        $methodName = $method->getName();
-
-        assert(!empty($methodName));
-
-        try {
-            $test = (new TestBuilder)->build($class, $methodName, $groups);
-        } catch (InvalidDataProviderException $e) {
-            Event\Facade::emitter()->testTriggeredPhpunitError(
-                new TestMethod(
-                    $className,
-                    $methodName,
-                    $class->getFileName(),
-                    $method->getStartLine(),
-                    Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                        $className,
-                        $methodName,
-                    ),
-                    MetadataCollection::fromArray([]),
-                    Event\TestData\TestDataCollection::fromArray([]),
-                ),
-                sprintf(
-                    "The data provider specified for %s::%s is invalid\n%s",
-                    $className,
-                    $methodName,
-                    $this->throwableToString($e),
-                ),
-            );
-
-            return;
-        }
-
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
-            $test->setDependencies(
-                Dependencies::dependencies($class->getName(), $methodName),
-            );
-        }
-
-        $this->addTest(
-            $test,
-            array_merge(
-                $groups,
-                (new Groups)->groups($class->getName(), $methodName),
-            ),
-        );
-    }
-
-    private function clearCaches(): void
-    {
-        $this->providedTests = null;
-        $this->requiredTests = null;
-    }
-
-    /**
-     * @param list<non-empty-string> $groups
-     */
-    private function containsOnlyVirtualGroups(array $groups): bool
-    {
-        foreach ($groups as $group) {
-            if (!str_starts_with($group, '__phpunit_')) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
-    {
-        $reflector = new ReflectionClass($this->name);
-
-        return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function throwableToString(Throwable $t): string
-    {
-        $message = $t->getMessage();
-
-        if (empty(trim($message))) {
-            $message = '<no message>';
-        }
-
-        if ($t instanceof InvalidDataProviderException) {
-            return sprintf(
-                "%s\n%s",
-                $message,
-                Filter::stackTraceFromThrowableAsString($t),
-            );
-        }
-
-        return sprintf(
-            "%s: %s\n%s",
-            $t::class,
-            $message,
-            Filter::stackTraceFromThrowableAsString($t),
-        );
     }
 }
