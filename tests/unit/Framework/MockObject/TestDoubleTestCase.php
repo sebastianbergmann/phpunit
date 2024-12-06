@@ -44,7 +44,6 @@ abstract class TestDoubleTestCase extends TestCase
     }
 
     #[TestDox('__toString() method returns empty string when return value generation is disabled and no return value is configured')]
-    #[IgnorePhpunitDeprecations]
     final public function testToStringMethodReturnsEmptyStringWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
@@ -54,7 +53,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame('', $double->__toString());
     }
 
-    #[IgnorePhpunitDeprecations]
     final public function testMethodDoesNotReturnValueWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
     {
         $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
