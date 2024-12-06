@@ -19,7 +19,6 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 * [#5998](https://github.com/sebastianbergmann/phpunit/pull/5998): Do not run `SKIPIF` section of PHPT test in separate process when it is free of side effects
 * [#5999](https://github.com/sebastianbergmann/phpunit/pull/5999): Do not run `CLEAN` section of PHPT test in separate process when it is free of side effects that modify the parent process
-* The type of the value passed for the `$type` parameter of the `assertContainsOnly()`, `assertNotContainsOnly()`, and `containsOnly()` methods can now be `NativeType`
 
 ### Deprecated
 
