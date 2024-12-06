@@ -24,6 +24,7 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -32,6 +33,7 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
@@ -184,6 +186,46 @@ final class TeamCityLogger
     /**
      * @throws InvalidArgumentException
      */
+    public function testSuiteSkipped(TestSuiteSkipped $event): void
+    {
+        if ($this->time === null) {
+            $this->time = $event->telemetryInfo()->time();
+        }
+
+        $parameters = [
+            'name'    => $event->testSuite()->name(),
+            'message' => $event->message(),
+        ];
+
+        $parameters['duration'] = $this->duration($event);
+
+        $this->writeMessage('testIgnored', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function beforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): void
+    {
+        if ($this->time === null) {
+            $this->time = $event->telemetryInfo()->time();
+        }
+
+        $parameters = [
+            'name'     => $event->testClassName(),
+            'message'  => $this->message($event->throwable()),
+            'details'  => $this->details($event->throwable()),
+            'duration' => $this->duration($event),
+        ];
+
+        $this->writeMessage('testFailed', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testErrored(Errored $event): void
     {
         if ($this->time === null) {
@@ -286,8 +328,10 @@ final class TeamCityLogger
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
+            new TestSuiteSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
+            new TestSuiteBeforeFirstTestMethodErroredSubscriber($this),
         );
     }
 
