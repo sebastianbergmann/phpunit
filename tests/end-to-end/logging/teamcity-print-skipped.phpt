@@ -1,8 +1,7 @@
 --TEST--
-TeamCity: print skipped message
+TeamCity: test skipped in test method
 --FILE--
 <?php declare(strict_types=1);
-
 $parentDirectory = dirname(__DIR__);
 
 $_SERVER['argv'][] = '--display-skipped';
