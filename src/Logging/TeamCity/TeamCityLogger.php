@@ -218,6 +218,7 @@ final class TeamCityLogger
             'details'  => $this->details($event->throwable()),
             'duration' => $this->duration($event),
         ];
+
         $this->writeMessage('testFailed', $parameters);
         $this->writeMessage('testSuiteFinished', $parameters);
     }
