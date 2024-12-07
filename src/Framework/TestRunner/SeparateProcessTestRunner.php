@@ -88,8 +88,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         }
 
-        $coverage         = CodeCoverage::instance()->isActive() ? 'true' : 'false';
-        $linesToBeIgnored = var_export(CodeCoverage::instance()->linesToBeIgnored(), true);
+        $coverage = CodeCoverage::instance()->isActive() ? 'true' : 'false';
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -128,7 +127,6 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             'filename'                       => $file,
             'className'                      => $class->getName(),
             'collectCodeCoverageInformation' => $coverage,
-            'linesToBeIgnored'               => $linesToBeIgnored,
             'data'                           => $data,
             'dataName'                       => $dataName,
             'dependencyInput'                => $dependencyInput,
