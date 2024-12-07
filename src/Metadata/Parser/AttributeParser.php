@@ -26,6 +26,8 @@ use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -71,6 +73,8 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\UsesClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
@@ -126,6 +130,20 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof CoversClass);
 
                     $result[] = Metadata::coversClass($attributeInstance->className());
+
+                    break;
+
+                case CoversClassesThatExtendClass::class:
+                    assert($attributeInstance instanceof CoversClassesThatExtendClass);
+
+                    $result[] = Metadata::coversClassesThatExtendClass($attributeInstance->className());
+
+                    break;
+
+                case CoversClassesThatImplementInterface::class:
+                    assert($attributeInstance instanceof CoversClassesThatImplementInterface);
+
+                    $result[] = Metadata::coversClassesThatImplementInterface($attributeInstance->interfaceName());
 
                     break;
 
@@ -340,6 +358,20 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof UsesClass);
 
                     $result[] = Metadata::usesClass($attributeInstance->className());
+
+                    break;
+
+                case UsesClassesThatExtendClass::class:
+                    assert($attributeInstance instanceof UsesClassesThatExtendClass);
+
+                    $result[] = Metadata::usesClassesThatExtendClass($attributeInstance->className());
+
+                    break;
+
+                case UsesClassesThatImplementInterface::class:
+                    assert($attributeInstance instanceof UsesClassesThatImplementInterface);
+
+                    $result[] = Metadata::usesClassesThatImplementInterface($attributeInstance->interfaceName());
 
                     break;
 

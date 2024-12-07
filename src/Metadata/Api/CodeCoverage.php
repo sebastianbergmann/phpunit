@@ -11,10 +11,14 @@ namespace PHPUnit\Metadata\Api;
 
 use function assert;
 use PHPUnit\Metadata\CoversClass;
+use PHPUnit\Metadata\CoversClassesThatExtendClass;
+use PHPUnit\Metadata\CoversClassesThatImplementInterface;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\UsesClass;
+use PHPUnit\Metadata\UsesClassesThatExtendClass;
+use PHPUnit\Metadata\UsesClassesThatImplementInterface;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
 use SebastianBergmann\CodeCoverage\Test\Target\Target;
@@ -46,6 +50,18 @@ final class CodeCoverage
                 $targets[] = Target::forClass($metadata->className());
             }
 
+            if ($metadata->isCoversClassesThatExtendClass()) {
+                assert($metadata instanceof CoversClassesThatExtendClass);
+
+                $targets[] = Target::forClassesThatExtendClass($metadata->className());
+            }
+
+            if ($metadata->isCoversClassesThatImplementInterface()) {
+                assert($metadata instanceof CoversClassesThatImplementInterface);
+
+                $targets[] = Target::forClassesThatImplementInterface($metadata->interfaceName());
+            }
+
             if ($metadata->isCoversMethod()) {
                 assert($metadata instanceof CoversMethod);
 
@@ -75,6 +91,18 @@ final class CodeCoverage
                 assert($metadata instanceof UsesClass);
 
                 $targets[] = Target::forClass($metadata->className());
+            }
+
+            if ($metadata->isUsesClassesThatExtendClass()) {
+                assert($metadata instanceof UsesClassesThatExtendClass);
+
+                $targets[] = Target::forClassesThatExtendClass($metadata->className());
+            }
+
+            if ($metadata->isUsesClassesThatImplementInterface()) {
+                assert($metadata instanceof UsesClassesThatImplementInterface);
+
+                $targets[] = Target::forClassesThatImplementInterface($metadata->interfaceName());
             }
 
             if ($metadata->isUsesMethod()) {

@@ -88,6 +88,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param class-string $className
+     */
+    public static function coversClassesThatExtendClass(string $className): CoversClassesThatExtendClass
+    {
+        return new CoversClassesThatExtendClass(self::CLASS_LEVEL, $className);
+    }
+
+    /**
+     * @param class-string $interfaceName
+     */
+    public static function coversClassesThatImplementInterface(string $interfaceName): CoversClassesThatImplementInterface
+    {
+        return new CoversClassesThatImplementInterface(self::CLASS_LEVEL, $interfaceName);
+    }
+
+    /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
@@ -447,6 +463,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param class-string $className
+     */
+    public static function usesClassesThatExtendClass(string $className): UsesClassesThatExtendClass
+    {
+        return new UsesClassesThatExtendClass(self::CLASS_LEVEL, $className);
+    }
+
+    /**
+     * @param class-string $interfaceName
+     */
+    public static function usesClassesThatImplementInterface(string $interfaceName): UsesClassesThatImplementInterface
+    {
+        return new UsesClassesThatImplementInterface(self::CLASS_LEVEL, $interfaceName);
+    }
+
+    /**
      * @param non-empty-string $functionName
      */
     public static function usesFunction(string $functionName): UsesFunction
@@ -538,6 +570,22 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true CoversClass $this
      */
     public function isCoversClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CoversClassesThatExtendClass $this
+     */
+    public function isCoversClassesThatExtendClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CoversClassesThatImplementInterface $this
+     */
+    public function isCoversClassesThatImplementInterface(): bool
     {
         return false;
     }
@@ -796,6 +844,22 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true UsesClass $this
      */
     public function isUsesClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesClassesThatExtendClass $this
+     */
+    public function isUsesClassesThatExtendClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesClassesThatImplementInterface $this
+     */
+    public function isUsesClassesThatImplementInterface(): bool
     {
         return false;
     }

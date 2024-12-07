@@ -185,6 +185,22 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCoversClass());
     }
 
+    public function test_Can_be_filtered_for_CoversClassesThatExtendClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversClassesThatExtendClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversClassesThatExtendClass());
+    }
+
+    public function test_Can_be_filtered_for_CoversClassesThatImplementInterface(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversClassesThatImplementInterface();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversClassesThatImplementInterface());
+    }
+
     public function test_Can_be_filtered_for_CoversFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversFunction();
@@ -450,6 +466,22 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesClass());
     }
 
+    public function test_Can_be_filtered_for_UsesClassesThatExtendClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesClassesThatExtendClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesClassesThatExtendClass());
+    }
+
+    public function test_Can_be_filtered_for_UsesClassesThatImplementInterface(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesClassesThatImplementInterface();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesClassesThatImplementInterface());
+    }
+
     public function test_Can_be_filtered_for_UsesFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesFunction();
@@ -485,6 +517,8 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::beforeClass(0),
                 Metadata::before(0),
                 Metadata::coversClass(''),
+                Metadata::coversClassesThatExtendClass(''),
+                Metadata::coversClassesThatImplementInterface(''),
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
@@ -527,6 +561,8 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::test(),
                 Metadata::testWith([]),
                 Metadata::usesClass(''),
+                Metadata::usesClassesThatExtendClass(''),
+                Metadata::usesClassesThatImplementInterface(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
                 Metadata::withoutErrorHandler(),

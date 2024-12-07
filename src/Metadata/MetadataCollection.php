@@ -170,6 +170,26 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isCoversClassesThatExtendClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isCoversClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatImplementInterface(),
+            ),
+        );
+    }
+
     public function isCoversFunction(): self
     {
         return new self(
@@ -499,6 +519,26 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isUsesClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatExtendClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatImplementInterface(),
             ),
         );
     }

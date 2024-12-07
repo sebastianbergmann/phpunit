@@ -87,6 +87,26 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
     }
 
+    #[TestDox('Parses #[CoversClassesThatExtendClass] attribute on class')]
+    public function test_parses_CoversClassesThatExtendClass_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversTest::class)->isCoversClassesThatExtendClass();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversClassesThatExtendClass());
+        $this->assertSame(Example::class, $metadata->asArray()[0]->className());
+    }
+
+    #[TestDox('Parses #[CoversClassesThatImplementInterface] attribute on class')]
+    public function test_parses_CoversClassesThatImplementInterface_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversTest::class)->isCoversClassesThatImplementInterface();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversClassesThatImplementInterface());
+        $this->assertSame(Example::class, $metadata->asArray()[0]->interfaceName());
+    }
+
     #[TestDox('Parses #[CoversFunction] attribute on class')]
     public function test_parses_CoversFunction_attribute_on_class(): void
     {
@@ -396,6 +416,26 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isUsesClass());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
+    }
+
+    #[TestDox('Parses #[UsesClassesThatExtendClass] attribute on class')]
+    public function test_parses_UsesClassesThatExtendClass_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesTest::class)->isUsesClassesThatExtendClass();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesClassesThatExtendClass());
+        $this->assertSame(Example::class, $metadata->asArray()[0]->className());
+    }
+
+    #[TestDox('Parses #[UsesClassesThatImplementInterface] attribute on class')]
+    public function test_parses_UsesClassesThatImplementInterface_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesTest::class)->isUsesClassesThatImplementInterface();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesClassesThatImplementInterface());
+        $this->assertSame(Example::class, $metadata->asArray()[0]->interfaceName());
     }
 
     #[TestDox('Parses #[UsesFunction] attribute on class')]
