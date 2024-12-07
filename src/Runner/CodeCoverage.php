@@ -171,7 +171,7 @@ final class CodeCoverage
         $this->collecting = true;
     }
 
-    public function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
+    public function stop(bool $append, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
     {
         if (!$this->collecting) {
             return;
