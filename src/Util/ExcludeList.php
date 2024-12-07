@@ -27,7 +27,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SebastianBergmann\CliParser\Parser as CliParser;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeUnit\CodeUnit;
 use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Complexity\Calculator;
@@ -92,9 +91,6 @@ final class ExcludeList
 
         // sebastian/cli-parser
         CliParser::class => 1,
-
-        // sebastian/code-unit
-        CodeUnit::class => 1,
 
         // sebastian/code-unit-reverse-lookup
         Wizard::class => 1,

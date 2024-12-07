@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function assert;
 use function file_put_contents;
 use function sprintf;
 use PHPUnit\Event\Facade as EventFacade;
@@ -30,6 +31,8 @@ use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
+use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
+use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 use SebastianBergmann\Comparator\Comparator;
@@ -156,11 +159,7 @@ final class CodeCoverage
         $this->collecting = true;
     }
 
-    /**
-     * @param array<string,list<int>>|false $linesToBeCovered
-     * @param array<string,list<int>>       $linesToBeUsed
-     */
-    public function stop(bool $append, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
+    public function stop(bool $append, null|false|TargetCollection $covers = null, ?TargetCollection $uses = null): void
     {
         if (!$this->collecting) {
             return;
@@ -176,8 +175,37 @@ final class CodeCoverage
             }
         }
 
-        /* @noinspection UnusedFunctionResultInspection */
-        $this->codeCoverage->stop($append, $status, $linesToBeCovered, $linesToBeUsed);
+        if ($covers instanceof TargetCollection) {
+            $result = $this->codeCoverage->validate($covers);
+
+            if ($result->isFailure()) {
+                assert($result instanceof ValidationFailure);
+
+                EventFacade::emitter()->testTriggeredPhpunitWarning(
+                    $this->test->valueObjectForEvents(),
+                    $result->message(),
+                );
+
+                $append = false;
+            }
+        }
+
+        if ($uses instanceof TargetCollection) {
+            $result = $this->codeCoverage->validate($uses);
+
+            if ($result->isFailure()) {
+                assert($result instanceof ValidationFailure);
+
+                EventFacade::emitter()->testTriggeredPhpunitWarning(
+                    $this->test->valueObjectForEvents(),
+                    $result->message(),
+                );
+
+                $append = false;
+            }
+        }
+
+        $this->codeCoverage->stop($append, $status, $covers, $uses);
 
         $this->test       = null;
         $this->collecting = false;
