@@ -97,7 +97,6 @@ use ReflectionException;
 use ReflectionMethod;
 use ReflectionObject;
 use ReflectionParameter;
-use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
@@ -502,7 +501,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
-     * @throws StaticAnalysisCacheNotConfiguredException
      * @throws UnintentionallyCoveredCodeException
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
