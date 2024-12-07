@@ -38,7 +38,6 @@ use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
 use PHPUnit\Util\PHP\PhpProcessException;
 use ReflectionClass;
-use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
 use SebastianBergmann\Template\InvalidArgumentException;
 use SebastianBergmann\Template\Template;
 
@@ -56,7 +55,6 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
-     * @throws StaticAnalysisCacheNotConfiguredException
      */
     public function run(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
     {
