@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
@@ -40,6 +41,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
@@ -341,6 +343,23 @@ abstract class AttributeParserTestCase extends TestCase
         assert($requirement instanceof RequiresPhpunitExtension);
 
         $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\SomeExtension', $requirement->extensionClass());
+    }
+
+    #[TestDox('Parses #[RequiresEnvironmentVariable] attribute on class')]
+    public function test_parses_RequiresEnvironmentVariable_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(RequiresEnvironmentVariableTest::class)->isRequiresEnvironmentVariable();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresEnvironmentVariable());
+
+        assert($requirement instanceof RequiresEnvironmentVariable);
+
+        $this->assertSame('foo', $requirement->environmentVariableName());
+        $this->assertSame('bar', $requirement->value());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on class')]
@@ -921,6 +940,26 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($requirement->isRequiresPhpunitExtension());
         assert($requirement instanceof RequiresPhpunitExtension);
         $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\SomeOtherExtension', $requirement->extensionClass());
+    }
+
+    #[TestDox('Parses #[RequiresEnvironmentVariable] attribute on method')]
+    public function test_parses_RequiresEnvironmentVariable_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RequiresEnvironmentVariableTest::class, 'testOne')->isRequiresEnvironmentVariable();
+
+        $this->assertCount(2, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+        $this->assertTrue($requirement->isRequiresEnvironmentVariable());
+        assert($requirement instanceof RequiresEnvironmentVariable);
+        $this->assertSame('foo', $requirement->environmentVariableName());
+        $this->assertNull($requirement->value());
+
+        $requirement = $metadata->asArray()[1];
+        $this->assertTrue($requirement->isRequiresEnvironmentVariable());
+        assert($requirement instanceof RequiresEnvironmentVariable);
+        $this->assertSame('bar', $requirement->environmentVariableName());
+        $this->assertSame('baz', $requirement->value());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on method')]

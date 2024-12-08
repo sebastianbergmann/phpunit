@@ -391,6 +391,16 @@ abstract readonly class Metadata
         return new RequiresPhpunitExtension(self::METHOD_LEVEL, $extensionClass);
     }
 
+    public static function requiresEnvironmentVariableOnClass(string $environmentVariableName, null|int|string $value): RequiresEnvironmentVariable
+    {
+        return new RequiresEnvironmentVariable(self::CLASS_LEVEL, $environmentVariableName, $value);
+    }
+
+    public static function requiresEnvironmentVariableOnMethod(string $environmentVariableName, null|int|string $value): RequiresEnvironmentVariable
+    {
+        return new RequiresEnvironmentVariable(self::METHOD_LEVEL, $environmentVariableName, $value);
+    }
+
     /**
      * @param non-empty-string $setting
      * @param non-empty-string $value
@@ -812,6 +822,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true RequiresPhpunitExtension $this
      */
     public function isRequiresPhpunitExtension(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true RequiresEnvironmentVariable $this
+     */
+    public function isRequiresEnvironmentVariable(): bool
     {
         return false;
     }

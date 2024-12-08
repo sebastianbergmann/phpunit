@@ -39,6 +39,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
@@ -103,6 +104,7 @@ use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 #[CoversClass(RequiresPhp::class)]
 #[CoversClass(RequiresPhpunit::class)]
 #[CoversClass(RequiresPhpunitExtension::class)]
+#[CoversClass(RequiresEnvironmentVariable::class)]
 #[CoversClass(RequiresSetting::class)]
 #[CoversClass(RunClassInSeparateProcess::class)]
 #[CoversClass(RunInSeparateProcess::class)]
