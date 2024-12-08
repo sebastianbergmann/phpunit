@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "eca5d614c38bd1dd7351723c341402c774814fdd"
+                "reference": "1ad8a2d3dc4b2946082996529ce8e52cc87080d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/eca5d614c38bd1dd7351723c341402c774814fdd",
-                "reference": "eca5d614c38bd1dd7351723c341402c774814fdd",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1ad8a2d3dc4b2946082996529ce8e52cc87080d0",
+                "reference": "1ad8a2d3dc4b2946082996529ce8e52cc87080d0",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,6 @@
                 "php": ">=8.3",
                 "phpunit/php-file-iterator": "^5.1.0",
                 "phpunit/php-text-template": "^4.0.1",
-                "sebastian/code-unit-reverse-lookup": "^4.0.1",
                 "sebastian/complexity": "^4.0.1",
                 "sebastian/environment": "^7.2.0",
                 "sebastian/lines-of-code": "^3.0.1",
@@ -319,7 +318,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-07T15:43:49+00:00"
+            "time": "2024-12-08T06:33:55+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -622,62 +621,6 @@
                 }
             ],
             "time": "2024-07-03T04:41:36+00:00"
-        },
-        {
-            "name": "sebastian/code-unit-reverse-lookup",
-            "version": "4.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/code-unit-reverse-lookup.git",
-                "reference": "183a9b2632194febd219bb9246eee421dad8d45e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/183a9b2632194febd219bb9246eee421dad8d45e",
-                "reference": "183a9b2632194febd219bb9246eee421dad8d45e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^11.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
-            "description": "Looks up which function or method a line of code belongs to",
-            "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "support": {
-                "issues": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/issues",
-                "security": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/security/policy",
-                "source": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/tree/4.0.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-07-03T04:45:54+00:00"
         },
         {
             "name": "sebastian/comparator",
