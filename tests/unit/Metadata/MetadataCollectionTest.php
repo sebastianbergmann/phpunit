@@ -48,6 +48,7 @@ use stdClass;
 #[UsesClass(RequiresPhpExtension::class)]
 #[UsesClass(RequiresPhpunit::class)]
 #[UsesClass(RequiresPhpunitExtension::class)]
+#[UsesClass(RequiresEnvironmentVariable::class)]
 #[UsesClass(RequiresSetting::class)]
 #[UsesClass(RunClassInSeparateProcess::class)]
 #[UsesClass(RunInSeparateProcess::class)]
@@ -402,6 +403,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresPhpunitExtension());
     }
 
+    public function test_Can_be_filtered_for_RequiresEnvironmentVariable(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresEnvironmentVariable();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresEnvironmentVariable());
+    }
+
     public function test_Can_be_filtered_for_RequiresSetting(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresSetting();
@@ -553,6 +562,7 @@ final class MetadataCollectionTest extends TestCase
                     ),
                 ),
                 Metadata::requiresPhpunitExtensionOnClass(stdClass::class),
+                Metadata::requiresEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::requiresSettingOnClass('foo', 'bar'),
                 Metadata::runClassInSeparateProcess(),
                 Metadata::runInSeparateProcess(),

@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
 
 #[CoversClass(Requirements::class)]
 #[Small]
@@ -130,12 +131,31 @@ final class RequirementsTest extends TestCase
         ];
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($_ENV['foo']);
+    }
+
     #[DataProvider('missingRequirementsProvider')]
     public function testGetMissingRequirements(string $test, array $result): void
     {
         $this->assertEquals(
             $result,
             (new Requirements)->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test),
+        );
+    }
+
+    public function testGetMissingEnvironmentVariableRequirements(): void
+    {
+        $_ENV['foo'] = '';
+
+        $this->assertEquals(
+            [
+                'Environment variable "foo" is required to be "bar".',
+                'Environment variable "baz" is required.',
+            ],
+            (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
         );
     }
 }

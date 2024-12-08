@@ -54,6 +54,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
@@ -311,6 +312,16 @@ final readonly class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpunitExtensionOnClass(
                         $attributeInstance->extensionClass(),
+                    );
+
+                    break;
+
+                case RequiresEnvironmentVariable::class:
+                    assert($attributeInstance instanceof RequiresEnvironmentVariable);
+
+                    $result[] = Metadata::requiresEnvironmentVariableOnClass(
+                        $attributeInstance->environmentVariableName(),
+                        $attributeInstance->value(),
                     );
 
                     break;
@@ -687,6 +698,16 @@ final readonly class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpunitExtensionOnMethod(
                         $attributeInstance->extensionClass(),
+                    );
+
+                    break;
+
+                case RequiresEnvironmentVariable::class:
+                    assert($attributeInstance instanceof RequiresEnvironmentVariable);
+
+                    $result[] = Metadata::requiresEnvironmentVariableOnMethod(
+                        $attributeInstance->environmentVariableName(),
+                        $attributeInstance->value(),
                     );
 
                     break;
