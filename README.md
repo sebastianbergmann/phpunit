@@ -14,7 +14,7 @@ It is an instance of the xUnit architecture for unit testing frameworks.
 
 ## Installation
 
-We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:
+We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required dependencies of PHPUnit bundled in a single file:
 
 ```bash
 $ wget https://phar.phpunit.de/phpunit-X.Y.phar
