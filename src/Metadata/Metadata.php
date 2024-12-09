@@ -391,12 +391,12 @@ abstract readonly class Metadata
         return new RequiresPhpunitExtension(self::METHOD_LEVEL, $extensionClass);
     }
 
-    public static function requiresEnvironmentVariableOnClass(string $environmentVariableName, null|int|string $value): RequiresEnvironmentVariable
+    public static function requiresEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): RequiresEnvironmentVariable
     {
         return new RequiresEnvironmentVariable(self::CLASS_LEVEL, $environmentVariableName, $value);
     }
 
-    public static function requiresEnvironmentVariableOnMethod(string $environmentVariableName, null|int|string $value): RequiresEnvironmentVariable
+    public static function requiresEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): RequiresEnvironmentVariable
     {
         return new RequiresEnvironmentVariable(self::METHOD_LEVEL, $environmentVariableName, $value);
     }
