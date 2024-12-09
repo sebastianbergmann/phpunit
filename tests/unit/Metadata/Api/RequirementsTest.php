@@ -133,7 +133,7 @@ final class RequirementsTest extends TestCase
 
     protected function tearDown(): void
     {
-        unset($_ENV['foo']);
+        unset($_ENV['FOO'], $_ENV['BAR']);
     }
 
     #[DataProvider('missingRequirementsProvider')]
@@ -147,12 +147,14 @@ final class RequirementsTest extends TestCase
 
     public function testGetMissingEnvironmentVariableRequirements(): void
     {
-        $_ENV['foo'] = '';
+        $_ENV['FOO'] = 'foo';
+        $_ENV['BAR'] = '';
 
         $this->assertEquals(
             [
-                'Environment variable "foo" is required to be "bar".',
-                'Environment variable "baz" is required.',
+                'Environment variable "FOO" is required to be "bar".',
+                'Environment variable "BAR" is required.',
+                'Environment variable "BAZ" is required.',
             ],
             (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
         );

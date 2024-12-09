@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
+         colors="false"
+         cacheResult="false">
+    <testsuites>
+        <testsuite name="requires_environment_variable">
+            <file>SomeTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env name="FOO" value="1"/>
+        <env name="BAR" value=""/>
+    </php>
+</phpunit>
