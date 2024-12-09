@@ -133,7 +133,6 @@ final class RequirementsTest extends TestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
         unset($_ENV['foo']);
     }
 
