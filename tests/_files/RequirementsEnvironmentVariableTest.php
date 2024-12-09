@@ -15,8 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 final class RequirementsEnvironmentVariableTest extends TestCase
 {
-    #[RequiresEnvironmentVariable('foo', 'bar')]
-    #[RequiresEnvironmentVariable('baz')]
+    #[RequiresEnvironmentVariable('FOO', 'bar')]
+    #[RequiresEnvironmentVariable('BAR')]
+    #[RequiresEnvironmentVariable('BAZ')]
     public function testRequiresEnvironmentVariable(): void
     {
     }

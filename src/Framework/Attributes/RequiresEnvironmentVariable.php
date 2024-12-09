@@ -20,9 +20,9 @@ use Attribute;
 final readonly class RequiresEnvironmentVariable
 {
     private string $environmentVariableName;
-    private null|bool|int|string $value;
+    private null|string $value;
 
-    public function __construct(string $environmentVariableName, null|bool|int|string $value = null)
+    public function __construct(string $environmentVariableName, null|string $value = null)
     {
         $this->environmentVariableName = $environmentVariableName;
         $this->value                   = $value;
@@ -33,7 +33,7 @@ final readonly class RequiresEnvironmentVariable
         return $this->environmentVariableName;
     }
 
-    public function value(): null|bool|int|string
+    public function value(): null|string
     {
         return $this->value;
     }

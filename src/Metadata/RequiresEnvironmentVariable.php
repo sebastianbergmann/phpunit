@@ -17,9 +17,9 @@ namespace PHPUnit\Metadata;
 final readonly class RequiresEnvironmentVariable extends Metadata
 {
     private string $environmentVariableName;
-    private null|bool|int|string $value;
+    private null|string $value;
 
-    public function __construct(int $level, string $environmentVariableName, null|bool|int|string $value)
+    public function __construct(int $level, string $environmentVariableName, null|string $value)
     {
         parent::__construct($level);
 
@@ -37,7 +37,7 @@ final readonly class RequiresEnvironmentVariable extends Metadata
         return $this->environmentVariableName;
     }
 
-    public function value(): null|bool|int|string
+    public function value(): null|string
     {
         return $this->value;
     }
