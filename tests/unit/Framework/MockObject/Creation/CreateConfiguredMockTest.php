@@ -24,7 +24,7 @@ final class CreateConfiguredMockTest extends TestCase
 {
     public function testCreatesMockObjectForInterfaceOrExtendableClassWithReturnValueConfigurationForMultipleMethods(): void
     {
-        $stub = $this->createConfiguredMock(
+        $double = $this->createConfiguredMock(
             InterfaceWithReturnTypeDeclaration::class,
             [
                 'doSomething'     => true,
@@ -32,7 +32,7 @@ final class CreateConfiguredMockTest extends TestCase
             ],
         );
 
-        $this->assertTrue($stub->doSomething());
-        $this->assertSame(1, $stub->doSomethingElse(0));
+        $this->assertTrue($double->doSomething());
+        $this->assertSame(1, $double->doSomethingElse(0));
     }
 }
