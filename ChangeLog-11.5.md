@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ## [11.5.1] - 2024-MM-DD
 
+### Added
+
+* [#6081](https://github.com/sebastianbergmann/phpunit/pull/6081): `DefaultResultCache::mergeWith()` for merging result cache instances
+
 ### Fixed
 
 * [#6066](https://github.com/sebastianbergmann/phpunit/pull/6066): TeamCity logger does not handle error/skipped events in before-class methods correctly
