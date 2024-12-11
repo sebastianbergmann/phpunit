@@ -68,4 +68,32 @@ final class DefaultResultCacheTest extends TestCase
 
         unlink($cacheFile);
     }
+
+    public function testCanBeMerged(): void
+    {
+        $cacheSourceOne = new DefaultResultCache;
+        $cacheSourceOne->setStatus('status.a', TestStatus::skipped());
+        $cacheSourceOne->setStatus('status.b', TestStatus::incomplete());
+        $cacheSourceOne->setTime('time.a', 1);
+        $cacheSourceOne->setTime('time.b', 2);
+        $cacheSourceTwo = new DefaultResultCache;
+        $cacheSourceTwo->setStatus('status.c', TestStatus::failure());
+        $cacheSourceTwo->setTime('time.c', 4);
+
+        $sum = new DefaultResultCache;
+        $sum->mergeWith($cacheSourceOne);
+
+        $this->assertSame(TestStatus::skipped()->asString(), $sum->status('status.a')->asString());
+        $this->assertSame(TestStatus::incomplete()->asString(), $sum->status('status.b')->asString());
+        $this->assertNotSame(TestStatus::failure()->asString(), $sum->status('status.c')->asString());
+
+        $this->assertSame(1.0, $sum->time('time.a'));
+        $this->assertSame(2.0, $sum->time('time.b'));
+        $this->assertNotSame(4.0, $sum->time('time.c'));
+
+        $sum->mergeWith($cacheSourceTwo);
+
+        $this->assertSame(TestStatus::failure()->asString(), $sum->status('status.c')->asString());
+        $this->assertSame(4.0, $sum->time('time.c'));
+    }
 }
