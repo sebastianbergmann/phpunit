@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\Ticket;
@@ -43,28 +42,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertFalse($double->doSomething());
     }
 
-    #[TestDox('__toString() method returns empty string when return value generation is disabled and no return value is configured')]
-    final public function testToStringMethodReturnsEmptyStringWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
-    {
-        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
-            ->disableAutoReturnValueGeneration()
-            ->getMock();
-
-        $this->assertSame('', $double->__toString());
-    }
-
-    final public function testMethodDoesNotReturnValueWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
-    {
-        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
-            ->disableAutoReturnValueGeneration()
-            ->getMock();
-
-        $this->expectException(ReturnValueNotConfiguredException::class);
-        $this->expectExceptionMessage('No return value is configured for ' . InterfaceWithReturnTypeDeclaration::class . '::doSomething() and return value generation is disabled');
-
-        $double->doSomething();
-    }
-
     final public function testMethodReturnsConfiguredValueWhenReturnValueIsConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
@@ -92,20 +69,6 @@ abstract class TestDoubleTestCase extends TestCase
         $double->method('doSomething')->willReturnArgument(0);
 
         $this->assertSame($object, $double->doSomething($object));
-    }
-
-    #[IgnorePhpunitDeprecations]
-    public function testCloningOfObjectsPassedAsArgumentCanBeEnabled(): void
-    {
-        $object = new stdClass;
-
-        $double = $this->getMockBuilder(InterfaceWithMethodThatExpectsObject::class)
-            ->enableArgumentCloning()
-            ->getMock();
-
-        $double->method('doSomething')->willReturnArgument(0);
-
-        $this->assertNotSame($object, $double->doSomething($object));
     }
 
     final public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
@@ -267,17 +230,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertFalse($double->doSomething());
     }
 
-    #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
-    final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
-    {
-        $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
-
-        clone $double;
-    }
-
     #[TestDox('Original __clone() method is not called by default when test double object is cloned (readonly class)')]
     #[RequiresPhp('^8.3')]
     final public function testOriginalCloneMethodIsNotCalledByDefaultWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
@@ -285,18 +237,6 @@ abstract class TestDoubleTestCase extends TestCase
         $double = clone $this->createTestDouble(ExtendableReadonlyClassWithCloneMethod::class);
 
         $this->assertFalse($double->doSomething());
-    }
-
-    #[TestDox('Original __clone() method can optionally be called when test double object is cloned (readonly class)')]
-    #[RequiresPhp('^8.3')]
-    final public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
-    {
-        $double = $this->getMockBuilder(ExtendableReadonlyClassWithCloneMethod::class)->enableOriginalClone()->getMock();
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage(ExtendableReadonlyClassWithCloneMethod::class . '::__clone');
-
-        clone $double;
     }
 
     public function testMethodNameCanOnlyBeConfiguredOnce(): void

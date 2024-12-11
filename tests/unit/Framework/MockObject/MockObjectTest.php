@@ -10,22 +10,28 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function call_user_func_array;
+use Exception;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresMethod;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithSetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatExpectsObject;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables;
 use ReflectionProperty;
+use stdClass;
 
 #[Group('test-doubles')]
 #[Group('test-doubles/mock-object')]
@@ -482,6 +488,65 @@ EOT,
         $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
 
         $double->property = 'value';
+    }
+
+    #[TestDox('__toString() method returns empty string when return value generation is disabled and no return value is configured')]
+    public function testToStringMethodReturnsEmptyStringWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
+    {
+        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->disableAutoReturnValueGeneration()
+            ->getMock();
+
+        $this->assertSame('', $double->__toString());
+    }
+
+    public function testMethodDoesNotReturnValueWhenReturnValueGenerationIsDisabledAndNoReturnValueIsConfigured(): void
+    {
+        $double = $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->disableAutoReturnValueGeneration()
+            ->getMock();
+
+        $this->expectException(ReturnValueNotConfiguredException::class);
+        $this->expectExceptionMessage('No return value is configured for ' . InterfaceWithReturnTypeDeclaration::class . '::doSomething() and return value generation is disabled');
+
+        $double->doSomething();
+    }
+
+    #[IgnorePhpunitDeprecations]
+    public function testCloningOfObjectsPassedAsArgumentCanBeEnabled(): void
+    {
+        $object = new stdClass;
+
+        $double = $this->getMockBuilder(InterfaceWithMethodThatExpectsObject::class)
+            ->enableArgumentCloning()
+            ->getMock();
+
+        $double->method('doSomething')->willReturnArgument(0);
+
+        $this->assertNotSame($object, $double->doSomething($object));
+    }
+
+    #[TestDox('Original __clone() method can optionally be called when test double object is cloned')]
+    public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectIsCloned(): void
+    {
+        $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
+
+        clone $double;
+    }
+
+    #[TestDox('Original __clone() method can optionally be called when test double object is cloned (readonly class)')]
+    #[RequiresPhp('^8.3')]
+    public function testOriginalCloneMethodCanOptionallyBeCalledWhenTestDoubleObjectOfReadonlyClassIsCloned(): void
+    {
+        $double = $this->getMockBuilder(ExtendableReadonlyClassWithCloneMethod::class)->enableOriginalClone()->getMock();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(ExtendableReadonlyClassWithCloneMethod::class . '::__clone');
+
+        clone $double;
     }
 
     /**
