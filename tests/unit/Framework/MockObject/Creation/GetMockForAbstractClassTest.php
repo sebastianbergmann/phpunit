@@ -30,11 +30,11 @@ final class GetMockForAbstractClassTest extends TestCase
 {
     public function testCreatesMockObjectForAbstractClassAndAllowsConfigurationOfAbstractMethods(): void
     {
-        $mock = $this->getMockForAbstractClass(AbstractClass::class);
+        $double = $this->getMockForAbstractClass(AbstractClass::class);
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
     }
 
     public function testCannotCreateMockObjectForAbstractClassThatDoesNotExist(): void
@@ -47,10 +47,10 @@ final class GetMockForAbstractClassTest extends TestCase
 
     public function testCreatesMockObjectForAbstractClassAndDoesNotAllowConfigurationOfConcreteMethods(): void
     {
-        $mock = $this->getMockForAbstractClass(AbstractClass::class);
+        $double = $this->getMockForAbstractClass(AbstractClass::class);
 
         try {
-            $mock->expects($this->once())->method('doSomething');
+            $double->expects($this->once())->method('doSomething');
         } catch (MethodCannotBeConfiguredException $e) {
             $this->assertSame('Trying to configure method "doSomething" which cannot be configured because it does not exist, has not been specified, is final, or is static', $e->getMessage());
 

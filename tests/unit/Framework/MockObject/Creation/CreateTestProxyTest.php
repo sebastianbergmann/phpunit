@@ -27,14 +27,14 @@ final class CreateTestProxyTest extends TestCase
 {
     public function testCreatesTestProxyForExtendableClass(): void
     {
-        $proxy = $this->createTestProxy(TestProxyFixture::class);
+        $double = $this->createTestProxy(TestProxyFixture::class);
 
-        $proxy->expects($this->once())
+        $double->expects($this->once())
             ->method('returnString');
 
-        assert($proxy instanceof MockObject);
-        assert($proxy instanceof TestProxyFixture);
+        assert($double instanceof MockObject);
+        assert($double instanceof TestProxyFixture);
 
-        $this->assertSame('result', $proxy->returnString());
+        $this->assertSame('result', $double->returnString());
     }
 }

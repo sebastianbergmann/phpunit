@@ -27,11 +27,11 @@ final class GetMockForTraitTest extends TestCase
 {
     public function testCreatesMockObjectForTraitAndAllowsConfigurationOfAbstractMethods(): void
     {
-        $mock = $this->getMockForTrait(TraitWithConcreteAndAbstractMethod::class);
+        $double = $this->getMockForTrait(TraitWithConcreteAndAbstractMethod::class);
 
-        $mock->method('abstractMethod')->willReturn(true);
+        $double->method('abstractMethod')->willReturn(true);
 
-        $this->assertTrue($mock->concreteMethod());
+        $this->assertTrue($double->concreteMethod());
     }
 
     public function testCannotCreateMockObjectForTraitThatDoesNotExist(): void
