@@ -34,20 +34,20 @@ final class MockObjectTest extends TestDoubleTestCase
 {
     public function testExpectationThatMethodIsNeverCalledSucceedsWhenMethodIsNotCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->never())->method('doSomething');
+        $double->expects($this->never())->method('doSomething');
     }
 
     public function testExpectationThatMethodIsNeverCalledFailsWhenMethodIsCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->never())->method('doSomething');
+        $double->expects($this->never())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
             AnInterface::class . '::doSomething() was not expected to be called.',
-            $mock,
+            $double,
             'doSomething',
         );
     }
@@ -55,35 +55,35 @@ final class MockObjectTest extends TestDoubleTestCase
     #[DoesNotPerformAssertions]
     public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsNotCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->any())->method('doSomething');
+        $double->expects($this->any())->method('doSomething');
     }
 
     #[DoesNotPerformAssertions]
     public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->any())->method('doSomething');
+        $double->expects($this->any())->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledOnceSucceedsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->once())->method('doSomething');
+        $double->expects($this->once())->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledOnceFailsWhenMethodIsNeverCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->once())->method('doSomething');
+        $double->expects($this->once())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -91,70 +91,70 @@ Expectation failed for method name is "doSomething" when invoked 1 time.
 Method was expected to be called 1 time, actually called 0 times.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationThatMethodIsCalledOnceFailsWhenMethodIsCalledMoreThanOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->once())->method('doSomething');
+        $double->expects($this->once())->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
             AnInterface::class . '::doSomething() was not expected to be called more than once.',
-            $mock,
+            $double,
             'doSomething',
         );
     }
 
     public function testExpectationThatMethodIsCalledAtLeastOnceSucceedsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeastOnce())->method('doSomething');
+        $double->expects($this->atLeastOnce())->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledAtLeastOnceSucceedsWhenMethodIsCalledTwice(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeastOnce())->method('doSomething');
+        $double->expects($this->atLeastOnce())->method('doSomething');
 
-        $mock->doSomething();
-        $mock->doSomething();
+        $double->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledAtLeastTwiceSucceedsWhenMethodIsCalledTwice(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeast(2))->method('doSomething');
+        $double->expects($this->atLeast(2))->method('doSomething');
 
-        $mock->doSomething();
-        $mock->doSomething();
+        $double->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledAtLeastTwiceSucceedsWhenMethodIsCalledThreeTimes(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeast(2))->method('doSomething');
+        $double->expects($this->atLeast(2))->method('doSomething');
 
-        $mock->doSomething();
-        $mock->doSomething();
-        $mock->doSomething();
+        $double->doSomething();
+        $double->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledAtLeastOnceFailsWhenMethodIsNotCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeastOnce())->method('doSomething');
+        $double->expects($this->atLeastOnce())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -162,17 +162,17 @@ Expectation failed for method name is "doSomething" when invoked at least once.
 Expected invocation at least once but it never occurred.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationThatMethodIsCalledAtLeastTwiceFailsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atLeast(2))->method('doSomething');
+        $double->expects($this->atLeast(2))->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -180,25 +180,25 @@ Expectation failed for method name is "doSomething" when invoked at least 2 time
 Expected invocation at least 2 times but it occurred 1 time.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationThatMethodIsCalledTwiceSucceedsWhenMethodIsCalledTwice(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->exactly(2))->method('doSomething');
+        $double->expects($this->exactly(2))->method('doSomething');
 
-        $mock->doSomething();
-        $mock->doSomething();
+        $double->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsNeverCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->exactly(2))->method('doSomething');
+        $double->expects($this->exactly(2))->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -206,17 +206,17 @@ Expectation failed for method name is "doSomething" when invoked 2 times.
 Method was expected to be called 2 times, actually called 0 times.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->exactly(2))->method('doSomething');
+        $double->expects($this->exactly(2))->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -224,50 +224,50 @@ Expectation failed for method name is "doSomething" when invoked 2 times.
 Method was expected to be called 2 times, actually called 1 time.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationThatMethodIsCalledTwiceFailsWhenMethodIsCalledThreeTimes(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->exactly(2))->method('doSomething');
+        $double->expects($this->exactly(2))->method('doSomething');
 
-        $mock->doSomething();
-        $mock->doSomething();
+        $double->doSomething();
+        $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
             AnInterface::class . '::doSomething() was not expected to be called more than 2 times.',
-            $mock,
+            $double,
             'doSomething',
         );
     }
 
     public function testExpectationThatMethodIsCalledAtMostOnceSucceedsWhenMethodIsNeverCalled(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atMost(1))->method('doSomething');
+        $double->expects($this->atMost(1))->method('doSomething');
     }
 
     public function testExpectationThatMethodIsCalledAtMostOnceSucceedsWhenMethodIsCalledOnce(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atMost(1))->method('doSomething');
+        $double->expects($this->atMost(1))->method('doSomething');
 
-        $mock->doSomething();
+        $double->doSomething();
     }
 
     public function testExpectationThatMethodIsCalledAtMostOnceFailsWhenMethodIsCalledTwice(): void
     {
-        $mock = $this->createMock(AnInterface::class);
+        $double = $this->createMock(AnInterface::class);
 
-        $mock->expects($this->atMost(1))->method('doSomething');
+        $double->expects($this->atMost(1))->method('doSomething');
 
-        $mock->doSomething();
-        $mock->doSomething();
+        $double->doSomething();
+        $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -275,33 +275,33 @@ Expectation failed for method name is "doSomething" when invoked at most 1 time.
 Expected invocation at most 1 time but it occurred 2 times.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationThatMethodIsCalledWithAnyParameterSucceedsWhenMethodIsCalledWithParameter(): void
     {
-        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $mock->expects($this->once())->method('doSomethingElse')->withAnyParameters();
+        $double->expects($this->once())->method('doSomethingElse')->withAnyParameters();
 
-        $mock->doSomethingElse(1);
+        $double->doSomethingElse(1);
     }
 
     public function testExpectationThatMethodIsCalledWithParameterSucceedsWhenMethodIsCalledWithExpectedParameter(): void
     {
-        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $mock->expects($this->once())->method('doSomethingElse')->with(1);
+        $double->expects($this->once())->method('doSomethingElse')->with(1);
 
-        $mock->doSomethingElse(1);
+        $double->doSomethingElse(1);
     }
 
     public function testExpectationThatMethodIsCalledWithParameterFailsWhenMethodIsCalledButWithUnexpectedParameter(): void
     {
-        $mock = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $mock->expects($this->once())->method('doSomethingElse')->with(1);
+        $double->expects($this->once())->method('doSomethingElse')->with(1);
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -309,70 +309,70 @@ Expectation failed for method name is "doSomethingElse" when invoked 1 time
 Parameter 0 for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(0): int does not match expected value.
 Failed asserting that 0 matches expected 1.
 EOT,
-            $mock,
+            $double,
             'doSomethingElse',
             [0],
         );
     }
 
     /**
-     * With <code>$mock->expects($this->once())->method('one')->id($id);</code>,
+     * With <code>$double->expects($this->once())->method('one')->id($id);</code>,
      * we configure an expectation that one() is called once. This expectation is given the ID $id.
      *
-     * With <code>$mock->expects($this->once())->method('two')->after($id);</code>,
+     * With <code>$double->expects($this->once())->method('two')->after($id);</code>,
      * we configure an expectation that two() is called once. However, this expectation will only be verified
      * if/after one() has been called.
      */
     public function testMethodCallCanBeExpectedContingentOnWhetherAnotherMethodWasPreviouslyCalled(): void
     {
-        $id   = 'the-id';
-        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $id     = 'the-id';
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('one')
             ->id($id);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('two')
             ->after($id);
 
-        $mock->one();
-        $mock->two();
+        $double->one();
+        $double->two();
     }
 
     public function testContingentExpectationsAreNotEvaluatedUntilTheirConditionIsMet(): void
     {
-        $id   = 'the-id';
-        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $id     = 'the-id';
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('one')
             ->id($id);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('two')
             ->after($id);
 
-        $mock->two();
-        $mock->one();
-        $mock->two();
+        $double->two();
+        $double->one();
+        $double->two();
     }
 
     public function testContingentExpectationsAreEvaluatedWhenTheirConditionIsMet(): void
     {
-        $id   = 'the-id';
-        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $id     = 'the-id';
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('one')
             ->id($id);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('two')
             ->after($id);
 
-        $mock->two();
-        $mock->one();
+        $double->two();
+        $double->one();
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
@@ -380,36 +380,36 @@ Expectation failed for method name is "two" when invoked 1 time.
 Method was expected to be called 1 time, actually called 0 times.
 
 EOT,
-            $mock,
+            $double,
         );
     }
 
     public function testExpectationCannotBeContingentOnExpectationThatHasNotBeenConfigured(): void
     {
-        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('two')
             ->after('the-id');
 
         $this->assertThatMockObjectExpectationFails(
             'No builder found for match builder identification <the-id>',
-            $mock,
+            $double,
             'two',
         );
     }
 
     public function testExpectationsCannotHaveDuplicateIds(): void
     {
-        $id   = 'the-id';
-        $mock = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $id     = 'the-id';
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
 
-        $mock->expects($this->once())
+        $double->expects($this->once())
             ->method('one')
             ->id($id);
 
         try {
-            $mock->expects($this->once())
+            $double->expects($this->once())
                 ->method('one')
                 ->id($id);
         } catch (MatcherAlreadyRegisteredException $e) {
@@ -425,13 +425,13 @@ EOT,
 
     public function testWillReturnCallbackWithVariadicVariables(): void
     {
-        $mock = $this->createMock(MethodWIthVariadicVariables::class);
-        $mock->expects($this->once())->method('testVariadic')
+        $double = $this->createMock(MethodWIthVariadicVariables::class);
+        $double->expects($this->once())->method('testVariadic')
             ->withAnyParameters()
             ->willReturnCallback(static fn ($string, ...$arguments) => [$string, ...$arguments]);
 
         $testData = ['foo', 'bar', 'biz' => 'kuz'];
-        $actual   = $mock->testVariadic(...$testData);
+        $actual   = $double->testVariadic(...$testData);
 
         $this->assertSame($testData, $actual);
     }
@@ -507,10 +507,10 @@ EOT,
         return $this->createMock($type);
     }
 
-    private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $mock, string $methodName = '__phpunit_verify', array $arguments = []): void
+    private function assertThatMockObjectExpectationFails(string $expectationFailureMessage, MockObject $double, string $methodName = '__phpunit_verify', array $arguments = []): void
     {
         try {
-            call_user_func_array([$mock, $methodName], $arguments);
+            call_user_func_array([$double, $methodName], $arguments);
         } catch (ExpectationFailedException|MatchBuilderNotFoundException $e) {
             $this->assertSame($expectationFailureMessage, $e->getMessage());
 

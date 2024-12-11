@@ -26,11 +26,11 @@ final class GetMockFromWsdlTest extends TestCase
     #[TestDox('Creates mock object from WSDL file')]
     public function test_CreatesMockObjectFromWsdlFileWithNonNamespacedClassName(): void
     {
-        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
+        $double = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
 
         $this->assertStringStartsWith(
             'MockObject_GoogleSearch_',
-            $mock::class,
+            $double::class,
         );
     }
 }
