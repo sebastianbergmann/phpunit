@@ -19,9 +19,9 @@ use PHPUnit\Util\Exporter;
  */
 final class ArrayHasKey extends Constraint
 {
-    private readonly int|string $key;
+    private readonly mixed $key;
 
-    public function __construct(int|string $key)
+    public function __construct(mixed $key)
     {
         $this->key = $key;
     }
