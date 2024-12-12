@@ -170,7 +170,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertArrayHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
+    final public static function assertArrayHasKey(mixed $key, array|ArrayAccess $array, string $message = ''): void
     {
         $constraint = new ArrayHasKey($key);
 
@@ -185,7 +185,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    final public static function assertArrayNotHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
+    final public static function assertArrayNotHasKey(mixed $key, array|ArrayAccess $array, string $message = ''): void
     {
         $constraint = new LogicalNot(
             new ArrayHasKey($key),
@@ -2865,7 +2865,7 @@ abstract class Assert
         return new TraversableContainsOnly($className, false);
     }
 
-    final public static function arrayHasKey(int|string $key): ArrayHasKey
+    final public static function arrayHasKey(mixed $key): ArrayHasKey
     {
         return new ArrayHasKey($key);
     }

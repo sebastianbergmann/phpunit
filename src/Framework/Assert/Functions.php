@@ -166,7 +166,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
      *
      * @see Assert::assertArrayHasKey
      */
-    function assertArrayHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
+    function assertArrayHasKey(mixed $key, array|ArrayAccess $array, string $message = ''): void
     {
         Assert::assertArrayHasKey(...func_get_args());
     }
@@ -185,7 +185,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
      *
      * @see Assert::assertArrayNotHasKey
      */
-    function assertArrayNotHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
+    function assertArrayNotHasKey(mixed $key, array|ArrayAccess $array, string $message = ''): void
     {
         Assert::assertArrayNotHasKey(...func_get_args());
     }
@@ -3093,7 +3093,7 @@ if (!function_exists('PHPUnit\Framework\containsOnlyInstancesOf')) {
 }
 
 if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
-    function arrayHasKey(int|string $key): ArrayHasKey
+    function arrayHasKey(mixed $key): ArrayHasKey
     {
         return Assert::arrayHasKey(...func_get_args());
     }
