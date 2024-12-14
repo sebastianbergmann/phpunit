@@ -23,7 +23,7 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 abstract readonly class Requirement
 {
-    private const string VERSION_COMPARISON = "/(?P<operator>!=|<|<=|<>|=|==|>|>=)\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m";
+    private const string VERSION_COMPARISON = "/(?P<operator>!=|<|<=|<>|=|==|>|>=)?\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m";
 
     /**
      * @throws InvalidVersionOperatorException
@@ -41,7 +41,9 @@ abstract readonly class Requirement
             if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches)) {
                 return new ComparisonRequirement(
                     $matches['version'],
-                    new VersionComparisonOperator($matches['operator']),
+                    new VersionComparisonOperator(
+                        !empty($matches['operator']) ? $matches['operator'] : '>=',
+                    ),
                 );
             }
         }
