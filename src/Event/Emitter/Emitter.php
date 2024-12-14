@@ -145,9 +145,6 @@ interface Emitter
 
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
 
-    /**
-     * @param non-empty-string $message
-     */
     public function testSkipped(Code\Test $test, string $message): void;
 
     /**

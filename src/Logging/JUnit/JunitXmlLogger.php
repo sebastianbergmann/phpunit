@@ -102,7 +102,7 @@ final class JunitXmlLogger
 
     public function flush(): void
     {
-        $this->printer->print($this->document->saveXML());
+        $this->printer->print($this->document->saveXML() ?: '');
 
         $this->printer->flush();
     }
@@ -269,7 +269,7 @@ final class JunitXmlLogger
         );
 
         $this->testSuiteTests[$this->testSuiteLevel]++;
-        $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+        $this->testSuiteTimes[$this->testSuiteLevel] += (int) $time;
 
         $this->currentTestCase = null;
         $this->time            = null;
