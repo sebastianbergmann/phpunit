@@ -76,7 +76,7 @@ final readonly class TestBuilder
     /**
      * @param non-empty-string                                                                                                                                                  $methodName
      * @param class-string<TestCase>                                                                                                                                            $className
-     * @param array<list<mixed>>                                                                                                                                                $data
+     * @param array<array<mixed>>                                                                                                                                               $data
      * @param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @param list<non-empty-string>                                                                                                                                            $groups
      */
