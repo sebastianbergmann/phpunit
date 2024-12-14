@@ -31,13 +31,50 @@ Please refer to the [documentation](https://phpunit.de/documentation.html?ref=gi
 
 Please refer to [CONTRIBUTING.md](https://github.com/sebastianbergmann/phpunit/blob/main/.github/CONTRIBUTING.md) for information on how to contribute to PHPUnit and its related projects.
 
-Thanks to everyone who has contributed to PHPUnit! You can find a detailed list of contributors on every PHPUnit related package on GitHub.
-This list shows only the major components:
+A big "Thank you!" to everyone who has contributed to PHPUnit!
+You can find a detailed list of contributors on every PHPUnit related package on GitHub.
 
-* [PHPUnit](https://github.com/sebastianbergmann/phpunit/graphs/contributors)
-* [php-code-coverage](https://github.com/sebastianbergmann/php-code-coverage/graphs/contributors)
+Here is a list of all components that are primarily developed and maintained by [Sebastian Bergmann](https://sebastian-bergmann.de/open-source.html?ref=github):
 
-A very special thanks to everyone who has contributed to the [documentation](https://github.com/sebastianbergmann/phpunit-documentation-english/graphs/contributors).
+* [phpunit/phpunit](https://github.com/sebastianbergmann/phpunit/graphs/contributors)
+* [phpunit/php-code-coverage](https://github.com/sebastianbergmann/php-code-coverage/graphs/contributors)
+* [phpunit/php-file-iterator](https://github.com/sebastianbergmann/php-file-iterator/graphs/contributors)
+* [phpunit/php-invoker](https://github.com/sebastianbergmann/php-invoker/graphs/contributors)
+* [phpunit/php-text-template](https://github.com/sebastianbergmann/php-text-template/graphs/contributors)
+* [phpunit/php-timer](https://github.com/sebastianbergmann/php-timer/graphs/contributors)
+* [sebastian/cli-parser](https://github.com/sebastianbergmann/cli-parser/graphs/contributors)
+* [sebastian/comparator](https://github.com/sebastianbergmann/comparator/graphs/contributors)
+* [sebastian/complexity](https://github.com/sebastianbergmann/complexity/graphs/contributors)
+* [sebastian/diff](https://github.com/sebastianbergmann/diff/graphs/contributors)
+* [sebastian/environment](https://github.com/sebastianbergmann/environment/graphs/contributors)
+* [sebastian/exporter](https://github.com/sebastianbergmann/exporter/graphs/contributors)
+* [sebastian/global-state](https://github.com/sebastianbergmann/global-state/graphs/contributors)
+* [sebastian/lines-of-code](https://github.com/sebastianbergmann/lines-of-code/graphs/contributors)
+* [sebastian/object-enumerator](https://github.com/sebastianbergmann/object-enumerator/graphs/contributors)
+* [sebastian/object-reflector](https://github.com/sebastianbergmann/object-reflector/graphs/contributors)
+* [sebastian/recursion-context](https://github.com/sebastianbergmann/recursion-context/graphs/contributors)
+* [sebastian/type](https://github.com/sebastianbergmann/type/graphs/contributors)
+* [sebastian/version](https://github.com/sebastianbergmann/version/graphs/contributors)
+
+A very special thanks to everyone who has contributed to the [PHPUnit Manual](https://github.com/sebastianbergmann/phpunit-documentation-english/graphs/contributors).
+
+In addition to the components listed above, PHPUnit depends on the components listed below:
+
+* [myclabs/deep-copy](https://github.com/myclabs/DeepCopy/graphs/contributors)
+* [nikic/php-parser](https://github.com/nikic/php-parser/graphs/contributors)
+* [phar-io/manifest](https://github.com/phar-io/manifest/graphs/contributors)
+* [phar-io/version](https://github.com/phar-io/version/graphs/contributors)
+* [staabm/side-effects-detector](https://github.com/staabm/side-effects-detector/graphs/contributors)
+* [theseer/tokenizer](https://github.com/theseer/tokenizer/graphs/contributors)
+
+These tools are used to develop PHPUnit:
+
+* [Composer](https://getcomposer.org/)
+* [Phive](https://phar.io/)
+* [PHP Autoload Builder](https://github.com/theseer/Autoload/)
+* [PHP-CS-Fixer](https://cs.symfony.com/)
+* [PHP-Scoper](https://github.com/humbug/php-scoper)
+* [PHPStan](https://phpstan.org/)
 
 ## Sponsors
 
