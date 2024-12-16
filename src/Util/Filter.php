@@ -63,7 +63,7 @@ final readonly class Filter
     /**
      * @param list<array{file: string, line: ?int, class?: class-string, function?: string, type: string}> $frames
      */
-    public static function stackTraceAsString(array $frames): string
+    private static function stackTraceAsString(array $frames): string
     {
         $buffer      = '';
         $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
