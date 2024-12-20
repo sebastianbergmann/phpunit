@@ -265,7 +265,7 @@
 
         <copy file="${basedir}/vendor/doctrine/deprecations/LICENSE" tofile="${basedir}/build/tmp/phar/doctrine-deprecations/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/doctrine-deprecations">
-            <fileset dir="${basedir}/vendor/doctrine/deprecations/lib">
+            <fileset dir="${basedir}/vendor/doctrine/deprecations/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
