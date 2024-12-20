@@ -9,5 +9,10 @@
  */
 \set_error_handler(static function (int $err_lvl, string $err_msg, string $err_file, int $err_line): bool
 {
+    // silenced errors (via "@" operator)
+    if (!(\error_reporting() & $errno)) {
+        return false;
+    }
+
     throw new ErrorException($err_msg, 0, $err_lvl, $err_file, $err_line);
 });
