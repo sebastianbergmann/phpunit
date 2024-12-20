@@ -64,6 +64,10 @@ final readonly class MigrationBuilder
             MoveCoverageDirectoriesToSource::class,
         ],
 
+        '10.4' => [
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
+        ],
+
         '10.5' => [
             RemoveRegisterMockObjectsFromTestArgumentsRecursivelyAttribute::class,
         ],
@@ -75,6 +79,10 @@ final readonly class MigrationBuilder
         '11.1' => [
             RemoveCacheResultFileAttribute::class,
             RemoveCoverageElementCacheDirectoryAttribute::class,
+        ],
+
+        '11.2' => [
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
         ],
 
         '11.4' => [

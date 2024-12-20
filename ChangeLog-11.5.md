@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Fixed
 
 * [#6082](https://github.com/sebastianbergmann/phpunit/issues/6082): `assertArrayHasKey()`, `assertArrayNotHasKey()`, `arrayHasKey()`, and `ArrayHasKey::__construct()` do not support all possible key types
+* [#6087](https://github.com/sebastianbergmann/phpunit/issues/6087): `--migrate-configuration` does not remove `beStrictAboutTodoAnnotatedTests` attribute from XML configuration file
 
 ## [11.5.1] - 2024-12-11
 
