@@ -63,6 +63,10 @@ final class MigrationBuilder
         '10.0' => [
             MoveCoverageDirectoriesToSource::class,
         ],
+
+        '10.4' => [
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
+        ],
     ];
 
     public function build(string $fromVersion): array

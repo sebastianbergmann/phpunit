@@ -26,6 +26,10 @@ final class MigratorTest extends TestCase
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.5.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.5.xml',
             ],
+            'Issue 6087' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-issue-6087.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-issue-6087.xml',
+            ],
         ];
     }
 
