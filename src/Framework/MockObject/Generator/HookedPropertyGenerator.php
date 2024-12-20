@@ -21,8 +21,6 @@ final class HookedPropertyGenerator
     /**
      * @param class-string         $className
      * @param list<HookedProperty> $properties
-     *
-     * @return non-empty-string
      */
     public function generate(string $className, array $properties): string
     {

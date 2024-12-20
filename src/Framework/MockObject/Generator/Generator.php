@@ -89,7 +89,7 @@ final class Generator
      *
      * @param class-string            $type
      * @param ?list<non-empty-string> $methods
-     * @param list<mixed>             $arguments
+     * @param array<mixed>            $arguments
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException

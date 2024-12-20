@@ -306,7 +306,7 @@ final readonly class ResultPrinter
             PHP_EOL,
             array_map(
                 static fn (string $line) => '   ' . $prefix . ($line ? ' ' . $line : ''),
-                preg_split('/\r\n|\r|\n/', $message),
+                preg_split('/\r\n|\r|\n/', $message) ?: [],
             ),
         );
     }
