@@ -9,35 +9,32 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 final class MigratorTest extends TestCase
 {
-    #[TestDox('Can migrate PHPUnit 9.2 configuration')]
-    public function testCanMigratePhpUnit92Configuration(): void
+    public static function provider(): array
     {
-        $this->assertEquals(
-            (new XmlLoader)->loadFile(__DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.2.xml'),
-            (new XmlLoader)->load(
-                (new Migrator)->migrate(
-                    __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.2.xml',
-                ),
-            ),
-        );
+        return [
+            'PHPUnit 9.2' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.2.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.2.xml',
+            ],
+            'PHPUnit 9.5' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.5.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.5.xml',
+            ],
+        ];
     }
 
-    #[TestDox('Can migrate PHPUnit 9.5 configuration')]
-    public function testCanMigratePhpUnit95Configuration(): void
+    #[DataProvider('provider')]
+    public function testCanMigrateConfigurationFileThatValidatesAgainstPreviousSchema(string $output, string $input): void
     {
         $this->assertEquals(
-            (new XmlLoader)->loadFile(__DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.5.xml'),
-            (new XmlLoader)->load(
-                (new Migrator)->migrate(
-                    __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.5.xml',
-                ),
-            ),
+            (new XmlLoader)->loadFile($output),
+            (new XmlLoader)->load((new Migrator)->migrate($input)),
         );
     }
 }
