@@ -29,6 +29,7 @@
             <directory suffix=".phpt">tests/end-to-end/mock-objects</directory>
             <directory suffix=".phpt">tests/end-to-end/phpt</directory>
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
+            <directory suffix=".phpt">tests/end-to-end/sandbox</directory>
             <directory suffix=".phpt">tests/end-to-end/self-direct-indirect</directory>
             <directory suffix=".phpt">tests/end-to-end/testdox</directory>
 
