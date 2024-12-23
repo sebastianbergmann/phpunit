@@ -22,7 +22,7 @@ final readonly class UsesFunction extends Metadata
     private string $functionName;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param non-empty-string $functionName
      */
     public function __construct(int $level, string $functionName)

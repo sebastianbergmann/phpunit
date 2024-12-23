@@ -23,7 +23,7 @@ abstract readonly class Metadata
     private const int METHOD_LEVEL = 1;
 
     /**
-     * @var 0|1
+     * @var int<0, 1>
      */
     private int $level;
 
@@ -527,7 +527,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param 0|1 $level
+     * @param int<0, 1> $level
      */
     protected function __construct(int $level)
     {

@@ -22,7 +22,7 @@ final readonly class UsesClassesThatImplementInterface extends Metadata
     private string $interfaceName;
 
     /**
-     * @param 0|1          $level
+     * @param int<0, 1>    $level
      * @param class-string $interfaceName
      */
     protected function __construct(int $level, string $interfaceName)
