@@ -19,8 +19,8 @@ use PHPUnit\Runner\Extension\Extension;
  */
 abstract readonly class Metadata
 {
-    private const CLASS_LEVEL  = 0;
-    private const METHOD_LEVEL = 1;
+    private const int CLASS_LEVEL  = 0;
+    private const int METHOD_LEVEL = 1;
 
     /**
      * @var 0|1
