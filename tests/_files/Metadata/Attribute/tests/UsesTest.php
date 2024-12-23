@@ -25,4 +25,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesFunction('f')]
 final class UsesTest extends TestCase
 {
+    public function testOne(): void
+    {
+    }
 }

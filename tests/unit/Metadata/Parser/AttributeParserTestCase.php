@@ -25,6 +25,7 @@ use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
+use PHPUnit\TestFixture\Metadata\Attribute\CoversNothingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DisableReturnValueGenerationForTestDoublesTest;
@@ -143,7 +144,7 @@ abstract class AttributeParserTestCase extends TestCase
     #[TestDox('Parses #[CoversNothing] attribute on class')]
     public function test_parses_CoversNothing_attribute_on_class(): void
     {
-        $metadata = $this->parser()->forClass(CoversTest::class)->isCoversNothing();
+        $metadata = $this->parser()->forClass(CoversNothingTest::class)->isCoversNothing();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
@@ -557,7 +558,7 @@ abstract class AttributeParserTestCase extends TestCase
     #[TestDox('Parses #[CoversNothing] attribute on method')]
     public function test_parses_CoversNothing_attribute_on_method(): void
     {
-        $metadata = $this->parser()->forMethod(CoversTest::class, 'testOne')->isCoversNothing();
+        $metadata = $this->parser()->forMethod(CoversNothingTest::class, 'testOne')->isCoversNothing();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
@@ -1100,7 +1101,6 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata->isCoversClass());
         $this->assertCount(1, $metadata->isCoversFunction());
-        $this->assertCount(2, $metadata->isCoversNothing());
     }
 
     public function test_ignores_attributes_not_owned_by_PHPUnit(): void

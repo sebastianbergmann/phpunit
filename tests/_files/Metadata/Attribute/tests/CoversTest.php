@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\CoversNamespace;
-use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
 #[CoversNamespace('PHPUnit\TestFixture\Metadata\Attribute')]
@@ -24,10 +23,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClassesThatImplementInterface(Example::class)]
 #[CoversMethod(Example::class, 'method')]
 #[CoversFunction('f')]
-#[CoversNothing]
 final class CoversTest extends TestCase
 {
-    #[CoversNothing]
     public function testOne(): void
     {
     }
