@@ -44,12 +44,4 @@ final readonly class CoversFunction extends Metadata
     {
         return $this->functionName;
     }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function asStringForCodeUnitMapper(): string
-    {
-        return '::' . $this->functionName;
-    }
 }

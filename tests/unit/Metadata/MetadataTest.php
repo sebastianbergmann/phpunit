@@ -592,7 +592,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
-        $this->assertSame(self::class, $metadata->asStringForCodeUnitMapper());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -834,7 +833,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
-        $this->assertSame('::f', $metadata->asStringForCodeUnitMapper());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -896,7 +894,6 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame('testCanBeCoversMethod', $metadata->methodName());
-        $this->assertSame(self::class . '::testCanBeCoversMethod', $metadata->asStringForCodeUnitMapper());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -4098,7 +4095,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
-        $this->assertSame(self::class, $metadata->asStringForCodeUnitMapper());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -4278,7 +4274,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
-        $this->assertSame('::f', $metadata->asStringForCodeUnitMapper());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -4340,7 +4335,6 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame('testCanBeUsesMethod', $metadata->methodName());
-        $this->assertSame(self::class . '::testCanBeUsesMethod', $metadata->asStringForCodeUnitMapper());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());

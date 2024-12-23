@@ -59,14 +59,4 @@ final readonly class CoversMethod extends Metadata
     {
         return $this->methodName;
     }
-
-    /**
-     * @return non-empty-string
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function asStringForCodeUnitMapper(): string
-    {
-        return $this->className . '::' . $this->methodName;
-    }
 }
