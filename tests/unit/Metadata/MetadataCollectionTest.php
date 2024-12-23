@@ -178,6 +178,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isBefore());
     }
 
+    public function test_Can_be_filtered_for_CoversNamespace(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversNamespace();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversNamespace());
+    }
+
     public function test_Can_be_filtered_for_CoversClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversClass();
@@ -467,6 +475,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isTestWith());
     }
 
+    public function test_Can_be_filtered_for_UsesNamespace(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesNamespace();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesNamespace());
+    }
+
     public function test_Can_be_filtered_for_UsesClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesClass();
@@ -525,6 +541,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::backupStaticPropertiesOnClass(true),
                 Metadata::beforeClass(0),
                 Metadata::before(0),
+                Metadata::coversNamespace(''),
                 Metadata::coversClass(''),
                 Metadata::coversClassesThatExtendClass(''),
                 Metadata::coversClassesThatImplementInterface(''),
@@ -570,6 +587,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::testDoxOnClass(''),
                 Metadata::test(),
                 Metadata::testWith([]),
+                Metadata::usesNamespace(''),
                 Metadata::usesClass(''),
                 Metadata::usesClassesThatExtendClass(''),
                 Metadata::usesClassesThatImplementInterface(''),

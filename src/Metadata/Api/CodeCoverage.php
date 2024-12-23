@@ -15,12 +15,14 @@ use PHPUnit\Metadata\CoversClassesThatExtendClass;
 use PHPUnit\Metadata\CoversClassesThatImplementInterface;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
+use PHPUnit\Metadata\CoversNamespace;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesClassesThatExtendClass;
 use PHPUnit\Metadata\UsesClassesThatImplementInterface;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
+use PHPUnit\Metadata\UsesNamespace;
 use SebastianBergmann\CodeCoverage\Test\Target\Target;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 
@@ -44,6 +46,12 @@ final class CodeCoverage
         $targets = [];
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if ($metadata->isCoversNamespace()) {
+                assert($metadata instanceof CoversNamespace);
+
+                $targets[] = Target::forNamespace($metadata->namespace());
+            }
+
             if ($metadata->isCoversClass()) {
                 assert($metadata instanceof CoversClass);
 
@@ -87,6 +95,12 @@ final class CodeCoverage
         $targets = [];
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if ($metadata->isUsesNamespace()) {
+                assert($metadata instanceof UsesNamespace);
+
+                $targets[] = Target::forNamespace($metadata->namespace());
+            }
+
             if ($metadata->isUsesClass()) {
                 assert($metadata instanceof UsesClass);
 

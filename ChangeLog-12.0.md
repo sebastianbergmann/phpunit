@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 * [#5984](https://github.com/sebastianbergmann/phpunit/issues/5984): `#[CoversClassesThatExtendClass]` and `#[UsesClassesThatExtendClass]`
 * [#5985](https://github.com/sebastianbergmann/phpunit/issues/5985): `#[CoversClassesThatImplementInterface]` and `#[UsesClassesThatImplementInterface]`
+* [#6073](https://github.com/sebastianbergmann/phpunit/issues/6073): `#[CoversNamespace]` and `#[UsesNamespace]`
 * [#6074](https://github.com/sebastianbergmann/phpunit/pull/6074): `#[RequiresEnvironmentVariable]`
 
 ### Changed

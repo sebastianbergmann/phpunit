@@ -80,6 +80,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string $namespace
+     */
+    public static function coversNamespace(string $namespace): CoversNamespace
+    {
+        return new CoversNamespace(self::CLASS_LEVEL, $namespace);
+    }
+
+    /**
      * @param class-string $className
      */
     public static function coversClass(string $className): CoversClass
@@ -465,6 +473,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string $namespace
+     */
+    public static function usesNamespace(string $namespace): UsesNamespace
+    {
+        return new UsesNamespace(self::CLASS_LEVEL, $namespace);
+    }
+
+    /**
      * @param class-string $className
      */
     public static function usesClass(string $className): UsesClass
@@ -572,6 +588,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true Before $this
      */
     public function isBefore(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CoversNamespace $this
+     */
+    public function isCoversNamespace(): bool
     {
         return false;
     }
@@ -854,6 +878,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true TestWith $this
      */
     public function isTestWith(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesNamespace $this
+     */
+    public function isUsesNamespace(): bool
     {
         return false;
     }

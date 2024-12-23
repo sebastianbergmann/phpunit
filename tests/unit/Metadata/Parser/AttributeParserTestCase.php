@@ -79,6 +79,16 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
+    #[TestDox('Parses #[CoversNamespace] attribute on class')]
+    public function test_parses_CoversNamespace_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversTest::class)->isCoversNamespace();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversNamespace());
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute', $metadata->asArray()[0]->namespace());
+    }
+
     #[TestDox('Parses #[CoversClass] attribute on class')]
     public function test_parses_CoversClass_attribute_on_class(): void
     {
@@ -425,6 +435,16 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    #[TestDox('Parses #[UsesNamespace] attribute on class')]
+    public function test_parses_UsesNamespace_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesTest::class)->isUsesNamespace();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesNamespace());
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute', $metadata->asArray()[0]->namespace());
     }
 
     #[TestDox('Parses #[UsesClass] attribute on class')]

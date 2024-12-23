@@ -160,6 +160,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isCoversNamespace(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversNamespace(),
+            ),
+        );
+    }
+
     public function isCoversClass(): self
     {
         return new self(
@@ -519,6 +529,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isTestWith(),
+            ),
+        );
+    }
+
+    public function isUsesNamespace(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesNamespace(),
             ),
         );
     }
