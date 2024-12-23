@@ -37,12 +37,8 @@ final class CodeCoverage
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public function coversTargets(string $className, string $methodName): false|TargetCollection
+    public function coversTargets(string $className, string $methodName): TargetCollection
     {
-        if (!$this->shouldCodeCoverageBeCollectedFor($className, $methodName)) {
-            return false;
-        }
-
         $targets = [];
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
