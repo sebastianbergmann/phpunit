@@ -22,7 +22,7 @@ final readonly class CoversClassesThatExtendClass extends Metadata
     private string $className;
 
     /**
-     * @param int<0, 1> $level
+     * @param int<0, 1>    $level
      * @param class-string $className
      */
     protected function __construct(int $level, string $className)
