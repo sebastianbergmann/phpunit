@@ -24,13 +24,16 @@ use PHPUnit\TestFixture\NoCoverageAttributesTest;
 #[Group('metadata')]
 final class CodeCoverageTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{0: bool, 1: class-string}>
+     */
     public static function canSkipCoverageProvider(): array
     {
         return [
-            [NoCoverageAttributesTest::class, false],
-            [CoversClassOnClassTest::class, false],
-            [CoversNothingOnClassTest::class, true],
-            [CoversNothingOnMethodTest::class, true],
+            [false, NoCoverageAttributesTest::class],
+            [false, CoversClassOnClassTest::class],
+            [true, CoversNothingOnClassTest::class],
+            [true, CoversNothingOnMethodTest::class],
         ];
     }
 
@@ -38,12 +41,12 @@ final class CodeCoverageTest extends TestCase
      * @param class-string $testCase
      */
     #[DataProvider('canSkipCoverageProvider')]
-    public function testWhetherCollectionOfCodeCoverageDataCanBeSkippedCanBeDetermined(string $testCase, bool $expectedCanSkip): void
+    public function testWhetherCollectionOfCodeCoverageDataCanBeSkippedCanBeDetermined(bool $expected, string $testCase): void
     {
         $test             = new $testCase('testSomething');
         $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test::class, $test->name());
         $canSkipCoverage  = !$coverageRequired;
 
-        $this->assertEquals($expectedCanSkip, $canSkipCoverage);
+        $this->assertSame($expected, $canSkipCoverage);
     }
 }
