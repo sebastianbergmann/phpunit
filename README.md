@@ -36,36 +36,36 @@ You can find a detailed list of contributors on every PHPUnit related package on
 
 Here is a list of all components that are primarily developed and maintained by [Sebastian Bergmann](https://sebastian-bergmann.de/open-source.html?ref=github):
 
-* [phpunit/phpunit](https://github.com/sebastianbergmann/phpunit/graphs/contributors)
-* [phpunit/php-code-coverage](https://github.com/sebastianbergmann/php-code-coverage/graphs/contributors)
-* [phpunit/php-file-iterator](https://github.com/sebastianbergmann/php-file-iterator/graphs/contributors)
-* [phpunit/php-invoker](https://github.com/sebastianbergmann/php-invoker/graphs/contributors)
-* [phpunit/php-text-template](https://github.com/sebastianbergmann/php-text-template/graphs/contributors)
-* [phpunit/php-timer](https://github.com/sebastianbergmann/php-timer/graphs/contributors)
-* [sebastian/cli-parser](https://github.com/sebastianbergmann/cli-parser/graphs/contributors)
-* [sebastian/comparator](https://github.com/sebastianbergmann/comparator/graphs/contributors)
-* [sebastian/complexity](https://github.com/sebastianbergmann/complexity/graphs/contributors)
-* [sebastian/diff](https://github.com/sebastianbergmann/diff/graphs/contributors)
-* [sebastian/environment](https://github.com/sebastianbergmann/environment/graphs/contributors)
-* [sebastian/exporter](https://github.com/sebastianbergmann/exporter/graphs/contributors)
-* [sebastian/global-state](https://github.com/sebastianbergmann/global-state/graphs/contributors)
-* [sebastian/lines-of-code](https://github.com/sebastianbergmann/lines-of-code/graphs/contributors)
-* [sebastian/object-enumerator](https://github.com/sebastianbergmann/object-enumerator/graphs/contributors)
-* [sebastian/object-reflector](https://github.com/sebastianbergmann/object-reflector/graphs/contributors)
-* [sebastian/recursion-context](https://github.com/sebastianbergmann/recursion-context/graphs/contributors)
-* [sebastian/type](https://github.com/sebastianbergmann/type/graphs/contributors)
-* [sebastian/version](https://github.com/sebastianbergmann/version/graphs/contributors)
+* [phpunit/phpunit](https://github.com/sebastianbergmann/phpunit)
+* [phpunit/php-code-coverage](https://github.com/sebastianbergmann/php-code-coverage)
+* [phpunit/php-file-iterator](https://github.com/sebastianbergmann/php-file-iterator)
+* [phpunit/php-invoker](https://github.com/sebastianbergmann/php-invoker)
+* [phpunit/php-text-template](https://github.com/sebastianbergmann/php-text-template)
+* [phpunit/php-timer](https://github.com/sebastianbergmann/php-timer)
+* [sebastian/cli-parser](https://github.com/sebastianbergmann/cli-parser)
+* [sebastian/comparator](https://github.com/sebastianbergmann/comparator)
+* [sebastian/complexity](https://github.com/sebastianbergmann/complexity)
+* [sebastian/diff](https://github.com/sebastianbergmann/diff)
+* [sebastian/environment](https://github.com/sebastianbergmann/environment)
+* [sebastian/exporter](https://github.com/sebastianbergmann/exporter)
+* [sebastian/global-state](https://github.com/sebastianbergmann/global-state)
+* [sebastian/lines-of-code](https://github.com/sebastianbergmann/lines-of-code)
+* [sebastian/object-enumerator](https://github.com/sebastianbergmann/object-enumerator)
+* [sebastian/object-reflector](https://github.com/sebastianbergmann/object-reflector)
+* [sebastian/recursion-context](https://github.com/sebastianbergmann/recursion-context)
+* [sebastian/type](https://github.com/sebastianbergmann/type)
+* [sebastian/version](https://github.com/sebastianbergmann/version)
 
-A very special thanks to everyone who has contributed to the [PHPUnit Manual](https://github.com/sebastianbergmann/phpunit-documentation-english/graphs/contributors).
+A very special thanks to everyone who has contributed to the [PHPUnit Manual](https://github.com/sebastianbergmann/phpunit-documentation-english).
 
 In addition to the components listed above, PHPUnit depends on the components listed below:
 
-* [myclabs/deep-copy](https://github.com/myclabs/DeepCopy/graphs/contributors)
-* [nikic/php-parser](https://github.com/nikic/php-parser/graphs/contributors)
-* [phar-io/manifest](https://github.com/phar-io/manifest/graphs/contributors)
-* [phar-io/version](https://github.com/phar-io/version/graphs/contributors)
-* [staabm/side-effects-detector](https://github.com/staabm/side-effects-detector/graphs/contributors)
-* [theseer/tokenizer](https://github.com/theseer/tokenizer/graphs/contributors)
+* [myclabs/deep-copy](https://github.com/myclabs/DeepCopy)
+* [nikic/php-parser](https://github.com/nikic/php-parser)
+* [phar-io/manifest](https://github.com/phar-io/manifest)
+* [phar-io/version](https://github.com/phar-io/version)
+* [staabm/side-effects-detector](https://github.com/staabm/side-effects-detector)
+* [theseer/tokenizer](https://github.com/theseer/tokenizer)
 
 These tools are used to develop PHPUnit:
 
