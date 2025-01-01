@@ -1872,8 +1872,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 Event\Code\ThrowableBuilder::from($e),
                 Event\Code\ComparisonFailureBuilder::from($e),
             );
-
-            throw $e;
         }
     }
 
