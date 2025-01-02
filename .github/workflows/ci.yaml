@@ -239,7 +239,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1, error_reporting=0
 
     steps:
       - name: Checkout
@@ -248,7 +248,7 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           coverage: none
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
