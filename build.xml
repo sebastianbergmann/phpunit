@@ -286,6 +286,18 @@
             </fileset>
         </copy>
 
+        <!-- https://github.com/sebastianbergmann/phpunit/issues/6092 -->
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Expr/ArrayItem.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Expr/ClosureUse.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/DNumber.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/Encapsed.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/EncapsedStringPart.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/LNumber.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/DeclareDeclare.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/PropertyProperty.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/StaticVar.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/UseUse.php"/>
+
         <copy file="${basedir}/vendor/phar-io/manifest/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-manifest/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/phar-io-manifest">
             <fileset dir="${basedir}/vendor/phar-io/manifest/src">
