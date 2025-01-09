@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.5.3] - 2025-MM-DD
+
+### Fixed
+
+* [#6095](https://github.com/sebastianbergmann/phpunit/issues/6095): Expectation is not counted correctly when a doubled method is called more often than is expected
+
 ## [11.5.2] - 2024-12-21
 
 ### Fixed
@@ -44,6 +50,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * [#6055](https://github.com/sebastianbergmann/phpunit/issues/6055): `assertNotContainsOnly()` (use `assertContainsNotOnlyArray()`, `assertContainsNotOnlyBool()`, `assertContainsNotOnlyCallable()`, `assertContainsNotOnlyFloat()`, `assertContainsNotOnlyInt()`, `assertContainsNotOnlyIterable()`, `assertContainsNotOnlyNumeric()`, `assertContainsNotOnlyObject()`, `assertContainsNotOnlyResource()`, `assertContainsNotOnlyClosedResource()`, `assertContainsNotOnlyScalar()`, or `assertContainsNotOnlyString()` instead)
 * [#6059](https://github.com/sebastianbergmann/phpunit/issues/6059): `containsOnly()` (use `containsOnlyArray()`, `containsOnlyBool()`, `containsOnlyCallable()`, `containsOnlyFloat()`, `containsOnlyInt()`, `containsOnlyIterable()`, `containsOnlyNumeric()`, `containsOnlyObject()`, `containsOnlyResource()`, `containsOnlyClosedResource()`, `containsOnlyScalar()`, or `containsOnlyString()` instead)
 
+[11.5.3]: https://github.com/sebastianbergmann/phpunit/compare/11.5.2...11.5
 [11.5.2]: https://github.com/sebastianbergmann/phpunit/compare/11.5.1...11.5.2
 [11.5.1]: https://github.com/sebastianbergmann/phpunit/compare/11.5.0...11.5.1
 [11.5.0]: https://github.com/sebastianbergmann/phpunit/compare/11.4.4...11.5.0
