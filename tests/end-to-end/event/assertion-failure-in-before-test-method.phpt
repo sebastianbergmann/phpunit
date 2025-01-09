@@ -22,6 +22,8 @@ Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest, 1 tes
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
 Assertion Failed (Constraint: is true, Value: false)
 Before Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest)
+Before Test Method Errored (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest)
+Failed asserting that false is true.
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest
 Test Preparation Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)

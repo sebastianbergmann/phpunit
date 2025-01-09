@@ -2081,6 +2081,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['beforeClass'],
             $emitter,
             'testBeforeFirstTestMethodCalled',
+            'testBeforeFirstTestMethodErrored',
             'testBeforeFirstTestMethodFinished',
         );
     }
@@ -2094,6 +2095,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['before'],
             $emitter,
             'testBeforeTestMethodCalled',
+            'testBeforeTestMethodErrored',
             'testBeforeTestMethodFinished',
         );
     }
@@ -2107,6 +2109,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['preCondition'],
             $emitter,
             'testPreConditionCalled',
+            'testPreConditionErrored',
             'testPreConditionFinished',
         );
     }
@@ -2120,6 +2123,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['postCondition'],
             $emitter,
             'testPostConditionCalled',
+            'testPostConditionErrored',
             'testPostConditionFinished',
         );
     }
@@ -2133,6 +2137,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['after'],
             $emitter,
             'testAfterTestMethodCalled',
+            'testAfterTestMethodErrored',
             'testAfterTestMethodFinished',
         );
     }
@@ -2148,6 +2153,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hookMethods['afterClass'],
             $emitter,
             'testAfterLastTestMethodCalled',
+            'testAfterLastTestMethodErrored',
             'testAfterLastTestMethodFinished',
         );
     }
@@ -2155,11 +2161,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-param list<non-empty-string> $hookMethods
      * @psalm-param 'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPreConditionCalled'|'testPostConditionCalled'|'testAfterTestMethodCalled'|'testAfterLastTestMethodCalled' $calledMethod
+     * @psalm-param 'testBeforeFirstTestMethodErrored'|'testBeforeTestMethodErrored'|'testPreConditionErrored'|'testPostConditionErrored'|'testAfterTestMethodErrored'|'testAfterLastTestMethodErrored' $erroredMethod
      * @psalm-param 'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPreConditionFinished'|'testPostConditionFinished'|'testAfterTestMethodFinished'|'testAfterLastTestMethodFinished' $finishedMethod
      *
      * @throws Throwable
      */
-    private function invokeHookMethods(array $hookMethods, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
+    private function invokeHookMethods(array $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $finishedMethod): void
     {
         $methodsInvoked = [];
 
@@ -2168,15 +2175,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 continue;
             }
 
-            try {
-                $this->{$methodName}();
-            } catch (Throwable $t) {
-            }
-
             $methodInvoked = new Event\Code\ClassMethod(
                 static::class,
                 $methodName,
             );
+
+            try {
+                $this->{$methodName}();
+            } catch (Throwable $t) {
+            }
 
             $emitter->{$calledMethod}(
                 static::class,
@@ -2186,6 +2193,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $methodsInvoked[] = $methodInvoked;
 
             if (isset($t)) {
+                $emitter->{$erroredMethod}(
+                    static::class,
+                    $methodInvoked,
+                    Event\Code\ThrowableBuilder::from($t),
+                );
+
                 break;
             }
         }

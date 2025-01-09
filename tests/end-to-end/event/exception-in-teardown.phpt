@@ -24,6 +24,7 @@ Test Prepared (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::testOne)
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::testOne)
 After Test Method Called (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::tearDown)
+After Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::tearDown)
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInTearDownTest::tearDown
 Test Errored (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::testOne)

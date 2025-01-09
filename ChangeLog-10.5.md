@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.41] - 2025-MM-DD
 
+### Added
+
+* `Test\AfterLastTestMethodErrored`, `Test\AfterTestMethodErrored`, `Test\BeforeTestMethodErrored`, `Test\PostConditionErrored`, and `Test\PreConditionErrored` events
+
 ### Fixed
 
 * [#6095](https://github.com/sebastianbergmann/phpunit/issues/6095): Expectation is not counted correctly when a doubled method is called more often than is expected

@@ -22,6 +22,8 @@ Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
 Assertion Failed (Constraint: is true, Value: false)
 Pre Condition Method Called (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition)
+Pre Condition Method Errored (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition)
+Failed asserting that false is true.
 Pre Condition Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition
 Test Preparation Failed (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
