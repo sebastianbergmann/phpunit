@@ -615,6 +615,54 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
+    public function testTestAfterTestMethodErroredDispatchesTestAfterTestMethodErroredEvent(): void
+    {
+        $testClassName = self::class;
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+            '::',
+            __METHOD__,
+        )));
+
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodErroredSubscriber
+        {
+            public function notify(Test\AfterTestMethodErrored $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\AfterTestMethodErroredSubscriber::class,
+            Test\AfterTestMethodErrored::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $throwable = ThrowableBuilder::from(new Exception('error'));
+
+        $emitter->testAfterTestMethodErrored(
+            $testClassName,
+            $calledMethod,
+            $throwable,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\AfterTestMethodErrored::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
+        $this->assertSame($throwable, $event->throwable());
+    }
+
     public function testTestAfterLastTestMethodFinishedDispatchesTestAfterLastTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
@@ -706,6 +754,54 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
+    public function testTestAfterLastTestMethodErroredDispatchesTestAfterLastTestMethodErroredEvent(): void
+    {
+        $testClassName = self::class;
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+            '::',
+            __METHOD__,
+        )));
+
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodErroredSubscriber
+        {
+            public function notify(Test\AfterLastTestMethodErrored $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\AfterLastTestMethodErroredSubscriber::class,
+            Test\AfterLastTestMethodErrored::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $throwable = ThrowableBuilder::from(new Exception('error'));
+
+        $emitter->testAfterLastTestMethodErrored(
+            $testClassName,
+            $calledMethod,
+            $throwable,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\AfterLastTestMethodErrored::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
+        $this->assertSame($throwable, $event->throwable());
+    }
+
     public function testTestBeforeFirstTestMethodFinishedDispatchesTestBeforeFirstTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
@@ -795,6 +891,54 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($testClassName, $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
+    }
+
+    public function testTestBeforeTestMethodErroredDispatchesTestBeforeTestMethodErroredEvent(): void
+    {
+        $testClassName = self::class;
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+            '::',
+            __METHOD__,
+        )));
+
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodErroredSubscriber
+        {
+            public function notify(Test\BeforeTestMethodErrored $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\BeforeTestMethodErroredSubscriber::class,
+            Test\BeforeTestMethodErrored::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $throwable = ThrowableBuilder::from(new Exception('error'));
+
+        $emitter->testBeforeTestMethodErrored(
+            $testClassName,
+            $calledMethod,
+            $throwable,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\BeforeTestMethodErrored::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestPreConditionCalledDispatchesTestPreConditionCalledEvent(): void
