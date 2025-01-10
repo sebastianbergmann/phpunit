@@ -111,7 +111,8 @@
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/Generator.php",
-            "tests/_files/NamespaceCoveredFunction.php"
+            "tests/_files/NamespaceCoveredFunction.php",
+            "tests/end-to-end/_files/listing-tests-and-groups/ExampleAbstractTestCase.php"
         ]
     },
     "extra": {
