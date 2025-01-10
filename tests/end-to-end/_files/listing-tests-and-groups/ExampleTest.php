@@ -25,4 +25,10 @@ final class ExampleTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    #[Group('3')]
+    public function testThree(): void
+    {
+        $this->assertTrue(true);
+    }
 }
