@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Fixed
 
 * [#6095](https://github.com/sebastianbergmann/phpunit/issues/6095): Expectation is not counted correctly when a doubled method is called more often than is expected
+* [#6098](https://github.com/sebastianbergmann/phpunit/issues/6098): No `system-out` element in JUnit XML logfile
 
 ## [11.5.2] - 2024-12-21
 
