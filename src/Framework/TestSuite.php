@@ -687,22 +687,29 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 continue;
             }
 
+            $methodCalledAfterLastTest = new Event\Code\ClassMethod(
+                $this->name,
+                $afterClassMethod,
+            );
+
             try {
                 call_user_func([$this->name, $afterClassMethod]);
+            } catch (Throwable $t) {
+            }
 
-                $methodCalledAfterLastTest = new Event\Code\ClassMethod(
-                    $this->name,
-                    $afterClassMethod,
-                );
+            $emitter->testAfterLastTestMethodCalled(
+                $this->name,
+                $methodCalledAfterLastTest,
+            );
 
-                $emitter->testAfterLastTestMethodCalled(
+            $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
+
+            if (isset($t)) {
+                $emitter->testAfterLastTestMethodErrored(
                     $this->name,
                     $methodCalledAfterLastTest,
+                    Event\Code\ThrowableBuilder::from($t),
                 );
-
-                $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
-            } catch (Throwable) {
-                // @todo
             }
         }
 
