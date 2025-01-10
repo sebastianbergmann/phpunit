@@ -23,6 +23,10 @@ Test Preparation Started (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClas
 Test Prepared (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest::testOne)
+After Last Test Method Called (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest::tearDownAfterClass)
+After Last Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest::tearDownAfterClass)
+After Last Test Method Finished:
+- PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest::tearDownAfterClass
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
