@@ -636,6 +636,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             } catch (Throwable $t) {
             }
 
+            /** @psalm-suppress RedundantCondition */
             if ($emitCalledEvent) {
                 $emitter->testBeforeFirstTestMethodCalled(
                     $this->name,
