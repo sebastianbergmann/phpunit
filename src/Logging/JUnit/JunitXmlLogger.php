@@ -203,6 +203,8 @@ final class JunitXmlLogger
 
     public function testPrintedUnexpectedOutput(PrintedUnexpectedOutput $event): void
     {
+        assert($this->currentTestCase !== null);
+
         $systemOut = $this->document->createElement(
             'system-out',
             Xml::prepareString($event->output()),
