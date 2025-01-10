@@ -70,13 +70,13 @@ final readonly class ListGroupsCommand implements Command
         );
 
         foreach ($groups as $group => $numberOfTests) {
-            if (str_starts_with($group, '__phpunit_')) {
+            if (str_starts_with((string) $group, '__phpunit_')) {
                 continue;
             }
 
             $buffer .= sprintf(
                 ' - %s (%d test%s)' . PHP_EOL,
-                $group,
+                (string) $group,
                 $numberOfTests,
                 $numberOfTests > 1 ? 's' : '',
             );

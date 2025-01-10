@@ -15,5 +15,6 @@ require_once __DIR__ . '/../../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Available test group:
+Available test groups:
+ - 3 (1 test)
  - two (1 test)
