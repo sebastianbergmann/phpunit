@@ -113,7 +113,7 @@ final class Facade
             return false;
         }
 
-        $deprecations = DeprecationCollectorFacade::deprecations();
+        $deprecations = DeprecationCollectorFacade::filteredDeprecations();
 
         if (!$configuration->hasSpecificDeprecationToStopOn()) {
             return $deprecations !== [];

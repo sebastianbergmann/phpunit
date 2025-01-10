@@ -14,6 +14,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * [#6095](https://github.com/sebastianbergmann/phpunit/issues/6095): Expectation is not counted correctly when a doubled method is called more often than is expected
 * [#6096](https://github.com/sebastianbergmann/phpunit/issues/6096): `--list-tests-xml` is broken when a group with a numeric name is defined
 * [#6098](https://github.com/sebastianbergmann/phpunit/issues/6098): No `system-out` element in JUnit XML logfile
+* [#6100](https://github.com/sebastianbergmann/phpunit/issues/6100): Suppressed deprecations incorrectly stop test execution when execution should be stopped on deprecation
 
 ## [11.5.2] - 2024-12-21
 
