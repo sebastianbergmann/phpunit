@@ -30,4 +30,4 @@ After Last Test Method Finished:
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInTearDownAfterClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)
