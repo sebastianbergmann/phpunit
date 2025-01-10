@@ -108,7 +108,7 @@ final readonly class ListTestsAsXmlCommand implements Command
 
         foreach ($groups as $groupName => $testIds) {
             $writer->startElement('group');
-            $writer->writeAttribute('name', $groupName);
+            $writer->writeAttribute('name', (string) $groupName);
 
             foreach ($testIds as $testId) {
                 $writer->startElement('test');
