@@ -608,57 +608,61 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return true;
         }
 
-        $methods       = (new HookMethods)->hookMethods($this->name)['beforeClass'];
-        $calledMethods = [];
+        $methods         = (new HookMethods)->hookMethods($this->name)['beforeClass'];
+        $calledMethods   = [];
+        $emitCalledEvent = true;
+        $result          = true;
 
-        try {
-            foreach ($methods as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
+        foreach ($methods as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
 
-                if ($missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $method)) {
+            $calledMethod = new Event\Code\ClassMethod(
+                $this->name,
+                $method,
+            );
+
+            try {
+                $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $method);
+
+                if ($missingRequirements !== []) {
+                    $emitCalledEvent = false;
+
                     $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
                 }
 
-                $calledMethod = new Event\Code\ClassMethod(
-                    $this->name,
-                    $method,
-                );
+                call_user_func([$this->name, $method]);
+            } catch (Throwable $t) {
+            }
 
+            if ($emitCalledEvent) {
                 $emitter->testBeforeFirstTestMethodCalled(
                     $this->name,
                     $calledMethod,
                 );
 
                 $calledMethods[] = $calledMethod;
-
-                call_user_func([$this->name, $method]);
             }
-        } catch (SkippedTest|SkippedTestSuiteError $e) {
-            $emitter->testSuiteSkipped(
-                $testSuiteValueObjectForEvents,
-                $e->getMessage(),
-            );
 
-            return false;
-        } catch (Throwable $t) {
-            assert(isset($calledMethod));
-
-            $emitter->testBeforeFirstTestMethodErrored(
-                $this->name,
-                $calledMethod,
-                Event\Code\ThrowableBuilder::from($t),
-            );
-
-            if (!empty($calledMethods)) {
-                $emitter->testBeforeFirstTestMethodFinished(
-                    $this->name,
-                    ...$calledMethods,
+            if (isset($t) && $t instanceof SkippedTest) {
+                $emitter->testSuiteSkipped(
+                    $testSuiteValueObjectForEvents,
+                    $t->getMessage(),
                 );
+
+                return false;
             }
 
-            return false;
+            if (isset($t)) {
+                $emitter->testBeforeFirstTestMethodErrored(
+                    $this->name,
+                    $calledMethod,
+                    Event\Code\ThrowableBuilder::from($t),
+                );
+
+                $result = false;
+            }
         }
 
         if (!empty($calledMethods)) {
@@ -668,7 +672,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             );
         }
 
-        return true;
+        return $result;
     }
 
     private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
