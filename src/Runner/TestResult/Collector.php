@@ -16,6 +16,7 @@ use function str_contains;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -66,7 +67,7 @@ final class Collector
     private int $numberOfIssuesIgnoredByBaseline = 0;
 
     /**
-     * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
+     * @psalm-var list<AfterLastTestMethodErrored|BeforeFirstTestMethodErrored|Errored>
      */
     private array $testErroredEvents = [];
 
@@ -169,6 +170,7 @@ final class Collector
             new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new BeforeTestClassMethodErroredSubscriber($this),
+            new AfterTestClassMethodErroredSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
@@ -294,6 +296,11 @@ final class Collector
         $this->testErroredEvents[] = $event;
 
         $this->numberOfTestsRun++;
+    }
+
+    public function afterTestClassMethodErrored(AfterLastTestMethodErrored $event): void
+    {
+        $this->testErroredEvents[] = $event;
     }
 
     public function testErrored(Errored $event): void

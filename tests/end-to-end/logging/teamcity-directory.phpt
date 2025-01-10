@@ -70,7 +70,7 @@ Runtime: %s
 ##teamcity[testSuiteFinished name='CLI Arguments' flowId='%d']
 Time: %s, Memory: %s
 
-There were 5 errors:
+There were 6 errors:
 
 1) PHPUnit\TestFixture\Basic\SetUpBeforeClassTest
 Exception: forcing an Exception in setUpBeforeClass()
@@ -96,6 +96,11 @@ RuntimeException:
 RuntimeException: error with custom message
 
 %s%eStatusTest.php:%d
+
+6) PHPUnit\TestFixture\Basic\TearDownAfterClassTest
+Exception: forcing an Exception in tearDownAfterClass()
+
+%s%eTearDownAfterClassTest.php:%d
 
 --
 
@@ -127,4 +132,4 @@ This test did not perform any assertions
 %s%eStatusTest.php:%d
 
 ERRORS!
-Tests: 18, Assertions: 6, Errors: 5, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
+Tests: 18, Assertions: 6, Errors: 6, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
