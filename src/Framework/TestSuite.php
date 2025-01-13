@@ -35,6 +35,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
@@ -81,9 +82,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @var ?list<ExecutionOrderDependency>
      */
-    private ?array $providedTests    = null;
-    private ?Factory $iteratorFilter = null;
-    private bool $wasRun             = false;
+    private ?array $providedTests           = null;
+    private ?Factory $iteratorFilter        = null;
+    private bool $wasRun                    = false;
+    private bool $isInSeparatedProcess      = false;
+    private bool $isTestsInSeparatedProcess = false;
 
     /**
      * @param non-empty-string $name
@@ -117,6 +120,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 ),
             );
         }
+
+        $registry                             = MetadataRegistry::parser()->forClass($class->name);
+        $testSuite->isTestsInSeparatedProcess = $registry->isRunTestsInSeparateProcesses()->isNotEmpty();
+        $testSuite->isInSeparatedProcess      = $registry->isRunClassInSeparateProcess()->isNotEmpty() || $testSuite->isTestsInSeparatedProcess;
 
         return $testSuite;
     }
@@ -316,6 +323,16 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         return $tests;
     }
 
+    public function isInSeparatedProcess(): bool
+    {
+        return $this->isInSeparatedProcess;
+    }
+
+    public function setIsInSeparatedProcess(bool $isInSeparatedProcess): void
+    {
+        $this->isInSeparatedProcess = $isInSeparatedProcess;
+    }
+
     /**
      * @throws CodeCoverageException
      * @throws Event\RuntimeException
@@ -367,6 +384,20 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
 
             $test->run();
+
+            // When all tests are run in a separated process, the primary process loads
+            // all the test methods. After executing the first test, TestRunner spawns
+            // a separated process which loads all the tests again.
+            // Skip primary process tests expect the first which initiates
+            // the separated process TestSuite.
+            if ($this->isInSeparatedProcess && !$this->isTestsInSeparatedProcess) {
+                // TestSuite statuses are returned from the separated process.
+                // Skipped and incomplete tests should continue processing, otherwise
+                // only a single test result is outputted to the console.
+                if ($test->status()->isUnknown()) {
+                    break;
+                }
+            }
         }
 
         $this->invokeMethodsAfterLastTest($emitter);
@@ -571,7 +602,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         $reflector = new ReflectionClass($this->name);
 
         return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
+            $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
     }
 
     /**
@@ -605,9 +636,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * @throws Exception
      * @throws NoPreviousThrowableException
      */
-    private function invokeMethodsBeforeFirstTest(Event\Emitter $emitter, Event\TestSuite\TestSuite $testSuiteValueObjectForEvents): bool
+    public function invokeMethodsBeforeFirstTest(Event\Emitter $emitter, Event\TestSuite\TestSuite $testSuiteValueObjectForEvents): bool
     {
-        if (!$this->isForTestClass()) {
+        if (!$this->isForTestClass() || $this->isInSeparatedProcess) {
             return true;
         }
 
@@ -678,9 +709,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         return $result;
     }
 
-    private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
+    public function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
     {
-        if (!$this->isForTestClass()) {
+        if (!$this->isForTestClass() || $this->isInSeparatedProcess) {
             return;
         }
 
