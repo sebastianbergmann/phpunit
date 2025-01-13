@@ -1,12 +1,12 @@
 --TEST--
-phpunit --requires-php-extension standard
+phpunit --covers PHPUnit\TestFixture\AttributeBasedFiltering\f
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
-$_SERVER['argv'][] = '--requires-php-extension';
-$_SERVER['argv'][] = 'standard';
+$_SERVER['argv'][] = '--covers';
+$_SERVER['argv'][] = 'PHPUnit\TestFixture\AttributeBasedFiltering\f';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/attribute-based-filtering';
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -22,12 +22,12 @@ Test Suite Sorted
 Test Suite Filtered (1 test)
 Test Runner Execution Started (1 test)
 Test Suite Started (CLI Arguments, 1 test)
-Test Suite Started (PHPUnit\TestFixture\AttributeBasedFiltering\RequiresPhpExtensionTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\AttributeBasedFiltering\RequiresPhpExtensionTest::testOne)
-Test Prepared (PHPUnit\TestFixture\AttributeBasedFiltering\RequiresPhpExtensionTest::testOne)
-Test Passed (PHPUnit\TestFixture\AttributeBasedFiltering\RequiresPhpExtensionTest::testOne)
-Test Finished (PHPUnit\TestFixture\AttributeBasedFiltering\RequiresPhpExtensionTest::testOne)
-Test Suite Finished (PHPUnit\TestFixture\AttributeBasedFiltering\RequiresPhpExtensionTest, 1 test)
+Test Suite Started (PHPUnit\TestFixture\AttributeBasedFiltering\CoversFunctionTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\AttributeBasedFiltering\CoversFunctionTest::testOne)
+Test Prepared (PHPUnit\TestFixture\AttributeBasedFiltering\CoversFunctionTest::testOne)
+Test Passed (PHPUnit\TestFixture\AttributeBasedFiltering\CoversFunctionTest::testOne)
+Test Finished (PHPUnit\TestFixture\AttributeBasedFiltering\CoversFunctionTest::testOne)
+Test Suite Finished (PHPUnit\TestFixture\AttributeBasedFiltering\CoversFunctionTest, 1 test)
 Test Suite Finished (CLI Arguments, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

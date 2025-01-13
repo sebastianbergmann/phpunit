@@ -9,14 +9,7 @@
  */
 namespace PHPUnit\TestFixture\AttributeBasedFiltering;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
-
-#[CoversClass(Foo::class)]
-final class CoversTest extends TestCase
+function f(): bool
 {
-    public function testOne(): void
-    {
-        $this->assertTrue(true);
-    }
+    return true;
 }
