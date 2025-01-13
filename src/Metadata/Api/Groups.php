@@ -104,7 +104,9 @@ final class Groups
             }
         }
 
-        return self::$groupCache[$key] = array_unique($groups);
+        self::$groupCache[$key] = array_unique($groups);
+
+        return self::$groupCache[$key];
     }
 
     /**
