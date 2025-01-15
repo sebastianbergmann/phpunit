@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "70fa33eeabebf93f3301c2b840849bc8e863155e"
+                "reference": "d4679aa4baabe5520bbf9f65ead03f144f78ff93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/70fa33eeabebf93f3301c2b840849bc8e863155e",
-                "reference": "70fa33eeabebf93f3301c2b840849bc8e863155e",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/d4679aa4baabe5520bbf9f65ead03f144f78ff93",
+                "reference": "d4679aa4baabe5520bbf9f65ead03f144f78ff93",
                 "shasum": ""
             },
             "require": {
@@ -318,7 +318,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-01T10:05:11+00:00"
+            "time": "2025-01-14T13:07:13+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
