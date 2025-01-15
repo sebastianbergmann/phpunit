@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4aa3bc08da580379290afb1889c31c86",
+    "content-hash": "3ed79df576e61465bfa9aa6951135c93",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "d4679aa4baabe5520bbf9f65ead03f144f78ff93"
+                "reference": "1bc3407da081bc1a47b290393d8ed5b8c01ac008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/d4679aa4baabe5520bbf9f65ead03f144f78ff93",
-                "reference": "d4679aa4baabe5520bbf9f65ead03f144f78ff93",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1bc3407da081bc1a47b290393d8ed5b8c01ac008",
+                "reference": "1bc3407da081bc1a47b290393d8ed5b8c01ac008",
                 "shasum": ""
             },
             "require": {
@@ -262,7 +262,7 @@
                 "ext-xmlwriter": "*",
                 "nikic/php-parser": "^5.4.0",
                 "php": ">=8.3",
-                "phpunit/php-file-iterator": "^5.1.0",
+                "phpunit/php-file-iterator": "^6.0-dev",
                 "phpunit/php-text-template": "^4.0.1",
                 "sebastian/complexity": "^4.0.1",
                 "sebastian/environment": "^7.2.0",
@@ -318,32 +318,33 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-14T13:07:13+00:00"
+            "time": "2025-01-15T13:43:03+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "5.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "118cfaaa8bc5aef3287bf315b6060b1174754af6"
+                "reference": "a1339a60b2206324e440c4a3806bbd873fda0860"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/118cfaaa8bc5aef3287bf315b6060b1174754af6",
-                "reference": "118cfaaa8bc5aef3287bf315b6060b1174754af6",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/a1339a60b2206324e440c4a3806bbd873fda0860",
+                "reference": "a1339a60b2206324e440c4a3806bbd873fda0860",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2"
+                "php": ">=8.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^11.0"
+                "phpunit/phpunit": "^12.0"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "5.0-dev"
+                    "dev-main": "6.0-dev"
                 }
             },
             "autoload": {
@@ -371,7 +372,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
                 "security": "https://github.com/sebastianbergmann/php-file-iterator/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/5.1.0"
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/main"
             },
             "funding": [
                 {
@@ -379,7 +380,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-27T05:02:59+00:00"
+            "time": "2025-01-15T13:41:39+00:00"
         },
         {
             "name": "phpunit/php-invoker",
@@ -1485,7 +1486,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "phpunit/php-code-coverage": 20
+        "phpunit/php-code-coverage": 20,
+        "phpunit/php-file-iterator": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
