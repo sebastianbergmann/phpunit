@@ -10,14 +10,12 @@
 namespace PHPUnit\Event\Code\IssueTrigger;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(TestTrigger::class)]
-#[CoversClass(SelfTrigger::class)]
-#[CoversClass(DirectTrigger::class)]
-#[CoversClass(IndirectTrigger::class)]
-#[CoversClass(UnknownTrigger::class)]
+#[CoversClass(IssueTrigger::class)]
+#[CoversClassesThatExtendClass(IssueTrigger::class)]
 #[Small]
 final class IssueTriggerTest extends TestCase
 {

@@ -11,13 +11,12 @@ namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestSuite::class)]
-#[CoversClass(TestSuiteForTestClass::class)]
-#[CoversClass(TestSuiteForTestMethodWithDataProvider::class)]
-#[CoversClass(TestSuiteWithName::class)]
+#[CoversClassesThatExtendClass(TestSuite::class)]
 #[Small]
 final class TestSuiteTest extends TestCase
 {
