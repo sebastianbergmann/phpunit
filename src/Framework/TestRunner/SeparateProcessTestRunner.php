@@ -254,10 +254,6 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             }
 
             foreach ($childResult as $result) {
-                if (!empty($result->output)) {
-                    $output = $result->output;
-                }
-
                 Facade::instance()->forward($result->events);
                 PassedTests::instance()->import($result->passedTests);
 
@@ -272,10 +268,6 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
                     );
                 }
             }
-        }
-
-        if (!empty($output)) {
-            print $output;
         }
     }
 
