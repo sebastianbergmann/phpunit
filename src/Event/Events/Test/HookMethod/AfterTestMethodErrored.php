@@ -17,7 +17,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -26,14 +26,14 @@ final class AfterTestMethodErrored implements Event
     private readonly Telemetry\Info $telemetryInfo;
 
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private readonly string $testClassName;
     private readonly Code\ClassMethod $calledMethod;
     private readonly Throwable $throwable;
 
     /**
-     * @psalm-param class-string $testClassName
+     * @param class-string $testClassName
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod $calledMethod, Throwable $throwable)
     {
@@ -49,7 +49,7 @@ final class AfterTestMethodErrored implements Event
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function testClassName(): string
     {
