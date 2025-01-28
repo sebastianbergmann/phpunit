@@ -265,6 +265,6 @@ final class SourceFilterTest extends TestCase
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(bool $expected, string $file, Source $source): void
     {
-        $this->assertSame($expected, (new SourceFilter)->includes($source, $file));
+        $this->assertSame($expected, (new SourceFilter((new SourceMapper)->map($source)))->includes($file));
     }
 }

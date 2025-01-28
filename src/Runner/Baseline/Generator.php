@@ -66,7 +66,7 @@ final readonly class Generator
             return;
         }
 
-        if ($this->restrict($event) && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrict($event) && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 

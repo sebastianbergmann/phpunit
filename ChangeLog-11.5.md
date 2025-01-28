@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 * [#6103](https://github.com/sebastianbergmann/phpunit/issues/6103): Output from test run in separate process is printed twice
 * [#6109](https://github.com/sebastianbergmann/phpunit/issues/6109): Skipping a test in a before-class method crashes JUnit XML logger
+* [#6111](https://github.com/sebastianbergmann/phpunit/issues/6111): Deprecations cause `SourceMapper` to scan all `<source/>` files
 
 ## [11.5.3] - 2025-01-13
 

@@ -58,7 +58,6 @@ final class ErrorHandler
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly Source $source;
-    private readonly SourceFilter $sourceFilter;
 
     /**
      * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
@@ -72,8 +71,7 @@ final class ErrorHandler
 
     private function __construct(Source $source)
     {
-        $this->source       = $source;
-        $this->sourceFilter = new SourceFilter;
+        $this->source = $source;
     }
 
     /**
@@ -276,14 +274,14 @@ final class ErrorHandler
                 return IssueTrigger::test();
             }
 
-            if ($this->sourceFilter->includes($this->source, $trace[0]['file'])) {
+            if (SourceFilter::instance()->includes($trace[0]['file'])) {
                 $triggeredInFirstPartyCode = true;
             }
         }
 
         if (isset($trace[1]['file']) &&
             ($trace[1]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[1]['file']))) {
+                SourceFilter::instance()->includes($trace[1]['file']))) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
