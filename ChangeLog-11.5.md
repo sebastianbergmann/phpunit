@@ -4,6 +4,11 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ## [11.5.4] - 2025-MM-DD
 
+### Changed
+
+* [#5958](https://github.com/sebastianbergmann/phpunit/issues/5958): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes is no longer deprecated
+* [#5960](https://github.com/sebastianbergmann/phpunit/issues/5960): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes is no longer deprecated
+
 ### Fixed
 
 * [#6103](https://github.com/sebastianbergmann/phpunit/issues/6103): Output from test run in separate process is printed twice

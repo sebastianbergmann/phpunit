@@ -59,7 +59,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#5216](https://github.com/sebastianbergmann/phpunit/issues/5216) | `TestCase::setLocale()`                                     | 10.3.0 |                                                                                         |
 | [#5800](https://github.com/sebastianbergmann/phpunit/issues/5800) | Targeting traits with `#[CoversClass]` and `#[UsesClass]`   | 11.2.0 | `#[CoversClass]` and `#[UsesClass]` also target the traits used by the targeted classes |
 | [#5951](https://github.com/sebastianbergmann/phpunit/issues/5951) | `includeUncoveredFiles` configuration option                | 11.4.0 |                                                                                         |
-| [#5958](https://github.com/sebastianbergmann/phpunit/issues/5958) | `#[CoversTrait]` and `#[UsesTrait]` attributes              | 11.4.0 | `#[CoversClass]` and `#[UsesClass]` also target the traits used by the targeted classes |
 | [#5960](https://github.com/sebastianbergmann/phpunit/issues/5960) | Targeting traits with `#[CoversMethod]` and `#[UsesMethod]` | 11.4.0 |                                                                                         |
 
 ## Soft Deprecations

@@ -16,7 +16,6 @@ use function interface_exists;
 use function sprintf;
 use function str_starts_with;
 use function trait_exists;
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Metadata\Covers;
@@ -273,42 +272,6 @@ final class CodeCoverage
         $name  = $metadata->asStringForCodeUnitMapper();
         $names = [$name];
 
-        if ($metadata->isCoversTrait()) {
-            EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                sprintf(
-                    'Targeting a trait such as %s with #[CoversTrait] is deprecated. The traits used by the class(es) you target with #[CoversClass] will be targeted as well.',
-                    $names[0],
-                ),
-            );
-        }
-
-        if ($metadata->isUsesTrait()) {
-            EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                sprintf(
-                    'Targeting a trait such as %s with #[UsesTrait] is deprecated. The traits used by the class(es) you target with #[UsesClass] will be targeted as well.',
-                    $names[0],
-                ),
-            );
-        }
-
-        if ($metadata->isCoversMethod() && trait_exists($metadata->className())) {
-            EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                sprintf(
-                    'Targeting a trait such as %s with #[CoversMethod] is deprecated.',
-                    $metadata->className(),
-                ),
-            );
-        }
-
-        if ($metadata->isUsesMethod() && trait_exists($metadata->className())) {
-            EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                sprintf(
-                    'Targeting a trait such as %s with #[UsesMethod] is deprecated.',
-                    $metadata->className(),
-                ),
-            );
-        }
-
         if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
             if (isset($this->withParents[$name])) {
                 return $this->withParents[$name];
@@ -333,24 +296,6 @@ final class CodeCoverage
             }
 
             assert(class_exists($names[0]) || trait_exists($names[0]));
-
-            if ($metadata->isCoversClass() && trait_exists($names[0])) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                    sprintf(
-                        'Targeting a trait such as %s with #[CoversClass] is deprecated. The traits used by the class(es) you target with #[CoversClass] will be targeted as well.',
-                        $names[0],
-                    ),
-                );
-            }
-
-            if ($metadata->isUsesClass() && trait_exists($names[0])) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation(
-                    sprintf(
-                        'Targeting a trait such as %s with #[UsesClass] is deprecated.  The traits used by the class(es) you target with #[UsesClass] will be targeted as well.',
-                        $names[0],
-                    ),
-                );
-            }
 
             $reflector = new ReflectionClass($name);
 
