@@ -367,7 +367,7 @@ final class Collector
             return;
         }
 
-        if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->source->restrictDeprecations() && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -403,7 +403,7 @@ final class Collector
             return;
         }
 
-        if ($this->source->restrictDeprecations() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->source->restrictDeprecations() && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -466,7 +466,7 @@ final class Collector
             return;
         }
 
-        if ($this->source->restrictNotices() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->source->restrictNotices() && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -498,7 +498,7 @@ final class Collector
             return;
         }
 
-        if ($this->source->restrictNotices() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->source->restrictNotices() && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -530,7 +530,7 @@ final class Collector
             return;
         }
 
-        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->source->restrictWarnings() && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -562,7 +562,7 @@ final class Collector
             return;
         }
 
-        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->source->restrictWarnings() && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
