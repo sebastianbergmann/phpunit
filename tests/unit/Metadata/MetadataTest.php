@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
 use PHPUnit\Util\VersionComparisonOperator;
 
 #[CoversClass(Metadata::class)]
@@ -40,6 +41,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -75,6 +77,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -98,6 +101,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -133,6 +137,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -156,6 +161,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -191,6 +197,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
@@ -215,6 +222,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -250,6 +258,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
@@ -274,6 +283,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -309,6 +319,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
@@ -333,6 +344,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -368,6 +380,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
@@ -392,6 +405,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -427,6 +441,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -449,6 +464,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -484,6 +500,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -507,6 +524,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -542,6 +560,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -569,6 +588,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -604,6 +624,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame($namespace, $metadata->namespace());
@@ -629,6 +650,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -664,6 +686,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -689,6 +712,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -724,6 +748,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->interfaceName());
@@ -748,6 +773,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
         $this->assertTrue($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -783,6 +809,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
@@ -808,6 +835,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertTrue($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -843,6 +871,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -904,6 +933,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -962,7 +992,70 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
+    }
+
+    public function testCanBeCoversTrait(): void
+    {
+        $metadata = Metadata::coversTrait(ExampleTrait::class);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversNamespace());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversClassesThatExtendClass());
+        $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertTrue($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresEnvironmentVariable());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUsesNamespace());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesClassesThatExtendClass());
+        $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(ExampleTrait::class, $metadata->traitName());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -985,6 +1078,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertTrue($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1020,6 +1114,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -1046,6 +1141,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertTrue($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1081,6 +1177,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -1108,6 +1205,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertTrue($metadata->isDependsOnMethod());
@@ -1143,6 +1241,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -1171,6 +1270,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1206,6 +1306,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isClassLevel());
@@ -1229,6 +1330,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1264,6 +1366,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isClassLevel());
@@ -1287,6 +1390,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1322,6 +1426,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -1345,6 +1450,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1380,6 +1486,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('variable', $metadata->globalVariableName());
@@ -1404,6 +1511,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1439,6 +1547,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('variable', $metadata->globalVariableName());
@@ -1463,6 +1572,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1498,6 +1608,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('class', $metadata->className());
@@ -1524,6 +1635,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1559,6 +1671,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('class', $metadata->className());
@@ -1585,6 +1698,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1620,6 +1734,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('name', $metadata->groupName());
@@ -1645,6 +1760,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1680,6 +1796,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isClassLevel());
@@ -1703,6 +1820,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1738,6 +1856,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -1761,6 +1880,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1796,6 +1916,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isClassLevel());
@@ -1819,6 +1940,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1854,6 +1976,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -1877,6 +2000,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1912,6 +2036,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('name', $metadata->groupName());
@@ -1937,6 +2062,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -1972,6 +2098,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isClassLevel());
@@ -1993,6 +2120,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversClassesThatExtendClass());
         $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isDataProvider());
@@ -2030,6 +2158,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isClassLevel());
@@ -2051,6 +2180,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversClassesThatExtendClass());
         $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isDataProvider());
@@ -2088,6 +2218,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -2109,6 +2240,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversClassesThatExtendClass());
         $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isDataProvider());
@@ -2146,6 +2278,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -2169,6 +2302,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2204,6 +2338,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -2227,6 +2362,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2262,6 +2398,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());
@@ -2281,6 +2418,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2316,6 +2454,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
@@ -2337,6 +2476,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2372,6 +2512,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertFalse($metadata->enabled());
@@ -2397,6 +2538,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2432,6 +2574,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -2458,6 +2601,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2493,6 +2637,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -2519,6 +2664,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2554,6 +2700,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
@@ -2579,6 +2726,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2614,6 +2762,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
@@ -2639,6 +2788,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2674,6 +2824,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystem());
@@ -2699,6 +2850,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2734,6 +2886,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystem());
@@ -2759,6 +2912,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2794,6 +2948,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystemFamily());
@@ -2819,6 +2974,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2854,6 +3010,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('Linux', $metadata->operatingSystemFamily());
@@ -2884,6 +3041,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2919,6 +3077,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('>= 8.0.0', $metadata->versionRequirement()->asString());
@@ -2949,6 +3108,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -2984,6 +3144,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('>= 8.0.0', $metadata->versionRequirement()->asString());
@@ -3009,6 +3170,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3044,6 +3206,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('test', $metadata->extension());
@@ -3079,6 +3242,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3114,6 +3278,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('test', $metadata->extension());
@@ -3141,6 +3306,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3176,6 +3342,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('test', $metadata->extension());
@@ -3211,6 +3378,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3246,6 +3414,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('test', $metadata->extension());
@@ -3278,6 +3447,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3313,6 +3483,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('>= 10.0.0', $metadata->versionRequirement()->asString());
@@ -3338,6 +3509,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3373,6 +3545,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(SomeExtension::class, $metadata->extensionClass());
@@ -3403,6 +3576,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3438,6 +3612,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('>= 10.0.0', $metadata->versionRequirement()->asString());
@@ -3463,6 +3638,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3498,6 +3674,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(SomeExtension::class, $metadata->extensionClass());
@@ -3523,6 +3700,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3558,6 +3736,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('foo', $metadata->environmentVariableName());
@@ -3584,6 +3763,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3619,6 +3799,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('foo', $metadata->environmentVariableName());
@@ -3645,6 +3826,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3680,6 +3862,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('foo', $metadata->setting());
@@ -3706,6 +3889,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3741,6 +3925,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('foo', $metadata->setting());
@@ -3767,6 +3952,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3802,6 +3988,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('text', $metadata->text());
@@ -3827,6 +4014,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3862,6 +4050,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('text', $metadata->text());
@@ -3887,6 +4076,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3921,6 +4111,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(['a', 'b'], $metadata->data());
@@ -3950,6 +4141,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -3985,6 +4177,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame($namespace, $metadata->namespace());
@@ -4010,6 +4203,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -4045,6 +4239,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -4070,6 +4265,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -4105,6 +4301,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -4130,6 +4327,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -4165,6 +4363,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->interfaceName());
@@ -4190,6 +4389,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -4224,6 +4424,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatExtendClass());
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertTrue($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('f', $metadata->functionName());
@@ -4249,6 +4450,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -4284,6 +4486,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertTrue($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame(self::class, $metadata->className());
@@ -4293,9 +4496,9 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isMethodLevel());
     }
 
-    public function testCanBeWithoutErrorHandler(): void
+    public function testCanBeUsesTrait(): void
     {
-        $metadata = Metadata::withoutErrorHandler();
+        $metadata = Metadata::usesTrait(ExampleTrait::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -4310,6 +4513,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isCoversFunction());
         $this->assertFalse($metadata->isCoversMethod());
         $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDependsOnClass());
         $this->assertFalse($metadata->isDependsOnMethod());
@@ -4345,6 +4549,69 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
         $this->assertFalse($metadata->isUsesFunction());
         $this->assertFalse($metadata->isUsesMethod());
+        $this->assertTrue($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(ExampleTrait::class, $metadata->traitName());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
+    }
+
+    public function testCanBeWithoutErrorHandler(): void
+    {
+        $metadata = Metadata::withoutErrorHandler();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversNamespace());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversClassesThatExtendClass());
+        $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresEnvironmentVariable());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUsesNamespace());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesClassesThatExtendClass());
+        $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
         $this->assertTrue($metadata->isWithoutErrorHandler());
 
         $this->assertTrue($metadata->isMethodLevel());

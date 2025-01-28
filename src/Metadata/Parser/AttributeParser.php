@@ -32,6 +32,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Depends;
@@ -80,6 +81,7 @@ use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
+use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
@@ -154,6 +156,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof CoversClassesThatImplementInterface);
 
                     $result[] = Metadata::coversClassesThatImplementInterface($attributeInstance->interfaceName());
+
+                    break;
+
+                case CoversTrait::class:
+                    assert($attributeInstance instanceof CoversTrait);
+
+                    $result[] = Metadata::coversTrait($attributeInstance->traitName());
 
                     break;
 
@@ -399,6 +408,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof UsesClassesThatImplementInterface);
 
                     $result[] = Metadata::usesClassesThatImplementInterface($attributeInstance->interfaceName());
+
+                    break;
+
+                case UsesTrait::class:
+                    assert($attributeInstance instanceof UsesTrait);
+
+                    $result[] = Metadata::usesTrait($attributeInstance->traitName());
 
                     break;
 

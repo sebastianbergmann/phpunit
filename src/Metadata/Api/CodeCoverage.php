@@ -16,6 +16,7 @@ use PHPUnit\Metadata\CoversClassesThatImplementInterface;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\CoversNamespace;
+use PHPUnit\Metadata\CoversTrait;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesClassesThatExtendClass;
@@ -23,6 +24,7 @@ use PHPUnit\Metadata\UsesClassesThatImplementInterface;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
 use PHPUnit\Metadata\UsesNamespace;
+use PHPUnit\Metadata\UsesTrait;
 use SebastianBergmann\CodeCoverage\Test\Target\Target;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 
@@ -77,6 +79,12 @@ final class CodeCoverage
 
                 $targets[] = Target::forFunction($metadata->functionName());
             }
+
+            if ($metadata->isCoversTrait()) {
+                assert($metadata instanceof CoversTrait);
+
+                $targets[] = Target::forTrait($metadata->traitName());
+            }
         }
 
         return TargetCollection::fromArray($targets);
@@ -125,6 +133,12 @@ final class CodeCoverage
                 assert($metadata instanceof UsesFunction);
 
                 $targets[] = Target::forFunction($metadata->functionName());
+            }
+
+            if ($metadata->isUsesTrait()) {
+                assert($metadata instanceof UsesTrait);
+
+                $targets[] = Target::forTrait($metadata->traitName());
             }
         }
 

@@ -28,6 +28,7 @@ use SebastianBergmann\CodeCoverage\Test\Target\ClassesThatImplementInterface;
 use SebastianBergmann\CodeCoverage\Test\Target\Function_;
 use SebastianBergmann\CodeCoverage\Test\Target\Method;
 use SebastianBergmann\CodeCoverage\Test\Target\Namespace_;
+use SebastianBergmann\CodeCoverage\Test\Target\Trait_;
 
 #[CoversClass(CodeCoverage::class)]
 #[Small]
@@ -53,7 +54,7 @@ final class CodeCoverageTest extends TestCase
         $targets = (new CodeCoverage)->coversTargets(CoversTest::class, 'testOne');
 
         $this->assertNotFalse($targets);
-        $this->assertCount(6, $targets);
+        $this->assertCount(7, $targets);
 
         $targets = $targets->asArray();
 
@@ -72,6 +73,10 @@ final class CodeCoverageTest extends TestCase
         $target = array_shift($targets);
         $this->assertInstanceOf(ClassesThatImplementInterface::class, $target);
         $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->interfaceName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Trait_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait', $target->traitName());
 
         $target = array_shift($targets);
         $this->assertInstanceOf(Method::class, $target);
@@ -89,7 +94,7 @@ final class CodeCoverageTest extends TestCase
         $targets = (new CodeCoverage)->usesTargets(UsesTest::class, 'testOne');
 
         $this->assertNotFalse($targets);
-        $this->assertCount(6, $targets);
+        $this->assertCount(7, $targets);
 
         $targets = $targets->asArray();
 
@@ -108,6 +113,10 @@ final class CodeCoverageTest extends TestCase
         $target = array_shift($targets);
         $this->assertInstanceOf(ClassesThatImplementInterface::class, $target);
         $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->interfaceName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Trait_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait', $target->traitName());
 
         $target = array_shift($targets);
         $this->assertInstanceOf(Method::class, $target);

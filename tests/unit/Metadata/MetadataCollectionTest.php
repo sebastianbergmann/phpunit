@@ -210,6 +210,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCoversClassesThatImplementInterface());
     }
 
+    public function test_Can_be_filtered_for_CoversTrait(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversTrait();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversTrait());
+    }
+
     public function test_Can_be_filtered_for_CoversFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversFunction();
@@ -507,6 +515,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesClassesThatImplementInterface());
     }
 
+    public function test_Can_be_filtered_for_UsesTrait(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesTrait();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesTrait());
+    }
+
     public function test_Can_be_filtered_for_UsesFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesFunction();
@@ -545,6 +561,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversClass(''),
                 Metadata::coversClassesThatExtendClass(''),
                 Metadata::coversClassesThatImplementInterface(''),
+                Metadata::coversTrait(''),
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
@@ -591,6 +608,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesClass(''),
                 Metadata::usesClassesThatExtendClass(''),
                 Metadata::usesClassesThatImplementInterface(''),
+                Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
                 Metadata::withoutErrorHandler(),

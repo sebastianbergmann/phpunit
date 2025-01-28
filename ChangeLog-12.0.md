@@ -47,7 +47,6 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5756](https://github.com/sebastianbergmann/phpunit/issues/5756): Support for the `restrictDeprecations` attribute on the `<source>` element of the XML configuration file
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5952](https://github.com/sebastianbergmann/phpunit/issues/5952): `includeUncoveredFiles` configuration option
-* [#5959](https://github.com/sebastianbergmann/phpunit/issues/5959): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes
 * [#5961](https://github.com/sebastianbergmann/phpunit/issues/5961): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 

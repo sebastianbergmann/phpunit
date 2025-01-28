@@ -234,6 +234,10 @@ final class TestRunner
                 return true;
             }
 
+            if ($metadata->isCoversTrait()) {
+                return true;
+            }
+
             if ($metadata->isCoversMethod()) {
                 return true;
             }
