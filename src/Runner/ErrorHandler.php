@@ -281,7 +281,7 @@ final class ErrorHandler
 
         if (isset($trace[1]['file']) &&
             ($trace[1]['file'] === $test->file() ||
-                SourceFilter::instance()->includes($trace[1]['file']))) {
+            SourceFilter::instance()->includes($trace[1]['file']))) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
