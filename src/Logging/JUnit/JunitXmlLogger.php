@@ -88,6 +88,7 @@ final class JunitXmlLogger
     private ?HRTime $time                = null;
     private bool $prepared               = false;
     private bool $preparationFailed      = false;
+    private ?string $unexpectedOutput    = null;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -203,14 +204,7 @@ final class JunitXmlLogger
 
     public function testPrintedUnexpectedOutput(PrintedUnexpectedOutput $event): void
     {
-        assert($this->currentTestCase !== null);
-
-        $systemOut = $this->document->createElement(
-            'system-out',
-            Xml::prepareString($event->output()),
-        );
-
-        $this->currentTestCase->appendChild($systemOut);
+        $this->unexpectedOutput = $event->output();
     }
 
     /**
@@ -283,6 +277,15 @@ final class JunitXmlLogger
             sprintf('%F', $time),
         );
 
+        if ($this->unexpectedOutput !== null) {
+            $systemOut = $this->document->createElement(
+                'system-out',
+                Xml::prepareString($this->unexpectedOutput),
+            );
+
+            $this->currentTestCase->appendChild($systemOut);
+        }
+
         $this->testSuites[$this->testSuiteLevel]->appendChild(
             $this->currentTestCase,
         );
@@ -290,9 +293,10 @@ final class JunitXmlLogger
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        $this->currentTestCase = null;
-        $this->time            = null;
-        $this->prepared        = false;
+        $this->currentTestCase  = null;
+        $this->time             = null;
+        $this->prepared         = false;
+        $this->unexpectedOutput = null;
     }
 
     /**
