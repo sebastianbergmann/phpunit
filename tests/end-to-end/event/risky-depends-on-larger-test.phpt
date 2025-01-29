@@ -29,6 +29,11 @@ Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTes
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest, 1 test)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest::testOne)
 This test depends on a test that is larger than itself
+Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest::testOne)
+Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest::testOne)
+Assertion Succeeded (Constraint: is true, Value: true)
+Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest::testOne)
+Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseDependencyOnLargerTest\SmallTest, 1 test)
 Test Suite Finished (CLI Arguments, 2 tests)
 Test Runner Execution Finished
