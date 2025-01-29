@@ -270,6 +270,82 @@ final class SourceMapperTest extends TestCase
                 ),
             ),
         ];
+
+        yield 'files included using same directory and different suffixes' => [
+            [
+                self::fixturePath('a/c/Prefix.php')              => true,
+                self::fixturePath('a/c/d/Prefix.php')            => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            '',
+                            'ExampleSuffix.php',
+                        ),
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            '',
+                            'Prefix.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files included using same directory and different prefixes' => [
+            [
+                self::fixturePath('a/c/Suffix.php')              => true,
+                self::fixturePath('a/c/d/Suffix.php')            => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'Suffix',
+                            '.php',
+                        ),
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'PrefixExample',
+                            '.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files excluded using same directory and different prefixes' => [
+            [
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray([
+                    new FilterDirectory(
+                        self::fixturePath(),
+                        '',
+                        '.php',
+                    ),
+                ]),
+                excludeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'Prefix',
+                            '.php',
+                        ),
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'Suffix',
+                            '.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
     }
 
     public static function fixturePath(?string $subPath = null): string
