@@ -40,8 +40,10 @@ final class SourceMapper
 
         $files = [];
 
-        foreach ($source->includeDirectories() as $directory) {
-            foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
+        $directories = $this->aggregateDirectories($source->includeDirectories());
+
+        foreach ($directories as $path => [$prefixes, $suffixes]) {
+            foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
                 if (!$file) {
@@ -62,8 +64,10 @@ final class SourceMapper
             $files[$file] = true;
         }
 
-        foreach ($source->excludeDirectories() as $directory) {
-            foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
+        $directories = $this->aggregateDirectories($source->excludeDirectories());
+
+        foreach ($directories as $path => [$prefixes, $suffixes]) {
+            foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
                 if (!$file) {
@@ -95,5 +99,36 @@ final class SourceMapper
         self::$files[$source] = $files;
 
         return $files;
+    }
+
+    /**
+     * @return array<string,array{list<string>,list<string>}>
+     */
+    private function aggregateDirectories(FilterDirectoryCollection $directories): array
+    {
+        $aggregated = [];
+
+        foreach ($directories as $directory) {
+            if (!isset($aggregated[$directory->path()])) {
+                $aggregated[$directory->path()] = [
+                    0 => [],
+                    1 => [],
+                ];
+            }
+
+            $prefix = $directory->prefix();
+
+            if ($prefix !== '') {
+                $aggregated[$directory->path()][0][] = $prefix;
+            }
+
+            $suffix = $directory->suffix();
+
+            if ($suffix !== '') {
+                $aggregated[$directory->path()][1][] = $suffix;
+            }
+        }
+
+        return $aggregated;
     }
 }
