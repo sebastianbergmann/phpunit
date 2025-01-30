@@ -585,6 +585,11 @@
       <code><![CDATA[assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)]]></code>
     </RedundantCondition>
   </file>
+  <file src="src/Logging/TestDox/NamePrettifier.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[(string) $value->value]]></code>
+    </LessSpecificReturnStatement>
+  </file>
   <file src="src/Logging/TestDox/TestResult/TestResultCollection.php">
     <PropertyTypeCoercion>
       <code><![CDATA[$testResults]]></code>
