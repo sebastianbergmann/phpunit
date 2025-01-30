@@ -115,11 +115,13 @@ final class SourceMapper
                     1 => [],
                 ];
             }
+
             $prefix = $directory->prefix();
 
             if ($prefix !== '') {
                 $aggregated[$directory->path()][0][] = $prefix;
             }
+
             $suffix = $directory->suffix();
 
             if ($suffix !== '') {
