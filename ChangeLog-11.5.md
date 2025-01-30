@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 * [#6112](https://github.com/sebastianbergmann/phpunit/pull/6112): Improve performance of `SourceMapper`
 
+### Fixed
+
+* [#6115](https://github.com/sebastianbergmann/phpunit/issues/6115): Backed enumerations with values not of type `string` cannot be used in customized TestDox output
+
 ## [11.5.5] - 2025-01-29
 
 ### Changed
