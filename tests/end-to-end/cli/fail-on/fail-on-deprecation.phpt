@@ -22,7 +22,7 @@ Test Runner Execution Started (3 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
-Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne, unknown if issue was triggered in first-party code or third-party code)
+Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne, unknown if issue was triggered in first-party code or third-party code) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)

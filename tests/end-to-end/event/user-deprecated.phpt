@@ -21,15 +21,15 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
-Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature, unknown if issue was triggered in first-party code or third-party code)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature, unknown if issue was triggered in first-party code or third-party code) in %s:%d
 message
-Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature, unknown if issue was triggered in first-party code or third-party code, suppressed using operator)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature, unknown if issue was triggered in first-party code or third-party code, suppressed using operator) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
-Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast, unknown if issue was triggered in first-party code or third-party code, suppressed using operator)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast, unknown if issue was triggered in first-party code or third-party code, suppressed using operator) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)

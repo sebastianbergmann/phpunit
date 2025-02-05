@@ -23,7 +23,7 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Issue6100\Issue6100Test, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Issue6100\Issue6100Test::testOne)
 Test Prepared (PHPUnit\TestFixture\Issue6100\Issue6100Test::testOne)
-Test Triggered Deprecation (PHPUnit\TestFixture\Issue6100\Issue6100Test::testOne, unknown if issue was triggered in first-party code or third-party code, suppressed using operator)
+Test Triggered Deprecation (PHPUnit\TestFixture\Issue6100\Issue6100Test::testOne, unknown if issue was triggered in first-party code or third-party code, suppressed using operator) in %s:%d
 test
 Test Passed (PHPUnit\TestFixture\Issue6100\Issue6100Test::testOne)
 Test Finished (PHPUnit\TestFixture\Issue6100\Issue6100Test::testOne)

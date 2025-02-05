@@ -111,8 +111,10 @@ final readonly class ErrorTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered Error (%s)%s',
+            'Test Triggered Error (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

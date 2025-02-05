@@ -122,8 +122,10 @@ final readonly class WarningTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered Warning (%s)%s',
+            'Test Triggered Warning (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }
