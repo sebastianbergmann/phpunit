@@ -22,14 +22,14 @@ Test Suite Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest, 2 tests
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Assertion Succeeded (Constraint: is true, Value: true)
-Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
+Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
+Test Triggered Suppressed Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast) in %s:%d
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
     'type' => 512,

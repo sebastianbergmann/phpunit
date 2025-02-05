@@ -22,7 +22,7 @@ Test Runner Execution Started (3 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
-Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)
+Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne) in %s:%d
 message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\DeprecationTest::testOne)

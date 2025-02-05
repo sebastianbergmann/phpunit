@@ -21,14 +21,14 @@ Test Runner Execution Started (4 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest, 4 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
-Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
+Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne) in %s:%d
 message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
-Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo) in %s:%d
 message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
@@ -36,7 +36,7 @@ Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwo)
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
 Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast)
+Test Triggered Test-Ignored Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGetLast) in %s:%d
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
     'type' => 16384,
@@ -49,7 +49,7 @@ Test Finished (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testOneErrorGet
 Test Preparation Started (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
 Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\IgnoreDeprecationsTest::testTwoErrorGetLast) in %s:%d
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
     'type' => 16384,

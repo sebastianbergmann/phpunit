@@ -22,14 +22,14 @@ Test Suite Started (PHPUnit\TestFixture\Event\UserWarningTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Assertion Succeeded (Constraint: is true, Value: true)
-Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
+Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarning)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
 Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast)
+Test Triggered Warning (PHPUnit\TestFixture\Event\UserWarningTest::testUserWarningErrorGetLast) in %s:%d
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
     'type' => 512,

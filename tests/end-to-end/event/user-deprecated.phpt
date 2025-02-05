@@ -21,9 +21,9 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
-Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
+Test Triggered Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature) in %s:%d
 message
-Test Triggered Suppressed Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
+Test Triggered Suppressed Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature) in %s:%d
 message
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFeature)
@@ -31,7 +31,7 @@ Test Finished (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedFe
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
 Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Suppressed Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast)
+Test Triggered Suppressed Deprecation (PHPUnit\TestFixture\Event\DeprecatedFeatureTest::testDeprecatedSuppressedErrorGetLast) in %s:%d
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
     'type' => 16384,

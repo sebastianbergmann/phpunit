@@ -22,9 +22,9 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\PhpWarningTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Prepared (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
-Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
+Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning) in %s:%d
 Undefined variable $b
-Test Triggered Suppressed PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
+Test Triggered Suppressed PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning) in %s:%d
 Undefined variable $b
 Assertion Succeeded (Constraint: is true, Value: true)
 Test Passed (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)

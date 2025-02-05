@@ -104,9 +104,11 @@ final class ErrorTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered %sError (%s)%s',
+            'Test Triggered %sError (%s) in %s:%d%s',
             $this->wasSuppressed() ? 'Suppressed ' : '',
             $this->test->id(),
+            $this->file,
+            $this->line,
             $message,
         );
     }

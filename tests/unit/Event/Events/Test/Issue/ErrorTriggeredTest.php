@@ -42,7 +42,7 @@ final class ErrorTriggeredTest extends AbstractEventTestCase
         $this->assertSame($file, $event->file());
         $this->assertSame($line, $event->line());
         $this->assertSame($suppressed, $event->wasSuppressed());
-        $this->assertSame('Test Triggered Error (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Error (FooTest::testBar) in file:1' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
@@ -57,6 +57,6 @@ final class ErrorTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->wasSuppressed());
-        $this->assertSame('Test Triggered Suppressed Error (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Suppressed Error (FooTest::testBar) in file:1' . PHP_EOL . 'message', $event->asString());
     }
 }

@@ -22,14 +22,14 @@ Test Suite Started (PHPUnit\TestFixture\Event\UserNoticeTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Assertion Succeeded (Constraint: is true, Value: true)
-Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
+Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Finished (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
 Assertion Succeeded (Constraint: is null, Value: null)
-Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
+Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast) in %s:%d
 message
 Assertion Succeeded (Constraint: is of type array, Value: Array &0 [
     'type' => 1024,

@@ -128,9 +128,11 @@ final class DeprecationTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered %sDeprecation (%s)%s',
+            'Test Triggered %sDeprecation (%s) in %s:%d%s',
             $status,
             $this->test->id(),
+            $this->file,
+            $this->line,
             $message,
         );
     }
