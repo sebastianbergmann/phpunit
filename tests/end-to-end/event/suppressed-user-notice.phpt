@@ -21,13 +21,13 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
-Test Triggered Notice (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice, suppressed using operator)
+Test Triggered Notice (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice, suppressed using operator) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNotice)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNoticeErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNoticeErrorGetLast)
-Test Triggered Notice (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNoticeErrorGetLast, suppressed using operator)
+Test Triggered Notice (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNoticeErrorGetLast, suppressed using operator) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNoticeErrorGetLast)
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserNoticeTest::testSuppressedUserNoticeErrorGetLast)

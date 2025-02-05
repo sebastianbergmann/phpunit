@@ -24,9 +24,9 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
-Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature, unknown if issue was triggered in first-party code or third-party code)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature, unknown if issue was triggered in first-party code or third-party code) in %s:%d
 strlen(): Passing null to parameter #1 ($string) of type string is deprecated
-Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature, unknown if issue was triggered in first-party code or third-party code, suppressed using operator)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature, unknown if issue was triggered in first-party code or third-party code, suppressed using operator) in %s:%d
 strlen(): Passing null to parameter #1 ($string) of type string is deprecated
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)

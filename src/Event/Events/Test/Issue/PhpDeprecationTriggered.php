@@ -141,8 +141,10 @@ final readonly class PhpDeprecationTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered PHP Deprecation (%s)%s',
+            'Test Triggered PHP Deprecation (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

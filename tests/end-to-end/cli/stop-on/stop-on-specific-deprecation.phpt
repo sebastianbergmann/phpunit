@@ -22,13 +22,13 @@ Test Runner Execution Started (3 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testOne)
-Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testOne, unknown if issue was triggered in first-party code or third-party code)
+Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testOne, unknown if issue was triggered in first-party code or third-party code) in %s:%d
 ...foo...
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testTwo)
-Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testTwo, unknown if issue was triggered in first-party code or third-party code)
+Test Triggered Deprecation (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testTwo, unknown if issue was triggered in first-party code or third-party code) in %s:%d
 ...bar...
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testTwo)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\SpecificDeprecationTest::testTwo)
