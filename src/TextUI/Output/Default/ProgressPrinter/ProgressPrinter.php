@@ -106,7 +106,7 @@ final class ProgressPrinter
         }
 
         if ($this->source->restrictNotices() &&
-            !(new SourceFilter)->includes($this->source, $event->file())) {
+            !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -124,7 +124,7 @@ final class ProgressPrinter
         }
 
         if ($this->source->restrictNotices() &&
-            !(new SourceFilter)->includes($this->source, $event->file())) {
+            !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -204,7 +204,7 @@ final class ProgressPrinter
         }
 
         if ($this->source->restrictWarnings() &&
-            !(new SourceFilter)->includes($this->source, $event->file())) {
+            !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -222,7 +222,7 @@ final class ProgressPrinter
         }
 
         if ($this->source->restrictWarnings() &&
-            !(new SourceFilter)->includes($this->source, $event->file())) {
+            !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 

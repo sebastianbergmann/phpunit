@@ -22,7 +22,7 @@ final readonly class AfterClass extends Metadata
     private int $priority;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param non-negative-int $priority
      */
     protected function __construct(int $level, int $priority)

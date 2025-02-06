@@ -4,6 +4,13 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 ## [12.0.0] - 2025-02-07
 
+### Added
+
+* [#5984](https://github.com/sebastianbergmann/phpunit/issues/5984): `#[CoversClassesThatExtendClass]` and `#[UsesClassesThatExtendClass]`
+* [#5985](https://github.com/sebastianbergmann/phpunit/issues/5985): `#[CoversClassesThatImplementInterface]` and `#[UsesClassesThatImplementInterface]`
+* [#6073](https://github.com/sebastianbergmann/phpunit/issues/6073): `#[CoversNamespace]` and `#[UsesNamespace]`
+* [#6074](https://github.com/sebastianbergmann/phpunit/pull/6074): `#[RequiresEnvironmentVariable]`
+
 ### Changed
 
 * [#5872](https://github.com/sebastianbergmann/phpunit/issues/5872): The default value for `shortenArraysForExportThreshold` is now `10` (limit export of arrays to 10 levels) instead of `0` (do not limit export of arrays)
@@ -40,8 +47,6 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5756](https://github.com/sebastianbergmann/phpunit/issues/5756): Support for the `restrictDeprecations` attribute on the `<source>` element of the XML configuration file
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5952](https://github.com/sebastianbergmann/phpunit/issues/5952): `includeUncoveredFiles` configuration option
-* [#5959](https://github.com/sebastianbergmann/phpunit/issues/5959): Support for `#[CoversTrait]` and `#[UsesTrait]` attributes
-* [#5961](https://github.com/sebastianbergmann/phpunit/issues/5961): Support for targeting trait methods with the `#[CoversMethod]` and `#[UsesMethod]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 
 [12.0.0]: https://github.com/sebastianbergmann/phpunit/compare/11.5...main

@@ -122,8 +122,10 @@ final readonly class PhpNoticeTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered PHP Notice (%s)%s',
+            'Test Triggered PHP Notice (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

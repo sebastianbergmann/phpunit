@@ -18,6 +18,7 @@ use function sprintf;
 use function str_starts_with;
 use function strtolower;
 use function trim;
+use Error;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
@@ -26,9 +27,13 @@ use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Depends;
@@ -52,6 +57,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
@@ -71,9 +77,14 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\UsesClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
+use PHPUnit\Framework\Attributes\UsesNamespace;
+use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
+use PHPUnit\Metadata\InvalidAttributeException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
@@ -94,9 +105,10 @@ final readonly class AttributeParser implements Parser
     {
         assert(class_exists($className));
 
-        $result = [];
+        $reflector = new ReflectionClass($className);
+        $result    = [];
 
-        foreach ((new ReflectionClass($className))->getAttributes() as $attribute) {
+        foreach ($reflector->getAttributes() as $attribute) {
             if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
                 continue;
             }
@@ -105,7 +117,17 @@ final readonly class AttributeParser implements Parser
                 continue;
             }
 
-            $attributeInstance = $attribute->newInstance();
+            try {
+                $attributeInstance = $attribute->newInstance();
+            } catch (Error $e) {
+                throw new InvalidAttributeException(
+                    $attribute->getName(),
+                    'class ' . $className,
+                    $reflector->getFileName(),
+                    $reflector->getStartLine(),
+                    $e->getMessage(),
+                );
+            }
 
             switch ($attribute->getName()) {
                 case BackupGlobals::class:
@@ -122,10 +144,38 @@ final readonly class AttributeParser implements Parser
 
                     break;
 
+                case CoversNamespace::class:
+                    assert($attributeInstance instanceof CoversNamespace);
+
+                    $result[] = Metadata::coversNamespace($attributeInstance->namespace());
+
+                    break;
+
                 case CoversClass::class:
                     assert($attributeInstance instanceof CoversClass);
 
                     $result[] = Metadata::coversClass($attributeInstance->className());
+
+                    break;
+
+                case CoversClassesThatExtendClass::class:
+                    assert($attributeInstance instanceof CoversClassesThatExtendClass);
+
+                    $result[] = Metadata::coversClassesThatExtendClass($attributeInstance->className());
+
+                    break;
+
+                case CoversClassesThatImplementInterface::class:
+                    assert($attributeInstance instanceof CoversClassesThatImplementInterface);
+
+                    $result[] = Metadata::coversClassesThatImplementInterface($attributeInstance->interfaceName());
+
+                    break;
+
+                case CoversTrait::class:
+                    assert($attributeInstance instanceof CoversTrait);
+
+                    $result[] = Metadata::coversTrait($attributeInstance->traitName());
 
                     break;
 
@@ -297,6 +347,16 @@ final readonly class AttributeParser implements Parser
 
                     break;
 
+                case RequiresEnvironmentVariable::class:
+                    assert($attributeInstance instanceof RequiresEnvironmentVariable);
+
+                    $result[] = Metadata::requiresEnvironmentVariableOnClass(
+                        $attributeInstance->environmentVariableName(),
+                        $attributeInstance->value(),
+                    );
+
+                    break;
+
                 case RequiresSetting::class:
                     assert($attributeInstance instanceof RequiresSetting);
 
@@ -336,10 +396,38 @@ final readonly class AttributeParser implements Parser
 
                     break;
 
+                case UsesNamespace::class:
+                    assert($attributeInstance instanceof UsesNamespace);
+
+                    $result[] = Metadata::usesNamespace($attributeInstance->namespace());
+
+                    break;
+
                 case UsesClass::class:
                     assert($attributeInstance instanceof UsesClass);
 
                     $result[] = Metadata::usesClass($attributeInstance->className());
+
+                    break;
+
+                case UsesClassesThatExtendClass::class:
+                    assert($attributeInstance instanceof UsesClassesThatExtendClass);
+
+                    $result[] = Metadata::usesClassesThatExtendClass($attributeInstance->className());
+
+                    break;
+
+                case UsesClassesThatImplementInterface::class:
+                    assert($attributeInstance instanceof UsesClassesThatImplementInterface);
+
+                    $result[] = Metadata::usesClassesThatImplementInterface($attributeInstance->interfaceName());
+
+                    break;
+
+                case UsesTrait::class:
+                    assert($attributeInstance instanceof UsesTrait);
+
+                    $result[] = Metadata::usesTrait($attributeInstance->traitName());
 
                     break;
 
@@ -374,9 +462,10 @@ final readonly class AttributeParser implements Parser
         assert(class_exists($className));
         assert(method_exists($className, $methodName));
 
-        $result = [];
+        $reflector = new ReflectionMethod($className, $methodName);
+        $result    = [];
 
-        foreach ((new ReflectionMethod($className, $methodName))->getAttributes() as $attribute) {
+        foreach ($reflector->getAttributes() as $attribute) {
             if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
                 continue;
             }
@@ -385,7 +474,17 @@ final readonly class AttributeParser implements Parser
                 continue;
             }
 
-            $attributeInstance = $attribute->newInstance();
+            try {
+                $attributeInstance = $attribute->newInstance();
+            } catch (Error $e) {
+                throw new InvalidAttributeException(
+                    $attribute->getName(),
+                    'method ' . $className . '::' . $methodName . '()',
+                    $reflector->getFileName(),
+                    $reflector->getStartLine(),
+                    $e->getMessage(),
+                );
+            }
 
             switch ($attribute->getName()) {
                 case After::class:
@@ -655,6 +754,16 @@ final readonly class AttributeParser implements Parser
 
                     $result[] = Metadata::requiresPhpunitExtensionOnMethod(
                         $attributeInstance->extensionClass(),
+                    );
+
+                    break;
+
+                case RequiresEnvironmentVariable::class:
+                    assert($attributeInstance instanceof RequiresEnvironmentVariable);
+
+                    $result[] = Metadata::requiresEnvironmentVariableOnMethod(
+                        $attributeInstance->environmentVariableName(),
+                        $attributeInstance->value(),
                     );
 
                     break;

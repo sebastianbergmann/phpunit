@@ -315,9 +315,9 @@ final class TestSuiteSorter
      * 3. If the test has dependencies but none left to do: mark done, start again from the top
      * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
-     * @param array<DataProviderTestSuite|TestCase> $tests
+     * @param array<TestCase> $tests
      *
-     * @return array<DataProviderTestSuite|TestCase>
+     * @return array<TestCase>
      */
     private function resolveDependencies(array $tests): array
     {

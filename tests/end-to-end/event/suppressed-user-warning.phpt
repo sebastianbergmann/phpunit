@@ -21,13 +21,13 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
-Test Triggered Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning, suppressed using operator)
+Test Triggered Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning, suppressed using operator) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarning)
 Test Preparation Started (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
-Test Triggered Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast, suppressed using operator)
+Test Triggered Warning (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast, suppressed using operator) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)
 Test Finished (PHPUnit\TestFixture\Event\SuppressedUserWarningTest::testSuppressedUserWarningErrorGetLast)

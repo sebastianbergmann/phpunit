@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Configuration;
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
 use function realpath;
+use function str_replace;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,136 +25,72 @@ final class SourceMapperTest extends TestCase
 {
     public static function provider(): Generator
     {
-        $fixtureDirectory = realpath(__DIR__ . '/../../_files/source-filter');
-
         yield 'file included using file' => [
             [
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                self::fixturePath('a/PrefixSuffix.php') => true,
             ],
-            new Source(
-                null,
-                false,
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray(
-                    [
-                        new File($fixtureDirectory . '/a/PrefixSuffix.php'),
-                    ],
-                ),
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                [
-                    'functions' => [],
-                    'methods'   => [],
-                ],
-                false,
-                false,
-                false,
+            self::createSource(
+                includeFiles: FileCollection::fromArray([
+                    new File(self::fixturePath('a/PrefixSuffix.php')),
+                ]),
             ),
         ];
 
         yield 'file included using file, but excluded using directory' => [
             [
             ],
-            new Source(
-                null,
-                false,
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray(
+            self::createSource(
+                includeFiles: FileCollection::fromArray(
                     [
-                        new File($fixtureDirectory . '/a/PrefixSuffix.php'),
+                        new File(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
-                FilterDirectoryCollection::fromArray(
+                excludeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
-                            $fixtureDirectory . '/a',
+                            self::fixturePath('/a'),
                             '',
                             '.php',
                         ),
                     ],
                 ),
-                FileCollection::fromArray([]),
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                [
-                    'functions' => [],
-                    'methods'   => [],
-                ],
-                false,
-                false,
-                false,
             ),
         ];
 
         yield 'file included using file, but excluded using file' => [
             [
             ],
-            new Source(
-                null,
-                false,
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray(
+            self::createSource(
+                includeFiles: FileCollection::fromArray(
                     [
-                        new File($fixtureDirectory . '/a/PrefixSuffix.php'),
+                        new File(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray(
+                excludeFiles: FileCollection::fromArray(
                     [
-                        new File($fixtureDirectory . '/a/PrefixSuffix.php'),
+                        new File(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                [
-                    'functions' => [],
-                    'methods'   => [],
-                ],
-                false,
-                false,
-                false,
             ),
         ];
 
-        $fileHiddenOnUnix = $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . '.hidden' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php';
+        $fileHiddenOnUnix = self::fixturePath('a/c/.hidden/PrefixSuffix.php');
 
         $expectedFiles = [
-            $fileHiddenOnUnix                                                                                                                                => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+            $fileHiddenOnUnix                                => true,
+            self::fixturePath('a/PrefixSuffix.php')          => true,
+            self::fixturePath('a/c/Prefix.php')              => true,
+            self::fixturePath('a/c/PrefixSuffix.php')        => true,
+            self::fixturePath('a/c/Suffix.php')              => true,
+            self::fixturePath('a/c/d/Prefix.php')            => true,
+            self::fixturePath('a/c/d/PrefixSuffix.php')      => true,
+            self::fixturePath('a/c/d/Suffix.php')            => true,
+            self::fixturePath('b/PrefixSuffix.php')          => true,
+            self::fixturePath('b/e/PrefixSuffix.php')        => true,
+            self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            self::fixturePath('b/e/g/PrefixSuffix.php')      => true,
+            self::fixturePath('b/f/PrefixSuffix.php')        => true,
+            self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
         ];
 
         if (PHP_OS_FAMILY !== 'Windows') {
@@ -162,53 +99,33 @@ final class SourceMapperTest extends TestCase
 
         yield 'file included using directory' => [
             $expectedFiles,
-            new Source(
-                null,
-                false,
-                FilterDirectoryCollection::fromArray(
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
-                            $fixtureDirectory,
+                            self::fixturePath(),
                             '',
                             '.php',
                         ),
                     ],
                 ),
-                FileCollection::fromArray([]),
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                [
-                    'functions' => [],
-                    'methods'   => [],
-                ],
-                false,
-                false,
-                false,
             ),
         ];
 
         $expectedFiles = [
-            $fileHiddenOnUnix                                                                                                                                => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Prefix.php'                                   => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'Suffix.php'                                   => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Prefix.php'       => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'a' . DIRECTORY_SEPARATOR . 'c' . DIRECTORY_SEPARATOR . 'd' . DIRECTORY_SEPARATOR . 'Suffix.php'       => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-            $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+            $fileHiddenOnUnix                                => true,
+            self::fixturePath('a/c/Prefix.php')              => true,
+            self::fixturePath('a/c/PrefixSuffix.php')        => true,
+            self::fixturePath('a/c/Suffix.php')              => true,
+            self::fixturePath('a/c/d/Prefix.php')            => true,
+            self::fixturePath('a/c/d/PrefixSuffix.php')      => true,
+            self::fixturePath('a/c/d/Suffix.php')            => true,
+            self::fixturePath('b/PrefixSuffix.php')          => true,
+            self::fixturePath('b/e/PrefixSuffix.php')        => true,
+            self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            self::fixturePath('b/e/g/PrefixSuffix.php')      => true,
+            self::fixturePath('b/f/PrefixSuffix.php')        => true,
+            self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
         ];
 
         if (PHP_OS_FAMILY !== 'Windows') {
@@ -217,98 +134,266 @@ final class SourceMapperTest extends TestCase
 
         yield 'file included using directory, but excluded using file' => [
             $expectedFiles,
-            new Source(
-                null,
-                false,
-                FilterDirectoryCollection::fromArray(
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
-                            $fixtureDirectory,
+                            self::fixturePath(),
                             '',
                             '.php',
                         ),
                     ],
                 ),
-                FileCollection::fromArray([]),
-                FilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray(
+                excludeFiles: FileCollection::fromArray(
                     [
-                        new File($fixtureDirectory . '/a/PrefixSuffix.php'),
+                        new File(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                [
-                    'functions' => [],
-                    'methods'   => [],
-                ],
-                false,
-                false,
-                false,
             ),
         ];
 
         yield 'file included using directory, but excluded using directory' => [
             [
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                                                         => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'e' . DIRECTORY_SEPARATOR . 'g' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php'                             => true,
-                $fixtureDirectory . DIRECTORY_SEPARATOR . 'b' . DIRECTORY_SEPARATOR . 'f' . DIRECTORY_SEPARATOR . 'h' . DIRECTORY_SEPARATOR . 'PrefixSuffix.php' => true,
+                self::fixturePath('b/PrefixSuffix.php')          => true,
+                self::fixturePath('b/e/PrefixSuffix.php')        => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                self::fixturePath('b/e/g/PrefixSuffix.php')      => true,
+                self::fixturePath('b/f/PrefixSuffix.php')        => true,
+                self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
             ],
-            new Source(
-                null,
-                false,
-                FilterDirectoryCollection::fromArray(
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
-                            $fixtureDirectory,
+                            self::fixturePath(),
                             '',
                             '.php',
                         ),
                     ],
                 ),
-                FileCollection::fromArray([]),
-                FilterDirectoryCollection::fromArray(
+                excludeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
-                            $fixtureDirectory . '/a',
+                            self::fixturePath('/a'),
                             '',
                             '.php',
                         ),
                     ],
                 ),
-                FileCollection::fromArray([]),
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                [
-                    'functions' => [],
-                    'methods'   => [],
-                ],
-                false,
-                false,
-                false,
             ),
         ];
+
+        yield 'files included using directory and prefix' => [
+            [
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            path: self::fixturePath(),
+                            prefix: 'PrefixExample',
+                            suffix: '.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files included using directory and suffix' => [
+            [
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            path: self::fixturePath(),
+                            prefix: '',
+                            suffix: 'ExampleSuffix.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files excluded using directory and prefix' => [
+            [
+                self::fixturePath('a/c/Suffix.php')   => true,
+                self::fixturePath('a/c/d/Suffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            '',
+                            '.php',
+                        ),
+                    ],
+                ),
+                excludeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            path: self::fixturePath(),
+                            prefix: 'Prefix',
+                            suffix: '.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files excluded using directory and suffix' => [
+            [
+                self::fixturePath('a/c/Prefix.php')   => true,
+                self::fixturePath('a/c/d/Prefix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            '',
+                            '.php',
+                        ),
+                    ],
+                ),
+                excludeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            path: self::fixturePath(),
+                            prefix: '',
+                            suffix: 'Suffix.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files included using same directory and different suffixes' => [
+            [
+                self::fixturePath('a/c/Prefix.php')              => true,
+                self::fixturePath('a/c/d/Prefix.php')            => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            '',
+                            'ExampleSuffix.php',
+                        ),
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            '',
+                            'Prefix.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files included using same directory and different prefixes' => [
+            [
+                self::fixturePath('a/c/Suffix.php')              => true,
+                self::fixturePath('a/c/d/Suffix.php')            => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'Suffix',
+                            '.php',
+                        ),
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'PrefixExample',
+                            '.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'files excluded using same directory and different prefixes' => [
+            [
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray([
+                    new FilterDirectory(
+                        self::fixturePath(),
+                        '',
+                        '.php',
+                    ),
+                ]),
+                excludeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'Prefix',
+                            '.php',
+                        ),
+                        new FilterDirectory(
+                            self::fixturePath(),
+                            'Suffix',
+                            '.php',
+                        ),
+                    ],
+                ),
+            ),
+        ];
+    }
+
+    public static function fixturePath(?string $subPath = null): string
+    {
+        $path = realpath(__DIR__ . '/../../_files/source-filter');
+
+        if ($subPath !== null) {
+            $path = $path . '/' . $subPath;
+        }
+
+        return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expected, Source $source): void
     {
         $this->assertEquals($expected, (new SourceMapper)->map($source));
+    }
+
+    private static function createSource(
+        ?FilterDirectoryCollection $includeDirectories = null,
+        ?FilterDirectoryCollection $excludeDirectories = null,
+        ?FileCollection $includeFiles = null,
+        ?FileCollection $excludeFiles = null,
+    ): Source {
+        return new Source(
+            null,
+            false,
+            $includeDirectories ?? FilterDirectoryCollection::fromArray([]),
+            $includeFiles ?? FileCollection::fromArray([]),
+            $excludeDirectories ?? FilterDirectoryCollection::fromArray([]),
+            $excludeFiles ?? FileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            [
+                'functions' => [],
+                'methods'   => [],
+            ],
+            false,
+            false,
+            false,
+        );
     }
 }

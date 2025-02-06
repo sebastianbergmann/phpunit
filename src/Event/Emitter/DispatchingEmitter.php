@@ -411,6 +411,24 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testBeforeTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\BeforeTestMethodErrored(
+                $this->telemetryInfo(),
+                $testClassName,
+                $calledMethod,
+                $throwable,
+            ),
+        );
+    }
+
+    /**
+     * @param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testBeforeTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(
@@ -435,6 +453,24 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $testClassName,
                 $calledMethod,
+            ),
+        );
+    }
+
+    /**
+     * @param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testPreConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PreConditionErrored(
+                $this->telemetryInfo(),
+                $testClassName,
+                $calledMethod,
+                $throwable,
             ),
         );
     }
@@ -941,6 +977,24 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testPostConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PostConditionErrored(
+                $this->telemetryInfo(),
+                $testClassName,
+                $calledMethod,
+                $throwable,
+            ),
+        );
+    }
+
+    /**
+     * @param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testPostConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(
@@ -975,6 +1029,24 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testAfterTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\AfterTestMethodErrored(
+                $this->telemetryInfo(),
+                $testClassName,
+                $calledMethod,
+                $throwable,
+            ),
+        );
+    }
+
+    /**
+     * @param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testAfterTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(
@@ -999,6 +1071,24 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $testClassName,
                 $calledMethod,
+            ),
+        );
+    }
+
+    /**
+     * @param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testAfterLastTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\AfterLastTestMethodErrored(
+                $this->telemetryInfo(),
+                $testClassName,
+                $calledMethod,
+                $throwable,
             ),
         );
     }

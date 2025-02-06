@@ -160,12 +160,52 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isCoversNamespace(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversNamespace(),
+            ),
+        );
+    }
+
     public function isCoversClass(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isCoversClass(),
+            ),
+        );
+    }
+
+    public function isCoversClassesThatExtendClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isCoversClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatImplementInterface(),
+            ),
+        );
+    }
+
+    public function isCoversTrait(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversTrait(),
             ),
         );
     }
@@ -463,6 +503,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isRequiresEnvironmentVariable(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRequiresEnvironmentVariable(),
+            ),
+        );
+    }
+
     public function isRequiresSetting(): self
     {
         return new self(
@@ -493,12 +543,52 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isUsesNamespace(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesNamespace(),
+            ),
+        );
+    }
+
     public function isUsesClass(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isUsesClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatExtendClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatImplementInterface(),
+            ),
+        );
+    }
+
+    public function isUsesTrait(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesTrait(),
             ),
         );
     }

@@ -10,16 +10,13 @@
 namespace PHPUnit\Framework\TestSize;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Known::class)]
-#[CoversClass(Large::class)]
-#[CoversClass(Medium::class)]
-#[CoversClass(\PHPUnit\Framework\TestSize\Small::class)]
 #[CoversClass(TestSize::class)]
-#[CoversClass(Unknown::class)]
+#[CoversClassesThatExtendClass(TestSize::class)]
 #[Small]
 final class TestSizeTest extends TestCase
 {

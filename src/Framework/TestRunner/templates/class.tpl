@@ -49,7 +49,6 @@ function __phpunit_run_isolated_class()
 
     if ({collectCodeCoverageInformation}) {
         CodeCoverage::instance()->init($configuration, CodeCoverageFilterRegistry::instance(), true);
-        CodeCoverage::instance()->ignoreLines({linesToBeIgnored});
     }
 
     $deprecationTriggers = [

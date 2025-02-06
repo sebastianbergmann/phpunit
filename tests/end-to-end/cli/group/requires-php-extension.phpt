@@ -16,7 +16,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
-Test Suite Loaded (3 tests)
+Test Suite Loaded (5 tests)
 Test Runner Started
 Test Suite Sorted
 Test Suite Filtered (1 test)

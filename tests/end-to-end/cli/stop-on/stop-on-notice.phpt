@@ -22,7 +22,7 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
-Test Triggered Notice (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
+Test Triggered Notice (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\NoticeTest::testOne)

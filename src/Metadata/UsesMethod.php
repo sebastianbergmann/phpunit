@@ -27,7 +27,7 @@ final readonly class UsesMethod extends Metadata
     private string $methodName;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
@@ -58,15 +58,5 @@ final readonly class UsesMethod extends Metadata
     public function methodName(): string
     {
         return $this->methodName;
-    }
-
-    /**
-     * @return non-empty-string
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function asStringForCodeUnitMapper(): string
-    {
-        return $this->className . '::' . $this->methodName;
     }
 }

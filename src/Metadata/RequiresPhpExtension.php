@@ -25,7 +25,7 @@ final readonly class RequiresPhpExtension extends Metadata
     private ?Requirement $versionRequirement;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param non-empty-string $extension
      */
     protected function __construct(int $level, string $extension, ?Requirement $versionRequirement)

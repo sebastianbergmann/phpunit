@@ -21,7 +21,7 @@ final readonly class RequiresPhpunit extends Metadata
     private Requirement $versionRequirement;
 
     /**
-     * @param 0|1 $level
+     * @param int<0, 1> $level
      */
     protected function __construct(int $level, Requirement $versionRequirement)
     {

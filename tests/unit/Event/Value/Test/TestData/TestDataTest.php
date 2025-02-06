@@ -10,12 +10,12 @@
 namespace PHPUnit\Event\TestData;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestData::class)]
-#[CoversClass(DataFromDataProvider::class)]
-#[CoversClass(DataFromTestDependency::class)]
+#[CoversClassesThatExtendClass(TestData::class)]
 #[Small]
 final class TestDataTest extends TestCase
 {

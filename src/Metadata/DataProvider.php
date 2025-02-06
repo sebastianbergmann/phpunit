@@ -27,7 +27,7 @@ final readonly class DataProvider extends Metadata
     private string $methodName;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param class-string     $className
      * @param non-empty-string $methodName
      */

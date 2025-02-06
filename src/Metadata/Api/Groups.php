@@ -63,20 +63,34 @@ final class Groups
         }
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
-                /** @phpstan-ignore booleanOr.alwaysTrue */
-                assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
+            if ($metadata->isCoversClass()) {
+                assert($metadata instanceof CoversClass);
 
-                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
+                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->className());
 
                 continue;
             }
 
-            if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
-                /** @phpstan-ignore booleanOr.alwaysTrue */
-                assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
+            if ($metadata->isCoversFunction()) {
+                assert($metadata instanceof CoversFunction);
 
-                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
+                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->functionName());
+
+                continue;
+            }
+
+            if ($metadata->isUsesClass()) {
+                assert($metadata instanceof UsesClass);
+
+                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->className());
+
+                continue;
+            }
+
+            if ($metadata->isUsesFunction()) {
+                assert($metadata instanceof UsesFunction);
+
+                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->functionName());
 
                 continue;
             }

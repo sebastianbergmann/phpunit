@@ -21,9 +21,7 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
 
-1) Cannot read baseline: Could not load "%sbaseline.xml":
-
-%snd%sag%s
+1) Cannot read baseline %sbaseline.xml: %s
 
 WARNINGS!
 Tests: 1, Assertions: 1, Warnings: 1.
