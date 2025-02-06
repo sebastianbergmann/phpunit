@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\InvalidAttributeException;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
@@ -30,6 +31,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DisableReturnValueGenerationForTestDoublesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DuplicateSmallAttributeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DuplicateTestAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
@@ -1136,6 +1139,20 @@ abstract class AttributeParserTestCase extends TestCase
         $metadata = $this->parser()->forClassAndMethod(PhpunitAttributeThatDoesNotExistTest::class, 'testOne');
 
         $this->assertTrue($metadata->isEmpty());
+    }
+
+    public function test_handles_ReflectionException_raised_when_instantiating_attribute_on_class(): void
+    {
+        $this->expectException(InvalidAttributeException::class);
+
+        $this->parser()->forClass(DuplicateSmallAttributeTest::class);
+    }
+
+    public function test_handles_ReflectionException_raised_when_instantiating_attribute_on_method(): void
+    {
+        $this->expectException(InvalidAttributeException::class);
+
+        $this->parser()->forMethod(DuplicateTestAttributeTest::class, 'testOne');
     }
 
     abstract protected function parser(): Parser;
