@@ -8,6 +8,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
+use PHPUnit\TextUI\TestSuiteFilterProcessor;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
 // php://stdout does not obey output buffering. Any output would break
@@ -86,13 +87,20 @@ function __phpunit_run_isolated_class()
     $suite = TestSuite::fromClassReflector($testClass);
     $suite->setIsInSeparatedProcess(false);
 
+    (new TestSuiteFilterProcessor)->process($configuration, $suite);
+
     $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($suite);
 
     if (!$suite->invokeMethodsBeforeFirstTest(Facade::emitter(), $testSuiteValueObjectForEvents)) {
         return;
     }
 
-    foreach($suite->tests() as $test) {
+    $tests = [];
+    foreach ($suite as $test) {
+        $tests[] = $test;
+    }
+
+    foreach($tests as $test) {
         $test->setRunClassInSeparateProcess(false);
         $test->run();
 

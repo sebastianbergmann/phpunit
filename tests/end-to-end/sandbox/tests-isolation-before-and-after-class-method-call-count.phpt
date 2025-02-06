@@ -8,12 +8,17 @@ $_SERVER['argv'][] = __DIR__ . '/_files/TestsIsolationBeforeAndAfterClassMethodC
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-\file_put_contents(__DIR__ . '/_files/temp/tests_before_method_call_count.txt', 0);
-\file_put_contents(__DIR__ . '/_files/temp/tests_after_method_call_count.txt', 0);
+$tmpDir = __DIR__ . '/_files/temp';
+
+if (!\file_exists($tmpDir)) {
+    \mkdir($tmpDir, recursive: true);
+}
+\file_put_contents($tmpDir . '/tests_before_method_call_count.txt', 0);
+\file_put_contents($tmpDir . '/tests_after_method_call_count.txt', 0);
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 
-if (\intval(\file_get_contents(__DIR__ . '/_files/temp/tests_after_method_call_count.txt')) !== 3){
+if (\intval(\file_get_contents($tmpDir . '/tests_after_method_call_count.txt')) !== 3){
 	throw new \Exception('Invalid after class method call count!');
 }
 --EXPECTF--
