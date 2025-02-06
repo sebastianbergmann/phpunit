@@ -62,6 +62,7 @@ use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
+use PHPUnit\Metadata\InvalidAttributeException;
 
 #[CoversClass(AttributeParser::class)]
 #[CoversClass(AfterClass::class)]
@@ -92,6 +93,7 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 #[CoversClass(IgnoreClassForCodeCoverage::class)]
 #[CoversClass(IgnoreFunctionForCodeCoverage::class)]
 #[CoversClass(IgnoreMethodForCodeCoverage::class)]
+#[CoversClass(InvalidAttributeException::class)]
 #[CoversClass(Large::class)]
 #[CoversClass(Medium::class)]
 #[CoversClass(PostCondition::class)]

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Changed
 
 * [#6117](https://github.com/sebastianbergmann/phpunit/issues/6117): Include source location information for issues triggered during test in `--debug` output
+* [#6119](https://github.com/sebastianbergmann/phpunit/issues/6119): Improve message for errors that occur while parsing attributes
 
 ## [10.5.44] - 2025-01-31
 
