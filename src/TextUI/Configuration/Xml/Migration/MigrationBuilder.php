@@ -84,10 +84,6 @@ final readonly class MigrationBuilder
         '11.2' => [
             RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
         ],
-
-        '11.4' => [
-            RemoveCoverageElementIncludeUncoveredFilesAttribute::class,
-        ],
     ];
 
     /**
