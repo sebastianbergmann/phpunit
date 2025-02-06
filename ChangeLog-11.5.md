@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 * [#6117](https://github.com/sebastianbergmann/phpunit/issues/6117): Include source location information for issues triggered during test in `--debug` output
 * [#6119](https://github.com/sebastianbergmann/phpunit/issues/6119): Improve message for errors that occur while parsing attributes
+* [#6120](https://github.com/sebastianbergmann/phpunit/issues/6120): Allow negative priorities for hook methods
 
 ## [11.5.6] - 2025-01-31
 
