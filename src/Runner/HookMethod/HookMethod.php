@@ -20,7 +20,6 @@ final readonly class HookMethod
      * @var non-empty-string
      */
     private string $methodName;
-
     private int $priority;
 
     /**
