@@ -64,6 +64,7 @@ use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
+use PHPUnit\Metadata\InvalidAttributeException;
 
 #[CoversClass(AttributeParser::class)]
 #[CoversClass(AfterClass::class)]
@@ -93,6 +94,7 @@ use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(Group::class)]
+#[CoversClass(InvalidAttributeException::class)]
 #[CoversClass(Large::class)]
 #[CoversClass(Medium::class)]
 #[CoversClass(PostCondition::class)]
