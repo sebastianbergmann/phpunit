@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d841414cb5570ed7a3e0f5491080a729",
+    "content-hash": "f2eee399bdee2bc43ac9917db7b4dfd2",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -244,16 +244,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "12.0.0",
+            "version": "12.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "b1fbe7ded00c951a3507b2352bd6c30574fd9672"
+                "reference": "89d8cb213336dfd15f134bd4ebfd9a420bba6024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b1fbe7ded00c951a3507b2352bd6c30574fd9672",
-                "reference": "b1fbe7ded00c951a3507b2352bd6c30574fd9672",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/89d8cb213336dfd15f134bd4ebfd9a420bba6024",
+                "reference": "89d8cb213336dfd15f134bd4ebfd9a420bba6024",
                 "shasum": ""
             },
             "require": {
@@ -309,7 +309,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.0.0"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.0.1"
             },
             "funding": [
                 {
@@ -317,7 +317,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-07T05:01:24+00:00"
+            "time": "2025-02-07T13:45:04+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
