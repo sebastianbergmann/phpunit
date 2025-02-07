@@ -179,12 +179,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
-    private string $errorOutput               = '';
-    private ?string $errorOutputExpectedRegex = null;
-    private ?string $errorOutputPrevious      = null;
+    private string $errorLogOutput            = '';
+    private ?string $errorLogExpectedRegex    = null;
+    private ?string $errorLogPrevious         = null;
 
     /** @var null|resource */
-    private $errorOutputResource;
+    private $errorLogResource;
     private bool $doesNotPerformAssertions = false;
 
     /**
@@ -1016,9 +1016,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputExpectedString = $expectedString;
     }
 
-    final protected function expectErrorOutputRegex(string $expectedRegex): void
+    final protected function expectErrorLogRegex(string $expectedRegex): void
     {
-        $this->errorOutputExpectedRegex = $expectedRegex;
+        $this->errorLogExpectedRegex = $expectedRegex;
     }
 
     /**
@@ -1463,13 +1463,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBufferingActive = true;
         $this->outputBufferingLevel  = ob_get_level();
 
-        $capture                   = tmpfile();
-        $this->errorOutputPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
-        $this->errorOutputResource = $capture;
+        $capture                = tmpfile();
+        $this->errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
+        $this->errorLogResource = $capture;
     }
 
     private function stopOutputBuffering(): bool
     {
+        if ($this->errorLogResource !== null) {
+            $this->errorLogOutput = stream_get_contents($this->errorLogResource);
+            fclose($this->errorLogResource);
+        }
+
+        if ($this->errorLogPrevious !== null) {
+            ini_set('error_log', $this->errorLogPrevious);
+        }
+
         $bufferingLevel = ob_get_level();
 
         if ($bufferingLevel !== $this->outputBufferingLevel) {
@@ -1489,15 +1498,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
 
             return false;
-        }
-
-        if ($this->errorOutputResource !== null) {
-            $this->errorOutput = stream_get_contents($this->errorOutputResource);
-            fclose($this->errorOutputResource);
-        }
-
-        if ($this->errorOutputPrevious !== null) {
-            ini_set('error_log', $this->errorOutputPrevious);
         }
 
         $this->output = ob_get_clean();
@@ -1890,8 +1890,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
             } elseif ($this->outputExpectedString !== null) {
                 $this->assertSame($this->outputExpectedString, $this->output);
-            } elseif ($this->errorOutputExpectedRegex !== null) {
-                $this->assertMatchesRegularExpression($this->errorOutputExpectedRegex, $this->errorOutput);
+            } elseif ($this->errorLogExpectedRegex !== null) {
+                $this->assertMatchesRegularExpression($this->errorLogExpectedRegex, $this->errorLogOutput);
             }
         } catch (ExpectationFailedException $e) {
             $this->status = TestStatus::failure($e->getMessage());
@@ -2179,7 +2179,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function hasExpectationOnOutput(): bool
     {
-        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex) || is_string($this->errorOutputExpectedRegex);
+        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex) || is_string($this->errorLogExpectedRegex);
     }
 
     private function requirementsNotSatisfied(): bool
