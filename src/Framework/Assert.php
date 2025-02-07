@@ -306,7 +306,7 @@ abstract class Assert
             EventFacade::emitter()->testTriggeredPhpunitDeprecation(
                 null,
                 sprintf(
-                    'assertContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'assertContainsOnly() is deprecated and will be removed in PHPUnit 13. ' .
                     'Please use %s($haystack) instead of assertContainsOnly(\'%s\', $haystack).',
                     $replacement,
                     $type,
@@ -318,7 +318,7 @@ abstract class Assert
             EventFacade::emitter()->testTriggeredPhpunitDeprecation(
                 null,
                 sprintf(
-                    'assertContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'assertContainsOnly() is deprecated and will be removed in PHPUnit 13. ' .
                     'Please use assertContainsOnlyInstancesOf(\'%s\', $haystack) instead of assertContainsOnly(\'%s\', $haystack).',
                     $type,
                     $type,
@@ -625,7 +625,7 @@ abstract class Assert
             EventFacade::emitter()->testTriggeredPhpunitDeprecation(
                 null,
                 sprintf(
-                    'assertNotContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'assertNotContainsOnly() is deprecated and will be removed in PHPUnit 13. ' .
                     'Please use %s($haystack) instead of assertNotContainsOnly(\'%s\', $haystack).',
                     $replacement,
                     $type,
@@ -637,7 +637,7 @@ abstract class Assert
             EventFacade::emitter()->testTriggeredPhpunitDeprecation(
                 null,
                 sprintf(
-                    'assertNotContainsOnly() is deprecated and will be removed in PHPUnit 12. ' .
+                    'assertNotContainsOnly() is deprecated and will be removed in PHPUnit 13. ' .
                     'Please use assertContainsNotOnlyInstancesOf(\'%s\', $haystack) instead of assertNotContainsOnly(\'%s\', $haystack).',
                     $type,
                     $type,
@@ -3063,7 +3063,7 @@ abstract class Assert
         EventFacade::emitter()->testTriggeredPhpunitDeprecation(
             null,
             sprintf(
-                'isType(\'%s\') is deprecated and will be removed in PHPUnit 12. ' .
+                'isType(\'%s\') is deprecated and will be removed in PHPUnit 13. ' .
                 'Please use the %s() method instead.',
                 $type,
                 $replacement,
