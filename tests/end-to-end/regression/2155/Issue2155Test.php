@@ -29,6 +29,6 @@ final class Issue2155Test extends TestCase
         $foo = new Foo;
 
         $this->assertSame('', $foo->doFoo());
-        self::expectErrorOutputRegex('/logged a side effect/');
+        $this->expectErrorOutputRegex('/logged a side effect/');
     }
 }
