@@ -22,9 +22,11 @@ use function count;
 use function defined;
 use function error_clear_last;
 use function explode;
+use function fclose;
 use function getcwd;
 use function implode;
 use function in_array;
+use function ini_set;
 use function is_array;
 use function is_callable;
 use function is_int;
@@ -44,6 +46,9 @@ use function set_error_handler;
 use function set_exception_handler;
 use function sprintf;
 use function str_contains;
+use function stream_get_contents;
+use function stream_get_meta_data;
+use function tmpfile;
 use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
@@ -174,7 +179,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
-    private bool $doesNotPerformAssertions    = false;
+    private string $errorOutput               = '';
+    private ?string $errorOutputExpectedRegex = null;
+    private ?string $errorOutputPrevious      = null;
+
+    /** @var null|resource */
+    private $errorOutputResource;
+    private bool $doesNotPerformAssertions = false;
 
     /**
      * @var list<Comparator>
@@ -1005,6 +1016,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputExpectedString = $expectedString;
     }
 
+    final protected function expectErrorOutputRegex(string $expectedRegex): void
+    {
+        $this->errorOutputExpectedRegex = $expectedRegex;
+    }
+
     /**
      * @param class-string<Throwable> $exception
      */
@@ -1446,6 +1462,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->outputBufferingActive = true;
         $this->outputBufferingLevel  = ob_get_level();
+
+        $capture                   = tmpfile();
+        $this->errorOutputPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
+        $this->errorOutputResource = $capture;
     }
 
     private function stopOutputBuffering(): bool
@@ -1469,6 +1489,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
 
             return false;
+        }
+
+        if ($this->errorOutputResource !== null) {
+            $this->errorOutput = stream_get_contents($this->errorOutputResource);
+            fclose($this->errorOutputResource);
+        }
+
+        if ($this->errorOutputPrevious !== null) {
+            ini_set('error_log', $this->errorOutputPrevious);
         }
 
         $this->output = ob_get_clean();
@@ -1861,6 +1890,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
             } elseif ($this->outputExpectedString !== null) {
                 $this->assertSame($this->outputExpectedString, $this->output);
+            } elseif ($this->errorOutputExpectedRegex !== null) {
+                $this->assertMatchesRegularExpression($this->errorOutputExpectedRegex, $this->errorOutput);
             }
         } catch (ExpectationFailedException $e) {
             $this->status = TestStatus::failure($e->getMessage());
@@ -2148,7 +2179,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function hasExpectationOnOutput(): bool
     {
-        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex);
+        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex) || is_string($this->errorOutputExpectedRegex);
     }
 
     private function requirementsNotSatisfied(): bool
