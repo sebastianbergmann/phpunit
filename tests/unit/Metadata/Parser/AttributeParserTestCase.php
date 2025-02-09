@@ -23,6 +23,7 @@ use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
+use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
@@ -60,6 +61,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
+use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
 
 abstract class AttributeParserTestCase extends TestCase
@@ -385,6 +387,20 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertSame('foo', $requirement->environmentVariableName());
         $this->assertSame('bar', $requirement->value());
+    }
+
+    #[TestDox('Parses #[WithEnvironmentVariable] attribute on class')]
+    public function test_parses_WithEnvironmentVariable_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(WithEnvironmentVariableTest::class)->isWithEnvironmentVariable();
+
+        $this->assertCount(1, $metadata);
+
+        $withEnvironmentVariable = $metadata->asArray()[0];
+        $this->assertTrue($withEnvironmentVariable->isWithEnvironmentVariable());
+        assert($withEnvironmentVariable instanceof WithEnvironmentVariable);
+        $this->assertSame('foo', $withEnvironmentVariable->environmentVariableName());
+        $this->assertSame('bar', $withEnvironmentVariable->value());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on class')]
@@ -1005,6 +1021,26 @@ abstract class AttributeParserTestCase extends TestCase
         assert($requirement instanceof RequiresEnvironmentVariable);
         $this->assertSame('bar', $requirement->environmentVariableName());
         $this->assertSame('baz', $requirement->value());
+    }
+
+    #[TestDox('Parses #[WithEnvironmentVariable] attribute on method')]
+    public function test_parses_WithEnvironmentVariable_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(WithEnvironmentVariableTest::class, 'testOne')->isWithEnvironmentVariable();
+
+        $this->assertCount(2, $metadata);
+
+        $withEnvironmentVariable = $metadata->asArray()[0];
+        $this->assertTrue($withEnvironmentVariable->isWithEnvironmentVariable());
+        assert($withEnvironmentVariable instanceof WithEnvironmentVariable);
+        $this->assertSame('foo', $withEnvironmentVariable->environmentVariableName());
+        $this->assertNull($withEnvironmentVariable->value());
+
+        $withEnvironmentVariable = $metadata->asArray()[1];
+        $this->assertTrue($withEnvironmentVariable->isWithEnvironmentVariable());
+        assert($withEnvironmentVariable instanceof WithEnvironmentVariable);
+        $this->assertSame('bar', $withEnvironmentVariable->environmentVariableName());
+        $this->assertSame('baz', $withEnvironmentVariable->value());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on method')]
