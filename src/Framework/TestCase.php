@@ -180,7 +180,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
     private string $errorLogOutput            = '';
-    private ?string $errorLogExpectedRegex    = null;
+    private bool $expectsErrorLog             = false;
     private ?string $errorLogPrevious         = null;
 
     /** @var null|resource */
@@ -566,6 +566,25 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $outputBufferingStopped = true;
 
             $this->performAssertionsOnOutput();
+        }
+
+        if ($this->expectsErrorLog) {
+            $this->assertNotEmpty($this->errorLogOutput);
+        } else {
+            $this->assertEmpty($this->errorLogOutput);
+        }
+
+        if ($this->status->isSuccess()) {
+            $emitter->testPassed(
+                $this->valueObjectForEvents(),
+            );
+
+            if (!$this->usesDataProvider()) {
+                PassedTests::instance()->testMethodPassed(
+                    $this->valueObjectForEvents(),
+                    $this->testResult,
+                );
+            }
         }
 
         try {
@@ -1016,9 +1035,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputExpectedString = $expectedString;
     }
 
-    final protected function expectErrorLogRegex(string $expectedRegex): void
+    final protected function expectsErrorLog(): void
     {
-        $this->errorLogExpectedRegex = $expectedRegex;
+        $this->expectsErrorLog = true;
     }
 
     /**
@@ -1890,8 +1909,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
             } elseif ($this->outputExpectedString !== null) {
                 $this->assertSame($this->outputExpectedString, $this->output);
-            } elseif ($this->errorLogExpectedRegex !== null) {
-                $this->assertMatchesRegularExpression($this->errorLogExpectedRegex, $this->errorLogOutput);
             }
         } catch (ExpectationFailedException $e) {
             $this->status = TestStatus::failure($e->getMessage());
@@ -2179,7 +2196,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function hasExpectationOnOutput(): bool
     {
-        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex) || is_string($this->errorLogExpectedRegex);
+        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex);
     }
 
     private function requirementsNotSatisfied(): bool
