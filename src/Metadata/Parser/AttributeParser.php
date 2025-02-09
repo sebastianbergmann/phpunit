@@ -83,6 +83,7 @@ use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\Attributes\UsesTrait;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\InvalidAttributeException;
 use PHPUnit\Metadata\Metadata;
@@ -351,6 +352,16 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresEnvironmentVariable);
 
                     $result[] = Metadata::requiresEnvironmentVariableOnClass(
+                        $attributeInstance->environmentVariableName(),
+                        $attributeInstance->value(),
+                    );
+
+                    break;
+
+                case WithEnvironmentVariable::class:
+                    assert($attributeInstance instanceof WithEnvironmentVariable);
+
+                    $result[] = Metadata::withEnvironmentVariableOnClass(
                         $attributeInstance->environmentVariableName(),
                         $attributeInstance->value(),
                     );
@@ -762,6 +773,16 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresEnvironmentVariable);
 
                     $result[] = Metadata::requiresEnvironmentVariableOnMethod(
+                        $attributeInstance->environmentVariableName(),
+                        $attributeInstance->value(),
+                    );
+
+                    break;
+
+                case WithEnvironmentVariable::class:
+                    assert($attributeInstance instanceof WithEnvironmentVariable);
+
+                    $result[] = Metadata::withEnvironmentVariableOnMethod(
                         $attributeInstance->environmentVariableName(),
                         $attributeInstance->value(),
                     );

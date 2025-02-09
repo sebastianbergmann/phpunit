@@ -427,6 +427,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresEnvironmentVariable());
     }
 
+    public function test_Can_be_filtered_for_WithEnvironmentVariable(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isWithEnvironmentVariable();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isWithEnvironmentVariable());
+    }
+
     public function test_Can_be_filtered_for_RequiresSetting(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresSetting();
@@ -611,6 +619,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
+                Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],
         );
