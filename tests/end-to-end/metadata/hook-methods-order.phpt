@@ -37,7 +37,6 @@ Before Test Method Finished:
 - PHPUnit\TestFixture\HookMethodsOrderTest::beforeSecond
 - PHPUnit\TestFixture\HookMethodsOrderTest::setUp
 Test Prepared (PHPUnit\TestFixture\HookMethodsOrderTest::testOne)
-Test Passed (PHPUnit\TestFixture\HookMethodsOrderTest::testOne)
 After Test Method Called (PHPUnit\TestFixture\HookMethodsOrderTest::afterWithPriority)
 After Test Method Called (PHPUnit\TestFixture\HookMethodsOrderTest::afterWithPriorityInParent)
 After Test Method Called (PHPUnit\TestFixture\HookMethodsOrderTest::tearDown)
@@ -51,6 +50,7 @@ After Test Method Finished:
 - PHPUnit\TestFixture\HookMethodsOrderTest::afterFirst
 - PHPUnit\TestFixture\HookMethodsOrderTest::afterSecond
 - PHPUnit\TestFixture\HookMethodsOrderTest::afterInParent
+Test Passed (PHPUnit\TestFixture\HookMethodsOrderTest::testOne)
 Test Finished (PHPUnit\TestFixture\HookMethodsOrderTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\HookMethodsOrderTest, 1 test)
 Test Runner Execution Finished
