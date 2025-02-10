@@ -38,13 +38,13 @@ Test Prepared (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Post Condition Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions)
 Post Condition Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions
-Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 After Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown)
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown
 After Last Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass)
 After Last Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass
+Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Child Process Finished
 Child Process Started
@@ -62,13 +62,13 @@ Test Prepared (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Post Condition Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions)
 Post Condition Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::assertPostConditions
-Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 After Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown)
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown
 After Last Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass)
 After Last Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass
+Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Child Process Finished
 After Last Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass)

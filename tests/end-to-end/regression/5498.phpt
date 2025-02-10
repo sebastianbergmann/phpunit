@@ -30,12 +30,12 @@ Before Test Method Finished:
 - PHPUnit\TestFixture\Issue5498\Test::parentBefore
 - PHPUnit\TestFixture\Issue5498\Test::before
 Test Prepared (PHPUnit\TestFixture\Issue5498\Test::testOne)
-Test Passed (PHPUnit\TestFixture\Issue5498\Test::testOne)
 After Test Method Called (PHPUnit\TestFixture\Issue5498\Test::after)
 After Test Method Called (PHPUnit\TestFixture\Issue5498\Test::parentAfter)
 After Test Method Finished:
 - PHPUnit\TestFixture\Issue5498\Test::after
 - PHPUnit\TestFixture\Issue5498\Test::parentAfter
+Test Passed (PHPUnit\TestFixture\Issue5498\Test::testOne)
 Test Finished (PHPUnit\TestFixture\Issue5498\Test::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Issue5498\Test, 1 test)
 Test Suite Finished (CLI Arguments, 1 test)
