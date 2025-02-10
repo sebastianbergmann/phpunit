@@ -21,7 +21,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ExceptionInTearDownTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::testOne)
-Test Passed (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::testOne)
 After Test Method Called (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::tearDown)
 After Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInTearDownTest::tearDown)
 After Test Method Finished:
