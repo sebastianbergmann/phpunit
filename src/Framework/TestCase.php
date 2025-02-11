@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Runner\BackupEnvironmentVariable;
 use const PHP_EOL;
 use function array_keys;
 use function array_merge;
@@ -140,7 +141,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private null|int|string $expectedExceptionCode  = null;
 
     /**
-     * @var array<string, false|string>
+     * @var list<BackupEnvironmentVariable>
      */
     private array $backupEnvironmentVariables = [];
 
@@ -1798,7 +1799,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         foreach ($environmentVariables as $environmentVariableName => $environmentVariableValue) {
-            $this->backupEnvironmentVariables[$environmentVariableName] = $_ENV[$environmentVariableName] ?? getenv($environmentVariableName);
+            $this->backupEnvironmentVariables = [...$this->backupEnvironmentVariables, ...BackupEnvironmentVariable::create($environmentVariableName)];
 
             if ($environmentVariableValue === null) {
                 unset($_ENV[$environmentVariableName]);
@@ -1812,14 +1813,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function restoreEnvironmentVariables(): void
     {
-        foreach ($this->backupEnvironmentVariables as $environmentVariableName => $value) {
-            if ($value === false) {
-                unset($_ENV[$environmentVariableName]);
-                putenv($environmentVariableName);
-            } else {
-                $_ENV[$environmentVariableName] = $value;
-                putenv("{$environmentVariableName}={$value}");
-            }
+        foreach ($this->backupEnvironmentVariables as $backupEnvironmentVariable) {
+            $backupEnvironmentVariable->restore();
         }
 
         $this->backupEnvironmentVariables = [];
