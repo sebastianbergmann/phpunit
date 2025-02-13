@@ -20,6 +20,7 @@ Runtime: %s
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\Basic\SetUpBeforeClassTest' locationHint='php_qn://%stests%eend-to-end%e_files%ebasic%eunit%eSetUpBeforeClassTest.php::\PHPUnit\TestFixture\Basic\SetUpBeforeClassTest' flowId='%d']
 ##teamcity[testFailed name='PHPUnit\TestFixture\Basic\SetUpBeforeClassTest' message='Exception: forcing an Exception in setUpBeforeClass()' details='%stests%eend-to-end%e_files%ebasic%eunit%eSetUpBeforeClassTest.php:32|n' duration='%d' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Basic\SetUpBeforeClassTest' message='Exception: forcing an Exception in setUpBeforeClass()' details='%stests%eend-to-end%e_files%ebasic%eunit%eSetUpBeforeClassTest.php:32|n' duration='%d' flowId='%d']
+##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Basic\SetUpBeforeClassTest' flowId='%d']
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\Basic\SetUpTest' locationHint='php_qn://%stests%eend-to-end%e_files%ebasic%eunit%eSetUpTest.php::\PHPUnit\TestFixture\Basic\SetUpTest' flowId='%d']
 ##teamcity[testFailed name='testOneWithSetUpException' message='RuntimeException: throw exception in setUp' details='%stests%eend-to-end%e_files%ebasic%eunit%eSetUpTest.php:%d|n' duration='%d' flowId='%d']
 ##teamcity[testFailed name='testTwoWithSetUpException' message='RuntimeException: throw exception in setUp' details='%stests%eend-to-end%e_files%ebasic%eunit%eSetUpTest.php:%d|n' duration='%d' flowId='%d']

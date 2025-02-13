@@ -23,6 +23,7 @@ Before First Test Method Called (PHPUnit\TestFixture\Event\ExceptionInSetUpBefor
 Before First Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest::setUpBeforeClass)
 Before First Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest::setUpBeforeClass
+Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 2)
