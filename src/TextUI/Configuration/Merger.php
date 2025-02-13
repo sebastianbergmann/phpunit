@@ -671,6 +671,8 @@ final readonly class Merger
             }
         }
 
+        $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
+
         $includePaths = [];
 
         if ($cliConfiguration->hasIncludePath()) {
@@ -889,6 +891,7 @@ final readonly class Merger
             $groups,
             $excludeGroups,
             $randomOrderSeed,
+            $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
             $includeTestSuite,
             $excludeTestSuite,
