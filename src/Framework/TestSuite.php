@@ -675,6 +675,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
+        if (!$result) {
+            $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
+        }
+
         return $result;
     }
 
