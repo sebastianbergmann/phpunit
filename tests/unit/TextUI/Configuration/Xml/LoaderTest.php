@@ -186,6 +186,7 @@ final class LoaderTest extends TestCase
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
         $this->assertTrue($codeCoverage->pathCoverage());
+        $this->assertTrue($codeCoverage->includeUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 

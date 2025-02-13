@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 ### Fixed
 
+* [#5951](https://github.com/sebastianbergmann/phpunit/issues/5951#issuecomment-2656364815): Restore the `includeUncoveredFiles` configuration option
 * A `Test\Passed` event is no longer emitted in addition to a `Test\Failed` or `Test\Errored` event when an assertion failure or an unexpected exception is triggered in an after-test method
 * A `TestSuite\Finished` event is now emitted when a before-first-test method errors
 
