@@ -227,8 +227,11 @@ final class Help
                 ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
                 ['spacer' => ''],
 
-                ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size'],
-                ['arg' => '--random-order-seed <N>', 'desc' => 'Use the specified random seed when running tests in random order'],
+                ['arg'    => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size'],
+                ['arg'    => '--random-order-seed <N>', 'desc' => 'Use the specified random seed when running tests in random order'],
+                ['spacer' => ''],
+
+                ['arg' => '--repeat <N>', 'desc' => 'Run each test N times'],
             ],
 
             'Reporting' => [
