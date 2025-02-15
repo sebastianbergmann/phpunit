@@ -179,13 +179,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
+    private bool $doesNotPerformAssertions    = false;
     private string $errorLogOutput            = '';
     private bool $expectsErrorLog             = false;
     private ?string $errorLogPrevious         = null;
 
     /** @var null|resource */
     private $errorLogResource;
-    private bool $doesNotPerformAssertions = false;
 
     /**
      * @var list<Comparator>
@@ -572,19 +572,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertNotEmpty($this->errorLogOutput);
         } else {
             $this->assertEmpty($this->errorLogOutput);
-        }
-
-        if ($this->status->isSuccess()) {
-            $emitter->testPassed(
-                $this->valueObjectForEvents(),
-            );
-
-            if (!$this->usesDataProvider()) {
-                PassedTests::instance()->testMethodPassed(
-                    $this->valueObjectForEvents(),
-                    $this->testResult,
-                );
-            }
         }
 
         try {
