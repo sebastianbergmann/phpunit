@@ -76,6 +76,8 @@ Execution:
   --order-by <order>                 Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size
   --random-order-seed <N>            Use the specified random seed when running tests in random order
 
+  --repeat <N>                       Run each test N times
+
 Reporting:
 
   --colors <flag>                    Use colors in output ("never", "auto" or "always")

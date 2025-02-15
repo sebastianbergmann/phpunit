@@ -670,6 +670,12 @@ final readonly class Merger
             $randomOrderSeed = time();
         }
 
+        $repeat = 1;
+
+        if ($cliConfiguration->hasRepeat()) {
+            $repeat = $cliConfiguration->repeat();
+        }
+
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
@@ -909,6 +915,7 @@ final readonly class Merger
             $groups,
             $excludeGroups,
             $randomOrderSeed,
+            $repeat,
             $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
             $includeTestSuite,

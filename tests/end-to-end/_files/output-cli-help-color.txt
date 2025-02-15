@@ -103,6 +103,8 @@
   [32m--random-order-seed [36m<N>[0m           [0m Use the specified random seed when running
                                      tests in random order
 
+  [32m--repeat [36m<N>[0m                      [0m Run each test N times
+
 [33mReporting:[0m
 
   [32m--colors [36m<flag>[0m                   [0m Use colors in output ("never", "auto" or
