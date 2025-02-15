@@ -182,10 +182,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
     private bool $expectsErrorLog             = false;
-    private ?string $errorLogPrevious         = null;
-
-    /** @var null|resource */
-    private $errorLogResource;
 
     /**
      * @var list<Comparator>
@@ -1120,10 +1116,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
+        $capture          = tmpfile();
+        $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
+
         try {
             $testResult = $this->{$this->methodName}(...$testArguments);
 
-            $errorLogOutput = stream_get_contents($this->errorLogResource);
+            $errorLogOutput = stream_get_contents($capture);
 
             if ($this->expectsErrorLog) {
                 $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
@@ -1139,6 +1138,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->verifyExceptionExpectations($exception);
 
             return null;
+        } finally {
+            if ($capture !== false) {
+                fclose($capture);
+            }
+
+            ini_set('error_log', $errorLogPrevious);
         }
 
         $this->expectedExceptionWasNotRaised();
@@ -1471,22 +1476,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->outputBufferingActive = true;
         $this->outputBufferingLevel  = ob_get_level();
-
-        $capture                = tmpfile();
-        $this->errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
-        $this->errorLogResource = $capture;
     }
 
     private function stopOutputBuffering(): bool
     {
-        if ($this->errorLogResource !== null) {
-            fclose($this->errorLogResource);
-        }
-
-        if ($this->errorLogPrevious !== null) {
-            ini_set('error_log', $this->errorLogPrevious);
-        }
-
         $bufferingLevel = ob_get_level();
 
         if ($bufferingLevel !== $this->outputBufferingLevel) {
