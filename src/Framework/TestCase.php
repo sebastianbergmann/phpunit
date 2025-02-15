@@ -40,6 +40,7 @@ use function ob_get_contents;
 use function ob_get_level;
 use function ob_start;
 use function preg_match;
+use function preg_replace;
 use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
@@ -180,7 +181,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
-    private string $errorLogOutput            = '';
     private bool $expectsErrorLog             = false;
     private ?string $errorLogPrevious         = null;
 
@@ -566,12 +566,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $outputBufferingStopped = true;
 
             $this->performAssertionsOnOutput();
-        }
-
-        if ($this->expectsErrorLog) {
-            $this->assertNotEmpty($this->errorLogOutput);
-        } else {
-            $this->assertEmpty($this->errorLogOutput);
         }
 
         try {
@@ -1128,6 +1122,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         try {
             $testResult = $this->{$this->methodName}(...$testArguments);
+
+            $errorLogOutput = stream_get_contents($this->errorLogResource);
+
+            if ($this->expectsErrorLog) {
+                $this->assertNotEmpty($errorLogOutput);
+            } else {
+                // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
+                print preg_replace('/\[.+\] /', '', $errorLogOutput);
+            }
         } catch (Throwable $exception) {
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
@@ -1477,7 +1480,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function stopOutputBuffering(): bool
     {
         if ($this->errorLogResource !== null) {
-            $this->errorLogOutput = stream_get_contents($this->errorLogResource);
             fclose($this->errorLogResource);
         }
 
