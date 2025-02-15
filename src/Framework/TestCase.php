@@ -1126,7 +1126,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $errorLogOutput = stream_get_contents($this->errorLogResource);
 
             if ($this->expectsErrorLog) {
-                $this->assertNotEmpty($errorLogOutput);
+                $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
             } else {
                 // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
                 print preg_replace('/\[.+\] /', '', $errorLogOutput);
