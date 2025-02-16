@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 ## [12.0.3] - 2025-MM-DD
 
+### Changed
+
+* `TestCase::__construct()` is now declared `final` (it was annotated with `@final` before and the  announced changed from `@final` to `final` for PHPUnit 12 was forgotten)
+
 ### Fixed
 
 * [#5951](https://github.com/sebastianbergmann/phpunit/issues/5951#issuecomment-2656364815): Restore the `includeUncoveredFiles` configuration option

@@ -202,10 +202,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @param non-empty-string $name
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     *
-     * @final
      */
-    public function __construct(string $name)
+    final public function __construct(string $name)
     {
         $this->methodName = $name;
         $this->status     = TestStatus::unknown();
