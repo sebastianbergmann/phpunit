@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Issue2155;
+namespace PHPUnit\TestFixture\ExpectErrorLog;
 
 use function error_log;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +22,7 @@ class Foo
     }
 }
 
-final class Issue2155Test extends TestCase
+final class ExpectErrorLogTest extends TestCase
 {
     public function testOne(): void
     {
