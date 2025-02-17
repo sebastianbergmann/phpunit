@@ -181,7 +181,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
-    private bool $expectErrorLog             = false;
+    private bool $expectErrorLog              = false;
 
     /**
      * @var list<Comparator>
