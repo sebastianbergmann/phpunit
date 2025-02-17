@@ -5,7 +5,7 @@ https://github.com/sebastianbergmann/phpunit/issues/2155
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--testdox';
-$_SERVER['argv'][] = __DIR__ . '/2155/Issue2155Test_NoErrorLog.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/ExpectErrorLogFailTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -19,7 +19,7 @@ F                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-Issue2155Test_No Error Log (PHPUnit\TestFixture\Issue2155\Issue2155Test_NoErrorLog)
+Expect Error Log Fail (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFail)
  ✘ One
    │
    │ Test did not call error_log().

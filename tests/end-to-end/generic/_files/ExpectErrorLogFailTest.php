@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Issue2155;
+namespace PHPUnit\TestFixture\ExpectNoErrorLog;
 
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +19,7 @@ class FooBar
     }
 }
 
-final class Issue2155Test_NoErrorLog extends TestCase
+final class ExpectErrorLogFailTest extends TestCase
 {
     public function testOne(): void
     {
