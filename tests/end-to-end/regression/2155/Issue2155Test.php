@@ -29,6 +29,6 @@ final class Issue2155Test extends TestCase
         $foo = new Foo;
 
         $this->assertSame('', $foo->doFoo());
-        $this->expectsErrorLog();
+        $this->expectErrorLog();
     }
 }

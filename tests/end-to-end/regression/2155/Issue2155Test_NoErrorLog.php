@@ -26,6 +26,6 @@ final class Issue2155Test_NoErrorLog extends TestCase
         $foo = new FooBar;
 
         $this->assertSame('', $foo->doFoo());
-        $this->expectsErrorLog();
+        $this->expectErrorLog();
     }
 }
