@@ -181,7 +181,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
-    private bool $expectsErrorLog             = false;
+    private bool $expectErrorLog             = false;
 
     /**
      * @var list<Comparator>
@@ -1012,9 +1012,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputExpectedString = $expectedString;
     }
 
-    final protected function expectsErrorLog(): void
+    final protected function expectErrorLog(): void
     {
-        $this->expectsErrorLog = true;
+        $this->expectErrorLog = true;
     }
 
     /**
@@ -1124,7 +1124,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $errorLogOutput = stream_get_contents($capture);
 
-            if ($this->expectsErrorLog) {
+            if ($this->expectErrorLog) {
                 $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
             } else {
                 // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
