@@ -80,7 +80,7 @@ final class JunitXmlLogger
     private array $testSuiteSkipped = [0];
 
     /**
-     * @var array<int, int>
+     * @var array<int, float>
      */
     private array $testSuiteTimes        = [0];
     private int $testSuiteLevel          = 0;
