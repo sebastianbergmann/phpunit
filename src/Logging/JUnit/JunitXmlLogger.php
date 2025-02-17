@@ -50,7 +50,7 @@ final class JunitXmlLogger
     private DOMElement $root;
 
     /**
-     * @var DOMElement[]
+     * @var array<int, DOMElement>
      */
     private array $testSuites = [];
 
