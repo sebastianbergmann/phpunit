@@ -285,7 +285,7 @@ final class JunitXmlLogger
         );
 
         $this->testSuiteTests[$this->testSuiteLevel]++;
-        $this->testSuiteTimes[$this->testSuiteLevel] += (int) $time;
+        $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
         $this->currentTestCase  = null;
         $this->time             = null;
