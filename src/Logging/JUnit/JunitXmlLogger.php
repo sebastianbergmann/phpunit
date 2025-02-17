@@ -50,39 +50,39 @@ final class JunitXmlLogger
     private DOMElement $root;
 
     /**
-     * @var DOMElement[]
+     * @var array<int, DOMElement>
      */
     private array $testSuites = [];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteTests = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteAssertions = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteErrors = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteFailures = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteSkipped = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, float>
      */
-    private array $testSuiteTimes        = [0];
+    private array $testSuiteTimes        = [0.0];
     private int $testSuiteLevel          = 0;
     private ?DOMElement $currentTestCase = null;
     private ?HRTime $time                = null;
@@ -131,7 +131,7 @@ final class JunitXmlLogger
         $this->testSuiteErrors[$this->testSuiteLevel]     = 0;
         $this->testSuiteFailures[$this->testSuiteLevel]   = 0;
         $this->testSuiteSkipped[$this->testSuiteLevel]    = 0;
-        $this->testSuiteTimes[$this->testSuiteLevel]      = 0;
+        $this->testSuiteTimes[$this->testSuiteLevel]      = 0.0;
     }
 
     public function testSuiteFinished(): void
