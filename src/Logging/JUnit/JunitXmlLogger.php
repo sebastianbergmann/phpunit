@@ -55,32 +55,32 @@ final class JunitXmlLogger
     private array $testSuites = [];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteTests = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteAssertions = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteErrors = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteFailures = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteSkipped = [0];
 
     /**
-     * @var array<int,int>
+     * @var array<int, int>
      */
     private array $testSuiteTimes        = [0];
     private int $testSuiteLevel          = 0;
