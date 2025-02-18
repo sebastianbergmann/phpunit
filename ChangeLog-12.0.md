@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 
 ### Changed
 
-* `TestCase::__construct()` is now declared `final` (it was annotated with `@final` before and the  announced changed from `@final` to `final` for PHPUnit 12 was forgotten)
+* `TestCase::__construct()` is now declared `final` (it was annotated with `@final` before and the announced changed from `@final` to `final` for PHPUnit 12 was forgotten)
 
 ### Fixed
 
