@@ -15,18 +15,12 @@ use function file_get_contents;
 use function get_include_path;
 use function hrtime;
 use function is_file;
-use function restore_error_handler;
 use function serialize;
-use function set_error_handler;
 use function sys_get_temp_dir;
 use function tempnam;
-use function trim;
 use function unlink;
 use function unserialize;
 use function var_export;
-use ErrorException;
-use PHPUnit\Event\Code\TestMethodBuilder;
-use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Runner\CodeCoverage;
@@ -176,92 +170,18 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             @unlink($processResultFile);
         }
 
-        $this->processChildResult(
+        $processor = new ChildProcessResultProcessor(
+            Facade::instance(),
+            Facade::emitter(),
+            PassedTests::instance(),
+            CodeCoverage::instance(),
+        );
+
+        $processor->process(
             $test,
             $processResult,
             $result->stderr(),
         );
-    }
-
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     */
-    private function processChildResult(Test $test, string $stdout, string $stderr): void
-    {
-        if (!empty($stderr)) {
-            $exception = new Exception(trim($stderr));
-
-            assert($test instanceof TestCase);
-
-            Facade::emitter()->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
-
-            return;
-        }
-
-        set_error_handler(
-            /**
-             * @throws ErrorException
-             */
-            static function (int $errno, string $errstr, string $errfile, int $errline): never
-            {
-                throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-            },
-        );
-
-        try {
-            $childResult = unserialize($stdout);
-
-            restore_error_handler();
-
-            if ($childResult === false) {
-                $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
-
-                assert($test instanceof TestCase);
-
-                Facade::emitter()->testErrored(
-                    TestMethodBuilder::fromTestCase($test),
-                    ThrowableBuilder::from($exception),
-                );
-
-                Facade::emitter()->testFinished(
-                    TestMethodBuilder::fromTestCase($test),
-                    0,
-                );
-            }
-        } catch (ErrorException $e) {
-            restore_error_handler();
-
-            $childResult = false;
-
-            $exception = new Exception(trim($stdout), 0, $e);
-
-            assert($test instanceof TestCase);
-
-            Facade::emitter()->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
-        }
-
-        if ($childResult !== false) {
-            Facade::instance()->forward($childResult['events']);
-            PassedTests::instance()->import($childResult['passedTests']);
-
-            assert($test instanceof TestCase);
-
-            $test->setResult($childResult['testResult']);
-            $test->addToAssertionCount($childResult['numAssertions']);
-
-            if (CodeCoverage::instance()->isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-                CodeCoverage::instance()->codeCoverage()->merge(
-                    $childResult['codeCoverage'],
-                );
-            }
-        }
     }
 
     /**
