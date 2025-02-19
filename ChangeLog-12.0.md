@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.0.4] - 2025-MM-DD
+
+### Fixed
+
+* [#6134](https://github.com/sebastianbergmann/phpunit/issues/6134): Missing event when child process ends unexpectedly
+
 ## [12.0.3] - 2025-02-18
 
 ### Changed
@@ -74,6 +80,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 
+[12.0.4]: https://github.com/sebastianbergmann/phpunit/compare/12.0.3...12.0
 [12.0.3]: https://github.com/sebastianbergmann/phpunit/compare/12.0.2...12.0.3
 [12.0.2]: https://github.com/sebastianbergmann/phpunit/compare/12.0.1...12.0.2
 [12.0.1]: https://github.com/sebastianbergmann/phpunit/compare/12.0.0...12.0.1
