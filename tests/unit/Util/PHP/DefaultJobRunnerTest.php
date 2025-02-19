@@ -12,11 +12,16 @@ namespace PHPUnit\Util\PHP;
 use const PHP_VERSION;
 use function version_compare;
 use Generator;
+use PHPUnit\Event\Emitter;
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\ChildProcessResultProcessor;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\PassedTests;
 
 #[CoversClass(DefaultJobRunner::class)]
 #[UsesClass(Job::class)]
@@ -114,7 +119,14 @@ EOT,
     #[DataProvider('provider')]
     public function testRunsJobInSeparateProcess(Result $expected, Job $job): void
     {
-        $jobRunner = new DefaultJobRunner;
+        $jobRunner = new DefaultJobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage,
+            ),
+        );
 
         $result = $jobRunner->run($job);
 

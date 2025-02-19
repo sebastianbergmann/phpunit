@@ -11,25 +11,20 @@ namespace PHPUnit\Framework;
 
 use function assert;
 use function defined;
-use function file_get_contents;
 use function get_include_path;
 use function hrtime;
-use function is_file;
 use function serialize;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function unserialize;
 use function var_export;
-use PHPUnit\Event\Facade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
-use PHPUnit\Util\PHP\PhpProcessException;
 use ReflectionClass;
 use SebastianBergmann\Template\InvalidArgumentException;
 use SebastianBergmann\Template\Template;
@@ -144,44 +139,9 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
 
         assert($code !== '');
 
-        $this->runTestJob($code, $test, $processResultFile);
+        JobRunnerRegistry::runTestJob(new Job($code), $processResultFile, $test);
 
         @unlink($serializedConfiguration);
-    }
-
-    /**
-     * @param non-empty-string $code
-     *
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws PhpProcessException
-     */
-    private function runTestJob(string $code, Test $test, string $processResultFile): void
-    {
-        $result = JobRunnerRegistry::run(new Job($code));
-
-        $processResult = '';
-
-        if (is_file($processResultFile)) {
-            $processResult = file_get_contents($processResultFile);
-
-            assert($processResult !== false);
-
-            @unlink($processResultFile);
-        }
-
-        $processor = new ChildProcessResultProcessor(
-            Facade::instance(),
-            Facade::emitter(),
-            PassedTests::instance(),
-            CodeCoverage::instance(),
-        );
-
-        $processor->process(
-            $test,
-            $processResult,
-            $result->stderr(),
-        );
     }
 
     /**
