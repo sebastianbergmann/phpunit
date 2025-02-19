@@ -118,8 +118,6 @@ final readonly class DefaultJobRunner extends JobRunner
             $environmentVariables,
         );
 
-        Facade::emitter()->testRunnerStartedChildProcess();
-
         if (!is_resource($process)) {
             // @codeCoverageIgnoreStart
             throw new PhpProcessException(
@@ -127,6 +125,8 @@ final readonly class DefaultJobRunner extends JobRunner
             );
             // @codeCoverageIgnoreEnd
         }
+
+        Facade::emitter()->testRunnerStartedChildProcess();
 
         fwrite($pipes[0], $job->code());
         fclose($pipes[0]);

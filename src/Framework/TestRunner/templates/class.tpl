@@ -99,8 +99,6 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    Facade::emitter()->testRunnerFinishedChildProcess($output, '');
-
     file_put_contents(
         '{processResultFile}',
         serialize(

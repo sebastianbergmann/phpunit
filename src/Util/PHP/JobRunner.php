@@ -13,6 +13,7 @@ use function assert;
 use function file_get_contents;
 use function is_file;
 use function unlink;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\ChildProcessResultProcessor;
 use PHPUnit\Framework\Test;
 
@@ -52,6 +53,8 @@ abstract readonly class JobRunner
             $processResult,
             $result->stderr(),
         );
+
+        EventFacade::emitter()->testRunnerFinishedChildProcess($result->stdout(), $result->stderr());
     }
 
     abstract public function run(Job $job): Result;
