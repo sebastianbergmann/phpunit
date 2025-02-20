@@ -24,6 +24,7 @@
             <directory suffix=".phpt">tests/end-to-end/generic</directory>
             <directory suffix=".phpt">tests/end-to-end/groups-from-configuration</directory>
             <directory suffix=".phpt">tests/end-to-end/logging/junit</directory>
+            <directory suffix=".phpt">tests/end-to-end/logging/open-test-reporting</directory>
             <directory suffix=".phpt">tests/end-to-end/logging/teamcity</directory>
             <directory suffix=".phpt">tests/end-to-end/logging/testdox</directory>
             <directory suffix=".phpt">tests/end-to-end/metadata</directory>

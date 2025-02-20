@@ -34,6 +34,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
+use PHPUnit\Logging\OpenTestReporting\OtrXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
@@ -648,6 +649,23 @@ final readonly class Application
                     sprintf(
                         'Cannot log test results in JUnit XML format to "%s": %s',
                         $configuration->logfileJunit(),
+                        $e->getMessage(),
+                    ),
+                );
+            }
+        }
+
+        if ($configuration->hasLogfileOtr()) {
+            try {
+                new OtrXmlLogger(
+                    OutputFacade::printerFor($configuration->logfileOtr()),
+                    EventFacade::instance(),
+                );
+            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Cannot log test results in Open Test Reporting XML format to "%s": %s',
+                        $configuration->logfileOtr(),
                         $e->getMessage(),
                     ),
                 );

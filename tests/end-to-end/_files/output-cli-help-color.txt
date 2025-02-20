@@ -151,6 +151,8 @@
 
   [32m--log-junit [36m<file>[0m                [0m Write test results in JUnit XML format to
                                      file
+  [32m--log-otr [36m<file>[0m                  [0m Write test results in Open Test Reporting
+                                     XML format to file
   [32m--log-teamcity [36m<file>[0m             [0m Write test results in TeamCity format to
                                      file
   [32m--testdox-html [36m<file>[0m             [0m Write test results in TestDox format

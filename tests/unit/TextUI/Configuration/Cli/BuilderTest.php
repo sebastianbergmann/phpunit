@@ -958,6 +958,26 @@ final class BuilderTest extends TestCase
         $configuration->junitLogfile();
     }
 
+    #[TestDox('--log-otr file')]
+    public function testLogOtr(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--log-otr', 'file']);
+
+        $this->assertTrue($configuration->hasOtrLogfile());
+        $this->assertSame('file', $configuration->otrLogfile());
+    }
+
+    public function testLogOtrMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasOtrLogfile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->otrLogfile();
+    }
+
     #[TestDox('--log-teamcity file')]
     public function testLogTeamcity(): void
     {

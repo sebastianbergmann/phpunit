@@ -109,6 +109,7 @@ Reporting:
 Logging:
 
   --log-junit <file>                 Write test results in JUnit XML format to file
+  --log-otr <file>                   Write test results in Open Test Reporting XML format to file
   --log-teamcity <file>              Write test results in TeamCity format to file
   --testdox-html <file>              Write test results in TestDox format (HTML) to file
   --testdox-text <file>              Write test results in TestDox format (plain text) to file
