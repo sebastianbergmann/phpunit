@@ -267,6 +267,7 @@ final class Help
 
             'Logging' => [
                 ['arg' => '--log-junit <file>', 'desc' => 'Write test results in JUnit XML format to file'],
+                ['arg' => '--log-otr <file>', 'desc' => 'Write test results in Open Test Reporting XML format to file'],
                 ['arg' => '--log-teamcity <file>', 'desc' => 'Write test results in TeamCity format to file'],
                 ['arg' => '--testdox-html <file>', 'desc' => 'Write test results in TestDox format (HTML) to file'],
                 ['arg' => '--testdox-text <file>', 'desc' => 'Write test results in TestDox format (plain text) to file'],
