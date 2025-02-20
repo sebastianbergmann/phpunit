@@ -83,6 +83,7 @@ final readonly class DefaultConfiguration extends Configuration
                 null,
                 null,
                 null,
+                null,
             ),
             new Php(
                 DirectoryCollection::fromArray([]),
