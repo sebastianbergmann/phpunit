@@ -89,6 +89,7 @@ final class Builder
         'list-tests',
         'list-tests-xml=',
         'log-junit=',
+        'log-otr=',
         'log-teamcity=',
         'migrate-configuration',
         'no-configuration',
@@ -243,6 +244,7 @@ final class Builder
         $includePath                       = null;
         $iniSettings                       = [];
         $junitLogfile                      = null;
+        $otrLogfile                        = null;
         $listGroups                        = false;
         $listSuites                        = false;
         $listTestFiles                     = false;
@@ -560,6 +562,11 @@ final class Builder
 
                 case '--log-junit':
                     $junitLogfile = $option[1];
+
+                    break;
+
+                case '--log-otr':
+                    $otrLogfile = $option[1];
 
                     break;
 
@@ -1049,6 +1056,7 @@ final class Builder
             $includePath,
             $iniSettings,
             $junitLogfile,
+            $otrLogfile,
             $listGroups,
             $listSuites,
             $listTestFiles,
