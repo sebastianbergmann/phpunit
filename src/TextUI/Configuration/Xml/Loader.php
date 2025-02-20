@@ -66,6 +66,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text as CodeCoverageText
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Xml as CodeCoverageXml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Junit;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
+use PHPUnit\TextUI\XmlConfiguration\Logging\Otr;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
@@ -143,6 +144,20 @@ final readonly class Loader
             );
         }
 
+        $otr     = null;
+        $element = $this->element($xpath, 'logging/otr');
+
+        if ($element) {
+            $otr = new Otr(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->parseStringAttribute($element, 'outputFile'),
+                    ),
+                ),
+            );
+        }
+
         $teamCity = null;
         $element  = $this->element($xpath, 'logging/teamcity');
 
@@ -187,6 +202,7 @@ final readonly class Loader
 
         return new Logging(
             $junit,
+            $otr,
             $teamCity,
             $testDoxHtml,
             $testDoxText,
