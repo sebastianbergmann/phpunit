@@ -151,7 +151,7 @@ final class Generator
             $callOriginalMethods,
         );
 
-        $object = $this->getObject(
+        $object = $this->instantiate(
             $mock,
             $type,
             $callOriginalConstructor,
@@ -386,7 +386,7 @@ final class Generator
             ],
         );
 
-        return $this->getObject(
+        return $this->instantiate(
             new MockTrait(
                 $classTemplate->render(),
                 $className['className'],
@@ -602,7 +602,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, array $arguments = [], bool $callOriginalMethods = false, ?object $proxyTarget = null, bool $returnValueGeneration = true): object
+    private function instantiate(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, array $arguments = [], bool $callOriginalMethods = false, ?object $proxyTarget = null, bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 

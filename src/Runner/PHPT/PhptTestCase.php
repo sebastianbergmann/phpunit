@@ -228,7 +228,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                     $diff = $e->getMessage();
                 }
 
-                $hint    = $this->getLocationHintFromDiff($diff, $sections);
+                $hint    = $this->locationHintFromDiff($diff, $sections);
                 $trace   = array_merge($hint, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
                 $failure = new PhptAssertionFailedError(
                     $e->getMessage(),
@@ -695,7 +695,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     /**
      * @return array{coverage: non-empty-string, job: non-empty-string}
      */
-    private function getCoverageFiles(): array
+    private function coverageFiles(): array
     {
         $baseDir  = dirname(realpath($this->filename)) . DIRECTORY_SEPARATOR;
         $basename = basename($this->filename, 'phpt');
@@ -715,7 +715,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      */
     private function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory): void
     {
-        $files = $this->getCoverageFiles();
+        $files = $this->coverageFiles();
 
         $template = new Template(
             __DIR__ . '/templates/phpt.tpl',
@@ -769,7 +769,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     private function cleanupForCoverage(): RawCodeCoverageData
     {
         $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
-        $files    = $this->getCoverageFiles();
+        $files    = $this->coverageFiles();
 
         $buffer = false;
 
@@ -821,7 +821,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      *
      * @return non-empty-list<array{file: non-empty-string, line: int}>
      */
-    private function getLocationHintFromDiff(string $message, array $sections): array
+    private function locationHintFromDiff(string $message, array $sections): array
     {
         $needle       = '';
         $previousLine = '';
@@ -840,13 +840,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             if ($block === 'diff') {
                 if (str_starts_with($line, '+')) {
-                    $needle = $this->getCleanDiffLine($previousLine);
+                    $needle = $this->cleanDiffLine($previousLine);
 
                     break;
                 }
 
                 if (str_starts_with($line, '-')) {
-                    $needle = $this->getCleanDiffLine($line);
+                    $needle = $this->cleanDiffLine($line);
 
                     break;
                 }
@@ -857,10 +857,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
         }
 
-        return $this->getLocationHint($needle, $sections);
+        return $this->locationHint($needle, $sections);
     }
 
-    private function getCleanDiffLine(string $line): string
+    private function cleanDiffLine(string $line): string
     {
         if (preg_match('/^[\-+]([\'\"]?)(.*)\1$/', $line, $matches)) {
             $line = $matches[2];
@@ -874,7 +874,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      *
      * @return non-empty-list<array{file: non-empty-string, line: int}>
      */
-    private function getLocationHint(string $needle, array $sections): array
+    private function locationHint(string $needle, array $sections): array
     {
         $needle = trim($needle);
 

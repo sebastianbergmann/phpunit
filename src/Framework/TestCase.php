@@ -1902,14 +1902,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function snapshotGlobalErrorExceptionHandlers(): void
     {
-        $this->backupGlobalErrorHandlers     = $this->getActiveErrorHandlers();
-        $this->backupGlobalExceptionHandlers = $this->getActiveExceptionHandlers();
+        $this->backupGlobalErrorHandlers     = $this->activeErrorHandlers();
+        $this->backupGlobalExceptionHandlers = $this->activeExceptionHandlers();
     }
 
     private function restoreGlobalErrorExceptionHandlers(): void
     {
-        $activeErrorHandlers     = $this->getActiveErrorHandlers();
-        $activeExceptionHandlers = $this->getActiveExceptionHandlers();
+        $activeErrorHandlers     = $this->activeErrorHandlers();
+        $activeExceptionHandlers = $this->activeExceptionHandlers();
 
         $message = null;
 
@@ -1972,7 +1972,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @return list<callable>
      */
-    private function getActiveErrorHandlers(): array
+    private function activeErrorHandlers(): array
     {
         $activeErrorHandlers = [];
 
@@ -2018,7 +2018,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @return list<callable>
      */
-    private function getActiveExceptionHandlers(): array
+    private function activeExceptionHandlers(): array
     {
         $res = [];
 
