@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -18,4 +20,6 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 interface MockObject extends Stub
 {
     public function expects(InvocationOrder $invocationRule): InvocationMocker;
+
+    public function method(Constraint|PropertyHook|string $constraint): InvocationMocker;
 }
