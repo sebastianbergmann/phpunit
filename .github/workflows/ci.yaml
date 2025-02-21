@@ -238,7 +238,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1, error_reporting=0
+      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     steps:
       - name: Checkout
