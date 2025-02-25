@@ -41,7 +41,7 @@ final class Parameters implements ParametersRule
     public function __construct(array $parameters)
     {
         foreach ($parameters as $parameter) {
-            if (!($parameter instanceof Constraint)) {
+            if (!$parameter instanceof Constraint) {
                 $parameter = new IsEqual(
                     $parameter,
                 );
@@ -116,6 +116,7 @@ final class Parameters implements ParametersRule
             } else {
                 $other = $this->invocation->parameters()[$i];
             }
+
             $parameter->evaluate(
                 $other,
                 sprintf(

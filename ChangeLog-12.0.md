@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.0.5] - 2025-MM-DD
+
+### Fixed
+
+* [#6138](https://github.com/sebastianbergmann/phpunit/issues/6138): Test with failed expectation on value passed to mocked method is incorrectly considered risky
+
 ## [12.0.4] - 2025-02-21
 
 ### Fixed
@@ -80,6 +86,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 
+[12.0.5]: https://github.com/sebastianbergmann/phpunit/compare/12.0.4...12.0
 [12.0.4]: https://github.com/sebastianbergmann/phpunit/compare/12.0.3...12.0.4
 [12.0.3]: https://github.com/sebastianbergmann/phpunit/compare/12.0.2...12.0.3
 [12.0.2]: https://github.com/sebastianbergmann/phpunit/compare/12.0.1...12.0.2
