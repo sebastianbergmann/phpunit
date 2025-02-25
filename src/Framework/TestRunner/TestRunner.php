@@ -185,7 +185,7 @@ final class TestRunner
         /**
          * Workaround for tests that fail due to mock object expectations
          * that are verified while the test is running and not after the
-         * test has finished running
+         * test has finished running.
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/6138
          */
