@@ -17,4 +17,4 @@ Runtime: %s
 
 Time: %s, Memory: %s MB
 
-OK (2 tests, 2 assertions)
+OK (2 tests, 4 assertions)
