@@ -21,12 +21,12 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class BeforeTestMethodErrored implements Event
+final readonly class BeforeTestMethodErrored implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly Code\TestMethod $test;
-    private readonly Code\ClassMethod $calledMethod;
-    private readonly Throwable $throwable;
+    private Telemetry\Info $telemetryInfo;
+    private Code\TestMethod $test;
+    private Code\ClassMethod $calledMethod;
+    private Throwable $throwable;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod $calledMethod, Throwable $throwable)
     {
