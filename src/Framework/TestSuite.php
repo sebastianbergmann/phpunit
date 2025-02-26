@@ -638,7 +638,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
             /** @psalm-suppress RedundantCondition */
             if ($emitCalledEvent) {
-                $emitter->testBeforeFirstTestMethodCalled(
+                $emitter->beforeFirstTestMethodCalled(
                     $this->name,
                     $calledMethod,
                 );
@@ -656,7 +656,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
 
             if (isset($t)) {
-                $emitter->testBeforeFirstTestMethodErrored(
+                $emitter->beforeFirstTestMethodErrored(
                     $this->name,
                     $calledMethod,
                     Event\Code\ThrowableBuilder::from($t),
@@ -667,7 +667,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (!empty($calledMethods)) {
-            $emitter->testBeforeFirstTestMethodFinished(
+            $emitter->beforeFirstTestMethodFinished(
                 $this->name,
                 ...$calledMethods,
             );
@@ -700,7 +700,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             } catch (Throwable $t) {
             }
 
-            $emitter->testAfterLastTestMethodCalled(
+            $emitter->afterLastTestMethodCalled(
                 $this->name,
                 $calledMethod,
             );
@@ -708,7 +708,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $calledMethods[] = $calledMethod;
 
             if (isset($t)) {
-                $emitter->testAfterLastTestMethodErrored(
+                $emitter->afterLastTestMethodErrored(
                     $this->name,
                     $calledMethod,
                     Event\Code\ThrowableBuilder::from($t),
@@ -717,7 +717,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (!empty($calledMethods)) {
-            $emitter->testAfterLastTestMethodFinished(
+            $emitter->afterLastTestMethodFinished(
                 $this->name,
                 ...$calledMethods,
             );
