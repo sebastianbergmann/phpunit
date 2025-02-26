@@ -68,47 +68,47 @@ interface Emitter
     /**
      * @param class-string $testClassName
      */
-    public function testBeforeFirstTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function beforeFirstTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testBeforeFirstTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function beforeFirstTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testBeforeFirstTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function beforeFirstTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testBeforeTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function beforeTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testBeforeTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function beforeTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testBeforeTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function beforeTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testPreConditionCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function preConditionCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testPreConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function preConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testPreConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function preConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     public function testPrepared(Code\Test $test): void;
 
@@ -259,47 +259,47 @@ interface Emitter
     /**
      * @param class-string $testClassName
      */
-    public function testPostConditionCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function postConditionCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testPostConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function postConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testPostConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function postConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testAfterTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function afterTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testAfterTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function afterTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testAfterTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function afterTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testAfterLastTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function afterLastTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testAfterLastTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function afterLastTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
      */
-    public function testAfterLastTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function afterLastTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     public function testSuiteFinished(TestSuite $testSuite): void;
 
