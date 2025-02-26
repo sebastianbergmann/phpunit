@@ -22,9 +22,11 @@ use function count;
 use function defined;
 use function error_clear_last;
 use function explode;
+use function fclose;
 use function getcwd;
 use function implode;
 use function in_array;
+use function ini_set;
 use function is_array;
 use function is_callable;
 use function is_int;
@@ -38,12 +40,16 @@ use function ob_get_contents;
 use function ob_get_level;
 use function ob_start;
 use function preg_match;
+use function preg_replace;
 use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
 use function set_exception_handler;
 use function sprintf;
 use function str_contains;
+use function stream_get_contents;
+use function stream_get_meta_data;
+use function tmpfile;
 use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
@@ -175,6 +181,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
+    private bool $expectErrorLog              = false;
 
     /**
      * @var list<Comparator>
@@ -1005,6 +1012,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputExpectedString = $expectedString;
     }
 
+    final protected function expectErrorLog(): void
+    {
+        $this->expectErrorLog = true;
+    }
+
     /**
      * @param class-string<Throwable> $exception
      */
@@ -1104,8 +1116,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
+        $capture          = tmpfile();
+        $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
+
         try {
             $testResult = $this->{$this->methodName}(...$testArguments);
+
+            $errorLogOutput = stream_get_contents($capture);
+
+            if ($this->expectErrorLog) {
+                $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
+            } else {
+                // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
+                print preg_replace('/\[.+\] /', '', $errorLogOutput);
+            }
         } catch (Throwable $exception) {
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
@@ -1114,6 +1138,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->verifyExceptionExpectations($exception);
 
             return null;
+        } finally {
+            if ($capture !== false) {
+                fclose($capture);
+            }
+
+            ini_set('error_log', $errorLogPrevious);
         }
 
         $this->expectedExceptionWasNotRaised();
