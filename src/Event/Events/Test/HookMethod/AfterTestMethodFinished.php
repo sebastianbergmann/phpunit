@@ -49,6 +49,8 @@ final readonly class AfterTestMethodFinished implements Event
 
     /**
      * @return class-string
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6140
      */
     public function testClassName(): string
     {
