@@ -552,7 +552,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testAfterTestMethodFinished(
+        $emitter->afterTestMethodFinished(
             $test,
             ...$calledMethods,
         );
@@ -597,7 +597,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testAfterTestMethodCalled(
+        $emitter->afterTestMethodCalled(
             $test,
             $calledMethod,
         );
@@ -644,7 +644,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $throwable = ThrowableBuilder::from(new Exception('error'));
 
-        $emitter->testAfterTestMethodErrored(
+        $emitter->afterTestMethodErrored(
             $test,
             $calledMethod,
             $throwable,
@@ -693,7 +693,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testAfterLastTestMethodFinished(
+        $emitter->afterLastTestMethodFinished(
             $testClassName,
             ...$calledMethods,
         );
@@ -737,7 +737,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testBeforeFirstTestMethodCalled(
+        $emitter->beforeFirstTestMethodCalled(
             $testClassName,
             $calledMethod,
         );
@@ -783,7 +783,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $throwable = ThrowableBuilder::from(new Exception('error'));
 
-        $emitter->testAfterLastTestMethodErrored(
+        $emitter->afterLastTestMethodErrored(
             $testClassName,
             $calledMethod,
             $throwable,
@@ -832,7 +832,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testBeforeFirstTestMethodFinished(
+        $emitter->beforeFirstTestMethodFinished(
             $testClassName,
             ...$calledMethods,
         );
@@ -877,7 +877,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testBeforeTestMethodCalled(
+        $emitter->beforeTestMethodCalled(
             $test,
             $calledMethod,
         );
@@ -924,7 +924,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $throwable = ThrowableBuilder::from(new Exception('error'));
 
-        $emitter->testBeforeTestMethodErrored(
+        $emitter->beforeTestMethodErrored(
             $test,
             $calledMethod,
             $throwable,
@@ -971,7 +971,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testPreConditionCalled(
+        $emitter->preConditionCalled(
             $test,
             $calledMethod,
         );
@@ -1016,7 +1016,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testPostConditionCalled(
+        $emitter->postConditionCalled(
             $test,
             $calledMethod,
         );
@@ -1064,7 +1064,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testPostConditionFinished(
+        $emitter->postConditionFinished(
             $test,
             ...$calledMethods,
         );
@@ -1112,7 +1112,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testBeforeTestMethodFinished(
+        $emitter->beforeTestMethodFinished(
             $test,
             ...$calledMethods,
         );
@@ -1160,7 +1160,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testPreConditionFinished(
+        $emitter->preConditionFinished(
             $test,
             ...$calledMethods,
         );
@@ -1204,7 +1204,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testAfterLastTestMethodCalled(
+        $emitter->afterLastTestMethodCalled(
             $testClassName,
             $calledMethod,
         );
