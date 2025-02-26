@@ -1890,6 +1890,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             'testBeforeFirstTestMethodCalled',
             'testBeforeFirstTestMethodErrored',
             'testBeforeFirstTestMethodFinished',
+            false,
         );
     }
 
@@ -1972,6 +1973,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             'testAfterLastTestMethodCalled',
             'testAfterLastTestMethodErrored',
             'testAfterLastTestMethodFinished',
+            false,
         );
     }
 
@@ -1982,8 +1984,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Throwable
      */
-    private function invokeHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $finishedMethod): void
+    private function invokeHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $finishedMethod, bool $forTestCase = true): void
     {
+        if ($forTestCase) {
+            $test = $this->valueObjectForEvents();
+        } else {
+            $test = static::class;
+        }
+
         $methodsInvoked = [];
 
         foreach ($hookMethods->methodNamesSortedByPriority() as $methodName) {
@@ -2002,7 +2010,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             $emitter->{$calledMethod}(
-                static::class,
+                $test,
                 $methodInvoked
             );
 
@@ -2010,7 +2018,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (isset($t)) {
                 $emitter->{$erroredMethod}(
-                    static::class,
+                    $test,
                     $methodInvoked,
                     Event\Code\ThrowableBuilder::from($t),
                 );
@@ -2021,7 +2029,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (!empty($methodsInvoked)) {
             $emitter->{$finishedMethod}(
-                static::class,
+                $test,
                 ...$methodsInvoked
             );
         }

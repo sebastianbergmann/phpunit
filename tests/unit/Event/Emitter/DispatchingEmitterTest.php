@@ -521,7 +521,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestAfterTestMethodFinishedDispatchesTestAfterTestMethodFinishedEvent(): void
     {
-        $testClassName = self::class;
+        $test = $this->testValueObject();
+
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
@@ -552,7 +553,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testAfterTestMethodFinished(
-            $testClassName,
+            $test,
             ...$calledMethods,
         );
 
@@ -562,14 +563,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AfterTestMethodFinished::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 
     public function testTestAfterTestMethodCalledDispatchesTestAfterTestMethodCalledEvent(): void
     {
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+        $test = $this->testValueObject();
+
+        $calledMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__,
         )));
@@ -596,7 +598,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testAfterTestMethodCalled(
-            $testClassName,
+            $test,
             $calledMethod,
         );
 
@@ -606,14 +608,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AfterTestMethodCalled::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
     public function testTestAfterTestMethodErroredDispatchesTestAfterTestMethodErroredEvent(): void
     {
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+        $test = $this->testValueObject();
+
+        $calledMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__,
         )));
@@ -642,7 +645,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $throwable = ThrowableBuilder::from(new Exception('error'));
 
         $emitter->testAfterTestMethodErrored(
-            $testClassName,
+            $test,
             $calledMethod,
             $throwable,
         );
@@ -653,7 +656,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AfterTestMethodErrored::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
@@ -846,8 +849,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestBeforeTestMethodCalledDispatchesTestBeforeTestMethodEvent(): void
     {
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+        $test = $this->testValueObject();
+
+        $calledMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__,
         )));
@@ -874,7 +878,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testBeforeTestMethodCalled(
-            $testClassName,
+            $test,
             $calledMethod,
         );
 
@@ -884,14 +888,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\BeforeTestMethodCalled::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
     public function testTestBeforeTestMethodErroredDispatchesTestBeforeTestMethodErroredEvent(): void
     {
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+        $test = $this->testValueObject();
+
+        $calledMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__,
         )));
@@ -920,7 +925,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $throwable = ThrowableBuilder::from(new Exception('error'));
 
         $emitter->testBeforeTestMethodErrored(
-            $testClassName,
+            $test,
             $calledMethod,
             $throwable,
         );
@@ -931,15 +936,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\BeforeTestMethodErrored::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestPreConditionCalledDispatchesTestPreConditionCalledEvent(): void
     {
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+        $test = $this->testValueObject();
+
+        $calledMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__,
         )));
@@ -966,7 +972,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testPreConditionCalled(
-            $testClassName,
+            $test,
             $calledMethod,
         );
 
@@ -976,14 +982,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PreConditionCalled::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
     public function testTestPostConditionCalledDispatchesTestPostConditionCalledEvent(): void
     {
-        $testClassName = self::class;
-        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+        $test = $this->testValueObject();
+
+        $calledMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__,
         )));
@@ -1010,7 +1017,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testPostConditionCalled(
-            $testClassName,
+            $test,
             $calledMethod,
         );
 
@@ -1020,13 +1027,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PostConditionCalled::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
     public function testTestPostConditionFinishedDispatchesTestPostConditionFinishedEvent(): void
     {
-        $testClassName = self::class;
+        $test = $this->testValueObject();
+
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
@@ -1057,7 +1065,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testPostConditionFinished(
-            $testClassName,
+            $test,
             ...$calledMethods,
         );
 
@@ -1067,13 +1075,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PostConditionFinished::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 
     public function testTestBeforeTestMethodFinishedDispatchesTestBeforeTestMethodFinishedEvent(): void
     {
-        $testClassName = self::class;
+        $test = $this->testValueObject();
+
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
@@ -1104,7 +1113,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testBeforeTestMethodFinished(
-            $testClassName,
+            $test,
             ...$calledMethods,
         );
 
@@ -1114,13 +1123,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\BeforeTestMethodFinished::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 
     public function testTestPreConditionFinishedDispatchesTestPreConditionFinishedEvent(): void
     {
-        $testClassName = self::class;
+        $test = $this->testValueObject();
+
         $calledMethods = array_map(
             static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
@@ -1151,7 +1161,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testPreConditionFinished(
-            $testClassName,
+            $test,
             ...$calledMethods,
         );
 
@@ -1161,7 +1171,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PreConditionFinished::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 

@@ -12,6 +12,7 @@ namespace PHPUnit\Event;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -80,35 +81,17 @@ interface Emitter
      */
     public function testBeforeFirstTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testBeforeTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function testBeforeTestMethodCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testBeforeTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function testBeforeTestMethodErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testBeforeTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function testBeforeTestMethodFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testPreConditionCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function testPreConditionCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testPreConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function testPreConditionErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testPreConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function testPreConditionFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
     public function testPrepared(Code\Test $test): void;
 
@@ -229,35 +212,17 @@ interface Emitter
 
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testPostConditionCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function testPostConditionCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testPostConditionErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function testPostConditionErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testPostConditionFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function testPostConditionFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testAfterTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
+    public function testAfterTestMethodCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testAfterTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+    public function testAfterTestMethodErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function testAfterTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
+    public function testAfterTestMethodFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
     /**
      * @param class-string $testClassName

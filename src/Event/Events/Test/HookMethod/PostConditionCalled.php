@@ -22,20 +22,13 @@ use PHPUnit\Event\Telemetry;
 final readonly class PostConditionCalled implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
-    /**
-     * @var class-string
-     */
-    private string $testClassName;
+    private Code\TestMethod $test;
     private Code\ClassMethod $calledMethod;
 
-    /**
-     * @param class-string $testClassName
-     */
-    public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod $calledMethod)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod $calledMethod)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testClassName = $testClassName;
+        $this->test          = $test;
         $this->calledMethod  = $calledMethod;
     }
 
@@ -44,12 +37,17 @@ final readonly class PostConditionCalled implements Event
         return $this->telemetryInfo;
     }
 
+    public function test(): Code\TestMethod
+    {
+        return $this->test;
+    }
+
     /**
      * @return class-string
      */
     public function testClassName(): string
     {
-        return $this->testClassName;
+        return $this->test->className();
     }
 
     public function calledMethod(): Code\ClassMethod
