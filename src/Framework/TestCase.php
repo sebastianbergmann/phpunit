@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Runner\BackupEnvironmentVariable;
 use const PHP_EOL;
 use function array_keys;
 use function array_merge;
@@ -23,6 +24,7 @@ use function defined;
 use function error_clear_last;
 use function explode;
 use function getcwd;
+use function getenv;
 use function implode;
 use function in_array;
 use function is_array;
@@ -38,6 +40,7 @@ use function ob_get_contents;
 use function ob_get_level;
 use function ob_start;
 use function preg_match;
+use function putenv;
 use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
@@ -72,6 +75,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -129,6 +133,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?string $expectedExceptionMessage       = null;
     private ?string $expectedExceptionMessageRegExp = null;
     private null|int|string $expectedExceptionCode  = null;
+
+    /**
+     * @var list<BackupEnvironmentVariable>
+     */
+    private array $backupEnvironmentVariables = [];
 
     /**
      * @var list<ExecutionOrderDependency>
@@ -450,6 +459,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->snapshotGlobalState();
         $this->snapshotGlobalErrorExceptionHandlers();
+        $this->handleEnvironmentVariables();
         $this->startOutputBuffering();
 
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
@@ -623,6 +633,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             chdir($currentWorkingDirectory);
         }
 
+        $this->restoreEnvironmentVariables();
         $this->restoreGlobalErrorExceptionHandlers();
         $this->restoreGlobalState();
         $this->unregisterCustomComparators();
@@ -1743,6 +1754,40 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 ),
             );
         }
+    }
+
+    private function handleEnvironmentVariables(): void
+    {
+        $withEnvironmentVariables = MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isWithEnvironmentVariable();
+
+        $environmentVariables = [];
+
+        foreach ($withEnvironmentVariables as $metadata) {
+            assert($metadata instanceof WithEnvironmentVariable);
+
+            $environmentVariables[$metadata->environmentVariableName()] = $metadata->value();
+        }
+
+        foreach ($environmentVariables as $environmentVariableName => $environmentVariableValue) {
+            $this->backupEnvironmentVariables = [...$this->backupEnvironmentVariables, ...BackupEnvironmentVariable::create($environmentVariableName)];
+
+            if ($environmentVariableValue === null) {
+                unset($_ENV[$environmentVariableName]);
+                putenv($environmentVariableName);
+            } else {
+                $_ENV[$environmentVariableName] = $environmentVariableValue;
+                putenv("{$environmentVariableName}={$environmentVariableValue}");
+            }
+        }
+    }
+
+    private function restoreEnvironmentVariables(): void
+    {
+        foreach ($this->backupEnvironmentVariables as $backupEnvironmentVariable) {
+            $backupEnvironmentVariable->restore();
+        }
+
+        $this->backupEnvironmentVariables = [];
     }
 
     private function shouldInvocationMockerBeReset(MockObject $mock): bool

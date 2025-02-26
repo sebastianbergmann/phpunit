@@ -399,6 +399,16 @@ abstract readonly class Metadata
         return new RequiresEnvironmentVariable(self::METHOD_LEVEL, $environmentVariableName, $value);
     }
 
+    public static function withEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): WithEnvironmentVariable
+    {
+        return new WithEnvironmentVariable(self::CLASS_LEVEL, $environmentVariableName, $value);
+    }
+
+    public static function withEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): WithEnvironmentVariable
+    {
+        return new WithEnvironmentVariable(self::METHOD_LEVEL, $environmentVariableName, $value);
+    }
+
     /**
      * @param non-empty-string $setting
      * @param non-empty-string $value
@@ -860,6 +870,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true RequiresEnvironmentVariable $this
      */
     public function isRequiresEnvironmentVariable(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true WithEnvironmentVariable $this
+     */
+    public function isWithEnvironmentVariable(): bool
     {
         return false;
     }

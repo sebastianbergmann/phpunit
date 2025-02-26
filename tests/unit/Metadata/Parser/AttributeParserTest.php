@@ -72,6 +72,7 @@ use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Metadata\InvalidAttributeException;
+use PHPUnit\Metadata\WithEnvironmentVariable;
 
 #[CoversClass(AttributeParser::class)]
 #[CoversClass(AfterClass::class)]
@@ -136,6 +137,7 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(UsesMethod::class)]
 #[CoversClass(UsesNamespace::class)]
 #[CoversClass(UsesTrait::class)]
+#[CoversClass(WithEnvironmentVariable::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[Small]
 #[Group('metadata')]
