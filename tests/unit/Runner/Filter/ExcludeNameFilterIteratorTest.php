@@ -42,7 +42,7 @@ class ExcludeNameFilterIteratorTest extends TestCase
     private function createFilter(string $filter): ExcludeNameFilterIterator
     {
         $suite = TestSuite::empty('test suite name');
-        $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
+        $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), []);
 
         $iterator = new ExcludeNameFilterIterator($suite->getIterator(), $filter);
 

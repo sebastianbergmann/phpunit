@@ -51,7 +51,7 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $test      = new Success('testOne');
         $testSuite = TestSuite::empty('test suite name');
-        $testSuite->addTest($test);
+        $testSuite->addTest($test, []);
         $subject = new TestSuiteIterator($testSuite);
 
         $this->assertSame($test, $subject->current());
@@ -71,7 +71,7 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $testSuite = TestSuite::empty('test suite name');
         $test      = new Success('testOne');
-        $testSuite->addTest($test);
+        $testSuite->addTest($test, []);
         $subject = new TestSuiteIterator($testSuite);
         $subject->next();
 
@@ -120,10 +120,10 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $childSuite = TestSuite::empty('test suite name');
         $test       = new Success('testOne');
-        $childSuite->addTest($test);
+        $childSuite->addTest($test, []);
 
         $testSuite = TestSuite::empty('test suite name');
-        $testSuite->addTest($childSuite);
+        $testSuite->addTest($childSuite, []);
 
         $subject = new TestSuiteIterator($testSuite);
 
@@ -137,7 +137,7 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $testSuite  = TestSuite::empty('test suite name');
         $childSuite = TestSuite::empty('test suite name');
-        $testSuite->addTest($childSuite);
+        $testSuite->addTest($childSuite, []);
         $subject = new TestSuiteIterator($testSuite);
 
         $this->assertTrue($subject->hasChildren());
@@ -161,7 +161,7 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $suite = TestSuite::empty('test suite name');
 
-        $suite->addTest(new Success('testOne'));
+        $suite->addTest(new Success('testOne'), []);
 
         return $suite;
     }

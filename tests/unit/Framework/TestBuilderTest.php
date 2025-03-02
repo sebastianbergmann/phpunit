@@ -27,6 +27,8 @@ final class TestBuilderTest extends TestCase
         $test = (new TestBuilder)->build(
             new ReflectionClass(TestWithoutIsolationAttributes::class),
             'testOne',
+            [],
+            1,
         );
 
         $this->assertInstanceOf(TestWithoutIsolationAttributes::class, $test);
@@ -46,6 +48,8 @@ final class TestBuilderTest extends TestCase
         $test = (new TestBuilder)->build(
             new ReflectionClass(TestWithClassLevelIsolationAttributes::class),
             'testOne',
+            [],
+            1,
         );
 
         $this->assertInstanceOf(TestWithClassLevelIsolationAttributes::class, $test);
@@ -65,6 +69,8 @@ final class TestBuilderTest extends TestCase
         $test = (new TestBuilder)->build(
             new ReflectionClass(TestWithMethodLevelIsolationAttributes::class),
             'testOne',
+            [],
+            1,
         );
 
         $this->assertInstanceOf(TestWithMethodLevelIsolationAttributes::class, $test);
@@ -83,6 +89,8 @@ final class TestBuilderTest extends TestCase
         $test = (new TestBuilder)->build(
             new ReflectionClass(TestWithDataProvider::class),
             'testOne',
+            [],
+            1,
         );
 
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);

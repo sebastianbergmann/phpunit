@@ -26,14 +26,22 @@ final class TestSuiteTest extends TestCase
 {
     public function testNotPublicTestCase(): void
     {
-        $suite = TestSuite::fromClassReflector(new ReflectionClass(NotPublicTestCase::class));
+        $suite = TestSuite::fromClassReflector(
+            new ReflectionClass(NotPublicTestCase::class),
+            [],
+            1,
+        );
 
         $this->assertCount(1, $suite);
     }
 
     public function testNormalizeProvidedDependencies(): void
     {
-        $suite = TestSuite::fromClassReflector(new ReflectionClass(MultiDependencyTest::class));
+        $suite = TestSuite::fromClassReflector(
+            new ReflectionClass(MultiDependencyTest::class),
+            [],
+            1,
+        );
 
         $this->assertEquals([
             MultiDependencyTest::class . '::class',
@@ -47,7 +55,11 @@ final class TestSuiteTest extends TestCase
 
     public function testNormalizeRequiredDependencies(): void
     {
-        $suite = TestSuite::fromClassReflector(new ReflectionClass(MultiDependencyTest::class));
+        $suite = TestSuite::fromClassReflector(
+            new ReflectionClass(MultiDependencyTest::class),
+            [],
+            1,
+        );
 
         $this->assertSame([], $suite->requires());
     }
@@ -56,6 +68,8 @@ final class TestSuiteTest extends TestCase
     {
         $suite = TestSuite::fromClassReflector(
             new ReflectionClass(DependencyOnClassTest::class),
+            [],
+            1,
         );
 
         $this->assertEquals([
@@ -72,9 +86,14 @@ final class TestSuiteTest extends TestCase
 
     public function testResolveDependenciesBetweenTestSuites(): void
     {
-        $suite = TestSuite::fromClassReflector(new ReflectionClass(DependencyOnClassTest::class));
-        $suite->addTestSuite(new ReflectionClass(DependencyFailureTest::class));
-        $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class));
+        $suite = TestSuite::fromClassReflector(
+            new ReflectionClass(DependencyOnClassTest::class),
+            [],
+            1,
+        );
+
+        $suite->addTestSuite(new ReflectionClass(DependencyFailureTest::class), [], 1);
+        $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class), [], 1);
 
         $this->assertEquals([
             DependencyOnClassTest::class . '::class',
@@ -101,7 +120,8 @@ final class TestSuiteTest extends TestCase
     public function testResolverOnlyUsesSuitesAndCases(): void
     {
         $suite = TestSuite::empty('SomeName');
-        $suite->addTestSuite(new ReflectionClass(DependencyOnClassTest::class));
+
+        $suite->addTestSuite(new ReflectionClass(DependencyOnClassTest::class), [], 1);
 
         $this->assertEquals([
             'SomeName::class',
@@ -122,7 +142,7 @@ final class TestSuiteTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $suite->addTestSuite(new ReflectionClass(AbstractTestCase::class));
+        $suite->addTestSuite(new ReflectionClass(AbstractTestCase::class), [], 1);
     }
 
     public function testRejectsClassThatDoesNotExtendTestClass(): void
@@ -131,6 +151,6 @@ final class TestSuiteTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $suite->addTestSuite(new ReflectionClass(NoTestCase::class));
+        $suite->addTestSuite(new ReflectionClass(NoTestCase::class), [], 1);
     }
 }

@@ -68,6 +68,7 @@ final class TestSuiteBuilderTest extends TestCase
             $configuration->testSuite(),
             $configuration->includeTestSuite(),
             $configuration->excludeTestSuite(),
+            1,
         );
     }
 }
