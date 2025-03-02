@@ -54,9 +54,9 @@ final class TestIdFilterIteratorTest extends TestCase
     {
         $suite = TestSuite::empty('test suite name');
 
-        $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
-        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'));
-        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative2'));
+        $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), []);
+        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), []);
+        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative2'), []);
 
         return $suite;
     }
