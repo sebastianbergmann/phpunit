@@ -40,7 +40,7 @@ final readonly class TestSuiteMapper
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException
      */
-    public function map(string $xmlConfigurationFile, TestSuiteCollection $configuredTestSuites, string $namesOfIncludedTestSuites, string $namesOfExcludedTestSuites): TestSuiteObject
+    public function map(string $xmlConfigurationFile, TestSuiteCollection $configuredTestSuites, string $namesOfIncludedTestSuites, string $namesOfExcludedTestSuites, int $numberOfRuns): TestSuiteObject
     {
         try {
             $namesOfIncludedTestSuitesAsArray = $namesOfIncludedTestSuites !== '' ? explode(',', $namesOfIncludedTestSuites) : [];
@@ -102,7 +102,7 @@ final readonly class TestSuiteMapper
                         $processed[$file] = $testSuiteName;
                         $empty            = false;
 
-                        $testSuite->addTestFile($file, $groups);
+                        $testSuite->addTestFile($file, $groups, $numberOfRuns);
                     }
                 }
 
@@ -131,11 +131,11 @@ final readonly class TestSuiteMapper
                     $processed[$file->path()] = $testSuiteName;
                     $empty                    = false;
 
-                    $testSuite->addTestFile($file->path(), $file->groups());
+                    $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns);
                 }
 
                 if (!$empty) {
-                    $result->addTest($testSuite);
+                    $result->addTest($testSuite, []);
                 }
             }
 
