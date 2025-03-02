@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function array_merge;
 use function assert;
+use function range;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\Requirements;
@@ -22,6 +23,8 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionNamedType;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -37,9 +40,15 @@ final readonly class TestBuilder
      *
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = []): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups, int $numberOfRuns): Test
     {
         $className = $theClass->getName();
+        $repeat    = false;
+
+        if ($numberOfRuns > 1) {
+            $repeat = $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
+                      $this->doesNotDependOnAnotherTest($className, $methodName);
+        }
 
         $data = null;
 
@@ -47,30 +56,55 @@ final readonly class TestBuilder
             $data = (new DataProvider)->providedData($className, $methodName);
         }
 
+        $runTestInSeparateProcess  = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
+        $preserveGlobalState       = $this->shouldGlobalStateBePreserved($className, $methodName);
+        $runClassInSeparateProcess = $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className);
+        $backupSettings            = $this->backupSettings($className, $methodName);
+
         if ($data !== null) {
             return $this->buildDataProviderTestSuite(
                 $methodName,
                 $className,
                 $data,
-                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-                $this->shouldGlobalStateBePreserved($className, $methodName),
-                $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
-                $this->backupSettings($className, $methodName),
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $runClassInSeparateProcess,
+                $backupSettings,
                 $groups,
             );
         }
 
-        $test = new $className($methodName);
+        if (!$repeat) {
+            $test = new $className($methodName);
 
-        $this->configureTestCase(
-            $test,
-            $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-            $this->shouldGlobalStateBePreserved($className, $methodName),
-            $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
-            $this->backupSettings($className, $methodName),
-        );
+            $this->configureTestCase(
+                $test,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $runClassInSeparateProcess,
+                $backupSettings,
+            );
 
-        return $test;
+            return $test;
+        }
+
+        $testSuite = TestSuite::empty($className . '::' . $methodName);
+
+        foreach (range(1, $numberOfRuns) as $i) {
+            $test = new $className($methodName);
+
+            $this->configureTestCase(
+                $test,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $runClassInSeparateProcess,
+                $backupSettings,
+            );
+
+            $testSuite->addTest($test, []);
+        }
+
+        return $testSuite;
     }
 
     /**
@@ -283,5 +317,23 @@ final readonly class TestBuilder
     private function requirementsSatisfied(string $className, string $methodName): bool
     {
         return (new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === [];
+    }
+
+    private function hasVoidReturnType(ReflectionMethod $method): bool
+    {
+        return $method->hasReturnType() === true &&
+               $method->getReturnType() instanceof ReflectionNamedType &&
+               $method->getReturnType()->getName() === 'void';
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     */
+    private function doesNotDependOnAnotherTest(string $className, string $methodName): bool
+    {
+        $metadata = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
+
+        return $metadata->isDepends()->isEmpty();
     }
 }
