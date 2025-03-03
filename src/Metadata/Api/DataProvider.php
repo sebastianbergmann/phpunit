@@ -35,6 +35,18 @@ final readonly class DataProvider
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     */
+    public function usesProvidedData(string $className, string $methodName): bool
+    {
+        $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
+        $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
+
+        return !$dataProvider->isEmpty() || !$testWith->isEmpty();
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws InvalidDataProviderException
      *
@@ -42,12 +54,12 @@ final readonly class DataProvider
      */
     public function providedData(string $className, string $methodName): ?array
     {
-        $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
-        $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
-
-        if ($dataProvider->isEmpty() && $testWith->isEmpty()) {
+        if (!$this->usesProvidedData($className, $methodName)) {
             return null;
         }
+
+        $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
+        $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
 
         if ($dataProvider->isNotEmpty()) {
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
