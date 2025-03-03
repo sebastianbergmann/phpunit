@@ -42,36 +42,50 @@ final readonly class TestBuilder
      */
     public function build(ReflectionClass $theClass, string $methodName, array $groups, int $numberOfRuns): Test
     {
-        $className = $theClass->getName();
-        $repeat    = false;
+        $className                 = $theClass->getName();
+        $repeat                    = false;
+        $runTestInSeparateProcess  = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
+        $preserveGlobalState       = $this->shouldGlobalStateBePreserved($className, $methodName);
+        $runClassInSeparateProcess = $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className);
+        $backupSettings            = $this->backupSettings($className, $methodName);
 
         if ($numberOfRuns > 1) {
             $repeat = $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
                       $this->doesNotDependOnAnotherTest($className, $methodName);
         }
 
-        $data = null;
+        if ($this->requirementsSatisfied($className, $methodName) &&
+            (new DataProvider)->usesProvidedData($className, $methodName)) {
+            if (!$repeat) {
+                return $this->buildDataProviderTestSuite(
+                    $methodName,
+                    $className,
+                    $runTestInSeparateProcess,
+                    $preserveGlobalState,
+                    $runClassInSeparateProcess,
+                    $backupSettings,
+                    $groups,
+                );
+            }
 
-        if ($this->requirementsSatisfied($className, $methodName)) {
-            $data = (new DataProvider)->providedData($className, $methodName);
-        }
+            $testSuite = TestSuite::empty($className . '::' . $methodName);
 
-        $runTestInSeparateProcess  = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
-        $preserveGlobalState       = $this->shouldGlobalStateBePreserved($className, $methodName);
-        $runClassInSeparateProcess = $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className);
-        $backupSettings            = $this->backupSettings($className, $methodName);
+            foreach (range(1, $numberOfRuns) as $i) {
+                $testSuite->addTest(
+                    $this->buildDataProviderTestSuite(
+                        $methodName,
+                        $className,
+                        $runTestInSeparateProcess,
+                        $preserveGlobalState,
+                        $runClassInSeparateProcess,
+                        $backupSettings,
+                        $groups,
+                    ),
+                    [],
+                );
+            }
 
-        if ($data !== null) {
-            return $this->buildDataProviderTestSuite(
-                $methodName,
-                $className,
-                $data,
-                $runTestInSeparateProcess,
-                $preserveGlobalState,
-                $runClassInSeparateProcess,
-                $backupSettings,
-                $groups,
-            );
+            return $testSuite;
         }
 
         if (!$repeat) {
@@ -110,11 +124,10 @@ final readonly class TestBuilder
     /**
      * @param non-empty-string                                                                                                                                                  $methodName
      * @param class-string<TestCase>                                                                                                                                            $className
-     * @param array<array<mixed>>                                                                                                                                               $data
      * @param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @param list<non-empty-string>                                                                                                                                            $groups
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings, array $groups): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings, array $groups): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
@@ -125,7 +138,7 @@ final readonly class TestBuilder
             (new Groups)->groups($className, $methodName),
         );
 
-        foreach ($data as $_dataName => $_data) {
+        foreach ((new DataProvider)->providedData($className, $methodName) as $_dataName => $_data) {
             $_test = new $className($methodName);
 
             $_test->setData($_dataName, $_data);
