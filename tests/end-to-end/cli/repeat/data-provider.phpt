@@ -19,18 +19,37 @@ Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Repeat\DataProviderTest::provider for test method PHPUnit\TestFixture\Repeat\DataProviderTest::testOne)
 Data Provider Method Finished for PHPUnit\TestFixture\Repeat\DataProviderTest::testOne:
 - PHPUnit\TestFixture\Repeat\DataProviderTest::provider
-Test Suite Loaded (1 test)
+Data Provider Method Called (PHPUnit\TestFixture\Repeat\DataProviderTest::provider for test method PHPUnit\TestFixture\Repeat\DataProviderTest::testOne)
+Data Provider Method Finished for PHPUnit\TestFixture\Repeat\DataProviderTest::testOne:
+- PHPUnit\TestFixture\Repeat\DataProviderTest::provider
+Test Suite Loaded (4 tests)
 Test Runner Started
 Test Suite Sorted
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 1 test)
+Test Runner Execution Started (4 tests)
+Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest, 4 tests)
+Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 4 tests)
+Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
 Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
 Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
 Test Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
-Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 1 test)
-Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 2 tests)
+Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
+Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
+Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
+Test Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#0)
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne#1)
+Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testOne, 4 tests)
+Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest, 4 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
