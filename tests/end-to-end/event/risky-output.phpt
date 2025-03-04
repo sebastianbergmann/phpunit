@@ -26,7 +26,7 @@ Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Printed Unexpected Output
 *
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
-This test printed output: *
+Test code or tested code printed unexpected output: *
 Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseOutputTest, 1 test)
 Test Runner Execution Finished

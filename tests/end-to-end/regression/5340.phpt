@@ -34,12 +34,12 @@ Failed asserting that false is true.
 There were 2 risky tests:
 
 1) Issue5340Test::testOne
-This test printed output: output printed from passing test
+Test code or tested code printed unexpected output: output printed from passing test
 
 %s%eIssue5340Test.php:%d
 
 2) Issue5340Test::testTwo
-This test printed output: 
+Test code or tested code printed unexpected output: 
 output printed from failing test
 
 %s%eIssue5340Test.php:%d
