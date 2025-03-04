@@ -1203,7 +1203,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testRunnerTriggeredDeprecation(string $message): void
+    public function testRunnerTriggeredPhpunitDeprecation(string $message): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\DeprecationTriggered(
@@ -1217,7 +1217,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testRunnerTriggeredWarning(string $message): void
+    public function testRunnerTriggeredPhpunitWarning(string $message): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\WarningTriggered(

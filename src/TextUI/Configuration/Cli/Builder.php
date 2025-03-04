@@ -455,7 +455,7 @@ final class Builder
 
                 case '--group':
                     if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             'Using comma-separated values with --group is deprecated and will no longer work in PHPUnit 12. You can use --group multiple times instead.',
                         );
                     }
@@ -472,7 +472,7 @@ final class Builder
 
                 case '--exclude-group':
                     if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             'Using comma-separated values with --exclude-group is deprecated and will no longer work in PHPUnit 12. You can use --exclude-group multiple times instead.',
                         );
                     }
@@ -489,7 +489,7 @@ final class Builder
 
                 case '--covers':
                     if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             'Using comma-separated values with --covers is deprecated and will no longer work in PHPUnit 12. You can use --covers multiple times instead.',
                         );
                     }
@@ -506,7 +506,7 @@ final class Builder
 
                 case '--uses':
                     if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             'Using comma-separated values with --uses is deprecated and will no longer work in PHPUnit 12. You can use --uses multiple times instead.',
                         );
                     }
@@ -534,7 +534,7 @@ final class Builder
 
                 case '--test-suffix':
                     if (str_contains($option[1], ',')) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             'Using comma-separated values with --test-suffix is deprecated and will no longer work in PHPUnit 12. You can use --test-suffix multiple times instead.',
                         );
                     }
@@ -1121,7 +1121,7 @@ final class Builder
         $this->processed[$option]++;
 
         if ($this->processed[$option] === 2) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Option %s cannot be used more than once',
                     $option,

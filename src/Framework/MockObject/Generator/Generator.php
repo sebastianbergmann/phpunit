@@ -848,7 +848,7 @@ final class Generator
                     $message,
                 );
             } catch (NoTestCaseObjectOnCallStackException) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
+                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation($message);
             }
         }
 

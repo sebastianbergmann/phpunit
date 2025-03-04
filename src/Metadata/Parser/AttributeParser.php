@@ -786,7 +786,7 @@ final readonly class AttributeParser implements Parser
             return false;
         }
 
-        EventFacade::emitter()->testRunnerTriggeredWarning(
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
             sprintf(
                 'Group name "%s" is not allowed for %s %s%s%s',
                 $_groupName,

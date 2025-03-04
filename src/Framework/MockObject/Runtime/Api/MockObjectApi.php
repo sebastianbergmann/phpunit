@@ -65,7 +65,7 @@ trait MockObjectApi
                 }
                 // @codeCoverageIgnoreStart
             } catch (NoTestCaseObjectOnCallStackException) {
-                EventFacade::emitter()->testRunnerTriggeredDeprecation($message);
+                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation($message);
                 // @codeCoverageIgnoreEnd
             }
         }
