@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -23,11 +21,11 @@ use function putenv;
  */
 final readonly class BackupEnvironmentVariable
 {
-    private const FROM_GETENV      = 'getenv';
-    private const FROM_SUPERGLOBAL = 'superglobal';
+    private const string FROM_GETENV      = 'getenv';
+    private const string FROM_SUPERGLOBAL = 'superglobal';
 
     /**
-     * @var self::FROM_*
+     * @var self::FROM_GETENV|self::FROM_SUPERGLOBAL
      */
     private string $from;
 
@@ -51,8 +49,8 @@ final readonly class BackupEnvironmentVariable
     }
 
     /**
-     * @param self::FROM_*     $from
-     * @param non-empty-string $name
+     * @param self::FROM_GETENV|self::FROM_SUPERGLOBAL $from
+     * @param non-empty-string                         $name
      */
     private function __construct(string $from, string $name, null|string $value)
     {
