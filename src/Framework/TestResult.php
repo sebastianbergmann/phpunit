@@ -930,7 +930,7 @@ final class TestResult implements Countable
                 $test,
                 new OutputError(
                     sprintf(
-                        'This test printed output: %s',
+                        'Test code or tested code printed unexpected output: %s',
                         $test->getActualOutput()
                     )
                 ),
