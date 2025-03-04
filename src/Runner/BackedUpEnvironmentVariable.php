@@ -19,7 +19,7 @@ use function putenv;
  *
  * @codeCoverageIgnore
  */
-final readonly class BackupEnvironmentVariable
+final readonly class BackedUpEnvironmentVariable
 {
     private const string FROM_GETENV      = 'getenv';
     private const string FROM_SUPERGLOBAL = 'superglobal';

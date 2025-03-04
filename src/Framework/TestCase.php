@@ -80,7 +80,7 @@ use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
-use PHPUnit\Runner\BackupEnvironmentVariable;
+use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -140,7 +140,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private null|int|string $expectedExceptionCode  = null;
 
     /**
-     * @var list<BackupEnvironmentVariable>
+     * @var list<BackedUpEnvironmentVariable>
      */
     private array $backupEnvironmentVariables = [];
 
@@ -1798,7 +1798,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         foreach ($environmentVariables as $environmentVariableName => $environmentVariableValue) {
-            $this->backupEnvironmentVariables = [...$this->backupEnvironmentVariables, ...BackupEnvironmentVariable::create($environmentVariableName)];
+            $this->backupEnvironmentVariables = [...$this->backupEnvironmentVariables, ...BackedUpEnvironmentVariable::create($environmentVariableName)];
 
             if ($environmentVariableValue === null) {
                 unset($_ENV[$environmentVariableName]);
