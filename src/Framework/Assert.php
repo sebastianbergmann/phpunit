@@ -2652,14 +2652,7 @@ abstract class Assert
         self::assertIsString($actualJson);
         self::assertJson($actualJson, $message);
 
-        $constraintExpected = new JsonMatches(
-            $expectedJson,
-        );
-
-        $constraintActual = new JsonMatches($actualJson);
-
-        self::assertThat($expectedJson, $constraintActual, $message);
-        self::assertThat($actualJson, $constraintExpected, $message);
+        self::assertThat($actualJson, new JsonMatches($expectedJson), $message);
     }
 
     /**
@@ -2683,14 +2676,7 @@ abstract class Assert
         self::assertIsString($actualJson);
         self::assertJson($actualJson, $message);
 
-        $constraintExpected = new JsonMatches(
-            $expectedJson,
-        );
-
-        $constraintActual = new JsonMatches($actualJson);
-
-        self::assertThat($expectedJson, new LogicalNot($constraintActual), $message);
-        self::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
+        self::assertThat($actualJson, LogicalNot(new JsonMatches($expectedJson)), $message);
     }
 
     /**
