@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 
 ### Added
 
+* [#6118](https://github.com/sebastianbergmann/phpunit/pull/6118): `expectErrorLog()` for expecting `error_log()` output
 * The `AfterTestMethodCalled`, `AfterTestMethodErrored`, `AfterTestMethodFinished`, `BeforeTestMethodCalled`, `BeforeTestMethodErrored`, `BeforeTestMethodFinished`, `PostConditionCalled`, `PostConditionErrored`, `PostConditionFinished`, `PreConditionCalled`, `PreConditionErrored`, and `PreConditionFinished` event value objects now have `test()` method that returns a value object representing the test method for which the hook method was called
 
 ### Deprecated
