@@ -319,9 +319,9 @@ interface Emitter
 
     public function testSuiteFinished(TestSuite $testSuite): void;
 
-    public function testRunnerTriggeredDeprecation(string $message): void;
+    public function testRunnerTriggeredPhpunitDeprecation(string $message): void;
 
-    public function testRunnerTriggeredWarning(string $message): void;
+    public function testRunnerTriggeredPhpunitWarning(string $message): void;
 
     public function testRunnerEnabledGarbageCollection(): void;
 

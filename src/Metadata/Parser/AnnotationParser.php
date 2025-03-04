@@ -164,7 +164,7 @@ final class AnnotationParser implements Parser
                 ),
             );
         } catch (InvalidVersionRequirementException $e) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Class %s is annotated using an invalid version requirement: %s',
                     $className,
@@ -394,7 +394,7 @@ final class AnnotationParser implements Parser
                     ),
                 );
             } catch (InvalidVersionRequirementException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Method %s::%s is annotated using an invalid version requirement: %s',
                         $className,

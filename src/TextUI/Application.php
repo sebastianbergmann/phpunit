@@ -221,7 +221,7 @@ final class Application
                         (new TestDoxHtmlRenderer)->render($testDoxResult),
                     );
                 } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                    EventFacade::emitter()->testRunnerTriggeredWarning(
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Cannot log test results in TestDox HTML format to "%s": %s',
                             $configuration->logfileTestdoxHtml(),
@@ -238,7 +238,7 @@ final class Application
                         (new TestDoxTextRenderer)->render($testDoxResult),
                     );
                 } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                    EventFacade::emitter()->testRunnerTriggeredWarning(
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Cannot log test results in TestDox plain text format to "%s": %s',
                             $configuration->logfileTestdoxText(),
@@ -603,7 +603,7 @@ final class Application
                     EventFacade::instance(),
                 );
             } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Cannot log test results in JUnit XML format to "%s": %s',
                         $configuration->logfileJunit(),
@@ -622,7 +622,7 @@ final class Application
                     EventFacade::instance(),
                 );
             } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Cannot log test results in TeamCity format to "%s": %s',
                         $configuration->logfileTeamcity(),
@@ -689,7 +689,7 @@ final class Application
             try {
                 $baseline = (new Reader)->read($baselineFile);
             } catch (CannotLoadBaselineException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning($e->getMessage());
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($e->getMessage());
             }
 
             if ($baseline !== null) {
