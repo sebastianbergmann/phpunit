@@ -87,7 +87,7 @@ final readonly class TestSuiteMapper
 
                     foreach ($files as $file) {
                         if (isset($processed[$file])) {
-                            EventFacade::emitter()->testRunnerTriggeredWarning(
+                            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                                 sprintf(
                                     'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
                                     $file,
@@ -116,7 +116,7 @@ final readonly class TestSuiteMapper
                     }
 
                     if (isset($processed[$file->path()])) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
                                 $file->path(),
