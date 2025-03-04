@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\Issue1570Test::testOne
-This test printed output: *
+Test code or tested code printed unexpected output: *
 
 %s:%d
 
