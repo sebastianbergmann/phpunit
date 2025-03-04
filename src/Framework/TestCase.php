@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Runner\BackupEnvironmentVariable;
 use const PHP_EOL;
 use function array_keys;
 use function array_merge;
@@ -25,7 +24,6 @@ use function error_clear_last;
 use function explode;
 use function fclose;
 use function getcwd;
-use function getenv;
 use function implode;
 use function in_array;
 use function ini_set;
@@ -82,6 +80,7 @@ use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
+use PHPUnit\Runner\BackupEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\TestRunner\TestResult\PassedTests;

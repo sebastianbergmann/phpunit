@@ -1,8 +1,18 @@
 <?php
 
 declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Runner;
+
+use function getenv;
+use function putenv;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -13,7 +23,7 @@ namespace PHPUnit\Runner;
  */
 final readonly class BackupEnvironmentVariable
 {
-    private const FROM_GETENV = 'getenv';
+    private const FROM_GETENV      = 'getenv';
     private const FROM_SUPERGLOBAL = 'superglobal';
 
     /**
@@ -25,21 +35,11 @@ final readonly class BackupEnvironmentVariable
      * @var non-empty-string
      */
     private string $name;
-    private string|null $value;
-
-    /**
-     * @param self::FROM_* $from
-     * @param non-empty-string $name
-     */
-    private function __construct(string $from, string $name, string|null $value)
-    {
-        $this->from  = $from;
-        $this->name  = $name;
-        $this->value = $value;
-    }
+    private null|string $value;
 
     /**
      * @param non-empty-string $name
+     *
      * @return array{0: self, 1: self}
      */
     public static function create(string $name): array
@@ -48,6 +48,17 @@ final readonly class BackupEnvironmentVariable
             new self(self::FROM_SUPERGLOBAL, $name, $_ENV[$name] ?? null),
             new self(self::FROM_GETENV, $name, getenv($name) ?: null),
         ];
+    }
+
+    /**
+     * @param self::FROM_*     $from
+     * @param non-empty-string $name
+     */
+    private function __construct(string $from, string $name, null|string $value)
+    {
+        $this->from  = $from;
+        $this->name  = $name;
+        $this->value = $value;
     }
 
     public function restore(): void
