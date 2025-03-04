@@ -118,7 +118,7 @@ final class Generator
             $callOriginalClone,
         );
 
-        $object = $this->getObject(
+        $object = $this->instantiate(
             $mock,
             $callOriginalConstructor,
             $arguments,
@@ -298,7 +298,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(DoubledClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function instantiate(DoubledClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 

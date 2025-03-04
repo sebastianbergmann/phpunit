@@ -21,24 +21,17 @@ use PHPUnit\Event\Telemetry;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class PostConditionErrored implements Event
+final readonly class PostConditionErrored implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
+    private Telemetry\Info $telemetryInfo;
+    private Code\TestMethod $test;
+    private Code\ClassMethod $calledMethod;
+    private Throwable $throwable;
 
-    /**
-     * @var class-string
-     */
-    private readonly string $testClassName;
-    private readonly Code\ClassMethod $calledMethod;
-    private readonly Throwable $throwable;
-
-    /**
-     * @param class-string $testClassName
-     */
-    public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod $calledMethod, Throwable $throwable)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod $calledMethod, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testClassName = $testClassName;
+        $this->test          = $test;
         $this->calledMethod  = $calledMethod;
         $this->throwable     = $throwable;
     }
@@ -48,12 +41,19 @@ final class PostConditionErrored implements Event
         return $this->telemetryInfo;
     }
 
+    public function test(): Code\TestMethod
+    {
+        return $this->test;
+    }
+
     /**
      * @return class-string
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6140
      */
     public function testClassName(): string
     {
-        return $this->testClassName;
+        return $this->test->className();
     }
 
     public function calledMethod(): Code\ClassMethod

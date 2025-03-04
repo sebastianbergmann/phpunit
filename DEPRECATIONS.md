@@ -1,5 +1,26 @@
 # Deprecations
 
+## Soft Deprecations
+
+This functionality is currently [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation):
+
+### Extending PHPUnit
+
+| Issue                                                             | Description                                 | Since  | Replacement                                   |
+|-------------------------------------------------------------------|---------------------------------------------|--------|-----------------------------------------------|
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `AfterTestMethodCalled::testCaseClass()`    | 12.1.0 | `AfterTestMethodCalled::test()->className()`  |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `AfterTestMethodErrored::testCaseClass()`   | 12.1.0 | `AfterTestMethodCalled::test()->className()`  |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `AfterTestMethodFinished::testCaseClass()`  | 12.1.0 | `AfterTestMethodCalled::test()->className()`  |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `BeforeTestMethodCalled::testCaseClass()`   | 12.1.0 | `BeforeTestMethodCalled::test()->className()` |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `BeforeTestMethodErrored::testCaseClass()`  | 12.1.0 | `BeforeTestMethodCalled::test()->className()` |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `BeforeTestMethodFinished::testCaseClass()` | 12.1.0 | `BeforeTestMethodCalled::test()->className()` |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PreConditionCalled::testCaseClass()`       | 12.1.0 | `PreConditionCalled::test()->className()`     |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PreConditionErrored::testCaseClass()`      | 12.1.0 | `PreConditionCalled::test()->className()`     |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PreConditionFinished::testCaseClass()`     | 12.1.0 | `PreConditionCalled::test()->className()`     |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PostConditionCalled::testCaseClass()`      | 12.1.0 | `PostConditionCalled::test()->className()`    |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PostConditionErrored::testCaseClass()`     | 12.1.0 | `PostConditionCalled::test()->className()`    |
+| [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PostConditionFinished::testCaseClass()`    | 12.1.0 | `PostConditionCalled::test()->className()`    |
+
 ## Hard Deprecations
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):

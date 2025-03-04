@@ -23,6 +23,7 @@ Child Process Started
 Test Errored (PHPUnit\TestFixture\Event\SeparateProcessesTest::testOne)
 Test was run in child process and ended unexpectedly
 Test Finished (PHPUnit\TestFixture\Event\SeparateProcessesTest::testOne)
+Child Process Finished
 Test Suite Finished (PHPUnit\TestFixture\Event\SeparateProcessesTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

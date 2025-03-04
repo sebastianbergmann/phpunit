@@ -53,7 +53,7 @@ final class StringContains extends Constraint
         return sprintf(
             'contains "%s" [%s](length: %s)',
             $needle,
-            $this->getDetectedEncoding($needle),
+            $this->detectedEncoding($needle),
             strlen($needle),
         );
     }
@@ -61,8 +61,8 @@ final class StringContains extends Constraint
     public function failureDescription(mixed $other): string
     {
         $stringifiedHaystack = Exporter::export($other);
-        $haystackEncoding    = $this->getDetectedEncoding($other);
-        $haystackLength      = $this->getHaystackLength($other);
+        $haystackEncoding    = $this->detectedEncoding($other);
+        $haystackLength      = $this->haystackLength($other);
 
         $haystackInformation = sprintf(
             '%s [%s](length: %s) ',
@@ -115,7 +115,7 @@ final class StringContains extends Constraint
         return str_contains($haystack, $this->needle);
     }
 
-    private function getDetectedEncoding(mixed $other): string
+    private function detectedEncoding(mixed $other): string
     {
         if ($this->ignoreCase) {
             return 'Encoding ignored';
@@ -134,7 +134,7 @@ final class StringContains extends Constraint
         return $detectedEncoding;
     }
 
-    private function getHaystackLength(mixed $haystack): int
+    private function haystackLength(mixed $haystack): int
     {
         if (!is_string($haystack)) {
             return 0;

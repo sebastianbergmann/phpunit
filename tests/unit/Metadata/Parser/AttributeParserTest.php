@@ -16,8 +16,11 @@ use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -60,8 +63,11 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\UsesClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
+use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
@@ -75,8 +81,11 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(BeforeClass::class)]
 #[CoversClass(Before::class)]
 #[CoversClass(CoversClass::class)]
+#[CoversClass(CoversClassesThatExtendClass::class)]
+#[CoversClass(CoversClassesThatImplementInterface::class)]
 #[CoversClass(CoversFunction::class)]
 #[CoversClass(CoversMethod::class)]
+#[CoversClass(CoversNamespace::class)]
 #[CoversClass(CoversNothing::class)]
 #[CoversClass(CoversTrait::class)]
 #[CoversClass(DataProviderExternal::class)]
@@ -121,8 +130,11 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(TestWith::class)]
 #[CoversClass(Ticket::class)]
 #[CoversClass(UsesClass::class)]
+#[CoversClass(UsesClassesThatExtendClass::class)]
+#[CoversClass(UsesClassesThatImplementInterface::class)]
 #[CoversClass(UsesFunction::class)]
 #[CoversClass(UsesMethod::class)]
+#[CoversClass(UsesNamespace::class)]
 #[CoversClass(UsesTrait::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[Small]

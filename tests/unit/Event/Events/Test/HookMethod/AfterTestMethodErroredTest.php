@@ -22,19 +22,20 @@ final class AfterTestMethodErroredTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = 'Test';
+        $test          = $this->testValueObject();
         $calledMethod  = $this->calledMethod();
         $throwable     = Code\ThrowableBuilder::from(new Exception('message'));
 
         $event = new AfterTestMethodErrored(
             $telemetryInfo,
-            $testClassName,
+            $test,
             $calledMethod,
             $throwable,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
+        $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
@@ -43,7 +44,7 @@ final class AfterTestMethodErroredTest extends AbstractEventTestCase
     {
         $event = new AfterTestMethodErrored(
             $this->telemetryInfo(),
-            'test class name',
+            $this->testValueObject(),
             $this->calledMethod(),
             Code\ThrowableBuilder::from(new Exception('message')),
         );
