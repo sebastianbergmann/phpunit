@@ -11,7 +11,6 @@ namespace PHPUnit\Event;
 
 use const PHP_EOL;
 use function array_key_exists;
-use function defined;
 use function dirname;
 use function sprintf;
 use function str_starts_with;
@@ -116,8 +115,7 @@ final class DirectDispatcher implements SubscribableDispatcher
      */
     public function handleThrowable(Throwable $t): void
     {
-        if (!defined('PHPUNIT_TESTSUITE') &&
-            $this->isThrowableFromThirdPartySubscriber($t)) {
+        if ($this->isThrowableFromThirdPartySubscriber($t)) {
             Facade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Exception in third-party event subscriber: %s%s%s',
