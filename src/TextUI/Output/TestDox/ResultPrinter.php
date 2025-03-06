@@ -77,12 +77,12 @@ final readonly class ResultPrinter
         }
 
         $this->printBeforeClassOrAfterClassErrors(
-            'These before-first-test methods errored:',
+            'before-first-test',
             $beforeFirstTestMethodErrored,
         );
 
         $this->printBeforeClassOrAfterClassErrors(
-            'These after-last-test methods errored:',
+            'after-last-test',
             $afterLastTestMethodErrored,
         );
     }
@@ -436,18 +436,23 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @param non-empty-string                                                                 $header
+     * @param 'after-last-test'|'before-first-test'                                            $type
      * @param array<non-empty-string, AfterLastTestMethodErrored|BeforeFirstTestMethodErrored> $errors
      */
-    private function printBeforeClassOrAfterClassErrors(string $header, array $errors): void
+    private function printBeforeClassOrAfterClassErrors(string $type, array $errors): void
     {
         if (empty($errors)) {
             return;
         }
 
-        $index = 0;
+        $this->printer->print(
+            sprintf(
+                'These %s methods errored:' . PHP_EOL . PHP_EOL,
+                $type,
+            ),
+        );
 
-        $this->printer->print($header . PHP_EOL . PHP_EOL);
+        $index = 0;
 
         foreach ($errors as $method => $error) {
             $this->printer->print(
