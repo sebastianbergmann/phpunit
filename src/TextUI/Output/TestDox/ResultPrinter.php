@@ -17,12 +17,16 @@ use function implode;
 use function preg_match;
 use function preg_split;
 use function rtrim;
+use function sprintf;
 use function str_starts_with;
 use function trim;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\AfterLastTestMethodErrored;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestResult;
 use PHPUnit\Logging\TestDox\TestResultCollection;
+use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
 
@@ -49,7 +53,7 @@ final readonly class ResultPrinter
     /**
      * @param array<string, TestResultCollection> $tests
      */
-    public function print(array $tests): void
+    public function print(TestResult $result, array $tests): void
     {
         $this->doPrint($tests, false);
 
@@ -58,6 +62,29 @@ final readonly class ResultPrinter
 
             $this->doPrint($tests, true);
         }
+
+        $beforeFirstTestMethodErrored = [];
+        $afterLastTestMethodErrored   = [];
+
+        foreach ($result->testErroredEvents() as $error) {
+            if ($error instanceof BeforeFirstTestMethodErrored) {
+                $beforeFirstTestMethodErrored[$error->calledMethod()->className() . '::' . $error->calledMethod()->methodName()] = $error;
+            }
+
+            if ($error instanceof AfterLastTestMethodErrored) {
+                $afterLastTestMethodErrored[$error->calledMethod()->className() . '::' . $error->calledMethod()->methodName()] = $error;
+            }
+        }
+
+        $this->printBeforeClassOrAfterClassErrors(
+            'These before-first-test methods errored:',
+            $beforeFirstTestMethodErrored,
+        );
+
+        $this->printBeforeClassOrAfterClassErrors(
+            'These after-last-test methods errored:',
+            $afterLastTestMethodErrored,
+        );
     }
 
     /**
@@ -406,5 +433,35 @@ final readonly class ResultPrinter
         }
 
         return '?';
+    }
+
+    /**
+     * @param non-empty-string                                                                 $header
+     * @param array<non-empty-string, AfterLastTestMethodErrored|BeforeFirstTestMethodErrored> $errors
+     */
+    private function printBeforeClassOrAfterClassErrors(string $header, array $errors): void
+    {
+        if (empty($errors)) {
+            return;
+        }
+
+        $index = 0;
+
+        $this->printer->print($header . PHP_EOL . PHP_EOL);
+
+        foreach ($errors as $method => $error) {
+            $this->printer->print(
+                sprintf(
+                    '%d) %s' . PHP_EOL,
+                    ++$index,
+                    $method,
+                ),
+            );
+
+            $this->printer->print(trim($error->throwable()->description()) . PHP_EOL . PHP_EOL);
+            $this->printer->print($this->formatStackTrace($error->throwable()->stackTrace()) . PHP_EOL);
+        }
+
+        $this->printer->print(PHP_EOL);
     }
 }
