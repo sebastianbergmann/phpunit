@@ -92,7 +92,7 @@ final class Facade
         }
 
         if (self::$testDoxResultPrinter !== null && $testDoxResult !== null) {
-            self::$testDoxResultPrinter->print($testDoxResult);
+            self::$testDoxResultPrinter->print($result, $testDoxResult);
         }
 
         if (self::$defaultResultPrinter !== null) {
