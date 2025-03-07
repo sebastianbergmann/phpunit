@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+use PHPUnit\TextUI\Configuration\FileCollection;
+use PHPUnit\TextUI\Configuration\FilterDirectory;
+use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\SourceMapper;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$dirs = $argv[1];
+
+$map = (new SourceMapper())->map(new Source(
+    baseline: null,
+    ignoreBaseline: false,
+    includeDirectories: FilterDirectoryCollection::fromArray([new FilterDirectory($dirs, '', '')]),
+    includeFiles: FileCollection::fromArray([]),
+    excludeDirectories: FilterDirectoryCollection::fromArray([]),
+    excludeFiles: FileCollection::fromArray([]),
+    restrictDeprecations: false,
+    restrictNotices: false,
+    restrictWarnings: false,
+    ignoreSuppressionOfDeprecations: false,
+    ignoreSuppressionOfPhpDeprecations: false,
+    ignoreSuppressionOfErrors: false,
+    ignoreSuppressionOfNotices: false,
+    ignoreSuppressionOfPhpNotices: false,
+    ignoreSuppressionOfWarnings: false,
+    ignoreSuppressionOfPhpWarnings: false,
+    deprecationTriggers: [],
+    ignoreSelfDeprecations: false,
+    ignoreDirectDeprecations: false,
+    ignoreIndirectDeprecations: false
+));
+
+
+var_dump($map);
