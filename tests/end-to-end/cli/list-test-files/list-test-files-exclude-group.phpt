@@ -14,5 +14,6 @@ require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Available test files:
+ - %slisting-tests-and-groups%sExampleExtendingAbstractTest.php
  - %slisting-tests-and-groups%sExampleTest.php
  - %slisting-tests-and-groups%sexample.phpt
