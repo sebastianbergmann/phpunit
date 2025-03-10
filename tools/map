@@ -1,6 +1,9 @@
 #!/usr/bin/env php
 <?php
 
+// This file is temporary to this pull request and it here to provide
+// a convenient way to explore the existing behavior.
+
 use PHPUnit\TextUI\Configuration\FileCollection;
 use PHPUnit\TextUI\Configuration\FilterDirectory;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
@@ -10,6 +13,7 @@ use PHPUnit\TextUI\Configuration\SourceMapper;
 require __DIR__ . '/../vendor/autoload.php';
 
 $dirs = $argv[1];
+var_dump($dirs);
 
 $map = (new SourceMapper())->map(new Source(
     baseline: null,
