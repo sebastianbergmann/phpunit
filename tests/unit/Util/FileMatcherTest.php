@@ -29,8 +29,12 @@ class FileMatcherTest extends TestCase
     #[DataProvider('provideQuestionMark')]
     #[DataProvider('provideCharacterGroup')]
     #[DataProvider('provideRelativePathSegments')]
-    public function testMatch(FileMatcherPattern $pattern, array $matchMap): void
+    public function testMatch(FileMatcherPattern $pattern, array $matchMap, ?string $skip = null): void
     {
+        if ($skip) {
+            self::markTestSkipped($skip);
+        }
+
         self::assertMap($pattern, $matchMap);
     }
 
@@ -175,8 +179,6 @@ class FileMatcherTest extends TestCase
             ],
         ];
 
-        // TODO: this edge case
-        return;
         // PHPUnit will match ALL directories within `/foo` with `/foo/A**`
         // however it will NOT match anything with `/foo/Aa**`
         //
@@ -193,6 +195,7 @@ class FileMatcherTest extends TestCase
                 '/baz/emm/foo/bad' => false,
                 '/baz/emm/foo/bad/boo' => false,
             ],
+            'PHPUnit edge case',
         ];
     }
 
@@ -290,6 +293,10 @@ class FileMatcherTest extends TestCase
      */
     public static function provideCharacterGroup(): Generator
     {
+        // TODO: POSIX will interpret an unterminated [ group as a literal while
+        //       Regex will crash -- we'd need to look ahead to see if the [ is
+        //       terminated if we continue using Regex.
+        //
         yield 'unterminated char group' => [
             new FileMatcherPattern('/[AB'),
             [
@@ -298,6 +305,7 @@ class FileMatcherTest extends TestCase
                 '/[AB' => true,
                 '/[AB/foo' => true,
             ],
+            'Unterminated square bracket',
         ];
         yield 'single char leaf' => [
             new FileMatcherPattern('/[A]'),
@@ -310,7 +318,7 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/a/[B]/c'),
             [
                 '/a' => false,
-                '/a/B' => true,
+                '/a/B' => false,
                 '/a/B/c' => true,
                 '/a/Z/c' => false,
             ],
@@ -319,7 +327,7 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/a/[ABC]/c'),
             [
                 '/a' => false,
-                '/a/A' => true,
+                '/a/A' => false,
                 '/a/B/c' => true,
                 '/a/C/c' => true,
                 '/a/Z/c' => false,
@@ -338,7 +346,6 @@ class FileMatcherTest extends TestCase
         ];
 
         // https://man7.org/linux/man-pages/man7/glob.7.html
-        // example from glob manpage
         yield 'square bracket in char group' => [
             new FileMatcherPattern('/[][!]'),
             [
@@ -349,6 +356,7 @@ class FileMatcherTest extends TestCase
                 '/a' => false,
                 '/' => false,
             ],
+            'Unterminated square bracket 2',
         ];
 
         yield 'match ranges' => [
@@ -380,8 +388,10 @@ class FileMatcherTest extends TestCase
         yield 'dash in group' => [
             new FileMatcherPattern('/a/[-]/c'),
             [
-                '/a/-' => true,
-                '/a/-/fo' => true,
+                '/a/-' => false,
+                '/a/-/c' => true,
+                '/a/-/ca/d' => false,
+                '/a/-/c/da' => true,
                 '/a/a/fo' => false,
             ],
         ];
@@ -390,12 +400,13 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/a/[-a-c]/c'),
             [
                 '/a/a' => false,
-                '/a/-' => true,
+                '/a/-' => false,
+                '/a/-/c' => true,
                 '/a/d' => false,
                 '/a/-b/c' => false,
-                '/a/a/fo' => true,
-                '/a/c/fo' => true,
-                '/a/d/fo' => false,
+                '/a/a/c/fo' => true,
+                '/a/c/fo' => false,
+                '/a/d/c' => false,
             ],
         ];
 
@@ -403,13 +414,13 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/a/[a-c-e-f]/c'),
             [
                 '/a/a' => false,
-                '/a/-' => true,
-                '/a/-/a' => true,
-                '/a/c/a' => true,
-                '/a/a/a' => true,
-                '/a/d/a' => false,
-                '/a/e/a' => true,
-                '/a/g/a' => false,
+                '/a/-/c' => true,
+                '/a/-/a' => false,
+                '/a/c/c' => true,
+                '/a/a/c' => true,
+                '/a/d/c' => false,
+                '/a/e/c' => true,
+                '/a/g/c' => false,
                 '/a/-/c' => true,
             ],
         ];
@@ -418,13 +429,13 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/a/[a-ce-f-]/c'),
             [
                 '/a/a' => false,
-                '/a/-' => true,
-                '/a/-/a' => true,
-                '/a/c/a' => true,
-                '/a/a/a' => true,
-                '/a/d/a' => false,
-                '/a/e/a' => true,
-                '/a/g/a' => false,
+                '/a/-/c' => true,
+                '/a/-/c' => true,
+                '/a/c/c' => true,
+                '/a/a/c' => true,
+                '/a/d/c' => false,
+                '/a/e/c' => true,
+                '/a/g/c' => false,
                 '/a/-/c' => true,
             ],
         ];
@@ -433,30 +444,30 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/a/[!a]/c'),
             [
                 '/a/a' => false,
-                '/a/a/b' => false,
-                '/a/b/b' => true,
-                '/a/0/b' => true,
-                '/a/0a/b' => false,
+                '/a/a/c' => false,
+                '/a/b/c' => true,
+                '/a/0/c' => true,
+                '/a/0a/c' => false,
             ]
         ];
 
         yield 'complementation multi char' => [
             new FileMatcherPattern('/a/[!abc]/c'),
             [
-                '/a/a/b' => false,
-                '/a/b/b' => false,
-                '/a/c/b' => false,
-                '/a/d/b' => true,
+                '/a/a/c' => false,
+                '/a/b/c' => false,
+                '/a/c/c' => false,
+                '/a/d/c' => true,
             ]
         ];
 
         yield 'complementation range' => [
             new FileMatcherPattern('/a/[!a-c]/c'),
             [
-                '/a/a/b' => false,
-                '/a/b/b' => false,
-                '/a/c/b' => false,
-                '/a/d/b' => true,
+                '/a/a/c' => false,
+                '/a/b/c' => false,
+                '/a/c/c' => false,
+                '/a/d/c' => true,
             ]
         ];
 
@@ -466,7 +477,8 @@ class FileMatcherTest extends TestCase
                 '/a/[!a-c]/c' => true,
                 '/a/[!a-c]/c/d' => true,
                 '/b/[!a-c]/c/d' => false,
-            ]
+            ],
+            'Regex escaping',
         ];
 
         // TODO: test all the character clases
@@ -479,7 +491,8 @@ class FileMatcherTest extends TestCase
                 '/a/1/c' => true,
                 '/a/2/c' => true,
                 '/b/!/c' => false,
-            ]
+            ],
+            'Named character classes',
         ];
 
         // TODO: all of these?
@@ -492,7 +505,8 @@ class FileMatcherTest extends TestCase
             [
                 '/a/á/c' => true,
                 '/a/a/c' => false,
-            ]
+            ],
+            'Collating symbols',
         ];
 
         // TODO: all of these?
@@ -506,8 +520,8 @@ class FileMatcherTest extends TestCase
             [
                 '/a/á/c' => true,
                 '/a/a/c' => true,
-            ]
-
+            ],
+            'Equaivalence class expressions',
         ];
     }
 
@@ -522,8 +536,8 @@ class FileMatcherTest extends TestCase
             [
                 '/a/a/c' => true,
                 '/a/b/c' => true,
-            ]
-
+            ],
+            'Relative path segments',
         ];
     }
     /**

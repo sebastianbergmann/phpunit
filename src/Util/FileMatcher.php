@@ -24,7 +24,6 @@ final readonly class FileMatcher
         self::assertIsAbsolute($path);
 
         $regex = self::toRegEx($pattern->path);
-        dump($pattern->path, $regex, $path);
 
         return preg_match($regex, $path) !== 0;
     }
@@ -46,9 +45,26 @@ final readonly class FileMatcher
             $c = $glob[$i];
 
             switch ($c) {
+                case '[':
+                    $regex .= '[';
+                    $inSquare = true;
+                    if (isset($glob[$i + 1]) && '^' === $glob[$i + 1]) {
+                        $regex .= '^';
+                        ++$i;
+                    }
+                    break;
+                case ']':
+                    $regex .= $inSquare ? ']' : '\\]';
+                    $inSquare = false;
+                    break;
                 case '?':
                     $regex .= '.';
                     break;
+                case '!':
+                    if ($glob[$i - 1] === '[') {
+                        $regex .= '^';
+                        break;
+                    }
 
                 // the PHPUnit file iterator will match all
                 // files within a wildcard, not just until the
@@ -76,6 +92,26 @@ final readonly class FileMatcher
                     }
                     $regex .= '/';
                     break;
+                case '\\':
+                    if (isset($glob[$i + 1])) {
+                        switch ($glob[$i + 1]) {
+                            case '*':
+                            case '?':
+                            case '[':
+                            case ']':
+                            case '\\':
+                                $regex .= '\\'.$glob[$i + 1];
+                                ++$i;
+                                break;
+
+                            default:
+                                $regex .= '\\\\';
+                        }
+                    } else {
+                        $regex .= '\\\\';
+                    }
+                    break;
+
                 default:
                     $regex .= $c;
                     break;
@@ -104,4 +140,3 @@ final readonly class FileMatcher
         }
     }
 }
-
