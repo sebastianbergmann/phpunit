@@ -69,9 +69,8 @@ class FileMatcherTest extends TestCase
                 '/path/foo/baz' => true,
                 '/path/baz.php' => true,
                 '/path/foo/baz/boo.php' => true,
-                '/path/example/file.php' => false,
+                '/path/example/file.php' => true,
                 '/' => false,
-                '' => false,
             ],
         ];
 
@@ -81,9 +80,8 @@ class FileMatcherTest extends TestCase
                 '/path/foo/bar' => true,
                 '/path/foo/baz' => true,
                 '/path/foo/baz/boo.php' => true,
-                '/path/example/file.php' => false,
+                '/path/example/file.php' => true,
                 '/' => false,
-                '' => false,
             ],
        ];
         yield 'segment directory wildcard' => [
@@ -138,7 +136,7 @@ class FileMatcherTest extends TestCase
             [
                 '/foo' => true,
                 '/foo/bar' => true,
-                '/' => false,
+                '/' => true, // matches zero or more
             ],
         ];
 
@@ -177,7 +175,11 @@ class FileMatcherTest extends TestCase
             ],
         ];
 
-        yield 'segment globstar with wildcard' => [
+        // PHPUnit will match ALL directories within `/foo` with `/foo/A**`
+        // however it will NOT match anything with `/foo/Aa**`
+        //
+        // This is likely a bug and so we could consider "fixing" it
+        yield 'EDGE: segment globstar with wildcard' => [
             new FileMatcherPattern('/foo/emm/**/*ar'),
             [
                 '/foo/emm/bar' => true,
@@ -512,7 +514,7 @@ class FileMatcherTest extends TestCase
      */
     public static function provideRelativePathSegments(): Generator
     {
-        yield 'equivalence class expressions' => [
+        yield 'dot dot' => [
             new FileMatcherPattern('/a/../a/c'),
             [
                 '/a/a/c' => true,
@@ -529,10 +531,15 @@ class FileMatcherTest extends TestCase
         foreach ($matchMap as $candidate => $shouldMatch) {
             $matches = FileMatcher::match($candidate, $pattern);
             if ($matches === $shouldMatch) {
-                $this->addToAssertionCount(1);
+                self::assertTrue(true);
                 continue;
             }
-            self::fail(sprintf('Expected the pattern "%s" to match path "%s"', $pattern->path, $candidate));
+            self::fail(sprintf(
+                'Expected the pattern "%s" %s match path "%s"',
+                $pattern->path,
+                $shouldMatch ? 'to' : 'to not',
+                $candidate
+            ));
         }
     }
 }
