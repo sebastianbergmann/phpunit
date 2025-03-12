@@ -137,6 +137,7 @@ final readonly class FileMatcher
     {
         $resolved = [];
         $escaped  = false;
+        $bracketOpen = false;
         $brackets = [];
 
         for ($offset = 0; $offset < count($tokens); $offset++) {
@@ -205,14 +206,24 @@ final readonly class FileMatcher
             }
 
             if ($type === self::T_BRACKET_OPEN && $tokens[$offset + 1][0] === self::T_BRACKET_CLOSE) {
-                $resolved[] = [self::T_BRACKET_OPEN, $char];
+                $bracketOpen = true;
+                $resolved[] = [self::T_BRACKET_OPEN, '['];
                 $brackets[] = array_key_last($resolved);
-                $resolved[] = [self::T_CHAR, $char];
+                $resolved[] = [self::T_CHAR, ']'];
+                $offset += 1;
 
                 continue;
             }
 
-            if ($type === self::T_BRACKET_OPEN) {
+            if ($bracketOpen === true && $type === self::T_BRACKET_OPEN) {
+                // if bracket is already open, interpret everything as a
+                // literal char
+                $resolved[] = [self::T_CHAR, $char];
+                continue;
+            }
+
+            if ($bracketOpen === false && $type === self::T_BRACKET_OPEN) {
+                $bracketOpen = true;
                 $resolved[] = [$type, $char];
                 $brackets[] = array_key_last($resolved);
 

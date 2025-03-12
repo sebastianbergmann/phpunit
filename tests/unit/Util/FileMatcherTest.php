@@ -297,22 +297,24 @@ class FileMatcherTest extends TestCase
         yield 'unterminated char group followed by char group' => [
             new FileMatcherPattern('/[AB[a-z]'),
             [
-                '/['        => false,
-                '/[Ac'      => false,
-                '/[ABc'     => true,
-                '/[ABc/foo' => true,
+                '/[' => true, // nested [ is literal
+                '/f' => true, // within a-z
+                '/A' => true,
+                '/B' => true,
+
+                '/Z' => false,
+                '/[c' => false,
             ],
         ];
 
         yield 'multiple unterminated char groups followed by char group' => [
             new FileMatcherPattern('/[AB[CD[a-z]EF'),
             [
-                '/['         => false,
-                '/[Ac'       => false,
-                '/[AB[C'     => false,
-                '/[AB[CD'    => false,
-                '/[AB[CDz'   => false,
-                '/[AB[CDzEF' => true,
+                '/[EF' => true,
+                '/AEF' => true,
+                '/[EF' => true,
+                '/DEF' => true,
+                '/EEF' => false,
             ],
         ];
 
@@ -358,7 +360,7 @@ class FileMatcherTest extends TestCase
 
         // https://man7.org/linux/man-pages/man7/glob.7.html
         yield 'square bracket in char group' => [
-            new FileMatcherPattern('/[][!]'),
+            new FileMatcherPattern('/[][!]*'),
             [
                 '/[hello' => true,
                 '/['      => true,
@@ -367,7 +369,6 @@ class FileMatcherTest extends TestCase
                 '/a'      => false,
                 '/'       => false,
             ],
-            'This test fails because `[` should be interpreted a literal',
         ];
 
         yield 'match ranges' => [
