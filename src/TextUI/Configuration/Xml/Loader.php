@@ -132,7 +132,7 @@ final readonly class Loader
         $junit   = null;
         $element = $this->element($xpath, 'logging/junit');
 
-        if ($element) {
+        if ($element !== null) {
             $junit = new Junit(
                 new File(
                     $this->toAbsolutePath(
@@ -146,7 +146,7 @@ final readonly class Loader
         $teamCity = null;
         $element  = $this->element($xpath, 'logging/teamcity');
 
-        if ($element) {
+        if ($element !== null) {
             $teamCity = new TeamCity(
                 new File(
                     $this->toAbsolutePath(
@@ -160,7 +160,7 @@ final readonly class Loader
         $testDoxHtml = null;
         $element     = $this->element($xpath, 'logging/testdoxHtml');
 
-        if ($element) {
+        if ($element !== null) {
             $testDoxHtml = new TestDoxHtml(
                 new File(
                     $this->toAbsolutePath(
@@ -174,7 +174,7 @@ final readonly class Loader
         $testDoxText = null;
         $element     = $this->element($xpath, 'logging/testdoxText');
 
-        if ($element) {
+        if ($element !== null) {
             $testDoxText = new TestDoxText(
                 new File(
                     $this->toAbsolutePath(
@@ -279,7 +279,7 @@ final readonly class Loader
 
         $element = $this->element($xpath, 'source');
 
-        if ($element) {
+        if ($element !== null) {
             $baseline = $this->parseStringAttribute($element, 'baseline');
 
             if ($baseline !== null) {
@@ -357,7 +357,7 @@ final readonly class Loader
 
         $element = $this->element($xpath, 'coverage');
 
-        if ($element) {
+        if ($element !== null) {
             $pathCoverage = $this->parseBooleanAttribute(
                 $element,
                 'pathCoverage',
@@ -386,7 +386,7 @@ final readonly class Loader
         $clover  = null;
         $element = $this->element($xpath, 'coverage/report/clover');
 
-        if ($element) {
+        if ($element !== null) {
             $clover = new Clover(
                 new File(
                     $this->toAbsolutePath(
@@ -400,7 +400,7 @@ final readonly class Loader
         $cobertura = null;
         $element   = $this->element($xpath, 'coverage/report/cobertura');
 
-        if ($element) {
+        if ($element !== null) {
             $cobertura = new Cobertura(
                 new File(
                     $this->toAbsolutePath(
@@ -414,7 +414,7 @@ final readonly class Loader
         $crap4j  = null;
         $element = $this->element($xpath, 'coverage/report/crap4j');
 
-        if ($element) {
+        if ($element !== null) {
             $crap4j = new Crap4j(
                 new File(
                     $this->toAbsolutePath(
@@ -429,7 +429,7 @@ final readonly class Loader
         $html    = null;
         $element = $this->element($xpath, 'coverage/report/html');
 
-        if ($element) {
+        if ($element !== null) {
             $defaultColors     = Colors::default();
             $defaultThresholds = Thresholds::default();
 
@@ -454,7 +454,7 @@ final readonly class Loader
         $php     = null;
         $element = $this->element($xpath, 'coverage/report/php');
 
-        if ($element) {
+        if ($element !== null) {
             $php = new CodeCoveragePhp(
                 new File(
                     $this->toAbsolutePath(
@@ -468,7 +468,7 @@ final readonly class Loader
         $text    = null;
         $element = $this->element($xpath, 'coverage/report/text');
 
-        if ($element) {
+        if ($element !== null) {
             $text = new CodeCoverageText(
                 new File(
                     $this->toAbsolutePath(
@@ -484,7 +484,7 @@ final readonly class Loader
         $xml     = null;
         $element = $this->element($xpath, 'coverage/report/xml');
 
-        if ($element) {
+        if ($element !== null) {
             $xml = new CodeCoverageXml(
                 new Directory(
                     $this->toAbsolutePath(
@@ -549,7 +549,7 @@ final readonly class Loader
 
             $directoryPath = $directoryNode->textContent;
 
-            if (!$directoryPath) {
+            if ($directoryPath === '') {
                 continue;
             }
 
@@ -576,7 +576,7 @@ final readonly class Loader
 
             $filePath = $fileNode->textContent;
 
-            if ($filePath) {
+            if ($filePath !== '') {
                 $files[] = new File($this->toAbsolutePath($filename, $filePath));
             }
         }
@@ -679,7 +679,7 @@ final readonly class Loader
 
             $path = $includePath->textContent;
 
-            if ($path) {
+            if ($path !== '') {
                 $includePaths[] = new Directory($this->toAbsolutePath($filename, $path));
             }
         }
@@ -967,7 +967,7 @@ final readonly class Loader
             foreach ($element->getElementsByTagName('exclude') as $excludeNode) {
                 $excludeFile = $excludeNode->textContent;
 
-                if ($excludeFile) {
+                if ($excludeFile !== '') {
                     $exclude[] = new File($this->toAbsolutePath($filename, $excludeFile));
                 }
             }

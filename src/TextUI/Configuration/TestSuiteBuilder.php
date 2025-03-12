@@ -94,7 +94,10 @@ final readonly class TestSuiteBuilder
     private function testSuiteFromPath(string $path, array $suffixes, ?TestSuite $suite = null): TestSuite
     {
         if (str_ends_with($path, '.phpt') && is_file($path)) {
-            $suite = $suite ?: TestSuite::empty($path);
+            if ($suite === null) {
+                $suite = TestSuite::empty($path);
+            }
+
             $suite->addTestFile($path);
 
             return $suite;
@@ -103,7 +106,10 @@ final readonly class TestSuiteBuilder
         if (is_dir($path)) {
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
-            $suite = $suite ?: TestSuite::empty('CLI Arguments');
+            if ($suite === null) {
+                $suite = TestSuite::empty('CLI Arguments');
+            }
+
             $suite->addTestFiles($files);
 
             return $suite;
@@ -117,7 +123,7 @@ final readonly class TestSuiteBuilder
             exit(1);
         }
 
-        if (!$suite) {
+        if ($suite === null) {
             return TestSuite::fromClassReflector($testClass);
         }
 

@@ -760,7 +760,7 @@ final readonly class Application
 
         $first = true;
 
-        if ($t->getPrevious()) {
+        if ($t->getPrevious() !== null) {
             $t = $t->getPrevious();
         }
 

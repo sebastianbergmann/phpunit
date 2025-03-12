@@ -26,7 +26,7 @@ final readonly class MoveAttributesFromFilterWhitelistToCoverage implements Migr
     {
         $whitelist = $document->getElementsByTagName('whitelist')->item(0);
 
-        if (!$whitelist) {
+        if ($whitelist === null) {
             return;
         }
 
