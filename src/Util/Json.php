@@ -77,8 +77,7 @@ final readonly class Json
      */
     private static function recursiveSort(mixed &$json): void
     {
-        // Nulls, empty arrays, and scalars need no further handling.
-        if (!$json || is_scalar($json)) {
+        if ($json === null || $json === [] || is_scalar($json)) {
             return;
         }
 

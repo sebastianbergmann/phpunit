@@ -264,7 +264,12 @@ final readonly class ResultPrinter
      */
     private function colorizeMessageAndDiff(string $buffer, string $style): array
     {
-        $lines      = $buffer ? array_map('\rtrim', explode(PHP_EOL, $buffer)) : [];
+        $lines = [];
+
+        if ($buffer !== '') {
+            $lines = array_map('\rtrim', explode(PHP_EOL, $buffer));
+        }
+
         $message    = [];
         $diff       = [];
         $insideDiff = false;
@@ -329,11 +334,17 @@ final readonly class ResultPrinter
 
     private function prefixLines(string $prefix, string $message): string
     {
+        $lines = preg_split('/\r\n|\r|\n/', $message);
+
+        if ($lines === false) {
+            $lines = [];
+        }
+
         return implode(
             PHP_EOL,
             array_map(
-                static fn (string $line) => '   ' . $prefix . ($line ? ' ' . $line : ''),
-                preg_split('/\r\n|\r|\n/', $message) ?: [],
+                static fn (string $line) => '   ' . $prefix . ($line !== '' ? ' ' . $line : ''),
+                $lines,
             ),
         );
     }

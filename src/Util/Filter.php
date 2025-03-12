@@ -42,7 +42,7 @@ final readonly class Filter
             $file       = $t->getFile();
             $line       = $t->getLine();
         } else {
-            if ($unwrap && $t->getPrevious()) {
+            if ($unwrap && $t->getPrevious() !== null) {
                 $t = $t->getPrevious();
             }
 

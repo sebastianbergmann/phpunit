@@ -32,7 +32,7 @@ final readonly class ThrowableToStringMapper
         if ($t instanceof SelfDescribing) {
             $buffer = $t->toString();
 
-            if ($t instanceof ExpectationFailedException && $t->getComparisonFailure()) {
+            if ($t instanceof ExpectationFailedException && $t->getComparisonFailure() !== null) {
                 $buffer .= $t->getComparisonFailure()->getDiff();
             }
 
