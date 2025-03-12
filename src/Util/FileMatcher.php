@@ -147,26 +147,29 @@ final readonly class FileMatcher
             $nextType      = $tokens[$offset + 1][0] ?? null;
 
             if ($type === self::T_BACKSLASH && false === $escaped) {
+                // skip the backslash and set flag to escape next token
                 $escaped = true;
 
                 continue;
             }
 
             if ($escaped === true) {
+                // escaped flag is set, so make this a literal char and unset
+                // the escaped flag
                 $resolved[] = [self::T_CHAR, $char];
                 $escaped    = false;
 
                 continue;
             }
 
-            // normal globstar
+            // globstar must be preceded by and succeeded by a directory separator
             if (
                 $type === self::T_SLASH &&
-                ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 2][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 3][0] ?? null) === self::T_SLASH
+                $nextType === self::T_ASTERIX && ($tokens[$offset + 2][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 3][0] ?? null) === self::T_SLASH
             ) {
                 $resolved[] = [self::T_GLOBSTAR, '**'];
 
-                // we eat the two `*` in addition to the slash
+                // we eat the two `*` and the trailing slash
                 $offset += 3;
 
                 continue;
@@ -208,6 +211,10 @@ final readonly class FileMatcher
                 continue;
             }
 
+            // https://man7.org/linux/man-pages/man7/glob.7.html
+            // > The string enclosed by the brackets cannot be empty; therefore
+            // > ']' can be allowed between the brackets, provided that it is
+            // > the first character.
             if ($type === self::T_BRACKET_OPEN && $nextType === self::T_BRACKET_CLOSE) {
                 $bracketOpen = true;
                 $resolved[]  = [self::T_BRACKET_OPEN, '['];
@@ -218,6 +225,8 @@ final readonly class FileMatcher
                 continue;
             }
 
+            // if we're already in a bracket and the next two chars are [: then
+            // start parsing a character class...
             if ($bracketOpen && $type === self::T_BRACKET_OPEN && $nextType === self::T_COLON) {
                 // this looks like a named [:character:] class
                 $class = '';
@@ -240,14 +249,17 @@ final readonly class FileMatcher
                 $resolved[] = [self::T_CHAR, ':' . $class];
             }
 
+
+            // if bracket is already open and we have another open bracket
+            // interpret it as a literal
             if ($bracketOpen === true && $type === self::T_BRACKET_OPEN) {
-                // if bracket is already open, interpret everything as a
-                // literal char
                 $resolved[] = [self::T_CHAR, $char];
 
                 continue;
             }
 
+            // if we are NOT in an open bracket and we have an open bracket
+            // then pop the bracket on the stack and enter bracket-mode.
             if ($bracketOpen === false && $type === self::T_BRACKET_OPEN) {
                 $bracketOpen = true;
                 $resolved[]  = [$type, $char];
@@ -256,7 +268,15 @@ final readonly class FileMatcher
                 continue;
             }
 
-            if ($type === self::T_BRACKET_CLOSE) {
+            // if are in a bracket and we get to bracket close then
+            // pop the last open bracket off the stack and continue
+            //
+            // TODO: $bracketOpen === true below is not tested
+            if ($bracketOpen === true && $type === self::T_BRACKET_CLOSE) {
+
+                // TODO: this is not tested
+                $bracketOpen = false;
+
                 array_pop($brackets);
                 $resolved[] = [$type, $char];
 
