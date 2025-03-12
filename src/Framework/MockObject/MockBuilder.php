@@ -116,7 +116,7 @@ final class MockBuilder
      */
     public function onlyMethods(array $methods): self
     {
-        if (empty($methods)) {
+        if ($methods === []) {
             $this->emptyMethodsArray = true;
 
             return $this;

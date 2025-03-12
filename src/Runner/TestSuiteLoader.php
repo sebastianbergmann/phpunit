@@ -109,7 +109,7 @@ final class TestSuiteLoader
             return self::$fileToClassesMap[$suiteClassFile];
         }
 
-        if (empty(self::$declaredClasses)) {
+        if (self::$declaredClasses === []) {
             self::$declaredClasses = get_declared_classes();
         }
 
@@ -133,7 +133,7 @@ final class TestSuiteLoader
 
         self::$declaredClasses = get_declared_classes();
 
-        if (empty($loadedClasses)) {
+        if ($loadedClasses === []) {
             return self::$declaredClasses;
         }
 
