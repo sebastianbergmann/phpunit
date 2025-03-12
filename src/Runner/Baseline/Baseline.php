@@ -52,7 +52,7 @@ final class Baseline
     }
 
     /**
-     * @return array<string, array<positive-int, list<Issue>>>
+     * @return array<non-empty-string, array<positive-int, list<Issue>>>
      */
     public function groupedByFileAndLine(): array
     {
