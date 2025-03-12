@@ -28,8 +28,9 @@ final readonly class FileMatcher
     private const T_SLASH = 'slash';
     private const T_BACKSLASH = 'backslash';
     private const T_CHAR = 'char';
-    private const T_GLOBSTAR = 'globstar';
+    private const T_GREEDY_GLOBSTAR = 'greedy_globstar';
     private const T_QUERY = 'query';
+    private const T_GLOBSTAR = 'globstar';
 
 
     public static function match(string $path, FileMatcherPattern $pattern): bool
@@ -58,7 +59,7 @@ final readonly class FileMatcher
             $type = $token[0];
             $regex .= match ($type) {
                 // literal char
-                self::T_CHAR => $token[1] ?? throw new Exception('Expected char token to have a value'),
+                self::T_CHAR => preg_quote($token[1]),
 
                 // literal directory separator
                 self::T_SLASH => '/',
@@ -66,10 +67,14 @@ final readonly class FileMatcher
 
                 // match any segment up until the next directory separator
                 self::T_ASTERIX => '[^/]*',
-                self::T_GLOBSTAR => '.*',
+                self::T_GREEDY_GLOBSTAR => '.*',
+                self::T_GLOBSTAR => '/([^/]+/)*',
                 default => '',
             };
         }
+        $regex .= '(/|$)';
+        dump($tokens);
+        dump($regex);
 
         return '{^'.$regex.'}';
     }
@@ -133,9 +138,33 @@ final readonly class FileMatcher
                 continue;
             }
 
-            if ($type === self::T_ASTERIX && ($tokens[$offset + 1] ?? null) === self::T_ASTERIX) {
-                $offset++;
+            // normal globstar
+            if (
+                $type === self::T_SLASH &&
+                ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 2][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 3][0] ?? null) === self::T_SLASH
+            ) {
                 $resolved[] = [self::T_GLOBSTAR, '**'];
+
+                // we eat the two `*` in addition to the slash
+                $offset += 3;
+                continue;
+            }
+
+            // greedy globstar (trailing?)
+            if (
+                $type === self::T_SLASH &&
+                ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 2][0] ?? null) === self::T_ASTERIX
+            ) {
+                $resolved[] = [self::T_GREEDY_GLOBSTAR, '**'];
+
+                // we eat the two `*` in addition to the slash
+                $offset += 2;
+                continue;
+            }
+
+            if ($type === self::T_ASTERIX && ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX) {
+                $resolved[] = [self::T_CHAR, $char];
+                $resolved[] = [self::T_CHAR, $char];
                 continue;
             }
 
