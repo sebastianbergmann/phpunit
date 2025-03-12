@@ -131,6 +131,7 @@ final readonly class FileMatcher
         $resolved = [];
         $escaped = false;
         $brackets = [];
+
         for ($offset = 0; $offset < count($tokens); $offset++) {
             [$type, $char] = $tokens[$offset];
 

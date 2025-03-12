@@ -371,6 +371,7 @@ class FileMatcherTest extends TestCase
                 '/a' => false,
                 '/' => false,
             ],
+            'This test fails because `[` should be interpreted a literal',
         ];
 
         yield 'match ranges' => [
