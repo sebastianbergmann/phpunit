@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use const JSON_ERROR_NONE;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
@@ -35,7 +36,7 @@ final readonly class Json
     {
         $decodedJson = json_decode($json, false);
 
-        if (json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidJsonException;
         }
 
@@ -57,7 +58,7 @@ final readonly class Json
     {
         $decodedJson = json_decode($json);
 
-        if (json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             return [true, null];
         }
 

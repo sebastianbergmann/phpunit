@@ -45,7 +45,7 @@ final class IsJson extends Constraint
 
         json_decode($other);
 
-        if (json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             return false;
         }
 
