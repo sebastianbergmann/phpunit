@@ -140,6 +140,7 @@ final readonly class FileMatcher
 
             if ($escaped === true) {
                 $resolved[] = [self::T_CHAR, $char];
+                $escaped = false;
                 continue;
             }
 

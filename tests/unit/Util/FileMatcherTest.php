@@ -494,7 +494,7 @@ class FileMatcherTest extends TestCase
                 '/b/[!a-c]/c/d' => false,
             ],
         ];
-        yield 'literal backslash neagted group' => [
+        yield 'literal backslash negated group' => [
             new FileMatcherPattern('/a/\\\[!a-c]/c'),
             [
                 '/a/\\d/c' => true,
