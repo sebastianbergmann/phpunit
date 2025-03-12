@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use function array_unshift;
 use function defined;
 use function in_array;
+use function is_array;
 use function is_file;
 use function realpath;
 use function sprintf;
