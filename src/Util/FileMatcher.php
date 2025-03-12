@@ -9,16 +9,29 @@
  */
 namespace PHPUnit\Util;
 
-use InvalidArgumentException;
+use PHPUnit\Exception;
 use RuntimeException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @phpstan-type token array{self::T_*,string}
  */
 final readonly class FileMatcher
 {
+    private const T_BRACKET_OPEN = 'bracket_open';
+    private const T_BRACKET_CLOSE = 'bracket_close';
+    private const T_BANG = 'bang';
+    private const T_HYPHEN = 'hyphen';
+    private const T_ASTERIX = 'asterix';
+    private const T_SLASH = 'slash';
+    private const T_BACKSLASH = 'backslash';
+    private const T_CHAR = 'char';
+    private const T_GLOBSTAR = 'globstar';
+    private const T_QUERY = 'query';
+
+
     public static function match(string $path, FileMatcherPattern $pattern): bool
     {
         self::assertIsAbsolute($path);
@@ -37,101 +50,27 @@ final readonly class FileMatcher
     {
         self::assertIsAbsolute($glob);
 
+        $tokens = self::tokenize($glob);
+
         $regex = '';
-        $length = strlen($glob);
 
-        $brackets = [];
+        foreach ($tokens as $token) {
+            $type = $token[0];
+            $regex .= match ($type) {
+                // literal char
+                self::T_CHAR => $token[1] ?? throw new Exception('Expected char token to have a value'),
 
-        for ($i = 0; $i < $length; ++$i) {
-            $c = $glob[$i];
+                // literal directory separator
+                self::T_SLASH => '/',
+                self::T_QUERY => '.',
 
-            switch ($c) {
-                case '[':
-                    $regex .= '[';
-                    $brackets[] = $i;
-                    break;
-                case ']':
-                    $regex .= ']';
-                    array_pop($brackets);
-                    break;
-                case '?':
-                    $regex .= '.';
-                    break;
-                case '-':
-                    $regex .= '-';
-                    break;
-                case '!':
-                    // complementation/negation: taking into account escaped square brackets
-                    if ($glob[$i - 1] === '[' && ($glob[$i - 2] !== '\\' || ($glob[$i -2] === '\\' && $glob[$i - 3] === '\\'))) {
-                        $regex .= '^';
-                        break;
-                    }
-
-                // the PHPUnit file iterator will match all
-                // files within a wildcard, not just until the
-                // next directory separator
-                case '*':
-                    // if this is a ** but it is NOT preceded with `/` then
-                    // it is not a globstar and just interpret it as a literal
-                    if (($glob[$i + 1] ?? null) === '*') {
-                        $regex .= '\*\*';
-                        $i++;
-                        break;
-                    }
-                    $regex .= '.*';
-                    break;
-                case '/':
-                    // code could be refactored - handle globstars
-                    if (isset($glob[$i + 3]) && '**/' === $glob[$i + 1].$glob[$i + 2].$glob[$i + 3]) {
-                        $regex .= '/([^/]+/)*';
-                        $i += 3;
-                        break;
-                    }
-                    if ((!isset($glob[$i + 3])) && isset($glob[$i + 2]) && '**' === $glob[$i + 1].$glob[$i + 2]) {
-                        $regex .= '.*';
-                        $i += 2;
-                        break;
-                    }
-                    $regex .= '/';
-                    break;
-                case '\\':
-                    // escape characters - this code is copy/pasted from webmozart/glob and
-                    // needs revision
-                    if (isset($glob[$i + 1])) {
-                        switch ($glob[$i + 1]) {
-                            case '*':
-                            case '?':
-                            case '[':
-                            case ']':
-                            case '\\':
-                                $regex .= '\\'.$glob[$i + 1];
-                                ++$i;
-                                break;
-
-                            default:
-                                $regex .= '\\\\';
-                        }
-                    } else {
-                        $regex .= '\\\\';
-                    }
-                    break;
-
-                default:
-                    $regex .= preg_quote($c);
-                    break;
-            }
+                // match any segment up until the next directory separator
+                self::T_ASTERIX => '[^/]*',
+                self::T_GLOBSTAR => '.*',
+                default => '',
+            };
         }
 
-        // escape unterminated brackets
-        $bracketOffset = 0;
-        foreach ($brackets as $offset) {
-            $regex = substr($regex, 0, $offset + $bracketOffset) . '\\' . substr($regex, $offset + $bracketOffset);
-            $bracketOffset++;
-        }
-
-        $regex .= '(/|$)';
-
-        dump($regex);
         return '{^'.$regex.'}';
     }
 
@@ -143,5 +82,65 @@ final readonly class FileMatcher
                 $path
             ));
         }
+    }
+
+    /**
+     * @return list<token>
+     */
+    private static function tokenize(string $glob): array
+    {
+        $length = strlen($glob);
+        
+        $tokens = [];
+        
+        for ($i = 0; $i < $length; ++$i) {
+            $c = $glob[$i];
+        
+            $tokens[] = match ($c) {
+                '[' => [self::T_BRACKET_OPEN, $c],
+                ']' => [self::T_BRACKET_CLOSE, $c],
+                '?' => [self::T_QUERY, $c],
+                '-' => [self::T_HYPHEN, $c],
+                '!' => [self::T_BANG, $c],
+                '*' => [self::T_ASTERIX, $c],
+                '/' => [self::T_SLASH, $c],
+                '\\' => [self::T_BACKSLASH, $c],
+                default => [self::T_CHAR, $c],
+            };
+        }
+
+        return self::processTokens($tokens);
+    }
+
+    /**
+     * @param list<token> $tokens
+     * @return list<token>
+     */
+    private static function processTokens(array $tokens): array
+    {
+        $resolved = [];
+        $escaped = false;
+        for ($offset = 0; $offset < count($tokens); $offset++) {
+            [$type, $char] = $tokens[$offset];
+
+            if ($type === self::T_BACKSLASH && false === $escaped) {
+                $escaped = true;
+                continue;
+            }
+
+            if ($escaped === true) {
+                $resolved[] = [self::T_CHAR, $char];
+                continue;
+            }
+
+            if ($type === self::T_ASTERIX && ($tokens[$offset + 1] ?? null) === self::T_ASTERIX) {
+                $offset++;
+                $resolved[] = [self::T_GLOBSTAR, '**'];
+                continue;
+            }
+
+            $resolved[] = [$type, $char];
+        }
+        return $resolved;
     }
 }
