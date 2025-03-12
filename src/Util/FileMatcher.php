@@ -39,7 +39,8 @@ final readonly class FileMatcher
 
         $regex = self::toRegEx($pattern->path);
 
-        return preg_match($regex, $path) !== 0;
+        $result = preg_match($regex, $path) !== 0;
+        return $result;
     }
 
     /**
@@ -181,14 +182,22 @@ final readonly class FileMatcher
                 continue;
             }
 
+            // if this was _not_ a bang preceded by a `[` token then convert it
+            // to a literal char
             if ($type === self::T_BANG) {
                 $resolved[] = [self::T_CHAR, $char];
                 continue;
             }
 
+            if ($type === self::T_BRACKET_OPEN && $tokens[$offset + 1][0] === self::T_BRACKET_CLOSE) {
+                $resolved[] = [self::T_BRACKET_OPEN, $char];
+                $brackets[] = array_key_last($resolved);
+                $resolved[] = [self::T_CHAR, $char];
+                continue;
+            }
             if ($type === self::T_BRACKET_OPEN) {
-                $brackets[] = $offset;
                 $resolved[] = [$type, $char];
+                $brackets[] = array_key_last($resolved);
                 continue;
             }
 

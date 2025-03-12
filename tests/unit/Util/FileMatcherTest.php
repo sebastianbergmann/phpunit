@@ -371,7 +371,6 @@ class FileMatcherTest extends TestCase
                 '/a' => false,
                 '/' => false,
             ],
-            'Unterminated square bracket 2',
         ];
 
         yield 'match ranges' => [
