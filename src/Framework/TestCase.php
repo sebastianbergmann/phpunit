@@ -1130,6 +1130,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
 
         try {
+            /** @phpstan-ignore method.dynamicName */
             $testResult = $this->{$this->methodName}(...$testArguments);
 
             $errorLogOutput = stream_get_contents($capture);
@@ -2079,10 +2080,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
 
             try {
+                /** @phpstan-ignore method.dynamicName */
                 $this->{$methodName}();
             } catch (Throwable $t) {
             }
 
+            /** @phpstan-ignore method.dynamicName */
             $emitter->{$calledMethod}(
                 $test,
                 $methodInvoked
@@ -2091,6 +2094,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $methodsInvoked[] = $methodInvoked;
 
             if (isset($t)) {
+                /** @phpstan-ignore method.dynamicName */
                 $emitter->{$erroredMethod}(
                     $test,
                     $methodInvoked,
@@ -2102,6 +2106,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($methodsInvoked !== []) {
+            /** @phpstan-ignore method.dynamicName */
             $emitter->{$finishedMethod}(
                 $test,
                 ...$methodsInvoked

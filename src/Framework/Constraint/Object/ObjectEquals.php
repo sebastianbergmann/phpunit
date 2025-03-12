@@ -132,6 +132,7 @@ final class ObjectEquals extends Constraint
             );
         }
 
+        /** @phpstan-ignore method.dynamicName */
         return $other->{$this->method}($this->expected);
     }
 
