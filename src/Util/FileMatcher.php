@@ -25,6 +25,12 @@ use RuntimeException;
  * - https://en.wikipedia.org/wiki/Glob_(programming)
  * - https://man7.org/linux/man-pages/man7/glob.7.html
  *
+ * The file matcher compiles the regex in three passes:
+ *
+ * - Tokenise interesting chars in the glob grammar.
+ * - Process the tokens and reorient them to produce regex.
+ * - Map the processed tokens to regular expression segments.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -53,7 +59,17 @@ final readonly class FileMatcher
     public static function toRegEx(string $glob): FileMatcherRegex
     {
         $tokens = self::tokenize($glob);
-        $regex  = '';
+        $tokens = self::processTokens($tokens);
+
+        return self::mapToRegex($tokens);
+    }
+
+    /**
+     * @param list<token> $tokens
+     */
+    public static function mapToRegex(array $tokens): FileMatcherRegex
+    {
+        $regex = '';
 
         foreach ($tokens as $token) {
             $type = $token[0];
@@ -111,7 +127,7 @@ final readonly class FileMatcher
             };
         }
 
-        return self::processTokens($tokens);
+        return $tokens;
     }
 
     /**
