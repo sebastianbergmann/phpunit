@@ -745,7 +745,7 @@ final readonly class Application
     {
         $message = $t->getMessage();
 
-        if (empty(trim($message))) {
+        if (trim($message) === '') {
             $message = '(no message)';
         }
 

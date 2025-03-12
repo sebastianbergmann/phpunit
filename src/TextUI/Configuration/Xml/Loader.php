@@ -979,7 +979,7 @@ final readonly class Loader
 
                 $directory = $directoryNode->textContent;
 
-                if (empty($directory)) {
+                if ($directory === '') {
                     continue;
                 }
 
@@ -1013,7 +1013,7 @@ final readonly class Loader
                     foreach (explode(',', $directoryNode->getAttribute('groups')) as $group) {
                         $group = trim($group);
 
-                        if (empty($group)) {
+                        if ($group === '') {
                             continue;
                         }
 
@@ -1038,7 +1038,7 @@ final readonly class Loader
 
                 $file = $fileNode->textContent;
 
-                if (empty($file)) {
+                if ($file === '') {
                     continue;
                 }
 
@@ -1060,7 +1060,7 @@ final readonly class Loader
                     foreach (explode(',', $fileNode->getAttribute('groups')) as $group) {
                         $group = trim($group);
 
-                        if (empty($group)) {
+                        if ($group === '') {
                             continue;
                         }
 

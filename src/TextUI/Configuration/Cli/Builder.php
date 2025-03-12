@@ -958,15 +958,15 @@ final class Builder
             }
         }
 
-        if (empty($iniSettings)) {
+        if ($iniSettings === []) {
             $iniSettings = null;
         }
 
-        if (empty($coverageFilter)) {
+        if ($coverageFilter === []) {
             $coverageFilter = null;
         }
 
-        if (empty($extensions)) {
+        if ($extensions === []) {
             $extensions = null;
         }
 
