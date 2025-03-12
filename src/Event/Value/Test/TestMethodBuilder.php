@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Code;
 
-use function assert;
 use function is_numeric;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\DataFromTestDependency;
@@ -30,10 +29,7 @@ final readonly class TestMethodBuilder
     public static function fromTestCase(TestCase $testCase): TestMethod
     {
         $methodName = $testCase->name();
-
-        assert(!empty($methodName));
-
-        $location = Reflection::sourceLocationFor($testCase::class, $methodName);
+        $location   = Reflection::sourceLocationFor($testCase::class, $methodName);
 
         return new TestMethod(
             $testCase::class,
