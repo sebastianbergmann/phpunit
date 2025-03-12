@@ -69,6 +69,9 @@ final readonly class FileMatcher
                 self::T_ASTERIX => '[^/]*',
                 self::T_GREEDY_GLOBSTAR => '.*',
                 self::T_GLOBSTAR => '/([^/]+/)*',
+                self::T_BRACKET_OPEN => '[',
+                self::T_BRACKET_CLOSE => ']',
+                self::T_HYPHEN => '-',
                 default => '',
             };
         }
