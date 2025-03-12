@@ -176,8 +176,13 @@ final readonly class FileMatcher
             }
 
             // complementation - only parse BANG if it is at the start of a character group
-            if ($type === self::T_BANG && isset($resolved[array_key_last($resolved) - 1]) && $resolved[array_key_last($resolved) - 1][0] === self::T_BRACKET_OPEN) {
+            if ($type === self::T_BANG && isset($resolved[array_key_last($resolved)]) && $resolved[array_key_last($resolved)][0] === self::T_BRACKET_OPEN) {
                 $resolved[] = [self::T_BANG, '!'];
+                continue;
+            }
+
+            if ($type === self::T_BANG) {
+                $resolved[] = [self::T_CHAR, $char];
                 continue;
             }
 
