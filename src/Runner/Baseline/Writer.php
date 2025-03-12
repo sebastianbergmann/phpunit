@@ -50,7 +50,7 @@ final readonly class Writer
 
                 foreach ($issues as $issue) {
                     $writer->startElement('issue');
-                    $writer->writeCData($issue->description());
+                    $writer->writeCdata($issue->description());
                     $writer->endElement();
                 }
 
