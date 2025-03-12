@@ -1,7 +1,15 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Util;
 
+use function sprintf;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -13,31 +21,6 @@ use RuntimeException;
 #[Small]
 class FileMatcherTest extends TestCase
 {
-    public function testExceptionIfPathIsNotAbsolute(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Path "foo/bar" must be absolute');
-        FileMatcher::match('foo/bar', new FileMatcherPattern(''));
-    }
-
-    /**
-     * @param array<FileMatcherPattern,bool> $matchMap
-     */
-    #[DataProvider('provideMatch')]
-    #[DataProvider('provideWildcard')]
-    #[DataProvider('provideGlobstar')]
-    #[DataProvider('provideQuestionMark')]
-    #[DataProvider('provideCharacterGroup')]
-    #[DataProvider('provideRelativePathSegments')]
-    public function testMatch(FileMatcherPattern $pattern, array $matchMap, ?string $skip = null): void
-    {
-        if ($skip) {
-            self::markTestSkipped($skip);
-        }
-
-        self::assertMap($pattern, $matchMap);
-    }
-
     /**
      * @return Generator<string,array{FileMatcherPattern,array<string,bool>}>
      */
@@ -54,9 +37,9 @@ class FileMatcherTest extends TestCase
         yield 'directory' => [
             new FileMatcherPattern('/path/to'),
             [
-                '/path/to' => true,
+                '/path/to'                 => true,
                 '/path/to/example/Foo.php' => true,
-                '/path/foo/Bar.php' => false,
+                '/path/foo/Bar.php'        => false,
             ],
         ];
     }
@@ -69,65 +52,66 @@ class FileMatcherTest extends TestCase
         yield 'leaf wildcard' => [
             new FileMatcherPattern('/path/*'),
             [
-                '/path/foo/bar' => true,
-                '/path/foo/baz' => true,
-                '/path/baz.php' => true,
-                '/path/foo/baz/boo.php' => true,
+                '/path/foo/bar'          => true,
+                '/path/foo/baz'          => true,
+                '/path/baz.php'          => true,
+                '/path/foo/baz/boo.php'  => true,
                 '/path/example/file.php' => true,
-                '/' => false,
+                '/'                      => false,
             ],
         ];
 
         yield 'leaf directory wildcard' => [
             new FileMatcherPattern('/path/*'),
             [
-                '/path/foo/bar' => true,
-                '/path/foo/baz' => true,
-                '/path/foo/baz/boo.php' => true,
+                '/path/foo/bar'          => true,
+                '/path/foo/baz'          => true,
+                '/path/foo/baz/boo.php'  => true,
                 '/path/example/file.php' => true,
-                '/' => false,
+                '/'                      => false,
             ],
-       ];
+        ];
+
         yield 'segment directory wildcard' => [
             new FileMatcherPattern('/path/*/bar'),
             [
-                '/path/foo/bar' => true,
-                '/path/foo/baz' => false,
+                '/path/foo/bar'         => true,
+                '/path/foo/baz'         => false,
                 '/path/foo/bar/boo.php' => true,
-                '/foo/bar/file.php' => false,
+                '/foo/bar/file.php'     => false,
             ],
-       ];
+        ];
 
         yield 'multiple segment directory wildcards' => [
             new FileMatcherPattern('/path/*/example/*/bar'),
             [
-                '/path/zz/example/aa/bar' => true,
+                '/path/zz/example/aa/bar'     => true,
                 '/path/zz/example/aa/bar/foo' => true,
-                '/path/example/aa/bar/foo' => false,
-                '/path/zz/example/bb/foo' => false,
+                '/path/example/aa/bar/foo'    => false,
+                '/path/zz/example/bb/foo'     => false,
             ],
         ];
 
         yield 'partial wildcard' => [
             new FileMatcherPattern('/path/f*'),
             [
-                '/path/foo/bar' => true,
-                '/path/foo/baz' => true,
-                '/path/boo' => false,
+                '/path/foo/bar'              => true,
+                '/path/foo/baz'              => true,
+                '/path/boo'                  => false,
                 '/path/boo/example/file.php' => false,
             ],
-       ];
+        ];
 
         yield 'partial segment wildcard' => [
             new FileMatcherPattern('/path/f*/bar'),
             [
-                '/path/foo/bar' => true,
-                '/path/faa/bar' => true,
-                '/path/foo/baz' => false,
-                '/path/boo' => false,
+                '/path/foo/bar'              => true,
+                '/path/faa/bar'              => true,
+                '/path/foo/baz'              => false,
+                '/path/boo'                  => false,
                 '/path/boo/example/file.php' => false,
             ],
-       ];
+        ];
     }
 
     /**
@@ -138,20 +122,20 @@ class FileMatcherTest extends TestCase
         yield 'leaf globstar at root' => [
             new FileMatcherPattern('/**'),
             [
-                '/foo' => true,
+                '/foo'     => true,
                 '/foo/bar' => true,
-                '/' => true, // matches zero or more
+                '/'        => true, // matches zero or more
             ],
         ];
 
         yield 'leaf globstar' => [
             new FileMatcherPattern('/foo/**'),
             [
-                '/foo' => true,
-                '/foo/foo' => true,
+                '/foo'             => true,
+                '/foo/foo'         => true,
                 '/foo/foo/baz.php' => true,
-                '/bar/foo' => false,
-                '/bar/foo/baz' => false,
+                '/bar/foo'         => false,
+                '/bar/foo/baz'     => false,
             ],
         ];
 
@@ -159,23 +143,23 @@ class FileMatcherTest extends TestCase
         yield 'partial leaf globstar' => [
             new FileMatcherPattern('/foo/emm**'),
             [
-                '/foo/emmer' => false,
-                '/foo/emm' => false,
+                '/foo/emmer'   => false,
+                '/foo/emm'     => false,
                 '/foo/emm/bar' => false,
-                '/' => false,
+                '/'            => false,
             ],
         ];
 
         yield 'segment globstar' => [
             new FileMatcherPattern('/foo/emm/**/bar'),
             [
-                '/foo/emm/bar' => true,
-                '/foo/emm/foo/bar' => true,
+                '/foo/emm/bar'         => true,
+                '/foo/emm/foo/bar'     => true,
                 '/baz/emm/foo/bar/boo' => false,
-                '/baz/emm/foo/bar' => false,
-                '/foo/emm/barfoo' => false,
-                '/foo/emm/' => false,
-                '/foo/emm' => false,
+                '/baz/emm/foo/bar'     => false,
+                '/foo/emm/barfoo'      => false,
+                '/foo/emm/'            => false,
+                '/foo/emm'             => false,
             ],
         ];
 
@@ -186,13 +170,13 @@ class FileMatcherTest extends TestCase
         yield 'EDGE: segment globstar with wildcard' => [
             new FileMatcherPattern('/foo/emm/**/*ar'),
             [
-                '/foo/emm/bar' => true,
-                '/foo/emm/far' => true,
-                '/foo/emm/foo/far' => true,
-                '/foo/emm/foo/far' => true,
+                '/foo/emm/bar'         => true,
+                '/foo/emm/far'         => true,
+                '/foo/emm/foo/far'     => true,
+                '/foo/emm/foo/far'     => true,
                 '/foo/emm/foo/bar/far' => true,
                 '/baz/emm/foo/bar/boo' => true,
-                '/baz/emm/foo/bad' => false,
+                '/baz/emm/foo/bad'     => false,
                 '/baz/emm/foo/bad/boo' => false,
             ],
             'PHPUnit edge case',
@@ -207,58 +191,63 @@ class FileMatcherTest extends TestCase
         yield 'question mark at root' => [
             new FileMatcherPattern('/?'),
             [
-                '/' => false,
-                '/f' => true,
-                '/foo' => false,
-                '/f/emm/foo/bar' => true,
+                '/'                => false,
+                '/f'               => true,
+                '/foo'             => false,
+                '/f/emm/foo/bar'   => true,
                 '/foo/emm/foo/bar' => false,
             ],
         ];
+
         yield 'question mark at leaf' => [
             new FileMatcherPattern('/foo/?'),
             [
-                '/foo' => false,
-                '/foo/' => false,
-                '/foo/a' => true,
-                '/foo/ab' => false,
+                '/foo'     => false,
+                '/foo/'    => false,
+                '/foo/a'   => true,
+                '/foo/ab'  => false,
                 '/foo/a/c' => true,
             ],
         ];
+
         yield 'question mark at segment start' => [
             new FileMatcherPattern('/foo/?ar'),
             [
-                '/' => false,
-                '/foo' => false,
-                '/foo/' => false,
-                '/foo/aa' => false,
-                '/foo/aar' => true,
-                '/foo/aarg' => false,
+                '/'             => false,
+                '/foo'          => false,
+                '/foo/'         => false,
+                '/foo/aa'       => false,
+                '/foo/aar'      => true,
+                '/foo/aarg'     => false,
                 '/foo/aar/barg' => true,
-                '/foo/bar' => true,
-                '/foo/ab/c' => false,
+                '/foo/bar'      => true,
+                '/foo/ab/c'     => false,
             ],
         ];
+
         yield 'question mark in segment' => [
             new FileMatcherPattern('/foo/f?o'),
             [
-                '/foo' => false,
-                '/foo/' => false,
-                '/foo/foo' => true,
-                '/foo/boo' => false,
+                '/foo'          => false,
+                '/foo/'         => false,
+                '/foo/foo'      => true,
+                '/foo/boo'      => false,
                 '/foo/foo/true' => true,
             ],
         ];
+
         yield 'consecutive question marks' => [
             new FileMatcherPattern('/foo/???'),
             [
-                '/foo' => false,
-                '/foo/' => false,
-                '/foo/bar' => true,
-                '/foo/car' => true,
-                '/foo/the/test/will/pass' => true,
+                '/foo'                        => false,
+                '/foo/'                       => false,
+                '/foo/bar'                    => true,
+                '/foo/car'                    => true,
+                '/foo/the/test/will/pass'     => true,
                 '/bar/the/test/will/not/pass' => false,
             ],
         ];
+
         yield 'multiple question marks in segment' => [
             new FileMatcherPattern('/foo/?a?'),
             [
@@ -266,24 +255,26 @@ class FileMatcherTest extends TestCase
                 '/foo/ccr' => false,
             ],
         ];
+
         yield 'multiple question marks in segments' => [
             new FileMatcherPattern('/foo/?a?/bar/f?a'),
             [
-                '/foo' => false,
-                '/foo/aaa' => false,
-                '/foo/aaa/bar' => false,
-                '/foo/aaa/bar/' => false,
-                '/foo/bar/zaa' => false,
+                '/foo'             => false,
+                '/foo/aaa'         => false,
+                '/foo/aaa/bar'     => false,
+                '/foo/aaa/bar/'    => false,
+                '/foo/bar/zaa'     => false,
                 '/foo/car/bar/faa' => true,
             ],
         ];
+
         yield 'tailing question mark' => [
             new FileMatcherPattern('/foo/?a?/bar/fa?'),
             [
-                '/foo/car' => false,
+                '/foo/car'         => false,
                 '/foo/car/bar/faa' => true,
-                '/foo/ccr' => false,
-                '/foo/bar/zaa' => false,
+                '/foo/ccr'         => false,
+                '/foo/bar/zaa'     => false,
             ],
         ];
     }
@@ -296,32 +287,35 @@ class FileMatcherTest extends TestCase
         yield 'unterminated char group' => [
             new FileMatcherPattern('/[AB'),
             [
-                '/[' => false,
-                '/[A' => false,
-                '/[AB' => true,
+                '/['       => false,
+                '/[A'      => false,
+                '/[AB'     => true,
                 '/[AB/foo' => true,
             ],
         ];
+
         yield 'unterminated char group followed by char group' => [
             new FileMatcherPattern('/[AB[a-z]'),
             [
-                '/[' => false,
-                '/[Ac' => false,
-                '/[ABc' => true,
+                '/['        => false,
+                '/[Ac'      => false,
+                '/[ABc'     => true,
                 '/[ABc/foo' => true,
             ],
         ];
+
         yield 'multiple unterminated char groups followed by char group' => [
             new FileMatcherPattern('/[AB[CD[a-z]EF'),
             [
-                '/[' => false,
-                '/[Ac' => false,
-                '/[AB[C' => false,
-                '/[AB[CD' => false,
-                '/[AB[CDz' => false,
+                '/['         => false,
+                '/[Ac'       => false,
+                '/[AB[C'     => false,
+                '/[AB[CD'    => false,
+                '/[AB[CDz'   => false,
                 '/[AB[CDzEF' => true,
             ],
         ];
+
         yield 'single char leaf' => [
             new FileMatcherPattern('/[A]'),
             [
@@ -329,24 +323,26 @@ class FileMatcherTest extends TestCase
                 '/B' => false,
             ],
         ];
+
         yield 'single char segment' => [
             new FileMatcherPattern('/a/[B]/c'),
             [
-                '/a' => false,
-                '/a/B' => false,
+                '/a'     => false,
+                '/a/B'   => false,
                 '/a/B/c' => true,
                 '/a/Z/c' => false,
             ],
         ];
+
         yield 'multichar' => [
             new FileMatcherPattern('/a/[ABC]/c'),
             [
-                '/a' => false,
-                '/a/A' => false,
-                '/a/B/c' => true,
-                '/a/C/c' => true,
-                '/a/Z/c' => false,
-                '/a/Za/c' => false,
+                '/a'       => false,
+                '/a/A'     => false,
+                '/a/B/c'   => true,
+                '/a/C/c'   => true,
+                '/a/Z/c'   => false,
+                '/a/Za/c'  => false,
                 '/a/Aaa/c' => false,
             ],
         ];
@@ -354,7 +350,7 @@ class FileMatcherTest extends TestCase
         yield 'matching is case sensitive' => [
             new FileMatcherPattern('/a/[ABC]/c'),
             [
-                '/a/a' => false,
+                '/a/a'   => false,
                 '/a/b/c' => false,
                 '/a/c/c' => false,
             ],
@@ -365,11 +361,11 @@ class FileMatcherTest extends TestCase
             new FileMatcherPattern('/[][!]'),
             [
                 '/[hello' => true,
-                '/[' => true,
-                '/!' => true,
-                '/!bang' => true,
-                '/a' => false,
-                '/' => false,
+                '/['      => true,
+                '/!'      => true,
+                '/!bang'  => true,
+                '/a'      => false,
+                '/'       => false,
             ],
             'This test fails because `[` should be interpreted a literal',
         ];
@@ -377,7 +373,7 @@ class FileMatcherTest extends TestCase
         yield 'match ranges' => [
             new FileMatcherPattern('/a/[a-c]/c'),
             [
-                '/a/a' => false,
+                '/a/a'   => false,
                 '/a/z/c' => false,
                 '/a/b/c' => true,
                 '/a/c/c' => true,
@@ -389,7 +385,7 @@ class FileMatcherTest extends TestCase
         yield 'multiple match ranges' => [
             new FileMatcherPattern('/a/[a-c0-8]/c'),
             [
-                '/a/a' => false,
+                '/a/a'   => false,
                 '/a/0/c' => true,
                 '/a/2/c' => true,
                 '/a/8/c' => true,
@@ -403,32 +399,32 @@ class FileMatcherTest extends TestCase
         yield 'dash in group' => [
             new FileMatcherPattern('/a/[-]/c'),
             [
-                '/a/-' => false,
-                '/a/-/c' => true,
+                '/a/-'      => false,
+                '/a/-/c'    => true,
                 '/a/-/ca/d' => false,
                 '/a/-/c/da' => true,
-                '/a/a/fo' => false,
+                '/a/a/fo'   => false,
             ],
         ];
 
         yield 'range prefix dash' => [
             new FileMatcherPattern('/a/[-a-c]/c'),
             [
-                '/a/a' => false,
-                '/a/-' => false,
-                '/a/-/c' => true,
-                '/a/d' => false,
-                '/a/-b/c' => false,
+                '/a/a'      => false,
+                '/a/-'      => false,
+                '/a/-/c'    => true,
+                '/a/d'      => false,
+                '/a/-b/c'   => false,
                 '/a/a/c/fo' => true,
-                '/a/c/fo' => false,
-                '/a/d/c' => false,
+                '/a/c/fo'   => false,
+                '/a/d/c'    => false,
             ],
         ];
 
         yield 'range infix dash' => [
             new FileMatcherPattern('/a/[a-c-e-f]/c'),
             [
-                '/a/a' => false,
+                '/a/a'   => false,
                 '/a/-/c' => true,
                 '/a/-/a' => false,
                 '/a/c/c' => true,
@@ -443,7 +439,7 @@ class FileMatcherTest extends TestCase
         yield 'range suffix dash' => [
             new FileMatcherPattern('/a/[a-ce-f-]/c'),
             [
-                '/a/a' => false,
+                '/a/a'   => false,
                 '/a/-/c' => true,
                 '/a/-/c' => true,
                 '/a/c/c' => true,
@@ -458,12 +454,12 @@ class FileMatcherTest extends TestCase
         yield 'complementation single char' => [
             new FileMatcherPattern('/a/[!a]/c'),
             [
-                '/a/a' => false,
-                '/a/a/c' => false,
-                '/a/b/c' => true,
-                '/a/0/c' => true,
+                '/a/a'    => false,
+                '/a/a/c'  => false,
+                '/a/b/c'  => true,
+                '/a/0/c'  => true,
                 '/a/0a/c' => false,
-            ]
+            ],
         ];
 
         yield 'complementation multi char' => [
@@ -473,7 +469,7 @@ class FileMatcherTest extends TestCase
                 '/a/b/c' => false,
                 '/a/c/c' => false,
                 '/a/d/c' => true,
-            ]
+            ],
         ];
 
         yield 'complementation range' => [
@@ -483,17 +479,18 @@ class FileMatcherTest extends TestCase
                 '/a/b/c' => false,
                 '/a/c/c' => false,
                 '/a/d/c' => true,
-            ]
+            ],
         ];
 
         yield 'escape range' => [
             new FileMatcherPattern('/a/\[!a-c]/c'),
             [
-                '/a/[!a-c]/c' => true,
+                '/a/[!a-c]/c'   => true,
                 '/a/[!a-c]/c/d' => true,
                 '/b/[!a-c]/c/d' => false,
             ],
         ];
+
         yield 'literal backslash negated group' => [
             new FileMatcherPattern('/a/\\\[!a-c]/c'),
             [
@@ -546,7 +543,8 @@ class FileMatcherTest extends TestCase
     }
 
     /**
-     * TODO: expand this
+     * TODO: expand this.
+     *
      * @return Generator<string,array{FileMatcherPattern,array<string,bool>}>
      */
     public static function provideRelativePathSegments(): Generator
@@ -560,6 +558,32 @@ class FileMatcherTest extends TestCase
             'Relative path segments',
         ];
     }
+
+    public function testExceptionIfPathIsNotAbsolute(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Path "foo/bar" must be absolute');
+        FileMatcher::match('foo/bar', new FileMatcherPattern(''));
+    }
+
+    /**
+     * @param array<FileMatcherPattern,bool> $matchMap
+     */
+    #[DataProvider('provideMatch')]
+    #[DataProvider('provideWildcard')]
+    #[DataProvider('provideGlobstar')]
+    #[DataProvider('provideQuestionMark')]
+    #[DataProvider('provideCharacterGroup')]
+    #[DataProvider('provideRelativePathSegments')]
+    public function testMatch(FileMatcherPattern $pattern, array $matchMap, ?string $skip = null): void
+    {
+        if ($skip) {
+            $this->markTestSkipped($skip);
+        }
+
+        self::assertMap($pattern, $matchMap);
+    }
+
     /**
      * @param array<FileMatcherPattern,bool> $matchMap
      */
@@ -567,15 +591,17 @@ class FileMatcherTest extends TestCase
     {
         foreach ($matchMap as $candidate => $shouldMatch) {
             $matches = FileMatcher::match($candidate, $pattern);
+
             if ($matches === $shouldMatch) {
                 self::assertTrue(true);
+
                 continue;
             }
             self::fail(sprintf(
                 'Expected the pattern "%s" %s match path "%s"',
                 $pattern->path,
                 $shouldMatch ? 'to' : 'to not',
-                $candidate
+                $candidate,
             ));
         }
     }

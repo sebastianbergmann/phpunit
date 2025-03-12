@@ -9,29 +9,36 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Exception;
+use function array_key_last;
+use function array_pop;
+use function count;
+use function preg_match;
+use function preg_quote;
+use function sprintf;
+use function strlen;
+use function substr;
 use RuntimeException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
  * @phpstan-type token array{self::T_*,string}
  */
 final readonly class FileMatcher
 {
-    private const T_BRACKET_OPEN = 'bracket_open';
-    private const T_BRACKET_CLOSE = 'bracket_close';
-    private const T_BANG = 'bang';
-    private const T_HYPHEN = 'hyphen';
-    private const T_ASTERIX = 'asterix';
-    private const T_SLASH = 'slash';
-    private const T_BACKSLASH = 'backslash';
-    private const T_CHAR = 'char';
+    private const T_BRACKET_OPEN    = 'bracket_open';
+    private const T_BRACKET_CLOSE   = 'bracket_close';
+    private const T_BANG            = 'bang';
+    private const T_HYPHEN          = 'hyphen';
+    private const T_ASTERIX         = 'asterix';
+    private const T_SLASH           = 'slash';
+    private const T_BACKSLASH       = 'backslash';
+    private const T_CHAR            = 'char';
     private const T_GREEDY_GLOBSTAR = 'greedy_globstar';
-    private const T_QUERY = 'query';
-    private const T_GLOBSTAR = 'globstar';
-
+    private const T_QUERY           = 'query';
+    private const T_GLOBSTAR        = 'globstar';
 
     public static function match(string $path, FileMatcherPattern $pattern): bool
     {
@@ -39,14 +46,13 @@ final readonly class FileMatcher
 
         $regex = self::toRegEx($pattern->path);
 
-        $result = preg_match($regex, $path) !== 0;
-        return $result;
+        return preg_match($regex, $path) !== 0;
     }
 
     /**
-     * Based on webmozart/glob
+     * Based on webmozart/glob.
      *
-     * @return string The regular expression for matching the glob.
+     * @return string the regular expression for matching the glob
      */
     public static function toRegEx($glob, $flags = 0): string
     {
@@ -65,23 +71,23 @@ final readonly class FileMatcher
                 // literal directory separator
                 self::T_SLASH => '/',
                 self::T_QUERY => '.',
-                self::T_BANG => '^',
+                self::T_BANG  => '^',
 
                 // match any segment up until the next directory separator
-                self::T_ASTERIX => '[^/]*',
+                self::T_ASTERIX         => '[^/]*',
                 self::T_GREEDY_GLOBSTAR => '.*',
-                self::T_GLOBSTAR => '/([^/]+/)*',
-                self::T_BRACKET_OPEN => '[',
-                self::T_BRACKET_CLOSE => ']',
-                self::T_HYPHEN => '-',
-                default => '',
+                self::T_GLOBSTAR        => '/([^/]+/)*',
+                self::T_BRACKET_OPEN    => '[',
+                self::T_BRACKET_CLOSE   => ']',
+                self::T_HYPHEN          => '-',
+                default                 => '',
             };
         }
         $regex .= '(/|$)';
         dump($tokens);
         dump($regex);
 
-        return '{^'.$regex.'}';
+        return '{^' . $regex . '}';
     }
 
     private static function assertIsAbsolute(string $path): void
@@ -89,7 +95,7 @@ final readonly class FileMatcher
         if (substr($path, 0, 1) !== '/') {
             throw new RuntimeException(sprintf(
                 'Path "%s" must be absolute',
-                $path
+                $path,
             ));
         }
     }
@@ -100,21 +106,21 @@ final readonly class FileMatcher
     private static function tokenize(string $glob): array
     {
         $length = strlen($glob);
-        
+
         $tokens = [];
-        
-        for ($i = 0; $i < $length; ++$i) {
+
+        for ($i = 0; $i < $length; $i++) {
             $c = $glob[$i];
-        
+
             $tokens[] = match ($c) {
-                '[' => [self::T_BRACKET_OPEN, $c],
-                ']' => [self::T_BRACKET_CLOSE, $c],
-                '?' => [self::T_QUERY, $c],
-                '-' => [self::T_HYPHEN, $c],
-                '!' => [self::T_BANG, $c],
-                '*' => [self::T_ASTERIX, $c],
-                '/' => [self::T_SLASH, $c],
-                '\\' => [self::T_BACKSLASH, $c],
+                '['     => [self::T_BRACKET_OPEN, $c],
+                ']'     => [self::T_BRACKET_CLOSE, $c],
+                '?'     => [self::T_QUERY, $c],
+                '-'     => [self::T_HYPHEN, $c],
+                '!'     => [self::T_BANG, $c],
+                '*'     => [self::T_ASTERIX, $c],
+                '/'     => [self::T_SLASH, $c],
+                '\\'    => [self::T_BACKSLASH, $c],
                 default => [self::T_CHAR, $c],
             };
         }
@@ -124,12 +130,13 @@ final readonly class FileMatcher
 
     /**
      * @param list<token> $tokens
+     *
      * @return list<token>
      */
     private static function processTokens(array $tokens): array
     {
         $resolved = [];
-        $escaped = false;
+        $escaped  = false;
         $brackets = [];
 
         for ($offset = 0; $offset < count($tokens); $offset++) {
@@ -137,12 +144,14 @@ final readonly class FileMatcher
 
             if ($type === self::T_BACKSLASH && false === $escaped) {
                 $escaped = true;
+
                 continue;
             }
 
             if ($escaped === true) {
                 $resolved[] = [self::T_CHAR, $char];
-                $escaped = false;
+                $escaped    = false;
+
                 continue;
             }
 
@@ -155,10 +164,11 @@ final readonly class FileMatcher
 
                 // we eat the two `*` in addition to the slash
                 $offset += 3;
+
                 continue;
             }
 
-            // greedy globstar (trailing?) 
+            // greedy globstar (trailing?)
             // TODO: this should probably only apply at the end of the string according to the webmozart implementation and therefore would be "T_TRAILING_GLOBSTAR"
             if (
                 $type === self::T_SLASH &&
@@ -168,18 +178,21 @@ final readonly class FileMatcher
 
                 // we eat the two `*` in addition to the slash
                 $offset += 2;
+
                 continue;
             }
 
             if ($type === self::T_ASTERIX && ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX) {
                 $resolved[] = [self::T_CHAR, $char];
                 $resolved[] = [self::T_CHAR, $char];
+
                 continue;
             }
 
             // complementation - only parse BANG if it is at the start of a character group
             if ($type === self::T_BANG && isset($resolved[array_key_last($resolved)]) && $resolved[array_key_last($resolved)][0] === self::T_BRACKET_OPEN) {
                 $resolved[] = [self::T_BANG, '!'];
+
                 continue;
             }
 
@@ -187,6 +200,7 @@ final readonly class FileMatcher
             // to a literal char
             if ($type === self::T_BANG) {
                 $resolved[] = [self::T_CHAR, $char];
+
                 continue;
             }
 
@@ -194,17 +208,21 @@ final readonly class FileMatcher
                 $resolved[] = [self::T_BRACKET_OPEN, $char];
                 $brackets[] = array_key_last($resolved);
                 $resolved[] = [self::T_CHAR, $char];
+
                 continue;
             }
+
             if ($type === self::T_BRACKET_OPEN) {
                 $resolved[] = [$type, $char];
                 $brackets[] = array_key_last($resolved);
+
                 continue;
             }
 
             if ($type === self::T_BRACKET_CLOSE) {
                 array_pop($brackets);
                 $resolved[] = [$type, $char];
+
                 continue;
             }
 
