@@ -2676,7 +2676,7 @@ abstract class Assert
         self::assertIsString($actualJson);
         self::assertJson($actualJson, $message);
 
-        self::assertThat($actualJson, LogicalNot(new JsonMatches($expectedJson)), $message);
+        self::assertThat($actualJson, self::logicalNot(new JsonMatches($expectedJson)), $message);
     }
 
     /**
