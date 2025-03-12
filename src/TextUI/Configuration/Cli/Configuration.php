@@ -1867,7 +1867,7 @@ final readonly class Configuration
      */
     public function testdoxPrinter(): bool
     {
-        if (!$this->hasTestdoxPrinter()) {
+        if (!$this->hasTestDoxPrinter()) {
             throw new Exception;
         }
 
@@ -1887,7 +1887,7 @@ final readonly class Configuration
      */
     public function testdoxPrinterSummary(): bool
     {
-        if (!$this->hasTestdoxPrinterSummary()) {
+        if (!$this->hasTestDoxPrinterSummary()) {
             throw new Exception;
         }
 
