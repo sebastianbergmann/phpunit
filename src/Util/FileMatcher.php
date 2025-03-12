@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use function array_key_last;
 use function array_pop;
 use function count;
+use function ctype_alpha;
 use function preg_match;
 use function preg_quote;
 use function sprintf;
@@ -39,6 +40,8 @@ final readonly class FileMatcher
     private const T_GREEDY_GLOBSTAR = 'greedy_globstar';
     private const T_QUERY           = 'query';
     private const T_GLOBSTAR        = 'globstar';
+    private const T_COLON           = 'colon';
+    private const T_CHAR_CLASS      = 'char_class';
 
     public static function match(string $path, FileMatcherPattern $pattern): bool
     {
@@ -80,6 +83,7 @@ final readonly class FileMatcher
                 self::T_BRACKET_OPEN    => '[',
                 self::T_BRACKET_CLOSE   => ']',
                 self::T_HYPHEN          => '-',
+                self::T_CHAR_CLASS      => '[:' . $token[1] . ':]',
                 default                 => '',
             };
         }
@@ -121,6 +125,7 @@ final readonly class FileMatcher
                 '*'     => [self::T_ASTERIX, $c],
                 '/'     => [self::T_SLASH, $c],
                 '\\'    => [self::T_BACKSLASH, $c],
+                ':'     => [self::T_COLON, $c],
                 default => [self::T_CHAR, $c],
             };
         }
@@ -135,13 +140,14 @@ final readonly class FileMatcher
      */
     private static function processTokens(array $tokens): array
     {
-        $resolved = [];
-        $escaped  = false;
+        $resolved    = [];
+        $escaped     = false;
         $bracketOpen = false;
-        $brackets = [];
+        $brackets    = [];
 
         for ($offset = 0; $offset < count($tokens); $offset++) {
             [$type, $char] = $tokens[$offset];
+            $nextType      = $tokens[$offset + 1][0] ?? null;
 
             if ($type === self::T_BACKSLASH && false === $escaped) {
                 $escaped = true;
@@ -205,27 +211,50 @@ final readonly class FileMatcher
                 continue;
             }
 
-            if ($type === self::T_BRACKET_OPEN && $tokens[$offset + 1][0] === self::T_BRACKET_CLOSE) {
+            if ($type === self::T_BRACKET_OPEN && $nextType === self::T_BRACKET_CLOSE) {
                 $bracketOpen = true;
-                $resolved[] = [self::T_BRACKET_OPEN, '['];
-                $brackets[] = array_key_last($resolved);
-                $resolved[] = [self::T_CHAR, ']'];
-                $offset += 1;
+                $resolved[]  = [self::T_BRACKET_OPEN, '['];
+                $brackets[]  = array_key_last($resolved);
+                $resolved[]  = [self::T_CHAR, ']'];
+                $offset++;
 
                 continue;
+            }
+
+            if ($bracketOpen && $type === self::T_BRACKET_OPEN && $nextType === self::T_COLON) {
+                // this looks like a named [:character:] class
+                $class = '';
+                $offset += 2;
+
+                // parse the character class name
+                while (ctype_alpha($tokens[$offset][1])) {
+                    $class .= $tokens[$offset++][1];
+                }
+
+                // if followed by a `:` then it's a character class
+                if ($tokens[$offset][0] === self::T_COLON) {
+                    $offset++;
+                    $resolved[] = [self::T_CHAR_CLASS, $class];
+
+                    continue;
+                }
+
+                // otherwise it's a harmless literal
+                $resolved[] = [self::T_CHAR, ':' . $class];
             }
 
             if ($bracketOpen === true && $type === self::T_BRACKET_OPEN) {
                 // if bracket is already open, interpret everything as a
                 // literal char
                 $resolved[] = [self::T_CHAR, $char];
+
                 continue;
             }
 
             if ($bracketOpen === false && $type === self::T_BRACKET_OPEN) {
                 $bracketOpen = true;
-                $resolved[] = [$type, $char];
-                $brackets[] = array_key_last($resolved);
+                $resolved[]  = [$type, $char];
+                $brackets[]  = array_key_last($resolved);
 
                 continue;
             }

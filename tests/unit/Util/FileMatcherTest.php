@@ -302,7 +302,7 @@ class FileMatcherTest extends TestCase
                 '/A' => true,
                 '/B' => true,
 
-                '/Z' => false,
+                '/Z'  => false,
                 '/[c' => false,
             ],
         ];
@@ -503,17 +503,47 @@ class FileMatcherTest extends TestCase
         // [:alnum:]  [:alpha:]  [:blank:]  [:cntrl:]
         // [:digit:]  [:graph:]  [:lower:]  [:print:]
         // [:punct:]  [:space:]  [:upper:]  [:xdigit:]
-        yield 'character class...' => [
-            new FileMatcherPattern('/a/[:alnum:]/c'),
+        yield 'character class [:alnum:]' => [
+            new FileMatcherPattern('/a/[[:alnum:]]/c'),
             [
                 '/a/1/c' => true,
                 '/a/2/c' => true,
                 '/b/!/c' => false,
             ],
-            'Named character classes',
         ];
 
-        // TODO: all of these?
+        yield 'character class [:digit:]' => [
+            new FileMatcherPattern('/a/[[:digit:]]/c'),
+            [
+                '/a/1/c' => true,
+                '/a/2/c' => true,
+                '/b/!/c' => false,
+                '/b/b/c' => false,
+            ],
+        ];
+
+        yield 'multiple character classes' => [
+            new FileMatcherPattern('/a/[[:digit:][:lower:]]/c'),
+            [
+                '/a/1/c' => true,
+                '/a/2/c' => true,
+                '/b/!/c' => false,
+                '/a/b/c' => true,
+            ],
+        ];
+
+        yield 'multiple character classes and range' => [
+            new FileMatcherPattern('/a/[@[:upper:][:lower:]5-7]/c'),
+            [
+                '/a/b/c' => true,
+                '/a/B/c' => true,
+                '/a/5/c' => true,
+                '/a/7/c' => true,
+                '/a/@/c' => true,
+            ],
+        ];
+
+        // TODO: ...
         // Collating symbols, like "[.ch.]" or "[.a-acute.]", where the
         // string between "[." and ".]" is a collating element defined for
         // the current locale.  Note that this may be a multicharacter
@@ -527,7 +557,7 @@ class FileMatcherTest extends TestCase
             'Collating symbols',
         ];
 
-        // TODO: all of these?
+        // TODO: ...
         // Equivalence class expressions, like "[=a=]", where the string
         //        between "[=" and "=]" is any collating element from its
         //        equivalence class, as defined for the current locale.  For
@@ -560,13 +590,6 @@ class FileMatcherTest extends TestCase
         ];
     }
 
-    public function testExceptionIfPathIsNotAbsolute(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Path "foo/bar" must be absolute');
-        FileMatcher::match('foo/bar', new FileMatcherPattern(''));
-    }
-
     /**
      * @param array<FileMatcherPattern,bool> $matchMap
      */
@@ -583,6 +606,13 @@ class FileMatcherTest extends TestCase
         }
 
         self::assertMap($pattern, $matchMap);
+    }
+
+    public function testExceptionIfPathIsNotAbsolute(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Path "foo/bar" must be absolute');
+        FileMatcher::match('foo/bar', new FileMatcherPattern(''));
     }
 
     /**
