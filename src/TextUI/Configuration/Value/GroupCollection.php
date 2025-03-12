@@ -62,7 +62,7 @@ final readonly class GroupCollection implements IteratorAggregate
 
     public function isEmpty(): bool
     {
-        return $this->groups !== [];
+        return $this->groups === [];
     }
 
     public function getIterator(): GroupCollectionIterator

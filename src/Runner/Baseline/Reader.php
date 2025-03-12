@@ -90,8 +90,8 @@ final readonly class Reader
                     $description = $issueElement->textContent;
 
                     assert($line > 0);
-                    assert(!empty($hash));
-                    assert(!empty($description));
+                    assert($hash !== '');
+                    assert($description !== '');
 
                     $baseline->add(Issue::from($file, $line, $hash, $description));
                 }
