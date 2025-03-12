@@ -143,6 +143,7 @@ class FileMatcherTest extends TestCase
         yield 'partial leaf globstar' => [
             new FileMatcherPattern('/foo/emm**'),
             [
+                '/foo/emm**'   => true,
                 '/foo/emmer'   => false,
                 '/foo/emm'     => false,
                 '/foo/emm/bar' => false,

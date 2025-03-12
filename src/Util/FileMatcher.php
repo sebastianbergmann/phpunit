@@ -19,8 +19,9 @@ use function strlen;
 use RuntimeException;
 
 /**
- * FileMatcher attempts to emulate the behavior of PHP's glob function on file
- * paths based on POSIX.2.
+ * FileMatcher ultimately attempts to emulate the behavior `php-file-iterator`
+ * which *mostly* comes down to emulating PHP's glob function on file paths
+ * based on POSIX.2:
  *
  * - https://en.wikipedia.org/wiki/Glob_(programming)
  * - https://man7.org/linux/man-pages/man7/glob.7.html
@@ -189,6 +190,8 @@ final readonly class FileMatcher
                 continue;
             }
 
+            // two consecutive ** which are not surrounded by `/` are invalid and
+            // we interpret them as literals.
             if ($type === self::T_ASTERIX && ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX) {
                 $resolved[] = [self::T_CHAR, $char];
                 $resolved[] = [self::T_CHAR, $char];
@@ -249,7 +252,6 @@ final readonly class FileMatcher
                 $resolved[] = [self::T_CHAR, ':' . $class];
             }
 
-
             // if bracket is already open and we have another open bracket
             // interpret it as a literal
             if ($bracketOpen === true && $type === self::T_BRACKET_OPEN) {
@@ -273,7 +275,6 @@ final readonly class FileMatcher
             //
             // TODO: $bracketOpen === true below is not tested
             if ($bracketOpen === true && $type === self::T_BRACKET_CLOSE) {
-
                 // TODO: this is not tested
                 $bracketOpen = false;
 
