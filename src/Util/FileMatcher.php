@@ -64,6 +64,7 @@ final readonly class FileMatcher
                 // literal directory separator
                 self::T_SLASH => '/',
                 self::T_QUERY => '.',
+                self::T_BANG => '^',
 
                 // match any segment up until the next directory separator
                 self::T_ASTERIX => '[^/]*',
@@ -154,7 +155,8 @@ final readonly class FileMatcher
                 continue;
             }
 
-            // greedy globstar (trailing?)
+            // greedy globstar (trailing?) 
+            // TODO: this should probably only apply at the end of the string according to the webmozart implementation and therefore would be "T_TRAILING_GLOBSTAR"
             if (
                 $type === self::T_SLASH &&
                 ($tokens[$offset + 1][0] ?? null) === self::T_ASTERIX && ($tokens[$offset + 2][0] ?? null) === self::T_ASTERIX
@@ -172,18 +174,32 @@ final readonly class FileMatcher
                 continue;
             }
 
+            // complementation - only parse BANG if it is at the start of a character group
+            if ($type === self::T_BANG && isset($resolved[array_key_last($resolved) - 1]) && $resolved[array_key_last($resolved) - 1][0] === self::T_BRACKET_OPEN) {
+                $resolved[] = [self::T_BANG, '!'];
+                continue;
+            }
+
             if ($type === self::T_BRACKET_OPEN) {
                 $brackets[] = $offset;
+                $resolved[] = [$type, $char];
+                continue;
             }
+
             if ($type === self::T_BRACKET_CLOSE) {
                 array_pop($brackets);
+                $resolved[] = [$type, $char];
+                continue;
             }
 
             $resolved[] = [$type, $char];
         }
+
+        // foreach unterminated bracket replace it with a literal char
         foreach ($brackets as $unterminatedBracket) {
             $resolved[$unterminatedBracket] = [self::T_CHAR, '['];
         }
+
         return $resolved;
     }
 }
