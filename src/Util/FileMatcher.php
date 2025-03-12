@@ -61,8 +61,8 @@ final readonly class FileMatcher
                     $regex .= '-';
                     break;
                 case '!':
-                    // complementation/negation
-                    if ($glob[$i - 1] === '[') {
+                    // complementation/negation: taking into account escaped square brackets
+                    if ($glob[$i - 1] === '[' && ($glob[$i - 2] !== '\\' || ($glob[$i -2] === '\\' && $glob[$i - 3] === '\\'))) {
                         $regex .= '^';
                         break;
                     }
@@ -131,6 +131,7 @@ final readonly class FileMatcher
 
         $regex .= '(/|$)';
 
+        dump($regex);
         return '{^'.$regex.'}';
     }
 

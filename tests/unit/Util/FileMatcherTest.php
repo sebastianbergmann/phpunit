@@ -493,7 +493,12 @@ class FileMatcherTest extends TestCase
                 '/a/[!a-c]/c/d' => true,
                 '/b/[!a-c]/c/d' => false,
             ],
-            'Regex escaping',
+        ];
+        yield 'literal backslash neagted group' => [
+            new FileMatcherPattern('/a/\\\[!a-c]/c'),
+            [
+                '/a/\\d/c' => true,
+            ],
         ];
 
         // TODO: test all the character clases
