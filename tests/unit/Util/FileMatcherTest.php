@@ -293,10 +293,6 @@ class FileMatcherTest extends TestCase
      */
     public static function provideCharacterGroup(): Generator
     {
-        // TODO: POSIX will interpret an unterminated [ group as a literal while
-        //       Regex will crash -- we'd need to look ahead to see if the [ is
-        //       terminated if we continue using Regex.
-        //
         yield 'unterminated char group' => [
             new FileMatcherPattern('/[AB'),
             [
@@ -305,7 +301,26 @@ class FileMatcherTest extends TestCase
                 '/[AB' => true,
                 '/[AB/foo' => true,
             ],
-            'Unterminated square bracket',
+        ];
+        yield 'unterminated char group followed by char group' => [
+            new FileMatcherPattern('/[AB[a-z]'),
+            [
+                '/[' => false,
+                '/[Ac' => false,
+                '/[ABc' => true,
+                '/[ABc/foo' => true,
+            ],
+        ];
+        yield 'multiple unterminated char groups followed by char group' => [
+            new FileMatcherPattern('/[AB[CD[a-z]EF'),
+            [
+                '/[' => false,
+                '/[Ac' => false,
+                '/[AB[C' => false,
+                '/[AB[CD' => false,
+                '/[AB[CDz' => false,
+                '/[AB[CDzEF' => true,
+            ],
         ];
         yield 'single char leaf' => [
             new FileMatcherPattern('/[A]'),

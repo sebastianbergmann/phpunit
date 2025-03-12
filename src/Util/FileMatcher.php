@@ -37,9 +37,10 @@ final readonly class FileMatcher
     {
         self::assertIsAbsolute($glob);
 
-        $inSquare = false;
         $regex = '';
         $length = strlen($glob);
+
+        $brackets = [];
 
         for ($i = 0; $i < $length; ++$i) {
             $c = $glob[$i];
@@ -47,20 +48,20 @@ final readonly class FileMatcher
             switch ($c) {
                 case '[':
                     $regex .= '[';
-                    $inSquare = true;
-                    if (isset($glob[$i + 1]) && '^' === $glob[$i + 1]) {
-                        $regex .= '^';
-                        ++$i;
-                    }
+                    $brackets[] = $i;
                     break;
                 case ']':
-                    $regex .= $inSquare ? ']' : '\\]';
-                    $inSquare = false;
+                    $regex .= ']';
+                    array_pop($brackets);
                     break;
                 case '?':
                     $regex .= '.';
                     break;
+                case '-':
+                    $regex .= '-';
+                    break;
                 case '!':
+                    // complementation/negation
                     if ($glob[$i - 1] === '[') {
                         $regex .= '^';
                         break;
@@ -80,6 +81,7 @@ final readonly class FileMatcher
                     $regex .= '.*';
                     break;
                 case '/':
+                    // code could be refactored - handle globstars
                     if (isset($glob[$i + 3]) && '**/' === $glob[$i + 1].$glob[$i + 2].$glob[$i + 3]) {
                         $regex .= '/([^/]+/)*';
                         $i += 3;
@@ -93,6 +95,8 @@ final readonly class FileMatcher
                     $regex .= '/';
                     break;
                 case '\\':
+                    // escape characters - this code is copy/pasted from webmozart/glob and
+                    // needs revision
                     if (isset($glob[$i + 1])) {
                         switch ($glob[$i + 1]) {
                             case '*':
@@ -113,16 +117,16 @@ final readonly class FileMatcher
                     break;
 
                 default:
-                    $regex .= $c;
+                    $regex .= preg_quote($c);
                     break;
             }
         }
 
-        if ($inSquare) {
-            throw new InvalidArgumentException(sprintf(
-                'Invalid glob: missing ] in %s',
-                $glob
-            ));
+        // escape unterminated brackets
+        $bracketOffset = 0;
+        foreach ($brackets as $offset) {
+            $regex = substr($regex, 0, $offset + $bracketOffset) . '\\' . substr($regex, $offset + $bracketOffset);
+            $bracketOffset++;
         }
 
         $regex .= '(/|$)';
