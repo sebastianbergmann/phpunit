@@ -13,14 +13,18 @@ use function array_key_last;
 use function array_pop;
 use function count;
 use function ctype_alpha;
-use function preg_match;
 use function preg_quote;
 use function sprintf;
 use function strlen;
-use function substr;
 use RuntimeException;
 
 /**
+ * FileMatcher attempts to emulate the behavior of PHP's glob function on file
+ * paths based on POSIX.2.
+ *
+ * - https://en.wikipedia.org/wiki/Glob_(programming)
+ * - https://man7.org/linux/man-pages/man7/glob.7.html
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -43,27 +47,13 @@ final readonly class FileMatcher
     private const T_COLON           = 'colon';
     private const T_CHAR_CLASS      = 'char_class';
 
-    public static function match(string $path, FileMatcherPattern $pattern): bool
-    {
-        self::assertIsAbsolute($path);
-
-        $regex = self::toRegEx($pattern->path);
-
-        return preg_match($regex, $path) !== 0;
-    }
-
     /**
-     * Based on webmozart/glob.
-     *
-     * @return string the regular expression for matching the glob
+     * Compile a regex for the given glob.
      */
-    public static function toRegEx($glob, $flags = 0): string
+    public static function toRegEx(string $glob): FileMatcherRegex
     {
-        self::assertIsAbsolute($glob);
-
         $tokens = self::tokenize($glob);
-
-        $regex = '';
+        $regex  = '';
 
         foreach ($tokens as $token) {
             $type = $token[0];
@@ -84,24 +74,15 @@ final readonly class FileMatcher
                 self::T_BRACKET_CLOSE   => ']',
                 self::T_HYPHEN          => '-',
                 self::T_CHAR_CLASS      => '[:' . $token[1] . ':]',
-                default                 => '',
+                default                 => throw new RuntimeException(sprintf(
+                    'Unhandled token type: %s - this should not happen',
+                    $type,
+                )),
             };
         }
         $regex .= '(/|$)';
-        dump($tokens);
-        dump($regex);
 
-        return '{^' . $regex . '}';
-    }
-
-    private static function assertIsAbsolute(string $path): void
-    {
-        if (substr($path, 0, 1) !== '/') {
-            throw new RuntimeException(sprintf(
-                'Path "%s" must be absolute',
-                $path,
-            ));
-        }
+        return new FileMatcherRegex('{^' . $regex . '}');
     }
 
     /**
