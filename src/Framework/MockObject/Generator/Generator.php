@@ -609,7 +609,7 @@ final class Generator
             if (!in_array($mockClassName['originalClassName'], $additionalInterfaces, true)) {
                 $buffer .= ', ';
 
-                if (!empty($mockClassName['namespaceName'])) {
+                if ($mockClassName['namespaceName'] !== '') {
                     $buffer .= $mockClassName['namespaceName'] . '\\';
                 }
 
@@ -619,7 +619,7 @@ final class Generator
             $buffer .= sprintf(
                 '%s extends %s%s implements %s',
                 $mockClassName['className'],
-                !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
+                $mockClassName['namespaceName'] !== '' ? $mockClassName['namespaceName'] . '\\' : '',
                 $mockClassName['originalClassName'],
                 $interfaces,
             );

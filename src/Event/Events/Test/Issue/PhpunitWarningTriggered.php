@@ -62,7 +62,7 @@ final readonly class PhpunitWarningTriggered implements Event
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 

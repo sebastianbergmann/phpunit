@@ -305,7 +305,7 @@ final readonly class Configuration
      */
     public function hasCliArguments(): bool
     {
-        return !empty($this->cliArguments);
+        return $this->cliArguments !== [];
     }
 
     /**
@@ -1077,7 +1077,7 @@ final readonly class Configuration
      */
     public function hasTestsCovering(): bool
     {
-        return !empty($this->testsCovering);
+        return $this->testsCovering !== null;
     }
 
     /**
@@ -1099,7 +1099,7 @@ final readonly class Configuration
      */
     public function hasTestsUsing(): bool
     {
-        return !empty($this->testsUsing);
+        return $this->testsUsing !== null;
     }
 
     /**
@@ -1121,7 +1121,7 @@ final readonly class Configuration
      */
     public function hasTestsRequiringPhpExtension(): bool
     {
-        return !empty($this->testsRequiringPhpExtension);
+        return $this->testsRequiringPhpExtension !== null;
     }
 
     /**
@@ -1183,7 +1183,7 @@ final readonly class Configuration
      */
     public function hasGroups(): bool
     {
-        return !empty($this->groups);
+        return $this->groups !== [];
     }
 
     /**
@@ -1205,7 +1205,7 @@ final readonly class Configuration
      */
     public function hasExcludeGroups(): bool
     {
-        return !empty($this->excludeGroups);
+        return $this->excludeGroups !== [];
     }
 
     /**

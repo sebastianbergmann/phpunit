@@ -111,7 +111,9 @@ final readonly class Filter
 
     private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
     {
-        return (empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+        return (!isset($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                !is_array($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'] === [] ||
                 !in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) &&
                 !$excludeList->isExcluded($file);
     }

@@ -668,7 +668,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
         }
 
-        if (!empty($calledMethods)) {
+        if ($calledMethods !== []) {
             $emitter->beforeFirstTestMethodFinished(
                 $this->name,
                 ...$calledMethods,
@@ -722,7 +722,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
         }
 
-        if (!empty($calledMethods)) {
+        if ($calledMethods !== []) {
             $emitter->afterLastTestMethodFinished(
                 $this->name,
                 ...$calledMethods,

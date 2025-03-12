@@ -580,49 +580,49 @@ final class Collector
 
     public function hasErroredTests(): bool
     {
-        return !empty($this->testErroredEvents);
+        return $this->testErroredEvents !== [];
     }
 
     public function hasFailedTests(): bool
     {
-        return !empty($this->testFailedEvents);
+        return $this->testFailedEvents !== [];
     }
 
     public function hasRiskyTests(): bool
     {
-        return !empty($this->testConsideredRiskyEvents);
+        return $this->testConsideredRiskyEvents !== [];
     }
 
     public function hasSkippedTests(): bool
     {
-        return !empty($this->testSkippedEvents);
+        return $this->testSkippedEvents !== [];
     }
 
     public function hasIncompleteTests(): bool
     {
-        return !empty($this->testMarkedIncompleteEvents);
+        return $this->testMarkedIncompleteEvents !== [];
     }
 
     public function hasDeprecations(): bool
     {
-        return !empty($this->deprecations) ||
-               !empty($this->phpDeprecations) ||
-               !empty($this->testTriggeredPhpunitDeprecationEvents) ||
-               !empty($this->testRunnerTriggeredDeprecationEvents);
+        return $this->deprecations !== [] ||
+               $this->phpDeprecations !== [] ||
+               $this->testTriggeredPhpunitDeprecationEvents !== [] ||
+               $this->testRunnerTriggeredDeprecationEvents !== [];
     }
 
     public function hasNotices(): bool
     {
-        return !empty($this->notices) ||
-               !empty($this->phpNotices);
+        return $this->notices !== [] ||
+               $this->phpNotices !== [];
     }
 
     public function hasWarnings(): bool
     {
-        return !empty($this->warnings) ||
-               !empty($this->phpWarnings) ||
-               !empty($this->testTriggeredPhpunitWarningEvents) ||
-               !empty($this->testRunnerTriggeredWarningEvents);
+        return $this->warnings !== [] ||
+               $this->phpWarnings !== [] ||
+               $this->testTriggeredPhpunitWarningEvents !== [] ||
+               $this->testRunnerTriggeredWarningEvents !== [];
     }
 
     /**

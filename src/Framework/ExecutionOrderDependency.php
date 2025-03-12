@@ -149,7 +149,7 @@ final class ExecutionOrderDependency implements Stringable
             [$this->className, $this->methodName] = explode('::', $classOrCallableName);
         } else {
             $this->className  = $classOrCallableName;
-            $this->methodName = !empty($methodName) ? $methodName : 'class';
+            $this->methodName = $methodName !== null && $methodName !== '' ? $methodName : 'class';
         }
     }
 

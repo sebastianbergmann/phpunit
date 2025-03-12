@@ -107,7 +107,7 @@ final readonly class PhpWarningTriggered implements Event
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 

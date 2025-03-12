@@ -93,7 +93,7 @@ final class NamePrettifier
             $className = 'UnnamedTests';
         }
 
-        if (!empty($parts)) {
+        if ($parts !== []) {
             $parts[]            = $className;
             $fullyQualifiedName = implode('\\', $parts);
         } else {

@@ -356,7 +356,7 @@ final class ResultPrinter
      */
     private function printIssueList(string $type, array $issues, bool $stackTrace = false): void
     {
-        if (empty($issues)) {
+        if ($issues === []) {
             return;
         }
 
@@ -492,7 +492,7 @@ final class ResultPrinter
                 $number,
                 $title,
                 $body,
-                !empty($body) ? "\n" : '',
+                $body !== '' ? "\n" : '',
             ),
         );
     }
@@ -507,7 +507,7 @@ final class ResultPrinter
                 $number,
                 $title,
                 $body,
-                !empty($body) ? "\n" : '',
+                $body !== '' ? "\n" : '',
             ),
         );
     }
@@ -558,7 +558,7 @@ final class ResultPrinter
                 $issues++;
             }
 
-            if (!empty($testLocation)) {
+            if ($testLocation !== '') {
                 $body .= $testLocation;
             }
 

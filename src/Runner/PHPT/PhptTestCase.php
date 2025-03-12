@@ -297,7 +297,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     public function hasOutput(): bool
     {
-        return !empty($this->output);
+        return $this->output !== '';
     }
 
     public function sortId(): string
@@ -854,7 +854,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 }
             }
 
-            if (!empty($line)) {
+            if ($line !== '') {
                 $previousLine = $line;
             }
         }

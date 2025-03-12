@@ -127,7 +127,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
         $numberOfParameters = $method->numberOfParameters();
         $defaultValues      = $method->defaultParameterValues();
-        $hasDefaultValues   = !empty($defaultValues);
+        $hasDefaultValues   = $defaultValues !== [];
 
         $_valueMap = [];
 

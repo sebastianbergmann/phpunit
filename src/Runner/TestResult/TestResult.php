@@ -410,7 +410,7 @@ final readonly class TestResult
         return $this->hasRiskyTests() ||
                $this->hasIncompleteTests() ||
                $this->hasDeprecations() ||
-               !empty($this->errors) ||
+               $this->errors !== [] ||
                $this->hasNotices() ||
                $this->hasWarnings();
     }
@@ -549,17 +549,17 @@ final readonly class TestResult
 
     public function hasIncompleteTests(): bool
     {
-        return !empty($this->testMarkedIncompleteEvents);
+        return $this->testMarkedIncompleteEvents !== [];
     }
 
     public function hasRiskyTests(): bool
     {
-        return !empty($this->testConsideredRiskyEvents);
+        return $this->testConsideredRiskyEvents !== [];
     }
 
     public function hasSkippedTests(): bool
     {
-        return !empty($this->testSkippedEvents);
+        return $this->testSkippedEvents !== [];
     }
 
     public function hasIssuesIgnoredByBaseline(): bool

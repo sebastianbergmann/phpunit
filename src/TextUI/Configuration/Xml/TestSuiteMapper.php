@@ -49,11 +49,11 @@ final readonly class TestSuiteMapper
             $processed                        = [];
 
             foreach ($configuredTestSuites as $configuredTestSuite) {
-                if (!empty($namesOfIncludedTestSuitesAsArray) && !in_array($configuredTestSuite->name(), $namesOfIncludedTestSuitesAsArray, true)) {
+                if ($namesOfIncludedTestSuitesAsArray !== [] && !in_array($configuredTestSuite->name(), $namesOfIncludedTestSuitesAsArray, true)) {
                     continue;
                 }
 
-                if (!empty($excludedTestSuitesAsArray) && in_array($configuredTestSuite->name(), $excludedTestSuitesAsArray, true)) {
+                if ($excludedTestSuitesAsArray !== [] && in_array($configuredTestSuite->name(), $excludedTestSuitesAsArray, true)) {
                     continue;
                 }
 

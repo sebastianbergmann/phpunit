@@ -95,7 +95,7 @@ final class Color
             }
         }
 
-        if (empty($styles)) {
+        if ($styles === []) {
             return $buffer;
         }
 

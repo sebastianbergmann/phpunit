@@ -70,7 +70,7 @@ final readonly class TestSuiteBuilder
         if (!isset($testSuite)) {
             $xmlConfigurationFile = $configuration->hasConfigurationFile() ? $configuration->configurationFile() : 'Root Test Suite';
 
-            assert(!empty($xmlConfigurationFile));
+            assert($xmlConfigurationFile !== '');
 
             $testSuite = (new TestSuiteMapper)->map(
                 $xmlConfigurationFile,

@@ -40,7 +40,7 @@ final readonly class ThrowableToStringMapper
                 $buffer .= $t->diff();
             }
 
-            if (!empty($buffer)) {
+            if ($buffer !== '') {
                 $buffer = trim($buffer) . "\n";
             }
 

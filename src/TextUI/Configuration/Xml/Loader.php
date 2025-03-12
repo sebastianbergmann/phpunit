@@ -249,7 +249,7 @@ final readonly class Loader
         //  - C:/windows
         //  - c:/windows
         if (defined('PHP_WINDOWS_VERSION_BUILD') &&
-            !empty($path) &&
+            $path !== '' &&
             ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
         }
@@ -1078,7 +1078,7 @@ final readonly class Loader
 
             $name = $element->getAttribute('name');
 
-            assert(!empty($name));
+            assert($name !== '');
 
             $testSuites[] = new TestSuiteConfiguration(
                 $name,

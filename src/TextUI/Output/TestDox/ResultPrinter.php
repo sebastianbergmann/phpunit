@@ -217,14 +217,14 @@ final readonly class ResultPrinter
         $stackTrace = $this->formatStackTrace($throwable->stackTrace());
         $diff       = '';
 
-        if (!empty($message) && $this->colors) {
+        if ($message !== '' && $this->colors) {
             ['message' => $message, 'diff' => $diff] = $this->colorizeMessageAndDiff(
                 $message,
                 $this->messageColorFor($test->status()),
             );
         }
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $this->printer->print(
                 $this->prefixLines(
                     $this->prefixFor('message', $test->status()),
@@ -235,7 +235,7 @@ final readonly class ResultPrinter
             $this->printer->print(PHP_EOL);
         }
 
-        if (!empty($diff)) {
+        if ($diff !== '') {
             $this->printer->print(
                 $this->prefixLines(
                     $this->prefixFor('diff', $test->status()),
@@ -246,8 +246,8 @@ final readonly class ResultPrinter
             $this->printer->print(PHP_EOL);
         }
 
-        if (!empty($stackTrace)) {
-            if (!empty($message) || !empty($diff)) {
+        if ($stackTrace !== '') {
+            if ($message !== '' || $diff !== '') {
                 $prefix = $this->prefixFor('default', $test->status());
             } else {
                 $prefix = $this->prefixFor('trace', $test->status());
@@ -292,7 +292,7 @@ final readonly class ResultPrinter
         $message = implode(PHP_EOL, $message);
         $diff    = implode(PHP_EOL, $diff);
 
-        if (!empty($message)) {
+        if ($message !== '') {
             // Testdox output has a left-margin of 5; keep right-margin to prevent terminal scrolling
             $message = Color::colorizeTextBox($style, $message, $this->columns - 7);
         }
@@ -441,7 +441,7 @@ final readonly class ResultPrinter
      */
     private function printBeforeClassOrAfterClassErrors(string $type, array $errors): void
     {
-        if (empty($errors)) {
+        if ($errors === []) {
             return;
         }
 

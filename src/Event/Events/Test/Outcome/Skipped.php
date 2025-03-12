@@ -52,7 +52,7 @@ final readonly class Skipped implements Event
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 

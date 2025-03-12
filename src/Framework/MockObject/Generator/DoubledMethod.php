@@ -204,15 +204,22 @@ EOT;
 
         if (str_contains($this->argumentsForCall, '...')) {
             $argumentsCount = null;
-        } elseif (!empty($this->argumentsForCall)) {
+        } elseif ($this->argumentsForCall !== '') {
             $argumentsCount = substr_count($this->argumentsForCall, ',') + 1;
+        }
+
+        $returnDeclaration  = '';
+        $returnTypeAsString = $this->returnType->asString();
+
+        if ($returnTypeAsString !== '') {
+            $returnDeclaration = ': ' . $returnTypeAsString;
         }
 
         $template->setVar(
             [
                 'arguments_decl'     => $this->argumentsForDeclaration,
                 'arguments_call'     => $this->argumentsForCall,
-                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
+                'return_declaration' => $returnDeclaration,
                 'return_type'        => $this->returnType->asString(),
                 'arguments_count'    => (string) $argumentsCount,
                 'class_name'         => $this->className,

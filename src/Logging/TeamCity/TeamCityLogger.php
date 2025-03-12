@@ -402,7 +402,7 @@ final class TeamCityLogger
 
         $buffer = $throwable->className();
 
-        if (!empty($throwable->message())) {
+        if ($throwable->message() !== '') {
             $buffer .= ': ' . $throwable->message();
         }
 

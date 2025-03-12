@@ -70,7 +70,7 @@ final readonly class BeforeTestMethodErrored implements Event
     {
         $message = $this->throwable->message();
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 

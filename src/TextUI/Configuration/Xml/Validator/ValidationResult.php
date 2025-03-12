@@ -56,7 +56,7 @@ final readonly class ValidationResult
 
     public function hasValidationErrors(): bool
     {
-        return !empty($this->validationErrors);
+        return $this->validationErrors !== [];
     }
 
     public function asString(): string

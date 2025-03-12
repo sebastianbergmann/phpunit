@@ -333,7 +333,7 @@ final class TestSuiteSorter
             } else {
                 $i++;
             }
-        } while (!empty($tests) && ($i < count($tests)));
+        } while ($tests !== [] && ($i < count($tests)));
 
         return array_merge($newTestOrder, $tests);
     }

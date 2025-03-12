@@ -161,7 +161,9 @@ final readonly class GlobalState
         }
 
         foreach (array_reverse($files) as $file) {
-            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
+            if (isset($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
+                is_array($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
+                $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'] !== [] &&
                 in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) {
                 continue;
             }

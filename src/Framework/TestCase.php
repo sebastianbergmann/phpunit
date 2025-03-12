@@ -689,7 +689,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function hasDependencyInput(): bool
     {
-        return !empty($this->dependencyInput);
+        return $this->dependencyInput !== [];
     }
 
     /**
@@ -813,7 +813,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function usesDataProvider(): bool
     {
-        return !empty($this->data);
+        return $this->data !== [];
     }
 
     /**
@@ -831,7 +831,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $buffer = '';
 
-        if (!empty($this->data)) {
+        if ($this->data !== []) {
             if (is_int($this->dataName)) {
                 $buffer .= sprintf(' with data set #%d', $this->dataName);
             } else {
@@ -1362,7 +1362,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->methodName,
         );
 
-        if (!empty($missingRequirements)) {
+        if ($missingRequirements !== []) {
             $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
         }
     }
@@ -2101,7 +2101,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        if (!empty($methodsInvoked)) {
+        if ($methodsInvoked !== []) {
             $emitter->{$finishedMethod}(
                 $test,
                 ...$methodsInvoked

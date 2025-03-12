@@ -36,7 +36,7 @@ final readonly class ChildProcessResultProcessor
 
     public function process(Test $test, string $serializedProcessResult, string $stderr): void
     {
-        if (!empty($stderr)) {
+        if ($stderr !== '') {
             $exception = new Exception(trim($stderr));
 
             assert($test instanceof TestCase);
