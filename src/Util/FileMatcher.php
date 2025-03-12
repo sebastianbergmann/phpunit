@@ -128,6 +128,7 @@ final readonly class FileMatcher
     {
         $resolved = [];
         $escaped = false;
+        $brackets = [];
         for ($offset = 0; $offset < count($tokens); $offset++) {
             [$type, $char] = $tokens[$offset];
 
@@ -171,7 +172,17 @@ final readonly class FileMatcher
                 continue;
             }
 
+            if ($type === self::T_BRACKET_OPEN) {
+                $brackets[] = $offset;
+            }
+            if ($type === self::T_BRACKET_CLOSE) {
+                array_pop($brackets);
+            }
+
             $resolved[] = [$type, $char];
+        }
+        foreach ($brackets as $unterminatedBracket) {
+            $resolved[$unterminatedBracket] = [self::T_CHAR, '['];
         }
         return $resolved;
     }
