@@ -14,9 +14,7 @@ use function array_pop;
 use function count;
 use function ctype_alpha;
 use function preg_quote;
-use function sprintf;
 use function strlen;
-use RuntimeException;
 
 /**
  * FileMatcher ultimately attempts to emulate the behavior `php-file-iterator`
@@ -90,11 +88,9 @@ final readonly class FileMatcher
                 self::T_BRACKET_OPEN    => '[',
                 self::T_BRACKET_CLOSE   => ']',
                 self::T_HYPHEN          => '-',
+                self::T_COLON           => ':',
+                self::T_BACKSLASH       => '\\',
                 self::T_CHAR_CLASS      => '[:' . $token[1] . ':]',
-                default                 => throw new RuntimeException(sprintf(
-                    'Unhandled token type: %s - this should not happen',
-                    $type,
-                )),
             };
         }
         $regex .= '(/|$)';

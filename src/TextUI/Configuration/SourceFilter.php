@@ -38,9 +38,10 @@ final class SourceFilter
     public static function instance(): self
     {
         if (self::$instance === null) {
-            $source = Registry::get()->source();
+            $source         = Registry::get()->source();
+            self::$instance = new self($source);
 
-            return new self($source);
+            return self::$instance;
         }
 
         return self::$instance;
