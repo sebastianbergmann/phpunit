@@ -588,9 +588,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             throw new InvalidPhptFileException;
         }
 
-        foreach ($unsupportedSections as $section) {
-            if (isset($sections[$section])) {
-                throw new UnsupportedPhptSectionException($section);
+        foreach ($unsupportedSections as $unsupportedSection) {
+            if (isset($sections[$unsupportedSection])) {
+                throw new UnsupportedPhptSectionException($unsupportedSection);
             }
         }
 
