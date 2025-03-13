@@ -264,12 +264,12 @@ final class TestSuiteSorter
         $priorityA = $this->defectSortOrder[$a->sortId()] ?? 0;
         $priorityB = $this->defectSortOrder[$b->sortId()] ?? 0;
 
-        if ($priorityB <=> $priorityA) {
+        if (($priorityB <=> $priorityA) > 0) {
             // Sort defect weight descending
             return $priorityB <=> $priorityA;
         }
 
-        if ($priorityA || $priorityB) {
+        if ($priorityA > 0 || $priorityB > 0) {
             return $this->cmpDuration($a, $b);
         }
 

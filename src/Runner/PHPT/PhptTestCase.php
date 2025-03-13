@@ -441,7 +441,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
 
-        if (!strncasecmp('skip', ltrim($output), 4)) {
+        if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
 
             if (preg_match('/^\s*skip\s*(.+)\s*/i', $output, $skipMatch)) {
