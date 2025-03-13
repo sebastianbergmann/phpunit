@@ -1354,7 +1354,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function checkRequirements(): void
     {
-        if (!$this->methodName || !method_exists($this, $this->methodName)) {
+        if ($this->methodName === '' || !method_exists($this, $this->methodName)) {
             return;
         }
 
@@ -1770,7 +1770,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
-        if ($before != $after) {
+        if ($before !== $after) {
             $differ = new Differ(new UnifiedDiffOutputBuilder($header));
 
             Event\Facade::emitter()->testConsideredRisky(

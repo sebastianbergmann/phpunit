@@ -94,7 +94,7 @@ abstract class Constraint implements Countable, SelfDescribing
 
         $additionalFailureDescription = $this->additionalFailureDescription($other);
 
-        if ($additionalFailureDescription) {
+        if ($additionalFailureDescription !== '') {
             $failureDescription .= "\n" . $additionalFailureDescription;
         }
 

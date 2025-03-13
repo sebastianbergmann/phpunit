@@ -224,7 +224,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             } elseif ($e instanceof ExpectationFailedException) {
                 $comparisonFailure = $e->getComparisonFailure();
 
-                if ($comparisonFailure) {
+                if ($comparisonFailure !== null) {
                     $diff = $comparisonFailure->getDiff();
                 } else {
                     $diff = $e->getMessage();
@@ -238,7 +238,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                     (string) $trace[0]['file'],
                     (int) $trace[0]['line'],
                     $trace,
-                    $comparisonFailure ? $diff : '',
+                    $comparisonFailure !== null ? $diff : '',
                 );
             }
 

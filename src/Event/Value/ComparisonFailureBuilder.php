@@ -28,7 +28,7 @@ final readonly class ComparisonFailureBuilder
             return null;
         }
 
-        if (!$t->getComparisonFailure()) {
+        if ($t->getComparisonFailure() === null) {
             return null;
         }
 
