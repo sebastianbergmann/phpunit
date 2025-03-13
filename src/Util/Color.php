@@ -138,7 +138,7 @@ final class Color
             $last        = count($path) - 1;
             $path[$last] = preg_replace_callback(
                 '/([\-_.]+|phpt$)/',
-                static fn ($matches) => self::dim($matches[0]),
+                static fn (array $matches) => self::dim($matches[0]),
                 $path[$last],
             );
         }
@@ -161,7 +161,7 @@ final class Color
 
         return preg_replace_callback(
             '/\s+/',
-            static fn ($matches) => self::dim(strtr($matches[0], $replaceMap)),
+            static fn (array $matches) => self::dim(strtr($matches[0], $replaceMap)),
             $buffer,
         );
     }

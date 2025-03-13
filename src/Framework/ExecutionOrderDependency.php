@@ -85,7 +85,7 @@ final class ExecutionOrderDependency implements Stringable
     public static function mergeUnique(array $existing, array $additional): array
     {
         $existingTargets = array_map(
-            static fn ($dependency) => $dependency->getTarget(),
+            static fn (ExecutionOrderDependency $dependency) => $dependency->getTarget(),
             $existing,
         );
 
@@ -121,7 +121,7 @@ final class ExecutionOrderDependency implements Stringable
 
         $diff         = [];
         $rightTargets = array_map(
-            static fn ($dependency) => $dependency->getTarget(),
+            static fn (ExecutionOrderDependency $dependency) => $dependency->getTarget(),
             $right,
         );
 
