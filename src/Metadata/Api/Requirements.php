@@ -70,9 +70,15 @@ final readonly class Requirements
             if ($metadata->isRequiresPhpExtension()) {
                 assert($metadata instanceof RequiresPhpExtension);
 
+                $extensionVersion = phpversion($metadata->extension());
+
+                if ($extensionVersion === false) {
+                    $extensionVersion = '';
+                }
+
                 if (!extension_loaded($metadata->extension()) ||
                     ($metadata->hasVersionRequirement() &&
-                        !$metadata->versionRequirement()->isSatisfiedBy(phpversion($metadata->extension()) ?: ''))) {
+                    !$metadata->versionRequirement()->isSatisfiedBy($extensionVersion))) {
                     $notSatisfied[] = sprintf(
                         'PHP extension %s%s is required.',
                         $metadata->extension(),

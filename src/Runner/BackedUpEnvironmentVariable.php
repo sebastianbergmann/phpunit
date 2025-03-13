@@ -40,9 +40,15 @@ final readonly class BackedUpEnvironmentVariable
      */
     public static function create(string $name): array
     {
+        $getenv = getenv($name);
+
+        if ($getenv === false) {
+            $getenv = null;
+        }
+
         return [
             new self(self::FROM_SUPERGLOBAL, $name, $_ENV[$name] ?? null),
-            new self(self::FROM_GETENV, $name, getenv($name) ?: null),
+            new self(self::FROM_GETENV, $name, $getenv),
         ];
     }
 

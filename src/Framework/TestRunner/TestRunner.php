@@ -283,7 +283,7 @@ final class TestRunner
             return false;
         }
 
-        if (!(($this->configuration->defaultTimeLimit() || $test->size()->isKnown()))) {
+        if (!(($this->configuration->defaultTimeLimit() > 0 || $test->size()->isKnown()))) {
             return false;
         }
 
