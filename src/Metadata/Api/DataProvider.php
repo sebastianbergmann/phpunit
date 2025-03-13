@@ -139,7 +139,7 @@ final readonly class DataProvider
                 $className  = $_dataProvider->className();
                 $methodName = $_dataProvider->methodName();
 
-                /** @phpstan-ignore method.dynamicName */
+                /** @phpstan-ignore staticMethod.dynamicName */
                 $data = $className::$methodName();
             } catch (Throwable $e) {
                 Event\Facade::emitter()->dataProviderMethodFinished(

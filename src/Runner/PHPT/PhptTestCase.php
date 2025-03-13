@@ -405,6 +405,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
                 $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
+                /** @phpstan-ignore staticMethod.dynamicName */
                 Assert::$sectionAssertion($expected, $actual);
 
                 return;
