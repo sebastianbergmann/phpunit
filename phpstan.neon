@@ -25,6 +25,13 @@ parameters:
         switchConditionsMatchingType: true
         uselessCast: true
 
+    type_coverage:
+        declare: 100
+        return: 100
+        param: 100
+        property: 100
+        constant: 100
+
     ignoreErrors:
         # ignore errors caused by defensive programming
         - '#Call to function assert\(\) with true will always evaluate to true.#'
