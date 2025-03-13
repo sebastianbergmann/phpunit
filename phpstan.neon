@@ -5,6 +5,26 @@ parameters:
 
     treatPhpDocTypesAsCertain: false
 
+    strictRules:
+        allRules: false
+        booleansInConditions: true
+        closureUsesThis: true
+        disallowedBacktick: true
+        disallowedEmpty: true
+        disallowedImplicitArrayCreation: true
+        disallowedLooseComparison: true
+        disallowedShortTernary: true
+        illegalConstructorMethodCall: true
+        matchingInheritedMethodNames: true
+        noVariableVariables: true
+        numericOperandsInArithmeticOperators: true
+        overwriteVariablesWithLoop: true
+        requireParentConstructorCall: true
+        strictArrayFilter: true
+        strictFunctionCalls: true
+        switchConditionsMatchingType: true
+        uselessCast: true
+
     ignoreErrors:
         # ignore errors caused by defensive programming
         - '#Call to function assert\(\) with true will always evaluate to true.#'
