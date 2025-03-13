@@ -89,7 +89,7 @@ final class NamePrettifier
             $className = substr($className, strlen('Test'));
         }
 
-        if (empty($className)) {
+        if ($className === '') {
             $className = 'UnnamedTests';
         }
 

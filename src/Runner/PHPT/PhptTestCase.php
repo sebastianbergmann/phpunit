@@ -569,7 +569,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 continue;
             }
 
-            if (empty($section)) {
+            if ($section === '') {
                 throw new InvalidPhptFileException;
             }
 
@@ -880,7 +880,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     {
         $needle = trim($needle);
 
-        if (empty($needle)) {
+        if ($needle === '') {
             return [[
                 'file' => realpath($this->filename),
                 'line' => 1,

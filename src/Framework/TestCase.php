@@ -847,7 +847,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function dataSetAsStringWithData(): string
     {
-        if (empty($this->data)) {
+        if ($this->data === []) {
             return '';
         }
 

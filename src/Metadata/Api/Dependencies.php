@@ -43,7 +43,7 @@ final readonly class Dependencies
 
             assert($metadata instanceof DependsOnMethod);
 
-            if (empty($metadata->methodName())) {
+            if ($metadata->methodName() === '') {
                 $dependencies[] = ExecutionOrderDependency::invalid();
 
                 continue;

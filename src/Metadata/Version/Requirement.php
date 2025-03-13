@@ -42,7 +42,7 @@ abstract readonly class Requirement
                 return new ComparisonRequirement(
                     $matches['version'],
                     new VersionComparisonOperator(
-                        !empty($matches['operator']) ? $matches['operator'] : '>=',
+                        $matches['operator'] !== '' ? $matches['operator'] : '>=',
                     ),
                 );
             }

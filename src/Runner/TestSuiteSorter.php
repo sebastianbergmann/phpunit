@@ -136,7 +136,7 @@ final class TestSuiteSorter
 
     private function sort(TestSuite $suite, int $order, bool $resolveDependencies, int $orderDefects): void
     {
-        if (empty($suite->tests())) {
+        if ($suite->tests() === []) {
             return;
         }
 

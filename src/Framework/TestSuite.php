@@ -579,7 +579,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     {
         $message = $t->getMessage();
 
-        if (empty(trim($message))) {
+        if (trim($message) === '') {
             $message = '<no message>';
         }
 
