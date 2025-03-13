@@ -5,6 +5,11 @@ parameters:
 
     treatPhpDocTypesAsCertain: false
 
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    reportAlwaysTrueInLastCondition: true
+    reportPossiblyNonexistentConstantArrayOffset: true
+    reportPossiblyNonexistentGeneralArrayOffset: true
+
     strictRules:
         allRules: false
         booleansInConditions: true
