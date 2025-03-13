@@ -738,7 +738,7 @@ XML;
 
     public function testAssertObjectHasAttributeMultiByteAttribute(): void
     {
-        $object         = new stdClass;
+        $object           = new stdClass;
         $object->{'東京'} = 2020;
 
         $this->assertObjectHasAttribute('東京', $object);
@@ -773,7 +773,7 @@ XML;
 
     public function testAssertObjectNotHasAttributeMultiByteAttribute(): void
     {
-        $object         = new stdClass;
+        $object           = new stdClass;
         $object->{'東京'} = 2020;
 
         $this->assertObjectNotHasAttribute('長野', $object);
