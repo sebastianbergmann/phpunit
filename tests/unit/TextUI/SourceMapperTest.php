@@ -9,19 +9,15 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
-use function realpath;
-use function str_replace;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SourceMapper::class)]
 #[Small]
-final class SourceMapperTest extends TestCase
+final class SourceMapperTest extends AbstractSouceFilterTestCase
 {
     public static function provider(): Generator
     {
@@ -348,52 +344,9 @@ final class SourceMapperTest extends TestCase
         ];
     }
 
-    public static function fixturePath(?string $subPath = null): string
-    {
-        $path = realpath(__DIR__ . '/../../_files/source-filter');
-
-        if ($subPath !== null) {
-            $path = $path . '/' . $subPath;
-        }
-
-        return str_replace('/', DIRECTORY_SEPARATOR, $path);
-    }
-
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expected, Source $source): void
     {
         $this->assertEquals($expected, (new SourceMapper)->map($source));
-    }
-
-    private static function createSource(
-        ?FilterDirectoryCollection $includeDirectories = null,
-        ?FilterDirectoryCollection $excludeDirectories = null,
-        ?FileCollection $includeFiles = null,
-        ?FileCollection $excludeFiles = null,
-    ): Source {
-        return new Source(
-            null,
-            false,
-            $includeDirectories ?? FilterDirectoryCollection::fromArray([]),
-            $includeFiles ?? FileCollection::fromArray([]),
-            $excludeDirectories ?? FilterDirectoryCollection::fromArray([]),
-            $excludeFiles ?? FileCollection::fromArray([]),
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            [
-                'functions' => [],
-                'methods'   => [],
-            ],
-            false,
-            false,
-            false,
-        );
     }
 }

@@ -73,6 +73,7 @@
         "files": [
             "tests/_files/deprecation-trigger/trigger_deprecation.php",
             "tests/unit/Event/AbstractEventTestCase.php",
+            "tests/unit/TextUI/AbstractSouceFilterTestCase.php",
             "tests/unit/Framework/MockObject/TestDoubleTestCase.php",
             "tests/unit/Metadata/Parser/AttributeParserTestCase.php",
             "tests/unit/Framework/Assert/assertContainsOnlyArrayTest.php",
