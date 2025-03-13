@@ -43,6 +43,7 @@ final class IsEmpty extends Constraint
             return count($other) === 0;
         }
 
+        /** @phpstan-ignore empty.notAllowed */
         return empty($other);
     }
 
