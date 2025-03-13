@@ -12,7 +12,7 @@ final class GeneratedConfig
 	public const EXTENSIONS = array (
   'phpstan/phpstan-strict-rules' => 
   array (
-    'install_path' => '/usr/local/src/phpunit/tools/phpstan/vendor/phpstan/phpstan-strict-rules',
+    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/phpstan/phpstan-strict-rules',
     'relative_install_path' => '../../phpstan-strict-rules',
     'extra' => 
     array (
@@ -23,6 +23,20 @@ final class GeneratedConfig
     ),
     'version' => '2.0.3',
     'phpstanVersionConstraint' => '>=2.0.4.0-dev, <3.0.0.0-dev',
+  ),
+  'tomasvotruba/type-coverage' => 
+  array (
+    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/tomasvotruba/type-coverage',
+    'relative_install_path' => '../../../tomasvotruba/type-coverage',
+    'extra' => 
+    array (
+      'includes' => 
+      array (
+        0 => 'config/extension.neon',
+      ),
+    ),
+    'version' => '2.0.2',
+    'phpstanVersionConstraint' => '>=2.0.0.0-dev, <3.0.0.0-dev',
   ),
 );
 
