@@ -68,7 +68,7 @@ final readonly class FileMatcher
     /**
      * @param list<token> $tokens
      */
-    public static function mapToRegex(array $tokens): FileMatcherRegex
+    private static function mapToRegex(array $tokens): FileMatcherRegex
     {
         $regex = '';
 
