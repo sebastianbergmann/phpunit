@@ -966,10 +966,6 @@ final class Builder
             $iniSettings = null;
         }
 
-        if ($coverageFilter === []) {
-            $coverageFilter = null;
-        }
-
         if ($extensions === []) {
             $extensions = null;
         }
