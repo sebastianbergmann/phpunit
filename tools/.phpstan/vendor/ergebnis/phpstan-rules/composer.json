@@ -1,0 +1,76 @@
+{
+  "name": "ergebnis/phpstan-rules",
+  "description": "Provides rules for phpstan/phpstan.",
+  "license": "MIT",
+  "type": "phpstan-extension",
+  "keywords": [
+    "phpstan",
+    "phpstan-rules"
+  ],
+  "authors": [
+    {
+      "name": "Andreas Möller",
+      "email": "am@localheinz.com",
+      "homepage": "https://localheinz.com"
+    }
+  ],
+  "homepage": "https://github.com/ergebnis/phpstan-rules",
+  "support": {
+    "issues": "https://github.com/ergebnis/phpstan-rules/issues",
+    "source": "https://github.com/ergebnis/phpstan-rules",
+    "security": "https://github.com/ergebnis/phpstan-rules/blob/main/.github/SECURITY.md"
+  },
+  "require": {
+    "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+    "ext-mbstring": "*",
+    "phpstan/phpstan": "^2.0.0"
+  },
+  "require-dev": {
+    "doctrine/orm": "^2.20.0 || ^3.3.0",
+    "ergebnis/composer-normalize": "^2.45.0",
+    "ergebnis/license": "^2.6.0",
+    "ergebnis/php-cs-fixer-config": "^6.43.0",
+    "ergebnis/phpunit-slow-test-detector": "^2.18.0",
+    "nette/di": "^3.1.10",
+    "phpstan/extension-installer": "^1.4.3",
+    "phpstan/phpstan-deprecation-rules": "^2.0.1",
+    "phpstan/phpstan-phpunit": "^2.0.4",
+    "phpstan/phpstan-strict-rules": "^2.0.3",
+    "phpunit/phpunit": "^9.6.21",
+    "psr/container": "^2.0.2",
+    "symfony/finder": "^5.4.45",
+    "symfony/process": "^5.4.47"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ergebnis\\PHPStan\\Rules\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Ergebnis\\PHPStan\\Rules\\Test\\": "test/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true,
+      "infection/extension-installer": true,
+      "phpstan/extension-installer": true
+    },
+    "audit": {
+      "abandoned": "report"
+    },
+    "platform": {
+      "php": "7.4.33"
+    },
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "phpstan": {
+      "includes": [
+        "rules.neon"
+      ]
+    }
+  }
+}

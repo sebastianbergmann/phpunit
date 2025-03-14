@@ -30,6 +30,18 @@ parameters:
         switchConditionsMatchingType: true
         uselessCast: true
 
+    ergebnis:
+        allRules: false
+        final:
+            enabled: true
+            classesNotRequiredToBeAbstractOrFinal:
+                - PHPUnit\Framework\Constraint\Count
+                - PHPUnit\Framework\AssertionFailedError
+                - PHPUnit\Framework\Exception
+                - PHPUnit\Framework\TestSuite
+        privateInFinalClass:
+            enabled: true
+
     type_coverage:
         declare: 100
         return: 100

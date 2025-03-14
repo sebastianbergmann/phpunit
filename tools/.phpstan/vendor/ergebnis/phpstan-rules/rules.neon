@@ -1,0 +1,263 @@
+conditionalTags:
+	Ergebnis\PHPStan\Rules\Classes\FinalRule:
+		phpstan.rules.rule: %ergebnis.final.enabled%
+	Ergebnis\PHPStan\Rules\Classes\NoExtendsRule:
+		phpstan.rules.rule: %ergebnis.noExtends.enabled%
+	Ergebnis\PHPStan\Rules\Classes\PHPUnit\Framework\TestCaseWithSuffixRule:
+		phpstan.rules.rule: %ergebnis.testCaseWithSuffix.enabled%
+	Ergebnis\PHPStan\Rules\Closures\NoNullableReturnTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noNullableReturnTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Closures\NoParameterPassedByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noParameterPassedByReference.enabled%
+	Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullableTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullableTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Expressions\NoAssignByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noAssignByReference.enabled%
+	Ergebnis\PHPStan\Rules\Expressions\NoCompactRule:
+		phpstan.rules.rule: %ergebnis.noCompact.enabled%
+	Ergebnis\PHPStan\Rules\Expressions\NoErrorSuppressionRule:
+		phpstan.rules.rule: %ergebnis.noErrorSuppression.enabled%
+	Ergebnis\PHPStan\Rules\Expressions\NoEvalRule:
+		phpstan.rules.rule: %ergebnis.noEval.enabled%
+	Ergebnis\PHPStan\Rules\Expressions\NoIssetRule:
+		phpstan.rules.rule: %ergebnis.noIsset.enabled%
+	Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule:
+		phpstan.rules.rule: %ergebnis.declareStrictTypes.enabled%
+	Ergebnis\PHPStan\Rules\Functions\NoNullableReturnTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noNullableReturnTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Functions\NoParameterPassedByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noParameterPassedByReference.enabled%
+	Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullableTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullableTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullDefaultValueRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullDefaultValue.enabled%
+	Ergebnis\PHPStan\Rules\Functions\NoReturnByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noReturnByReference.enabled%
+	Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule:
+		phpstan.rules.rule: %ergebnis.finalInAbstractClass.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule:
+		phpstan.rules.rule: %ergebnis.noConstructorParameterWithDefaultValue.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoNullableReturnTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noNullableReturnTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoParameterPassedByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noParameterPassedByReference.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoParameterWithContainerTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithContainerTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullableTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullableTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullDefaultValueRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullDefaultValue.enabled%
+	Ergebnis\PHPStan\Rules\Methods\NoReturnByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noReturnByReference.enabled%
+	Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule:
+		phpstan.rules.rule: %ergebnis.privateInFinalClass.enabled%
+	Ergebnis\PHPStan\Rules\Statements\NoSwitchRule:
+		phpstan.rules.rule: %ergebnis.noSwitch.enabled%
+
+parameters:
+	ergebnis:
+		allRules: true
+		declareStrictTypes:
+			enabled: %ergebnis.allRules%
+		final:
+			allowAbstractClasses: true
+			classesNotRequiredToBeAbstractOrFinal: []
+			enabled: %ergebnis.allRules%
+		finalInAbstractClass:
+			enabled: %ergebnis.allRules%
+		noAssignByReference:
+			enabled: %ergebnis.allRules%
+		noCompact:
+			enabled: %ergebnis.allRules%
+		noConstructorParameterWithDefaultValue:
+			enabled: %ergebnis.allRules%
+		noErrorSuppression:
+			enabled: %ergebnis.allRules%
+		noEval:
+			enabled: %ergebnis.allRules%
+		noExtends:
+			classesAllowedToBeExtended: []
+			enabled: %ergebnis.allRules%
+		noIsset:
+			enabled: %ergebnis.allRules%
+		noNullableReturnTypeDeclaration:
+			enabled: %ergebnis.allRules%
+		noParameterPassedByReference:
+			enabled: %ergebnis.allRules%
+		noParameterWithContainerTypeDeclaration:
+			enabled: %ergebnis.allRules%
+			interfacesImplementedByContainers:
+				- Psr\Container\ContainerInterface
+			methodsAllowedToUseContainerTypeDeclarations: []
+		noParameterWithNullableTypeDeclaration:
+			enabled: %ergebnis.allRules%
+		noParameterWithNullDefaultValue:
+			enabled: %ergebnis.allRules%
+		noReturnByReference:
+			enabled: %ergebnis.allRules%
+		noSwitch:
+			enabled: %ergebnis.allRules%
+		privateInFinalClass:
+			enabled: %ergebnis.allRules%
+		testCaseWithSuffix:
+			enabled: %ergebnis.allRules%
+
+parametersSchema:
+	ergebnis: structure([
+		allRules: bool()
+		declareStrictTypes: structure([
+			enabled: bool(),
+		])
+		final: structure([
+			allowAbstractClasses: bool()
+			classesNotRequiredToBeAbstractOrFinal: listOf(string())
+			enabled: bool(),
+		])
+		finalInAbstractClass: structure([
+			enabled: bool(),
+		])
+		noAssignByReference: structure([
+			enabled: bool(),
+		])
+		noCompact: structure([
+			enabled: bool(),
+		])
+		noConstructorParameterWithDefaultValue: structure([
+			enabled: bool(),
+		])
+		noErrorSuppression: structure([
+			enabled: bool(),
+		])
+		noExtends: structure([
+			classesAllowedToBeExtended: listOf(string())
+			enabled: bool(),
+		])
+		noEval: structure([
+			enabled: bool(),
+		])
+		noIsset: structure([
+			enabled: bool(),
+		])
+		noNullableReturnTypeDeclaration: structure([
+			enabled: bool(),
+		])
+		noParameterPassedByReference: structure([
+			enabled: bool(),
+		])
+		noParameterWithContainerTypeDeclaration: structure([
+			enabled: bool(),
+			interfacesImplementedByContainers: listOf(string())
+			methodsAllowedToUseContainerTypeDeclarations: listOf(string())
+		])
+		noParameterWithNullableTypeDeclaration: structure([
+			enabled: bool(),
+		])
+		noParameterWithNullDefaultValue: structure([
+			enabled: bool(),
+		])
+		noReturnByReference: structure([
+			enabled: bool(),
+		])
+		noSwitch: structure([
+			enabled: bool(),
+		])
+		privateInFinalClass: structure([
+			enabled: bool(),
+		])
+		testCaseWithSuffix: structure([
+			enabled: bool(),
+		])
+	])
+
+services:
+	-
+		class: Ergebnis\PHPStan\Rules\Analyzer
+
+	-
+		class: Ergebnis\PHPStan\Rules\Classes\FinalRule
+		arguments:
+			allowAbstractClasses: %ergebnis.final.allowAbstractClasses%
+			classesNotRequiredToBeAbstractOrFinal: %ergebnis.final.classesNotRequiredToBeAbstractOrFinal%
+
+	-
+		class: Ergebnis\PHPStan\Rules\Classes\NoExtendsRule
+		arguments:
+			classesAllowedToBeExtended: %ergebnis.noExtends.classesAllowedToBeExtended%
+
+	-
+		class: Ergebnis\PHPStan\Rules\Classes\PHPUnit\Framework\TestCaseWithSuffixRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Closures\NoNullableReturnTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Closures\NoParameterPassedByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullableTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Expressions\NoAssignByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Expressions\NoCompactRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Expressions\NoErrorSuppressionRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Expressions\NoEvalRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Expressions\NoIssetRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Functions\NoNullableReturnTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Functions\NoParameterPassedByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullableTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullDefaultValueRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Functions\NoReturnByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoNullableReturnTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoParameterPassedByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoParameterWithContainerTypeDeclarationRule
+		arguments:
+			interfacesImplementedByContainers: %ergebnis.noParameterWithContainerTypeDeclaration.interfacesImplementedByContainers%
+			methodsAllowedToUseContainerTypeDeclarations: %ergebnis.noParameterWithContainerTypeDeclaration.methodsAllowedToUseContainerTypeDeclarations%
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullableTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullDefaultValueRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\NoReturnByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Statements\NoSwitchRule
