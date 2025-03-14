@@ -317,7 +317,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
-     * @throws CodeCoverageException
      * @throws Event\RuntimeException
      * @throws Exception
      * @throws InvalidArgumentException

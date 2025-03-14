@@ -23,7 +23,7 @@ use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
+use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
@@ -46,7 +46,6 @@ final class TestRunner
     }
 
     /**
-     * @throws CodeCoverageException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
@@ -168,7 +167,7 @@ final class TestRunner
                     PHP_EOL .
                     $cce->getMessage(),
                 );
-            } catch (OriginalCodeCoverageException $cce) {
+            } catch (CodeCoverageException $cce) {
                 $error = true;
 
                 $e = $e ?? $cce;

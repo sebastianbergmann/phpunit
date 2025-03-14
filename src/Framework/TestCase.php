@@ -325,7 +325,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\Template\InvalidArgumentException
-     * @throws CodeCoverageException
      * @throws Exception
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
