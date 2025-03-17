@@ -183,12 +183,19 @@ final class ResultPrinter
         }
 
         $elements = [];
+        $messages = [];
 
         foreach ($result->testRunnerTriggeredWarningEvents() as $event) {
+            if (isset($messages[$event->message()])) {
+                continue;
+            }
+
             $elements[] = [
                 'title' => $event->message(),
                 'body'  => '',
             ];
+
+            $messages[$event->message()] = true;
         }
 
         $this->printListHeaderWithNumber(count($elements), 'PHPUnit test runner warning');
