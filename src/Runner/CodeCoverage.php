@@ -31,6 +31,7 @@ use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
+use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
@@ -123,6 +124,22 @@ final class CodeCoverage
         if (!$configuration->hasCoverageCacheDirectory()) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 'No cache directory configured, result of static analysis for code coverage will not be cached',
+            );
+        }
+
+        if ($configuration->hasCoverageCacheDirectory() && $configuration->includeUncoveredFiles()) {
+            EventFacade::emitter()->testRunnerStartedStaticAnalysisForCodeCoverage();
+
+            $statistics = (new CacheWarmer)->warmCache(
+                $configuration->coverageCacheDirectory(),
+                !$configuration->disableCodeCoverageIgnore(),
+                $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
+                $codeCoverageFilterRegistry->get(),
+            );
+
+            EventFacade::emitter()->testRunnerFinishedStaticAnalysisForCodeCoverage(
+                $statistics['cacheHits'],
+                $statistics['cacheMisses'],
             );
         }
     }

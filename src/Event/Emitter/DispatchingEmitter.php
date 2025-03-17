@@ -1104,6 +1104,34 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testRunnerStartedStaticAnalysisForCodeCoverage(): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\StaticAnalysisForCodeCoverageStarted(
+                $this->telemetryInfo(),
+            ),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testRunnerFinishedStaticAnalysisForCodeCoverage(int $cacheHits, int $cacheMisses): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\StaticAnalysisForCodeCoverageFinished(
+                $this->telemetryInfo(),
+                $cacheHits,
+                $cacheMisses,
+            ),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerTriggeredPhpunitDeprecation(string $message): void
     {
         $this->dispatcher->dispatch(

@@ -132,6 +132,73 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($filename, $event->filename());
     }
 
+    public function testTestRunnerStartedStaticAnalysisForCodeCoverageDispatchesStaticAnalysisForCodeCoverageStartedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\StaticAnalysisForCodeCoverageStartedSubscriber
+        {
+            public function notify(TestRunner\StaticAnalysisForCodeCoverageStarted $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\StaticAnalysisForCodeCoverageStartedSubscriber::class,
+            TestRunner\StaticAnalysisForCodeCoverageStarted::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerStartedStaticAnalysisForCodeCoverage();
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+        $this->assertInstanceOf(TestRunner\StaticAnalysisForCodeCoverageStarted::class, $subscriber->lastRecordedEvent());
+    }
+
+    public function testTestRunnerFinishedStaticAnalysisForCodeCoverageDispatchesStaticAnalysisForCodeCoverageFinishedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\StaticAnalysisForCodeCoverageFinishedSubscriber
+        {
+            public function notify(TestRunner\StaticAnalysisForCodeCoverageFinished $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\StaticAnalysisForCodeCoverageFinishedSubscriber::class,
+            TestRunner\StaticAnalysisForCodeCoverageFinished::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $cacheHits   = 1;
+        $cacheMisses = 2;
+
+        $emitter->testRunnerFinishedStaticAnalysisForCodeCoverage($cacheHits, $cacheMisses);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\StaticAnalysisForCodeCoverageFinished::class, $event);
+
+        $this->assertSame($cacheHits, $event->cacheHits());
+        $this->assertSame($cacheMisses, $event->cacheMisses());
+    }
+
     public function testComparatorRegisteredDispatchesComparatorRegisteredEvent(): void
     {
         $className = self::class;

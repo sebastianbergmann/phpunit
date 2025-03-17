@@ -26,6 +26,8 @@ PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (1 test)
+Static Analysis for Code Coverage Started
+Static Analysis for Code Coverage Finished (%d cache hits, %d cache misses)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)

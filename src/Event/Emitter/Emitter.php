@@ -245,6 +245,10 @@ interface Emitter
 
     public function testRunnerFinishedChildProcess(string $stdout, string $stderr): void;
 
+    public function testRunnerStartedStaticAnalysisForCodeCoverage(): void;
+
+    public function testRunnerFinishedStaticAnalysisForCodeCoverage(int $cacheHits, int $cacheMisses): void;
+
     public function testRunnerTriggeredPhpunitDeprecation(string $message): void;
 
     public function testRunnerTriggeredPhpunitWarning(string $message): void;

@@ -236,6 +236,8 @@ final class Facade
             TestRunner\GarbageCollectionEnabled::class,
             TestRunner\ChildProcessFinished::class,
             TestRunner\ChildProcessStarted::class,
+            TestRunner\StaticAnalysisForCodeCoverageFinished::class,
+            TestRunner\StaticAnalysisForCodeCoverageStarted::class,
 
             TestSuite\Filtered::class,
             TestSuite\Finished::class,
