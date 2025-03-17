@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "830e689ecc0109ed4b1c5e93f126f960",
+    "content-hash": "9486dd35924bb212a37699b59e89c89c",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -244,16 +244,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "12.0.5",
+            "version": "12.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "da732486790670c622aa367eb3dbb7e1619e68be"
+                "reference": "d8ea53e372b9010de6cb4b47175a8d1f679c5b14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/da732486790670c622aa367eb3dbb7e1619e68be",
-                "reference": "da732486790670c622aa367eb3dbb7e1619e68be",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/d8ea53e372b9010de6cb4b47175a8d1f679c5b14",
+                "reference": "d8ea53e372b9010de6cb4b47175a8d1f679c5b14",
                 "shasum": ""
             },
             "require": {
@@ -280,7 +280,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "12.0.x-dev"
+                    "dev-main": "12.1.x-dev"
                 }
             },
             "autoload": {
@@ -309,7 +309,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.0.5"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/12.1.0"
             },
             "funding": [
                 {
@@ -317,7 +317,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-15T07:24:51+00:00"
+            "time": "2025-03-17T13:49:22+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
