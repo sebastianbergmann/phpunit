@@ -435,6 +435,12 @@ final readonly class Merger
             $strictCoverage = $xmlConfiguration->phpunit()->beStrictAboutCoverageMetadata();
         }
 
+        if ($cliConfiguration->hasSkipCoversNothing()) {
+            $skipCoversNothing = $cliConfiguration->skipCoversNothing();
+        } else {
+            $skipCoversNothing = false;
+        }
+
         if ($cliConfiguration->hasDisallowTestOutput()) {
             $disallowTestOutput = $cliConfiguration->disallowTestOutput();
         } else {
@@ -858,6 +864,7 @@ final readonly class Merger
             $timeoutForLargeTests,
             $reportUselessTests,
             $strictCoverage,
+            $skipCoversNothing,
             $disallowTestOutput,
             $displayDetailsOnIncompleteTests,
             $displayDetailsOnSkippedTests,

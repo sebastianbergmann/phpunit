@@ -215,6 +215,18 @@ final class TestRunner
             );
         }
 
+        $isCoversNothing = (bool) MetadataRegistry::parser()->forClassAndMethod($test::class, $test->name())->isCoversNothing()->count();
+
+        if ($this->configuration->skipCoversNothing() && $isCoversNothing) {
+            Facade::emitter()->testSkipped(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    'This test skipped because of --skip-covers-nothing flag: %s',
+                    $test->output(),
+                ),
+            );
+        }
+
         if ($test->wasPrepared()) {
             Facade::emitter()->testFinished(
                 $test->valueObjectForEvents(),

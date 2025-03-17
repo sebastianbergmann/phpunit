@@ -1,4 +1,4 @@
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit 12.1-dev by Sebastian Bergmann and contributors.
 
 Usage:
   phpunit [options] <directory|file> ...
@@ -127,6 +127,7 @@ Code Coverage:
   --path-coverage                    Report path coverage in addition to line coverage
   --disable-coverage-ignore          Disable metadata for ignoring code coverage
   --no-coverage                      Ignore code coverage reporting configured in the XML configuration file
+  --skip-covers-nothing              Skip tests annotated with @coversNothing when generating code coverage report
 
 Miscellaneous:
 

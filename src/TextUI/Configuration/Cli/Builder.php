@@ -124,6 +124,7 @@ final class Builder
         'stop-on-skipped',
         'stop-on-warning',
         'strict-coverage',
+        'skip-covers-nothing',
         'disable-coverage-ignore',
         'strict-global-state',
         'teamcity',
@@ -257,6 +258,7 @@ final class Builder
         $reverseList                       = null;
         $stderr                            = null;
         $strictCoverage                    = null;
+        $skipCoversNothing                 = null;
         $teamcityLogfile                   = null;
         $testdoxHtmlFile                   = null;
         $testdoxTextFile                   = null;
@@ -806,6 +808,11 @@ final class Builder
 
                     break;
 
+                case '--skip-covers-nothing':
+                    $skipCoversNothing = true;
+
+                    break;
+
                 case '--disable-coverage-ignore':
                     $disableCodeCoverageIgnore = true;
 
@@ -1052,6 +1059,7 @@ final class Builder
             $reverseList,
             $stderr,
             $strictCoverage,
+            $skipCoversNothing,
             $teamcityLogfile,
             $testdoxHtmlFile,
             $testdoxTextFile,

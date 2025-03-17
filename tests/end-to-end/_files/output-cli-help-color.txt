@@ -182,6 +182,8 @@
                                      coverage
   [32m--no-coverage                     [0m Ignore code coverage reporting configured
                                      in the XML configuration file
+  [32m--skip-covers-nothing             [0m Skip tests annotated with @coversNothing
+                                     when generating code coverage report
 
 [33mMiscellaneous:[0m
 

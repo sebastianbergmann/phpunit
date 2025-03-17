@@ -285,6 +285,7 @@ final class Help
                 ['arg' => '--path-coverage', 'desc' => 'Report path coverage in addition to line coverage'],
                 ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable metadata for ignoring code coverage'],
                 ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage reporting configured in the XML configuration file'],
+                ['arg' => '--skip-covers-nothing', 'desc' => 'Skip tests annotated with @coversNothing when generating code coverage report'],
             ],
         ];
 

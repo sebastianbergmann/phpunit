@@ -2270,4 +2270,24 @@ final class BuilderTest extends TestCase
 
         (new Builder)->fromParameters(['--invalid-option']);
     }
+
+    #[TestDox('--skip-covers-nothing')]
+    public function testSkipCoversNothing(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--skip-covers-nothing']);
+
+        $this->assertTrue($configuration->hasSkipCoversNothing());
+        $this->assertTrue($configuration->skipCoversNothing());
+    }
+
+    public function testSkipCoversNothingMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasSkipCoversNothing());
+
+        $this->expectException(Exception::class);
+
+        $configuration->skipCoversNothing();
+    }
 }
