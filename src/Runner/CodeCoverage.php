@@ -116,6 +116,12 @@ final class CodeCoverage
 
             $this->deactivate();
         }
+
+        if (!$configuration->hasCoverageCacheDirectory()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'No cache directory configured, result of static analysis for code coverage will not be cached',
+            );
+        }
     }
 
     /**
