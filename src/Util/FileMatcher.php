@@ -38,19 +38,19 @@ use function strlen;
  */
 final readonly class FileMatcher
 {
-    private const T_BRACKET_OPEN    = 'bracket_open';
-    private const T_BRACKET_CLOSE   = 'bracket_close';
-    private const T_BANG            = 'bang';
-    private const T_HYPHEN          = 'hyphen';
-    private const T_ASTERIX         = 'asterix';
-    private const T_SLASH           = 'slash';
-    private const T_BACKSLASH       = 'backslash';
-    private const T_CHAR            = 'char';
-    private const T_GREEDY_GLOBSTAR = 'greedy_globstar';
-    private const T_QUERY           = 'query';
-    private const T_GLOBSTAR        = 'globstar';
-    private const T_COLON           = 'colon';
-    private const T_CHAR_CLASS      = 'char_class';
+    private const string T_BRACKET_OPEN    = 'bracket_open';
+    private const string T_BRACKET_CLOSE   = 'bracket_close';
+    private const string T_BANG            = 'bang';
+    private const string T_HYPHEN          = 'hyphen';
+    private const string T_ASTERIX         = 'asterix';
+    private const string T_SLASH           = 'slash';
+    private const string T_BACKSLASH       = 'backslash';
+    private const string T_CHAR            = 'char';
+    private const string T_GREEDY_GLOBSTAR = 'greedy_globstar';
+    private const string T_QUERY           = 'query';
+    private const string T_GLOBSTAR        = 'globstar';
+    private const string T_COLON           = 'colon';
+    private const string T_CHAR_CLASS      = 'char_class';
 
     /**
      * Compile a regex for the given glob.
