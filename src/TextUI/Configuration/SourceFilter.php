@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use PHPUnit\Util\FileMatcherPattern;
 use function array_map;
 use PHPUnit\Util\FileMatcher;
 use PHPUnit\Util\FileMatcherRegex;
@@ -52,11 +53,11 @@ final class SourceFilter
         $this->source                  = $source;
         $this->includeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
         {
-            return FileMatcher::toRegEx($directory->path());
+            return FileMatcher::toRegEx(new FileMatcherPattern($directory->path()));
         }, $source->includeDirectories()->asArray());
         $this->excludeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
         {
-            return FileMatcher::toRegEx($directory->path());
+            return FileMatcher::toRegEx(new FileMatcherPattern($directory->path()));
         }, $source->excludeDirectories()->asArray());
     }
 

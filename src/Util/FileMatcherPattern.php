@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-class FileMatcherPattern
+final class FileMatcherPattern
 {
     public function __construct(public string $path)
     {
