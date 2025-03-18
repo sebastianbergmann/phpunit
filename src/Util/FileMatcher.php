@@ -55,9 +55,9 @@ final readonly class FileMatcher
     /**
      * Compile a regex for the given glob.
      */
-    public static function toRegEx(string $glob): FileMatcherRegex
+    public static function toRegEx(FileMatcherPattern $pattern): FileMatcherRegex
     {
-        $tokens = self::tokenize($glob);
+        $tokens = self::tokenize($pattern->path);
         $tokens = self::processTokens($tokens);
 
         return self::mapToRegex($tokens);

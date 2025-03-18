@@ -613,7 +613,7 @@ class FileMatcherTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Path "foo/bar" must be absolute');
-        FileMatcher::toRegEx('/a')->matches('foo/bar');
+        FileMatcher::toRegEx(new FileMatcherPattern('/a'))->matches('foo/bar');
     }
 
     /**
@@ -622,7 +622,7 @@ class FileMatcherTest extends TestCase
     private static function assertMap(FileMatcherPattern $pattern, array $matchMap): void
     {
         foreach ($matchMap as $candidate => $shouldMatch) {
-            $matches = FileMatcher::toRegEx($pattern->path)->matches($candidate);
+            $matches = FileMatcher::toRegEx($pattern)->matches($candidate);
 
             if ($matches === $shouldMatch) {
                 self::assertTrue(true);
