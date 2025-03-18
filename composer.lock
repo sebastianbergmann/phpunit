@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2b5ac4dee326271559186906f966324",
+    "content-hash": "e24d453b11134ef328d42f0cc34ff1c0",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1268,16 +1268,16 @@
         },
         {
             "name": "sebastian/type",
-            "version": "6.0.1",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/type.git",
-                "reference": "bbe49725bb524d0e6af6ceb156e1135d6cd4ffa3"
+                "reference": "1d7cd6e514384c36d7a390347f57c385d4be6069"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/bbe49725bb524d0e6af6ceb156e1135d6cd4ffa3",
-                "reference": "bbe49725bb524d0e6af6ceb156e1135d6cd4ffa3",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/1d7cd6e514384c36d7a390347f57c385d4be6069",
+                "reference": "1d7cd6e514384c36d7a390347f57c385d4be6069",
                 "shasum": ""
             },
             "require": {
@@ -1313,7 +1313,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/type/issues",
                 "security": "https://github.com/sebastianbergmann/type/security/policy",
-                "source": "https://github.com/sebastianbergmann/type/tree/6.0.1"
+                "source": "https://github.com/sebastianbergmann/type/tree/6.0.2"
             },
             "funding": [
                 {
@@ -1321,7 +1321,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-18T13:20:02+00:00"
+            "time": "2025-03-18T13:37:31+00:00"
         },
         {
             "name": "sebastian/version",
