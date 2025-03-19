@@ -65,7 +65,7 @@ final class InvocationStubberImplementation implements InvocationStubber
      *
      * @return $this
      */
-    public function id(string $id): self
+    public function id(string $id): InvocationStubber
     {
         $this->invocationHandler->registerMatcher($id, $this->matcher);
 
@@ -75,7 +75,7 @@ final class InvocationStubberImplementation implements InvocationStubber
     /**
      * @return $this
      */
-    public function will(Stub $stub): self
+    public function will(Stub $stub): InvocationStubber
     {
         $this->matcher->setStub($stub);
 
@@ -85,7 +85,7 @@ final class InvocationStubberImplementation implements InvocationStubber
     /**
      * @throws IncompatibleReturnValueException
      */
-    public function willReturn(mixed $value, mixed ...$nextValues): self
+    public function willReturn(mixed $value, mixed ...$nextValues): InvocationStubber
     {
         if (count($nextValues) === 0) {
             $this->ensureTypeOfReturnValues([$value]);
@@ -104,14 +104,14 @@ final class InvocationStubberImplementation implements InvocationStubber
         return $this->will($stub);
     }
 
-    public function willReturnReference(mixed &$reference): self
+    public function willReturnReference(mixed &$reference): InvocationStubber
     {
         $stub = new ReturnReference($reference);
 
         return $this->will($stub);
     }
 
-    public function willReturnMap(array $valueMap): self
+    public function willReturnMap(array $valueMap): InvocationStubber
     {
         $method = $this->configuredMethod();
 
@@ -156,35 +156,35 @@ final class InvocationStubberImplementation implements InvocationStubber
         return $this->will($stub);
     }
 
-    public function willReturnArgument(int $argumentIndex): self
+    public function willReturnArgument(int $argumentIndex): InvocationStubber
     {
         $stub = new ReturnArgument($argumentIndex);
 
         return $this->will($stub);
     }
 
-    public function willReturnCallback(callable $callback): self
+    public function willReturnCallback(callable $callback): InvocationStubber
     {
         $stub = new ReturnCallback($callback);
 
         return $this->will($stub);
     }
 
-    public function willReturnSelf(): self
+    public function willReturnSelf(): InvocationStubber
     {
         $stub = new ReturnSelf;
 
         return $this->will($stub);
     }
 
-    public function willReturnOnConsecutiveCalls(mixed ...$values): self
+    public function willReturnOnConsecutiveCalls(mixed ...$values): InvocationStubber
     {
         $stub = new ConsecutiveCalls($values);
 
         return $this->will($stub);
     }
 
-    public function willThrowException(Throwable $exception): self
+    public function willThrowException(Throwable $exception): InvocationStubber
     {
         $stub = new Exception($exception);
 
@@ -194,7 +194,7 @@ final class InvocationStubberImplementation implements InvocationStubber
     /**
      * @return $this
      */
-    public function after(string $id): self
+    public function after(string $id): InvocationStubber
     {
         $this->matcher->setAfterMatchBuilderId($id);
 
@@ -208,7 +208,7 @@ final class InvocationStubberImplementation implements InvocationStubber
      *
      * @return $this
      */
-    public function with(mixed ...$arguments): self
+    public function with(mixed ...$arguments): InvocationStubber
     {
         $this->ensureParametersCanBeConfigured();
 
@@ -223,7 +223,7 @@ final class InvocationStubberImplementation implements InvocationStubber
      *
      * @return $this
      */
-    public function withAnyParameters(): self
+    public function withAnyParameters(): InvocationStubber
     {
         $this->ensureParametersCanBeConfigured();
 
@@ -239,7 +239,7 @@ final class InvocationStubberImplementation implements InvocationStubber
      *
      * @return $this
      */
-    public function method(Constraint|PropertyHook|string $constraint): self
+    public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
     {
         if ($this->matcher->hasMethodNameRule()) {
             throw new MethodNameAlreadyConfiguredException;
