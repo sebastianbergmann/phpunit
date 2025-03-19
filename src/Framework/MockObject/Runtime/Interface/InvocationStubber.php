@@ -18,6 +18,8 @@ use Throwable;
  */
 interface InvocationStubber
 {
+    public function id(string $id): self;
+
     /**
      * @return $this
      */
