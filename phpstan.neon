@@ -1,14 +1,17 @@
 parameters:
     level: 6
+
     paths:
         - src
 
-    treatPhpDocTypesAsCertain: false
+    excludePaths:
+        - src/Framework/MockObject/Runtime/Api # exclude partial traits, which are only used in runtime generated code
 
     checkTooWideReturnTypesInProtectedAndPublicMethods: true
     reportAlwaysTrueInLastCondition: true
     reportPossiblyNonexistentConstantArrayOffset: true
     reportPossiblyNonexistentGeneralArrayOffset: true
+    treatPhpDocTypesAsCertain: false
 
     strictRules:
         allRules: false
@@ -56,9 +59,6 @@ parameters:
         - '#Strict comparison using !== between .*non-empty-string.* and .* will always evaluate to true.#'
         - '#Strict comparison using !== between .*non-falsy-string.* and .* will always evaluate to true.#'
         - identifier: argument.named
-
-    excludePaths:
-        - src/Framework/MockObject/Runtime/Api # exclude partial traits, which are only used in runtime generated code
 
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
