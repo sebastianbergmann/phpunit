@@ -96,6 +96,8 @@ final class InvocationStubberImplementation implements InvocationStubber
     }
 
     /**
+     * @param non-empty-string $id
+     *
      * @throws MatcherAlreadyRegisteredException
      *
      * @return $this
@@ -108,6 +110,8 @@ final class InvocationStubberImplementation implements InvocationStubber
     }
 
     /**
+     * @param non-empty-string $id
+     *
      * @return $this
      */
     public function after(string $id): InvocationStubber

@@ -24,11 +24,15 @@ interface InvocationStubber
     public function method(Constraint|string $constraint): self;
 
     /**
+     * @param non-empty-string $id
+     *
      * @return $this
      */
     public function id(string $id): self;
 
     /**
+     * @param non-empty-string $id
+     *
      * @return $this
      */
     public function after(string $id): self;
