@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.0.9] - 2025-MM-DD
+
+### Fixed
+
+* [#6154](https://github.com/sebastianbergmann/phpunit/issues/6154): Method `with()` on test doubles yields error with static analyzer
+
 ## [12.0.8] - 2025-03-18
 
 ### Changed
@@ -104,6 +110,7 @@ All notable changes of the PHPUnit 12.0 release series are documented in this fi
 * [#5801](https://github.com/sebastianbergmann/phpunit/issues/5801): Support for targeting traits with `#[CoversClass]` and `#[UsesClass]` attributes
 * [#5978](https://github.com/sebastianbergmann/phpunit/issues/5978): Support for PHP 8.2
 
+[12.0.9]: https://github.com/sebastianbergmann/phpunit/compare/12.0.8...12.0
 [12.0.8]: https://github.com/sebastianbergmann/phpunit/compare/12.0.7...12.0.8
 [12.0.7]: https://github.com/sebastianbergmann/phpunit/compare/12.0.6...12.0.7
 [12.0.6]: https://github.com/sebastianbergmann/phpunit/compare/12.0.5...12.0.6

@@ -7,8 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Builder;
+namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use Throwable;
 
@@ -17,7 +18,30 @@ use Throwable;
  */
 interface InvocationStubber
 {
-    public function will(Stub $stub): Identity;
+    /**
+     * @return $this
+     */
+    public function method(Constraint|string $constraint): self;
+
+    /**
+     * @return $this
+     */
+    public function after(string $id): self;
+
+    /**
+     * @return $this
+     */
+    public function with(mixed ...$arguments): self;
+
+    /**
+     * @return $this
+     */
+    public function withAnyParameters(): self;
+
+    /**
+     * @return $this
+     */
+    public function will(Stub $stub): self;
 
     /**
      * @return $this

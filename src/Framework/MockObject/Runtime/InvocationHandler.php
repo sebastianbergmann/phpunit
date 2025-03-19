@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject;
 
 use function strtolower;
 use Exception;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Throwable;
 
@@ -81,12 +80,12 @@ final class InvocationHandler
         $this->matcherMap[$id] = $matcher;
     }
 
-    public function expects(InvocationOrder $rule): InvocationMocker
+    public function expects(InvocationOrder $rule): InvocationStubberImplementation
     {
         $matcher = new Matcher($rule);
         $this->addMatcher($matcher);
 
-        return new InvocationMocker(
+        return new InvocationStubberImplementation(
             $this,
             $matcher,
             ...$this->configurableMethods,

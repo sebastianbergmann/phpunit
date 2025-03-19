@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
+use PHPUnit\Framework\MockObject\InvocationStubberImplementation as InvocationMockerBuilder;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**

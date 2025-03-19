@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
@@ -17,5 +16,5 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
  */
 interface MockObject extends Stub
 {
-    public function expects(InvocationOrder $invocationRule): InvocationMocker;
+    public function expects(InvocationOrder $invocationRule): InvocationStubber;
 }
