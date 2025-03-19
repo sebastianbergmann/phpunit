@@ -5,7 +5,8 @@ parameters:
         - src
 
     excludePaths:
-        - src/Framework/MockObject/Runtime/Api # exclude partial traits, which are only used in runtime generated code
+        # exclude partial traits, which are only used in runtime generated code
+        - src/Framework/MockObject/Runtime/Api
 
     checkTooWideReturnTypesInProtectedAndPublicMethods: true
     reportAlwaysTrueInLastCondition: true
