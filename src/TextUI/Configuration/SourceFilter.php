@@ -9,7 +9,14 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use PHPUnit\Util\FileMatcherPattern;
+use function array_map;
+use PHPUnit\Util\FileMatcher;
+use PHPUnit\Util\FileMatcherRegex;
+
 /**
+ * TODO: Does not take into account suffixes and prefixes - and tests don't cover it.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -17,35 +24,71 @@ namespace PHPUnit\TextUI\Configuration;
 final class SourceFilter
 {
     private static ?self $instance = null;
+    private Source $source;
 
     /**
-     * @var array<non-empty-string, true>
+     * @var list<FileMatcherRegex>
      */
-    private readonly array $map;
+    private array $includeDirectoryRegexes;
+
+    /**
+     * @var list<FileMatcherRegex>
+     */
+    private array $excludeDirectoryRegexes;
 
     public static function instance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new self(
-                (new SourceMapper)->map(
-                    Registry::get()->source(),
-                ),
-            );
+            $source         = Registry::get()->source();
+            self::$instance = new self($source);
+
+            return self::$instance;
         }
 
         return self::$instance;
     }
 
-    /**
-     * @param array<non-empty-string, true> $map
-     */
-    public function __construct(array $map)
+    public function __construct(Source $source)
     {
-        $this->map = $map;
+        $this->source                  = $source;
+        $this->includeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
+        {
+            return FileMatcher::toRegEx(new FileMatcherPattern($directory->path()));
+        }, $source->includeDirectories()->asArray());
+        $this->excludeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
+        {
+            return FileMatcher::toRegEx(new FileMatcherPattern($directory->path()));
+        }, $source->excludeDirectories()->asArray());
     }
 
     public function includes(string $path): bool
     {
-        return isset($this->map[$path]);
+        $included = false;
+
+        foreach ($this->source->includeFiles() as $file) {
+            if ($file->path() === $path) {
+                $included = true;
+            }
+        }
+
+        foreach ($this->includeDirectoryRegexes as $directoryRegex) {
+            if ($directoryRegex->matches($path)) {
+                $included = true;
+            }
+        }
+
+        foreach ($this->source->excludeFiles() as $file) {
+            if ($file->path() === $path) {
+                $included = false;
+            }
+        }
+
+        foreach ($this->excludeDirectoryRegexes as $directoryRegex) {
+            if ($directoryRegex->matches($path)) {
+                $included = false;
+            }
+        }
+
+        return $included;
     }
 }
