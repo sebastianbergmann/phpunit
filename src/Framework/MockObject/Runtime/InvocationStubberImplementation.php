@@ -61,6 +61,8 @@ final class InvocationStubberImplementation implements InvocationStubber
     }
 
     /**
+     * @param Constraint|non-empty-string|PropertyHook $constraint
+     *
      * @throws InvalidArgumentException
      * @throws MethodCannotBeConfiguredException
      * @throws MethodNameAlreadyConfiguredException

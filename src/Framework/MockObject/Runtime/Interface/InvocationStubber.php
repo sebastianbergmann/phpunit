@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use Throwable;
 
@@ -19,9 +20,11 @@ use Throwable;
 interface InvocationStubber
 {
     /**
+     * @param Constraint|non-empty-string|PropertyHook $constraint
+     *
      * @return $this
      */
-    public function method(Constraint|string $constraint): self;
+    public function method(Constraint|PropertyHook|string $constraint): self;
 
     /**
      * @param non-empty-string $id
