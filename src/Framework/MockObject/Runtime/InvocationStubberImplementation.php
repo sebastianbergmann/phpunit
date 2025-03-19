@@ -61,6 +61,41 @@ final class InvocationStubberImplementation implements InvocationStubber
     }
 
     /**
+     * @throws InvalidArgumentException
+     * @throws MethodCannotBeConfiguredException
+     * @throws MethodNameAlreadyConfiguredException
+     *
+     * @return $this
+     */
+    public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
+    {
+        if ($this->matcher->hasMethodNameRule()) {
+            throw new MethodNameAlreadyConfiguredException;
+        }
+
+        if ($constraint instanceof PropertyHook) {
+            $constraint = $constraint->asString();
+        }
+
+        if (is_string($constraint)) {
+            $this->configurableMethodNames ??= array_flip(
+                array_map(
+                    static fn (ConfigurableMethod $configurable) => strtolower($configurable->name()),
+                    $this->configurableMethods,
+                ),
+            );
+
+            if (!array_key_exists(strtolower($constraint), $this->configurableMethodNames)) {
+                throw new MethodCannotBeConfiguredException($constraint);
+            }
+        }
+
+        $this->matcher->setMethodNameRule(new Rule\MethodName($constraint));
+
+        return $this;
+    }
+
+    /**
      * @throws MatcherAlreadyRegisteredException
      *
      * @return $this
@@ -68,6 +103,47 @@ final class InvocationStubberImplementation implements InvocationStubber
     public function id(string $id): InvocationStubber
     {
         $this->invocationHandler->registerMatcher($id, $this->matcher);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function after(string $id): InvocationStubber
+    {
+        $this->matcher->setAfterMatchBuilderId($id);
+
+        return $this;
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws MethodNameNotConfiguredException
+     * @throws MethodParametersAlreadyConfiguredException
+     *
+     * @return $this
+     */
+    public function with(mixed ...$arguments): InvocationStubber
+    {
+        $this->ensureParametersCanBeConfigured();
+
+        $this->matcher->setParametersRule(new Rule\Parameters($arguments));
+
+        return $this;
+    }
+
+    /**
+     * @throws MethodNameNotConfiguredException
+     * @throws MethodParametersAlreadyConfiguredException
+     *
+     * @return $this
+     */
+    public function withAnyParameters(): InvocationStubber
+    {
+        $this->ensureParametersCanBeConfigured();
+
+        $this->matcher->setParametersRule(new Rule\AnyParameters);
 
         return $this;
     }
@@ -189,82 +265,6 @@ final class InvocationStubberImplementation implements InvocationStubber
         $stub = new Exception($exception);
 
         return $this->will($stub);
-    }
-
-    /**
-     * @return $this
-     */
-    public function after(string $id): InvocationStubber
-    {
-        $this->matcher->setAfterMatchBuilderId($id);
-
-        return $this;
-    }
-
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws MethodNameNotConfiguredException
-     * @throws MethodParametersAlreadyConfiguredException
-     *
-     * @return $this
-     */
-    public function with(mixed ...$arguments): InvocationStubber
-    {
-        $this->ensureParametersCanBeConfigured();
-
-        $this->matcher->setParametersRule(new Rule\Parameters($arguments));
-
-        return $this;
-    }
-
-    /**
-     * @throws MethodNameNotConfiguredException
-     * @throws MethodParametersAlreadyConfiguredException
-     *
-     * @return $this
-     */
-    public function withAnyParameters(): InvocationStubber
-    {
-        $this->ensureParametersCanBeConfigured();
-
-        $this->matcher->setParametersRule(new Rule\AnyParameters);
-
-        return $this;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     * @throws MethodCannotBeConfiguredException
-     * @throws MethodNameAlreadyConfiguredException
-     *
-     * @return $this
-     */
-    public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
-    {
-        if ($this->matcher->hasMethodNameRule()) {
-            throw new MethodNameAlreadyConfiguredException;
-        }
-
-        if ($constraint instanceof PropertyHook) {
-            $constraint = $constraint->asString();
-        }
-
-        if (is_string($constraint)) {
-            $this->configurableMethodNames ??= array_flip(
-                array_map(
-                    static fn (ConfigurableMethod $configurable) => strtolower($configurable->name()),
-                    $this->configurableMethods,
-                ),
-            );
-
-            if (!array_key_exists(strtolower($constraint), $this->configurableMethodNames)) {
-                throw new MethodCannotBeConfiguredException($constraint);
-            }
-        }
-
-        $this->matcher->setMethodNameRule(new Rule\MethodName($constraint));
-
-        return $this;
     }
 
     /**

@@ -18,12 +18,12 @@ use Throwable;
  */
 interface InvocationStubber
 {
-    public function id(string $id): self;
-
     /**
      * @return $this
      */
     public function method(Constraint|string $constraint): self;
+
+    public function id(string $id): self;
 
     /**
      * @return $this
