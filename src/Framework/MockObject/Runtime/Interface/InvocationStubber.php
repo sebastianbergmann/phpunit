@@ -7,8 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Builder;
+namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use Throwable;
 
@@ -17,24 +18,70 @@ use Throwable;
  */
 interface InvocationStubber
 {
-    public function will(Stub $stub): Identity;
+    /**
+     * @return $this
+     */
+    public function method(Constraint|string $constraint): self;
 
+    /**
+     * @return $this
+     */
+    public function after(string $id): self;
+
+    /**
+     * @return $this
+     */
+    public function with(mixed ...$arguments): self;
+
+    /**
+     * @return $this
+     */
+    public function withAnyParameters(): self;
+
+    /**
+     * @return $this
+     */
+    public function will(Stub $stub): self;
+
+    /**
+     * @return $this
+     */
     public function willReturn(mixed $value, mixed ...$nextValues): self;
 
+    /**
+     * @return $this
+     */
     public function willReturnReference(mixed &$reference): self;
 
     /**
      * @param array<int, array<int, mixed>> $valueMap
+     *
+     * @return $this
      */
     public function willReturnMap(array $valueMap): self;
 
+    /**
+     * @return $this
+     */
     public function willReturnArgument(int $argumentIndex): self;
 
+    /**
+     * @return $this
+     */
     public function willReturnCallback(callable $callback): self;
 
+    /**
+     * @return $this
+     */
     public function willReturnSelf(): self;
 
+    /**
+     * @return $this
+     */
     public function willReturnOnConsecutiveCalls(mixed ...$values): self;
 
+    /**
+     * @return $this
+     */
     public function willThrowException(Throwable $exception): self;
 }

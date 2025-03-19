@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Builder;
+namespace PHPUnit\Framework\MockObject;
 
 use function array_flip;
 use function array_key_exists;
@@ -21,16 +21,6 @@ use function range;
 use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\InvalidArgumentException;
-use PHPUnit\Framework\MockObject\ConfigurableMethod;
-use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
-use PHPUnit\Framework\MockObject\InvocationHandler;
-use PHPUnit\Framework\MockObject\Matcher;
-use PHPUnit\Framework\MockObject\MatcherAlreadyRegisteredException;
-use PHPUnit\Framework\MockObject\MethodCannotBeConfiguredException;
-use PHPUnit\Framework\MockObject\MethodNameAlreadyConfiguredException;
-use PHPUnit\Framework\MockObject\MethodNameNotConfiguredException;
-use PHPUnit\Framework\MockObject\MethodParametersAlreadyConfiguredException;
-use PHPUnit\Framework\MockObject\Rule;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls;
 use PHPUnit\Framework\MockObject\Stub\Exception;
@@ -45,8 +35,10 @@ use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvocationMocker implements InvocationStubber, MethodNameMatch
+final class InvocationStubberImplementation implements InvocationStubber
 {
     private readonly InvocationHandler $invocationHandler;
     private readonly Matcher $matcher;
@@ -83,7 +75,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     /**
      * @return $this
      */
-    public function will(Stub $stub): Identity
+    public function will(Stub $stub): self
     {
         $this->matcher->setStub($stub);
 

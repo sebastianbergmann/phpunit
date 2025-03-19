@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 
 /**
