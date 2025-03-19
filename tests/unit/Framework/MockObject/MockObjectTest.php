@@ -431,7 +431,7 @@ EOT,
         $double = $this->createMock(MethodWIthVariadicVariables::class);
         $double->expects($this->once())->method('testVariadic')
             ->withAnyParameters()
-            ->willReturnCallback(static fn ($string, ...$arguments) => [$string, ...$arguments]);
+            ->willReturnCallback(static fn (string $string, string ...$arguments) => [$string, ...$arguments]);
 
         $testData = ['foo', 'bar', 'biz' => 'kuz'];
         $actual   = $double->testVariadic(...$testData);
