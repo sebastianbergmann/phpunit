@@ -23,6 +23,9 @@ interface InvocationStubber
      */
     public function method(Constraint|string $constraint): self;
 
+    /**
+     * @return $this
+     */
     public function id(string $id): self;
 
     /**
