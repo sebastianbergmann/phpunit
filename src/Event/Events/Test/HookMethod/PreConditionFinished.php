@@ -65,6 +65,9 @@ final readonly class PreConditionFinished implements Event
         return $this->calledMethods;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $buffer = 'Pre Condition Method Finished:';

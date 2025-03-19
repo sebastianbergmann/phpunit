@@ -91,6 +91,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-empty-string $filename
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -105,6 +107,10 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-empty-string $filename
+     * @param non-empty-string $name
+     * @param non-empty-string $version
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -928,6 +934,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-negative-int $numberOfAssertionsPerformed
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -1114,6 +1122,9 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-negative-int $cacheHits
+     * @param non-negative-int $cacheMisses
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */

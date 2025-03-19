@@ -31,6 +31,9 @@ final readonly class StaticAnalysisForCodeCoverageStarted implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return 'Static Analysis for Code Coverage Started';

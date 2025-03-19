@@ -103,6 +103,9 @@ final readonly class WarningTriggered implements Event
         return $this->ignoredByBaseline;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;

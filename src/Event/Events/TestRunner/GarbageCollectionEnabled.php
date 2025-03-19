@@ -31,6 +31,9 @@ final readonly class GarbageCollectionEnabled implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return 'Test Runner Enabled Garbage Collection';

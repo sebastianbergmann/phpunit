@@ -73,6 +73,9 @@ final readonly class Failed implements Event
         return $this->comparisonFailure;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = trim($this->throwable->message());

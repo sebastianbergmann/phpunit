@@ -96,6 +96,9 @@ final readonly class ErrorTriggered implements Event
         return $this->suppressed;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;

@@ -40,6 +40,9 @@ final readonly class PreparationStarted implements Event
         return $this->test;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

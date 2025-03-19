@@ -55,6 +55,9 @@ final readonly class DataProviderMethodFinished implements Event
         return $this->calledMethods;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $buffer = sprintf(

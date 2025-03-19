@@ -57,6 +57,9 @@ final readonly class AfterLastTestMethodCalled implements Event
         return $this->calledMethod;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

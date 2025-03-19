@@ -31,6 +31,9 @@ final readonly class EventFacadeSealed implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return 'Event Facade Sealed';

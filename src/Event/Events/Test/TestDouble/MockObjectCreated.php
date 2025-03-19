@@ -49,6 +49,9 @@ final readonly class MockObjectCreated implements Event
         return $this->className;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

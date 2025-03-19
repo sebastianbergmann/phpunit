@@ -64,6 +64,9 @@ final readonly class StaticAnalysisForCodeCoverageFinished implements Event
         return $this->cacheMisses;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

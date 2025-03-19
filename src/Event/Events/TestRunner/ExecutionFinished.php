@@ -31,6 +31,9 @@ final readonly class ExecutionFinished implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return 'Test Runner Execution Finished';

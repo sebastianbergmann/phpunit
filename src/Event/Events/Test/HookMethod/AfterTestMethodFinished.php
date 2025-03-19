@@ -65,6 +65,9 @@ final readonly class AfterTestMethodFinished implements Event
         return $this->calledMethods;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $buffer = 'After Test Method Finished:';

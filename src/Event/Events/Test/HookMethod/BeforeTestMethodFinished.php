@@ -65,6 +65,9 @@ final readonly class BeforeTestMethodFinished implements Event
         return $this->calledMethods;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $buffer = 'Before Test Method Finished:';

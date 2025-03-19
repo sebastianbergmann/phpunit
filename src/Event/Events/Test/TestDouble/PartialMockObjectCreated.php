@@ -63,6 +63,9 @@ final readonly class PartialMockObjectCreated implements Event
         return $this->methodNames;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

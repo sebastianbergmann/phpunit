@@ -30,8 +30,16 @@ interface Emitter
 
     public function testRunnerConfigured(Configuration $configuration): void;
 
+    /**
+     * @param non-empty-string $filename
+     */
     public function testRunnerBootstrapFinished(string $filename): void;
 
+    /**
+     * @param non-empty-string $filename
+     * @param non-empty-string $name
+     * @param non-empty-string $version
+     */
     public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void;
 
     /**
@@ -210,6 +218,9 @@ interface Emitter
      */
     public function testPrintedUnexpectedOutput(string $output): void;
 
+    /**
+     * @param non-negative-int $numberOfAssertionsPerformed
+     */
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
     public function postConditionCalled(TestMethod $test, ClassMethod $calledMethod): void;
@@ -247,6 +258,10 @@ interface Emitter
 
     public function testRunnerStartedStaticAnalysisForCodeCoverage(): void;
 
+    /**
+     * @param non-negative-int $cacheHits
+     * @param non-negative-int $cacheMisses
+     */
     public function testRunnerFinishedStaticAnalysisForCodeCoverage(int $cacheHits, int $cacheMisses): void;
 
     public function testRunnerTriggeredPhpunitDeprecation(string $message): void;

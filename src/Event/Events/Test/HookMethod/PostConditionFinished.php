@@ -65,6 +65,9 @@ final readonly class PostConditionFinished implements Event
         return $this->calledMethods;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $buffer = 'Post Condition Method Finished:';
