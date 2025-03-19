@@ -80,7 +80,7 @@ final class InvocationHandler
         $this->matcherMap[$id] = $matcher;
     }
 
-    public function expects(InvocationOrder $rule): InvocationStubberImplementation
+    public function expects(InvocationOrder $rule): InvocationStubber
     {
         $matcher = new Matcher($rule);
         $this->addMatcher($matcher);

@@ -22,7 +22,7 @@ trait Method
 {
     abstract public function __phpunit_getInvocationHandler(): InvocationHandler;
 
-    public function method(Constraint|PropertyHook|string $constraint): InvocationStubberImplementation
+    public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
     {
         return $this
             ->__phpunit_getInvocationHandler()
