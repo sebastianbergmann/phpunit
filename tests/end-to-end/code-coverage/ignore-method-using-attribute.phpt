@@ -15,17 +15,10 @@ $_SERVER['argv'][] = '--coverage-filter';
 $_SERVER['argv'][] = __DIR__ . '/ignore-method-using-attribute/src';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = __DIR__ . '/ignore-method-using-attribute/tests';
-$_SERVER['argv'][] = '--cache-directory';
-$_SERVER['argv'][] = __DIR__ . '/ignore-method-using-attribute/cache';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
---CLEAN--
-<?php declare(strict_types=1);
-require __DIR__ . '/../../_files/delete_directory.php';
-
-delete_directory(__DIR__ . '/ignore-method-using-attribute/cache');
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

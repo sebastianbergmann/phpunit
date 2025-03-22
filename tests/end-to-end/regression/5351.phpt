@@ -12,17 +12,10 @@ $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/5351/phpunit.xml';
-$_SERVER['argv'][] = '--cache-directory';
-$_SERVER['argv'][] = __DIR__ . '/5351/cache';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
---CLEAN--
-<?php declare(strict_types=1);
-require __DIR__ . '/../../_files/delete_directory.php';
-
-delete_directory(__DIR__ . '/5351/cache');
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
