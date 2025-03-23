@@ -15,6 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Available test groups:
  - 3 (1 test)
+ - abstract-one (1 test)
  - default (1 test)
  - one (1 test)
  - two (1 test)
