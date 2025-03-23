@@ -148,7 +148,7 @@ final readonly class Loader
         $otr     = null;
         $element = $this->element($xpath, 'logging/otr');
 
-        if ($element) {
+        if ($element !== null) {
             $otr = new Otr(
                 new File(
                     $this->toAbsolutePath(
