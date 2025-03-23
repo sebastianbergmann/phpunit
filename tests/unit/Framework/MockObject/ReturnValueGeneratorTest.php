@@ -34,6 +34,9 @@ use stdClass;
 #[Small]
 final class ReturnValueGeneratorTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{0: mixed, 1: non-empty-string}>
+     */
     public static function unionProvider(): array
     {
         return [
