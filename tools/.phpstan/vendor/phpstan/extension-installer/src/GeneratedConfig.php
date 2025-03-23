@@ -35,7 +35,7 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.0.3',
+    'version' => '2.0.4',
     'phpstanVersionConstraint' => '>=2.0.4.0-dev, <3.0.0.0-dev',
   ),
   'tomasvotruba/type-coverage' => 

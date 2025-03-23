@@ -71,8 +71,7 @@ class VariablePropertyFetchRule implements Rule
 		ClassReflection $classReflection
 	): bool
 	{
-		return $classReflection->getName() === SimpleXMLElement::class
-			|| $classReflection->isSubclassOf(SimpleXMLElement::class);
+		return $classReflection->is(SimpleXMLElement::class);
 	}
 
 	private function isUniversalObjectCrate(
@@ -84,10 +83,7 @@ class VariablePropertyFetchRule implements Rule
 				continue;
 			}
 
-			if (
-				$classReflection->getName() === $className
-				|| $classReflection->isSubclassOf($className)
-			) {
+			if ($classReflection->is($className)) {
 				return true;
 			}
 		}

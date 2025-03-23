@@ -15,6 +15,7 @@ parameters:
 		allRules: true
 		disallowedLooseComparison: %strictRules.allRules%
 		booleansInConditions: %strictRules.allRules%
+		booleansInLoopConditions: [%strictRules.allRules%, %featureToggles.bleedingEdge%]
 		uselessCast: %strictRules.allRules%
 		requireParentConstructorCall: %strictRules.allRules%
 		disallowedBacktick: %strictRules.allRules%
@@ -37,6 +38,7 @@ parametersSchema:
 		allRules: anyOf(bool(), arrayOf(bool())),
 		disallowedLooseComparison: anyOf(bool(), arrayOf(bool())),
 		booleansInConditions: anyOf(bool(), arrayOf(bool()))
+		booleansInLoopConditions: anyOf(bool(), arrayOf(bool()))
 		uselessCast: anyOf(bool(), arrayOf(bool()))
 		requireParentConstructorCall: anyOf(bool(), arrayOf(bool()))
 		disallowedBacktick: anyOf(bool(), arrayOf(bool()))
@@ -64,12 +66,16 @@ conditionalTags:
 		phpstan.rules.rule: %strictRules.booleansInConditions%
 	PHPStan\Rules\BooleansInConditions\BooleanInBooleanOrRule:
 		phpstan.rules.rule: %strictRules.booleansInConditions%
+	PHPStan\Rules\BooleansInConditions\BooleanInDoWhileConditionRule:
+		phpstan.rules.rule: %strictRules.booleansInLoopConditions%
 	PHPStan\Rules\BooleansInConditions\BooleanInElseIfConditionRule:
 		phpstan.rules.rule: %strictRules.booleansInConditions%
 	PHPStan\Rules\BooleansInConditions\BooleanInIfConditionRule:
 		phpstan.rules.rule: %strictRules.booleansInConditions%
 	PHPStan\Rules\BooleansInConditions\BooleanInTernaryOperatorRule:
 		phpstan.rules.rule: %strictRules.booleansInConditions%
+	PHPStan\Rules\BooleansInConditions\BooleanInWhileConditionRule:
+		phpstan.rules.rule: %strictRules.booleansInLoopConditions%
 	PHPStan\Rules\Cast\UselessCastRule:
 		phpstan.rules.rule: %strictRules.uselessCast%
 	PHPStan\Rules\Classes\RequireParentConstructCallRule:
@@ -164,6 +170,9 @@ services:
 		class: PHPStan\Rules\BooleansInConditions\BooleanInBooleanOrRule
 
 	-
+		class: PHPStan\Rules\BooleansInConditions\BooleanInDoWhileConditionRule
+
+	-
 		class: PHPStan\Rules\BooleansInConditions\BooleanInElseIfConditionRule
 
 	-
@@ -171,6 +180,9 @@ services:
 
 	-
 		class: PHPStan\Rules\BooleansInConditions\BooleanInTernaryOperatorRule
+
+	-
+		class: PHPStan\Rules\BooleansInConditions\BooleanInWhileConditionRule
 
 	-
 		class: PHPStan\Rules\Cast\UselessCastRule
