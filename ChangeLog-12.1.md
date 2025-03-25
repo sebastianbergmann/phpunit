@@ -12,7 +12,8 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 
 ### Changed
 
-* The static analysis of first-party source files required for the code coverage functionality is now performed before the first test is run, if code coverage processing is requested (via the XML configuration file and/or CLI options) and all first-party source files are configured to be processed (which is the default). This has the same effect as running `phpunit --warm-coverage-cache` before running tests.
+* When code coverage processing is requested and no static analysis cache directory has been configured then a cache directory in the operating system's path used for temporary files is automatically created and used
+* The static analysis of first-party source files required for the code coverage functionality is now performed before the first test is run, if code coverage processing is requested (via the XML configuration file and/or CLI options), all first-party source files are configured to be processed (which is the default), and a static analysis cache directory is available (either explicitly configured or automatically determined, see above). This has the same effect as running `phpunit --warm-coverage-cache` before running tests.
 
 ### Deprecated
 

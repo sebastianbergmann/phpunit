@@ -12,11 +12,13 @@ namespace PHPUnit\Runner;
 use function assert;
 use function file_put_contents;
 use function sprintf;
+use function sys_get_temp_dir;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -80,7 +82,17 @@ final class CodeCoverage
         }
 
         if ($configuration->hasCoverageCacheDirectory()) {
-            $this->codeCoverage()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
+            $coverageCacheDirectory = $configuration->coverageCacheDirectory();
+        } else {
+            $candidate = sys_get_temp_dir() . '/phpunit-code-coverage-cache';
+
+            if (Filesystem::createDirectory($candidate)) {
+                $coverageCacheDirectory = $candidate;
+            }
+        }
+
+        if (isset($coverageCacheDirectory)) {
+            $this->codeCoverage()->cacheStaticAnalysis($coverageCacheDirectory);
         }
 
         $this->codeCoverage()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
@@ -121,11 +133,11 @@ final class CodeCoverage
             $this->deactivate();
         }
 
-        if ($configuration->hasCoverageCacheDirectory() && $configuration->includeUncoveredFiles()) {
+        if (isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
             EventFacade::emitter()->testRunnerStartedStaticAnalysisForCodeCoverage();
 
             $statistics = (new CacheWarmer)->warmCache(
-                $configuration->coverageCacheDirectory(),
+                $coverageCacheDirectory,
                 !$configuration->disableCodeCoverageIgnore(),
                 $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
                 $codeCoverageFilterRegistry->get(),
