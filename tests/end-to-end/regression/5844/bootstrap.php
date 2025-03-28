@@ -22,5 +22,3 @@ final class CustomErrorHandler
     {
     }
 }
-
-new CustomErrorHandler;
