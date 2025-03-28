@@ -1140,6 +1140,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-empty-string $message
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
@@ -1154,6 +1156,8 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-empty-string $message
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */

@@ -66,6 +66,9 @@ interface Emitter
 
     public function testRunnerTriggeredGarbageCollection(): void;
 
+    /**
+     * @param non-empty-string $message
+     */
     public function testSuiteSkipped(TestSuite $testSuite, string $message): void;
 
     public function testSuiteStarted(TestSuite $testSuite): void;
@@ -146,6 +149,9 @@ interface Emitter
 
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
 
+    /**
+     * @param non-empty-string $message
+     */
     public function testSkipped(Code\Test $test, string $message): void;
 
     /**
@@ -264,8 +270,14 @@ interface Emitter
      */
     public function testRunnerFinishedStaticAnalysisForCodeCoverage(int $cacheHits, int $cacheMisses): void;
 
+    /**
+     * @param non-empty-string $message
+     */
     public function testRunnerTriggeredPhpunitDeprecation(string $message): void;
 
+    /**
+     * @param non-empty-string $message
+     */
     public function testRunnerTriggeredPhpunitWarning(string $message): void;
 
     public function testRunnerEnabledGarbageCollection(): void;
