@@ -185,7 +185,11 @@ final readonly class Application
 
             EventFacade::instance()->seal();
 
+            ErrorHandler::instance()->registerDeprecationHandler();
+
             $testSuite = $this->buildTestSuite($configuration);
+
+            ErrorHandler::instance()->restoreDeprecationHandler();
 
             $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
 
