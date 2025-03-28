@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f78c146bbf134acba21687081e24adc",
+    "content-hash": "71926590ca15cf68b3905081bba7e9d2",
     "packages": [],
     "packages-dev": [
         {
@@ -215,16 +215,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.9",
+            "version": "2.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0876262406b99b6e7909fbb213c1f245023a2362"
+                "reference": "8ca5f79a8f63c49b2359065832a654e1ec70ac30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0876262406b99b6e7909fbb213c1f245023a2362",
-                "reference": "0876262406b99b6e7909fbb213c1f245023a2362",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8ca5f79a8f63c49b2359065832a654e1ec70ac30",
+                "reference": "8ca5f79a8f63c49b2359065832a654e1ec70ac30",
                 "shasum": ""
             },
             "require": {
@@ -269,7 +269,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-23T11:45:29+00:00"
+            "time": "2025-03-24T13:45:00+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
