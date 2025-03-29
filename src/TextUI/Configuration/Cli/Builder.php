@@ -61,6 +61,7 @@ final class Builder
         'display-skipped',
         'display-deprecations',
         'display-phpunit-deprecations',
+        'display-phpunit-notices',
         'display-errors',
         'display-notices',
         'display-warnings',
@@ -108,6 +109,7 @@ final class Builder
         'stderr',
         'fail-on-deprecation',
         'fail-on-phpunit-deprecation',
+        'fail-on-phpunit-notice',
         'fail-on-empty-test-suite',
         'fail-on-incomplete',
         'fail-on-notice',
@@ -199,6 +201,7 @@ final class Builder
         $displaySkipped                    = null;
         $displayDeprecations               = null;
         $displayPhpunitDeprecations        = null;
+        $displayPhpunitNotices             = null;
         $displayErrors                     = null;
         $displayNotices                    = null;
         $displayWarnings                   = null;
@@ -208,6 +211,7 @@ final class Builder
         $executionOrderDefects             = null;
         $failOnDeprecation                 = null;
         $failOnPhpunitDeprecation          = null;
+        $failOnPhpunitNotice               = null;
         $failOnEmptyTestSuite              = null;
         $failOnIncomplete                  = null;
         $failOnNotice                      = null;
@@ -641,6 +645,11 @@ final class Builder
 
                     break;
 
+                case '--fail-on-phpunit-notice':
+                    $failOnPhpunitNotice = true;
+
+                    break;
+
                 case '--fail-on-empty-test-suite':
                     $failOnEmptyTestSuite = true;
 
@@ -845,6 +854,11 @@ final class Builder
 
                     break;
 
+                case '--display-phpunit-notices':
+                    $displayPhpunitNotices = true;
+
+                    break;
+
                 case '--display-errors':
                     $displayErrors = true;
 
@@ -1003,6 +1017,7 @@ final class Builder
             $executionOrderDefects,
             $failOnDeprecation,
             $failOnPhpunitDeprecation,
+            $failOnPhpunitNotice,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnNotice,
@@ -1063,6 +1078,7 @@ final class Builder
             $displaySkipped,
             $displayDeprecations,
             $displayPhpunitDeprecations,
+            $displayPhpunitNotices,
             $displayErrors,
             $displayNotices,
             $displayWarnings,

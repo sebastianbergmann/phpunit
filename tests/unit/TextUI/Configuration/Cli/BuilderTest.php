@@ -1275,6 +1275,26 @@ final class BuilderTest extends TestCase
         $configuration->failOnPhpunitDeprecation();
     }
 
+    #[TestDox('--fail-on-phpunit-notice')]
+    public function testFailOnPhpunitNotice(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-phpunit-notice']);
+
+        $this->assertTrue($configuration->hasFailOnPhpunitNotice());
+        $this->assertTrue($configuration->failOnPhpunitNotice());
+    }
+
+    public function testFailOnPhpunitNoticeMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnPhpunitNotice());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnPhpunitNotice();
+    }
+
     #[TestDox('--fail-on-empty-test-suite')]
     public function testFailOnEmptyTestSuite(): void
     {
@@ -2040,6 +2060,26 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->displayDetailsOnPhpunitDeprecations();
+    }
+
+    #[TestDox('--display-phpunit-notices')]
+    public function testDisplayPhpunitNotices(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--display-phpunit-notices']);
+
+        $this->assertTrue($configuration->hasDisplayDetailsOnPhpunitNotices());
+        $this->assertTrue($configuration->displayDetailsOnPhpunitNotices());
+    }
+
+    public function testDisplayPhpunitNoticesMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDisplayDetailsOnPhpunitNotices());
+
+        $this->expectException(Exception::class);
+
+        $configuration->displayDetailsOnPhpunitNotices();
     }
 
     #[TestDox('--display-errors')]

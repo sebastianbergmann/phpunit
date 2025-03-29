@@ -36,6 +36,8 @@ use PHPUnit\Event\TestRunner\GarbageCollectionEnabled;
 use PHPUnit\Event\TestRunner\GarbageCollectionEnabledSubscriber;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggeredSubscriber as TestRunnerNoticeTriggeredSubscriber;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber as TestRunnerWarningTriggeredSubscriber;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
@@ -1809,6 +1811,48 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($message, $event->message());
     }
 
+    #[TestDox('testTriggeredPhpunitNotice() emits Test\PhpunitNoticeTriggered event')]
+    public function testTestTriggeredPhpunitNoticeEmitsTestPhpunitNoticeTriggeredEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PhpunitNoticeTriggeredSubscriber
+        {
+            public function notify(Test\PhpunitNoticeTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PhpunitNoticeTriggeredSubscriber::class,
+            Test\PhpunitNoticeTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test    = $this->testValueObject();
+        $message = 'message';
+
+        $emitter->testTriggeredPhpunitNotice(
+            $test,
+            $message,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PhpunitNoticeTriggered::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
+    }
+
     #[TestDox('testTriggeredPhpDeprecation() emits Test\PhpDeprecationTriggered event')]
     public function testTestTriggeredPhpDeprecationEmitsTestPhpDeprecationTriggeredEvent(): void
     {
@@ -2806,6 +2850,43 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(TestRunnerDeprecationTriggered::class, $event);
+
+        $this->assertSame($message, $event->message());
+    }
+
+    #[TestDox('testRunnerTriggeredPhpunitNotice() emits TestRunner\NoticeTriggered event')]
+    public function testTestRunnerTriggeredPhpunitNoticeEmitsTestRunnerNoticeTriggeredEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunnerNoticeTriggeredSubscriber
+        {
+            public function notify(TestRunnerNoticeTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunnerNoticeTriggeredSubscriber::class,
+            TestRunnerNoticeTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $message = 'message';
+
+        $emitter->testRunnerTriggeredPhpunitNotice($message);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunnerNoticeTriggered::class, $event);
 
         $this->assertSame($message, $event->message());
     }

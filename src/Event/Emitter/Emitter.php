@@ -161,6 +161,11 @@ interface Emitter
 
     /**
      * @param non-empty-string $message
+     */
+    public function testTriggeredPhpunitNotice(?Code\Test $test, string $message): void;
+
+    /**
+     * @param non-empty-string $message
      * @param non-empty-string $file
      * @param positive-int     $line
      */
@@ -274,6 +279,11 @@ interface Emitter
      * @param non-empty-string $message
      */
     public function testRunnerTriggeredPhpunitDeprecation(string $message): void;
+
+    /**
+     * @param non-empty-string $message
+     */
+    public function testRunnerTriggeredPhpunitNotice(string $message): void;
 
     /**
      * @param non-empty-string $message

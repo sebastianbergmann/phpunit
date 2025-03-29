@@ -1,0 +1,9 @@
+1 test triggered 1 PHPUnit notice:
+
+1) FooTest::testBar
+message
+
+FooTest.php:1
+
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Notices: 1.

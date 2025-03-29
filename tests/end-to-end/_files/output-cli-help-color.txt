@@ -86,6 +86,8 @@
                                      a deprecation was triggered
   [32m--fail-on-phpunit-deprecation     [0m Signal failure using shell exit code when
                                      a PHPUnit deprecation was triggered
+  [32m--fail-on-phpunit-notice          [0m Signal failure using shell exit code when
+                                     a PHPUnit notice was triggered
   [32m--fail-on-notice                  [0m Signal failure using shell exit code when
                                      a notice was triggered
   [32m--fail-on-skipped                 [0m Signal failure using shell exit code when
@@ -120,6 +122,7 @@
   [32m--display-deprecations            [0m Display details for deprecations triggered
                                      by tests
   [32m--display-phpunit-deprecations    [0m Display details for PHPUnit deprecations
+  [32m--display-phpunit-notices         [0m Display details for PHPUnit notices
   [32m--display-errors                  [0m Display details for errors triggered by
                                      tests
   [32m--display-notices                 [0m Display details for notices triggered by

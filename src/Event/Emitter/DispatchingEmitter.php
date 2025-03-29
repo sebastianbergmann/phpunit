@@ -719,6 +719,28 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @param non-empty-string $message
+     *
+     * @throws InvalidArgumentException
+     * @throws NoTestCaseObjectOnCallStackException
+     * @throws UnknownEventTypeException
+     */
+    public function testTriggeredPhpunitNotice(?Code\Test $test, string $message): void
+    {
+        if ($test === null) {
+            $test = TestMethodBuilder::fromCallStack();
+        }
+
+        $this->dispatcher->dispatch(
+            new Test\PhpunitNoticeTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+            ),
+        );
+    }
+
+    /**
+     * @param non-empty-string $message
      * @param non-empty-string $file
      * @param positive-int     $line
      *
@@ -1149,6 +1171,22 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new TestRunner\DeprecationTriggered(
+                $this->telemetryInfo(),
+                $message,
+            ),
+        );
+    }
+
+    /**
+     * @param non-empty-string $message
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testRunnerTriggeredPhpunitNotice(string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\NoticeTriggered(
                 $this->telemetryInfo(),
                 $message,
             ),

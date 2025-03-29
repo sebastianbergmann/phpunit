@@ -180,6 +180,7 @@
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnPhpunitNotice" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnNotice" type="xs:boolean" default="false"/>
@@ -216,6 +217,7 @@
         <xs:attribute name="displayDetailsOnSkippedTests" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnPhpunitDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnPhpunitNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>

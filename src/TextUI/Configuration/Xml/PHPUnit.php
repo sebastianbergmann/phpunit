@@ -27,6 +27,7 @@ final readonly class PHPUnit
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDetailsOnTestsThatTriggerDeprecations;
     private bool $displayDetailsOnPhpunitDeprecations;
+    private bool $displayDetailsOnPhpunitNotices;
     private bool $displayDetailsOnTestsThatTriggerErrors;
     private bool $displayDetailsOnTestsThatTriggerNotices;
     private bool $displayDetailsOnTestsThatTriggerWarnings;
@@ -36,6 +37,7 @@ final readonly class PHPUnit
     private bool $processIsolation;
     private bool $failOnDeprecation;
     private bool $failOnPhpunitDeprecation;
+    private bool $failOnPhpunitNotice;
     private bool $failOnEmptyTestSuite;
     private bool $failOnIncomplete;
     private bool $failOnNotice;
@@ -85,7 +87,7 @@ final readonly class PHPUnit
      * @param ?non-empty-string $extensionsDirectory
      * @param non-negative-int  $shortenArraysForExportThreshold
      */
-    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->cacheResult                                  = $cacheResult;
@@ -96,6 +98,7 @@ final readonly class PHPUnit
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
         $this->displayDetailsOnPhpunitDeprecations          = $displayDetailsOnPhpunitDeprecations;
+        $this->displayDetailsOnPhpunitNotices               = $displayDetailsOnPhpunitNotices;
         $this->displayDetailsOnTestsThatTriggerErrors       = $displayDetailsOnTestsThatTriggerErrors;
         $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
@@ -105,6 +108,7 @@ final readonly class PHPUnit
         $this->processIsolation                             = $processIsolation;
         $this->failOnDeprecation                            = $failOnDeprecation;
         $this->failOnPhpunitDeprecation                     = $failOnPhpunitDeprecation;
+        $this->failOnPhpunitNotice                          = $failOnPhpunitNotice;
         $this->failOnEmptyTestSuite                         = $failOnEmptyTestSuite;
         $this->failOnIncomplete                             = $failOnIncomplete;
         $this->failOnNotice                                 = $failOnNotice;
@@ -203,6 +207,11 @@ final readonly class PHPUnit
         return $this->displayDetailsOnPhpunitDeprecations;
     }
 
+    public function displayDetailsOnPhpunitNotices(): bool
+    {
+        return $this->displayDetailsOnPhpunitNotices;
+    }
+
     public function displayDetailsOnTestsThatTriggerErrors(): bool
     {
         return $this->displayDetailsOnTestsThatTriggerErrors;
@@ -261,6 +270,11 @@ final readonly class PHPUnit
     public function failOnPhpunitDeprecation(): bool
     {
         return $this->failOnPhpunitDeprecation;
+    }
+
+    public function failOnPhpunitNotice(): bool
+    {
+        return $this->failOnPhpunitNotice;
     }
 
     public function failOnEmptyTestSuite(): bool
