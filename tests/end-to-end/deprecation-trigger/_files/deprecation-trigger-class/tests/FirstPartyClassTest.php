@@ -7,15 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Issue5844;
+namespace PHPUnit\TestFixture\SelfDirectIndirect;
 
 use PHPUnit\Framework\TestCase;
 
-final class Issue5844Test extends TestCase
+final class FirstPartyClassTest extends TestCase
 {
     public function testOne(): void
     {
-        new CustomErrorHandler;
-        $this->assertTrue(true);
+        $this->assertTrue((new FirstPartyClass)->method());
     }
 }
