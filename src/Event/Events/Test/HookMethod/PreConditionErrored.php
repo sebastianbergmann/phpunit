@@ -41,7 +41,7 @@ final readonly class PreConditionErrored implements Event
         return $this->telemetryInfo;
     }
 
-    public function test(): Code\TestMethod
+    public function testMethod(): Code\TestMethod
     {
         return $this->test;
     }
