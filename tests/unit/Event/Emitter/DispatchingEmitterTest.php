@@ -1814,8 +1814,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     #[TestDox('testTriggeredPhpunitNotice() emits Test\PhpunitNoticeTriggered event')]
     public function testTestTriggeredPhpunitNoticeEmitsTestPhpunitNoticeTriggeredEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\PhpunitNoticeTriggeredSubscriber
-        {
+        $subscriber = new class extends RecordingSubscriber implements Test\PhpunitNoticeTriggeredSubscriber {
             public function notify(Test\PhpunitNoticeTriggered $event): void
             {
                 $this->record($event);
@@ -1835,7 +1834,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $test    = $this->testValueObject();
+        $test = $this->testValueObject();
         $message = 'message';
 
         $emitter->testTriggeredPhpunitNotice(
@@ -1851,13 +1850,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
-    }
-        $this->assertInstanceOf(Test\Prepared::class, $event);
         // Prove that the previous and current durations are the same
         $this->assertSame(
             $event->telemetryInfo()->durationSincePrevious()->nanoseconds(),
             $event->telemetryInfo()->durationSinceStart()->nanoseconds(),
         );
+    }
 
     #[TestDox('testTriggeredPhpDeprecation() emits Test\PhpDeprecationTriggered event')]
     public function testTestTriggeredPhpDeprecationEmitsTestPhpDeprecationTriggeredEvent(): void
