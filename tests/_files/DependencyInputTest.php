@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class DependencyInputTest extends TestCase
+final class DependencyInputTest extends TestCase
 {
     public function testDependencyInputAsParameter(string $dependencyInput): void
     {

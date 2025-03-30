@@ -9,16 +9,45 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
 use function defined;
 use function is_file;
+use function rsort;
 use function sprintf;
+use DirectoryIterator;
 use PHPUnit\Runner\Version;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class SchemaFinder
 {
+    /**
+     * @return non-empty-list<non-empty-string>
+     */
+    public function available(): array
+    {
+        $result = [Version::series()];
+
+        foreach ((new DirectoryIterator($this->path() . 'schema')) as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+
+            $version = $file->getBasename('.xsd');
+
+            assert($version !== '');
+
+            $result[] = $version;
+        }
+
+        rsort($result);
+
+        return $result;
+    }
+
     /**
      * @throws CannotFindSchemaException
      */

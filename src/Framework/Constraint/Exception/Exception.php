@@ -14,11 +14,13 @@ use PHPUnit\Util\Filter;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Exception extends Constraint
+final class Exception extends Constraint
 {
-    private string $className;
+    private readonly string $className;
 
     public function __construct(string $className)
     {
@@ -66,7 +68,7 @@ final readonly class Exception extends Constraint
 
         if ($other instanceof Throwable) {
             $message = '. Message was: "' . $other->getMessage() . '" at'
-                . "\n" . Filter::getFilteredStacktrace($other);
+                . "\n" . Filter::stackTraceFromThrowableAsString($other);
         }
 
         return sprintf(

@@ -14,8 +14,17 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
+    // *WithPropertyWith*Hook.php use PHP 8.4 syntax that currently leads to PHP-CS-Fixer errors
+    ->notName('ExtendableClassWithPropertyWithGetHook.php')
+    ->notName('ExtendableClassWithPropertyWithSetHook.php')
+    ->notName('InterfaceWithPropertyWithGetHook.php')
+    ->notName('InterfaceWithPropertyWithSetHook.php')
+    // DeprecatedPhpFeatureTest.php must not use declare(strict_types=1);
     ->notName('DeprecatedPhpFeatureTest.php')
-    ->notName('ReadonlyClass.php')
+    // UseBaselineTest.php must not use declare(strict_types=1);
+    ->notName('UseBaselineTest.php')
+    // Issue5795Test.php contains required whitespace that would be cleaned up
+    ->notName('Issue5795Test.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
@@ -103,7 +112,7 @@ $config->setFinder($finder)
         'explicit_string_variable' => true,
         'fopen_flag_order' => true,
         'full_opening_tag' => true,
-        'fully_qualified_strict_types' => true,
+        'fully_qualified_strict_types' => ['import_symbols' => true],
         'function_declaration' => true,
         'function_to_constant' => true,
         'get_class_to_class_keyword' => true,
@@ -139,7 +148,7 @@ $config->setFinder($finder)
         'modernize_types_casting' => true,
         'multiline_comment_opening_closing' => true,
         'multiline_whitespace_before_semicolons' => true,
-        'native_constant_invocation' => false,
+        'native_constant_invocation' => true,
         'native_function_casing' => false,
         'native_function_invocation' => [
             'include' => [
@@ -162,7 +171,23 @@ $config->setFinder($finder)
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
-        'no_extra_blank_lines' => true,
+        'no_extra_blank_lines' => [
+            'tokens' => [
+                'attribute',
+                'break',
+                'case',
+                'continue',
+                'curly_brace_block',
+                'default',
+                'extra',
+                'parenthesis_brace_block',
+                'return',
+                'square_brace_block',
+                'switch',
+                'throw',
+                'use',
+            ],
+        ],
         'no_homoglyph_names' => true,
         'no_leading_import_slash' => true,
         'no_leading_namespace_whitespace' => true,
@@ -201,6 +226,7 @@ $config->setFinder($finder)
         'no_whitespace_in_blank_line' => true,
         'non_printable_character' => true,
         'normalize_index_brace' => true,
+        'nullable_type_declaration_for_default_null_value' => true,
         'object_operator_without_whitespace' => true,
         'octal_notation' => true,
         'operator_linebreak' => [
@@ -344,6 +370,8 @@ $config->setFinder($finder)
         'whitespace_after_comma_in_array' => true,
     ]);
 
-$config->setCacheFile(__DIR__ . '/.php-cs-fixer.cache/' . sha1(@trim((string) @shell_exec('git rev-parse --abbrev-ref HEAD'))));
+$config->setCacheFile(__DIR__ . '/.php-cs-fixer.cache/' . json_decode((string) @file_get_contents('composer.json'), true)["extra"]["branch-alias"]["dev-main"] ?? 'unknown');
+
+$config->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect());
 
 return $config;

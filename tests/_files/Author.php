@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class Author
+final class Author
 {
     // the order of properties is important for testing the cycle!
     public $books = [];

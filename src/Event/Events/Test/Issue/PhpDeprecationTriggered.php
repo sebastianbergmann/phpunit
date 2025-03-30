@@ -10,13 +10,15 @@
 namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
+use function implode;
 use function sprintf;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -26,29 +28,30 @@ final readonly class PhpDeprecationTriggered implements Event
     private Test $test;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $message;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $file;
 
     /**
-     * @psalm-var positive-int
+     * @var positive-int
      */
     private int $line;
     private bool $suppressed;
     private bool $ignoredByBaseline;
     private bool $ignoredByTest;
+    private IssueTrigger $trigger;
 
     /**
-     * @psalm-param non-empty-string $message
-     * @psalm-param non-empty-string $file
-     * @psalm-param positive-int $line
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest)
+    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, IssueTrigger $trigger)
     {
         $this->telemetryInfo     = $telemetryInfo;
         $this->test              = $test;
@@ -58,6 +61,7 @@ final readonly class PhpDeprecationTriggered implements Event
         $this->suppressed        = $suppressed;
         $this->ignoredByBaseline = $ignoredByBaseline;
         $this->ignoredByTest     = $ignoredByTest;
+        $this->trigger           = $trigger;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -71,7 +75,7 @@ final readonly class PhpDeprecationTriggered implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function message(): string
     {
@@ -79,7 +83,7 @@ final readonly class PhpDeprecationTriggered implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function file(): string
     {
@@ -87,7 +91,7 @@ final readonly class PhpDeprecationTriggered implements Event
     }
 
     /**
-     * @psalm-return positive-int
+     * @return positive-int
      */
     public function line(): int
     {
@@ -109,28 +113,41 @@ final readonly class PhpDeprecationTriggered implements Event
         return $this->ignoredByTest;
     }
 
+    public function trigger(): IssueTrigger
+    {
+        return $this->trigger;
+    }
+
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 
-        $status = '';
+        $details = [$this->test->id(), $this->trigger->asString()];
+
+        if ($this->suppressed) {
+            $details[] = 'suppressed using operator';
+        }
 
         if ($this->ignoredByTest) {
-            $status = 'Test-Ignored ';
-        } elseif ($this->ignoredByBaseline) {
-            $status = 'Baseline-Ignored ';
-        } elseif ($this->suppressed) {
-            $status = 'Suppressed ';
+            $details[] = 'ignored by test';
+        }
+
+        if ($this->ignoredByBaseline) {
+            $details[] = 'ignored by baseline';
         }
 
         return sprintf(
-            'Test Triggered %sPHP Deprecation (%s)%s',
-            $status,
-            $this->test->id(),
+            'Test Triggered PHP Deprecation (%s) in %s:%d%s',
+            implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

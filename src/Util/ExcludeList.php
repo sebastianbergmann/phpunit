@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util;
 
+use const PHP_OS_FAMILY;
+use function assert;
 use function class_exists;
 use function defined;
 use function dirname;
@@ -25,8 +27,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SebastianBergmann\CliParser\Parser as CliParser;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeUnit\CodeUnit;
-use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Complexity\Calculator;
 use SebastianBergmann\Diff\Diff;
@@ -37,11 +37,13 @@ use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\LinesOfCode\Counter;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
+use SebastianBergmann\ObjectReflector\ObjectReflector;
 use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
+use staabm\SideEffectsDetector\SideEffectsDetector;
 use TheSeer\Tokenizer\Tokenizer;
 
 /**
@@ -50,9 +52,9 @@ use TheSeer\Tokenizer\Tokenizer;
 final class ExcludeList
 {
     /**
-     * @psalm-var array<string,int>
+     * @var non-empty-array<class-string, positive-int>
      */
-    private const EXCLUDED_CLASS_NAMES = [
+    private const array EXCLUDED_CLASS_NAMES = [
         // composer
         ClassLoader::class => 1,
 
@@ -89,12 +91,6 @@ final class ExcludeList
         // sebastian/cli-parser
         CliParser::class => 1,
 
-        // sebastian/code-unit
-        CodeUnit::class => 1,
-
-        // sebastian/code-unit-reverse-lookup
-        Wizard::class => 1,
-
         // sebastian/comparator
         Comparator::class => 1,
 
@@ -119,6 +115,9 @@ final class ExcludeList
         // sebastian/object-enumerator
         Enumerator::class => 1,
 
+        // sebastian/object-reflector
+        ObjectReflector::class => 1,
+
         // sebastian/recursion-context
         Context::class => 1,
 
@@ -128,19 +127,22 @@ final class ExcludeList
         // sebastian/version
         Version::class => 1,
 
+        // staabm/side-effects-detector
+        SideEffectsDetector::class => 1,
+
         // theseer/tokenizer
         Tokenizer::class => 1,
     ];
 
     /**
-     * @psalm-var list<string>
+     * @var list<string>
      */
     private static array $directories = [];
     private static bool $initialized  = false;
     private readonly bool $enabled;
 
     /**
-     * @psalm-param non-empty-string $directory
+     * @param non-empty-string $directory
      *
      * @throws InvalidDirectoryException
      */
@@ -150,7 +152,11 @@ final class ExcludeList
             throw new InvalidDirectoryException($directory);
         }
 
-        self::$directories[] = realpath($directory);
+        $directory = realpath($directory);
+
+        assert($directory !== false);
+
+        self::$directories[] = $directory;
     }
 
     public function __construct(?bool $enabled = null)
@@ -163,7 +169,7 @@ final class ExcludeList
     }
 
     /**
-     * @psalm-return list<string>
+     * @return list<string>
      */
     public function getExcludedDirectories(): array
     {
@@ -209,11 +215,16 @@ final class ExcludeList
             self::$directories[] = $directory;
         }
 
-        // Hide process isolation workaround on Windows.
+        /**
+         * Hide process isolation workaround on Windows:
+         * tempnam() prefix is limited to first 3 characters.
+         *
+         * @see https://php.net/manual/en/function.tempnam.php
+         */
         if (PHP_OS_FAMILY === 'Windows') {
-            // tempnam() prefix is limited to first 3 chars.
-            // @see https://php.net/manual/en/function.tempnam.php
+            // @codeCoverageIgnoreStart
             self::$directories[] = sys_get_temp_dir() . '\\PHP';
+            // @codeCoverageIgnoreEnd
         }
 
         self::$initialized = true;

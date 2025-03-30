@@ -10,17 +10,15 @@
 namespace PHPUnit\Framework\MockObject;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface StubInternal extends Stub
 {
-    public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void;
+    public function __phpunit_state(): TestDoubleState;
 
     public function __phpunit_getInvocationHandler(): InvocationHandler;
 
-    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void;
-
     public function __phpunit_unsetInvocationMocker(): void;
-
-    public function __phpunit_wasGeneratedAsMockObject(): bool;
 }

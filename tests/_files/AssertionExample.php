@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use function assert;
 
-class AssertionExample
+final class AssertionExample
 {
     public function doSomething(): void
     {

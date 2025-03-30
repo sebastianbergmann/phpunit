@@ -2,30 +2,22 @@
 The right events are emitted in the right order for a successful test that uses a data provider
 --FILE--
 <?php declare(strict_types=1);
-$traceFile = tempnam(sys_get_temp_dir(), __FILE__);
-
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--no-output';
-$_SERVER['argv'][] = '--log-events-text';
-$_SERVER['argv'][] = $traceFile;
+$_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/DataProviderTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
-
-print file_get_contents($traceFile);
-
-unlink($traceFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
+Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Event\DataProviderTest::values for test method PHPUnit\TestFixture\Event\DataProviderTest::testSuccess)
 Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\DataProviderTest::values
 Test Suite Loaded (2 tests)
-Event Facade Sealed
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)

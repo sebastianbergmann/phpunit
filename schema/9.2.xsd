@@ -163,7 +163,7 @@
     </xs:group>
     <xs:complexType name="directoryFilterType">
         <xs:simpleContent>
-            <xs:extension base="xs:string">
+            <xs:extension base="xs:anyURI">
                 <xs:attribute type="xs:string" name="prefix" default=""/>
                 <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
                 <xs:attributeGroup ref="phpVersionGroup"/>
@@ -248,7 +248,7 @@
         <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
         <xs:attribute name="forceCoversAnnotation" type="xs:boolean" default="false"/>
-        <xs:attribute name="printerClass" type="xs:string" default="PHPUnit\TextUI\ResultPrinter"/>
+        <xs:attribute name="printerClass" type="xs:string" default="PHPUnit\TextUI\DefaultResultPrinter"/>
         <xs:attribute name="printerFile" type="xs:anyURI"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
         <xs:attribute name="stopOnDefect" type="xs:boolean" default="false"/>
@@ -282,7 +282,7 @@
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
         <xs:attribute name="registerMockObjectsFromTestArgumentsRecursively" type="xs:boolean" default="false"/>
-        <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
+        <xs:attribute name="extensionsDirectory" type="xs:string"/>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
         <xs:attribute name="noInteraction" type="xs:boolean" default="false"/>
@@ -310,7 +310,7 @@
     <xs:complexType name="testSuiteType">
         <xs:sequence>
             <xs:group ref="pathGroup"/>
-            <xs:element name="exclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="exclude" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>

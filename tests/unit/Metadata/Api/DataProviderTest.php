@@ -10,15 +10,19 @@
 namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\DuplicateKeyDataProvidersTest;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
+use PHPUnit\TestFixture\TestWithAttributeDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
 #[CoversClass(DataProvider::class)]
 #[Small]
+#[Group('metadata')]
 final class DataProviderTest extends TestCase
 {
     /**
@@ -80,7 +84,6 @@ final class DataProviderTest extends TestCase
             ['P'],
             ['Q'],
             ['R'],
-
         ], $dataSets);
     }
 
@@ -98,7 +101,6 @@ final class DataProviderTest extends TestCase
             ['P'],
             ['Q'],
             ['R'],
-
         ], $dataSets);
     }
 
@@ -116,7 +118,6 @@ final class DataProviderTest extends TestCase
             ['Y'],
             ['Z'],
             ['P'],
-
         ], $dataSets);
     }
 
@@ -154,12 +155,42 @@ final class DataProviderTest extends TestCase
         ], $dataSets);
     }
 
-    public function testWithDuplicateKeyDataProviders(): void
+    public function testWithDuplicateKeyDataProvider(): void
     {
         $this->expectException(InvalidDataProviderException::class);
         $this->expectExceptionMessage('The key "foo" has already been defined by a previous data provider');
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(DuplicateKeyDataProviderTest::class, 'test');
+    }
+
+    public function testTestWithAttribute(): void
+    {
+        $dataSets = (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithAttribute');
+
+        $this->assertSame([
+            'foo' => ['a', 'b'],
+            'bar' => ['c', 'd'],
+            0     => ['e', 'f'],
+            1     => ['g', 'h'],
+        ], $dataSets);
+    }
+
+    public function testTestWithAttributeWithDuplicateKey(): void
+    {
+        $this->expectException(InvalidDataProviderException::class);
+        $this->expectExceptionMessage('The key "foo" has already been defined by a previous TestWith attribute');
+
+        /* @noinspection UnusedFunctionResultInspection */
+        (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithDuplicateName');
+    }
+
+    public function testWithDuplicateKeyDataProviders(): void
+    {
+        $this->expectException(InvalidDataProviderException::class);
+        $this->expectExceptionMessage('The key "bar" has already been defined by a previous data provider');
+
+        /* @noinspection UnusedFunctionResultInspection */
+        (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');
     }
 }

@@ -11,45 +11,49 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_map;
 use function implode;
-use function is_object;
 use function sprintf;
 use function str_starts_with;
 use function strtolower;
 use function substr;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Util\Cloner;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Invocation implements SelfDescribing
 {
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $className;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $methodName;
+
+    /**
+     * @var array<mixed>
+     */
     private array $parameters;
     private string $returnType;
     private bool $isReturnTypeNullable;
-    private bool $proxiedCall;
     private MockObjectInternal|StubInternal $object;
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     * @param array<mixed>     $parameters
      */
-    public function __construct(string $className, string $methodName, array $parameters, string $returnType, MockObjectInternal|StubInternal $object, bool $cloneObjects = false, bool $proxiedCall = false)
+    public function __construct(string $className, string $methodName, array $parameters, string $returnType, MockObjectInternal|StubInternal $object)
     {
-        $this->className   = $className;
-        $this->methodName  = $methodName;
-        $this->object      = $object;
-        $this->proxiedCall = $proxiedCall;
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->parameters = $parameters;
+        $this->object     = $object;
 
         if (strtolower($methodName) === '__tostring') {
             $returnType = 'string';
@@ -63,24 +67,10 @@ final readonly class Invocation implements SelfDescribing
         }
 
         $this->returnType = $returnType;
-
-        if (!$cloneObjects) {
-            $this->parameters = $parameters;
-
-            return;
-        }
-
-        foreach ($parameters as $key => $value) {
-            if (is_object($value)) {
-                $parameters[$key] = Cloner::clone($value);
-            }
-        }
-
-        $this->parameters = $parameters;
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function className(): string
     {
@@ -88,13 +78,16 @@ final readonly class Invocation implements SelfDescribing
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function methodName(): string
     {
         return $this->methodName;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parameters(): array
     {
         return $this->parameters;
@@ -112,22 +105,20 @@ final readonly class Invocation implements SelfDescribing
             );
         }
 
-        if ($this->isReturnTypeNullable || $this->proxiedCall) {
+        if ($this->isReturnTypeNullable) {
             return null;
         }
 
         return (new ReturnValueGenerator)->generate(
             $this->className,
             $this->methodName,
-            $this->object::class,
+            $this->object,
             $this->returnType,
         );
     }
 
     public function toString(): string
     {
-        $exporter = new Exporter;
-
         return sprintf(
             '%s::%s(%s)%s',
             $this->className,
@@ -135,11 +126,11 @@ final readonly class Invocation implements SelfDescribing
             implode(
                 ', ',
                 array_map(
-                    [$exporter, 'shortenedExport'],
+                    [Exporter::class, 'shortenedExport'],
                     $this->parameters,
                 ),
             ),
-            $this->returnType ? sprintf(': %s', $this->returnType) : '',
+            $this->returnType !== '' ? sprintf(': %s', $this->returnType) : '',
         );
     }
 

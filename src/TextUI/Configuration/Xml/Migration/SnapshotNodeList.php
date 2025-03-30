@@ -17,6 +17,8 @@ use DOMNodeList;
 use IteratorAggregate;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
  * @template-implements IteratorAggregate<int, DOMNode>
@@ -24,10 +26,13 @@ use IteratorAggregate;
 final class SnapshotNodeList implements Countable, IteratorAggregate
 {
     /**
-     * @psalm-var list<DOMNode>
+     * @var list<DOMNode>
      */
     private array $nodes = [];
 
+    /**
+     * @param DOMNodeList<DOMNode> $list
+     */
     public static function fromNodeList(DOMNodeList $list): self
     {
         $snapshot = new self;
@@ -44,6 +49,9 @@ final class SnapshotNodeList implements Countable, IteratorAggregate
         return count($this->nodes);
     }
 
+    /**
+     * @return ArrayIterator<int, DOMNode>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->nodes);

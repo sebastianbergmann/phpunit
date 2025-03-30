@@ -10,17 +10,31 @@
 namespace PHPUnit\Metadata;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class PostCondition extends Metadata
 {
+    private int $priority;
+
     /**
-     * @psalm-assert-if-true PostCondition $this
+     * @param int<0, 1> $level
      */
-    public function isPostCondition(): bool
+    protected function __construct(int $level, int $priority)
+    {
+        parent::__construct($level);
+
+        $this->priority = $priority;
+    }
+
+    public function isPostCondition(): true
     {
         return true;
+    }
+
+    public function priority(): int
+    {
+        return $this->priority;
     }
 }

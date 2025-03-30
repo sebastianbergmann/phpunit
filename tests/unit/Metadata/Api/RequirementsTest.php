@@ -11,11 +11,14 @@ namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
 
 #[CoversClass(Requirements::class)]
 #[Small]
+#[Group('metadata')]
 final class RequirementsTest extends TestCase
 {
     public static function missingRequirementsProvider(): array
@@ -29,25 +32,25 @@ final class RequirementsTest extends TestCase
                 'PHP extension testExt is required.',
             ]],
             ['testAlwaysSkip',     [
-                'PHPUnit >= 1111111 is required.',
+                'PHPUnit 1111111 is required.',
             ]],
             ['testAlwaysSkip2',    [
-                'PHP >= 9999999 is required.',
+                'PHP 9999999 is required.',
             ]],
             ['testAlwaysSkip3',    [
                 'Operating system DOESNOTEXIST is required.',
             ]],
             ['testAllPossibleRequirements', [
-                'PHP >= 99-dev is required.',
-                'PHP extension testExtOne is required.',
-                'PHP extension testExt2 is required.',
-                'PHP extension testExtThree >= 2.0 is required.',
-                'PHPUnit >= 99-dev is required.',
+                'PHP 99-dev is required.',
+                'PHPUnit 99-dev is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Function testFuncOne() is required.',
                 'Function testFunc2() is required.',
                 'Method DoesNotExist::doesNotExist() is required.',
+                'PHP extension testExtOne is required.',
+                'PHP extension testExt2 is required.',
+                'PHP extension testExtThree 2.0 is required.',
                 'Setting "not_a_setting" is required to be "Off".',
             ]],
             ['testPHPVersionOperatorLessThan', [
@@ -121,7 +124,16 @@ final class RequirementsTest extends TestCase
                 'PHP ^1.0 is required.',
                 'PHPUnit ^2.0 is required.',
             ]],
+            ['testPHPUnitExtensionRequired', [
+                'PHPUnit extension "PHPUnit\TestFixture\SomeExtension" is required.',
+                'PHPUnit extension "PHPUnit\TestFixture\SomeOtherExtension" is required.',
+            ]],
         ];
+    }
+
+    protected function tearDown(): void
+    {
+        unset($_ENV['FOO'], $_ENV['BAR']);
     }
 
     #[DataProvider('missingRequirementsProvider')]
@@ -130,6 +142,21 @@ final class RequirementsTest extends TestCase
         $this->assertEquals(
             $result,
             (new Requirements)->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test),
+        );
+    }
+
+    public function testGetMissingEnvironmentVariableRequirements(): void
+    {
+        $_ENV['FOO'] = 'foo';
+        $_ENV['BAR'] = '';
+
+        $this->assertEquals(
+            [
+                'Environment variable "FOO" is required to be "bar".',
+                'Environment variable "BAR" is required.',
+                'Environment variable "BAZ" is required.',
+            ],
+            (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
         );
     }
 }

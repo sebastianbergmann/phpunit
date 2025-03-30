@@ -9,43 +9,49 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const PHP_EOL;
+use function count;
 use function sprintf;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\TextUI\Configuration\Registry;
-use RecursiveIteratorIterator;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class ListTestsAsTextCommand implements Command
 {
-    private TestSuite $suite;
+    /**
+     * @var list<PhptTestCase|TestCase>
+     */
+    private array $tests;
 
-    public function __construct(TestSuite $suite)
+    /**
+     * @param list<PhptTestCase|TestCase> $tests
+     */
+    public function __construct(array $tests)
     {
-        $this->suite = $suite;
+        $this->tests = $tests;
     }
 
     public function execute(): Result
     {
-        $buffer = $this->warnAboutConflictingOptions();
+        $buffer = sprintf(
+            'Available test%s:' . PHP_EOL,
+            count($this->tests) > 1 ? 's' : '',
+        );
 
-        $buffer .= 'Available test(s):' . PHP_EOL;
-
-        foreach (new RecursiveIteratorIterator($this->suite) as $test) {
+        foreach ($this->tests as $test) {
             if ($test instanceof TestCase) {
                 $name = sprintf(
                     '%s::%s',
                     $test::class,
                     str_replace(' with data set ', '', $test->nameWithDataSet()),
                 );
-            } elseif ($test instanceof PhptTestCase) {
-                $name = $test->getName();
             } else {
-                continue;
+                $name = $test->getName();
             }
 
             $buffer .= sprintf(
@@ -55,30 +61,5 @@ final readonly class ListTestsAsTextCommand implements Command
         }
 
         return Result::from($buffer);
-    }
-
-    private function warnAboutConflictingOptions(): string
-    {
-        $buffer = '';
-
-        $configuration = Registry::get();
-
-        if ($configuration->hasFilter()) {
-            $buffer .= 'The --filter and --list-tests options cannot be combined, --filter is ignored' . PHP_EOL;
-        }
-
-        if ($configuration->hasGroups()) {
-            $buffer .= 'The --group and --list-tests options cannot be combined, --group is ignored' . PHP_EOL;
-        }
-
-        if ($configuration->hasExcludeGroups()) {
-            $buffer .= 'The --exclude-group and --list-tests options cannot be combined, --exclude-group is ignored' . PHP_EOL;
-        }
-
-        if (!empty($buffer)) {
-            $buffer .= PHP_EOL;
-        }
-
-        return $buffer;
     }
 }

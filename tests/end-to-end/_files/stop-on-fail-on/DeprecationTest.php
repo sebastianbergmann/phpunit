@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\TestFixture\TestRunnerStopping;
 
+use const E_USER_DEPRECATED;
 use function trigger_error;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
 
 final class DeprecationTest extends TestCase
@@ -24,5 +26,15 @@ final class DeprecationTest extends TestCase
     public function testTwo(): void
     {
         $this->assertTrue(true);
+    }
+
+    public function testThree(): void
+    {
+        $this->assertTrue(true);
+
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'message',
+        );
     }
 }

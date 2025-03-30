@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function assert;
-use function interface_exists;
 use function sprintf;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -24,6 +22,9 @@ use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnInterfaceForIssue5593;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterfaceForIssue5593;
+use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatReturnsSelf;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatReturnsStatic;
 use PHPUnit\TestFixture\MockObject\YetAnotherInterface;
 use stdClass;
 
@@ -33,6 +34,9 @@ use stdClass;
 #[Small]
 final class ReturnValueGeneratorTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{0: mixed, 1: non-empty-string}>
+     */
     public static function unionProvider(): array
     {
         return [
@@ -121,17 +125,35 @@ final class ReturnValueGeneratorTest extends TestCase
 
     public function test_Generates_Generator_for_Generator(): void
     {
-        $this->assertInstanceOf(Generator::class, $this->generate('Generator'));
+        $value = $this->generate('Generator');
+
+        $this->assertInstanceOf(Generator::class, $value);
+
+        foreach ($value as $element) {
+            $this->assertSame([], $element);
+        }
     }
 
     public function test_Generates_Generator_for_Traversable(): void
     {
-        $this->assertInstanceOf(Generator::class, $this->generate('Traversable'));
+        $value = $this->generate('Traversable');
+
+        $this->assertInstanceOf(Generator::class, $value);
+
+        foreach ($value as $element) {
+            $this->assertSame([], $element);
+        }
     }
 
     public function test_Generates_Generator_for_iterable(): void
     {
-        $this->assertInstanceOf(Generator::class, $this->generate('iterable'));
+        $value = $this->generate('iterable');
+
+        $this->assertInstanceOf(Generator::class, $value);
+
+        foreach ($value as $element) {
+            $this->assertSame([], $element);
+        }
     }
 
     public function test_Generates_test_stub_for_class_or_interface_name(): void
@@ -144,13 +166,6 @@ final class ReturnValueGeneratorTest extends TestCase
 
     public function test_Generates_test_stub_for_intersection_of_interfaces(): void
     {
-        /**
-         * @todo Figure out why AnotherInterface is not found by the autoloader
-         * when only the tests of this class are run; the interface is found as
-         * expected when the entire (unit) test suite is run
-         */
-        assert(interface_exists(AnotherInterface::class));
-
         $value = $this->generate(AnInterface::class . '&' . AnotherInterface::class);
 
         $this->assertInstanceOf(Stub::class, $value);
@@ -158,11 +173,24 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $value);
     }
 
+    public function test_Generates_new_instance_of_test_stub_for_self(): void
+    {
+        $stub = $this->createStub(InterfaceWithMethodThatReturnsSelf::class);
+
+        $returnValue = $stub->doSomething();
+
+        $this->assertNotInstanceOf($stub::class, $returnValue);
+        $this->assertNotSame($stub, $returnValue);
+    }
+
     public function test_Generates_new_instance_of_test_stub_for_static(): void
     {
-        $stubClassName = ($this->createStub(AnInterface::class))::class;
+        $stub = $this->createStub(InterfaceWithMethodThatReturnsStatic::class);
 
-        $this->assertInstanceOf($stubClassName, $this->generate('static', $stubClassName));
+        $returnValue = $stub->doSomething();
+
+        $this->assertInstanceOf($stub::class, $returnValue);
+        $this->assertNotSame($stub, $returnValue);
     }
 
     #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5593')]
@@ -210,17 +238,32 @@ final class ReturnValueGeneratorTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $value);
     }
 
-    public function test_Generates_test_stub_for_unknown_type(): void
+    public function test_Does_not_handle_union_of_extendable_class_and_interface(): void
     {
-        $this->assertInstanceOf(Stub::class, $this->generate('ThisDoesNotExist'));
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is a union, please configure a return value for this method');
+
+        $this->generate(ExtendableClass::class . '|' . AnInterface::class);
     }
 
-    private function generate(string $typeDeclaration, string $stubClassName = 'StubClassName'): mixed
+    public function test_Does_not_handle_intersection_of_extendable_class_and_interface(): void
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is an intersection, please configure a return value for this method');
+
+        $this->generate(ExtendableClass::class . '&' . AnInterface::class);
+    }
+
+    private function generate(string $typeDeclaration, ?StubInternal $testStub = null): mixed
+    {
+        if ($testStub === null) {
+            $testStub = $this->createStub(AnInterface::class);
+        }
+
         return (new ReturnValueGenerator)->generate(
             'OriginalClassName',
             'methodName',
-            $stubClassName,
+            $testStub,
             $typeDeclaration,
         );
     }

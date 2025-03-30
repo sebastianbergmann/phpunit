@@ -15,7 +15,7 @@ use function sprintf;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsWritable extends Constraint
+final class IsWritable extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

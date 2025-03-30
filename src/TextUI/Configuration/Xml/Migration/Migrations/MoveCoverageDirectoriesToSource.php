@@ -15,6 +15,8 @@ use DOMElement;
 use DOMXPath;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class MoveCoverageDirectoriesToSource implements Migration
@@ -46,9 +48,21 @@ final readonly class MoveCoverageDirectoriesToSource implements Migration
         $xpath = new DOMXPath($document);
 
         foreach (['include', 'exclude'] as $element) {
-            foreach (SnapshotNodeList::fromNodeList($xpath->query('//coverage/' . $element)) as $node) {
+            $nodes = $xpath->query('//coverage/' . $element);
+
+            assert($nodes !== false);
+
+            foreach (SnapshotNodeList::fromNodeList($nodes) as $node) {
                 $source->appendChild($node);
             }
         }
+
+        if ($coverage->childElementCount !== 0) {
+            return;
+        }
+
+        assert($coverage->parentNode !== null);
+
+        $coverage->parentNode->removeChild($coverage);
     }
 }

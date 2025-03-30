@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use function array_pop;
 use function end;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 class StackTest extends TestCase
@@ -27,9 +28,7 @@ class StackTest extends TestCase
         return $stack;
     }
 
-    /**
-     * @depends testPush
-     */
+    #[Depends('testPush')]
     public function testPop(array $stack): void
     {
         $this->assertEquals('foo', array_pop($stack));

@@ -10,13 +10,14 @@
 namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
+use function implode;
 use function sprintf;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -26,25 +27,25 @@ final readonly class ErrorTriggered implements Event
     private Test $test;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $message;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $file;
 
     /**
-     * @psalm-var positive-int
+     * @var positive-int
      */
     private int $line;
     private bool $suppressed;
 
     /**
-     * @psalm-param non-empty-string $message
-     * @psalm-param non-empty-string $file
-     * @psalm-param positive-int $line
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
      */
     public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line, bool $suppressed)
     {
@@ -67,7 +68,7 @@ final readonly class ErrorTriggered implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function message(): string
     {
@@ -75,7 +76,7 @@ final readonly class ErrorTriggered implements Event
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function file(): string
     {
@@ -83,7 +84,7 @@ final readonly class ErrorTriggered implements Event
     }
 
     /**
-     * @psalm-return positive-int
+     * @return positive-int
      */
     public function line(): int
     {
@@ -95,18 +96,28 @@ final readonly class ErrorTriggered implements Event
         return $this->suppressed;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 
+        $details = [$this->test->id()];
+
+        if ($this->suppressed) {
+            $details[] = 'suppressed using operator';
+        }
+
         return sprintf(
-            'Test Triggered %sError (%s)%s',
-            $this->wasSuppressed() ? 'Suppressed ' : '',
-            $this->test->id(),
+            'Test Triggered Error (%s) in %s:%d%s',
+            implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

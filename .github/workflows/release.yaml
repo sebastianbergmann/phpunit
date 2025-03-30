@@ -1,0 +1,54 @@
+# https://docs.github.com/en/actions
+
+on:
+  push:
+    tags:
+      - "**"
+
+name: Release
+
+jobs:
+  release:
+    name: Release
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: none
+          extensions: none
+          tools: none
+
+      - name: Determine tag
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Parse ChangeLog
+        run: build/scripts/extract-release-notes.php ${{ env.RELEASE_TAG }} > release-notes.md
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.RELEASE_TAG }}
+          name: PHPUnit ${{ env.RELEASE_TAG }}
+          bodyFile: release-notes.md
+          commit: "12.0"
+
+      - name: Announce release
+        id: mastodon
+        uses: cbrgm/mastodon-github-action@v2
+        with:
+          access-token: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          url: ${{ secrets.MASTODON_URL }}
+          language: "en"
+          message: "#PHPUnit ${{ env.RELEASE_TAG }} has been released: https://github.com/sebastianbergmann/phpunit/releases/tag/${{ env.RELEASE_TAG }}"

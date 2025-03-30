@@ -17,13 +17,13 @@ use PHPUnit\Util\InvalidVersionOperatorException;
 use PHPUnit\Util\VersionComparisonOperator;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract readonly class Requirement
 {
-    private const VERSION_COMPARISON = '/(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
+    private const string VERSION_COMPARISON = "/(?P<operator>!=|<|<=|<>|=|==|>|>=)?\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m";
 
     /**
      * @throws InvalidVersionOperatorException
@@ -42,7 +42,7 @@ abstract readonly class Requirement
                 return new ComparisonRequirement(
                     $matches['version'],
                     new VersionComparisonOperator(
-                        !empty($matches['operator']) ? $matches['operator'] : '>=',
+                        $matches['operator'] !== '' ? $matches['operator'] : '>=',
                     ),
                 );
             }

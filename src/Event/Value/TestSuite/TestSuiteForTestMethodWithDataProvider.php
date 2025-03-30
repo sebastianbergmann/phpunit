@@ -12,28 +12,28 @@ namespace PHPUnit\Event\TestSuite;
 use PHPUnit\Event\Code\TestCollection;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestSuiteForTestMethodWithDataProvider extends TestSuite
 {
     /**
-     * @psalm-var class-string
+     * @var class-string
      */
     private string $className;
 
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $methodName;
     private string $file;
     private int $line;
 
     /**
-     * @psalm-param non-empty-string $name
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param non-empty-string $name
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line)
     {
@@ -46,7 +46,7 @@ final readonly class TestSuiteForTestMethodWithDataProvider extends TestSuite
     }
 
     /**
-     * @psalm-return class-string
+     * @return class-string
      */
     public function className(): string
     {
@@ -54,7 +54,7 @@ final readonly class TestSuiteForTestMethodWithDataProvider extends TestSuite
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function methodName(): string
     {
@@ -71,10 +71,7 @@ final readonly class TestSuiteForTestMethodWithDataProvider extends TestSuite
         return $this->line;
     }
 
-    /**
-     * @psalm-assert-if-true TestSuiteForTestMethodWithDataProvider $this
-     */
-    public function isForTestMethodWithDataProvider(): bool
+    public function isForTestMethodWithDataProvider(): true
     {
         return true;
     }

@@ -14,7 +14,7 @@ use function is_finite;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsFinite extends Constraint
+final class IsFinite extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

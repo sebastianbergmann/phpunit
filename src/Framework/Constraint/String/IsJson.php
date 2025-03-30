@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const JSON_ERROR_CTRL_CHAR;
+use const JSON_ERROR_DEPTH;
+use const JSON_ERROR_NONE;
+use const JSON_ERROR_STATE_MISMATCH;
+use const JSON_ERROR_SYNTAX;
+use const JSON_ERROR_UTF8;
 use function is_string;
 use function json_decode;
 use function json_last_error;
@@ -17,7 +23,7 @@ use function sprintf;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsJson extends Constraint
+final class IsJson extends Constraint
 {
     /**
      * Returns a string representation of the constraint.
@@ -39,7 +45,7 @@ final readonly class IsJson extends Constraint
 
         json_decode($other);
 
-        if (json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             return false;
         }
 

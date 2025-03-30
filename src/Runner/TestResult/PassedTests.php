@@ -18,6 +18,8 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class PassedTests
@@ -25,12 +27,12 @@ final class PassedTests
     private static ?self $instance = null;
 
     /**
-     * @psalm-var list<class-string>
+     * @var list<class-string>
      */
     private array $passedTestClasses = [];
 
     /**
-     * @psalm-var array<string,array{returnValue: mixed, size: TestSize}>
+     * @var array<string,array{returnValue: mixed, size: TestSize}>
      */
     private array $passedTestMethods = [];
 
@@ -46,7 +48,7 @@ final class PassedTests
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     public function testClassPassed(string $className): void
     {
@@ -80,7 +82,7 @@ final class PassedTests
     }
 
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     public function hasTestClassPassed(string $className): bool
     {

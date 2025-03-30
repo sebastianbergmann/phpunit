@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderTest extends TestCase
+final class DataProviderTest extends TestCase
 {
-    public static function providerMethod()
+    public static function providerMethod(): array
     {
         return [
             [0, 0, 0],
@@ -23,9 +24,7 @@ class DataProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providerMethod
-     */
+    #[DataProvider('providerMethod')]
     public function testAdd($a, $b, $c): void
     {
         $this->assertEquals($c, $a + $b);

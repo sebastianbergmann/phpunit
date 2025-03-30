@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\TestData;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -45,10 +45,7 @@ final readonly class DataFromDataProvider extends TestData
         return $this->dataAsStringForResultOutput;
     }
 
-    /**
-     * @psalm-assert-if-true DataFromDataProvider $this
-     */
-    public function isFromDataProvider(): bool
+    public function isFromDataProvider(): true
     {
         return true;
     }

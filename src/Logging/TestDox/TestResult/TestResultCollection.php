@@ -14,19 +14,21 @@ use IteratorAggregate;
 /**
  * @template-implements IteratorAggregate<int, TestResult>
  *
- * @psalm-immutable
+ * @immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestResultCollection implements IteratorAggregate
 {
     /**
-     * @psalm-var list<TestResult>
+     * @var list<TestResult>
      */
     private array $testResults;
 
     /**
-     * @psalm-param list<TestResult> $testResults
+     * @param list<TestResult> $testResults
      */
     public static function fromArray(array $testResults): self
     {
@@ -39,7 +41,7 @@ final readonly class TestResultCollection implements IteratorAggregate
     }
 
     /**
-     * @psalm-return list<TestResult>
+     * @return list<TestResult>
      */
     public function asArray(): array
     {

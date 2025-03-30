@@ -22,11 +22,17 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Util\ThrowableToStringMapper;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Matcher
 {
     private readonly InvocationOrder $invocationRule;
+
+    /**
+     * @var ?non-empty-string
+     */
     private ?string $afterMatchBuilderId    = null;
     private ?MethodName $methodNameRule     = null;
     private ?ParametersRule $parametersRule = null;
@@ -72,6 +78,9 @@ final class Matcher
         $this->stub = $stub;
     }
 
+    /**
+     * @param non-empty-string $id
+     */
     public function setAfterMatchBuilderId(string $id): void
     {
         $this->afterMatchBuilderId = $id;
@@ -95,7 +104,7 @@ final class Matcher
                 ->__phpunit_getInvocationHandler()
                 ->lookupMatcher($this->afterMatchBuilderId);
 
-            if (!$matcher) {
+            if ($matcher === null) {
                 throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
             }
         }
@@ -116,7 +125,7 @@ final class Matcher
             );
         }
 
-        if ($this->stub) {
+        if ($this->stub !== null) {
             return $this->stub->invoke($invocation);
         }
 
@@ -136,7 +145,7 @@ final class Matcher
                 ->__phpunit_getInvocationHandler()
                 ->lookupMatcher($this->afterMatchBuilderId);
 
-            if (!$matcher) {
+            if ($matcher === null) {
                 throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
             }
 

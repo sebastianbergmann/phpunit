@@ -13,7 +13,7 @@ final class Issue5210Test extends TestCase
 {
     protected function tearDown(): void
     {
-        throw new \Exception('test');
+        throw new Exception('test');
     }
 
     public function testOne(): void

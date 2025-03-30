@@ -14,7 +14,7 @@ use function is_nan;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IsNan extends Constraint
+final class IsNan extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

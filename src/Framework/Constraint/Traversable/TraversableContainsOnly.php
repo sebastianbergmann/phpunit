@@ -10,27 +10,33 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TraversableContainsOnly extends Constraint
+final class TraversableContainsOnly extends Constraint
 {
-    private Constraint $constraint;
-    private string $type;
+    private readonly Constraint $constraint;
+    private readonly string $type;
+
+    public static function forNativeType(NativeType $type): self
+    {
+        return new self(new IsType($type), $type->value);
+    }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @param class-string $type
      */
-    public function __construct(string $type, bool $isNativeType = true)
+    public static function forClassOrInterface(string $type): self
     {
-        if ($isNativeType) {
-            $this->constraint = new IsType($type);
-        } else {
-            $this->constraint = new IsInstanceOf($type);
-        }
+        return new self(new IsInstanceOf($type), $type);
+    }
 
-        $this->type = $type;
+    private function __construct(IsInstanceOf|IsType $constraint, string $type)
+    {
+        $this->constraint = $constraint;
+        $this->type       = $type;
     }
 
     /**

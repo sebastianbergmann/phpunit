@@ -1,0 +1,33 @@
+{
+    "name": "phpstan/extension-installer",
+    "type": "composer-plugin",
+    "description": "Composer plugin for automatic installation of PHPStan extensions",
+    "license": [
+        "MIT"
+    ],
+    "keywords": ["dev", "static analysis"],
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "composer-plugin-api": "^2.0",
+        "phpstan/phpstan": "^1.9.0 || ^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.0",
+        "php-parallel-lint/php-parallel-lint": "^1.2.0",
+        "phpstan/phpstan-strict-rules": "^0.11 || ^0.12 || ^1.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "ocramius/package-versions": true
+        }
+    },
+    "extra": {
+        "class": "PHPStan\\ExtensionInstaller\\Plugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPStan\\ExtensionInstaller\\": "src/"
+        }
+    }
+}

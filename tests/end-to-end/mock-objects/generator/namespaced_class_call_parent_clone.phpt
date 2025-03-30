@@ -16,23 +16,20 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->generate(
-    'NS\Foo',
-    true,
-    true,
-    [],
-    'MockFoo',
-    true
+    type: 'NS\Foo',
+    mockObject: true,
+    methods: [],
+    mockClassName: 'MockFoo',
 );
 
 print $mock->classCode();
---EXPECTF--
+--EXPECT--
 declare(strict_types=1);
 
 class MockFoo extends NS\Foo implements PHPUnit\Framework\MockObject\MockObjectInternal
 {
     use PHPUnit\Framework\MockObject\StubApi;
     use PHPUnit\Framework\MockObject\MockObjectApi;
-    use PHPUnit\Framework\MockObject\GeneratedAsMockObject;
     use PHPUnit\Framework\MockObject\Method;
     use PHPUnit\Framework\MockObject\ProxiedCloneMethod;
 }

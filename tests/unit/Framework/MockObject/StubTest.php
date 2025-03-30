@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 final class StubTest extends TestDoubleTestCase
 {
     /**
-     * @psalm-param class-string $type
+     * @param class-string $type
      */
     protected function createTestDouble(string $type): object
     {

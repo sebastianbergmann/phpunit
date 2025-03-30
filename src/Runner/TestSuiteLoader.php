@@ -10,9 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function array_diff;
-use function array_values;
 use function basename;
-use function class_exists;
 use function get_declared_classes;
 use function realpath;
 use function str_ends_with;
@@ -23,22 +21,26 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestSuiteLoader
 {
     /**
-     * @psalm-var list<class-string>
+     * @var list<class-string>
      */
     private static array $declaredClasses = [];
 
     /**
-     * @psalm-var array<non-empty-string, list<class-string>>
+     * @var array<non-empty-string, list<class-string>>
      */
     private static array $fileToClassesMap = [];
 
     /**
      * @throws Exception
+     *
+     * @return ReflectionClass<TestCase>
      */
     public function load(string $suiteClassFile): ReflectionClass
     {
@@ -77,11 +79,13 @@ final class TestSuiteLoader
             throw $e;
         }
 
-        if (!class_exists($suiteClassName)) {
-            throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
+        foreach ($loadedClasses as $className) {
+            if (str_ends_with(strtolower($className), strtolower($suiteClassName))) {
+                throw new ClassDoesNotExtendTestCaseException($className, $suiteClassFile);
+            }
         }
 
-        throw new ClassDoesNotExtendTestCaseException($suiteClassName, $suiteClassFile);
+        throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
     }
 
     private function classNameFromFileName(string $suiteClassFile): string
@@ -97,7 +101,7 @@ final class TestSuiteLoader
     }
 
     /**
-     * @psalm-return list<class-string>
+     * @return array<class-string>
      */
     private function loadSuiteClassFile(string $suiteClassFile): array
     {
@@ -105,17 +109,15 @@ final class TestSuiteLoader
             return self::$fileToClassesMap[$suiteClassFile];
         }
 
-        if (empty(self::$declaredClasses)) {
+        if (self::$declaredClasses === []) {
             self::$declaredClasses = get_declared_classes();
         }
 
         require_once $suiteClassFile;
 
-        $loadedClasses = array_values(
-            array_diff(
-                get_declared_classes(),
-                self::$declaredClasses,
-            ),
+        $loadedClasses = array_diff(
+            get_declared_classes(),
+            self::$declaredClasses,
         );
 
         foreach ($loadedClasses as $loadedClass) {
@@ -131,7 +133,7 @@ final class TestSuiteLoader
 
         self::$declaredClasses = get_declared_classes();
 
-        if (empty($loadedClasses)) {
+        if ($loadedClasses === []) {
             return self::$declaredClasses;
         }
 

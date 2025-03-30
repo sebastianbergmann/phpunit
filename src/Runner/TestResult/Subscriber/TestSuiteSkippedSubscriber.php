@@ -13,6 +13,8 @@ use PHPUnit\Event\TestSuite\Skipped;
 use PHPUnit\Event\TestSuite\SkippedSubscriber;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestSuiteSkippedSubscriber extends Subscriber implements SkippedSubscriber

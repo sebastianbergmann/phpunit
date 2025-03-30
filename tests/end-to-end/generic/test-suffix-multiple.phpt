@@ -5,7 +5,9 @@ phpunit --test-suffix .test.php,.my.php ../../_files/
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--test-suffix';
-$_SERVER['argv'][] = '.test.php,.my.php';
+$_SERVER['argv'][] = '.test.php';
+$_SERVER['argv'][] = '--test-suffix';
+$_SERVER['argv'][] = '.my.php';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/';
 
 require_once __DIR__ . '/../../bootstrap.php';

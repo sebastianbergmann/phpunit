@@ -21,8 +21,20 @@ final class TestWithTest extends TestCase
         $this->assertTrue(true);
     }
 
+    #[TestWith([1, 2, 3], 'Name1')]
+    public function testOneWithName(): void
+    {
+        $this->assertTrue(true);
+    }
+
     #[TestWithJson('[1, 2, 3]')]
     public function testTwo(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    #[TestWithJson('[1, 2, 3]', 'Name2')]
+    public function testTwoWithName(): void
     {
         $this->assertTrue(true);
     }

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpunit" default="setup">
-    <target name="setup" depends="install-dependencies"/>
+    <target name="setup" depends="clean-build-artifacts,install-dependencies"/>
 
-    <target name="clean" description="Cleanup build artifacts">
+    <target name="clean" description="Cleanup build artifacts and vendor directory" depends="clean-build-artifacts,clean-vendor">
+    </target>
+
+    <target name="clean-build-artifacts" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/tmp"/>
+    </target>
+
+    <target name="clean-vendor" description="Cleanup vendor directory">
         <delete dir="${basedir}/vendor"/>
     </target>
 
@@ -13,6 +19,21 @@
             <arg value="install"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+        </exec>
+    </target>
+
+    <target name="update-dependencies" description="Update (and bump) dependencies with Composer">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="bump"/>
+            <arg value="--no-interaction"/>
             <arg value="--no-ansi"/>
         </exec>
     </target>
@@ -27,12 +48,26 @@
             <arg value="--no-progress"/>
             <arg value="update"/>
         </exec>
+
+        <exec executable="${basedir}/tools/composer" dir="${basedir}/tools/.phpstan" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer" dir="${basedir}/tools/.phpstan" taskname="composer">
+            <arg value="bump"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-ansi"/>
+        </exec>
     </target>
 
     <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
         <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
         <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
             <arg value="fix"/>
+            <arg value="--show-progress=none"/>
             <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
         </exec>
     </target>
@@ -152,20 +187,6 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/sebastian/code-unit/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-code-unit/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/sebastian-code-unit">
-            <fileset dir="${basedir}/vendor/sebastian/code-unit/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/sebastian/code-unit-reverse-lookup/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-code-unit-reverse-lookup/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/sebastian-code-unit-reverse-lookup">
-            <fileset dir="${basedir}/vendor/sebastian/code-unit-reverse-lookup/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/sebastian/comparator/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-comparator/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-comparator">
             <fileset dir="${basedir}/vendor/sebastian/comparator/src">
@@ -250,6 +271,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/staabm/side-effects-detector/LICENSE" tofile="${basedir}/build/tmp/phar/staabm-side-effects-detector/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/staabm-side-effects-detector">
+            <fileset dir="${basedir}/vendor/staabm/side-effects-detector/lib">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/tmp/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
@@ -263,6 +291,18 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
+        <!-- https://github.com/sebastianbergmann/phpunit/issues/6092 -->
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Expr/ArrayItem.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Expr/ClosureUse.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/DNumber.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/Encapsed.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/EncapsedStringPart.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/LNumber.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/DeclareDeclare.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/PropertyProperty.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/StaticVar.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/UseUse.php"/>
 
         <copy file="${basedir}/vendor/phar-io/manifest/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-manifest/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/phar-io-manifest">
@@ -308,20 +348,16 @@
             <arg value="--no-interaction" />
             <arg value="--output-dir" />
             <arg path="${basedir}/build/tmp/phar-scoped" />
-            <arg value="--prefix" />
-            <arg value="PHPUnit" />
             <arg path="${basedir}/build/tmp/phar" />
         </exec>
 
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl"   token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl"   token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnit\SebastianBergmann\CodeCoverage\Driver\Selector"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl"   token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnit\SebastianBergmann\CodeCoverage\Filter"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl"  token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl"  token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnit\SebastianBergmann\CodeCoverage\Driver\Selector"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnit\SebastianBergmann\CodeCoverage\Driver\Selector"/>
-
-        <copy file="${basedir}/.phpstorm.meta.php" tofile="${basedir}/build/tmp/phar-scoped/.phpstorm.meta.php"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Filter"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/class.tpl"  token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/class.tpl"  token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/method.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/method.tpl" token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />

@@ -17,16 +17,16 @@ use function sprintf;
 use function str_contains;
 use function strlen;
 use function strtr;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class StringContains extends Constraint
+final class StringContains extends Constraint
 {
-    private string $needle;
-    private bool $ignoreCase;
-    private bool $ignoreLineEndings;
+    private readonly string $needle;
+    private readonly bool $ignoreCase;
+    private readonly bool $ignoreLineEndings;
 
     public function __construct(string $needle, bool $ignoreCase = false, bool $ignoreLineEndings = false)
     {
@@ -53,16 +53,16 @@ final readonly class StringContains extends Constraint
         return sprintf(
             'contains "%s" [%s](length: %s)',
             $needle,
-            $this->getDetectedEncoding($needle),
+            $this->detectedEncoding($needle),
             strlen($needle),
         );
     }
 
     public function failureDescription(mixed $other): string
     {
-        $stringifiedHaystack = (new Exporter)->export($other);
-        $haystackEncoding    = $this->getDetectedEncoding($other);
-        $haystackLength      = $this->getHaystackLength($other);
+        $stringifiedHaystack = Exporter::export($other);
+        $haystackEncoding    = $this->detectedEncoding($other);
+        $haystackLength      = $this->haystackLength($other);
 
         $haystackInformation = sprintf(
             '%s [%s](length: %s) ',
@@ -115,7 +115,7 @@ final readonly class StringContains extends Constraint
         return str_contains($haystack, $this->needle);
     }
 
-    private function getDetectedEncoding(mixed $other): string
+    private function detectedEncoding(mixed $other): string
     {
         if ($this->ignoreCase) {
             return 'Encoding ignored';
@@ -127,14 +127,14 @@ final readonly class StringContains extends Constraint
 
         $detectedEncoding = mb_detect_encoding($other, null, true);
 
-        if (!$detectedEncoding) {
+        if ($detectedEncoding === false) {
             return 'Encoding detection failed';
         }
 
         return $detectedEncoding;
     }
 
-    private function getHaystackLength(mixed $haystack): int
+    private function haystackLength(mixed $haystack): int
     {
         if (!is_string($haystack)) {
             return 0;

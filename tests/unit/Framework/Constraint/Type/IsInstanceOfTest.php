@@ -37,14 +37,22 @@ final class IsInstanceOfTest extends TestCase
 
             [
                 false,
-                'Failed asserting that an object is an instance of class stdClass.',
+                'Failed asserting that an instance of anonymous class created at',
+                stdClass::class,
+                new class
+                {},
+            ],
+
+            [
+                false,
+                'Failed asserting that an instance of class Exception is an instance of class stdClass.',
                 stdClass::class,
                 new Exception,
             ],
 
             [
                 false,
-                'Failed asserting that an object is an instance of interface Throwable.',
+                'Failed asserting that an instance of class stdClass is an instance of interface Throwable.',
                 Throwable::class,
                 new stdClass,
             ],

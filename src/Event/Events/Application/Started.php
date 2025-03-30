@@ -15,7 +15,7 @@ use PHPUnit\Event\Runtime\Runtime;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -40,6 +40,9 @@ final readonly class Started implements Event
         return $this->runtime;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

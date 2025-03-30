@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -139,12 +141,12 @@ final class StringMatchesFormatDescriptionTest extends TestCase
         $this->assertFalse($constraint->evaluate('**', '', true));
         $this->assertFalse($constraint->evaluate('***', '', true));
         $this->assertFalse($constraint->evaluate('*a*', '', true));
+        $this->assertFalse($constraint->evaluate('*1.*', '', true));
 
         $this->assertTrue($constraint->evaluate('*1.0*', '', true));
         $this->assertTrue($constraint->evaluate('*0*', '', true));
         $this->assertTrue($constraint->evaluate('*12*', '', true));
         $this->assertTrue($constraint->evaluate('*.1*', '', true));
-        $this->assertTrue($constraint->evaluate('*1.*', '', true));
         $this->assertTrue($constraint->evaluate('*2e3*', '', true));
         $this->assertTrue($constraint->evaluate('*-2.34e-56*', '', true));
         $this->assertTrue($constraint->evaluate('*+2.34e+56*', '', true));

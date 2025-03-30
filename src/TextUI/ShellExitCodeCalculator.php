@@ -12,15 +12,17 @@ namespace PHPUnit\TextUI;
 use PHPUnit\TestRunner\TestResult\TestResult;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class ShellExitCodeCalculator
 {
-    private const SUCCESS_EXIT   = 0;
-    private const FAILURE_EXIT   = 1;
-    private const EXCEPTION_EXIT = 2;
+    private const int SUCCESS_EXIT   = 0;
+    private const int FAILURE_EXIT   = 1;
+    private const int EXCEPTION_EXIT = 2;
 
-    public function calculate(bool $failOnDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, TestResult $result): int
+    public function calculate(bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, TestResult $result): int
     {
         $returnCode = self::FAILURE_EXIT;
 
@@ -33,7 +35,11 @@ final readonly class ShellExitCodeCalculator
         }
 
         if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
-            if ($failOnDeprecation && $result->hasDeprecations()) {
+            if ($failOnDeprecation && $result->hasPhpOrUserDeprecations()) {
+                $returnCode = self::FAILURE_EXIT;
+            }
+
+            if ($failOnPhpunitDeprecation && $result->hasPhpunitDeprecations()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 

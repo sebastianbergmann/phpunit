@@ -25,7 +25,7 @@ final class ReflectionTest extends TestCase
         $this->assertSame(
             [
                 'file' => realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
-                'line' => 30,
+                'line' => 22,
             ],
             Reflection::sourceLocationFor(BankAccountTest::class, 'testBalanceIsInitiallyZero'),
         );
@@ -44,7 +44,7 @@ final class ReflectionTest extends TestCase
 
     public function testFindsPublicMethodsInTestClass(): void
     {
-        $methods = Reflection::publicMethodsInTestClass(new ReflectionClass(BankAccountTest::class));
+        $methods = Reflection::publicMethodsDeclaredDirectlyInTestClass(new ReflectionClass(BankAccountTest::class));
 
         $this->assertCount(3, $methods);
         $this->assertSame('testBalanceIsInitiallyZero', $methods[0]->getName());
@@ -54,12 +54,11 @@ final class ReflectionTest extends TestCase
 
     public function testFindsMethodsInTestClass(): void
     {
-        $methods = Reflection::methodsInTestClass(new ReflectionClass(BankAccountTest::class));
+        $methods = Reflection::methodsDeclaredDirectlyInTestClass(new ReflectionClass(BankAccountTest::class));
 
-        $this->assertCount(4, $methods);
-        $this->assertSame('setUp', $methods[0]->getName());
-        $this->assertSame('testBalanceIsInitiallyZero', $methods[1]->getName());
-        $this->assertSame('testBalanceCannotBecomeNegative', $methods[2]->getName());
-        $this->assertSame('testBalanceCannotBecomeNegative2', $methods[3]->getName());
+        $this->assertCount(3, $methods);
+        $this->assertSame('testBalanceIsInitiallyZero', $methods[0]->getName());
+        $this->assertSame('testBalanceCannotBecomeNegative', $methods[1]->getName());
+        $this->assertSame('testBalanceCannotBecomeNegative2', $methods[2]->getName());
     }
 }

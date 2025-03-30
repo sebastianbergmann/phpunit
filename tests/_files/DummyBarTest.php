@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class DummyBarTest extends TestCase
+final class DummyBarTest extends TestCase
 {
     public function testBarEqualsBar(): void
     {

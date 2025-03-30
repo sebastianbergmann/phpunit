@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\NativeType;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -21,23 +22,14 @@ use stdClass;
 #[Small]
 final class TraversableContainsOnlyTest extends TestCase
 {
-    public static function provider(): array
+    public static function nativeTypeProvider(): array
     {
         return [
             [
                 true,
                 '',
-                'integer',
-                true,
+                NativeType::Int,
                 [0, 1, 2],
-            ],
-
-            [
-                true,
-                '',
-                stdClass::class,
-                false,
-                [new stdClass, new stdClass, new stdClass],
             ],
 
             [
@@ -47,19 +39,41 @@ Failed asserting that Array &0 [
     0 => 0,
     1 => '1',
     2 => 2,
-] contains only values of type "integer".
+] contains only values of type "int".
 EOT,
-                'integer',
-                true,
+                NativeType::Int,
                 [0, '1', 2],
             ],
         ];
     }
 
-    #[DataProvider('provider')]
-    public function testCanBeEvaluated(bool $result, string $failureDescription, string $expected, bool $isNativeType, mixed $actual): void
+    public static function classOrInterfaceProvider(): array
     {
-        $constraint = new TraversableContainsOnly($expected, $isNativeType);
+        return [
+            [
+                true,
+                '',
+                stdClass::class,
+                [new stdClass, new stdClass],
+            ],
+
+            [
+                false,
+                <<<'EOT'
+Failed asserting that Array &0 [
+    0 => null,
+] contains only values of type "stdClass".
+EOT,
+                stdClass::class,
+                [null],
+            ],
+        ];
+    }
+
+    #[DataProvider('nativeTypeProvider')]
+    public function testCanBeEvaluatedForNativeType(bool $result, string $failureDescription, NativeType $expected, mixed $actual): void
+    {
+        $constraint = TraversableContainsOnly::forNativeType($expected);
 
         $this->assertSame($result, $constraint->evaluate($actual, returnResult: true));
 
@@ -73,14 +87,38 @@ EOT,
         $constraint->evaluate($actual);
     }
 
-    public function testCanBeRepresentedAsString(): void
+    /**
+     * @param class-string $expected
+     */
+    #[DataProvider('classOrInterfaceProvider')]
+    public function testCanBeEvaluatedForClassOrInterface(bool $result, string $failureDescription, string $expected, mixed $actual): void
     {
-        $this->assertSame('contains only values of type "integer"', (new TraversableContainsOnly('integer'))->toString());
-        $this->assertSame('contains only values of type "stdClass"', (new TraversableContainsOnly(stdClass::class, false))->toString());
+        $constraint = TraversableContainsOnly::forClassOrInterface($expected);
+
+        $this->assertSame($result, $constraint->evaluate($actual, returnResult: true));
+
+        if ($result) {
+            return;
+        }
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage($failureDescription);
+
+        $constraint->evaluate($actual);
+    }
+
+    public function testCanBeRepresentedAsStringForNativeType(): void
+    {
+        $this->assertSame('contains only values of type "int"', TraversableContainsOnly::forNativeType(NativeType::Int)->toString());
+    }
+
+    public function testCanBeRepresentedAsStringForClassOrInterface(): void
+    {
+        $this->assertSame('contains only values of type "stdClass"', TraversableContainsOnly::forClassOrInterface(stdClass::class)->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(1, (new TraversableContainsOnly(stdClass::class, false)));
+        $this->assertCount(1, TraversableContainsOnly::forNativeType(NativeType::Int));
     }
 }

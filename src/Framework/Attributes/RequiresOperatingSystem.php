@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Attributes;
 use Attribute;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -20,12 +20,12 @@ use Attribute;
 final readonly class RequiresOperatingSystem
 {
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $regularExpression;
 
     /**
-     * @psalm-param non-empty-string $regularExpression
+     * @param non-empty-string $regularExpression
      */
     public function __construct(string $regularExpression)
     {
@@ -33,7 +33,7 @@ final readonly class RequiresOperatingSystem
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function regularExpression(): string
     {

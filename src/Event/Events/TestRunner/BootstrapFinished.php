@@ -14,15 +14,22 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class BootstrapFinished implements Event
 {
     private Telemetry\Info $telemetryInfo;
+
+    /**
+     * @var non-empty-string
+     */
     private string $filename;
 
+    /**
+     * @param non-empty-string $filename
+     */
     public function __construct(Telemetry\Info $telemetryInfo, string $filename)
     {
         $this->telemetryInfo = $telemetryInfo;
@@ -34,11 +41,17 @@ final readonly class BootstrapFinished implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function filename(): string
     {
         return $this->filename;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

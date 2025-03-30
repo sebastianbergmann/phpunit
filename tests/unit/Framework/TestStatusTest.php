@@ -10,21 +10,12 @@
 namespace PHPUnit\Framework\TestStatus;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Deprecation::class)]
-#[CoversClass(Error::class)]
-#[CoversClass(Failure::class)]
-#[CoversClass(Incomplete::class)]
-#[CoversClass(Known::class)]
-#[CoversClass(Notice::class)]
-#[CoversClass(Risky::class)]
-#[CoversClass(Skipped::class)]
-#[CoversClass(Success::class)]
 #[CoversClass(TestStatus::class)]
-#[CoversClass(Unknown::class)]
-#[CoversClass(Warning::class)]
+#[CoversClassesThatExtendClass(TestStatus::class)]
 #[Small]
 final class TestStatusTest extends TestCase
 {

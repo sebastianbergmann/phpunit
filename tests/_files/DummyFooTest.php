@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class DummyFooTest extends TestCase
+final class DummyFooTest extends TestCase
 {
     public function testFooEqualsFoo(): void
     {

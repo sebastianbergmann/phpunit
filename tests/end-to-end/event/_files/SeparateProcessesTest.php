@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @runTestsInSeparateProcesses
- */
+#[RunTestsInSeparateProcesses]
 final class SeparateProcessesTest extends TestCase
 {
     public function testOne(): array

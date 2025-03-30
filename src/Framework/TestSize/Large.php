@@ -10,16 +10,15 @@
 namespace PHPUnit\Framework\TestSize;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class Large extends Known
 {
-    /**
-     * @psalm-assert-if-true Large $this
-     */
-    public function isLarge(): bool
+    public function isLarge(): true
     {
         return true;
     }

@@ -9,11 +9,14 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class RemoveLoggingElements implements Migration
@@ -26,7 +29,11 @@ final readonly class RemoveLoggingElements implements Migration
 
     private function removeTestDoxElement(DOMDocument $document): void
     {
-        $node = (new DOMXPath($document))->query('logging/testdoxXml')->item(0);
+        $nodes = (new DOMXPath($document))->query('logging/testdoxXml');
+
+        assert($nodes !== false);
+
+        $node = $nodes->item(0);
 
         if (!$node instanceof DOMElement || $node->parentNode === null) {
             return;
@@ -37,7 +44,11 @@ final readonly class RemoveLoggingElements implements Migration
 
     private function removeTextElement(DOMDocument $document): void
     {
-        $node = (new DOMXPath($document))->query('logging/text')->item(0);
+        $nodes = (new DOMXPath($document))->query('logging/text');
+
+        assert($nodes !== false);
+
+        $node = $nodes->item(0);
 
         if (!$node instanceof DOMElement || $node->parentNode === null) {
             return;

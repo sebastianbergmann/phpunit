@@ -12,18 +12,17 @@ namespace PHPUnit\Framework\MockObject\Generator;
 use SebastianBergmann\Template\Template;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
  */
 trait TemplateLoader
 {
     /**
-     * @psalm-var array<string,Template>
+     * @var array<string,Template>
      */
     private static array $templates = [];
 
-    /**
-     * @psalm-suppress MissingThrowsDocblock
-     */
     private function loadTemplate(string $template): Template
     {
         $filename = __DIR__ . '/templates/' . $template;

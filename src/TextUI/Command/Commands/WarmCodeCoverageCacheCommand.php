@@ -19,7 +19,11 @@ use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\Timer;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @codeCoverageIgnore
  */
 final readonly class WarmCodeCoverageCacheCommand implements Command
 {
@@ -59,7 +63,7 @@ final readonly class WarmCodeCoverageCacheCommand implements Command
 
         print 'Warming cache for static analysis ... ';
 
-        (new CacheWarmer)->warmCache(
+        $statistics = (new CacheWarmer)->warmCache(
             $this->configuration->coverageCacheDirectory(),
             !$this->configuration->disableCodeCoverageIgnore(),
             $this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
@@ -67,8 +71,16 @@ final readonly class WarmCodeCoverageCacheCommand implements Command
         );
 
         printf(
-            '[%s]%s',
+            '[%s]%s%s%d file%s processed, %d cache hit%s, %d cache miss%s%s',
             $timer->stop()->asString(),
+            PHP_EOL,
+            PHP_EOL,
+            $statistics['cacheHits'] + $statistics['cacheMisses'],
+            ($statistics['cacheHits'] + $statistics['cacheMisses']) !== 1 ? 's' : '',
+            $statistics['cacheHits'],
+            $statistics['cacheHits'] !== 1 ? 's' : '',
+            $statistics['cacheMisses'],
+            $statistics['cacheMisses'] !== 1 ? 'es' : '',
             PHP_EOL,
         );
 

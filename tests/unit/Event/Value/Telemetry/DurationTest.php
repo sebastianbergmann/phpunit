@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 final class DurationTest extends TestCase
 {
     /**
-     * @psalm-return array<string, array{0: int, 1: int, 2: string}>
+     * @return array<string, array{0: int, 1: int, 2: string}>
      */
     public static function provideDurationAndStringRepresentation(): array
     {

@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderFilterTest extends TestCase
+final class DataProviderFilterTest extends TestCase
 {
-    public static function truthProvider()
+    public static function truthProvider(): array
     {
         return [
             [true],
@@ -23,7 +24,7 @@ class DataProviderFilterTest extends TestCase
         ];
     }
 
-    public static function falseProvider()
+    public static function falseProvider(): array
     {
         return [
             'false test'        => [false],
@@ -33,17 +34,13 @@ class DataProviderFilterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider truthProvider
-     */
+    #[DataProvider('truthProvider')]
     public function testTrue($truth): void
     {
         $this->assertTrue($truth);
     }
 
-    /**
-     * @dataProvider falseProvider
-     */
+    #[DataProvider('falseProvider')]
     public function testFalse($false): void
     {
         $this->assertFalse($false);

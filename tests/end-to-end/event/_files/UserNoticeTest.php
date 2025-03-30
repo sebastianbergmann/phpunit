@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use const E_USER_NOTICE;
 use function error_get_last;
 use function trigger_error;
 use PHPUnit\Framework\TestCase;

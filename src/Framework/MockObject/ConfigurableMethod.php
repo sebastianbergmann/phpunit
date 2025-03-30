@@ -12,30 +12,32 @@ namespace PHPUnit\Framework\MockObject;
 use SebastianBergmann\Type\Type;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class ConfigurableMethod
 {
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $name;
 
     /**
-     * @psalm-var array<int, mixed>
+     * @var array<int, mixed>
      */
     private array $defaultParameterValues;
 
     /**
-     * @psalm-var non-negative-int
+     * @var non-negative-int
      */
     private int $numberOfParameters;
     private Type $returnType;
 
     /**
-     * @psalm-param non-empty-string $name
-     * @psalm-param array<int, mixed> $defaultParameterValues
-     * @psalm-param non-negative-int $numberOfParameters
+     * @param non-empty-string  $name
+     * @param array<int, mixed> $defaultParameterValues
+     * @param non-negative-int  $numberOfParameters
      */
     public function __construct(string $name, array $defaultParameterValues, int $numberOfParameters, Type $returnType)
     {
@@ -46,7 +48,7 @@ final readonly class ConfigurableMethod
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function name(): string
     {
@@ -54,7 +56,7 @@ final readonly class ConfigurableMethod
     }
 
     /**
-     * @psalm-return array<int, mixed>
+     * @return array<int, mixed>
      */
     public function defaultParameterValues(): array
     {
@@ -62,7 +64,7 @@ final readonly class ConfigurableMethod
     }
 
     /**
-     * @psalm-return non-negative-int
+     * @return non-negative-int
      */
     public function numberOfParameters(): int
     {

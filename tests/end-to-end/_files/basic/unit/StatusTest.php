@@ -9,18 +9,17 @@
  */
 namespace PHPUnit\TestFixture\Basic;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use RuntimeException;
 
-/**
- * @covers Foo
- *
- * @uses Bar
- *
- * @testdox Test result status with and without message
- */
+#[CoversClass('Foo')]
+#[UsesClass('Bar')]
+#[TestDox('Test result status with and without message')]
 class StatusTest extends TestCase
 {
     public function testSuccess(): void

@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @runTestsInSeparateProcesses
- */
-class SeparateProcessesTest extends TestCase
+#[RunTestsInSeparateProcesses]
+final class SeparateProcessesTest extends TestCase
 {
     public function testFoo(): void
     {

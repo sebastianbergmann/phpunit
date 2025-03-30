@@ -11,6 +11,7 @@ namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\LargeGroupAttributesTest;
@@ -21,6 +22,7 @@ use PHPUnit\TestFixture\SmallGroupAttributesTest;
 
 #[CoversClass(Groups::class)]
 #[Small]
+#[Group('metadata')]
 final class GroupsTest extends TestCase
 {
     public static function provider(): array
@@ -28,7 +30,6 @@ final class GroupsTest extends TestCase
         return [
             [
                 [
-                    'default',
                 ],
                 NoGroupsMetadataTest::class,
                 'testOne',

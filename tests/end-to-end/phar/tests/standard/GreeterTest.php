@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\TestFixture\Phar;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\TestFixture\Phar\Greeter
- */
+#[CoversClass(Greeter::class)]
 final class GreeterTest extends TestCase
 {
     public function testGreets(): void
@@ -21,11 +22,8 @@ final class GreeterTest extends TestCase
         $this->assertSame('Hello world!', (new Greeter)->greet());
     }
 
-    /**
-     * @runInSeparateProcess
-     *
-     * @ticket https://github.com/sebastianbergmann/phpunit/issues/4412
-     */
+    #[RunInSeparateProcess]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/4412')]
     public function testGreetsInIsolation(): void
     {
         $this->assertSame('Hello world!', (new Greeter)->greet());

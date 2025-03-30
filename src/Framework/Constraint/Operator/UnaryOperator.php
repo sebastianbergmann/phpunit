@@ -14,9 +14,9 @@ use function count;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract readonly class UnaryOperator extends Operator
+abstract class UnaryOperator extends Operator
 {
-    private Constraint $constraint;
+    private readonly Constraint $constraint;
 
     public function __construct(mixed $constraint)
     {
@@ -95,7 +95,7 @@ abstract readonly class UnaryOperator extends Operator
     }
 
     /**
-     * Transforms string returned by the memeber constraint's toString() or
+     * Transforms string returned by the member constraint's toString() or
      * failureDescription() such that it reflects constraint's participation in
      * this expression.
      *

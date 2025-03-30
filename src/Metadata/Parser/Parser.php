@@ -12,24 +12,26 @@ namespace PHPUnit\Metadata\Parser;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Parser
 {
     /**
-     * @psalm-param class-string $className
+     * @param class-string $className
      */
     public function forClass(string $className): MetadataCollection;
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function forMethod(string $className, string $methodName): MetadataCollection;
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      */
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection;
 }

@@ -11,33 +11,34 @@ namespace PHPUnit\Framework\MockObject;
 
 use function strtolower;
 use Exception;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class InvocationHandler
 {
     /**
-     * @psalm-var list<Matcher>
+     * @var list<Matcher>
      */
     private array $matchers = [];
 
     /**
-     * @psalm-var array<string,Matcher>
+     * @var array<non-empty-string, Matcher>
      */
     private array $matcherMap = [];
 
     /**
-     * @psalm-var list<ConfigurableMethod>
+     * @var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
     private readonly bool $returnValueGeneration;
 
     /**
-     * @psalm-param list<ConfigurableMethod> $configurableMethods
+     * @param list<ConfigurableMethod> $configurableMethods
      */
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
@@ -58,6 +59,8 @@ final class InvocationHandler
 
     /**
      * Looks up the match builder with identification $id and returns it.
+     *
+     * @param non-empty-string $id
      */
     public function lookupMatcher(string $id): ?Matcher
     {
@@ -67,6 +70,8 @@ final class InvocationHandler
     /**
      * Registers a matcher with the identification $id. The matcher can later be
      * looked up using lookupMatcher() to figure out if it has been invoked.
+     *
+     * @param non-empty-string $id
      *
      * @throws MatcherAlreadyRegisteredException
      */
@@ -79,12 +84,12 @@ final class InvocationHandler
         $this->matcherMap[$id] = $matcher;
     }
 
-    public function expects(InvocationOrder $rule): InvocationMocker
+    public function expects(InvocationOrder $rule): InvocationStubber
     {
         $matcher = new Matcher($rule);
         $this->addMatcher($matcher);
 
-        return new InvocationMocker(
+        return new InvocationStubberImplementation(
             $this,
             $matcher,
             ...$this->configurableMethods,

@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderIncompleteTest extends TestCase
+final class DataProviderIncompleteTest extends TestCase
 {
-    public static function providerMethod()
+    public static function providerMethod(): array
     {
         return [
             [0, 0, 0],
@@ -21,29 +22,20 @@ class DataProviderIncompleteTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider incompleteTestProviderMethod
-     */
+    public static function incompleteTestProviderMethod(): array
+    {
+        self::markTestIncomplete('incomplete');
+    }
+
+    #[DataProvider('incompleteTestProviderMethod')]
     public function testIncomplete($a, $b, $c): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider providerMethod
-     */
+    #[DataProvider('providerMethod')]
     public function testAdd($a, $b, $c): void
     {
         $this->assertEquals($c, $a + $b);
-    }
-
-    public function incompleteTestProviderMethod()
-    {
-        $this->markTestIncomplete('incomplete');
-
-        return [
-            [0, 0, 0],
-            [0, 1, 1],
-        ];
     }
 }

@@ -9,29 +9,18 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DependsOnClass;
 use PHPUnit\Framework\TestCase;
 
-class DependencyOnClassTest extends TestCase
+final class DependencyOnClassTest extends TestCase
 {
-    /**
-     * Guard support for using annotations to depend on a whole successful TestSuite.
-     *
-     * @depends PHPUnit\TestFixture\DependencySuccessTest::class
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/3519
-     */
+    #[DependsOnClass(DependencySuccessTest::class)]
     public function testThatDependsOnASuccessfulClass(): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * Guard support for using annotations to depend on a whole failing TestSuite.
-     *
-     * @depends PHPUnit\TestFixture\DependencyFailureTest::class
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/3519
-     */
+    #[DependsOnClass(DependencyFailureTest::class)]
     public function testThatDependsOnAFailingClass(): void
     {
         $this->assertTrue(true);

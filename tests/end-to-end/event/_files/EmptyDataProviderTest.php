@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class EmptyDataProviderTest extends TestCase
@@ -18,9 +19,7 @@ final class EmptyDataProviderTest extends TestCase
         return [];
     }
 
-    /**
-     * @dataProvider providerMethod
-     */
+    #[DataProvider('providerMethod')]
     public function testCase(): void
     {
     }

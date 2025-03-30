@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class FailureTest extends TestCase
+final class FailureTest extends TestCase
 {
     public function testAssertArrayEqualsArray(): void
     {

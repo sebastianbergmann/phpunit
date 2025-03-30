@@ -10,9 +10,11 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class PHPUnit
 {
@@ -24,6 +26,8 @@ final readonly class PHPUnit
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDetailsOnTestsThatTriggerDeprecations;
+    private bool $displayDetailsOnPhpunitDeprecations;
+    private bool $displayDetailsOnPhpunitNotices;
     private bool $displayDetailsOnTestsThatTriggerErrors;
     private bool $displayDetailsOnTestsThatTriggerNotices;
     private bool $displayDetailsOnTestsThatTriggerWarnings;
@@ -32,6 +36,8 @@ final readonly class PHPUnit
     private ?string $bootstrap;
     private bool $processIsolation;
     private bool $failOnDeprecation;
+    private bool $failOnPhpunitDeprecation;
+    private bool $failOnPhpunitNotice;
     private bool $failOnEmptyTestSuite;
     private bool $failOnIncomplete;
     private bool $failOnNotice;
@@ -49,7 +55,7 @@ final readonly class PHPUnit
     private bool $stopOnWarning;
 
     /**
-     * @psalm-var ?non-empty-string
+     * @var ?non-empty-string
      */
     private ?string $extensionsDirectory;
     private bool $beStrictAboutChangesToGlobalState;
@@ -68,13 +74,20 @@ final readonly class PHPUnit
     private bool $backupGlobals;
     private bool $backupStaticProperties;
     private bool $testdoxPrinter;
+    private bool $testdoxPrinterSummary;
     private bool $controlGarbageCollector;
     private int $numberOfTestsBeforeGarbageCollection;
 
     /**
-     * @psalm-param ?non-empty-string $extensionsDirectory
+     * @var non-negative-int
      */
-    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection)
+    private int $shortenArraysForExportThreshold;
+
+    /**
+     * @param ?non-empty-string $extensionsDirectory
+     * @param non-negative-int  $shortenArraysForExportThreshold
+     */
+    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->cacheResult                                  = $cacheResult;
@@ -84,6 +97,8 @@ final readonly class PHPUnit
         $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
+        $this->displayDetailsOnPhpunitDeprecations          = $displayDetailsOnPhpunitDeprecations;
+        $this->displayDetailsOnPhpunitNotices               = $displayDetailsOnPhpunitNotices;
         $this->displayDetailsOnTestsThatTriggerErrors       = $displayDetailsOnTestsThatTriggerErrors;
         $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
@@ -92,6 +107,8 @@ final readonly class PHPUnit
         $this->bootstrap                                    = $bootstrap;
         $this->processIsolation                             = $processIsolation;
         $this->failOnDeprecation                            = $failOnDeprecation;
+        $this->failOnPhpunitDeprecation                     = $failOnPhpunitDeprecation;
+        $this->failOnPhpunitNotice                          = $failOnPhpunitNotice;
         $this->failOnEmptyTestSuite                         = $failOnEmptyTestSuite;
         $this->failOnIncomplete                             = $failOnIncomplete;
         $this->failOnNotice                                 = $failOnNotice;
@@ -124,12 +141,14 @@ final readonly class PHPUnit
         $this->backupGlobals                                = $backupGlobals;
         $this->backupStaticProperties                       = $backupStaticProperties;
         $this->testdoxPrinter                               = $testdoxPrinter;
+        $this->testdoxPrinterSummary                        = $testdoxPrinterSummary;
         $this->controlGarbageCollector                      = $controlGarbageCollector;
         $this->numberOfTestsBeforeGarbageCollection         = $numberOfTestsBeforeGarbageCollection;
+        $this->shortenArraysForExportThreshold              = $shortenArraysForExportThreshold;
     }
 
     /**
-     * @psalm-assert-if-true !null $this->cacheDirectory
+     * @phpstan-assert-if-true !null $this->cacheDirectory
      */
     public function hasCacheDirectory(): bool
     {
@@ -183,6 +202,16 @@ final readonly class PHPUnit
         return $this->displayDetailsOnTestsThatTriggerDeprecations;
     }
 
+    public function displayDetailsOnPhpunitDeprecations(): bool
+    {
+        return $this->displayDetailsOnPhpunitDeprecations;
+    }
+
+    public function displayDetailsOnPhpunitNotices(): bool
+    {
+        return $this->displayDetailsOnPhpunitNotices;
+    }
+
     public function displayDetailsOnTestsThatTriggerErrors(): bool
     {
         return $this->displayDetailsOnTestsThatTriggerErrors;
@@ -209,7 +238,7 @@ final readonly class PHPUnit
     }
 
     /**
-     * @psalm-assert-if-true !null $this->bootstrap
+     * @phpstan-assert-if-true !null $this->bootstrap
      */
     public function hasBootstrap(): bool
     {
@@ -236,6 +265,16 @@ final readonly class PHPUnit
     public function failOnDeprecation(): bool
     {
         return $this->failOnDeprecation;
+    }
+
+    public function failOnPhpunitDeprecation(): bool
+    {
+        return $this->failOnPhpunitDeprecation;
+    }
+
+    public function failOnPhpunitNotice(): bool
+    {
+        return $this->failOnPhpunitNotice;
     }
 
     public function failOnEmptyTestSuite(): bool
@@ -314,7 +353,7 @@ final readonly class PHPUnit
     }
 
     /**
-     * @psalm-assert-if-true !null $this->extensionsDirectory
+     * @phpstan-assert-if-true !null $this->extensionsDirectory
      */
     public function hasExtensionsDirectory(): bool
     {
@@ -322,9 +361,9 @@ final readonly class PHPUnit
     }
 
     /**
-     * @psalm-return non-empty-string
-     *
      * @throws Exception
+     *
+     * @return non-empty-string
      */
     public function extensionsDirectory(): string
     {
@@ -381,7 +420,7 @@ final readonly class PHPUnit
     }
 
     /**
-     * @psalm-assert-if-true !null $this->defaultTestSuite
+     * @phpstan-assert-if-true !null $this->defaultTestSuite
      */
     public function hasDefaultTestSuite(): bool
     {
@@ -430,6 +469,11 @@ final readonly class PHPUnit
         return $this->testdoxPrinter;
     }
 
+    public function testdoxPrinterSummary(): bool
+    {
+        return $this->testdoxPrinterSummary;
+    }
+
     public function controlGarbageCollector(): bool
     {
         return $this->controlGarbageCollector;
@@ -438,5 +482,13 @@ final readonly class PHPUnit
     public function numberOfTestsBeforeGarbageCollection(): int
     {
         return $this->numberOfTestsBeforeGarbageCollection;
+    }
+
+    /**
+     * @return non-negative-int
+     */
+    public function shortenArraysForExportThreshold(): int
+    {
+        return $this->shortenArraysForExportThreshold;
     }
 }

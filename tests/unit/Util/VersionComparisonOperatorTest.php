@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 final class VersionComparisonOperatorTest extends TestCase
 {
     /**
-     * @psalm-return non-empty-list<non-empty-list<string>>
+     * @return non-empty-list<non-empty-list<string>>
      */
     public static function validValues(): array
     {

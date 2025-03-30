@@ -21,17 +21,18 @@ final class PostConditionCalledTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = 'Test';
+        $test          = $this->testValueObject();
         $calledMethod  = $this->calledMethod();
 
         $event = new PostConditionCalled(
             $telemetryInfo,
-            $testClassName,
+            $test,
             $calledMethod,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->testMethod());
+        $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
@@ -39,7 +40,7 @@ final class PostConditionCalledTest extends AbstractEventTestCase
     {
         $event = new PostConditionCalled(
             $this->telemetryInfo(),
-            'Test',
+            $this->testValueObject(),
             $this->calledMethod(),
         );
 

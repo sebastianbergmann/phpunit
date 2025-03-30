@@ -18,19 +18,19 @@ use IteratorAggregate;
 /**
  * @template-implements IteratorAggregate<int, Metadata>
  *
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class MetadataCollection implements Countable, IteratorAggregate
 {
     /**
-     * @psalm-var list<Metadata>
+     * @var list<Metadata>
      */
     private array $metadata;
 
     /**
-     * @psalm-param list<Metadata> $metadata
+     * @param list<Metadata> $metadata
      */
     public static function fromArray(array $metadata): self
     {
@@ -43,7 +43,7 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @psalm-return list<Metadata>
+     * @return list<Metadata>
      */
     public function asArray(): array
     {
@@ -160,12 +160,12 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isCovers(): self
+    public function isCoversNamespace(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isCovers(),
+                static fn (Metadata $metadata): bool => $metadata->isCoversNamespace(),
             ),
         );
     }
@@ -180,12 +180,32 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isCoversDefaultClass(): self
+    public function isCoversClassesThatExtendClass(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isCoversDefaultClass(),
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isCoversClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatImplementInterface(),
+            ),
+        );
+    }
+
+    public function isCoversTrait(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversTrait(),
             ),
         );
     }
@@ -196,6 +216,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isCoversFunction(),
+            ),
+        );
+    }
+
+    public function isCoversMethod(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversMethod(),
             ),
         );
     }
@@ -266,6 +296,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isDependsOnMethod(),
+            ),
+        );
+    }
+
+    public function isDisableReturnValueGenerationForTestDoubles(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isDisableReturnValueGenerationForTestDoubles(),
             ),
         );
     }
@@ -453,6 +493,36 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isRequiresPhpunitExtension(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRequiresPhpunitExtension(),
+            ),
+        );
+    }
+
+    public function isRequiresEnvironmentVariable(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRequiresEnvironmentVariable(),
+            ),
+        );
+    }
+
+    public function isWithEnvironmentVariable(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isWithEnvironmentVariable(),
+            ),
+        );
+    }
+
     public function isRequiresSetting(): self
     {
         return new self(
@@ -483,12 +553,12 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isUses(): self
+    public function isUsesNamespace(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isUses(),
+                static fn (Metadata $metadata): bool => $metadata->isUsesNamespace(),
             ),
         );
     }
@@ -503,12 +573,32 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isUsesDefaultClass(): self
+    public function isUsesClassesThatExtendClass(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isUsesDefaultClass(),
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatImplementInterface(),
+            ),
+        );
+    }
+
+    public function isUsesTrait(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesTrait(),
             ),
         );
     }
@@ -519,6 +609,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isUsesFunction(),
+            ),
+        );
+    }
+
+    public function isUsesMethod(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesMethod(),
             ),
         );
     }

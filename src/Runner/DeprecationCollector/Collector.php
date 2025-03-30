@@ -13,35 +13,55 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\TestRunner\IssueFilter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Collector
 {
+    private readonly IssueFilter $issueFilter;
+
     /**
-     * @psalm-var list<non-empty-string>
+     * @var list<non-empty-string>
      */
     private array $deprecations = [];
+
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $filteredDeprecations = [];
 
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Facade $facade)
+    public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
         $facade->registerSubscribers(
             new TestPreparedSubscriber($this),
             new TestTriggeredDeprecationSubscriber($this),
         );
+
+        $this->issueFilter = $issueFilter;
     }
 
     /**
-     * @psalm-return list<non-empty-string>
+     * @return list<non-empty-string>
      */
     public function deprecations(): array
     {
         return $this->deprecations;
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function filteredDeprecations(): array
+    {
+        return $this->filteredDeprecations;
     }
 
     public function testPrepared(): void
@@ -52,5 +72,11 @@ final class Collector
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
         $this->deprecations[] = $event->message();
+
+        if (!$this->issueFilter->shouldBeProcessed($event)) {
+            return;
+        }
+
+        $this->filteredDeprecations[] = $event->message();
     }
 }

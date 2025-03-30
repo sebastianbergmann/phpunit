@@ -18,6 +18,21 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 When you submit code changes, your submissions are understood to be under the same [BSD-3-Clause License](https://github.com/sebastianbergmann/phpunit/blob/main/LICENSE) that covers the project. By contributing to this project, you agree that your contributions will be licensed under its BSD-3-Clause License.
 
+### Do Not Violate Copyright
+
+Only submit a pull request with your own original code. Do NOT submit a pull request containing code which you have largely copied from
+another project, unless you wrote the respective code yourself.
+
+Open Source does not mean that copyright does not apply. Copyright infringements will not be tolerated and can lead to you being banned from this project and repository.
+
+### Do Not Submit AI-Generated Pull Requests
+
+The same goes for (largely) AI-generated pull requests. These are not welcome as they will be based on copyrighted code from others
+without accreditation and without taking the license of the original code into account, let alone getting permission
+for the use of the code or for re-licensing.
+
+Aside from that, the experience is that AI-generated pull requests will be incorrect 100% of the time and cost reviewers too much time.
+Submitting a (largely) AI-generated pull request will lead to you being banned from this project and repository.
 
 ## Write bug reports with detail, background, and sample code
 
@@ -73,12 +88,6 @@ Due to time constraints, we are not always able to respond as quickly as we woul
 
 ## Coding Guidelines
 
-This project comes with a configuration file (located at `/.psalm/config.xml` in the repository) and an executable for [Psalm](https://psalm.dev/) (located at `/tools/psalm` in the repository) that you can use to perform static analysis (with a focus on type checking):
-
-```bash
-$ ./tools/psalm --config=.psalm/config.xml
-```
-
 This project comes with a configuration file (located at `/.php-cs-fixer.dist.php` in the repository) and an executable for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (located at `/tools/php-cs-fixer` in the repository) that you can use to (re)format your source code for compliance with this project's coding guidelines:
 
 ```bash
@@ -87,6 +96,13 @@ $ ./tools/php-cs-fixer fix
 
 Please understand that we will not accept a pull request when its changes violate this project's coding guidelines.
 
+## Static Analysis
+
+This project comes with a configuration file (located at `/phpstan.neon` in the repository) and an executable for [PHPStan](https://phpstan.org/) (located at `/tools/phpstan` in the repository) that you can use to perform static analysis:
+
+```bash
+$ ./tools/phpstan
+```
 
 ## Using PHPUnit from a Git checkout
 

@@ -9,20 +9,19 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class Issue2830Test extends TestCase
 {
-    public static function simpleDataProvider()
+    public static function simpleDataProvider(): array
     {
         return [
             ['foo'],
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testMethodUsesDataProvider(): void
     {
         $this->assertTrue(true);

@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use function array_keys;
 use function array_merge;
 use function array_reverse;
+use function assert;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -19,15 +20,17 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Reflection
 {
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
-     * @psalm-return array{file: non-empty-string, line: non-negative-int}
+     * @return array{file: non-empty-string, line: non-negative-int}
      */
     public static function sourceLocationFor(string $className, string $methodName): array
     {
@@ -41,6 +44,9 @@ final readonly class Reflection
             $line = 0;
         }
 
+        assert($file !== false && $file !== '');
+        assert($line !== false && $line >= 0);
+
         return [
             'file' => $file,
             'line' => $line,
@@ -48,23 +54,29 @@ final readonly class Reflection
     }
 
     /**
-     * @psalm-return list<ReflectionMethod>
+     * @param ReflectionClass<TestCase> $class
+     *
+     * @return list<ReflectionMethod>
      */
-    public static function publicMethodsInTestClass(ReflectionClass $class): array
+    public static function publicMethodsDeclaredDirectlyInTestClass(ReflectionClass $class): array
     {
         return self::filterAndSortMethods($class, ReflectionMethod::IS_PUBLIC, true);
     }
 
     /**
-     * @psalm-return list<ReflectionMethod>
+     * @param ReflectionClass<TestCase> $class
+     *
+     * @return list<ReflectionMethod>
      */
-    public static function methodsInTestClass(ReflectionClass $class): array
+    public static function methodsDeclaredDirectlyInTestClass(ReflectionClass $class): array
     {
         return self::filterAndSortMethods($class, null, false);
     }
 
     /**
-     * @psalm-return list<ReflectionMethod>
+     * @param ReflectionClass<TestCase> $class
+     *
+     * @return list<ReflectionMethod>
      */
     private static function filterAndSortMethods(ReflectionClass $class, ?int $filter, bool $sortHighestToLowest): array
     {

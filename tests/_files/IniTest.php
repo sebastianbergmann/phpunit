@@ -10,13 +10,12 @@
 namespace PHPUnit\TestFixture;
 
 use function ini_get;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
-class IniTest extends TestCase
+final class IniTest extends TestCase
 {
-    /**
-     * @preserveGlobalState enabled
-     */
+    #[PreserveGlobalState(true)]
     public function testIni(): void
     {
         $this->assertEquals('application/x-test', ini_get('default_mimetype'));

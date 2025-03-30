@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class NotPublicTestCase extends TestCase
+final class NotPublicTestCase extends TestCase
 {
     public function testPublic(): void
     {

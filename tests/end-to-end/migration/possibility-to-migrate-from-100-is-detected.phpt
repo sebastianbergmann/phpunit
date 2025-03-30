@@ -3,6 +3,7 @@ Possibility to migrate XML configuration file from PHPUnit 10.0 format is detect
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--display-phpunit-deprecations';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/possibility-to-migrate-from-100-is-detected/phpunit.xml';
 
@@ -24,4 +25,4 @@ There was 1 PHPUnit test runner deprecation:
 1) Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Deprecations: 1.
+Tests: 1, Assertions: 1, PHPUnit Deprecations: 1.

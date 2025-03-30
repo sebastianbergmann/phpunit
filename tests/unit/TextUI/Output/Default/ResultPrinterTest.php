@@ -29,10 +29,12 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
+use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -53,7 +55,7 @@ use PHPUnit\TextUI\Output\SummaryPrinter;
 final class ResultPrinterTest extends TestCase
 {
     /**
-     * @psalm-return array<string,array{0: string, 1: TestResult}>
+     * @return array<string,array{0: string, 1: TestResult}>
      */
     public static function provider(): array
     {
@@ -179,7 +181,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers deprecation' => [
+            'successful test that triggers deprecation (do not display stack trace)' => [
                 __DIR__ . '/expectations/successful_test_with_deprecation.txt',
                 self::createTestResult(
                     deprecations: [
@@ -191,6 +193,22 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+            ],
+
+            'successful test that triggers deprecation (display stack trace)' => [
+                __DIR__ . '/expectations/successful_test_with_deprecation_with_stack_trace.txt',
+                self::createTestResult(
+                    deprecations: [
+                        Issue::from(
+                            'Foo.php',
+                            1,
+                            'message',
+                            self::testMethod(),
+                            '/path/to/file.php:1234',
+                        ),
+                    ],
+                ),
+                true,
             ],
 
             'successful test that triggers PHP deprecation' => [
@@ -329,6 +347,33 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
+            'successful test and PHPUnit test runner notice' => [
+                __DIR__ . '/expectations/successful_test_and_phpunit_test_runner_notice.txt',
+                self::createTestResult(
+                    testRunnerTriggeredNoticeEvents: [
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+            ],
+
+            'successful test that triggers PHPUnit notice' => [
+                __DIR__ . '/expectations/successful_test_with_phpunit_notice.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitNoticeEvents: [
+                        'Foo::testBar' => [
+                            new PhpunitNoticeTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+            ],
+
             'successful test that triggers PHPUnit warning' => [
                 __DIR__ . '/expectations/successful_test_with_phpunit_warning.txt',
                 self::createTestResult(
@@ -361,7 +406,7 @@ final class ResultPrinterTest extends TestCase
     }
 
     #[DataProvider('provider')]
-    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result): void
+    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result, bool $stackTraceForDeprecations = false): void
     {
         $printer = $this->printer();
 
@@ -379,11 +424,11 @@ final class ResultPrinterTest extends TestCase
             true,
             true,
             true,
+            true,
             false,
         );
 
-        $resultPrinter->print($result);
-        $resultPrinter->flush();
+        $resultPrinter->print($result, $stackTraceForDeprecations);
 
         $summaryPrinter = new SummaryPrinter(
             $printer,
@@ -422,26 +467,28 @@ final class ResultPrinterTest extends TestCase
     }
 
     /**
-     * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
-     * @psalm-param list<Failed> $testFailedEvents
-     * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
-     * @psalm-param list<TestSuiteSkipped> $testSuiteSkippedEvents
-     * @psalm-param list<TestSkipped> $testSkippedEvents
-     * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
-     * @psalm-param list<Issue> $deprecations
-     * @psalm-param list<Issue> $phpDeprecations
-     * @psalm-param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
-     * @psalm-param list<Issue> $errors
-     * @psalm-param list<Issue> $notices
-     * @psalm-param list<Issue> $phpNotices
-     * @psalm-param list<Issue> $warnings
-     * @psalm-param list<Issue> $phpWarnings
-     * @psalm-param array<string,list<PhpunitErrorTriggered>> $testTriggeredPhpunitErrorEvents
-     * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
-     * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
-     * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
+     * @param list<BeforeFirstTestMethodErrored|Errored>      $testErroredEvents
+     * @param list<Failed>                                    $testFailedEvents
+     * @param array<string,list<ConsideredRisky>>             $testConsideredRiskyEvents
+     * @param list<TestSuiteSkipped>                          $testSuiteSkippedEvents
+     * @param list<TestSkipped>                               $testSkippedEvents
+     * @param list<MarkedIncomplete>                          $testMarkedIncompleteEvents
+     * @param list<Issue>                                     $deprecations
+     * @param list<Issue>                                     $phpDeprecations
+     * @param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
+     * @param list<Issue>                                     $errors
+     * @param list<Issue>                                     $notices
+     * @param list<Issue>                                     $phpNotices
+     * @param list<Issue>                                     $warnings
+     * @param list<Issue>                                     $phpWarnings
+     * @param array<string,list<PhpunitErrorTriggered>>       $testTriggeredPhpunitErrorEvents
+     * @param array<string,list<PhpunitNoticeTriggered>>      $testTriggeredPhpunitNoticeEvents
+     * @param array<string,list<PhpunitWarningTriggered>>     $testTriggeredPhpunitWarningEvents
+     * @param list<TestRunnerDeprecationTriggered>            $testRunnerTriggeredDeprecationEvents
+     * @param list<TestRunnerNoticeTriggered>                 $testRunnerTriggeredNoticeEvents
+     * @param list<TestRunnerWarningTriggered>                $testRunnerTriggeredWarningEvents
      */
-    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = [], int $numberOfIssuesIgnoredByBaseline = 0): TestResult
+    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitNoticeEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredNoticeEvents = [], array $testRunnerTriggeredWarningEvents = [], int $numberOfIssuesIgnoredByBaseline = 0): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -455,8 +502,10 @@ final class ResultPrinterTest extends TestCase
             $testMarkedIncompleteEvents,
             $testTriggeredPhpunitDeprecationEvents,
             $testTriggeredPhpunitErrorEvents,
+            $testTriggeredPhpunitNoticeEvents,
             $testTriggeredPhpunitWarningEvents,
             $testRunnerTriggeredDeprecationEvents,
+            $testRunnerTriggeredNoticeEvents,
             $testRunnerTriggeredWarningEvents,
             $errors,
             $deprecations,

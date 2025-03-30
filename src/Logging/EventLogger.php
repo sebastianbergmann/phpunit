@@ -12,15 +12,18 @@ namespace PHPUnit\Logging;
 use const FILE_APPEND;
 use const LOCK_EX;
 use const PHP_EOL;
-use function explode;
+use const PHP_OS_FAMILY;
 use function file_put_contents;
 use function implode;
+use function preg_split;
 use function str_repeat;
 use function strlen;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Tracer\Tracer;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class EventLogger implements Tracer
@@ -38,12 +41,23 @@ final readonly class EventLogger implements Tracer
     {
         $telemetryInfo = $this->telemetryInfo($event);
         $indentation   = PHP_EOL . str_repeat(' ', strlen($telemetryInfo));
-        $lines         = explode(PHP_EOL, $event->asString());
+        $flags         = FILE_APPEND;
+
+        if (!(PHP_OS_FAMILY === 'Windows' || PHP_OS_FAMILY === 'Darwin') ||
+            $this->path !== 'php://stdout') {
+            $flags |= LOCK_EX;
+        }
+
+        $lines = preg_split('/\r\n|\r|\n/', $event->asString());
+
+        if ($lines === false) {
+            $lines = [];
+        }
 
         file_put_contents(
             $this->path,
             $telemetryInfo . implode($indentation, $lines) . PHP_EOL,
-            FILE_APPEND | LOCK_EX,
+            $flags,
         );
     }
 

@@ -10,48 +10,37 @@
 namespace PHPUnit\TestFixture;
 
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class Issue498Test extends TestCase
 {
-    public static function shouldBeTrueDataProvider()
+    public static function shouldBeTrueDataProvider(): array
     {
-        // throw new Exception("Can't create the data");
         return [
             [true],
             [false],
         ];
     }
 
-    public static function shouldBeFalseDataProvider()
+    public static function shouldBeFalseDataProvider(): array
     {
         throw new Exception("Can't create the data");
-
-        return [
-            [true],
-            [false],
-        ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider shouldBeTrueDataProvider
-     *
-     * @group falseOnly
-     */
+    #[Test]
+    #[DataProvider('shouldBeTrueDataProvider')]
+    #[Group('falseOnly')]
     public function shouldBeTrue($testData): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider shouldBeFalseDataProvider
-     *
-     * @group trueOnly
-     */
+    #[Test]
+    #[DataProvider('shouldBeFalseDataProvider')]
+    #[Group('trueOnly')]
     public function shouldBeFalse($testData): void
     {
         $this->assertFalse(false);

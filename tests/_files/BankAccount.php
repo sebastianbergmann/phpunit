@@ -9,14 +9,14 @@
  */
 namespace PHPUnit\TestFixture;
 
-class BankAccount
+final class BankAccount
 {
     /**
      * The bank account's balance.
      *
      * @var float
      */
-    protected $balance = 0;
+    private $balance = 0;
 
     /**
      * Returns the bank account's balance.
@@ -63,7 +63,7 @@ class BankAccount
      *
      * @throws BankAccountException
      */
-    protected function setBalance($balance): void
+    private function setBalance($balance): void
     {
         if ($balance >= 0) {
             $this->balance = $balance;

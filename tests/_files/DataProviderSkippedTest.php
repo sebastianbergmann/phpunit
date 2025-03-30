@@ -9,9 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class DataProviderSkippedTest extends TestCase
+final class DataProviderSkippedTest extends TestCase
 {
     public static function providerMethod()
     {
@@ -21,29 +22,20 @@ class DataProviderSkippedTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider skippedTestProviderMethod
-     */
+    public static function skippedTestProviderMethod(): array
+    {
+        self::markTestSkipped('skipped');
+    }
+
+    #[DataProvider('skippedTestProviderMethod')]
     public function testSkipped($a, $b, $c): void
     {
         $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider providerMethod
-     */
+    #[DataProvider('providerMethod')]
     public function testAdd($a, $b, $c): void
     {
         $this->assertEquals($c, $a + $b);
-    }
-
-    public function skippedTestProviderMethod()
-    {
-        $this->markTestSkipped('skipped');
-
-        return [
-            [0, 0, 0],
-            [0, 1, 1],
-        ];
     }
 }

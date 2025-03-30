@@ -15,7 +15,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -24,12 +24,12 @@ final readonly class TestStubForIntersectionOfInterfacesCreated implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @psalm-var list<class-string>
+     * @var list<class-string>
      */
     private array $interfaces;
 
     /**
-     * @psalm-param list<class-string> $interfaces
+     * @param list<class-string> $interfaces
      */
     public function __construct(Telemetry\Info $telemetryInfo, array $interfaces)
     {
@@ -50,6 +50,9 @@ final readonly class TestStubForIntersectionOfInterfacesCreated implements Event
         return $this->interfaces;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
+>
+    <testsuites>
+        <testsuite name="default">
+            <directory groups="foo">tests/foo</directory>
+            <directory groups="bar,baz">tests/bar-baz</directory>
+            <file groups="another-group">tests/AnotherTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

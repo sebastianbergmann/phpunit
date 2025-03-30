@@ -23,6 +23,8 @@ use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Generator
@@ -60,11 +62,11 @@ final readonly class Generator
      */
     public function testTriggeredIssue(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): void
     {
-        if (!$this->source->ignoreSuppressionOfPhpWarnings() && $event->wasSuppressed()) {
+        if ($event->wasSuppressed() && !$this->isSuppressionIgnored($event)) {
             return;
         }
 
-        if ($this->source->restrictWarnings() && !(new SourceFilter)->includes($this->source, $event->file())) {
+        if ($this->restrict($event) && !SourceFilter::instance()->includes($event->file())) {
             return;
         }
 
@@ -76,5 +78,43 @@ final readonly class Generator
                 $event->message(),
             ),
         );
+    }
+
+    private function restrict(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): bool
+    {
+        if ($event instanceof WarningTriggered || $event instanceof PhpWarningTriggered) {
+            return $this->source->restrictWarnings();
+        }
+
+        if ($event instanceof NoticeTriggered || $event instanceof PhpNoticeTriggered) {
+            return $this->source->restrictNotices();
+        }
+
+        return false;
+    }
+
+    private function isSuppressionIgnored(DeprecationTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): bool
+    {
+        if ($event instanceof WarningTriggered) {
+            return $this->source->ignoreSuppressionOfWarnings();
+        }
+
+        if ($event instanceof PhpWarningTriggered) {
+            return $this->source->ignoreSuppressionOfPhpWarnings();
+        }
+
+        if ($event instanceof PhpNoticeTriggered) {
+            return $this->source->ignoreSuppressionOfPhpNotices();
+        }
+
+        if ($event instanceof NoticeTriggered) {
+            return $this->source->ignoreSuppressionOfNotices();
+        }
+
+        if ($event instanceof PhpDeprecationTriggered) {
+            return $this->source->ignoreSuppressionOfPhpDeprecations();
+        }
+
+        return $this->source->ignoreSuppressionOfDeprecations();
     }
 }

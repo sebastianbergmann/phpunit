@@ -1,0 +1,43 @@
+{
+	"name": "phpstan/phpstan-strict-rules",
+	"type": "phpstan-extension",
+	"description": "Extra strict and opinionated rules for PHPStan",
+	"license": [
+		"MIT"
+	],
+	"require": {
+		"php": "^7.4 || ^8.0",
+		"phpstan/phpstan": "^2.0.4"
+	},
+	"require-dev": {
+		"php-parallel-lint/php-parallel-lint": "^1.2",
+		"phpstan/phpstan-deprecation-rules": "^2.0",
+		"phpstan/phpstan-phpunit": "^2.0",
+		"phpunit/phpunit": "^9.6"
+	},
+	"config": {
+		"platform": {
+			"php": "7.4.6"
+		},
+		"sort-packages": true
+	},
+	"extra": {
+		"phpstan": {
+			"includes": [
+				"rules.neon"
+			]
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"PHPStan\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/"
+		]
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}

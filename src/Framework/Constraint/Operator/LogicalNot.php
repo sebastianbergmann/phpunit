@@ -19,7 +19,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class LogicalNot extends UnaryOperator
+final class LogicalNot extends UnaryOperator
 {
     public static function negate(string $string): string
     {
@@ -50,6 +50,10 @@ final readonly class LogicalNot extends UnaryOperator
         ];
 
         preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
+
+        if (count($matches) === 0) {
+            preg_match('/(\'[\w\W]*\')([\w\W]*)(\'[\w\W]*\')/i', $string, $matches);
+        }
 
         $positives = array_map(
             static fn (string $s) => '/\\b' . preg_quote($s, '/') . '/',

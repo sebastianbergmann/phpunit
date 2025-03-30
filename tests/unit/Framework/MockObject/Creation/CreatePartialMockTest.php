@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use ReflectionProperty;
@@ -25,19 +26,27 @@ final class CreatePartialMockTest extends TestCase
 {
     public function testCreatesPartialMockObjectForExtendableClass(): void
     {
-        $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
+        $double = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
+    }
+
+    public function testCannotCreatePartialMockObjectForExtendableClassWithDuplicateMethods(): void
+    {
+        $this->expectException(DuplicateMethodException::class);
+        $this->expectExceptionMessage('Cannot double using a method list that contains duplicates: "doSomethingElse, doSomethingElse" (duplicate: "doSomethingElse")');
+
+        $this->createPartialMock(ExtendableClass::class, ['doSomethingElse', 'doSomethingElse']);
     }
 
     public function testMethodOfPartialMockThatIsNotConfigurableCannotBeConfigured(): void
     {
-        $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
+        $double = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
 
         try {
-            $mock->expects($this->once())->method('doSomething')->willReturn(true);
+            $double->expects($this->once())->method('doSomething')->willReturn(true);
         } catch (MethodCannotBeConfiguredException $e) {
             $this->assertSame('Trying to configure method "doSomething" which cannot be configured because it does not exist, has not been specified, is final, or is static', $e->getMessage());
 

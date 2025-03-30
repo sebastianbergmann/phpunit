@@ -1,5 +1,9 @@
 --TEST--
 phpunit ../../_files/UnexpectedOutputTest.php
+--SKIPIF--
+<?php if(str_contains((string)ini_get('xdebug.mode'), 'develop')) {
+print 'skip: xdebug.mode=develop is enabled';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\Event\ErrorHandlerCanBeDisabled;
 
+use const E_USER_WARNING;
 use function error_get_last;
 use function fopen;
 use function trigger_error;

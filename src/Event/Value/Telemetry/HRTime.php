@@ -13,7 +13,7 @@ use function sprintf;
 use PHPUnit\Event\InvalidArgumentException;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -56,9 +56,6 @@ final readonly class HRTime
         return $this->nanoseconds;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
     public function duration(self $start): Duration
     {
         $seconds     = $this->seconds - $start->seconds();
@@ -71,7 +68,7 @@ final readonly class HRTime
         }
 
         if ($seconds < 0) {
-            throw new InvalidArgumentException('Start needs to be smaller.');
+            return Duration::fromSecondsAndNanoseconds(0, 0);
         }
 
         return Duration::fromSecondsAndNanoseconds(

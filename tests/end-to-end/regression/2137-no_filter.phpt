@@ -17,13 +17,13 @@ There were 2 PHPUnit errors:
 
 1) PHPUnit\TestFixture\Issue2137Test::testBrandService
 The data provider specified for PHPUnit\TestFixture\Issue2137Test::testBrandService is invalid
-Data set #0 is invalid
+Data set #0 is invalid, expected array but got stdClass
 
 %s:%d
 
 2) PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid
 The data provider specified for PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid is invalid
-Data set #0 is invalid
+Data set #0 is invalid, expected array but got stdClass
 
 %s:%d
 

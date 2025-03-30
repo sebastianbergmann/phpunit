@@ -9,18 +9,19 @@
  */
 namespace PHPUnit\Event\Code;
 
-use function assert;
-use function debug_backtrace;
 use function is_numeric;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\DataFromTestDependency;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Reflection;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Test as TestUtil;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestMethodBuilder
@@ -28,10 +29,7 @@ final readonly class TestMethodBuilder
     public static function fromTestCase(TestCase $testCase): TestMethod
     {
         $methodName = $testCase->name();
-
-        assert(!empty($methodName));
-
-        $location = Reflection::sourceLocationFor($testCase::class, $methodName);
+        $location   = Reflection::sourceLocationFor($testCase::class, $methodName);
 
         return new TestMethod(
             $testCase::class,
@@ -49,18 +47,11 @@ final readonly class TestMethodBuilder
      */
     public static function fromCallStack(): TestMethod
     {
-        foreach (debug_backtrace() as $frame) {
-            if (isset($frame['object']) && $frame['object'] instanceof TestCase) {
-                return $frame['object']->valueObjectForEvents();
-            }
-        }
-
-        throw new NoTestCaseObjectOnCallStackException;
+        return TestUtil::currentTestCase()->valueObjectForEvents();
     }
 
     private static function dataFor(TestCase $testCase): TestDataCollection
     {
-        $exporter = new Exporter;
         $testData = [];
 
         if ($testCase->usesDataProvider()) {
@@ -72,14 +63,14 @@ final readonly class TestMethodBuilder
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                $exporter->export($testCase->providedData()),
+                Exporter::export($testCase->providedData()),
                 $testCase->dataSetAsStringWithData(),
             );
         }
 
         if ($testCase->hasDependencyInput()) {
             $testData[] = DataFromTestDependency::from(
-                $exporter->export($testCase->dependencyInput()),
+                Exporter::export($testCase->dependencyInput()),
             );
         }
 

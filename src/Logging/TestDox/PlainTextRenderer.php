@@ -12,12 +12,14 @@ namespace PHPUnit\Logging\TestDox;
 use function sprintf;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class PlainTextRenderer
 {
     /**
-     * @psalm-param array<string, TestResultCollection> $tests
+     * @param array<string, TestResultCollection> $tests
      */
     public function render(array $tests): string
     {
@@ -41,7 +43,7 @@ final readonly class PlainTextRenderer
     }
 
     /**
-     * @psalm-return array<string, 'x'|' '>
+     * @return array<string, ' '|'x'>
      */
     private function reduce(TestResultCollection $tests): array
     {
@@ -50,13 +52,22 @@ final readonly class PlainTextRenderer
         foreach ($tests as $test) {
             $prettifiedMethodName = $test->test()->testDox()->prettifiedMethodName();
 
+            $success = true;
+
+            if ($test->status()->isError() ||
+                $test->status()->isFailure() ||
+                $test->status()->isIncomplete() ||
+                $test->status()->isSkipped()) {
+                $success = false;
+            }
+
             if (!isset($result[$prettifiedMethodName])) {
-                $result[$prettifiedMethodName] = $test->status()->isSuccess() ? 'x' : ' ';
+                $result[$prettifiedMethodName] = $success ? 'x' : ' ';
 
                 continue;
             }
 
-            if ($test->status()->isSuccess()) {
+            if ($success) {
                 continue;
             }
 

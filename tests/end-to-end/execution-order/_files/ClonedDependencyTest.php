@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -28,41 +31,31 @@ class ClonedDependencyTest extends TestCase
         return self::$dependency;
     }
 
-    /**
-     * @depends testOne
-     */
+    #[Depends('testOne')]
     public function testTwo($dependency): void
     {
         $this->assertSame(self::$dependency, $dependency);
     }
 
-    /**
-     * @depends !clone testOne
-     */
+    #[Depends('testOne')]
     public function testThree($dependency): void
     {
         $this->assertSame(self::$dependency, $dependency);
     }
 
-    /**
-     * @depends clone testOne
-     */
+    #[DependsUsingDeepClone('testOne')]
     public function testFour($dependency): void
     {
         $this->assertNotSame(self::$dependency, $dependency);
     }
 
-    /**
-     * @depends !shallowClone testOne
-     */
+    #[Depends('testOne')]
     public function testFive($dependency): void
     {
         $this->assertSame(self::$dependency, $dependency);
     }
 
-    /**
-     * @depends shallowClone testOne
-     */
+    #[DependsUsingShallowClone('testOne')]
     public function testSix($dependency): void
     {
         $this->assertNotSame(self::$dependency, $dependency);

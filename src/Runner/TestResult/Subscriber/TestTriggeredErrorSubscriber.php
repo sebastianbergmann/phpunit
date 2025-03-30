@@ -13,6 +13,8 @@ use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\ErrorTriggeredSubscriber;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestTriggeredErrorSubscriber extends Subscriber implements ErrorTriggeredSubscriber

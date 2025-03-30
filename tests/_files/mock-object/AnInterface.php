@@ -11,5 +11,5 @@ namespace PHPUnit\TestFixture\MockObject;
 
 interface AnInterface
 {
-    public function doSomething();
+    public function doSomething(): bool;
 }

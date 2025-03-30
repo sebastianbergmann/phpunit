@@ -21,17 +21,18 @@ final class PreConditionCalledTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = 'Test';
+        $test          = $this->testValueObject();
         $calledMethod  = $this->calledMethod();
 
         $event = new PreConditionCalled(
             $telemetryInfo,
-            $testClassName,
+            $test,
             $calledMethod,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->testMethod());
+        $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
@@ -39,7 +40,7 @@ final class PreConditionCalledTest extends AbstractEventTestCase
     {
         $event = new PreConditionCalled(
             $this->telemetryInfo(),
-            'Test',
+            $this->testValueObject(),
             $this->calledMethod(),
         );
 

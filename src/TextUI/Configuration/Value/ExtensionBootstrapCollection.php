@@ -16,17 +16,17 @@ use IteratorAggregate;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
 final readonly class ExtensionBootstrapCollection implements IteratorAggregate
 {
     /**
-     * @psalm-var list<ExtensionBootstrap>
+     * @var list<ExtensionBootstrap>
      */
     private array $extensionBootstraps;
 
     /**
-     * @psalm-param list<ExtensionBootstrap> $extensionBootstraps
+     * @param list<ExtensionBootstrap> $extensionBootstraps
      */
     public static function fromArray(array $extensionBootstraps): self
     {
@@ -39,7 +39,7 @@ final readonly class ExtensionBootstrapCollection implements IteratorAggregate
     }
 
     /**
-     * @psalm-return list<ExtensionBootstrap>
+     * @return list<ExtensionBootstrap>
      */
     public function asArray(): array
     {

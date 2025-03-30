@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class Foo
+final class Foo
 {
     public function doSomething(Bar $bar)
     {

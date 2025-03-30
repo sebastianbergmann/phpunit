@@ -20,7 +20,14 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Risky (PHPUnit\TestFixture\TestDox\Risky)
- ☢ This is a useless test that does not test anything
+ ⚠ This is a useless test that does not test anything
+
+There was 1 risky test:
+
+1) PHPUnit\TestFixture\TestDox\RiskyTest::test_this_is_a_useless_test_that_does_not_test_anything
+This test did not perform any assertions
+
+%s:16
 
 OK, but there were issues!
 Tests: 1, Assertions: 0, Risky: 1.

@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class OutputTestCase extends TestCase
+final class OutputTestCase extends TestCase
 {
     public function testExpectOutputStringFooActualFoo(): void
     {

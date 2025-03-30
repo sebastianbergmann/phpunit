@@ -15,18 +15,27 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
+use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
+use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
+use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInConstructor;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithConstructorArguments;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
 #[CoversClass(MockBuilder::class)]
-#[CoversClass(CannotUseAddMethodsException::class)]
+#[CoversClass(DuplicateMethodException::class)]
+#[CoversClass(InvalidMethodNameException::class)]
+#[CoversClass(NameAlreadyInUseException::class)]
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
 #[Group('test-doubles/mock-object')]
 #[Medium]
 final class MockBuilderTest extends TestCase
 {
+    #[TestDox('setMockClassName() can be used to configure the name of the mock object class')]
     public function testCanCreateMockObjectWithSpecifiedClassName(): void
     {
         $className = 'random_' . md5((string) mt_rand());
@@ -38,27 +47,63 @@ final class MockBuilderTest extends TestCase
         $this->assertSame($className, $double::class);
     }
 
-    #[IgnorePhpunitDeprecations]
-    public function testCanCreateMockObjectForExtendableClassWhileAddingMethodsToIt(): void
+    #[TestDox('setMockClassName() cannot be used to configure the name of the mock object class when a class with that name already exists')]
+    public function testCannotCreateMockObjectWithSpecifiedClassNameWhenClassWithThatNameAlreadyExists(): void
     {
-        $double = $this->getMockBuilder(ExtendableClass::class)
-            ->addMethods(['additionalMethod'])
+        $this->expectException(NameAlreadyInUseException::class);
+
+        $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->setMockClassName(__CLASS__)
+            ->getMock();
+    }
+
+    #[TestDox('setConstructorArgs() can be used to configure constructor arguments for a partially mocked class')]
+    public function testConstructorArgumentsCanBeConfiguredForPartiallyMockedClass(): void
+    {
+        $value = 'string';
+
+        $double = $this->getMockBuilder(ExtendableClassWithConstructorArguments::class)
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([$value])
+            ->onlyMethods([])
             ->getMock();
 
-        $value = 'value';
+        $this->assertSame($value, $double->value());
+    }
 
-        $double->method('additionalMethod')->willReturn($value);
+    #[TestDox('onlyMethods() can be used to configure which methods should be doubled')]
+    public function testCreatesPartialMockObjectForExtendableClass(): void
+    {
+        $double = $this->getMockBuilder(ExtendableClass::class)
+            ->onlyMethods(['doSomethingElse'])
+            ->getMock();
 
-        $this->assertSame($value, $double->additionalMethod());
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
+
+        $this->assertTrue($double->doSomething());
     }
 
     #[IgnorePhpunitDeprecations]
-    public function testCannotCreateMockObjectForExtendableClassAddingMethodsToItThatItAlreadyHas(): void
+    public function testDefaultBehaviourCanBeConfiguredExplicitly(): void
     {
-        $this->expectException(CannotUseAddMethodsException::class);
-
-        $this->getMockBuilder(ExtendableClass::class)
-            ->addMethods(['doSomething'])
+        $double = $this->getMockBuilder(ExtendableClass::class)
+            ->enableOriginalConstructor()
+            ->enableOriginalClone()
+            ->enableAutoReturnValueGeneration()
             ->getMock();
+
+        $this->assertTrue($double->constructorCalled);
+    }
+
+    #[TestDox('Mocked methods can be called from the original constructor of a partially mocked class')]
+    public function testOnlyMethodCalledInConstructorWorks(): void
+    {
+        $double = $this->getMockBuilder(ExtendableClassCallingMethodInConstructor::class)
+            ->onlyMethods(['reset'])
+            ->getMock();
+
+        $double->expects($this->once())->method('reset');
+
+        $double->second();
     }
 }

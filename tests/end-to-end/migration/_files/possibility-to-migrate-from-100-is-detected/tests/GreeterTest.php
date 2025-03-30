@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\TestFixture\Migration;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\TestFixture\Migration\Greeter
- */
+#[CoversClass(Greeter::class)]
 final class GreeterTest extends TestCase
 {
     public function testGreets(): void

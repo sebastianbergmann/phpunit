@@ -13,6 +13,8 @@ use DOMDocument;
 use DOMElement;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class MoveAttributesFromFilterWhitelistToCoverage implements Migration
@@ -24,7 +26,7 @@ final readonly class MoveAttributesFromFilterWhitelistToCoverage implements Migr
     {
         $whitelist = $document->getElementsByTagName('whitelist')->item(0);
 
-        if (!$whitelist) {
+        if ($whitelist === null) {
             return;
         }
 

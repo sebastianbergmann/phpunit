@@ -9,15 +9,12 @@
  */
 namespace PHPUnit\TestFixture\Baseline;
 
-use function trigger_error;
 use PHPUnit\Framework\TestCase;
 
 final class Test extends TestCase
 {
     public function testOne(): void
     {
-        trigger_error('deprecation', E_USER_DEPRECATED);
-
         $this->assertTrue(true);
     }
 }

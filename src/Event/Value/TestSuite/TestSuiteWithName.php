@@ -10,16 +10,13 @@
 namespace PHPUnit\Event\TestSuite;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class TestSuiteWithName extends TestSuite
 {
-    /**
-     * @psalm-assert-if-true TestSuiteWithName $this
-     */
-    public function isWithName(): bool
+    public function isWithName(): true
     {
         return true;
     }

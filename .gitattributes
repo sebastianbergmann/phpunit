@@ -1,6 +1,5 @@
 /.github                export-ignore
 /.phive                 export-ignore
-/.psalm                 export-ignore
 /build                  export-ignore
 /tools                  export-ignore
 /tools/*                binary
@@ -10,6 +9,7 @@
 /.gitignore             export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /build.xml              export-ignore
+/phpstan.neon           export-ignore
 /phpunit.xml            export-ignore
 
 *.php diff=php

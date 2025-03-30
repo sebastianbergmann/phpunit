@@ -23,10 +23,10 @@ Time: %s, Memory: %s
 
 There were 2 errors:
 
-1) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
+1) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependencyOnTestMethodThatDoesNotExist
 This test depends on "PHPUnit\TestFixture\DependencyFailureTest::doesNotExist" which does not exist
 
-2) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
+2) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependencyOnTestMethodWithEmptyName
 This test has an invalid dependency
 
 --
@@ -36,7 +36,7 @@ There was 1 failure:
 1) PHPUnit\TestFixture\DependencyFailureTest::testOne
 Failed asserting that false is true.
 
-%s%etests%e_files%edependencies%eDependencyFailureTest.php:18
+%s%etests%e_files%edependencies%eDependencyFailureTest.php:20
 
 --
 

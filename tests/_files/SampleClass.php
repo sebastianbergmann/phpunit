@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class SampleClass
+final class SampleClass
 {
     public $a;
     public $b;

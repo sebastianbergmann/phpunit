@@ -12,6 +12,7 @@ namespace PHPUnit\Metadata;
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +26,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[CoversClass(Requirement::class)]
 #[UsesClass(VersionComparisonOperator::class)]
 #[Small]
+#[Group('metadata')]
 final class RequirementTest extends TestCase
 {
     public static function constraintProvider(): array

@@ -45,7 +45,7 @@ class TestCaseTest extends TestCase
             $_SERVER['f'],
             $_FILES['g'],
             $_REQUEST['h'],
-            $GLOBALS['i']
+            $GLOBALS['i'],
         );
     }
 

@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use ArrayAccess;
 
-class SampleArrayAccess implements ArrayAccess
+final class SampleArrayAccess implements ArrayAccess
 {
     private array $container;
 

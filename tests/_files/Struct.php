@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class Struct
+final class Struct
 {
     public $var;
 

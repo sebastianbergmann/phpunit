@@ -11,14 +11,16 @@ namespace PHPUnit\Framework\Constraint;
 
 use function sprintf;
 use function str_contains;
-use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Util\Exporter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ExceptionMessageIsOrContains extends Constraint
+final class ExceptionMessageIsOrContains extends Constraint
 {
-    private string $expectedMessage;
+    private readonly string $expectedMessage;
 
     public function __construct(string $expectedMessage)
     {
@@ -31,7 +33,7 @@ final readonly class ExceptionMessageIsOrContains extends Constraint
             return 'exception message is empty';
         }
 
-        return 'exception message contains ' . (new Exporter)->export($this->expectedMessage);
+        return 'exception message contains ' . Exporter::export($this->expectedMessage);
     }
 
     protected function matches(mixed $other): bool

@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-class InheritedTestCase extends OneTestCase
+final class InheritedTestCase extends OneTestCase
 {
     public function test2(): void
     {

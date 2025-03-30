@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_map;
+use function array_walk;
 use function count;
 use function explode;
 use function implode;
@@ -26,22 +27,24 @@ use function strtr;
 use function trim;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Color
 {
     /**
-     * @psalm-var array<string,string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private const WHITESPACE_MAP = [
+    private const array WHITESPACE_MAP = [
         ' '  => '·',
         "\t" => '⇥',
     ];
 
     /**
-     * @psalm-var array<string,string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private const WHITESPACE_EOL_MAP = [
+    private const array WHITESPACE_EOL_MAP = [
         ' '  => '·',
         "\t" => '⇥',
         "\n" => '↵',
@@ -49,9 +52,9 @@ final class Color
     ];
 
     /**
-     * @psalm-var array<string,string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private static array $ansiCodes = [
+    private const array ANSI_CODES = [
         'reset'      => '0',
         'bold'       => '1',
         'dim'        => '2',
@@ -87,30 +90,33 @@ final class Color
         $styles = [];
 
         foreach ($codes as $code) {
-            if (isset(self::$ansiCodes[$code])) {
-                $styles[] = self::$ansiCodes[$code] ?? '';
+            if (isset(self::ANSI_CODES[$code])) {
+                $styles[] = self::ANSI_CODES[$code];
             }
         }
 
-        if (empty($styles)) {
+        if ($styles === []) {
             return $buffer;
         }
 
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
-    public static function colorizeTextBox(string $color, string $buffer): string
+    public static function colorizeTextBox(string $color, string $buffer, ?int $columns = null): string
     {
-        $lines   = preg_split('/\r\n|\r|\n/', $buffer);
-        $padding = max(array_map('\strlen', $lines));
+        $lines       = preg_split('/\r\n|\r|\n/', $buffer);
+        $maxBoxWidth = max(array_map('\strlen', $lines));
 
-        $styledLines = [];
-
-        foreach ($lines as $line) {
-            $styledLines[] = self::colorize($color, str_pad($line, $padding));
+        if ($columns !== null) {
+            $maxBoxWidth = min($maxBoxWidth, $columns);
         }
 
-        return implode(PHP_EOL, $styledLines);
+        array_walk($lines, static function (string &$line) use ($color, $maxBoxWidth): void
+        {
+            $line = self::colorize($color, str_pad($line, $maxBoxWidth));
+        });
+
+        return implode(PHP_EOL, $lines);
     }
 
     public static function colorizePath(string $path, ?string $previousPath = null, bool $colorizeFilename = false): string
@@ -132,7 +138,7 @@ final class Color
             $last        = count($path) - 1;
             $path[$last] = preg_replace_callback(
                 '/([\-_.]+|phpt$)/',
-                static fn ($matches) => self::dim($matches[0]),
+                static fn (array $matches) => self::dim($matches[0]),
                 $path[$last],
             );
         }
@@ -155,7 +161,7 @@ final class Color
 
         return preg_replace_callback(
             '/\s+/',
-            static fn ($matches) => self::dim(strtr($matches[0], $replaceMap)),
+            static fn (array $matches) => self::dim(strtr($matches[0], $replaceMap)),
             $buffer,
         );
     }

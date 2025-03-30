@@ -46,7 +46,7 @@ final class IsListTest extends TestCase
 
             [
                 false,
-                'Failed asserting that an object is a list.',
+                'Failed asserting that an instance of class stdClass is a list.',
                 new stdClass,
             ],
 

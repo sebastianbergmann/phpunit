@@ -138,4 +138,4 @@ Failed asserting that string matches format description.
 %s:%i
 
 FAILURES!
-Tests: 13, Assertions: 14, Failures: 13.
+Tests: 13, Assertions: 15, Failures: 13.

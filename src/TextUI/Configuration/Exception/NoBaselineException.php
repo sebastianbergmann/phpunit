@@ -12,6 +12,8 @@ namespace PHPUnit\TextUI\Configuration;
 use RuntimeException;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class NoBaselineException extends RuntimeException implements Exception

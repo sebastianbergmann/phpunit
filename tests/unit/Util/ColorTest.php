@@ -10,6 +10,8 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
+use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -72,6 +74,41 @@ final class ColorTest extends TestCase
         ];
     }
 
+    public static function colorizeTextBoxProvider(): array
+    {
+        return [
+            'fitting text' => [
+                40,     // simulate 40 char wide terminal
+                'this is fine' . PHP_EOL .
+                PHP_EOL .
+                'all lines fit nicely' . PHP_EOL .
+                'bottom text',
+                Color::colorize('red', 'this is fine        ') . PHP_EOL .
+                Color::colorize('red', '                    ') . PHP_EOL .
+                Color::colorize('red', 'all lines fit nicely') . PHP_EOL .
+                Color::colorize('red', 'bottom text         '),
+            ],
+            'oversize text' => [
+                20,     // simulate 20 char wide terminal
+                'this is also fine' . PHP_EOL .
+                PHP_EOL .
+                'the very long lines do not stretch the whole textbox' . PHP_EOL .
+                'anymore',
+                Color::colorize('red', 'this is also fine   ') . PHP_EOL .
+                Color::colorize('red', '                    ') . PHP_EOL .
+                Color::colorize('red', 'the very long lines do not stretch the whole textbox') . PHP_EOL .
+                Color::colorize('red', 'anymore             '),
+            ],
+            'default terminal width cap' => [
+                80,     // simulate (default) 80 char wide terminal
+                str_repeat('.123456789', 8) . PHP_EOL .
+                'this is a shorter line',
+                Color::colorize('red', str_repeat('.123456789', 8)) . PHP_EOL .
+                Color::colorize('red', 'this is a shorter line                                                          '),
+            ],
+        ];
+    }
+
     public static function whitespacedStringProvider(): array
     {
         return [
@@ -117,6 +154,13 @@ final class ColorTest extends TestCase
     public function testColorizePath(?string $prevPath, string $path, bool $colorizeFilename, string $expected): void
     {
         $this->assertSame($expected, Color::colorizePath($path, $prevPath, $colorizeFilename));
+    }
+
+    #[TestDox('Colorize an autosizing text box')]
+    #[DataProvider('colorizeTextBoxProvider')]
+    public function testColorizeTextBox(int $columns, string $buffer, string $expected): void
+    {
+        $this->assertSame($expected, Color::colorizeTextBox('red', $buffer, $columns));
     }
 
     #[TestDox('dim($m) and colorize(\'dim\',$m) return different ANSI codes')]

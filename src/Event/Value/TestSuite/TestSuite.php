@@ -12,21 +12,21 @@ namespace PHPUnit\Event\TestSuite;
 use PHPUnit\Event\Code\TestCollection;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract readonly class TestSuite
 {
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private string $name;
     private int $count;
     private TestCollection $tests;
 
     /**
-     * @psalm-param non-empty-string $name
+     * @param non-empty-string $name
      */
     public function __construct(string $name, int $size, TestCollection $tests)
     {
@@ -36,7 +36,7 @@ abstract readonly class TestSuite
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function name(): string
     {
@@ -54,7 +54,7 @@ abstract readonly class TestSuite
     }
 
     /**
-     * @psalm-assert-if-true TestSuiteWithName $this
+     * @phpstan-assert-if-true TestSuiteWithName $this
      */
     public function isWithName(): bool
     {
@@ -62,7 +62,7 @@ abstract readonly class TestSuite
     }
 
     /**
-     * @psalm-assert-if-true TestSuiteForTestClass $this
+     * @phpstan-assert-if-true TestSuiteForTestClass $this
      */
     public function isForTestClass(): bool
     {
@@ -70,7 +70,7 @@ abstract readonly class TestSuite
     }
 
     /**
-     * @psalm-assert-if-true TestSuiteForTestMethodWithDataProvider $this
+     * @phpstan-assert-if-true TestSuiteForTestMethodWithDataProvider $this
      */
     public function isForTestMethodWithDataProvider(): bool
     {

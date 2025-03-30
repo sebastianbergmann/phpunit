@@ -17,18 +17,20 @@ use function interface_exists;
 use function sprintf;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TypeMap
 {
     /**
-     * @psalm-var array<class-string, class-string>
+     * @var array<class-string, class-string>
      */
     private array $mapping = [];
 
     /**
-     * @psalm-param class-string $subscriberInterface
-     * @psalm-param class-string $eventClass
+     * @param class-string $subscriberInterface
+     * @param class-string $eventClass
      *
      * @throws EventAlreadyAssignedException
      * @throws InvalidEventException
@@ -66,9 +68,9 @@ final class TypeMap
     }
 
     /**
-     * @psalm-return class-string
-     *
      * @throws MapError
+     *
+     * @return class-string
      */
     public function map(Subscriber $subscriber): string
     {
@@ -87,7 +89,7 @@ final class TypeMap
     }
 
     /**
-     * @psalm-param class-string $subscriberInterface
+     * @param class-string $subscriberInterface
      *
      * @throws UnknownSubscriberException
      */
@@ -104,7 +106,7 @@ final class TypeMap
     }
 
     /**
-     * @psalm-param class-string $eventClass
+     * @param class-string $eventClass
      *
      * @throws UnknownEventException
      */
@@ -121,7 +123,7 @@ final class TypeMap
     }
 
     /**
-     * @psalm-param class-string $subscriberInterface
+     * @param class-string $subscriberInterface
      *
      * @throws InvalidSubscriberException
      */
@@ -138,7 +140,7 @@ final class TypeMap
     }
 
     /**
-     * @psalm-param class-string $eventClass
+     * @param class-string $eventClass
      *
      * @throws InvalidEventException
      */
@@ -155,7 +157,7 @@ final class TypeMap
     }
 
     /**
-     * @psalm-param class-string $subscriberInterface
+     * @param class-string $subscriberInterface
      *
      * @throws SubscriberTypeAlreadyRegisteredException
      */
@@ -172,7 +174,7 @@ final class TypeMap
     }
 
     /**
-     * @psalm-param class-string $eventClass
+     * @param class-string $eventClass
      *
      * @throws EventAlreadyAssignedException
      */

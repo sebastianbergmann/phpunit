@@ -11,6 +11,6 @@ namespace PHPUnit\TestFixture;
 
 use Exception;
 
-class DummyException extends Exception
+final class DummyException extends Exception
 {
 }

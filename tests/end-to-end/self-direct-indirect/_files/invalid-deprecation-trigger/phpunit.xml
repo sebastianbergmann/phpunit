@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+>
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <deprecationTrigger>
+            <function>does_not_exist</function>
+            <method>invalid-string</method>
+            <method>DoesNotExist::doesNotExist</method>
+        </deprecationTrigger>
+    </source>
+</phpunit>

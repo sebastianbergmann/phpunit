@@ -1,5 +1,5 @@
 --TEST--
-GH-2830: @runClassInSeparateProcess fails for tests with a @dataProvider
+GH-2830: @runClassInSeparateProcess fails for tests with a data provider
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

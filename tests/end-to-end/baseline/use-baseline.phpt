@@ -15,10 +15,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
-.                                                                   1 / 1 (100%)
+.....                                                               5 / 5 (100%)
 
 Time: %s, Memory: %s
 
-OK (1 test, 1 assertion)
+OK (5 tests, 5 assertions)
 
-1 issue was ignored by baseline.
+6 issues were ignored by baseline.

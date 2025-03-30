@@ -14,12 +14,14 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract class InvocationOrder implements SelfDescribing
 {
     /**
-     * @psalm-var list<BaseInvocation>
+     * @var list<BaseInvocation>
      */
     private array $invocations = [];
 

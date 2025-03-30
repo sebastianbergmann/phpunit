@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use Generator;
 use IteratorAggregate;
 
-class WrapperIteratorAggregate implements IteratorAggregate
+final class WrapperIteratorAggregate implements IteratorAggregate
 {
     private iterable $baseCollection;
 

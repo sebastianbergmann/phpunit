@@ -1,13 +1,15 @@
 # https://docs.github.com/en/actions
 
 on:
-  - pull_request
-  - push
+  pull_request: null
+  push: null
+  schedule:
+    - cron: "15 0 * * *"
 
 name: CI
 
 env:
-  COMPOSER_ROOT_VERSION: "11.0-dev"
+  COMPOSER_ROOT_VERSION: "12.1.x-dev"
 
 permissions:
   contents: read
@@ -17,6 +19,7 @@ jobs:
     name: Dependency Validation
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -25,8 +28,8 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
-          extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
+          php-version: 8.4
+          extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
           coverage: none
           tools: none
 
@@ -39,7 +42,10 @@ jobs:
   coding-guidelines:
     name: Coding Guidelines
 
+    if: github.event_name != 'schedule'
+
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -56,13 +62,16 @@ jobs:
       - name: Run PHP-CS-Fixer
         run: ./tools/php-cs-fixer fix --dry-run --show-progress=dots --using-cache=no --verbose
 
-  type-checker:
-    name: Type Checker
+  static-analysis:
+    name: Static Analysis
+
+    if: github.event_name != 'schedule'
 
     needs:
       - dependency-validation
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -71,19 +80,15 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
-          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
+          php-version: 8.4
           coverage: none
           tools: none
 
       - name: Install dependencies with Composer
-        run: ./tools/composer install --no-interaction --no-ansi --no-progress
+        run: ./tools/composer update --no-interaction --no-ansi --no-progress
 
-      - name: Run Psalm on public API
-        run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
-
-      - name: Run Psalm on internal code
-        run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+      - name: Run PHPStan
+        run: ./tools/phpstan analyse --no-progress --error-format=github
 
   unit-tests:
     name: Unit Tests
@@ -92,10 +97,11 @@ jobs:
       - dependency-validation
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -105,9 +111,9 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
+          - "8.5"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -129,7 +135,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite unit
+        run: php ./phpunit --testsuite unit --order-by depends,random
 
   end-to-end-tests:
     name: End-to-End Tests
@@ -138,10 +144,11 @@ jobs:
       - unit-tests
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -151,9 +158,9 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
+          - "8.5"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -169,22 +176,24 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
-          coverage: pcov
           tools: none
 
       - name: Install dependencies with Composer
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end
+        run: php ./phpunit --testsuite end-to-end --order-by depends,random
 
   code-coverage:
     name: Code Coverage
+
+    if: github.event_name != 'schedule'
 
     needs:
       - end-to-end-tests
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -193,34 +202,43 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
-          coverage: pcov
-          extensions: none, ctype, curl, dom, json, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+          php-version: 8.4
+          coverage: xdebug
+          extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter
+          ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
       - name: Install dependencies with Composer
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Collect code coverage with PHPUnit
-        run: ./phpunit --coverage-clover=coverage.xml
+        run: ./phpunit --log-junit junit.xml --coverage-clover=coverage.xml
 
-      - name: Send code coverage report to Codecov.io
-        uses: codecov/codecov-action@v3
+      - name: Upload test results to Codecov.io
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload code coverage data to Codecov.io
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   build-phar:
     name: Build PHAR
 
+    if: github.event_name != 'schedule'
+
     needs:
       - end-to-end-tests
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     env:
-      PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+      PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     steps:
       - name: Checkout
@@ -229,14 +247,14 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           coverage: none
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: 11
@@ -245,34 +263,38 @@ jobs:
         run: ant phar-snapshot
 
       - name: Check whether PHAR is scoped
-        run: cat build/artifacts/phpunit-snapshot.phar | grep -q PHPUnit\\\\DeepCopy\\\\Exception\\\\CloneException || (echo "phpunit-snapshot.phar is not scoped." && false)
+        run: grep -q PHPUnitPHAR\\\\DeepCopy\\\\Exception\\\\CloneException build/artifacts/phpunit-snapshot.phar || (echo "phpunit-snapshot.phar is not scoped." && false)
 
       - name: Upload PHAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: phpunit-snapshot-phar
+          overwrite: true
           path: ./build/artifacts/phpunit-snapshot.phar
           retention-days: 7
 
   test-phar:
     name: Test PHAR
 
+    if: github.event_name != 'schedule'
+
     needs:
       - build-phar
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     strategy:
       fail-fast: false
       matrix:
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
+          - "8.5"
 
         coverage:
           - pcov
@@ -292,13 +314,13 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: 11
 
       - name: Download PHAR
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/

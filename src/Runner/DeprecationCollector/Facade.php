@@ -12,8 +12,12 @@ namespace PHPUnit\Runner\DeprecationCollector;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\TestRunner\IssueFilter;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Facade
@@ -30,10 +34,10 @@ final class Facade
     }
 
     /**
-     * @psalm-return list<non-empty-string>
-     *
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
+     *
+     * @return list<non-empty-string>
      */
     public static function deprecations(): array
     {
@@ -43,11 +47,27 @@ final class Facade
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
+     *
+     * @return list<non-empty-string>
+     */
+    public static function filteredDeprecations(): array
+    {
+        return self::collector()->filteredDeprecations();
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
      */
     private static function collector(): Collector
     {
         if (self::$collector === null) {
-            self::$collector = new Collector(EventFacade::instance());
+            self::$collector = new Collector(
+                EventFacade::instance(),
+                new IssueFilter(
+                    ConfigurationRegistry::get()->source(),
+                ),
+            );
         }
 
         return self::$collector;

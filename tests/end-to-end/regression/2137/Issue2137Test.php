@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 class Issue2137Test extends TestCase
@@ -23,24 +26,22 @@ class Issue2137Test extends TestCase
     }
 
     /**
-     * @dataProvider provideBrandService
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
+    #[DataProvider('provideBrandService')]
     public function testBrandService($provided, $expected): void
     {
         $this->assertSame($provided, $expected);
     }
 
     /**
-     * @dataProvider provideBrandService
-     *
      * @throws \Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
+    #[DataProvider('provideBrandService')]
     public function testSomethingElseInvalid($provided, $expected): void
     {
         $this->assertSame($provided, $expected);

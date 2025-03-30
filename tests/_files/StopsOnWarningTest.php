@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class StopsOnWarningTest extends TestCase
+final class StopsOnWarningTest extends TestCase
 {
     public function testOne(): void
     {

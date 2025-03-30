@@ -17,6 +17,8 @@ use PHPUnit\Runner\ErrorException;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class ThrowableToStringMapper
@@ -30,7 +32,7 @@ final readonly class ThrowableToStringMapper
         if ($t instanceof SelfDescribing) {
             $buffer = $t->toString();
 
-            if ($t instanceof ExpectationFailedException && $t->getComparisonFailure()) {
+            if ($t instanceof ExpectationFailedException && $t->getComparisonFailure() !== null) {
                 $buffer .= $t->getComparisonFailure()->getDiff();
             }
 
@@ -38,7 +40,7 @@ final readonly class ThrowableToStringMapper
                 $buffer .= $t->diff();
             }
 
-            if (!empty($buffer)) {
+            if ($buffer !== '') {
                 $buffer = trim($buffer) . "\n";
             }
 

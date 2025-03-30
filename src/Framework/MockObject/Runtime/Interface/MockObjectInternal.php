@@ -10,13 +10,13 @@
 namespace PHPUnit\Framework\MockObject;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface MockObjectInternal extends MockObject, StubInternal
 {
     public function __phpunit_hasMatchers(): bool;
-
-    public function __phpunit_setOriginalObject(object $originalObject): void;
 
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
 }

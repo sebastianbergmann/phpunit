@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"TestWithDifferentDurations::testOne":1,"TestWithDifferentDurations::testTwo":0.5,"TestWithDifferentDurations::testThree":1.5}}
+{"version":1,"defects":[],"times":{"PHPUnit\\TestFixture\\TestWithDifferentDurations::testOne":2.006,"PHPUnit\\TestFixture\\TestWithDifferentDurations::testTwo":0,"PHPUnit\\TestFixture\\TestWithDifferentDurations::testThree":3.001,"PHPUnit\\TestFixture\\ExampleTest::testOne":2.006,"PHPUnit\\TestFixture\\ExampleTest::testTwo":3.001,"PHPUnit\\TestFixture\\ExampleTest::testThree":0}}

@@ -15,7 +15,7 @@ use PHPUnit;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
-class ExceptionStackTest extends TestCase
+final class ExceptionStackTest extends TestCase
 {
     public function testPrintingChildException(): void
     {

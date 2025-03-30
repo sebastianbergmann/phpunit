@@ -15,12 +15,14 @@ use function implode;
 use function sprintf;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class DuplicateMethodException extends \PHPUnit\Framework\Exception implements Exception
 {
     /**
-     * @psalm-param list<string> $methods
+     * @param list<string> $methods
      */
     public function __construct(array $methods)
     {

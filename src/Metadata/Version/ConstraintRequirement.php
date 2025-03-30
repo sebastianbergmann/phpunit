@@ -14,7 +14,7 @@ use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -27,9 +27,6 @@ final readonly class ConstraintRequirement extends Requirement
         $this->constraint = $constraint;
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function isSatisfiedBy(string $version): bool
     {
         return $this->constraint->complies(
@@ -37,9 +34,6 @@ final readonly class ConstraintRequirement extends Requirement
         );
     }
 
-    /**
-     * @psalm-suppress ImpureMethodCall
-     */
     public function asString(): string
     {
         return $this->constraint->asString();

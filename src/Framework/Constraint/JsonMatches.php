@@ -19,9 +19,9 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class JsonMatches extends Constraint
+final class JsonMatches extends Constraint
 {
-    private string $value;
+    private readonly string $value;
 
     public function __construct(string $value)
     {
@@ -59,7 +59,7 @@ final readonly class JsonMatches extends Constraint
             return false;
         }
 
-        return $recodedOther == $recodedValue;
+        return $recodedOther === $recodedValue;
     }
 
     /**
@@ -68,7 +68,7 @@ final readonly class JsonMatches extends Constraint
      * @throws ExpectationFailedException
      * @throws InvalidJsonException
      */
-    protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): never
+    protected function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
     {
         if ($comparisonFailure === null) {
             [$error, $recodedOther] = Json::canonicalize($other);
