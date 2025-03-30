@@ -1285,9 +1285,9 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $current;
 
         return $info;
-                                                                                                                                                                                                                                                                                                                                                                }
+    }
 
-                                                                                                                                                                                                                                                                                                                                                                private function telemetryInfoStartingNow(): Telemetry\Info
+    private function telemetryInfoStartingNow(): Telemetry\Info
     {
         $current = $this->system->snapshot();
 

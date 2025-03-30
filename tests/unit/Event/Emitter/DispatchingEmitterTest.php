@@ -1814,7 +1814,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     #[TestDox('testTriggeredPhpunitNotice() emits Test\PhpunitNoticeTriggered event')]
     public function testTestTriggeredPhpunitNoticeEmitsTestPhpunitNoticeTriggeredEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\PhpunitNoticeTriggeredSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PhpunitNoticeTriggeredSubscriber
+        {
             public function notify(Test\PhpunitNoticeTriggered $event): void
             {
                 $this->record($event);
@@ -1834,7 +1835,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $test = $this->testValueObject();
+        $test    = $this->testValueObject();
         $message = 'message';
 
         $emitter->testTriggeredPhpunitNotice(
