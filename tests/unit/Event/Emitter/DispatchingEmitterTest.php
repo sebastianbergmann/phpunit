@@ -519,6 +519,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(Test\Prepared::class, $event);
+        // Prove that the previous and current durations are the same
+        $this->assertSame(
+            $event->telemetryInfo()->durationSincePrevious()->nanoseconds(),
+            $event->telemetryInfo()->durationSinceStart()->nanoseconds(),
+        );
 
         $this->assertSame($test, $event->test());
     }
