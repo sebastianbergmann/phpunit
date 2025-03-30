@@ -444,7 +444,7 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new Test\Prepared(
-                $this->telemetryInfo(),
+                $this->telemetryInfoStartingNow(),
                 $test,
             ),
         );
@@ -1180,6 +1180,23 @@ final class DispatchingEmitter implements Emitter
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
             $current->time()->duration($this->previousSnapshot->time()),
             $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage()),
+        );
+
+        $this->previousSnapshot = $current;
+
+        return $info;
+    }
+
+    private function telemetryInfoStartingNow(): Telemetry\Info
+    {
+        $current = $this->system->snapshot();
+
+        $info = new Telemetry\Info(
+            $current,
+            $current->time()->duration($this->startSnapshot->time()),
+            $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
+            $current->time()->duration($this->startSnapshot->time()),
+            $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
         );
 
         $this->previousSnapshot = $current;
