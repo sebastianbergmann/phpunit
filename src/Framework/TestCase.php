@@ -1234,9 +1234,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function runTest(): mixed
     {
-        $testArguments = array_merge($this->data, array_values($this->dependencyInput));
+        $testArguments  = array_merge($this->data, array_values($this->dependencyInput));
         $positionalArgs = [];
-        $namedArgs = [];
+        $namedArgs      = [];
 
         foreach ($testArguments as $key => $value) {
             if (is_int($key)) {
