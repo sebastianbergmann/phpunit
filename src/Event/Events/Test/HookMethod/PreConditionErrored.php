@@ -24,14 +24,14 @@ use PHPUnit\Event\Telemetry;
 final readonly class PreConditionErrored implements Event
 {
     private Telemetry\Info $telemetryInfo;
-    private Code\TestMethod $testMethod;
+    private Code\TestMethod $test;
     private Code\ClassMethod $calledMethod;
     private Throwable $throwable;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $testMethod, Code\ClassMethod $calledMethod, Throwable $throwable)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod $calledMethod, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testMethod    = $testMethod;
+        $this->test          = $test;
         $this->calledMethod  = $calledMethod;
         $this->throwable     = $throwable;
     }
@@ -43,7 +43,7 @@ final readonly class PreConditionErrored implements Event
 
     public function testMethod(): Code\TestMethod
     {
-        return $this->testMethod;
+        return $this->test;
     }
 
     /**
@@ -53,7 +53,7 @@ final readonly class PreConditionErrored implements Event
      */
     public function testClassName(): string
     {
-        return $this->testMethod->className();
+        return $this->test->className();
     }
 
     public function calledMethod(): Code\ClassMethod

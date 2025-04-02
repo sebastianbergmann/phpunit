@@ -23,17 +23,17 @@ use PHPUnit\Event\Telemetry;
 final readonly class PostConditionFinished implements Event
 {
     private Telemetry\Info $telemetryInfo;
-    private Code\TestMethod $testMethod;
+    private Code\TestMethod $test;
 
     /**
      * @var list<Code\ClassMethod>
      */
     private array $calledMethods;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $testMethod, Code\ClassMethod ...$calledMethods)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod ...$calledMethods)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testMethod    = $testMethod;
+        $this->test          = $test;
         $this->calledMethods = $calledMethods;
     }
 
@@ -44,7 +44,7 @@ final readonly class PostConditionFinished implements Event
 
     public function testMethod(): Code\TestMethod
     {
-        return $this->testMethod;
+        return $this->test;
     }
 
     /**
@@ -54,7 +54,7 @@ final readonly class PostConditionFinished implements Event
      */
     public function testClassName(): string
     {
-        return $this->testMethod->className();
+        return $this->test->className();
     }
 
     /**

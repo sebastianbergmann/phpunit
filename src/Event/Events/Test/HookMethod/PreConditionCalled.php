@@ -22,13 +22,13 @@ use PHPUnit\Event\Telemetry;
 final readonly class PreConditionCalled implements Event
 {
     private Telemetry\Info$telemetryInfo;
-    private Code\TestMethod $testMethod;
+    private Code\TestMethod $test;
     private Code\ClassMethod $calledMethod;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $testMethod, Code\ClassMethod $calledMethod)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod $calledMethod)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testMethod    = $testMethod;
+        $this->test          = $test;
         $this->calledMethod  = $calledMethod;
     }
 
@@ -39,7 +39,7 @@ final readonly class PreConditionCalled implements Event
 
     public function testMethod(): Code\TestMethod
     {
-        return $this->testMethod;
+        return $this->test;
     }
 
     /**
@@ -49,7 +49,7 @@ final readonly class PreConditionCalled implements Event
      */
     public function testClassName(): string
     {
-        return $this->testMethod->className();
+        return $this->test->className();
     }
 
     public function calledMethod(): Code\ClassMethod
