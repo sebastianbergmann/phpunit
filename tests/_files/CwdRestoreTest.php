@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestFixture;
 
+use function chdir;
+use function sys_get_temp_dir;
 use PHPUnit\Framework\TestCase;
 
 final class CwdRestoreTest extends TestCase
