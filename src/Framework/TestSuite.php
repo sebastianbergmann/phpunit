@@ -146,12 +146,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         assert($test instanceof TestCase || $test instanceof PhptTestCase);
 
-        $class = new ReflectionClass($test);
-
-        if ($class->isAbstract()) {
-            return;
-        }
-
         $this->tests[] = $test;
 
         $this->clearCaches();
