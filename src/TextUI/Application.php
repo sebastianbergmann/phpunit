@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI;
 
-use const E_USER_DEPRECATED;
 use const PHP_EOL;
 use const PHP_VERSION;
 use function assert;
@@ -21,7 +20,6 @@ use function is_readable;
 use function method_exists;
 use function printf;
 use function realpath;
-use function set_error_handler;
 use function sprintf;
 use function str_contains;
 use function trim;
@@ -180,7 +178,7 @@ final readonly class Application
 
             EventFacade::instance()->seal();
 
-            set_error_handler([ErrorHandler::instance(), 'deprecationHandler'], E_USER_DEPRECATED);
+            ErrorHandler::instance()->registerDeprecationHandler();
 
             $testSuite = $this->buildTestSuite($configuration);
 

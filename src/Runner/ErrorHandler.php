@@ -209,6 +209,11 @@ final class ErrorHandler
         return true;
     }
 
+    public function registerDeprecationHandler(): void
+    {
+        set_error_handler([self::$instance, 'deprecationHandler'], E_USER_DEPRECATED);
+    }
+
     public function restoreDeprecationHandler(): void
     {
         restore_error_handler();
@@ -260,14 +265,6 @@ final class ErrorHandler
     public function useDeprecationTriggers(array $deprecationTriggers): void
     {
         $this->deprecationTriggers = $deprecationTriggers;
-    }
-
-    /**
-     * @param list<array{int, string, string, int}> $deprecations
-     */
-    public function collectGlobalDeprecations(array $deprecations): void
-    {
-        $this->globalDeprecations = $deprecations;
     }
 
     /**
