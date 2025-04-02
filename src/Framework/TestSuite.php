@@ -515,7 +515,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     "The data provider specified for %s::%s is invalid\n%s",
                     $className,
                     $methodName,
-                    $this->throwableToString($e),
+                    $this->exceptionToString($e),
                 ),
             );
 
@@ -568,27 +568,18 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @throws Exception
      */
-    private function throwableToString(Throwable $t): string
+    private function exceptionToString(InvalidDataProviderException $e): string
     {
-        $message = $t->getMessage();
+        $message = $e->getMessage();
 
         if (trim($message) === '') {
             $message = '<no message>';
         }
 
-        if ($t instanceof InvalidDataProviderException) {
-            return sprintf(
-                "%s\n%s",
-                $message,
-                Filter::stackTraceFromThrowableAsString($t),
-            );
-        }
-
         return sprintf(
-            "%s: %s\n%s",
-            $t::class,
+            "%s\n%s",
             $message,
-            Filter::stackTraceFromThrowableAsString($t),
+            Filter::stackTraceFromThrowableAsString($e),
         );
     }
 
