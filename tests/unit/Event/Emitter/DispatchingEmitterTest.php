@@ -1039,7 +1039,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\BeforeTestMethodCalled::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
@@ -1083,7 +1083,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\BeforeTestMethodErrored::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
@@ -1126,7 +1126,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\BeforeTestMethodFinished::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame([$calledMethod], $event->calledMethods());
     }
 
@@ -1168,7 +1168,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PreConditionCalled::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
@@ -1212,7 +1212,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PreConditionErrored::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
@@ -1255,7 +1255,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PreConditionFinished::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame([$calledMethod], $event->calledMethods());
     }
 
@@ -2432,7 +2432,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PostConditionCalled::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
@@ -2476,7 +2476,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PostConditionErrored::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
@@ -2519,7 +2519,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PostConditionFinished::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame([$calledMethod], $event->calledMethods());
     }
 
@@ -2561,7 +2561,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AfterTestMethodCalled::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
@@ -2605,7 +2605,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AfterTestMethodErrored::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
     }
@@ -2648,7 +2648,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AfterTestMethodFinished::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($testMethod, $event->test());
         $this->assertSame([$calledMethod], $event->calledMethods());
     }
 

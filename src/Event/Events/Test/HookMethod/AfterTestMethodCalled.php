@@ -37,7 +37,7 @@ final readonly class AfterTestMethodCalled implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): Code\TestMethod
+    public function test(): Code\TestMethod
     {
         return $this->test;
     }

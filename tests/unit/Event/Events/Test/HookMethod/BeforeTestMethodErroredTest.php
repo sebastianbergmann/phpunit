@@ -34,7 +34,7 @@ final class BeforeTestMethodErroredTest extends AbstractEventTestCase
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($test, $event->testMethod());
+        $this->assertSame($test, $event->test());
         $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
         $this->assertSame($throwable, $event->throwable());
