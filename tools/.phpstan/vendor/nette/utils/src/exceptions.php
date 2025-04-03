@@ -11,8 +11,7 @@ namespace Nette;
 
 
 /**
- * The exception that is thrown when the value of an argument is
- * outside the allowable range of values as defined by the invoked method.
+ * The value is outside the allowed range.
  */
 class ArgumentOutOfRangeException extends \InvalidArgumentException
 {
@@ -20,8 +19,7 @@ class ArgumentOutOfRangeException extends \InvalidArgumentException
 
 
 /**
- * The exception that is thrown when a method call is invalid for the object's
- * current state, method has been invoked at an illegal or inappropriate time.
+ * The object is in a state that does not allow the requested operation.
  */
 class InvalidStateException extends \RuntimeException
 {
@@ -29,7 +27,7 @@ class InvalidStateException extends \RuntimeException
 
 
 /**
- * The exception that is thrown when a requested method or operation is not implemented.
+ * The requested feature is not implemented.
  */
 class NotImplementedException extends \LogicException
 {
@@ -37,8 +35,7 @@ class NotImplementedException extends \LogicException
 
 
 /**
- * The exception that is thrown when an invoked method is not supported. For scenarios where
- * it is sometimes possible to perform the requested operation, see InvalidStateException.
+ * The requested operation is not supported.
  */
 class NotSupportedException extends \LogicException
 {
@@ -46,7 +43,7 @@ class NotSupportedException extends \LogicException
 
 
 /**
- * The exception that is thrown when a requested method or operation is deprecated.
+ * The requested feature is deprecated and no longer available.
  */
 class DeprecatedException extends NotSupportedException
 {
@@ -54,7 +51,7 @@ class DeprecatedException extends NotSupportedException
 
 
 /**
- * The exception that is thrown when accessing a class member (property or method) fails.
+ * Cannot access the requested class property or method.
  */
 class MemberAccessException extends \Error
 {
@@ -62,7 +59,7 @@ class MemberAccessException extends \Error
 
 
 /**
- * The exception that is thrown when an I/O error occurs.
+ * Failed to read from or write to a file or stream.
  */
 class IOException extends \RuntimeException
 {
@@ -70,7 +67,7 @@ class IOException extends \RuntimeException
 
 
 /**
- * The exception that is thrown when accessing a file that does not exist on disk.
+ * The requested file does not exist.
  */
 class FileNotFoundException extends IOException
 {
@@ -78,7 +75,7 @@ class FileNotFoundException extends IOException
 
 
 /**
- * The exception that is thrown when part of a file or directory cannot be found.
+ * The requested directory does not exist.
  */
 class DirectoryNotFoundException extends IOException
 {
@@ -86,7 +83,7 @@ class DirectoryNotFoundException extends IOException
 
 
 /**
- * The exception that is thrown when an argument does not match with the expected value.
+ * The provided argument has invalid type or format.
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
@@ -94,7 +91,7 @@ class InvalidArgumentException extends \InvalidArgumentException
 
 
 /**
- * The exception that is thrown when an illegal index was requested.
+ * The requested array or collection index does not exist.
  */
 class OutOfRangeException extends \OutOfRangeException
 {
@@ -102,8 +99,16 @@ class OutOfRangeException extends \OutOfRangeException
 
 
 /**
- * The exception that is thrown when a value (typically returned by function) does not match with the expected value.
+ * The returned value has unexpected type or format.
  */
 class UnexpectedValueException extends \UnexpectedValueException
+{
+}
+
+
+/**
+ * Houston, we have a problem.
+ */
+class ShouldNotHappenException extends \LogicException
 {
 }

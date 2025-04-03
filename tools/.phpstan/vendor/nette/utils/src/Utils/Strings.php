@@ -28,7 +28,7 @@ class Strings
 
 
 	/**
-	 * @deprecated use Nette\Utils\Validator::isUnicode()
+	 * @deprecated use Nette\Utils\Validators::isUnicode()
 	 */
 	public static function checkEncoding(string $s): bool
 	{
@@ -547,7 +547,6 @@ class Strings
 		return $utf8 && $captureOffset
 			? self::bytesToChars($subject, [$m])[0]
 			: $m;
-
 	}
 
 

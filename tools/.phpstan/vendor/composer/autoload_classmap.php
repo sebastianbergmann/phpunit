@@ -23,6 +23,7 @@ return array(
     'Nette\\NotImplementedException' => $vendorDir . '/nette/utils/src/exceptions.php',
     'Nette\\NotSupportedException' => $vendorDir . '/nette/utils/src/exceptions.php',
     'Nette\\OutOfRangeException' => $vendorDir . '/nette/utils/src/exceptions.php',
+    'Nette\\ShouldNotHappenException' => $vendorDir . '/nette/utils/src/exceptions.php',
     'Nette\\SmartObject' => $vendorDir . '/nette/utils/src/SmartObject.php',
     'Nette\\StaticClass' => $vendorDir . '/nette/utils/src/StaticClass.php',
     'Nette\\UnexpectedValueException' => $vendorDir . '/nette/utils/src/exceptions.php',

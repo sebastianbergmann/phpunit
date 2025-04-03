@@ -505,6 +505,6 @@ class Finder implements \IteratorAggregate
 				'\-' => '-',
 			],
 		);
-		return '#' . $anchor . $pattern . '$#D' . (defined('PHP_WINDOWS_VERSION_BUILD') ? 'i' : '');
+		return '#' . $anchor . $pattern . '$#D' . (Helpers::IsWindows ? 'i' : '');
 	}
 }
