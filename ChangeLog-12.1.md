@@ -19,4 +19,4 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 
 * [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140): The `testClassName()` method on the `AfterTestMethodCalled`, `AfterTestMethodErrored`, `AfterTestMethodFinished`, `BeforeTestMethodCalled`, `BeforeTestMethodErrored`, `BeforeTestMethodFinished`, `PostConditionCalled`, `PostConditionErrored`, `PostConditionFinished`, `PreConditionCalled`, `PreConditionErrored`, and `PreConditionFinished` event value objects (use `test()->className()` instead)
 
-[12.1.0]: https://github.com/sebastianbergmann/phpunit/compare/12.0...main
+[12.1.0]: https://github.com/sebastianbergmann/phpunit/compare/12.0.10...12.1.0
