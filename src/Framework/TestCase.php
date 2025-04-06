@@ -1234,20 +1234,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function runTest(): mixed
     {
-        $testArguments  = array_merge($this->data, array_values($this->dependencyInput));
-        $positionalArgs = [];
-        $namedArgs      = [];
+        $testArguments       = array_merge($this->data, array_values($this->dependencyInput));
+        $positionalArguments = [];
+        $namedArguments      = [];
 
         foreach ($testArguments as $key => $value) {
             if (is_int($key)) {
-                $positionalArgs[] = $value;
+                $positionalArguments[] = $value;
             } else {
-                $namedArgs[$key] = $value;
+                $namedArguments[$key] = $value;
             }
         }
 
         try {
-            $testResult = $this->{$this->methodName}(...$namedArgs, ...$positionalArgs);
+            $testResult = $this->{$this->methodName}(...$namedArguments, ...$positionalArguments);
         } catch (Throwable $exception) {
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
