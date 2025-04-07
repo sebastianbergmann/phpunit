@@ -24,6 +24,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterVal
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
+use PHPUnit\TestFixture\MockObject\Issue6174;
 use stdClass;
 
 abstract class TestDoubleTestCase extends TestCase
@@ -128,6 +129,50 @@ abstract class TestDoubleTestCase extends TestCase
 
         $this->assertSame(2, $double->doSomething(1));
         $this->assertSame(4, $double->doSomething(3));
+    }
+
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/6174')]
+    final public function testIssue6174(): void
+    {
+        $double = $this->createTestDouble(Issue6174::class);
+
+        $double->method('methodNullDefault')->willReturnMap(
+            [
+                ['A', null, 'result'],
+            ],
+        );
+
+        $this->assertSame('result', $double->methodNullDefault('A'));
+
+        $double = $this->createTestDouble(Issue6174::class);
+
+        $double->method('methodNullDefault')->willReturnMap(
+            [
+                ['A', 'result'],
+            ],
+        );
+
+        $this->assertSame('result', $double->methodNullDefault('A'));
+
+        $double = $this->createTestDouble(Issue6174::class);
+
+        $double->method('methodStringDefault')->willReturnMap(
+            [
+                ['A', 'result'],
+            ],
+        );
+
+        $this->assertSame('result', $double->methodStringDefault('A'));
+
+        $double = $this->createTestDouble(Issue6174::class);
+
+        $double->method('methodStringDefault')->willReturnMap(
+            [
+                [null, 'result'],
+            ],
+        );
+
+        $this->assertSame('result', $double->methodStringDefault(null));
     }
 
     final public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void

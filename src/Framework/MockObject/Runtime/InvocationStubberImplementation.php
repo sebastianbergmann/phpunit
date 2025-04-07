@@ -218,13 +218,13 @@ final class InvocationStubberImplementation implements InvocationStubber
             $returnValue = array_pop($mapping);
 
             foreach (range(0, $numberOfParameters - 1) as $i) {
-                if (isset($mapping[$i])) {
+                if (array_key_exists($i, $mapping)) {
                     $_mapping[] = $mapping[$i];
 
                     continue;
                 }
 
-                if (isset($defaultValues[$i])) {
+                if (array_key_exists($i, $defaultValues)) {
                     $_mapping[] = $defaultValues[$i];
                 }
             }

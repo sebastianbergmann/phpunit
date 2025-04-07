@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 ### Fixed
 
 * [#6104](https://github.com/sebastianbergmann/phpunit/issues/6104): Test with dependencies and data provider fails
+* [#6174](https://github.com/sebastianbergmann/phpunit/issues/6174): `willReturnMap()` fails with nullable parameters when their default is `null` and no argument is passed for them
 
 ## [12.1.0] - 2025-04-04
 
