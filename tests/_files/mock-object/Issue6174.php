@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-interface YetAnotherInterface
+interface Issue6174
 {
-    public function doSomethingElseEntirely();
+    public function methodNullDefault(?string $param, ?string $nullDefault = null): string;
+
+    public function methodStringDefault(?string $param, ?string $stringDefault = 'something'): string;
 }
