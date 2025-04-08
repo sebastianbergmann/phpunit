@@ -11,8 +11,6 @@ namespace PHPUnit\Framework;
 
 use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
@@ -22,18 +20,6 @@ use PHPUnit\TestFixture\TestWithDifferentNames;
 class TestCaseTest extends TestCase
 {
     protected static int $testStatic = 456;
-
-    /**
-     * @return array<non-empty-string, array<non-empty-string, string>>
-     */
-    public static function provider(): array
-    {
-        return [
-            'case 1' => [
-                'fromProvider' => 'value from provider',
-            ],
-        ];
-    }
 
     public static function setUpBeforeClass(): void
     {
@@ -96,20 +82,5 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($methodName);
 
         $this->assertSame($methodName, $testCase->nameWithDataSet());
-    }
-
-    public function testDependedUponTest(): string
-    {
-        $this->assertTrue(true);
-
-        return 'value from depended-upon test';
-    }
-
-    #[DataProvider('provider')]
-    #[Depends('testDependedUponTest')]
-    public function testTestDataFromProviderAndDependedUponTest(string $fromProvider, string $fromDependency): void
-    {
-        $this->assertSame('value from provider', $fromProvider);
-        $this->assertSame('value from depended-upon test', $fromDependency);
     }
 }
