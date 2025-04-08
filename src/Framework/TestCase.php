@@ -1268,6 +1268,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 print preg_replace('/\[.+\] /', '', $errorLogOutput);
             }
         } catch (Throwable $exception) {
+            if (!$this->expectErrorLog) {
+                $errorLogOutput = stream_get_contents($capture);
+
+                // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
+                print preg_replace('/\[.+\] /', '', $errorLogOutput);
+            }
+
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
             }
