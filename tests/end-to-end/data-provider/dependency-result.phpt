@@ -13,9 +13,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-....                                                                4 / 4 (100%)
+...E                                                                4 / 4 (100%)
 
 Time: %s, Memory: %s
 
-OK (4 tests, 7 assertions)
+There was 1 error:
 
+1) PHPUnit\TestFixture\DataProviderDependencyResultTest::testAdd with data set #2 (2, 0)
+Error: Cannot use positional argument after named argument during unpacking
+
+ERRORS!
+Tests: 4, Assertions: 5, Errors: 1.
