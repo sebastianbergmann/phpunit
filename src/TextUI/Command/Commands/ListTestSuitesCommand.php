@@ -83,11 +83,11 @@ final readonly class ListTestSuitesCommand implements Command
         }
 
         if ($configuration->hasGroups()) {
-            $buffer .= 'The --group and --list-suites options cannot be combined, --group is ignored' . PHP_EOL;
+            $buffer .= 'The --group (CLI) and <groups> (XML) options cannot be combined with --list-suites, --group and <groups> are ignored' . PHP_EOL;
         }
 
         if ($configuration->hasExcludeGroups()) {
-            $buffer .= 'The --exclude-group and --list-suites options cannot be combined, --exclude-group is ignored' . PHP_EOL;
+            $buffer .= 'The --exclude-group (CLI) and <groups> (XML) options cannot be combined with --list-suites, --exclude-group and <groups> are ignored' . PHP_EOL;
         }
 
         if (!empty($buffer)) {
