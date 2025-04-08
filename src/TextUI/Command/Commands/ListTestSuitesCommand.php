@@ -70,6 +70,14 @@ final readonly class ListTestSuitesCommand implements Command
 
         $configuration = Registry::get();
 
+        if ($configuration->hasDefaultTestSuite()) {
+            $buffer .= 'The defaultTestSuite (XML) and --list-suites (CLI) options cannot be combined, only the default test suite is shown' . PHP_EOL;
+        }
+
+        if ($configuration->includeTestSuite() !== '' && !$configuration->hasDefaultTestSuite()) {
+            $buffer .= 'The --testsuite and --list-suites options cannot be combined, --testsuite is ignored' . PHP_EOL;
+        }
+
         if ($configuration->hasFilter()) {
             $buffer .= 'The --filter and --list-suites options cannot be combined, --filter is ignored' . PHP_EOL;
         }
@@ -80,10 +88,6 @@ final readonly class ListTestSuitesCommand implements Command
 
         if ($configuration->hasExcludeGroups()) {
             $buffer .= 'The --exclude-group and --list-suites options cannot be combined, --exclude-group is ignored' . PHP_EOL;
-        }
-
-        if ($configuration->includeTestSuite() !== '') {
-            $buffer .= 'The --testsuite and --list-suites options cannot be combined, --testsuite is ignored' . PHP_EOL;
         }
 
         if (!empty($buffer)) {
