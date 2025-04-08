@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function assert;
 use function count;
 use function ksort;
 use function sprintf;
@@ -36,9 +37,7 @@ final readonly class ListTestSuitesCommand implements Command
         $suites = [];
 
         foreach ($this->testSuite->tests() as $test) {
-            if (!$test instanceof TestSuite) {
-                continue;
-            }
+            assert($test instanceof TestSuite);
 
             $suites[$test->name()] = count($test->collect());
         }
