@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 12.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [12.1.1] - 2025-MM-DD
+## [12.1.1] - 2025-04-08
 
 ### Fixed
 
@@ -26,5 +26,5 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 
 * [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140): The `testClassName()` method on the `AfterTestMethodCalled`, `AfterTestMethodErrored`, `AfterTestMethodFinished`, `BeforeTestMethodCalled`, `BeforeTestMethodErrored`, `BeforeTestMethodFinished`, `PostConditionCalled`, `PostConditionErrored`, `PostConditionFinished`, `PreConditionCalled`, `PreConditionErrored`, and `PreConditionFinished` event value objects (use `test()->className()` instead)
 
-[12.1.1]: https://github.com/sebastianbergmann/phpunit/compare/12.1.0...12.1
+[12.1.1]: https://github.com/sebastianbergmann/phpunit/compare/12.1.0...12.1.1
 [12.1.0]: https://github.com/sebastianbergmann/phpunit/compare/12.0.10...12.1.0
