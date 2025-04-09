@@ -21,11 +21,11 @@ final readonly class SystemMemoryMeter implements MemoryMeter
 {
     public function memoryUsage(): MemoryUsage
     {
-        return MemoryUsage::fromBytes(memory_get_usage(true));
+        return MemoryUsage::fromBytes(memory_get_usage());
     }
 
     public function peakMemoryUsage(): MemoryUsage
     {
-        return MemoryUsage::fromBytes(memory_get_peak_usage(true));
+        return MemoryUsage::fromBytes(memory_get_peak_usage());
     }
 }
