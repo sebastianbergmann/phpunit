@@ -60,6 +60,11 @@ final class ErrorHandler
     private readonly Source $source;
 
     /**
+     * @var list<array{int, string, string, int}>
+     */
+    private array $globalDeprecations = [];
+
+    /**
      * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
      */
     private ?array $deprecationTriggers = null;
@@ -197,6 +202,23 @@ final class ErrorHandler
         return false;
     }
 
+    public function deprecationHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
+    {
+        $this->globalDeprecations[] = [$errorNumber, $errorString, $errorFile, $errorLine];
+
+        return true;
+    }
+
+    public function registerDeprecationHandler(): void
+    {
+        set_error_handler([self::$instance, 'deprecationHandler'], E_USER_DEPRECATED);
+    }
+
+    public function restoreDeprecationHandler(): void
+    {
+        restore_error_handler();
+    }
+
     public function enable(): void
     {
         if ($this->enabled) {
@@ -213,6 +235,7 @@ final class ErrorHandler
 
         $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
+        $this->triggerGlobalDeprecations();
 
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
     }
@@ -421,5 +444,12 @@ final class ErrorHandler
         }
 
         return $buffer;
+    }
+
+    private function triggerGlobalDeprecations(): void
+    {
+        foreach ($this->globalDeprecations ?? [] as $d) {
+            $this->__invoke(...$d);
+        }
     }
 }
