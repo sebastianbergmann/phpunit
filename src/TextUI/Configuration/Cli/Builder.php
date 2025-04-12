@@ -140,6 +140,7 @@ final class Builder
         'log-events-verbose-text=',
         'version',
         'debug',
+        'with-telemetry',
         'extension=',
     ];
 
@@ -275,6 +276,7 @@ final class Builder
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
         $debug                             = false;
+        $withTelemetry                     = false;
         $extensions                        = [];
 
         foreach ($options[0] as $option) {
@@ -963,6 +965,11 @@ final class Builder
 
                     break;
 
+                case '--with-telemetry':
+                    $withTelemetry = true;
+
+                    break;
+
                 case '--extension':
                     $extensions[] = $option[1];
 
@@ -1090,6 +1097,7 @@ final class Builder
             $printerTestDox,
             $printerTestDoxSummary,
             $debug,
+            $withTelemetry,
             $extensions,
         );
     }

@@ -932,6 +932,7 @@ final readonly class Merger
             $xmlConfiguration->phpunit()->numberOfTestsBeforeGarbageCollection(),
             $generateBaseline,
             $cliConfiguration->debug(),
+            $cliConfiguration->withTelemetry(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
         );
     }

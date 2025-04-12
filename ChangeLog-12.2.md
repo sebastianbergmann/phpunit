@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 12.2 release series are documented in this fi
 
 ## [12.2.0] - 2025-06-06
 
+### Added
+
+* `--with-telemetry` CLI option that can be used together with `--debug` to print debugging information that includes telemetry information
+
 [12.2.0]: https://github.com/sebastianbergmann/phpunit/compare/12.1...main

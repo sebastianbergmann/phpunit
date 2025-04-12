@@ -260,6 +260,7 @@ final class Help
                 ['spacer' => ''],
 
                 ['arg' => '--debug', 'desc' => 'Replace default progress and result output with debugging information'],
+                ['arg' => '--with-telemetry', 'desc' => 'Include telemetry information in debugging information output'],
             ],
 
             'Logging' => [

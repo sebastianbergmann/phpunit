@@ -140,6 +140,8 @@
 
   [32m--debug                           [0m Replace default progress and result output
                                      with debugging information
+  [32m--with-telemetry                  [0m Include telemetry information in debugging
+                                     information output
 
 [33mLogging:[0m
 

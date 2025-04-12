@@ -153,7 +153,7 @@ final readonly class Application
                 EventFacade::instance()->registerTracer(
                     new EventLogger(
                         'php://stdout',
-                        false,
+                        $configuration->withTelemetry(),
                     ),
                 );
             }

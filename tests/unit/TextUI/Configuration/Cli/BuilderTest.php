@@ -2303,6 +2303,14 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->debug());
     }
 
+    #[TestDox('--with-telemetry')]
+    public function testWithTelemetry(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--with-telemetry']);
+
+        $this->assertTrue($configuration->withTelemetry());
+    }
+
     public function testInvalidOption(): void
     {
         $this->expectException(Exception::class);
