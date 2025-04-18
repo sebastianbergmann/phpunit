@@ -407,25 +407,23 @@ final class AnnotationParser implements Parser
             }
         }
 
-        if (method_exists($className, $methodName)) {
-            try {
-                $result = array_merge(
-                    $result,
-                    $this->parseRequirements(
-                        AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements(),
-                        'method',
-                    ),
-                );
-            } catch (InvalidVersionRequirementException $e) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Method %s::%s is annotated using an invalid version requirement: %s',
-                        $className,
-                        $methodName,
-                        $e->getMessage(),
-                    ),
-                );
-            }
+        try {
+            $result = array_merge(
+                $result,
+                $this->parseRequirements(
+                    AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements(),
+                    'method',
+                ),
+            );
+        } catch (InvalidVersionRequirementException $e) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Method %s::%s is annotated using an invalid version requirement: %s',
+                    $className,
+                    $methodName,
+                    $e->getMessage(),
+                ),
+            );
         }
 
         if (!empty($result) &&
