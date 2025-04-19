@@ -15,7 +15,7 @@ use function ksort;
 use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

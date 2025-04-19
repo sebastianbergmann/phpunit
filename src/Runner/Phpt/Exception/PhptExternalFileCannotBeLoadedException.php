@@ -7,8 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Runner\Phpt;
 
+use function sprintf;
+use PHPUnit\Runner\Exception as RunnerException;
 use RuntimeException;
 
 /**
@@ -16,6 +18,16 @@ use RuntimeException;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvalidPhptFileException extends RuntimeException implements Exception
+final class PhptExternalFileCannotBeLoadedException extends RuntimeException implements RunnerException
 {
+    public function __construct(string $section, string $file)
+    {
+        parent::__construct(
+            sprintf(
+                'Could not load --%s-- %s for PHPT file',
+                $section . '_EXTERNAL',
+                $file,
+            ),
+        );
+    }
 }

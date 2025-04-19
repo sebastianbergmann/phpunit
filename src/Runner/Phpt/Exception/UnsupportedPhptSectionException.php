@@ -7,9 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Runner\Phpt;
 
 use function sprintf;
+use PHPUnit\Runner\Exception as RunnerException;
 use RuntimeException;
 
 /**
@@ -17,13 +18,13 @@ use RuntimeException;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class UnsupportedPhptSectionException extends RuntimeException implements Exception
+final class UnsupportedPhptSectionException extends RuntimeException implements RunnerException
 {
     public function __construct(string $section)
     {
         parent::__construct(
             sprintf(
-                'PHPUnit does not support PHPT %s sections',
+                'PHPUnit does not support PHPT --%s-- sections',
                 $section,
             ),
         );

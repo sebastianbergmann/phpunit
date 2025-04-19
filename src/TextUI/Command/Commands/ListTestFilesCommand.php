@@ -14,7 +14,7 @@ use function array_unique;
 use function assert;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use ReflectionClass;
 use ReflectionException;
 
