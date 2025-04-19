@@ -280,26 +280,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $this->filename;
     }
 
-    public function usesDataProvider(): bool
-    {
-        return false;
-    }
-
-    public function numberOfAssertionsPerformed(): int
-    {
-        return 1;
-    }
-
-    public function output(): string
-    {
-        return $this->output;
-    }
-
-    public function hasOutput(): bool
-    {
-        return $this->output !== '';
-    }
-
     public function sortId(): string
     {
         return $this->filename;
