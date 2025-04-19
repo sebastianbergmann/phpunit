@@ -527,9 +527,10 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only instances of a specified interface or class name.
-     *
-     * @param class-string    $className
-     * @param iterable<mixed> $haystack
+     * @template T
+     * @phpstan-assert iterable<T> $haystack
+     * @param class-string<T>      $className
+     * @param iterable<mixed>      $haystack
      *
      * @throws Exception
      * @throws ExpectationFailedException
