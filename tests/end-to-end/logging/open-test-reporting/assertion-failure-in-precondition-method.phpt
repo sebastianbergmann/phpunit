@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
   <git:repository originUrl="%s"/>
   <git:branch>%s</git:branch>
   <git:commit>%s</git:commit>
-  <git:status clean="true"><![CDATA[]]></git:status>
+  <git:status clean="%s"><![CDATA[%A]]></git:status>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest" time="%s"/>
  <e:started id="2" parent="1" name="PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne" time="%s"/>
