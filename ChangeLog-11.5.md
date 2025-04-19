@@ -10,6 +10,10 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * The peak memory usage returned by `memory_get_peak_usage()` is now reset immediately before the `Test\Prepared` event is emitted using `memory_reset_peak_usage()` so that (memory usage at `Test\Finished` - memory usage at `Test\Prepared`) is a better approximation of the memory usage of the test
 * The string representation of `Telemetry\Info` now uses peak memory usage instead of memory usage (this affects `--log-events-verbose-text`) 
 
+### Fixed
+
+* A "Before Test Method Errored" event is no longer emitted when a test is skipped in a "before test" method
+
 ## [11.5.17] - 2025-04-08
 
 ### Fixed
