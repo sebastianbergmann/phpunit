@@ -16,10 +16,15 @@ require_once __DIR__ . '/../../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/git/0.2.0">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
+  <operatingSystem>%s</operatingSystem>
+  <git:repository originUrl="%s"/>
+  <git:branch>%s</git:branch>
+  <git:commit>%s</git:commit>
+  <git:status clean="true"><![CDATA[]]></git:status>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest" time="%s"/>
  <e:started id="2" parent="1" name="PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne" time="%s"/>
