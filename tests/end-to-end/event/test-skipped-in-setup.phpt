@@ -21,7 +21,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\SkippedInSetupTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\SkippedInSetupTest::testOne)
 Before Test Method Called (PHPUnit\TestFixture\Event\SkippedInSetupTest::setUp)
-Before Test Method Errored (PHPUnit\TestFixture\Event\SkippedInSetupTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\SkippedInSetupTest::setUp
 Test Skipped (PHPUnit\TestFixture\Event\SkippedInSetupTest::testOne)

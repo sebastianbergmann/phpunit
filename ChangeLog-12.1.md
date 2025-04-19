@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 ### Fixed
 
 * [#6173](https://github.com/sebastianbergmann/phpunit/issues/6173): Output from `error_log()` is not displayed when test fails
+* A "Before Test Method Errored" event is no longer emitted when a test is skipped in a "before test" method
 
 ## [12.1.2] - 2025-04-08
 
