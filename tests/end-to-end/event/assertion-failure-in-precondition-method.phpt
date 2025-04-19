@@ -21,7 +21,7 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
 Pre Condition Method Called (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition)
-Pre Condition Method Errored (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition)
+Pre Condition Method Failed (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition)
 Failed asserting that false is true.
 Pre Condition Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition

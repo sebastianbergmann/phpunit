@@ -22,7 +22,7 @@ Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest, 1 
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::testOne)
 After Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::afterTest)
-After Test Method Errored (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::afterTest)
+After Test Method Failed (PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::afterTest)
 Failed asserting that false is true.
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInTearDownTest::afterTest

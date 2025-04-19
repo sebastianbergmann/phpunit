@@ -1968,6 +1968,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter,
             'beforeFirstTestMethodCalled',
             'beforeFirstTestMethodErrored',
+            'beforeFirstTestMethodFailed',
             'beforeFirstTestMethodFinished',
             false,
         );
@@ -1985,6 +1986,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter,
             'beforeTestMethodCalled',
             'beforeTestMethodErrored',
+            'beforeTestMethodFailed',
             'beforeTestMethodFinished',
         );
     }
@@ -2001,6 +2003,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter,
             'preConditionCalled',
             'preConditionErrored',
+            'preConditionFailed',
             'preConditionFinished',
         );
     }
@@ -2017,6 +2020,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter,
             'postConditionCalled',
             'postConditionErrored',
+            'postConditionFailed',
             'postConditionFinished',
         );
     }
@@ -2033,6 +2037,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter,
             'afterTestMethodCalled',
             'afterTestMethodErrored',
+            'afterTestMethodFailed',
             'afterTestMethodFinished',
         );
     }
@@ -2051,6 +2056,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $emitter,
             'afterLastTestMethodCalled',
             'afterLastTestMethodErrored',
+            'afterLastTestMethodFailed',
             'afterLastTestMethodFinished',
             false,
         );
@@ -2059,11 +2065,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @param 'afterLastTestMethodCalled'|'afterTestMethodCalled'|'beforeFirstTestMethodCalled'|'beforeTestMethodCalled'|'postConditionCalled'|'preConditionCalled'             $calledMethod
      * @param 'afterLastTestMethodErrored'|'afterTestMethodErrored'|'beforeFirstTestMethodErrored'|'beforeTestMethodErrored'|'postConditionErrored'|'preConditionErrored'       $erroredMethod
+     * @param 'afterLastTestMethodFailed'|'afterTestMethodFailed'|'beforeFirstTestMethodFailed'|'beforeTestMethodFailed'|'postConditionFailed'|'preConditionFailed'             $failedMethod
      * @param 'afterLastTestMethodFinished'|'afterTestMethodFinished'|'beforeFirstTestMethodFinished'|'beforeTestMethodFinished'|'postConditionFinished'|'preConditionFinished' $finishedMethod
      *
      * @throws Throwable
      */
-    private function invokeHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $finishedMethod, bool $forTestCase = true): void
+    private function invokeHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod, bool $forTestCase = true): void
     {
         if ($forTestCase) {
             $test = $this->valueObjectForEvents();
@@ -2098,8 +2105,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $methodsInvoked[] = $methodInvoked;
 
             if (isset($t) && !$t instanceof SkippedTest) {
+                if ($t instanceof AssertionFailedError) {
+                    $method = $failedMethod;
+                } else {
+                    $method = $erroredMethod;
+                }
+
                 /** @phpstan-ignore method.dynamicName */
-                $emitter->{$erroredMethod}(
+                $emitter->{$method}(
                     $test,
                     $methodInvoked,
                     Event\Code\ThrowableBuilder::from($t),

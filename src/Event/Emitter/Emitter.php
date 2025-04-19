@@ -90,17 +90,26 @@ interface Emitter
     /**
      * @param class-string $testClassName
      */
+    public function beforeFirstTestMethodFailed(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+
+    /**
+     * @param class-string $testClassName
+     */
     public function beforeFirstTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
     public function beforeTestMethodCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
     public function beforeTestMethodErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
+    public function beforeTestMethodFailed(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
+
     public function beforeTestMethodFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
     public function preConditionCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
     public function preConditionErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
+
+    public function preConditionFailed(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
     public function preConditionFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
@@ -238,11 +247,15 @@ interface Emitter
 
     public function postConditionErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
+    public function postConditionFailed(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
+
     public function postConditionFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
     public function afterTestMethodCalled(TestMethod $test, ClassMethod $calledMethod): void;
 
     public function afterTestMethodErrored(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
+
+    public function afterTestMethodFailed(TestMethod $test, ClassMethod $calledMethod, Throwable $throwable): void;
 
     public function afterTestMethodFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
@@ -255,6 +268,11 @@ interface Emitter
      * @param class-string $testClassName
      */
     public function afterLastTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
+
+    /**
+     * @param class-string $testClassName
+     */
+    public function afterLastTestMethodFailed(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName
