@@ -19,7 +19,7 @@ use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use ReflectionClass;
 use ReflectionMethod;
 

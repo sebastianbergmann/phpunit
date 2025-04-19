@@ -37,7 +37,7 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\Util\Filter;
