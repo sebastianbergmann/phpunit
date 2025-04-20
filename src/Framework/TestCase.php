@@ -524,6 +524,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
                 $emitter->testPreparationFailed(
                     $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($e),
                 );
             }
 
@@ -552,6 +553,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if (!$this->wasPrepared) {
                     $emitter->testPreparationFailed(
                         $this->valueObjectForEvents(),
+                        Event\Code\ThrowableBuilder::from($e),
                     );
                 }
 

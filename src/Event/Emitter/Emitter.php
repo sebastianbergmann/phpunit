@@ -75,7 +75,7 @@ interface Emitter
 
     public function testPreparationStarted(Code\Test $test): void;
 
-    public function testPreparationFailed(Code\Test $test): void;
+    public function testPreparationFailed(Code\Test $test, Throwable $throwable): void;
 
     /**
      * @param class-string $testClassName

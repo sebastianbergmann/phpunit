@@ -26,6 +26,7 @@ Failed asserting that false is true.
 Pre Condition Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::preCondition
 Test Preparation Failed (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
+Failed asserting that false is true.
 Test Failed (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Event\AssertionFailureInPreConditionTest::testOne)

@@ -860,9 +860,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $test = $this->testValueObject();
+        $test      = $this->testValueObject();
+        $throwable = ThrowableBuilder::from(new Exception('message'));
 
-        $emitter->testPreparationFailed($test);
+        $emitter->testPreparationFailed($test, $throwable);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -870,6 +871,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\PreparationFailed::class, $event);
         $this->assertSame($test, $event->test());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     #[TestDox('beforeFirstTestMethodCalled() emits Test\BeforeFirstTestMethodCalled event')]

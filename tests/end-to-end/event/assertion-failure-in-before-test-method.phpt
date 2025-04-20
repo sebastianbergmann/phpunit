@@ -26,6 +26,7 @@ Failed asserting that false is true.
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest
 Test Preparation Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
+Failed asserting that false is true.
 Test Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
