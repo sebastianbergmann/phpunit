@@ -75,6 +75,8 @@ interface Emitter
 
     public function testPreparationStarted(Code\Test $test): void;
 
+    public function testPreparationErrored(Code\Test $test, Throwable $throwable): void;
+
     public function testPreparationFailed(Code\Test $test, Throwable $throwable): void;
 
     /**

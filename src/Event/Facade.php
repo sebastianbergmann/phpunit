@@ -215,6 +215,7 @@ final class Facade
             Test\PreConditionFinished::class,
             Test\PreparationStarted::class,
             Test\Prepared::class,
+            Test\PreparationErrored::class,
             Test\PreparationFailed::class,
             Test\PrintedUnexpectedOutput::class,
             Test\Skipped::class,

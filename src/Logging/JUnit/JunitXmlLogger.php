@@ -193,6 +193,11 @@ final class JunitXmlLogger
         $this->preparationFailed = false;
     }
 
+    public function testPreparationErrored(): void
+    {
+        $this->preparationFailed = true;
+    }
+
     public function testPreparationFailed(): void
     {
         $this->preparationFailed = true;
@@ -311,6 +316,7 @@ final class JunitXmlLogger
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparationStartedSubscriber($this),
+            new TestPreparationErroredSubscriber($this),
             new TestPreparationFailedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestPrintedUnexpectedOutputSubscriber($this),

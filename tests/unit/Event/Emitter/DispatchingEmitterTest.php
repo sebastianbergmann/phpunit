@@ -836,6 +836,44 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($test, $event->test());
     }
 
+    #[TestDox('testPreparationErrored() emits Test\PreparationErrored event')]
+    public function testTestPreparationErroredEmitsTestPreparationErroredEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PreparationErroredSubscriber
+        {
+            public function notify(Test\PreparationErrored $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PreparationErroredSubscriber::class,
+            Test\PreparationErrored::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test      = $this->testValueObject();
+        $throwable = ThrowableBuilder::from(new Exception('message'));
+
+        $emitter->testPreparationErrored($test, $throwable);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PreparationErrored::class, $event);
+        $this->assertSame($test, $event->test());
+        $this->assertSame($throwable, $event->throwable());
+    }
+
     #[TestDox('testPreparationFailed() emits Test\PreparationFailed event')]
     public function testTestPreparationFailedEmitsTestPreparationFailedEvent(): void
     {
