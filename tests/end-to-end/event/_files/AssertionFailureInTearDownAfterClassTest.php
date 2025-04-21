@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class AssertionFailureInTearDownAfterClassTest extends TestCase
