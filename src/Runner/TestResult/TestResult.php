@@ -11,7 +11,9 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use function count;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
+use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -44,7 +46,7 @@ final readonly class TestResult
     private array $testErroredEvents;
 
     /**
-     * @var list<Failed>
+     * @var list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>
      */
     private array $testFailedEvents;
 
@@ -145,7 +147,7 @@ final readonly class TestResult
 
     /**
      * @param list<AfterLastTestMethodErrored|BeforeFirstTestMethodErrored|Errored> $testErroredEvents
-     * @param list<Failed>                                                          $testFailedEvents
+     * @param list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>    $testFailedEvents
      * @param array<string,list<ConsideredRisky>>                                   $testConsideredRiskyEvents
      * @param list<TestSuiteSkipped>                                                $testSuiteSkippedEvents
      * @param list<TestSkipped>                                                     $testSkippedEvents

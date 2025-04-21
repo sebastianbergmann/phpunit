@@ -17,7 +17,9 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
+use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
@@ -73,7 +75,7 @@ final class Collector
     private array $testErroredEvents = [];
 
     /**
-     * @var list<Failed>
+     * @var list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>
      */
     private array $testFailedEvents = [];
 
@@ -181,7 +183,9 @@ final class Collector
             new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new BeforeTestClassMethodErroredSubscriber($this),
+            new BeforeTestClassMethodFailedSubscriber($this),
             new AfterTestClassMethodErroredSubscriber($this),
+            new AfterTestClassMethodFailedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
@@ -313,9 +317,21 @@ final class Collector
         $this->numberOfTestsRun++;
     }
 
+    public function beforeTestClassMethodFailed(BeforeFirstTestMethodFailed $event): void
+    {
+        $this->testFailedEvents[] = $event;
+
+        $this->numberOfTestsRun++;
+    }
+
     public function afterTestClassMethodErrored(AfterLastTestMethodErrored $event): void
     {
         $this->testErroredEvents[] = $event;
+    }
+
+    public function afterTestClassMethodFailed(AfterLastTestMethodFailed $event): void
+    {
+        $this->testFailedEvents[] = $event;
     }
 
     public function testErrored(Errored $event): void
