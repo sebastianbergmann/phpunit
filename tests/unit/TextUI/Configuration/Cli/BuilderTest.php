@@ -21,6 +21,14 @@ use PHPUnit\Runner\TestSuiteSorter;
 #[TestDox('CLI Options Parser')]
 final class BuilderTest extends TestCase
 {
+    #[TestDox('argument')]
+    public function testArguments(): void
+    {
+        $configuration = (new Builder)->fromParameters(['command', 'argument']);
+
+        $this->assertSame(['argument'], $configuration->arguments());
+    }
+
     #[TestDox('--colors')]
     public function testColorsImplicitAuto(): void
     {
@@ -1422,6 +1430,10 @@ final class BuilderTest extends TestCase
 
         $this->assertTrue($configuration->hasStopOnDeprecation());
         $this->assertTrue($configuration->stopOnDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->specificDeprecationToStopOn();
     }
 
     #[TestDox('--stop-on-deprecation=message')]
@@ -1624,6 +1636,26 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->testdoxPrinter();
+    }
+
+    #[TestDox('--testdox-summary')]
+    public function testTestDoxPrinterSummary(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--testdox-summary']);
+
+        $this->assertTrue($configuration->hasTestDoxPrinterSummary());
+        $this->assertTrue($configuration->testdoxPrinterSummary());
+    }
+
+    public function testTestDoxPrinterSummaryMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTestDoxPrinterSummary());
+
+        $this->expectException(Exception::class);
+
+        $configuration->testdoxPrinterSummary();
     }
 
     #[TestDox('--testdox-html file')]
@@ -2261,6 +2293,26 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--debug']);
 
         $this->assertTrue($configuration->debug());
+    }
+
+    #[TestDox('--extension')]
+    public function testExtension(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--extension', 'ExtensionClass']);
+
+        $this->assertTrue($configuration->hasExtensions());
+        $this->assertSame(['ExtensionClass'], $configuration->extensions());
+    }
+
+    public function testExtensionMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasExtensions());
+
+        $this->expectException(Exception::class);
+
+        $configuration->extensions();
     }
 
     public function testInvalidOption(): void
