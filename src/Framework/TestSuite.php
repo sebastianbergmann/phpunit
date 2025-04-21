@@ -644,11 +644,19 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
 
             if (isset($t)) {
-                $emitter->beforeFirstTestMethodErrored(
-                    $this->name,
-                    $calledMethod,
-                    Event\Code\ThrowableBuilder::from($t),
-                );
+                if ($t instanceof AssertionFailedError) {
+                    $emitter->beforeFirstTestMethodFailed(
+                        $this->name,
+                        $calledMethod,
+                        Event\Code\ThrowableBuilder::from($t),
+                    );
+                } else {
+                    $emitter->beforeFirstTestMethodErrored(
+                        $this->name,
+                        $calledMethod,
+                        Event\Code\ThrowableBuilder::from($t),
+                    );
+                }
 
                 $result = false;
             }
@@ -700,11 +708,19 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $calledMethods[] = $calledMethod;
 
             if (isset($t)) {
-                $emitter->afterLastTestMethodErrored(
-                    $this->name,
-                    $calledMethod,
-                    Event\Code\ThrowableBuilder::from($t),
-                );
+                if ($t instanceof AssertionFailedError) {
+                    $emitter->afterLastTestMethodFailed(
+                        $this->name,
+                        $calledMethod,
+                        Event\Code\ThrowableBuilder::from($t),
+                    );
+                } else {
+                    $emitter->afterLastTestMethodErrored(
+                        $this->name,
+                        $calledMethod,
+                        Event\Code\ThrowableBuilder::from($t),
+                    );
+                }
             }
         }
 
