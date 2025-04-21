@@ -658,7 +658,7 @@ final readonly class Application
         if ($configuration->hasLogfileOtr()) {
             try {
                 new OtrXmlLogger(
-                    OutputFacade::printerFor($configuration->logfileOtr()),
+                    $configuration->logfileOtr(),
                     EventFacade::instance(),
                 );
             } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
