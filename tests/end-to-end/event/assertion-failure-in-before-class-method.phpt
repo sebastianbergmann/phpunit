@@ -20,11 +20,11 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpBeforeClassTest, 1 test)
 Before First Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInSetUpBeforeClassTest::setUpBeforeClass)
-Before First Test Method Errored (PHPUnit\TestFixture\Event\AssertionFailureInSetUpBeforeClassTest::setUpBeforeClass)
+Before First Test Method Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpBeforeClassTest::setUpBeforeClass)
 Failed asserting that false is true.
 Before First Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInSetUpBeforeClassTest::setUpBeforeClass
 Test Suite Finished (PHPUnit\TestFixture\Event\AssertionFailureInSetUpBeforeClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 2)
+PHPUnit Finished (Shell Exit Code: 1)

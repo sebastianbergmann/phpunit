@@ -24,11 +24,11 @@ Test Prepared (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTes
 Test Passed (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest::testOne)
 After Last Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest::tearDownAfterClass)
-After Last Test Method Errored (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest::tearDownAfterClass)
+After Last Test Method Failed (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest::tearDownAfterClass)
 Failed asserting that false is true.
 After Last Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest::tearDownAfterClass
 Test Suite Finished (PHPUnit\TestFixture\Event\AssertionFailureInTearDownAfterClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 2)
+PHPUnit Finished (Shell Exit Code: 1)
