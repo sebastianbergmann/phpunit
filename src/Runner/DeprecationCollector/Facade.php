@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Runner\DeprecationCollector;
 
-use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 
@@ -24,19 +22,12 @@ final class Facade
 {
     private static ?Collector $collector = null;
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     public static function init(): void
     {
         self::collector();
     }
 
     /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     *
      * @return list<non-empty-string>
      */
     public static function deprecations(): array
@@ -45,9 +36,6 @@ final class Facade
     }
 
     /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     *
      * @return list<non-empty-string>
      */
     public static function filteredDeprecations(): array
@@ -55,10 +43,6 @@ final class Facade
         return self::collector()->filteredDeprecations();
     }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     private static function collector(): Collector
     {
         if (self::$collector === null) {
