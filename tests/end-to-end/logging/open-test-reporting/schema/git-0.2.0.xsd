@@ -1,0 +1,69 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://schemas.opentest4j.org/reporting/git/0.2.0"
+           elementFormDefault="qualified">
+
+  <!-- infrastructure -->
+
+  <xs:element name="repository">
+    <xs:complexType>
+      <xs:attribute name="originUrl" use="required">
+        <xs:annotation>
+          <xs:documentation>the URL of the 'origin' remote of the Git repository</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="xs:anyURI">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value=".*:.*"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="branch">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:annotation>
+            <xs:documentation>the branch the HEAD commit is pointing to, if any</xs:documentation>
+          </xs:annotation>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="commit">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:annotation>
+            <xs:documentation>the commit hash</xs:documentation>
+          </xs:annotation>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="status">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:annotation>
+            <xs:documentation>the output of `git status --porcelain`, potentially empty</xs:documentation>
+          </xs:annotation>
+          <xs:attribute name="clean" type="xs:boolean" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                whether the working directory clean contains no changes or untracked files
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
