@@ -1,10 +1,15 @@
 --TEST--
-phpunit --display-all-issues ../_files/OutcomesAndIssuesTest
+phpunit --display-incomplete --display-skipped --display-deprecations --display-errors --display-notices --display-warnings ../_files/OutcomesAndIssuesTest
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--display-all-issues';
+$_SERVER['argv'][] = '--display-incomplete';
+$_SERVER['argv'][] = '--display-skipped';
+$_SERVER['argv'][] = '--display-deprecations';
+$_SERVER['argv'][] = '--display-errors';
+$_SERVER['argv'][] = '--display-notices';
+$_SERVER['argv'][] = '--display-warnings';
 $_SERVER['argv'][] = __DIR__ . '/../_files/OutcomesAndIssuesTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';

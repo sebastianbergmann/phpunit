@@ -64,6 +64,7 @@ Execution:
   --fail-on-notice                   Signal failure using shell exit code when a notice was triggered
   --fail-on-skipped                  Signal failure using shell exit code when a test was skipped
   --fail-on-incomplete               Signal failure using shell exit code when a test was marked incomplete
+  --fail-on-all-issues               Signal failure using shell exit code when an issue is triggered
 
   --cache-result                     Write test results to cache file
   --do-not-cache-result              Do not write test results to cache file
@@ -89,6 +90,7 @@ Reporting:
   --display-errors                   Display details for errors triggered by tests
   --display-notices                  Display details for notices triggered by tests
   --display-warnings                 Display details for warnings triggered by tests
+  --display-all-issues               Display details for all issues that are triggered
   --reverse-list                     Print defects in reverse order
 
   --teamcity                         Replace default progress and result output with TeamCity format
