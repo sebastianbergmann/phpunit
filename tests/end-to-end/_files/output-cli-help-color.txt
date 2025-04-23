@@ -85,6 +85,8 @@
                                      a test was skipped
   [32m--fail-on-incomplete              [0m Signal failure using shell exit code when
                                      a test was marked incomplete
+  [32m--fail-on-all-issues              [0m Signal failure using shell exit code when
+                                     an issue is triggered
 
   [32m--cache-result                    [0m Write test results to cache file
   [32m--do-not-cache-result             [0m Do not write test results to cache file
@@ -119,6 +121,8 @@
                                      tests
   [32m--display-warnings                [0m Display details for warnings triggered by
                                      tests
+  [32m--display-all-issues              [0m Display details for all issues that are
+                                     triggered
   [32m--reverse-list                    [0m Print defects in reverse order
 
   [32m--teamcity                        [0m Replace default progress and result output
