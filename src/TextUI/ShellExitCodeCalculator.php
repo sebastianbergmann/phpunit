@@ -22,7 +22,7 @@ final readonly class ShellExitCodeCalculator
     private const int FAILURE_EXIT   = 1;
     private const int EXCEPTION_EXIT = 2;
 
-    public function calculate(bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, TestResult $result): int
+    public function calculate(bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, TestResult $result): int
     {
         $returnCode = self::FAILURE_EXIT;
 
@@ -40,6 +40,10 @@ final readonly class ShellExitCodeCalculator
             }
 
             if ($failOnPhpunitDeprecation && $result->hasPhpunitDeprecations()) {
+                $returnCode = self::FAILURE_EXIT;
+            }
+
+            if ($failOnPhpunitNotice && $result->hasPhpunitNotices()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 

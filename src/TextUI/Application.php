@@ -285,6 +285,7 @@ final readonly class Application
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration->failOnDeprecation() || $configuration->failOnAllIssues(),
                 $configuration->failOnPhpunitDeprecation() || $configuration->failOnAllIssues(),
+                $configuration->failOnPhpunitNotice() || $configuration->failOnAllIssues(),
                 $configuration->failOnEmptyTestSuite() || $configuration->failOnAllIssues(),
                 $configuration->failOnIncomplete() || $configuration->failOnAllIssues(),
                 $configuration->failOnNotice() || $configuration->failOnAllIssues(),
