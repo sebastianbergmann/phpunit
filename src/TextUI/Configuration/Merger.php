@@ -773,6 +773,10 @@ final readonly class Merger
         assert($useBaseline !== '');
         assert($generateBaseline !== '');
 
+        if ($failOnAllIssues) {
+            $displayDetailsOnAllIssues = true;
+        }
+
         if ($failOnDeprecation) {
             $displayDetailsOnTestsThatTriggerDeprecations = true;
         }
