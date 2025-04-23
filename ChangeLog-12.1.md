@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 12.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.1.4] - 2025-MM-DD
+
+### Added
+
+* `displayDetailsOnAllIssues` attribute on the `<phpunit>` element of the XML configuration file and `--display-all-issues` CLI option for controlling whether PHPUnit should display details on all issues that are triggered (default: `false`)
+* `failOnAllIssues` attribute on the `<phpunit>` element of the XML configuration file and `--fail-on-all-issues` CLI option for controlling whether PHPUnit should fail on all issues that are triggered (default: `false`)
+
 ## [12.1.3] - 2025-04-22
 
 ### Changed
@@ -45,6 +52,7 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 
 * [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140): The `testClassName()` method on the `AfterTestMethodCalled`, `AfterTestMethodErrored`, `AfterTestMethodFinished`, `BeforeTestMethodCalled`, `BeforeTestMethodErrored`, `BeforeTestMethodFinished`, `PostConditionCalled`, `PostConditionErrored`, `PostConditionFinished`, `PreConditionCalled`, `PreConditionErrored`, and `PreConditionFinished` event value objects (use `test()->className()` instead)
 
+[12.1.4]: https://github.com/sebastianbergmann/phpunit/compare/12.1.3...12.1
 [12.1.3]: https://github.com/sebastianbergmann/phpunit/compare/12.1.2...12.1.3
 [12.1.2]: https://github.com/sebastianbergmann/phpunit/compare/12.1.1...12.1.2
 [12.1.1]: https://github.com/sebastianbergmann/phpunit/compare/12.1.0...12.1.1
