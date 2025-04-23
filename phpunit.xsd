@@ -178,6 +178,7 @@
         <xs:attribute name="numberOfTestsBeforeGarbageCollection" type="xs:integer" default="100"/>
         <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
@@ -212,6 +213,7 @@
         <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
+        <xs:attribute name="displayDetailsOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnIncompleteTests" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnSkippedTests" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerDeprecations" type="xs:boolean" default="false"/>

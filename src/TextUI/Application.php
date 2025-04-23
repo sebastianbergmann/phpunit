@@ -283,14 +283,14 @@ final readonly class Application
             }
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
-                $configuration->failOnDeprecation(),
-                $configuration->failOnPhpunitDeprecation(),
-                $configuration->failOnEmptyTestSuite(),
-                $configuration->failOnIncomplete(),
-                $configuration->failOnNotice(),
-                $configuration->failOnRisky(),
-                $configuration->failOnSkipped(),
-                $configuration->failOnWarning(),
+                $configuration->failOnDeprecation() || $configuration->failOnAllIssues(),
+                $configuration->failOnPhpunitDeprecation() || $configuration->failOnAllIssues(),
+                $configuration->failOnEmptyTestSuite() || $configuration->failOnAllIssues(),
+                $configuration->failOnIncomplete() || $configuration->failOnAllIssues(),
+                $configuration->failOnNotice() || $configuration->failOnAllIssues(),
+                $configuration->failOnRisky() || $configuration->failOnAllIssues(),
+                $configuration->failOnSkipped() || $configuration->failOnAllIssues(),
+                $configuration->failOnWarning() || $configuration->failOnAllIssues(),
                 $result,
             );
 
