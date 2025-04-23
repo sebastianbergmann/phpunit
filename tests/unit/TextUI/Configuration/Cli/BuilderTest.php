@@ -1243,6 +1243,26 @@ final class BuilderTest extends TestCase
         $configuration->stderr();
     }
 
+    #[TestDox('--fail-on-all-issues')]
+    public function testFailOnAllIssues(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-all-issues']);
+
+        $this->assertTrue($configuration->hasFailOnAllIssues());
+        $this->assertTrue($configuration->failOnAllIssues());
+    }
+
+    public function testFailOnAllIssuesMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnAllIssues());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnAllIssues();
+    }
+
     #[TestDox('--fail-on-deprecation')]
     public function testFailOnDeprecation(): void
     {
@@ -2012,6 +2032,26 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->disallowTestOutput();
+    }
+
+    #[TestDox('--display-all-issues')]
+    public function testDisplayAllIssues(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--display-all-issues']);
+
+        $this->assertTrue($configuration->hasDisplayDetailsOnAllIssues());
+        $this->assertTrue($configuration->displayDetailsOnAllIssues());
+    }
+
+    public function testDisplayAllIssuesMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDisplayDetailsOnAllIssues());
+
+        $this->expectException(Exception::class);
+
+        $configuration->displayDetailsOnAllIssues();
     }
 
     #[TestDox('--display-incomplete')]
