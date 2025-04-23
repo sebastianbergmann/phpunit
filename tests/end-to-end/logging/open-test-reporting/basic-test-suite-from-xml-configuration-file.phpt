@@ -27,51 +27,51 @@ require_once __DIR__ . '/../../../bootstrap.php';
  <e:started id="1" name="%sphpunit.xml" time="%s"/>
  <e:started id="2" name="default" time="%s"/>
  <e:started id="3" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s"/>
- <e:started id="4" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccess" time="%s"/>
+ <e:started id="4" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccess" time="%s"/>
  <e:finished id="4" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:started id="5" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testFailure" time="%s"/>
+ <e:started id="5" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testFailure" time="%s"/>
  <e:finished id="5" time="%s">
   <result status="FAILED"/>
  </e:finished>
- <e:started id="6" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testError" time="%s"/>
+ <e:started id="6" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testError" time="%s"/>
  <e:finished id="6" time="%s">
   <result status="ERRORED"/>
  </e:finished>
- <e:started id="7" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testIncomplete" time="%s"/>
+ <e:started id="7" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testIncomplete" time="%s"/>
  <e:finished id="7" time="%s">
   <result status="ABORTED"/>
  </e:finished>
- <e:started id="8" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSkipped" time="%s"/>
+ <e:started id="8" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSkipped" time="%s"/>
  <e:finished id="8" time="%s">
   <result status="SKIPPED"/>
  </e:finished>
- <e:started id="9" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testRisky" time="%s"/>
+ <e:started id="9" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testRisky" time="%s"/>
  <e:finished id="9" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:started id="10" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccessWithMessage" time="%s"/>
+ <e:started id="10" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccessWithMessage" time="%s"/>
  <e:finished id="10" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:started id="11" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testFailureWithMessage" time="%s"/>
+ <e:started id="11" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testFailureWithMessage" time="%s"/>
  <e:finished id="11" time="%s">
   <result status="FAILED"/>
  </e:finished>
- <e:started id="12" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testErrorWithMessage" time="%s"/>
+ <e:started id="12" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testErrorWithMessage" time="%s"/>
  <e:finished id="12" time="%s">
   <result status="ERRORED"/>
  </e:finished>
- <e:started id="13" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testIncompleteWithMessage" time="%s"/>
+ <e:started id="13" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testIncompleteWithMessage" time="%s"/>
  <e:finished id="13" time="%s">
   <result status="ABORTED"/>
  </e:finished>
- <e:started id="14" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSkippedWithMessage" time="%s"/>
+ <e:started id="14" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSkippedWithMessage" time="%s"/>
  <e:finished id="14" time="%s">
   <result status="SKIPPED"/>
  </e:finished>
- <e:started id="15" parent="3" name="PHPUnit\TestFixture\Basic\StatusTest::testRiskyWithMessage" time="%s"/>
+ <e:started id="15" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testRiskyWithMessage" time="%s"/>
  <e:finished id="15" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
