@@ -1,0 +1,132 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:core="https://schemas.opentest4j.org/reporting/core/0.2.0"
+           targetNamespace="https://schemas.opentest4j.org/reporting/core/0.2.0"
+           elementFormDefault="qualified">
+  <xs:element name="infrastructure" type="core:Infrastructure"/>
+  <xs:complexType name="Infrastructure">
+    <xs:sequence>
+      <xs:element name="hostName" minOccurs="0" type="xs:string"/>
+      <xs:element name="userName" minOccurs="0" type="xs:string"/>
+      <xs:element name="operatingSystem" minOccurs="0" type="xs:string"/>
+      <xs:element name="cpuCores" minOccurs="0" type="xs:int"/>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TestInfo">
+    <xs:sequence>
+      <xs:element name="metadata" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="tags" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="tag" type="xs:string" maxOccurs="unbounded"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sources" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="directorySource" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attribute name="path" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="fileSource" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="filePosition" type="core:FilePosition" minOccurs="0"/>
+                </xs:sequence>
+                <xs:attribute name="path" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="attachments" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="key" type="xs:string" use="required"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="time" type="xs:dateTime" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="file">
+                <xs:complexType>
+                  <xs:attribute name="time" type="xs:dateTime" use="required"/>
+                  <xs:attribute name="path" type="xs:string" use="required"/>
+                  <xs:attribute name="mediaType" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>
+                        The media type of the file content, e.g. 'text/plain' or 'application/json',
+                        see https://www.iana.org/assignments/media-types/media-types.xhtml.
+                        For text files, the charset should be specified in the 'charset' attribute,
+                        e.g. 'text/plain; charset=utf-8'.
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="output">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="time" type="xs:dateTime" use="required"/>
+                      <xs:attribute name="source" type="xs:string" use="required">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Typically 'stdout' or 'stderr' but may also be used for attaching other log output
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:any namespace="##other"/>
+            </xs:choice>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="result" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="reason" type="xs:string" minOccurs="0"/>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other"/>
+          </xs:sequence>
+          <xs:attribute name="status" type="core:Status"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="Status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SUCCESSFUL"/>
+      <xs:enumeration value="SKIPPED"/>
+      <xs:enumeration value="ABORTED"/>
+      <xs:enumeration value="FAILED"/>
+      <xs:enumeration value="ERRORED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="FilePosition">
+    <xs:attribute name="line" type="xs:int" use="required"/>
+    <xs:attribute name="column" type="xs:int"/>
+  </xs:complexType>
+</xs:schema>
