@@ -1,17 +1,22 @@
 --TEST--
-phpunit --configuration ../_files/status/phpunit.xml --log-otr php://stdout
+phpunit --configuration ../_files/status/phpunit.xml --log-otr /path/to/logfile
 --FILE--
 <?php declare(strict_types=1);
+$logfile = tempnam(sys_get_temp_dir(), __FILE__);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/status/phpunit.xml';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-otr';
-$_SERVER['argv'][] = 'php://stdout';
+$_SERVER['argv'][] = $logfile;
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/validate_and_print.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+
+validate_and_print($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
 <e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0">
