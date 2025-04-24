@@ -2,6 +2,8 @@
 phpunit --configuration ../_files/status/phpunit.xml --log-otr /path/to/logfile
 --FILE--
 <?php declare(strict_types=1);
+use function PHPUnit\TestFixture\validate_and_print;
+
 $logfile = tempnam(sys_get_temp_dir(), __FILE__);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
