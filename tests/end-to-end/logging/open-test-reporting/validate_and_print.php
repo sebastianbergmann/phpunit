@@ -25,7 +25,7 @@ function validate_and_print(string $logfile): void
     $document = new DOMDocument;
     $document->load($logfile);
 
-    if (!$document->schemaValidate(__DIR__ . '/schema/otr.xsd')) {
+    if (!$document->schemaValidate(__DIR__ . '/../../../../src/Logging/OpenTestReporting/schema/otr.xsd')) {
         print 'Generated XML document does not validate against Open Test Reporting schemas:' . PHP_EOL . PHP_EOL;
 
         foreach (libxml_get_errors() as $error) {
