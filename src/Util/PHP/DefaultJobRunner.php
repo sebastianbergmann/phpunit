@@ -13,6 +13,7 @@ use const PHP_BINARY;
 use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
+use function array_values;
 use function assert;
 use function fclose;
 use function file_put_contents;

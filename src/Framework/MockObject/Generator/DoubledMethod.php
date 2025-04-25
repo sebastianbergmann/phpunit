@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject\Generator;
 
+use function array_key_exists;
+use function assert;
 use function count;
 use function explode;
 use function implode;
@@ -92,7 +94,8 @@ final class DoubledMethod
         $docComment = $method->getDocComment();
 
         if (is_string($docComment) &&
-            preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation)) {
+            preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation) > 0
+        ) {
             $deprecation = trim(preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
         } else {
             $deprecation = null;
@@ -278,6 +281,8 @@ EOT;
             $default         = '';
             $reference       = '';
             $typeDeclaration = '';
+
+            assert(array_key_exists($i, $types));
 
             if (!$types[$i]->type()->isUnknown()) {
                 $typeDeclaration = $types[$i]->type()->asString() . ' ';

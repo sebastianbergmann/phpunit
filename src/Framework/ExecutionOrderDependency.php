@@ -12,6 +12,8 @@ namespace PHPUnit\Framework;
 use function array_filter;
 use function array_map;
 use function array_values;
+use function assert;
+use function count;
 use function explode;
 use function in_array;
 use function str_contains;
@@ -146,6 +148,7 @@ final class ExecutionOrderDependency implements Stringable
         }
 
         if (str_contains($classOrCallableName, '::')) {
+            assert(count(explode('::', $classOrCallableName)) === 2);
             [$this->className, $this->methodName] = explode('::', $classOrCallableName);
         } else {
             $this->className  = $classOrCallableName;

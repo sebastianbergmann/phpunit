@@ -99,7 +99,7 @@ abstract class BinaryOperator extends Operator
      */
     protected function reduce(): Constraint
     {
-        if ($this->arity() === 1 && $this->constraints[0] instanceof Operator) {
+        if (count($this->constraints) === 1 && $this->constraints[0] instanceof Operator) {
             return $this->constraints[0]->reduce();
         }
 
