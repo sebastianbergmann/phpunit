@@ -161,6 +161,9 @@ final class ExecutionOrderDependency implements Stringable
         return $this->getTarget();
     }
 
+    /**
+     * @phpstan-assert-if-true non-empty-string $this->getTarget()
+     */
     public function isValid(): bool
     {
         // Invalid dependencies can be declared and are skipped by the runner
