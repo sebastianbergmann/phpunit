@@ -16,7 +16,6 @@ use function libxml_get_errors;
 use function libxml_use_internal_errors;
 use function printf;
 use function trim;
-use function unlink;
 use DOMDocument;
 
 function validate_and_print(string $logfile): void
