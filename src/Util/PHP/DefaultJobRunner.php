@@ -198,7 +198,7 @@ final readonly class DefaultJobRunner extends JobRunner
             }
         }
 
-        $command = array_merge($command, $this->settingsToParameters($phpSettings));
+        $command = array_merge($command, $this->settingsToParameters(array_values($phpSettings)));
 
         if (PHP_SAPI === 'phpdbg') {
             $command[] = '-qrr';
