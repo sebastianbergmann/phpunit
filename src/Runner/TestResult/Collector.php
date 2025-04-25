@@ -11,6 +11,7 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use function array_values;
 use function assert;
+use function count;
 use function implode;
 use function str_contains;
 use PHPUnit\Event\Code\TestMethod;
@@ -275,6 +276,7 @@ final class Collector
 
         if ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
+            assert(count($testSuite->tests()->asArray()) > 0);
 
             $test = $testSuite->tests()->asArray()[0];
 
