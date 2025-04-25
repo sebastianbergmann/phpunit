@@ -62,4 +62,4 @@ parameters:
         - identifier: argument.named
 
 includes:
-	- phar://phpstan.phar/conf/bleedingEdge.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
