@@ -37,14 +37,10 @@ function validate_and_print(string $logfile): void
             );
         }
 
-        unset($error);
-
         print PHP_EOL;
     }
 
     libxml_clear_errors();
-
-    unset($document);
 
     print file_get_contents($logfile);
 }
