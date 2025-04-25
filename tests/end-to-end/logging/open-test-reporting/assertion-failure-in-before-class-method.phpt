@@ -19,6 +19,8 @@ require __DIR__ . '/validate_and_print.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 
 validate_and_print($logfile);
+
+unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
 <e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0">
