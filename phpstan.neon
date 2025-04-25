@@ -17,4 +17,4 @@ parameters:
         - src/Framework/MockObject/Runtime/Api # exclude partial traits, which are only used in runtime generated code
 
 includes:
-	- phar://phpstan.phar/conf/bleedingEdge.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
