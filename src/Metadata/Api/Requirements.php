@@ -151,7 +151,7 @@ final readonly class Requirements
                     addcslashes($metadata->operatingSystem(), '/'),
                 );
 
-                if (!preg_match($pattern, PHP_OS)) {
+                if (preg_match($pattern, PHP_OS) === 0) {
                     $notSatisfied[] = sprintf(
                         'Operating system %s is required.',
                         $metadata->operatingSystem(),

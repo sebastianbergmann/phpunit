@@ -38,7 +38,7 @@ abstract readonly class Requirement
                 ),
             );
         } catch (UnsupportedVersionConstraintException) {
-            if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches)) {
+            if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches) > 0) {
                 return new ComparisonRequirement(
                     $matches['version'],
                     new VersionComparisonOperator(
