@@ -318,7 +318,7 @@ final readonly class ResultPrinter
         $previousPath = '';
 
         foreach (explode(PHP_EOL, $stackTrace) as $line) {
-            if (preg_match('/^(.*):(\d+)$/', $line, $matches)) {
+            if (preg_match('/^(.*):(\d+)$/', $line, $matches) > 0) {
                 $lines[]      = Color::colorizePath($matches[1], $previousPath) . Color::dim(':') . Color::colorize('fg-blue', $matches[2]) . "\n";
                 $previousPath = $matches[1];
 

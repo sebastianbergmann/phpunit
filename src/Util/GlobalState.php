@@ -173,7 +173,7 @@ final readonly class GlobalState
             }
 
             // Skip virtual file system protocols
-            if (preg_match('/^(vfs|phpvfs[a-z0-9]+):/', $file)) {
+            if (preg_match('/^(vfs|phpvfs[a-z0-9]+):/', $file) > 0) {
                 continue;
             }
 
@@ -233,8 +233,8 @@ final readonly class GlobalState
 
         foreach (self::SUPER_GLOBAL_ARRAYS as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray]) && is_array($GLOBALS[$superGlobalArray])) {
-                foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
-                    if ($GLOBALS[$superGlobalArray][$key] instanceof Closure) {
+                foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                    if ($value instanceof Closure) {
                         continue;
                     }
 
@@ -251,12 +251,12 @@ final readonly class GlobalState
         $excludeList   = self::SUPER_GLOBAL_ARRAYS;
         $excludeList[] = 'GLOBALS';
 
-        foreach (array_keys($GLOBALS) as $key) {
-            if (!$GLOBALS[$key] instanceof Closure && !in_array($key, $excludeList, true)) {
+        foreach ($GLOBALS as $key => $value) {
+            if (!$value instanceof Closure && !in_array($key, $excludeList, true)) {
                 $result .= sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,
-                    self::exportVariable($GLOBALS[$key]),
+                    self::exportVariable($value),
                 );
             }
         }
