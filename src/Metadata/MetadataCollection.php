@@ -55,11 +55,19 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         return count($this->metadata);
     }
 
+    /**
+     * @phpstan-assert-if-true 0 $this->count()
+     * @phpstan-assert-if-true array{} $this->asArray()
+     */
     public function isEmpty(): bool
     {
         return $this->count() === 0;
     }
 
+    /**
+     * @phpstan-assert-if-true positive-int $this->count()
+     * @phpstan-assert-if-true non-empty-list<Metadata> $this->asArray()
+     */
     public function isNotEmpty(): bool
     {
         return $this->count() > 0;
