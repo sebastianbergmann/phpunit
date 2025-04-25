@@ -11,7 +11,6 @@ namespace PHPUnit\Util;
 
 use const PHP_MAJOR_VERSION;
 use const PHP_MINOR_VERSION;
-use function array_keys;
 use function array_reverse;
 use function array_shift;
 use function assert;
