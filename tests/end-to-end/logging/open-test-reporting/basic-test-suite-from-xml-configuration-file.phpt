@@ -34,8 +34,8 @@ unlink($logfile);
   <git:status clean="%s"><![CDATA[%A]]></git:status>
  </infrastructure>
  <e:started id="1" name="%sphpunit.xml" time="%s"/>
- <e:started id="2" name="default" time="%s"/>
- <e:started id="3" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s"/>
+ <e:started id="2" parentId="1" name="default" time="%s"/>
+ <e:started id="3" parentId="2" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s"/>
  <e:started id="4" parentId="3" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccess" time="%s"/>
  <e:finished id="4" time="%s">
   <result status="SUCCESSFUL"/>
