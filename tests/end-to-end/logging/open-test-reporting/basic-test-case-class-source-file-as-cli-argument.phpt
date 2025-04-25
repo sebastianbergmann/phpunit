@@ -23,7 +23,7 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.0.1">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
@@ -33,52 +33,143 @@ unlink($logfile);
   <git:commit>%s</git:commit>
   <git:status clean="%s"><![CDATA[%A]]></git:status>
  </infrastructure>
- <e:started id="1" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s"/>
- <e:started id="2" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccess" time="%s"/>
+ <e:started id="1" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="23"/>
+   </fileSource>
+   <phpunit:classSource className="PHPUnit\TestFixture\Basic\StatusTest"/>
+  </sources>
+ </e:started>
+ <e:started id="2" parentId="1" name="testSuccess" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="25"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSuccess"/>
+  </sources>
+ </e:started>
  <e:finished id="2" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:started id="3" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testFailure" time="%s"/>
+ <e:started id="3" parentId="1" name="testFailure" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="32"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testFailure"/>
+  </sources>
+ </e:started>
  <e:finished id="3" time="%s">
   <result status="FAILED"/>
  </e:finished>
- <e:started id="4" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testError" time="%s"/>
+ <e:started id="4" parentId="1" name="testError" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="37"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testError"/>
+  </sources>
+ </e:started>
  <e:finished id="4" time="%s">
   <result status="ERRORED"/>
  </e:finished>
- <e:started id="5" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testIncomplete" time="%s"/>
+ <e:started id="5" parentId="1" name="testIncomplete" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="42"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testIncomplete"/>
+  </sources>
+ </e:started>
  <e:finished id="5" time="%s">
   <result status="ABORTED"/>
  </e:finished>
- <e:started id="6" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testSkipped" time="%s"/>
+ <e:started id="6" parentId="1" name="testSkipped" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="47"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSkipped"/>
+  </sources>
+ </e:started>
  <e:finished id="6" time="%s">
   <result status="SKIPPED"/>
  </e:finished>
- <e:started id="7" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testRisky" time="%s"/>
+ <e:started id="7" parentId="1" name="testRisky" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="52"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRisky"/>
+  </sources>
+ </e:started>
  <e:finished id="7" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:started id="8" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testSuccessWithMessage" time="%s"/>
+ <e:started id="8" parentId="1" name="testSuccessWithMessage" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="56"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSuccessWithMessage"/>
+  </sources>
+ </e:started>
  <e:finished id="8" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:started id="9" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testFailureWithMessage" time="%s"/>
+ <e:started id="9" parentId="1" name="testFailureWithMessage" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="61"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testFailureWithMessage"/>
+  </sources>
+ </e:started>
  <e:finished id="9" time="%s">
   <result status="FAILED"/>
  </e:finished>
- <e:started id="10" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testErrorWithMessage" time="%s"/>
+ <e:started id="10" parentId="1" name="testErrorWithMessage" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="66"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testErrorWithMessage"/>
+  </sources>
+ </e:started>
  <e:finished id="10" time="%s">
   <result status="ERRORED"/>
  </e:finished>
- <e:started id="11" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testIncompleteWithMessage" time="%s"/>
+ <e:started id="11" parentId="1" name="testIncompleteWithMessage" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="71"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testIncompleteWithMessage"/>
+  </sources>
+ </e:started>
  <e:finished id="11" time="%s">
   <result status="ABORTED"/>
  </e:finished>
- <e:started id="12" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testSkippedWithMessage" time="%s"/>
+ <e:started id="12" parentId="1" name="testSkippedWithMessage" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="81"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSkippedWithMessage"/>
+  </sources>
+ </e:started>
  <e:finished id="12" time="%s">
   <result status="SKIPPED"/>
  </e:finished>
- <e:started id="13" parentId="1" name="PHPUnit\TestFixture\Basic\StatusTest::testRiskyWithMessage" time="%s"/>
+ <e:started id="13" parentId="1" name="testRiskyWithMessage" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="86"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRiskyWithMessage"/>
+  </sources>
+ </e:started>
  <e:finished id="13" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>

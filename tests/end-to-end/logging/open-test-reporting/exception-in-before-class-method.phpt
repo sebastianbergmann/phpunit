@@ -23,7 +23,7 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.0.1">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
@@ -33,7 +33,14 @@ unlink($logfile);
   <git:commit>%s</git:commit>
   <git:status clean="%s"><![CDATA[%A]]></git:status>
  </infrastructure>
- <e:started id="1" name="PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest" time="%s"/>
+ <e:started id="1" name="PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest" time="%s">
+  <sources>
+   <fileSource path="%sExceptionInSetUpBeforeClassTest.php">
+    <filePosition line="%d"/>
+   </fileSource>
+   <phpunit:classSource className="PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest"/>
+  </sources>
+ </e:started>
  <e:finished id="1" time="%s">
   <result status="ERRORED"/>
  </e:finished>
