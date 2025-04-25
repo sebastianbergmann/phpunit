@@ -643,7 +643,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         clearstatcache();
 
-        if ($currentWorkingDirectory !== getcwd()) {
+        if ($currentWorkingDirectory !== false && $currentWorkingDirectory !== getcwd()) {
             chdir($currentWorkingDirectory);
         }
 
