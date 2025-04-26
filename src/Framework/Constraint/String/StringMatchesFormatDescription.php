@@ -11,6 +11,9 @@ namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
+use function array_slice;
+use function array_splice;
+use function count;
 use function explode;
 use function implode;
 use function preg_match;
@@ -60,30 +63,72 @@ final class StringMatchesFormatDescription extends Constraint
         return 'string matches format description';
     }
 
+    /**
+     * Returns a useful diff with the 'actual' differences.
+     *
+     * The expected string can contain placeholders like %s and %d.
+     * By using 'diff' such placeholders compared to the real output are
+     * always objectively different, although we don't want to show them as different.
+     *
+     * This method removes the objective differences by figuring out if an objective
+     * difference is allowed by a placeholder.
+     *
+     * The final result should only contain the differences that caused the failing test.
+     */
     protected function additionalFailureDescription(mixed $other): string
     {
-        $from = explode("\n", $this->formatDescription);
-        $to   = explode("\n", $this->convertNewlines($other));
+        $expected = explode("\n", $this->formatDescription);
+        $output   = explode("\n", $this->convertNewlines($other));
 
-        foreach ($from as $index => $line) {
-            if (isset($to[$index]) && $line !== $to[$index]) {
-                $line = $this->regularExpressionForFormatDescription($line);
+        for ($oIndex = 0, $eIndex = 0, $length = count($output); $oIndex < $length; $oIndex++) {
+            $multiLineMatch = false;
 
-                if (preg_match($line, $to[$index]) > 0) {
-                    $from[$index] = $to[$index];
+            if (isset($expected[$eIndex]) && $expected[$eIndex] !== $output[$oIndex]) {
+                $regEx     = $this->regularExpressionForFormatDescription($expected[$eIndex]);
+                $compareTo = $output[$oIndex];
+                $matches   = [];
+
+                // if we do a multiline match we have to consider all following lines as well
+                if ($this->isMultilineMatch($expected[$eIndex])) {
+                    $multiLineMatch = true;
+                    $compareTo      = implode("\n", array_slice($output, $oIndex));
+                }
+
+                if (preg_match($regEx, $compareTo, $matches) > 0) {
+                    $lines = 1;
+
+                    // if we matched multiple lines we have to sync $expected and $output
+                    if ($multiLineMatch) {
+                        $lines = count(explode("\n", $matches[0]));
+                    }
+
+                    // we sync at least one line
+                    $expected[$eIndex] = $output[$oIndex];
+
+                    // for multiline matches we sync the matched lines to $expected
+                    for ($i = 1; $i < $lines; $i++) {
+                        $eIndex++;
+                        $oIndex++;
+
+                        array_splice($expected, $eIndex, 0, [$output[$oIndex]]);
+                    }
                 }
             }
+
+            $eIndex++;
         }
 
-        $from = implode("\n", $from);
-        $to   = implode("\n", $to);
+        $expectedString = implode("\n", $expected);
+        $outputString   = implode("\n", $output);
 
-        return $this->differ()->diff($from, $to);
+        return $this->differ()->diff($expectedString, $outputString);
     }
 
     private function regularExpressionForFormatDescription(string $string): string
     {
-        $string = strtr(
+        // only add the end of string check ($) for single line comparisons
+        $endOfLine = $this->isMultilineMatch($string) ? '' : '$';
+        $string    = strtr(
             preg_quote($string, '/'),
             [
                 '%%' => '%',
@@ -102,7 +147,7 @@ final class StringMatchesFormatDescription extends Constraint
             ],
         );
 
-        return '/^' . $string . '$/s';
+        return '/^' . $string . $endOfLine . '/s';
     }
 
     private function convertNewlines(string $text): string
@@ -113,5 +158,10 @@ final class StringMatchesFormatDescription extends Constraint
     private function differ(): Differ
     {
         return new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"));
+    }
+
+    private function isMultilineMatch(string $line): bool
+    {
+        return preg_match('#%a#i', $line) > 0;
     }
 }
