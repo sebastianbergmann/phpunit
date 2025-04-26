@@ -52,7 +52,13 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="2" time="%s">
-  <result status="ERRORED"/>
+  <result status="ERRORED">
+   <reason></reason>
+   <phpunit:throwable type="Exception" assertionError="false"><![CDATA[Exception: 
+
+%sExceptionInSetUpTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:finished id="1" time="%s"/>
 </e:events>
