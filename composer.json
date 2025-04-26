@@ -52,6 +52,7 @@
         "platform": {
             "php": "8.3.0"
         },
+        "classmap-authoritative": true,
         "optimize-autoloader": true,
         "sort-packages": true
     },
