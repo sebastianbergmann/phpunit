@@ -55,6 +55,12 @@ unlink($logfile);
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:finished id="1" time="%s">
-  <result status="ERRORED"/>
+  <result status="ERRORED">
+   <reason></reason>
+   <phpunit:throwable type="Exception" assertionError="false"><![CDATA[Exception: 
+
+%sExceptionInTearDownAfterClassTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
 </e:events>
