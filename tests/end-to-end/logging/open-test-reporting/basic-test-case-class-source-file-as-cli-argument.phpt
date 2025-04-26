@@ -38,7 +38,7 @@ unlink($logfile);
  <e:started id="1" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="23"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:classSource className="PHPUnit\TestFixture\Basic\StatusTest"/>
   </sources>
@@ -46,7 +46,7 @@ unlink($logfile);
  <e:started id="2" parentId="1" name="testSuccess" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="25"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSuccess"/>
   </sources>
@@ -57,7 +57,7 @@ unlink($logfile);
  <e:started id="3" parentId="1" name="testFailure" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="32"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testFailure"/>
   </sources>
@@ -74,7 +74,7 @@ unlink($logfile);
  <e:started id="4" parentId="1" name="testError" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="37"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testError"/>
   </sources>
@@ -91,7 +91,7 @@ unlink($logfile);
  <e:started id="5" parentId="1" name="testIncomplete" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="42"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testIncomplete"/>
   </sources>
@@ -107,7 +107,7 @@ unlink($logfile);
  <e:started id="6" parentId="1" name="testSkipped" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="47"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSkipped"/>
   </sources>
@@ -120,7 +120,7 @@ unlink($logfile);
  <e:started id="7" parentId="1" name="testRisky" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="52"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRisky"/>
   </sources>
@@ -131,7 +131,7 @@ unlink($logfile);
  <e:started id="8" parentId="1" name="testSuccessWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="56"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSuccessWithMessage"/>
   </sources>
@@ -142,7 +142,7 @@ unlink($logfile);
  <e:started id="9" parentId="1" name="testFailureWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="61"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testFailureWithMessage"/>
   </sources>
@@ -161,7 +161,7 @@ Failed asserting that false is true.
  <e:started id="10" parentId="1" name="testErrorWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="66"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testErrorWithMessage"/>
   </sources>
@@ -178,7 +178,7 @@ Failed asserting that false is true.
  <e:started id="11" parentId="1" name="testIncompleteWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="71"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testIncompleteWithMessage"/>
   </sources>
@@ -195,7 +195,7 @@ Failed asserting that false is true.
  <e:started id="12" parentId="1" name="testSkippedWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="81"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSkippedWithMessage"/>
   </sources>
@@ -208,7 +208,7 @@ Failed asserting that false is true.
  <e:started id="13" parentId="1" name="testRiskyWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
-    <filePosition line="86"/>
+    <filePosition line="%d"/>
    </fileSource>
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRiskyWithMessage"/>
   </sources>
