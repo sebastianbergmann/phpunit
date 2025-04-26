@@ -52,7 +52,13 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="2" time="%s">
-  <result status="FAILED"/>
+  <result status="FAILED">
+   <reason>Failed asserting that false is true.</reason>
+   <phpunit:throwable type="PHPUnit\Framework\ExpectationFailedException" assertionError="true"><![CDATA[Failed asserting that false is true.
+
+%sAssertionFailureInSetUpTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:finished id="1" time="%s"/>
 </e:events>

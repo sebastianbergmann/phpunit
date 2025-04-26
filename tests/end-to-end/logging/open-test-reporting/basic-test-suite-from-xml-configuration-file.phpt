@@ -65,7 +65,13 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="5" time="%s">
-  <result status="FAILED"/>
+  <result status="FAILED">
+   <reason>Failed asserting that false is true.</reason>
+   <phpunit:throwable type="PHPUnit\Framework\ExpectationFailedException" assertionError="true"><![CDATA[Failed asserting that false is true.
+
+%sStatusTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:started id="6" parentId="3" name="testError" time="%s">
   <sources>
@@ -76,7 +82,13 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="6" time="%s">
-  <result status="ERRORED"/>
+  <result status="ERRORED">
+   <reason></reason>
+   <phpunit:throwable type="RuntimeException" assertionError="false"><![CDATA[RuntimeException: 
+
+%sStatusTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:started id="7" parentId="3" name="testIncomplete" time="%s">
   <sources>
@@ -87,7 +99,12 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="7" time="%s">
-  <result status="ABORTED"/>
+  <result status="ABORTED">
+   <reason></reason>
+   <phpunit:throwable type="PHPUnit\Framework\IncompleteTestError" assertionError="false"><![CDATA[
+%sStatusTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:started id="8" parentId="3" name="testSkipped" time="%s">
   <sources>
@@ -98,7 +115,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="8" time="%s">
-  <result status="SKIPPED"/>
+  <result status="SKIPPED">
+   <reason></reason>
+  </result>
  </e:finished>
  <e:started id="9" parentId="3" name="testRisky" time="%s">
   <sources>
@@ -131,7 +150,15 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="11" time="%s">
-  <result status="FAILED"/>
+  <result status="FAILED">
+   <reason>failure with custom message
+Failed asserting that false is true.</reason>
+   <phpunit:throwable type="PHPUnit\Framework\ExpectationFailedException" assertionError="true"><![CDATA[failure with custom message
+Failed asserting that false is true.
+
+%sStatusTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:started id="12" parentId="3" name="testErrorWithMessage" time="%s">
   <sources>
@@ -142,7 +169,13 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="12" time="%s">
-  <result status="ERRORED"/>
+  <result status="ERRORED">
+   <reason>error with custom message</reason>
+   <phpunit:throwable type="RuntimeException" assertionError="false"><![CDATA[RuntimeException: error with custom message
+
+%sStatusTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:started id="13" parentId="3" name="testIncompleteWithMessage" time="%s">
   <sources>
@@ -153,7 +186,13 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="13" time="%s">
-  <result status="ABORTED"/>
+  <result status="ABORTED">
+   <reason>incomplete with custom message</reason>
+   <phpunit:throwable type="PHPUnit\Framework\IncompleteTestError" assertionError="false"><![CDATA[incomplete with custom message
+
+%sStatusTest.php:%d
+]]></phpunit:throwable>
+  </result>
  </e:finished>
  <e:started id="14" parentId="3" name="testSkippedWithMessage" time="%s">
   <sources>
@@ -164,7 +203,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="14" time="%s">
-  <result status="SKIPPED"/>
+  <result status="SKIPPED">
+   <reason>skipped with custom message</reason>
+  </result>
  </e:finished>
  <e:started id="15" parentId="3" name="testRiskyWithMessage" time="%s">
   <sources>
