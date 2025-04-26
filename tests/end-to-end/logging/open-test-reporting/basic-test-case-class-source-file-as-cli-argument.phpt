@@ -192,7 +192,20 @@ Failed asserting that false is true.
 ]]></phpunit:throwable>
   </result>
  </e:finished>
- <e:started id="12" parentId="1" name="testSkippedWithMessage" time="%s">
+ <e:started id="12" parentId="1" name="testSkippedByMetadata" time="%s">
+  <sources>
+   <fileSource path="%sStatusTest.php">
+    <filePosition line="%d"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSkippedByMetadata"/>
+  </sources>
+ </e:started>
+ <e:finished id="12" time="%s">
+  <result status="SKIPPED">
+   <reason>PHP &gt; 9000 is required.</reason>
+  </result>
+ </e:finished>
+ <e:started id="13" parentId="1" name="testSkippedWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -200,12 +213,12 @@ Failed asserting that false is true.
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testSkippedWithMessage"/>
   </sources>
  </e:started>
- <e:finished id="12" time="%s">
+ <e:finished id="13" time="%s">
   <result status="SKIPPED">
    <reason>skipped with custom message</reason>
   </result>
  </e:finished>
- <e:started id="13" parentId="1" name="testRiskyWithMessage" time="%s">
+ <e:started id="14" parentId="1" name="testRiskyWithMessage" time="%s">
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -213,7 +226,7 @@ Failed asserting that false is true.
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRiskyWithMessage"/>
   </sources>
  </e:started>
- <e:finished id="13" time="%s">
+ <e:finished id="14" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:finished id="1" time="%s"/>
