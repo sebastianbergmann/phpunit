@@ -13,6 +13,8 @@ use const PHP_EOL;
 use const PHP_VERSION;
 use function assert;
 use function class_exists;
+use function defined;
+use function dirname;
 use function explode;
 use function function_exists;
 use function is_file;
@@ -22,6 +24,7 @@ use function printf;
 use function realpath;
 use function sprintf;
 use function str_contains;
+use function str_starts_with;
 use function trim;
 use function unlink;
 use PHPUnit\Event\EventFacadeIsSealedException;
@@ -100,6 +103,8 @@ final readonly class Application
      */
     public function run(array $argv): int
     {
+        $this->preload();
+
         try {
             EventFacade::emitter()->applicationStarted();
 
@@ -840,5 +845,31 @@ final readonly class Application
         }
 
         ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+    }
+
+    private function preload(): void
+    {
+        if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
+            return;
+        }
+
+        $classMapFile = dirname(PHPUNIT_COMPOSER_INSTALL) . '/composer/autoload_classmap.php';
+
+        if (!is_file($classMapFile)) {
+            return;
+        }
+
+        foreach (require $classMapFile as $codeUnitName => $sourceCodeFile) {
+            if (!str_starts_with($codeUnitName, 'PHPUnit\\') &&
+                !str_starts_with($codeUnitName, 'SebastianBergmann\\')) {
+                continue;
+            }
+
+            if (str_contains($sourceCodeFile, '/tests/')) {
+                continue;
+            }
+
+            require_once $sourceCodeFile;
+        }
     }
 }
