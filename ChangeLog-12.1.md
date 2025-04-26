@@ -9,6 +9,10 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 * `displayDetailsOnAllIssues` attribute on the `<phpunit>` element of the XML configuration file and `--display-all-issues` CLI option for controlling whether PHPUnit should display details on all issues that are triggered (default: `false`)
 * `failOnAllIssues` attribute on the `<phpunit>` element of the XML configuration file and `--fail-on-all-issues` CLI option for controlling whether PHPUnit should fail on all issues that are triggered (default: `false`)
 
+### Fixed
+
+* [#6192](https://github.com/sebastianbergmann/phpunit/issues/6192): Positive `%a` and `%A` matches are not ignored from diff when `EXPECTF` fails
+
 ## [12.1.3] - 2025-04-22
 
 ### Changed
