@@ -101,6 +101,7 @@ final class StringMatchesFormatDescription extends Constraint
                     if ($multiLineMatch) {
                         $lines = count(explode("\n", $matches[0]));
                     }
+
                     // we sync at least one line
                     $expected[$eIndex] = $output[$oIndex];
 
@@ -108,12 +109,15 @@ final class StringMatchesFormatDescription extends Constraint
                     for ($i = 1; $i < $lines; $i++) {
                         $eIndex++;
                         $oIndex++;
+
                         array_splice($expected, $eIndex, 0, [$output[$oIndex]]);
                     }
                 }
             }
+
             $eIndex++;
         }
+
         $expectedString = implode("\n", $expected);
         $outputString   = implode("\n", $output);
 
