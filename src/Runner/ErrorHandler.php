@@ -90,7 +90,7 @@ final class ErrorHandler
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/5956
          */
-        if (defined('E_STRICT') && $errorNumber === @E_STRICT) {
+        if (version_compare(PHP_VERSION, '8.4.0', '<') && defined('E_STRICT') && $errorNumber === @E_STRICT) {
             $errorNumber = E_NOTICE;
         }
 
