@@ -335,6 +335,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type array.
      *
+     * @phpstan-assert iterable<array<mixed>> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -352,6 +354,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of type bool.
+     *
+     * @phpstan-assert iterable<bool> $haystack
      *
      * @param iterable<mixed> $haystack
      *
@@ -371,6 +375,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type callable.
      *
+     * @phpstan-assert iterable<callable> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -388,6 +394,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of type float.
+     *
+     * @phpstan-assert iterable<float> $haystack
      *
      * @param iterable<mixed> $haystack
      *
@@ -407,6 +415,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type int.
      *
+     * @phpstan-assert iterable<int> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -424,6 +434,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of type iterable.
+     *
+     * @phpstan-assert iterable<iterable<mixed>> $haystack
      *
      * @param iterable<mixed> $haystack
      *
@@ -443,6 +455,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type null.
      *
+     * @phpstan-assert iterable<null> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -460,6 +474,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of type numeric.
+     *
+     * @phpstan-assert iterable<numeric> $haystack
      *
      * @param iterable<mixed> $haystack
      *
@@ -479,6 +495,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type object.
      *
+     * @phpstan-assert iterable<object> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -496,6 +514,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of type resource.
+     *
+     * @phpstan-assert iterable<resource> $haystack
      *
      * @param iterable<mixed> $haystack
      *
@@ -515,6 +535,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type closed resource.
      *
+     * @phpstan-assert iterable<resource> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -533,6 +555,8 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only values of type scalar.
      *
+     * @phpstan-assert iterable<scalar> $haystack
+     *
      * @param iterable<mixed> $haystack
      *
      * @throws ExpectationFailedException
@@ -550,6 +574,8 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains only values of type string.
+     *
+     * @phpstan-assert iterable<string> $haystack
      *
      * @param iterable<mixed> $haystack
      *
