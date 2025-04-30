@@ -550,7 +550,7 @@ final readonly class Application
         $runtime = 'PHP ' . PHP_VERSION;
 
         if (CodeCoverage::instance()->isActive()) {
-            $runtime .= ' with ' . CodeCoverage::instance()->driver()->nameAndVersion();
+            $runtime .= ' with ' . CodeCoverage::instance()->driverNameAndVersion();
         }
 
         $this->writeMessage($printer, 'Runtime', $runtime);
