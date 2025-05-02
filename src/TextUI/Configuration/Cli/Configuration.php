@@ -889,13 +889,6 @@ final readonly class Configuration
     }
 
     /**
-     * <<<<<<< HEAD.
-     *
-     * @phpstan-assert-if-true !null $this->failOnPhpunitDeprecation
-     * ||||||| 506d66348d
-     *
-     * @psalm-assert-if-true !null $this->failOnPhpunitDeprecation
-     * =======
      * @psalm-assert-if-true !null $this->failOnAllIssues
      */
     public function hasFailOnAllIssues(): bool
@@ -917,7 +910,6 @@ final readonly class Configuration
 
     /**
      * @psalm-assert-if-true !null $this->failOnPhpunitDeprecation
-     * >>>>>>> 10.5
      */
     public function hasFailOnPhpunitDeprecation(): bool
     {
@@ -1994,13 +1986,6 @@ final readonly class Configuration
     }
 
     /**
-     * <<<<<<< HEAD.
-     *
-     * @phpstan-assert-if-true !null $this->displayDetailsOnIncompleteTests
-     * ||||||| 506d66348d
-     *
-     * @psalm-assert-if-true !null $this->displayDetailsOnIncompleteTests
-     * =======
      * @psalm-assert-if-true !null $this->displayDetailsOnAllIssues
      */
     public function hasDisplayDetailsOnAllIssues(): bool
@@ -2022,7 +2007,6 @@ final readonly class Configuration
 
     /**
      * @psalm-assert-if-true !null $this->displayDetailsOnIncompleteTests
-     * >>>>>>> 10.5
      */
     public function hasDisplayDetailsOnIncompleteTests(): bool
     {
