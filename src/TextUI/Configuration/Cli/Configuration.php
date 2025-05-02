@@ -889,7 +889,7 @@ final readonly class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->failOnAllIssues
+     * @phpstan-assert-if-true !null $this->failOnAllIssues
      */
     public function hasFailOnAllIssues(): bool
     {
@@ -909,7 +909,7 @@ final readonly class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->failOnPhpunitDeprecation
+     * @phpstan-assert-if-true !null $this->failOnPhpunitDeprecation
      */
     public function hasFailOnPhpunitDeprecation(): bool
     {
@@ -1986,7 +1986,7 @@ final readonly class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->displayDetailsOnAllIssues
+     * @phpstan-assert-if-true !null $this->displayDetailsOnAllIssues
      */
     public function hasDisplayDetailsOnAllIssues(): bool
     {
@@ -2006,7 +2006,7 @@ final readonly class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->displayDetailsOnIncompleteTests
+     * @phpstan-assert-if-true !null $this->displayDetailsOnIncompleteTests
      */
     public function hasDisplayDetailsOnIncompleteTests(): bool
     {
