@@ -140,6 +140,7 @@ final class CodeCoverage
         if (isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
             EventFacade::emitter()->testRunnerStartedStaticAnalysisForCodeCoverage();
 
+            /** @phpstan-ignore new.internalClass,method.internalClass */
             $statistics = (new CacheWarmer)->warmCache(
                 $coverageCacheDirectory,
                 !$configuration->disableCodeCoverageIgnore(),

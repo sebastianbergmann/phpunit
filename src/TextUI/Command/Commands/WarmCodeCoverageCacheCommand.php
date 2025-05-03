@@ -63,6 +63,7 @@ final readonly class WarmCodeCoverageCacheCommand implements Command
 
         print 'Warming cache for static analysis ... ';
 
+        /** @phpstan-ignore new.internalClass,method.internalClass */
         $statistics = (new CacheWarmer)->warmCache(
             $this->configuration->coverageCacheDirectory(),
             !$this->configuration->disableCodeCoverageIgnore(),
