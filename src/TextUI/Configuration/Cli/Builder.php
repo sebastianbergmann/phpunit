@@ -43,6 +43,7 @@ final class Builder
         'check-version',
         'colors==',
         'columns=',
+        'compact',
         'configuration=',
         'warm-coverage-cache',
         'coverage-filter=',
@@ -184,6 +185,7 @@ final class Builder
         $checkVersion                      = false;
         $colors                            = null;
         $columns                           = null;
+        $compact                           = null;
         $configuration                     = null;
         $warmCoverageCache                 = false;
         $coverageFilter                    = null;
@@ -322,6 +324,11 @@ final class Builder
                     } elseif ($option[1] === 'max') {
                         $columns = 'max';
                     }
+
+                    break;
+
+                case '--compact':
+                    $compact = true;
 
                     break;
 
@@ -1017,6 +1024,7 @@ final class Builder
             $checkVersion,
             $colors,
             $columns,
+            $compact,
             $configuration,
             $coverageClover,
             $coverageCobertura,

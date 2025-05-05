@@ -236,6 +236,7 @@ final class Help
                 ['arg' => '--colors <flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
                 ['arg'    => '--columns <n>', 'desc' => 'Number of columns to use for progress output'],
                 ['arg'    => '--columns max', 'desc' => 'Use maximum number of columns for progress output'],
+                ['arg'    => '--compact', 'desc' => 'Display only failing test classes'],
                 ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
                 ['spacer' => ''],
 
