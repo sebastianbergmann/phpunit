@@ -140,19 +140,19 @@ final class Facade
             $printerNeeded = true;
         }
 
-        if ($printerNeeded) {
-            if ($configuration->outputToStandardErrorStream()) {
-                self::$printer = DefaultPrinter::standardError();
-
-                return;
-            }
-
-            self::$printer = DefaultPrinter::standardOutput();
+        if (!$printerNeeded) {
+            self::$printer = new NullPrinter;
 
             return;
         }
 
-        self::$printer = new NullPrinter;
+        if ($configuration->outputToStandardErrorStream()) {
+            self::$printer = DefaultPrinter::standardError();
+
+            return;
+        }
+
+        self::$printer = DefaultPrinter::standardOutput();
     }
 
     private static function createProgressPrinter(Configuration $configuration): void
