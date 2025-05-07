@@ -852,8 +852,6 @@ abstract class Assert
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
-     *
-     * @psalm-assert empty $actual
      */
     public static function assertEmpty($actual, string $message = ''): void
     {
@@ -889,8 +887,6 @@ abstract class Assert
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
-     *
-     * @psalm-assert !empty $actual
      */
     public static function assertNotEmpty($actual, string $message = ''): void
     {

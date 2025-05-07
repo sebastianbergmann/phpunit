@@ -567,8 +567,6 @@ if (!\function_exists('PHPUnit\Framework\assertEmpty')) {
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      *
-     * @psalm-assert empty $actual
-     *
      * @see Assert::assertEmpty
      */
     function assertEmpty($actual, string $message = ''): void
@@ -606,8 +604,6 @@ if (!\function_exists('PHPUnit\Framework\assertNotEmpty')) {
      *
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
-     *
-     * @psalm-assert !empty $actual
      *
      * @see Assert::assertNotEmpty
      */
