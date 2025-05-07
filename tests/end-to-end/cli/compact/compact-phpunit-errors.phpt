@@ -17,7 +17,7 @@ Runtime: %s
 
 ...                                                                 3 / 3 (100%)
 
-Time: 00:00, Memory: 14.00 MB
+Time: %s, Memory: %s
 
 There were 2 PHPUnit errors:
 

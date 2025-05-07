@@ -17,7 +17,7 @@ Runtime: %s
 
 F.F                                                                 3 / 3 (100%)
 
-Time: 00:00.001, Memory: 14.00 MB
+Time: %s, Memory: %s
 
 There was 1 failure:
 
