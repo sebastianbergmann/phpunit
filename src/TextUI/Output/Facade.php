@@ -219,10 +219,6 @@ final class Facade
         if ($configuration->compact()) {
             self::$defaultResultPrinter = new CompactResultPrinter(
                 self::$printer,
-                $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
-                true,
-                $configuration->displayDetailsOnPhpunitNotices() || $configuration->displayDetailsOnAllIssues(),
-                true,
                 true,
                 true,
                 true,

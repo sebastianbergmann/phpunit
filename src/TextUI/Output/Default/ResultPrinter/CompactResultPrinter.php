@@ -42,35 +42,23 @@ use PHPUnit\TextUI\Output\Printer;
 final class CompactResultPrinter
 {
     private readonly Printer $printer;
-    private readonly bool $displayPhpunitDeprecations;
     private readonly bool $displayPhpunitErrors;
-    private readonly bool $displayPhpunitNotices;
-    private readonly bool $displayPhpunitWarnings;
     private readonly bool $displayTestsWithErrors;
     private readonly bool $displayTestsWithFailedAssertions;
-    private readonly bool $displayRiskyTests;
     private readonly bool $displayDefectsInReverseOrder;
     private bool $listPrinted = false;
 
     public function __construct(
         Printer $printer,
-        bool $displayPhpunitDeprecations,
         bool $displayPhpunitErrors,
-        bool $displayPhpunitNotices,
-        bool $displayPhpunitWarnings,
         bool $displayTestsWithErrors,
         bool $displayTestsWithFailedAssertions,
-        bool $displayRiskyTests,
         bool $displayDefectsInReverseOrder
     ) {
         $this->printer                          = $printer;
-        $this->displayPhpunitDeprecations       = $displayPhpunitDeprecations;
         $this->displayPhpunitErrors             = $displayPhpunitErrors;
-        $this->displayPhpunitNotices            = $displayPhpunitNotices;
-        $this->displayPhpunitWarnings           = $displayPhpunitWarnings;
         $this->displayTestsWithErrors           = $displayTestsWithErrors;
         $this->displayTestsWithFailedAssertions = $displayTestsWithFailedAssertions;
-        $this->displayRiskyTests                = $displayRiskyTests;
         $this->displayDefectsInReverseOrder     = $displayDefectsInReverseOrder;
     }
 
@@ -180,7 +168,7 @@ final class CompactResultPrinter
     }
 
     /**
-     * @param list<array{title: string, body: string}> $elements
+     * @param list<array{title: string}> $elements
      */
     private function printList(array $elements): void
     {
@@ -223,8 +211,7 @@ final class CompactResultPrinter
     /**
      * @param array<string,list<ConsideredRisky|DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpunitDeprecationTriggered|PhpunitErrorTriggered|PhpunitNoticeTriggered|PhpunitWarningTriggered|PhpWarningTriggered|WarningTriggered>> $events
      *
-     * @return array{numberOfTestsWithIssues: int, numberOfIssues: int, elements: list<array{title: string, body:
-     *     string}>}
+     * @return array{numberOfTestsWithIssues: int, numberOfIssues: int, elements: list<array{title: string}>}
      */
     private function mapTestsWithIssuesEventsToElements(array $events): array
     {
