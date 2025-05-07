@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TestFixture\TestCompactResultPrinter;
 
-use const E_USER_DEPRECATED;
-use function trigger_error;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
 

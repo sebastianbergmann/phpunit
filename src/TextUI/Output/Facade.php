@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Output;
 
-
 use const PHP_EOL;
 use function assert;
 use PHPUnit\Event\Facade as EventFacade;
@@ -35,11 +34,11 @@ use SebastianBergmann\Timer\ResourceUsageFormatter;
  */
 final class Facade
 {
-    private static ?Printer $printer                                                        = null;
-    private static null|DefaultResultPrinter|CompactResultPrinter $defaultResultPrinter     = null;
-    private static ?TestDoxResultPrinter $testDoxResultPrinter                              = null;
-    private static ?SummaryPrinter $summaryPrinter                                          = null;
-    private static bool $defaultProgressPrinter                                             = false;
+    private static ?Printer $printer                                                    = null;
+    private static null|CompactResultPrinter|DefaultResultPrinter $defaultResultPrinter = null;
+    private static ?TestDoxResultPrinter $testDoxResultPrinter                          = null;
+    private static ?SummaryPrinter $summaryPrinter                                      = null;
+    private static bool $defaultProgressPrinter                                         = false;
 
     public static function init(Configuration $configuration, bool $extensionReplacesProgressOutput, bool $extensionReplacesResultOutput): Printer
     {

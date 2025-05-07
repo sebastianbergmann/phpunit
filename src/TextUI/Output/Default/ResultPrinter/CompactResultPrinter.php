@@ -8,24 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\TextUI\Output\Default\ResultPrinter;
 
-use const PHP_EOL;
-use function array_keys;
-use function array_merge;
+use function array_key_exists;
 use function array_reverse;
-use function array_unique;
 use function assert;
 use function count;
-use function explode;
-use function ksort;
-use function range;
 use function sprintf;
-use function str_starts_with;
-use function strlen;
-use function substr;
-use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
@@ -42,7 +31,6 @@ use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
-use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
 
@@ -75,15 +63,15 @@ final class CompactResultPrinter
         bool $displayRiskyTests,
         bool $displayDefectsInReverseOrder
     ) {
-        $this->printer = $printer;
-        $this->displayPhpunitDeprecations = $displayPhpunitDeprecations;
-        $this->displayPhpunitErrors = $displayPhpunitErrors;
-        $this->displayPhpunitNotices = $displayPhpunitNotices;
-        $this->displayPhpunitWarnings = $displayPhpunitWarnings;
-        $this->displayTestsWithErrors = $displayTestsWithErrors;
+        $this->printer                          = $printer;
+        $this->displayPhpunitDeprecations       = $displayPhpunitDeprecations;
+        $this->displayPhpunitErrors             = $displayPhpunitErrors;
+        $this->displayPhpunitNotices            = $displayPhpunitNotices;
+        $this->displayPhpunitWarnings           = $displayPhpunitWarnings;
+        $this->displayTestsWithErrors           = $displayTestsWithErrors;
         $this->displayTestsWithFailedAssertions = $displayTestsWithFailedAssertions;
-        $this->displayRiskyTests = $displayRiskyTests;
-        $this->displayDefectsInReverseOrder = $displayDefectsInReverseOrder;
+        $this->displayRiskyTests                = $displayRiskyTests;
+        $this->displayDefectsInReverseOrder     = $displayDefectsInReverseOrder;
     }
 
     public function print(TestResult $result, bool $stackTraceForDeprecations = false): void
@@ -119,7 +107,7 @@ final class CompactResultPrinter
             return;
         }
 
-        $elements = [];
+        $elements        = [];
         $processedByName = [];
 
         foreach ($result->testErroredEvents() as $event) {
@@ -133,7 +121,7 @@ final class CompactResultPrinter
                 continue;
             }
             $processedByName[$title] = true;
-            $elements[] = [
+            $elements[]              = [
                 'title' => $title,
             ];
         }
@@ -148,7 +136,7 @@ final class CompactResultPrinter
             return;
         }
 
-        $elements = [];
+        $elements        = [];
         $processedByName = [];
 
         foreach ($result->testFailedEvents() as $event) {
@@ -158,7 +146,7 @@ final class CompactResultPrinter
                 continue;
             }
             $processedByName[$title] = true;
-            $elements[] = [
+            $elements[]              = [
                 'title' => $this->name($event->test()),
             ];
         }
@@ -240,12 +228,12 @@ final class CompactResultPrinter
      */
     private function mapTestsWithIssuesEventsToElements(array $events): array
     {
-        $elements = [];
-        $issues = 0;
+        $elements              = [];
+        $issues                = 0;
         $processedTestsByTitle = [];
 
         foreach ($events as $reasons) {
-            $test = $reasons[0]->test();
+            $test  = $reasons[0]->test();
             $title = $this->name($test);
 
             $issues += count($reasons);
@@ -254,15 +242,15 @@ final class CompactResultPrinter
                 continue;
             }
             $processedTestsByTitle[$title] = true;
-            $elements[] = [
+            $elements[]                    = [
                 'title' => $title,
             ];
         }
 
         return [
             'numberOfTestsWithIssues' => count($events),
-            'numberOfIssues' => $issues,
-            'elements' => $elements,
+            'numberOfIssues'          => $issues,
+            'elements'                => $elements,
         ];
     }
 }
