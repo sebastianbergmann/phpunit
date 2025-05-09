@@ -21,6 +21,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
+use PHPUnit\TextUI\Output\Default\ResultPrinter\CompactResultPrinter;
 use PHPUnit\TextUI\Output\Default\UnexpectedOutputPrinter;
 use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
 use SebastianBergmann\Timer\Duration;
@@ -33,11 +34,11 @@ use SebastianBergmann\Timer\ResourceUsageFormatter;
  */
 final class Facade
 {
-    private static ?Printer $printer                           = null;
-    private static ?DefaultResultPrinter $defaultResultPrinter = null;
-    private static ?TestDoxResultPrinter $testDoxResultPrinter = null;
-    private static ?SummaryPrinter $summaryPrinter             = null;
-    private static bool $defaultProgressPrinter                = false;
+    private static ?Printer $printer                                                    = null;
+    private static null|CompactResultPrinter|DefaultResultPrinter $defaultResultPrinter = null;
+    private static ?TestDoxResultPrinter $testDoxResultPrinter                          = null;
+    private static ?SummaryPrinter $summaryPrinter                                      = null;
+    private static bool $defaultProgressPrinter                                         = false;
 
     public static function init(Configuration $configuration, bool $extensionReplacesProgressOutput, bool $extensionReplacesResultOutput): Printer
     {
@@ -140,19 +141,19 @@ final class Facade
             $printerNeeded = true;
         }
 
-        if ($printerNeeded) {
-            if ($configuration->outputToStandardErrorStream()) {
-                self::$printer = DefaultPrinter::standardError();
-
-                return;
-            }
-
-            self::$printer = DefaultPrinter::standardOutput();
+        if (!$printerNeeded) {
+            self::$printer = new NullPrinter;
 
             return;
         }
 
-        self::$printer = new NullPrinter;
+        if ($configuration->outputToStandardErrorStream()) {
+            self::$printer = DefaultPrinter::standardError();
+
+            return;
+        }
+
+        self::$printer = DefaultPrinter::standardOutput();
     }
 
     private static function createProgressPrinter(Configuration $configuration): void
@@ -212,6 +213,16 @@ final class Facade
                 $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->reverseDefectList(),
+            );
+        }
+
+        if ($configuration->compact()) {
+            self::$defaultResultPrinter = new CompactResultPrinter(
+                self::$printer,
+                true,
+                true,
+                true,
+                $configuration->displayDetailsOnIncompleteTests() || $configuration->displayDetailsOnAllIssues(),
             );
         }
 

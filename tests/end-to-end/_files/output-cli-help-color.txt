@@ -113,6 +113,7 @@
                                      output
   [32m--columns max                     [0m Use maximum number of columns for progress
                                      output
+  [32m--compact                         [0m Display only failing test classes
   [32m--stderr                          [0m Write to STDERR instead of STDOUT
 
   [32m--no-progress                     [0m Disable output of test execution progress
