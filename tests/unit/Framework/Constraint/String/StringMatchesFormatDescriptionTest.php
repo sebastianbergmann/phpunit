@@ -216,6 +216,13 @@ final class StringMatchesFormatDescriptionTest extends TestCase
         $this->assertTrue($constraint->evaluate("\r\n", '', true));
     }
 
+    public function testConstraintStringMatchesAnythingMultiline(): void
+    {
+        $constraint = new StringMatchesFormatDescription("*\n%a\nbar\nbaz");
+
+        $this->assertFalse($constraint->evaluate("*\n*", '', true));
+    }
+
     public function testFailureMessageWithNewlines(): void
     {
         $constraint = new StringMatchesFormatDescription("%c\nfoo\n%c");
@@ -236,6 +243,93 @@ EOD
         );
 
         $constraint->evaluate("*\nbar\n*");
+    }
+
+    public function testFailureMessageWithNewlinesAndAnythingMatcher(): void
+    {
+        $constraint = new StringMatchesFormatDescription("%a\nfoo\n%s\nbar");
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            <<<'EOD'
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+ *
+ foo
+ *
+-bar
++mismatch
+
+EOD
+        );
+
+        $constraint->evaluate("*\nfoo\n*\nmismatch");
+    }
+
+    public function testFailureMessageWithNewlinesAndAnythingMatcherMultilineMatches(): void
+    {
+        $constraint = new StringMatchesFormatDescription(
+            <<<'EOD'
+## before first A
+%A
+## after first A
+*
+## before second A
+%A
+## after second A
+*
+Foo: %s
+
+EOD
+        );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            <<<'EOD'
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+ ## before first A
+ some multiline
++text for
++A to match
+ ## after first A
+ *
+ ## before second A
++more multiline text
++for A to match
++## after second A
+ *
+-## after second A
++Foo: s match
+ *
+-Foo: %s
++Additional Text that is not matched
+
+EOD
+        );
+
+        $constraint->evaluate(
+            <<<'EOD'
+## before first A
+some multiline
+text for
+A to match
+## after first A
+*
+## before second A
+more multiline text
+for A to match
+## after second A
+*
+Foo: s match
+*
+Additional Text that is not matched
+EOD
+        );
     }
 
     public function testCanBeRepresentedAsString(): void
