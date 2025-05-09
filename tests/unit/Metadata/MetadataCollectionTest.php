@@ -435,6 +435,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isWithEnvironmentVariable());
     }
 
+    public function test_Can_be_filtered_for_Retry(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRetry();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRetry());
+    }
+
     public function test_Can_be_filtered_for_RequiresSetting(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresSetting();
@@ -621,6 +629,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesMethod('', ''),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
+                Metadata::retry(1),
             ],
         );
     }

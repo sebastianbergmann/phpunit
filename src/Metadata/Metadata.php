@@ -534,6 +534,11 @@ abstract readonly class Metadata
         return new WithoutErrorHandler(self::METHOD_LEVEL);
     }
 
+    public static function retry(int $maxRetries, ?int $delay = 0, ?string $retryOn = null): Retry
+    {
+        return new Retry(self::METHOD_LEVEL, $maxRetries, $delay, $retryOn);
+    }
+
     /**
      * @param int<0, 1> $level
      */
@@ -966,6 +971,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true WithoutErrorHandler $this
      */
     public function isWithoutErrorHandler(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Retry $this
+     */
+    public function isRetry(): bool
     {
         return false;
     }
