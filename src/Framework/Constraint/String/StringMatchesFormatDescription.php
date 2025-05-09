@@ -11,9 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
-use function array_slice;
-use function array_splice;
-use function count;
 use function explode;
 use function implode;
 use function preg_match;
@@ -64,71 +61,47 @@ final class StringMatchesFormatDescription extends Constraint
     }
 
     /**
-     * Returns a useful diff with the 'actual' differences.
+     * Returns a cleaned up diff.
      *
      * The expected string can contain placeholders like %s and %d.
-     * By using 'diff' such placeholders compared to the real output are
-     * always objectively different, although we don't want to show them as different.
+     * By using 'diff' such placeholders compared to the real output will
+     * always be different, although we don't want to show them as different.
+     * This method removes the expected differences by figuring out if a difference
+     * is allowed by the use of a placeholder.
      *
-     * This method removes the objective differences by figuring out if an objective
-     * difference is allowed by a placeholder.
-     *
-     * The final result should only contain the differences that caused the failing test.
+     * The problem here are %A and %a multiline placeholders since we look at the
+     * expected and actual output line by line. If differences allowed by those placeholders
+     * stretch over multiple lines they will still end up in the final diff.
+     * And since they mess up the line sync between the expected and actual output
+     * all following allowed changes will not be detected/removed anymore.
      */
     protected function additionalFailureDescription(mixed $other): string
     {
-        $expected = explode("\n", $this->formatDescription);
-        $output   = explode("\n", $this->convertNewlines($other));
+        $from = explode("\n", $this->formatDescription);
+        $to   = explode("\n", $this->convertNewlines($other));
 
-        for ($oIndex = 0, $eIndex = 0, $length = count($output); $oIndex < $length; $oIndex++) {
-            $multiLineMatch = false;
+        foreach ($from as $index => $line) {
+            // is the expected output line different from the actual output line
+            if (isset($to[$index]) && $line !== $to[$index]) {
+                $line = $this->regularExpressionForFormatDescription($line);
 
-            if (isset($expected[$eIndex]) && $expected[$eIndex] !== $output[$oIndex]) {
-                $regEx     = $this->regularExpressionForFormatDescription($expected[$eIndex]);
-                $compareTo = $output[$oIndex];
-                $matches   = [];
-
-                // if we do a multiline match we have to consider all following lines as well
-                if ($this->isMultilineMatch($expected[$eIndex])) {
-                    $multiLineMatch = true;
-                    $compareTo      = implode("\n", array_slice($output, $oIndex));
-                }
-
-                if (preg_match($regEx, $compareTo, $matches) > 0) {
-                    $lines = 1;
-
-                    // if we matched multiple lines we have to sync $expected and $output
-                    if ($multiLineMatch) {
-                        $lines = count(explode("\n", $matches[0]));
-                    }
-
-                    // we sync at least one line
-                    $expected[$eIndex] = $output[$oIndex];
-
-                    // for multiline matches we sync the matched lines to $expected
-                    for ($i = 1; $i < $lines; $i++) {
-                        $eIndex++;
-                        $oIndex++;
-
-                        array_splice($expected, $eIndex, 0, [$output[$oIndex]]);
-                    }
+                // if the difference is allowed by a placeholder
+                // overwrite the expected line with the actual line to prevent it from showing up in the diff
+                if (preg_match($line, $to[$index]) > 0) {
+                    $from[$index] = $to[$index];
                 }
             }
-
-            $eIndex++;
         }
 
-        $expectedString = implode("\n", $expected);
-        $outputString   = implode("\n", $output);
+        $from = implode("\n", $from);
+        $to   = implode("\n", $to);
 
-        return $this->differ()->diff($expectedString, $outputString);
+        return $this->differ()->diff($from, $to);
     }
 
     private function regularExpressionForFormatDescription(string $string): string
     {
-        // only add the end of string check ($) for single line comparisons
-        $endOfLine = $this->isMultilineMatch($string) ? '' : '$';
-        $string    = strtr(
+        $string = strtr(
             preg_quote($string, '/'),
             [
                 '%%' => '%',
@@ -147,7 +120,7 @@ final class StringMatchesFormatDescription extends Constraint
             ],
         );
 
-        return '/^' . $string . $endOfLine . '/s';
+        return '/^' . $string . '$/s';
     }
 
     private function convertNewlines(string $text): string
@@ -158,10 +131,5 @@ final class StringMatchesFormatDescription extends Constraint
     private function differ(): Differ
     {
         return new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"));
-    }
-
-    private function isMultilineMatch(string $line): bool
-    {
-        return preg_match('#%a#i', $line) > 0;
     }
 }
