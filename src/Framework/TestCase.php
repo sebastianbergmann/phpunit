@@ -32,6 +32,7 @@ use function is_callable;
 use function is_int;
 use function is_object;
 use function is_string;
+use function is_writable;
 use function libxml_clear_errors;
 use function method_exists;
 use function ob_end_clean;
@@ -1252,27 +1253,40 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
-        $capture          = tmpfile();
-        $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
+        $capture = tmpfile();
+
+        if ($capture !== false) {
+            $capturePath = stream_get_meta_data($capture)['uri'];
+
+            if (@is_writable($capturePath)) {
+                $errorLogPrevious = ini_set('error_log', $capturePath);
+            } else {
+                $capture = false;
+            }
+        }
 
         try {
             /** @phpstan-ignore method.dynamicName */
             $testResult = $this->{$this->methodName}(...$testArguments);
 
-            $errorLogOutput = stream_get_contents($capture);
-
-            if ($this->expectErrorLog) {
-                $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
-            } else {
-                // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-                print preg_replace('/\[.+\] /', '', $errorLogOutput);
-            }
-        } catch (Throwable $exception) {
-            if (!$this->expectErrorLog) {
+            if ($capture !== false) {
                 $errorLogOutput = stream_get_contents($capture);
 
-                // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-                print preg_replace('/\[.+\] /', '', $errorLogOutput);
+                if ($this->expectErrorLog) {
+                    $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
+                } else {
+                    // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
+                    print preg_replace('/\[.+\] /', '', $errorLogOutput);
+                }
+            }
+        } catch (Throwable $exception) {
+            if ($capture !== false) {
+                if (!$this->expectErrorLog) {
+                    $errorLogOutput = stream_get_contents($capture);
+
+                    // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
+                    print preg_replace('/\[.+\] /', '', $errorLogOutput);
+                }
             }
 
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
@@ -1285,9 +1299,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } finally {
             if ($capture !== false) {
                 fclose($capture);
-            }
 
-            ini_set('error_log', $errorLogPrevious);
+                /** @phpstan-ignore variable.undefined (https://github.com/phpstan/phpstan/issues/12992) */
+                ini_set('error_log', $errorLogPrevious);
+            }
         }
 
         $this->expectedExceptionWasNotRaised();
