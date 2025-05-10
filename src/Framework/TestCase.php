@@ -1275,8 +1275,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if ($this->expectErrorLog) {
                     $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
                 } else {
-                    // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-                    print preg_replace('/\[.+\] /', '', $errorLogOutput);
+                    print $this->stripDateFromErrorLog($errorLogOutput);
                 }
             }
         } catch (Throwable $exception) {
@@ -1284,8 +1283,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if (!$this->expectErrorLog) {
                     $errorLogOutput = stream_get_contents($capture);
 
-                    // strip date from logged error, see https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-                    print preg_replace('/\[.+\] /', '', $errorLogOutput);
+                    print $this->stripDateFromErrorLog($errorLogOutput);
                 }
             }
 
@@ -1308,6 +1306,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedExceptionWasNotRaised();
 
         return $testResult;
+    }
+
+    private function stripDateFromErrorLog(string $log): string
+    {
+        // https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
+        return preg_replace('/\[\d+-\w+-\d+ \d+:\d+:\d+ [^\r\n[\]]+?\] /', '', $log);
     }
 
     /**
