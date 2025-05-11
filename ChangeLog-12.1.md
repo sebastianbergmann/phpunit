@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 
 ### Fixed
 
+* [#6192](https://github.com/sebastianbergmann/phpunit/issues/6192): Reverted change made in PHPUnit 11.5.19 due to regression
 * [#6199](https://github.com/sebastianbergmann/phpunit/issues/6199): `assertEmpty()` and `assertNotEmpty()` use overly restrictive `phpstan-assert empty` directives
 
 ## [12.1.4] - 2025-05-02
