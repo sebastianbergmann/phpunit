@@ -18,11 +18,16 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 
 logged a side effect
-.                                                                   1 / 1 (100%)
+I                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
 Expect Error Log (PHPUnit\TestFixture\ExpectErrorLog\ExpectErrorLog)
- ✔ One
+ ∅ One
+   │
+   │ Could not create writable error_log file.
 
-OK (1 test, 1 assertion)
+   │
+
+OK, but there were issues!
+Tests: 1, Assertions: 1, Incomplete: 1.
