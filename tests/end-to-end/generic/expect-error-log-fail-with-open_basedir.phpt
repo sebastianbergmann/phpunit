@@ -13,7 +13,8 @@ $_SERVER['argv'][] = __DIR__ . '/_files/ExpectErrorLogFailTest.php';
  * - https://github.com/php/php-src/issues/17817
  * - https://github.com/php/php-src/issues/18530
  *
- * Until then, ignore TestCase::expectErrorLog() if open_basedir php.ini is in effect.
+ * Until then, mark the test result as incomplete when TestCase::expectErrorLog() was called and an error_log file
+ * could not be created (because of open_basedir php.ini in effect, readonly filesystem...).
  */
 
 ini_set('open_basedir', (ini_get('open_basedir') ? ini_get('open_basedir') . PATH_SEPARATOR : '') . dirname(__DIR__, 3));
@@ -26,11 +27,16 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.                                                                   1 / 1 (100%)
+I                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
 Expect Error Log Fail (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFail)
- ✔ One
+ ∅ One
+   │
+   │ Could not create writable error_log file.
 
-OK (1 test, 1 assertion)
+   │
+
+OK, but there were issues!
+Tests: 1, Assertions: 1, Incomplete: 1.
