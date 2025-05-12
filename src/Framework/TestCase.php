@@ -1328,6 +1328,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         print $this->stripDateFromErrorLog($errorLogOutput);
                     }
                 }
+            } elseif ($this->expectErrorLog) {
+                $this->markTestIncomplete('Could not create writable error_log file.');
             }
         } catch (Throwable $exception) {
             if ($capture !== false) {
