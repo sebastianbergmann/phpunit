@@ -247,6 +247,12 @@ final readonly class Merger
 
         assert(is_int($columns));
 
+        $compact = false;
+
+        if ($cliConfiguration->hasCompact() && $cliConfiguration->compact()) {
+            $compact = true;
+        }
+
         $noExtensions = false;
 
         if ($cliConfiguration->hasNoExtensions() && $cliConfiguration->noExtensions()) {
@@ -877,6 +883,7 @@ final readonly class Merger
             $stopOnWarning,
             $outputToStandardErrorStream,
             $columns,
+            $compact,
             $noExtensions,
             $pharExtensionDirectory,
             $extensionBootstrappers,

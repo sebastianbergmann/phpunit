@@ -174,6 +174,25 @@ final class BuilderTest extends TestCase
         $configuration->columns();
     }
 
+    #[TestDox('--compact')]
+    public function testCompact(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--compact']);
+
+        $this->assertTrue($configuration->hasCompact());
+    }
+
+    public function testCompactMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasCompact());
+
+        $this->expectException(Exception::class);
+
+        $configuration->compact();
+    }
+
     #[TestDox('-c file')]
     public function testConfigurationShort(): void
     {
