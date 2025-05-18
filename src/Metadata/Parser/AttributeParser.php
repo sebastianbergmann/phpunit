@@ -878,15 +878,29 @@ final readonly class AttributeParser implements Parser
 
         EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
             sprintf(
-                'Group name "%s" is not allowed for %s %s%s%s',
+                'Group name "%s" is not allowed for %s',
                 $_groupName,
-                $testMethodName !== null ? 'method' : 'class',
-                $testClassName,
-                $testMethodName !== null ? '::' : '',
-                $testMethodName !== null ? $testMethodName : '',
+                $this->testAsString($testClassName, $testMethodName),
             ),
         );
 
         return true;
+    }
+
+    /**
+     * @param class-string      $testClassName
+     * @param ?non-empty-string $testMethodName
+     *
+     * @return non-empty-string
+     */
+    private function testAsString(string $testClassName, ?string $testMethodName = null): string
+    {
+        return sprintf(
+            '%s %s%s%s',
+            $testMethodName !== null ? 'method' : 'class',
+            $testClassName,
+            $testMethodName !== null ? '::' : '',
+            $testMethodName !== null ? $testMethodName : '',
+        );
     }
 }
