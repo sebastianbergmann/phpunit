@@ -12,10 +12,7 @@ namespace PHPUnit\TestFixture\SizeGroups;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-#[Group('small')]
-#[Group('medium')]
-#[Group('large')]
-final class SizeGroupsTest extends TestCase
+final class MethodLevelTest extends TestCase
 {
     #[Group('small')]
     #[Group('medium')]
