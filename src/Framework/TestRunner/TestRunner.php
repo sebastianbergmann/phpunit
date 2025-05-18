@@ -61,6 +61,25 @@ final class TestRunner
             $test->name(),
         );
 
+        if (!$shouldCodeCoverageBeCollected) {
+            $covers = $codeCoverageMetadataApi->coversTargets(
+                $test::class,
+                $test->name(),
+            );
+
+            $uses = $codeCoverageMetadataApi->usesTargets(
+                $test::class,
+                $test->name(),
+            );
+
+            if ($covers->isNotEmpty() || $uses->isNotEmpty()) {
+                Facade::emitter()->testTriggeredPhpunitWarning(
+                    $test->valueObjectForEvents(),
+                    '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
+                );
+            }
+        }
+
         $error      = false;
         $failure    = false;
         $incomplete = false;
