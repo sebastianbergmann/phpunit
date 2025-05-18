@@ -1,0 +1,26 @@
+--TEST--
+phpunit ../_files/size-combinations/MediumLargeTest.php
+--FILE--
+<?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = __DIR__ . '/../_files/size-combinations/MediumLargeTest.php';
+
+require __DIR__ . '/../../bootstrap.php';
+
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+--EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime: %s
+
+.                                                                   1 / 1 (100%)
+
+Time: %s, Memory: %s
+
+There was 1 PHPUnit test runner warning:
+
+1) #[Large] cannot be combined with #[Small] or #[Medium] for class PHPUnit\TestFixture\SizeCombinations\MediumLargeTest
+
+WARNINGS!
+Tests: 1, Assertions: 1, Warnings: 1.

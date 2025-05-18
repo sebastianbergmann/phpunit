@@ -109,6 +109,10 @@ final readonly class AttributeParser implements Parser
         $reflector = new ReflectionClass($className);
         $result    = [];
 
+        $small  = false;
+        $medium = false;
+        $large  = false;
+
         foreach ($reflector->getAttributes() as $attribute) {
             if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
                 continue;
@@ -238,13 +242,51 @@ final readonly class AttributeParser implements Parser
 
                     break;
 
-                case Large::class:
-                    $result[] = Metadata::groupOnClass('large');
+                case Small::class:
+                    if (!$medium && !$large) {
+                        $result[] = Metadata::groupOnClass('small');
+
+                        $small = true;
+                    } else {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                '#[Small] cannot be combined with #[Medium] or #[Large] for %s',
+                                $this->testAsString($className),
+                            ),
+                        );
+                    }
 
                     break;
 
                 case Medium::class:
-                    $result[] = Metadata::groupOnClass('medium');
+                    if (!$small && !$large) {
+                        $result[] = Metadata::groupOnClass('medium');
+
+                        $medium = true;
+                    } else {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                '#[Medium] cannot be combined with #[Small] or #[Large] for %s',
+                                $this->testAsString($className),
+                            ),
+                        );
+                    }
+
+                    break;
+
+                case Large::class:
+                    if (!$small && !$medium) {
+                        $result[] = Metadata::groupOnClass('large');
+
+                        $large = true;
+                    } else {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                '#[Large] cannot be combined with #[Small] or #[Medium] for %s',
+                                $this->testAsString($className),
+                            ),
+                        );
+                    }
 
                     break;
 
@@ -385,11 +427,6 @@ final readonly class AttributeParser implements Parser
 
                 case RunTestsInSeparateProcesses::class:
                     $result[] = Metadata::runTestsInSeparateProcesses();
-
-                    break;
-
-                case Small::class:
-                    $result[] = Metadata::groupOnClass('small');
 
                     break;
 
