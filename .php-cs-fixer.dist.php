@@ -25,6 +25,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('UseBaselineTest.php')
     // Issue5795Test.php contains required whitespace that would be cleaned up
     ->notName('Issue5795Test.php')
+    // Hook methods that should be protected must be public in TestAttributeOnHookMethodsTest.php
+    ->notName('TestAttributeOnHookMethodsTest.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
