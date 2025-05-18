@@ -1,5 +1,5 @@
 --TEST--
-phpunit --group small,medium,large ../../_files/size-groups/SizeGroupsTest.php
+phpunit --group small,medium,large ../_files/size-groups/SizeGroupsTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -10,9 +10,9 @@ $_SERVER['argv'][] = '--group';
 $_SERVER['argv'][] = 'medium';
 $_SERVER['argv'][] = '--group';
 $_SERVER['argv'][] = 'large';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/size-groups/SizeGroupsTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/size-groups/SizeGroupsTest.php';
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
