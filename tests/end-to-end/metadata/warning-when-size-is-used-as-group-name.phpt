@@ -1,15 +1,9 @@
 --TEST--
-phpunit --group small,medium,large ../_files/size-groups/SizeGroupsTest.php
+phpunit ../_files/size-groups/SizeGroupsTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--group';
-$_SERVER['argv'][] = 'small';
-$_SERVER['argv'][] = '--group';
-$_SERVER['argv'][] = 'medium';
-$_SERVER['argv'][] = '--group';
-$_SERVER['argv'][] = 'large';
 $_SERVER['argv'][] = __DIR__ . '/../_files/size-groups/SizeGroupsTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
@@ -19,6 +13,10 @@ require __DIR__ . '/../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
+
+.                                                                   1 / 1 (100%)
+
+Time: %s, Memory: %s
 
 There were 6 PHPUnit test runner warnings:
 
@@ -34,4 +32,5 @@ There were 6 PHPUnit test runner warnings:
 
 6) Group name "large" is not allowed for method PHPUnit\TestFixture\SizeGroups\SizeGroupsTest::testOne
 
-No tests executed!
+WARNINGS!
+Tests: 1, Assertions: 1, Warnings: 6.
