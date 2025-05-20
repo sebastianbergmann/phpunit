@@ -25,7 +25,6 @@ use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
-use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
 
@@ -136,8 +135,7 @@ final readonly class DataProvider
             $methodsCalled[] = $dataProviderMethod;
 
             try {
-                $class  = new ReflectionClass($_dataProvider->className());
-                $method = $class->getMethod($_dataProvider->methodName());
+                $method = new ReflectionMethod($_dataProvider->className(), $_dataProvider->methodName());
 
                 if (!$method->isPublic()) {
                     throw new InvalidDataProviderException(
