@@ -16,8 +16,10 @@ use function get_debug_type;
 use function is_array;
 use function is_int;
 use function is_string;
+use function method_exists;
 use function sprintf;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
@@ -77,12 +79,30 @@ final readonly class DataProvider
             }
 
             if ($testMethodNumberOfParameters < count($value)) {
-                throw new InvalidDataProviderException(
+                assert(method_exists($className, $methodName));
+
+                $method = new ReflectionMethod($className, $methodName);
+
+                Event\Facade::emitter()->testTriggeredPhpunitWarning(
+                    new TestMethod(
+                        $className,
+                        $methodName,
+                        $method->getFileName(),
+                        $method->getStartLine(),
+                        Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                            $className,
+                            $methodName,
+                        ),
+                        MetadataCollection::fromArray([]),
+                        Event\TestData\TestDataCollection::fromArray([]),
+                    ),
                     sprintf(
-                        'The key "%s" has more arguments (%d) than the test method accepts (%d).',
-                        $key,
+                        'The data provider specified for %s::%s has more arguments (%d) than the test method accepts (%d) for key "%s"',
+                        $className,
+                        $methodName,
                         count($value),
                         $testMethodNumberOfParameters,
+                        $key,
                     ),
                 );
             }

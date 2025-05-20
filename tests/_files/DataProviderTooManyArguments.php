@@ -27,7 +27,7 @@ final class DataProviderTooManyArguments extends TestCase
     }
 
     #[DataProvider('provider')]
-    public function testMethodHavingTwoParameters(bool $x1, bool $x2 = false): void
+    public function testMethodHavingTwoParameters(bool $x1, bool $x2 = true): void
     {
         $this->assertSame($x1, $x2);
     }

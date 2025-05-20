@@ -13,17 +13,16 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.                                                                   1 / 1 (100%)
+W...                                                                4 / 4 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 PHPUnit error:
+1 test triggered 1 PHPUnit warning:
 
 1) PHPUnit\TestFixture\DataProviderTooManyArguments::testMethodHavingTwoParameters
-The data provider specified for PHPUnit\TestFixture\DataProviderTooManyArguments::testMethodHavingTwoParameters is invalid
-The key "2" has more arguments (3) than the test method accepts (2).
+The data provider specified for PHPUnit\TestFixture\DataProviderTooManyArguments::testMethodHavingTwoParameters has more arguments (3) than the test method accepts (2) for key "2"
 
-%sDataProviderTooManyArguments.php:%d
+%s:%d
 
-ERRORS!
-Tests: 1, Assertions: 1, Errors: 1.
+WARNINGS!
+Tests: 4, Assertions: 4, Warnings: 1.
