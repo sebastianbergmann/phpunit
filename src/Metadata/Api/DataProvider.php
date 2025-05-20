@@ -72,7 +72,7 @@ final readonly class DataProvider
                 throw new InvalidDataProviderException(
                     sprintf(
                         'Data set %s is invalid, expected array but got %s',
-                        is_int($key) ? '#' . $key : '"' . $key . '"',
+                        $this->formatKey($key),
                         get_debug_type($value),
                     ),
                 );
@@ -97,12 +97,10 @@ final readonly class DataProvider
                         Event\TestData\TestDataCollection::fromArray([]),
                     ),
                     sprintf(
-                        'The data provider specified for %s::%s has more arguments (%d) than the test method accepts (%d) for key "%s"',
-                        $className,
-                        $methodName,
+                        'Data set %s has more arguments (%d) than the test method accepts (%d)',
+                        $this->formatKey($key),
                         count($value),
                         $testMethodNumberOfParameters,
-                        $key,
                     ),
                 );
             }
@@ -258,5 +256,15 @@ final readonly class DataProvider
         }
 
         return $result;
+    }
+
+    /**
+     * @param int|non-empty-string $key
+     *
+     * @return non-empty-string
+     */
+    private function formatKey(int|string $key): string
+    {
+        return is_int($key) ? '#' . $key : '"' . $key . '"';
     }
 }

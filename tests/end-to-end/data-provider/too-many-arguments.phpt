@@ -20,7 +20,7 @@ Time: %s, Memory: %s
 1 test triggered 1 PHPUnit warning:
 
 1) PHPUnit\TestFixture\DataProviderTooManyArgumentsTest::testMethodHavingTwoParameters
-The data provider specified for PHPUnit\TestFixture\DataProviderTooManyArgumentsTest::testMethodHavingTwoParameters has more arguments (3) than the test method accepts (2) for key "2"
+Data set #2 has more arguments (3) than the test method accepts (2)
 
 %s:%d
 
