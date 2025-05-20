@@ -23,7 +23,7 @@ There was 1 PHPUnit error:
 The data provider specified for PHPUnit\TestFixture\DataProviderTooManyArguments::testMethodHavingTwoParameters is invalid
 The key "2" has more arguments (3) than the test method accepts (2).
 
-%A
+%sDataProviderTooManyArguments.php:%d
 
 ERRORS!
 Tests: 1, Assertions: 1, Errors: 1.
