@@ -11,6 +11,7 @@ namespace PHPUnit\Metadata\Api;
 
 use function array_key_exists;
 use function assert;
+use function count;
 use function get_debug_type;
 use function is_array;
 use function is_int;
@@ -23,6 +24,7 @@ use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
 use ReflectionClass;
+use ReflectionMethod;
 use Throwable;
 
 /**
@@ -61,6 +63,8 @@ final readonly class DataProvider
             );
         }
 
+        $testMethodNumberOfParameters = (new ReflectionMethod($className, $methodName))->getNumberOfParameters();
+
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
                 throw new InvalidDataProviderException(
@@ -68,6 +72,17 @@ final readonly class DataProvider
                         'Data set %s is invalid, expected array but got %s',
                         is_int($key) ? '#' . $key : '"' . $key . '"',
                         get_debug_type($value),
+                    ),
+                );
+            }
+
+            if ($testMethodNumberOfParameters < count($value)) {
+                throw new InvalidDataProviderException(
+                    sprintf(
+                        'The key "%s" has more arguments (%d) than the test method accepts (%d).',
+                        $key,
+                        count($value),
+                        $testMethodNumberOfParameters,
                     ),
                 );
             }
