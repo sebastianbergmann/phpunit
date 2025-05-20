@@ -4,7 +4,6 @@ phpunit ../../_files/DataProviderTooManyArguments.php
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--display-skipped';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderTooManyArguments.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
