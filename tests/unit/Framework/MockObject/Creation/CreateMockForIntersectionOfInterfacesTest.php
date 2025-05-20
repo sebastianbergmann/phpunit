@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\RuntimeException as GeneratorRuntimeException;
-use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
+use PHPUnit\Framework\MockObject\Generator\UnknownInterfaceException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
@@ -59,7 +59,7 @@ final class CreateMockForIntersectionOfInterfacesTest extends TestCase
 
     public function testCannotCreateMockObjectForIntersectionOfUnknownInterfaces(): void
     {
-        $this->expectException(UnknownTypeException::class);
+        $this->expectException(UnknownInterfaceException::class);
 
         $this->createMockForIntersectionOfInterfaces(['DoesNotExist', 'DoesNotExist']);
     }

@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\RuntimeException as GeneratorRuntimeException;
-use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
+use PHPUnit\Framework\MockObject\Generator\UnknownInterfaceException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
@@ -60,7 +60,7 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
 
     public function testCannotCreateTestStubForIntersectionOfUnknownInterfaces(): void
     {
-        $this->expectException(UnknownTypeException::class);
+        $this->expectException(UnknownInterfaceException::class);
 
         $this->createStubForIntersectionOfInterfaces(['DoesNotExist', 'DoesNotExist']);
     }
@@ -75,8 +75,8 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
 
     public function testCannotCreateTestStubForIntersectionOfInterfacesWhenClassIsUsed(): void
     {
-        $this->expectException(UnknownTypeException::class);
-        $this->expectExceptionMessage('Class or interface "PHPUnit\TestFixture\MockObject\ExtendableClass" does not exist');
+        $this->expectException(UnknownInterfaceException::class);
+        $this->expectExceptionMessage('Interface "PHPUnit\TestFixture\MockObject\ExtendableClass" does not exist');
 
         $this->createStubForIntersectionOfInterfaces([AnInterface::class, ExtendableClass::class]);
     }
