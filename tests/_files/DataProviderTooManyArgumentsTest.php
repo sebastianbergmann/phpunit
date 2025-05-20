@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class DataProviderTooManyArguments extends TestCase
+final class DataProviderTooManyArgumentsTest extends TestCase
 {
     public static function provider(): iterable
     {

@@ -1,11 +1,11 @@
 --TEST--
-phpunit ../../_files/DataProviderTooManyArguments.php
+phpunit ../../_files/DataProviderTooManyArgumentsTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--display-skipped';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderTooManyArguments.php';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderTooManyArgumentsTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
@@ -20,8 +20,8 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\DataProviderTooManyArguments::testMethodHavingTwoParameters
-The data provider specified for PHPUnit\TestFixture\DataProviderTooManyArguments::testMethodHavingTwoParameters is invalid
+1) PHPUnit\TestFixture\DataProviderTooManyArgumentsTest::testMethodHavingTwoParameters
+The data provider specified for PHPUnit\TestFixture\DataProviderTooManyArgumentsTest::testMethodHavingTwoParameters is invalid
 The key "2" has more arguments (3) than the test method accepts (2).
 
 %A
