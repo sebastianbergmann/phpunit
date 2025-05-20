@@ -20,7 +20,7 @@ final class TestWithDataProvider extends TestCase
     }
 
     #[DataProvider('provider')]
-    public function testOne(): void
+    public function testOne(int $zero): void
     {
     }
 }
