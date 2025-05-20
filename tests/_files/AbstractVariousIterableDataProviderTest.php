@@ -49,14 +49,14 @@ abstract class AbstractVariousIterableDataProviderTest
     #[DataProvider('asArrayProvider')]
     #[DataProvider('asIteratorProvider')]
     #[DataProvider('asTraversableProvider')]
-    public function testAbstract(): void
+    public function testAbstract(string $x): void
     {
     }
 
     #[DataProvider('asArrayProviderInParent')]
     #[DataProvider('asIteratorProviderInParent')]
     #[DataProvider('asTraversableProviderInParent')]
-    public function testInParent(): void
+    public function testInParent(string $x): void
     {
     }
 }

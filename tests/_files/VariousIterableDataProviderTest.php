@@ -71,21 +71,21 @@ final class VariousIterableDataProviderTest extends AbstractVariousIterableDataP
     #[DataProvider('asArrayStaticProvider')]
     #[DataProvider('asIteratorStaticProvider')]
     #[DataProvider('asTraversableStaticProvider')]
-    public function testStatic(): void
+    public function testStatic(string $x): void
     {
     }
 
     #[DataProvider('asArrayProvider')]
     #[DataProvider('asIteratorProvider')]
     #[DataProvider('asTraversableProvider')]
-    public function testNonStatic(): void
+    public function testNonStatic(string $x): void
     {
     }
 
     #[DataProvider('asArrayProviderInParent')]
     #[DataProvider('asIteratorProviderInParent')]
     #[DataProvider('asTraversableProviderInParent')]
-    public function testFromParent(): void
+    public function testFromParent(string $x): void
     {
     }
 }

@@ -16,25 +16,25 @@ use PHPUnit\Framework\TestCase;
 final class TestWithTest extends TestCase
 {
     #[TestWith([1, 2, 3])]
-    public function testOne(): void
+    public function testOne($one, $two, $three): void
     {
         $this->assertTrue(true);
     }
 
     #[TestWith([1, 2, 3], 'Name1')]
-    public function testOneWithName(): void
+    public function testOneWithName($one, $two = null, $three = null): void
     {
         $this->assertTrue(true);
     }
 
     #[TestWithJson('[1, 2, 3]')]
-    public function testTwo(): void
+    public function testTwo($one, $two, $three): void
     {
         $this->assertTrue(true);
     }
 
     #[TestWithJson('[1, 2, 3]', 'Name2')]
-    public function testTwoWithName(): void
+    public function testTwoWithName($one, $two, $three): void
     {
         $this->assertTrue(true);
     }
