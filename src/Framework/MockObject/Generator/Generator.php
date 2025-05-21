@@ -140,7 +140,7 @@ final class Generator
      * @param list<class-string> $interfaces
      *
      * @throws RuntimeException
-     * @throws UnknownTypeException
+     * @throws UnknownInterfaceException
      */
     public function testDoubleForInterfaceIntersection(array $interfaces, bool $mockObject, bool $returnValueGeneration = true): MockObject|Stub
     {
@@ -150,7 +150,7 @@ final class Generator
 
         foreach ($interfaces as $interface) {
             if (!interface_exists($interface)) {
-                throw new UnknownTypeException($interface);
+                throw new UnknownInterfaceException($interface);
             }
         }
 
