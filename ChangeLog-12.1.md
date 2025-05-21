@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.1 release series are documented in this fi
 ### Changed
 
 * [#6210](https://github.com/sebastianbergmann/phpunit/pull/6210): Set default Clover coverage project name
+* [#6217](https://github.com/sebastianbergmann/phpunit/pull/6217): Improve the error message when `createStubForIntersectionOfInterfaces()` is called with a class
 
 ## [12.1.5] - 2025-05-11
 
