@@ -24,6 +24,7 @@ use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
+use SebastianBergmann\CodeCoverage\Report\OpenClover as OpenCloverReport;
 use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
@@ -288,6 +289,21 @@ final class CodeCoverage
             try {
                 $writer = new CloverReport;
                 $writer->process($this->codeCoverage(), $configuration->coverageClover(), 'Clover Coverage');
+
+                $this->codeCoverageGenerationSucceeded($printer);
+
+                unset($writer);
+            } catch (CodeCoverageException $e) {
+                $this->codeCoverageGenerationFailed($printer, $e);
+            }
+        }
+
+        if ($configuration->hasCoverageOpenClover()) {
+            $this->codeCoverageGenerationStart($printer, 'OpenClover XML');
+
+            try {
+                $writer = new OpenCloverReport;
+                $writer->process($this->codeCoverage(), $configuration->coverageOpenClover(), 'OpenClover Coverage');
 
                 $this->codeCoverageGenerationSucceeded($printer);
 

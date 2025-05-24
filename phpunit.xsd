@@ -289,6 +289,7 @@
             <xs:element name="cobertura" type="logToFileType" minOccurs="0"/>
             <xs:element name="crap4j" type="coverageReportCrap4JType" minOccurs="0" />
             <xs:element name="html" type="coverageReportHtmlType" minOccurs="0" />
+            <xs:element name="openclover" type="logToFileType" minOccurs="0"/>
             <xs:element name="php" type="logToFileType" minOccurs="0" />
             <xs:element name="text" type="coverageReportTextType" minOccurs="0" />
             <xs:element name="xml" type="logToDirectoryType" minOccurs="0" />

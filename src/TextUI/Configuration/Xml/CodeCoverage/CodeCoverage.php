@@ -13,6 +13,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Cobertura;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Crap4j;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Html;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\OpenClover;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Xml;
@@ -35,11 +36,12 @@ final readonly class CodeCoverage
     private ?Cobertura $cobertura;
     private ?Crap4j $crap4j;
     private ?Html $html;
+    private ?OpenClover $openClover;
     private ?Php $php;
     private ?Text $text;
     private ?Xml $xml;
 
-    public function __construct(bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?OpenClover $openClover, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
@@ -49,6 +51,7 @@ final readonly class CodeCoverage
         $this->cobertura                 = $cobertura;
         $this->crap4j                    = $crap4j;
         $this->html                      = $html;
+        $this->openClover                = $openClover;
         $this->php                       = $php;
         $this->text                      = $text;
         $this->xml                       = $xml;
@@ -160,6 +163,28 @@ final readonly class CodeCoverage
         }
 
         return $this->html;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->openClover
+     */
+    public function hasOpenClover(): bool
+    {
+        return $this->openClover !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function openClover(): OpenClover
+    {
+        if (!$this->hasOpenClover()) {
+            throw new Exception(
+                'Code Coverage report "OpenClover XML" has not been configured',
+            );
+        }
+
+        return $this->openClover();
     }
 
     /**

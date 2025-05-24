@@ -50,6 +50,7 @@ final class Builder
         'coverage-cobertura=',
         'coverage-crap4j=',
         'coverage-html=',
+        'coverage-openclover=',
         'coverage-php=',
         'coverage-text==',
         'only-summary-for-coverage-text',
@@ -191,6 +192,7 @@ final class Builder
         $coverageCobertura                 = null;
         $coverageCrap4J                    = null;
         $coverageHtml                      = null;
+        $coverageOpenClover                = null;
         $coveragePhp                       = null;
         $coverageText                      = null;
         $coverageTextShowUncoveredFiles    = null;
@@ -358,6 +360,11 @@ final class Builder
 
                 case '--coverage-php':
                     $coveragePhp = $option[1];
+
+                    break;
+
+                case '--coverage-openclover':
+                    $coverageOpenClover = $option[1];
 
                     break;
 
@@ -1022,6 +1029,7 @@ final class Builder
             $coverageCobertura,
             $coverageCrap4J,
             $coverageHtml,
+            $coverageOpenClover,
             $coveragePhp,
             $coverageText,
             $coverageTextShowUncoveredFiles,

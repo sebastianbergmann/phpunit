@@ -277,6 +277,7 @@ final class Help
 
             'Code Coverage' => [
                 ['arg' => '--coverage-clover <file>', 'desc' => 'Write code coverage report in Clover XML format to file'],
+                ['arg' => '--coverage-openclover <file>', 'desc' => 'Write code coverage report in OpenClover XML format to file'],
                 ['arg' => '--coverage-cobertura <file>', 'desc' => 'Write code coverage report in Cobertura XML format to file'],
                 ['arg' => '--coverage-crap4j <file>', 'desc' => 'Write code coverage report in Crap4J XML format to file'],
                 ['arg' => '--coverage-html <dir>', 'desc' => 'Write code coverage report in HTML format to directory'],

@@ -298,6 +298,26 @@ final class BuilderTest extends TestCase
         $configuration->coverageHtml();
     }
 
+    #[TestDox('--coverage-openclover file')]
+    public function testCoverageOpenClover(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--coverage-openclover', 'file']);
+
+        $this->assertTrue($configuration->hasCoverageOpenClover());
+        $this->assertSame('file', $configuration->coverageOpenClover());
+    }
+
+    public function testCoverageOpenCloverMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasCoverageOpenClover());
+
+        $this->expectException(Exception::class);
+
+        $configuration->coverageOpenClover();
+    }
+
     #[TestDox('--coverage-php file')]
     public function testCoveragePhp(): void
     {

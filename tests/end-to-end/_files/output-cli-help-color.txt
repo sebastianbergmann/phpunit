@@ -167,6 +167,8 @@
 
   [32m--coverage-clover [36m<file>[0m          [0m Write code coverage report in Clover XML
                                      format to file
+  [32m--coverage-openclover [36m<file>[0m      [0m Write code coverage report in OpenClover
+                                     XML format to file
   [32m--coverage-cobertura [36m<file>[0m       [0m Write code coverage report in Cobertura
                                      XML format to file
   [32m--coverage-crap4j [36m<file>[0m          [0m Write code coverage report in Crap4J XML
