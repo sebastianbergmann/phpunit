@@ -1025,6 +1025,23 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-empty-string $additionalInformation
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testProvidedAdditionalInformation(TestMethod $test, string $additionalInformation): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\AdditionalInformationProvided(
+                $this->telemetryInfo(),
+                $test,
+                $additionalInformation,
+            ),
+        );
+    }
+
+    /**
      * @param non-negative-int $numberOfAssertionsPerformed
      *
      * @throws InvalidArgumentException

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.2 release series are documented in this fi
 ### Added
 
 * `--with-telemetry` CLI option that can be used together with `--debug` to print debugging information that includes telemetry information
+* The `TestCase::provideAdditionalInformation()` method can now be used to emit a `Test\AdditionalInformationProvided` event
 * The new `Test\AfterLastTestMethodFailed`, `Test\AfterTestMethodFailed`, `Test\BeforeFirstTestMethodFailed`, `Test\BeforeTestMethodFailed`, `Test\PostConditionFailed`, `Test\PreConditionFailed` events are now emitted instead of `Test\AfterLastTestMethodErrored`, `Test\AfterTestMethodErrored`, `Test\BeforeFirstTestMethodErrored`, `Test\BeforeTestMethodErrored`, `Test\PostConditionErrored`, `Test\PreConditionErrored` when the `Throwable` extends `AssertionFailedError` to distinguish between errors and failures triggered in hook methods
 * The new `Test\PreparationErrored` event is now emitted instead of `Test\PreparationFailed` when the `Throwable` does not extend `AssertionFailedError` to distinguish between errors and failures triggered during test preparation
 * `Test\PreparationFailed::throwable()`

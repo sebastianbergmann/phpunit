@@ -189,6 +189,7 @@ final class Facade
             Test\BeforeTestMethodErrored::class,
             Test\BeforeTestMethodFailed::class,
             Test\BeforeTestMethodFinished::class,
+            Test\AdditionalInformationProvided::class,
             Test\ComparatorRegistered::class,
             Test\ConsideredRisky::class,
             Test\DeprecationTriggered::class,

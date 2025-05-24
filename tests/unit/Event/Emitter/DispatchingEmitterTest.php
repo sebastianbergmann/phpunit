@@ -2531,6 +2531,47 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($output, $event->output());
     }
 
+    #[TestDox('testProvidedAdditionalInformation() emits Test\AdditionalInformationProvided event')]
+    public function testTestProvidedAdditionalInformationEmitsAdditionalInformationProvidedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\AdditionalInformationProvidedSubscriber
+        {
+            public function notify(Test\AdditionalInformationProvided $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\AdditionalInformationProvidedSubscriber::class,
+            Test\AdditionalInformationProvided::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+        $test            = $this->testValueObject();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $additionalInformation = 'addtional information';
+
+        $emitter->testProvidedAdditionalInformation(
+            $test,
+            $additionalInformation,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\AdditionalInformationProvided::class, $event);
+        $this->assertSame($test, $event->test());
+        $this->assertSame($additionalInformation, $event->additionalInformation());
+    }
+
     #[TestDox('testFinished() emits Test\Finished event')]
     public function testTestFinishedEmitsTestFinishedEvent(): void
     {

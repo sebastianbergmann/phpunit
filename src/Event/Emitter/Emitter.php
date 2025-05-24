@@ -241,6 +241,11 @@ interface Emitter
     public function testPrintedUnexpectedOutput(string $output): void;
 
     /**
+     * @param non-empty-string $additionalInformation
+     */
+    public function testProvidedAdditionalInformation(TestMethod $test, string $additionalInformation): void;
+
+    /**
      * @param non-negative-int $numberOfAssertionsPerformed
      */
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;

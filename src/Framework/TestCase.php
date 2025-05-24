@@ -1242,6 +1242,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $partialMock;
     }
 
+    /**
+     * @param non-empty-string $additionalInformation
+     */
+    final protected function provideAdditionalInformation(string $additionalInformation): void
+    {
+        Event\Facade::emitter()->testProvidedAdditionalInformation(
+            $this->valueObjectForEvents(),
+            $additionalInformation,
+        );
+    }
+
     protected function transformException(Throwable $t): Throwable
     {
         return $t;
