@@ -212,18 +212,22 @@ jobs:
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Collect code coverage with PHPUnit
-        run: ./phpunit --log-junit junit.xml --coverage-openclover=coverage.xml
+        run: ./phpunit --log-junit test-results.xml --coverage-openclover=code-coverage.xml
 
       - name: Upload test results to Codecov.io
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
+          files: ./test-results.xml
 
       - name: Upload code coverage data to Codecov.io
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
+          files: ./code-coverage.xml
 
   build-phar:
     name: Build PHAR
