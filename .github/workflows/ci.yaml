@@ -212,7 +212,7 @@ jobs:
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Collect code coverage with PHPUnit
-        run: ./phpunit --log-junit junit.xml --coverage-clover=coverage.xml
+        run: ./phpunit --log-junit junit.xml --coverage-openclover=coverage.xml
 
       - name: Upload test results to Codecov.io
         if: ${{ !cancelled() }}
