@@ -229,12 +229,14 @@ jobs:
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
           files: ./test-results.xml
 
       - name: Upload code coverage data to Codecov.io
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
           files: ./code-coverage.xml
 
   build-phar:
