@@ -5,6 +5,7 @@ phpunit ../_files/code-coverage-targeting/CoversClassCoversNothingTest.php
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/tests/CoversClassCoversNothingTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
