@@ -56,23 +56,23 @@ final class TestRunner
 
         $codeCoverageMetadataApi = new CodeCoverageMetadataApi;
 
+        $coversTargets = $codeCoverageMetadataApi->coversTargets(
+            $test::class,
+            $test->name(),
+        );
+
+        $usesTargets = $codeCoverageMetadataApi->usesTargets(
+            $test::class,
+            $test->name(),
+        );
+
         $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor(
             $test::class,
             $test->name(),
         );
 
         if (!$shouldCodeCoverageBeCollected) {
-            $covers = $codeCoverageMetadataApi->coversTargets(
-                $test::class,
-                $test->name(),
-            );
-
-            $uses = $codeCoverageMetadataApi->usesTargets(
-                $test::class,
-                $test->name(),
-            );
-
-            if ($covers->isNotEmpty() || $uses->isNotEmpty()) {
+            if ($coversTargets->isNotEmpty() || $usesTargets->isNotEmpty()) {
                 Facade::emitter()->testTriggeredPhpunitWarning(
                     $test->valueObjectForEvents(),
                     '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
@@ -154,30 +154,17 @@ final class TestRunner
 
         if ($collectCodeCoverage) {
             $append = !$risky && !$incomplete && !$skipped;
-            $covers = null;
-            $uses   = null;
 
             if (!$append) {
-                $covers = false;
-            }
-
-            if ($append) {
-                $covers = $codeCoverageMetadataApi->coversTargets(
-                    $test::class,
-                    $test->name(),
-                );
-
-                $uses = $codeCoverageMetadataApi->usesTargets(
-                    $test::class,
-                    $test->name(),
-                );
+                $coversTargets = false;
+                $usesTargets   = null;
             }
 
             try {
                 CodeCoverage::instance()->stop(
                     $append,
-                    $covers,
-                    $uses,
+                    $coversTargets,
+                    $usesTargets,
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
                 Facade::emitter()->testConsideredRisky(
