@@ -10,12 +10,12 @@
 namespace PHPUnit\TestFixture\CodeCoverageTargeting\Warnings;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SomeClass::class)]
-#[CoversNothing]
-final class CoversClassCoversNothingTest extends TestCase
+#[UsesClass(SomeClass::class)]
+final class CoversAndUsesTest extends TestCase
 {
     public function testOne(): void
     {

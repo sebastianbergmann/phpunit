@@ -1,11 +1,11 @@
 --TEST--
-phpunit ../_files/code-coverage-targeting/CoversClassCoversNothingTest.php
+phpunit ../_files/code-coverage-targeting/CoversAndUsesTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/phpunit.xml';
-$_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/tests/CoversClassCoversNothingTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/tests/CoversAndUsesTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -22,10 +22,10 @@ Time: %s, Memory: %s
 
 1 test triggered 1 PHPUnit warning:
 
-1) PHPUnit\TestFixture\CodeCoverageTargeting\Warnings\CoversClassCoversNothingTest::testOne
-#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used
+1) PHPUnit\TestFixture\CodeCoverageTargeting\Warnings\CoversAndUsesTest::testOne
+Class PHPUnit\TestFixture\CodeCoverageTargeting\Warnings\SomeClass is targeted by both "Covers" and "Uses" attributes
 
-%sCoversClassCoversNothingTest.php:%d
+%sCoversAndUsesTest.php:%d
 
 WARNINGS!
 Tests: 1, Assertions: 1, Warnings: 1.

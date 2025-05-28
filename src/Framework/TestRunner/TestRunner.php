@@ -10,6 +10,9 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_diff_assoc;
+use function array_intersect;
+use function array_unique;
 use function assert;
 use function extension_loaded;
 use function sprintf;
@@ -345,6 +348,51 @@ final class TestRunner
                     '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
                 );
             }
+        }
+
+        $coversAsString = [];
+        $usesAsString   = [];
+
+        foreach ($coversTargets as $coversTarget) {
+            $coversAsString[] = $coversTarget->description();
+        }
+
+        foreach ($usesTargets as $usesTarget) {
+            $usesAsString[] = $usesTarget->description();
+        }
+
+        $coversDuplicates = array_unique(array_diff_assoc($coversAsString, array_unique($coversAsString)));
+        $usesDuplicates   = array_unique(array_diff_assoc($usesAsString, array_unique($usesAsString)));
+        $coversAndUses    = array_intersect($coversAsString, $usesAsString);
+
+        foreach ($coversDuplicates as $target) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    '%s is targeted multiple times by the same "Covers" attribute',
+                    $target,
+                ),
+            );
+        }
+
+        foreach ($usesDuplicates as $target) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    '%s is targeted multiple times by the same "Uses" attribute',
+                    $target,
+                ),
+            );
+        }
+
+        foreach ($coversAndUses as $target) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    '%s is targeted by both "Covers" and "Uses" attributes',
+                    $target,
+                ),
+            );
         }
     }
 }

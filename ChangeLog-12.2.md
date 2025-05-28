@@ -39,6 +39,8 @@ This feature is experimental and the generated XML may change to enhance complia
 ### Changed
 
 * A warning is now emitted when both `#[CoversNothing]` and `#[Covers*]` (or `#[Uses*]`) are used on a test class
+* A warning is now emitted when the same `#[Covers*]` (or `#[Uses*]`) attribute is used multiple times on a test class
+* A warning is now emitted when the same code is targeted by both `#[Covers*]` and `#[Uses*]` attributes
 * A warning is now emitted when a hook method such as `setUp()`, for example has a `#[Test]` attribute
 * A warning is now emitted when more than one of `#[Small]`, `#[Medium]`, or `#[Large]` is used on a test class
 * A warning is now emitted when a data provider provides data sets that have more values than the test method consumes using arguments
