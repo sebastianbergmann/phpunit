@@ -25,6 +25,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
@@ -71,14 +72,7 @@ final class TestRunner
             $test->name(),
         );
 
-        if (!$shouldCodeCoverageBeCollected) {
-            if ($coversTargets->isNotEmpty() || $usesTargets->isNotEmpty()) {
-                Facade::emitter()->testTriggeredPhpunitWarning(
-                    $test->valueObjectForEvents(),
-                    '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
-                );
-            }
-        }
+        $this->performSanityChecks($test, $coversTargets, $usesTargets, $shouldCodeCoverageBeCollected);
 
         $error      = false;
         $failure    = false;
@@ -340,5 +334,17 @@ final class TestRunner
         }
 
         return true;
+    }
+
+    private function performSanityChecks(TestCase $test, TargetCollection $coversTargets, TargetCollection $usesTargets, bool $shouldCodeCoverageBeCollected): void
+    {
+        if (!$shouldCodeCoverageBeCollected) {
+            if ($coversTargets->isNotEmpty() || $usesTargets->isNotEmpty()) {
+                Facade::emitter()->testTriggeredPhpunitWarning(
+                    $test->valueObjectForEvents(),
+                    '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
+                );
+            }
+        }
     }
 }
