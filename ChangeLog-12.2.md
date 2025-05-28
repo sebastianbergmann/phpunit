@@ -12,7 +12,7 @@ PHPUnit has supported reporting test results in the JUnit XML format for a long 
 
 To address this, the JUnit team started the [Open Test Reporting project](https://github.com/ota4j-team/open-test-reporting), creating and maintaining language-agnostic XML and HTML test reporting formats. Unlike JUnit XML, Open Test Reporting's XML formats are extensible.
 
-Logging in the Open Test Reporting XML format is now controlled by the new `--log-otr` CLI option and the new `<otr>` XML configuration element.
+Logging in the Open Test Reporting XML format is controlled by the new `--log-otr` CLI option and the new `<otr>` XML configuration element.
 
 This feature is experimental and the generated XML may change in order to enhance compliance with the Open Test Reporting project's XML schema definitions. The same applies to the XML schema definitions for information that is specific for PHP and PHPUnit. Please note that such changes may occur in bugfix or minor releases and could potentially break backwards compatibility.
 
