@@ -661,6 +661,26 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->migrateConfiguration());
     }
 
+    #[TestDox('--generate-xdebug-filter')]
+    public function testGenerateXdebugFilter(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--generate-xdebug-filter', 'filter.php']);
+
+        $this->assertTrue($configuration->hasGenerateXdebugFilter());
+        $this->assertSame('filter.php', $configuration->generateXdebugFilter());
+    }
+
+    public function testGenerateXdebugFilterMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasGenerateXdebugFilter());
+
+        $this->expectException(Exception::class);
+
+        $configuration->generateXdebugFilter();
+    }
+
     #[TestDox('--group string')]
     public function testGroup(): void
     {

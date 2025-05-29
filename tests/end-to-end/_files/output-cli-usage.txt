@@ -129,11 +129,12 @@ Code Coverage:
   --only-summary-for-coverage-text   Option for code coverage report in text format: only show summary
   --show-uncovered-for-coverage-text Option for code coverage report in text format: show uncovered files
   --coverage-xml <dir>               Write code coverage report in XML format to directory
-  --warm-coverage-cache              Warm static analysis cache
   --coverage-filter <dir>            Include <dir> in code coverage reporting
   --path-coverage                    Report path coverage in addition to line coverage
   --disable-coverage-ignore          Disable metadata for ignoring code coverage
   --no-coverage                      Ignore code coverage reporting configured in the XML configuration file
+  --warm-coverage-cache              Warm static analysis cache
+  --generate-xdebug-filter           Generate Xdebug filter script for use with --prepend
 
 Miscellaneous:
 

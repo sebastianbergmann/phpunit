@@ -66,6 +66,7 @@ use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\XmlConfigurationFileFinder;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
+use PHPUnit\TextUI\Command\GenerateXdebugFilterCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
 use PHPUnit\TextUI\Command\ListTestFilesCommand;
 use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
@@ -488,6 +489,10 @@ final readonly class Application
 
     private function executeCommandsThatDoNotRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration): void
     {
+        if ($cliConfiguration->hasGenerateXdebugFilter()) {
+            $this->execute(new GenerateXdebugFilterCommand($cliConfiguration->generateXdebugFilter(), $configuration, CodeCoverageFilterRegistry::instance()));
+        }
+
         if ($cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }

@@ -76,6 +76,8 @@ final class Builder
         'use-baseline=',
         'ignore-baseline',
         'generate-configuration',
+        'generate-xdebug-filter=',
+        'prepend=',
         'globals-backup',
         'group=',
         'covers=',
@@ -243,6 +245,7 @@ final class Builder
         $ignoreBaseline                    = false;
         $generateConfiguration             = false;
         $migrateConfiguration              = false;
+        $generateXdebugFilter              = null;
         $groups                            = null;
         $testsCovering                     = null;
         $testsUsing                        = null;
@@ -474,6 +477,11 @@ final class Builder
 
                 case '--migrate-configuration':
                     $migrateConfiguration = true;
+
+                    break;
+
+                case '--generate-xdebug-filter':
+                    $generateXdebugFilter = $option[1];
 
                     break;
 
@@ -1078,6 +1086,7 @@ final class Builder
             $ignoreBaseline,
             $generateConfiguration,
             $migrateConfiguration,
+            $generateXdebugFilter,
             $groups,
             $testsCovering,
             $testsUsing,
