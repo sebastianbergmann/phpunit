@@ -1,4 +1,6 @@
 conditionalTags:
+	Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule:
+		phpstan.rules.rule: %ergebnis.noNamedArgument.enabled%
 	Ergebnis\PHPStan\Rules\Classes\FinalRule:
 		phpstan.rules.rule: %ergebnis.final.enabled%
 	Ergebnis\PHPStan\Rules\Classes\NoExtendsRule:
@@ -80,6 +82,8 @@ parameters:
 			enabled: %ergebnis.allRules%
 		noIsset:
 			enabled: %ergebnis.allRules%
+		noNamedArgument:
+			enabled: %ergebnis.allRules%
 		noNullableReturnTypeDeclaration:
 			enabled: %ergebnis.allRules%
 		noParameterPassedByReference:
@@ -138,6 +142,9 @@ parametersSchema:
 		noIsset: structure([
 			enabled: bool(),
 		])
+		noNamedArgument: structure([
+			enabled: bool(),
+		])
 		noNullableReturnTypeDeclaration: structure([
 			enabled: bool(),
 		])
@@ -172,6 +179,9 @@ parametersSchema:
 services:
 	-
 		class: Ergebnis\PHPStan\Rules\Analyzer
+
+	-
+		class: Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule
 
 	-
 		class: Ergebnis\PHPStan\Rules\Classes\FinalRule

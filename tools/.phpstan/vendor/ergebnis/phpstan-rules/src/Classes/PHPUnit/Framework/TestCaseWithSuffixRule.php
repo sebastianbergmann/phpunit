@@ -65,7 +65,7 @@ final class TestCaseWithSuffixRule implements Rules\Rule
         $extendedPhpunitTestCaseClassName = '';
 
         foreach (self::$phpunitTestCaseClassNames as $phpunitTestCaseClassName) {
-            if ($classReflection->isSubclassOf($phpunitTestCaseClassName)) {
+            if ($classReflection->isSubclassOfClass($this->reflectionProvider->getClass($phpunitTestCaseClassName))) {
                 $extendedPhpunitTestCaseClassName = $phpunitTestCaseClassName;
 
                 break;

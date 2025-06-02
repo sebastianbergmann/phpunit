@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.8.0...main`][2.8.0...main].
+For a full diff see [`2.9.0...main`][2.9.0...main].
+
+## [`2.9.0`][2.9.0]
+
+For a full diff see [`2.8.0...2.9.0`][2.8.0...2.9.0].
+
+### Added
+
+- Added `CallLikes\NoNamedArgumentRule`, which reports an error when an anonymous function, a function, or a method is invoked using a named argument ([#914]), by [@localheinz]
+
+### Changed
+
+- Required `phpstan/phpstan:^2.1.8` ([#938]), by [@localheinz]
 
 ## [`2.8.0`][2.8.0]
 
@@ -14,7 +26,7 @@ For a full diff see [`2.7.0...2.8.0`][2.7.0...2.8.0].
 
 ### Added
 
-- Added `allRules` parameter to allow disabling and enabling all rules  ([#913]), by [@localheinz]
+- Added `allRules` parameter to allow disabling and enabling all rules ([#913]), by [@localheinz]
 - Added `Expressions\NoAssignByReferenceRule`, which reports an error when a variable is assigned by reference ([#914]), by [@localheinz]
 
 ## [`2.7.0`][2.7.0]
@@ -499,6 +511,7 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.6.1]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.6.1
 [2.7.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.7.0
 [2.8.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.8.0
+[2.9.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.9.0
 
 [362c7ea...0.1.0]: https://github.com/ergebnis/phpstan-rules/compare/362c7ea...0.1.0
 [0.1.0...0.2.0]: https://github.com/ergebnis/phpstan-rules/compare/0.1.0...0.2.0
@@ -540,7 +553,8 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.6.0...2.6.1]: https://github.com/ergebnis/phpstan-rules/compare/2.6.0...2.6.1
 [2.6.1...2.7.0]: https://github.com/ergebnis/phpstan-rules/compare/2.6.1...2.7.0
 [2.7.0...2.8.0]: https://github.com/ergebnis/phpstan-rules/compare/2.7.0...2.8.0
-[2.8.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.8.0...main
+[2.8.0...2.9.0]: https://github.com/ergebnis/phpstan-rules/compare/2.8.0...2.9.0
+[2.9.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.9.0...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -625,6 +639,7 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#912]: https://github.com/ergebnis/phpstan-rules/pull/912
 [#913]: https://github.com/ergebnis/phpstan-rules/pull/913
 [#914]: https://github.com/ergebnis/phpstan-rules/pull/914
+[#938]: https://github.com/ergebnis/phpstan-rules/pull/938
 
 [@cosmastech]: https://github.com/cosmastech
 [@enumag]: https://github.com/enumag

@@ -44,6 +44,7 @@ includes:
 
 This package provides the following rules for use with [`phpstan/phpstan`](https://github.com/phpstan/phpstan):
 
+- [`Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule`](https://github.com/ergebnis/phpstan-rules#calllikesnonamedargumentrule)
 - [`Ergebnis\PHPStan\Rules\Classes\FinalRule`](https://github.com/ergebnis/phpstan-rules#classesfinalrule)
 - [`Ergebnis\PHPStan\Rules\Classes\NoExtendsRule`](https://github.com/ergebnis/phpstan-rules#classesnoextendsrule)
 - [`Ergebnis\PHPStan\Rules\Classes\PHPUnit\Framework\TestCaseWithSuffixRule`](https://github.com/ergebnis/phpstan-rules#classesphpunitframeworktestcasewithsuffixrule)
@@ -72,6 +73,24 @@ This package provides the following rules for use with [`phpstan/phpstan`](https
 - [`Ergebnis\PHPStan\Rules\Methods\NoReturnByReferenceRule`](https://github.com/ergebnis/phpstan-rules#methodsnoreturnbyreferencerule)
 - [`Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule`](https://github.com/ergebnis/phpstan-rules#methodsprivateinfinalclassrule)
 - [`Ergebnis\PHPStan\Rules\Statements\NoSwitchRule`](https://github.com/ergebnis/phpstan-rules#statementsnoswitchrule)
+
+
+### CallLikes
+
+#### `CallLikes\NoNamedArgumentRule`
+
+This rule reports an error when an anonymous function, a function, or a method is invoked using a [named argument](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments).
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noNamedArgument:
+			enabled: false
+```
 
 ### Classes
 
@@ -409,7 +428,7 @@ parameters:
 
 #### `Methods\FinalInAbstractClassRule`
 
-This rule reports an error when a concrete `public` or `protected `method in an `abstract` class is not `final`.
+This rule reports an error when a concrete `public` or `protected` method in an `abstract` class is not `final`.
 
 :bulb: This rule ignores
 

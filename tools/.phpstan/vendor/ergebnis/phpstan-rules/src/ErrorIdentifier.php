@@ -25,6 +25,11 @@ final class ErrorIdentifier
         $this->value = $value;
     }
 
+    public static function fromString(string $value): self
+    {
+        return new self($value);
+    }
+
     public static function declareStrictTypes(): self
     {
         return new self('declareStrictTypes');
@@ -73,6 +78,11 @@ final class ErrorIdentifier
     public static function noIsset(): self
     {
         return new self('noIsset');
+    }
+
+    public static function noNamedArgument(): self
+    {
+        return new self('noNamedArgument');
     }
 
     public static function noParameterPassedByReference(): self
