@@ -33,7 +33,7 @@ Time: %s, Memory: %s MB
 
 %sGreeterTest.php:18
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.
 
 

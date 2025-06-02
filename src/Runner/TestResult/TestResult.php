@@ -397,12 +397,14 @@ final readonly class TestResult
     public function wasSuccessfulIgnoringPhpunitWarnings(): bool
     {
         return !$this->hasTestErroredEvents() &&
-               !$this->hasTestFailedEvents();
+               !$this->hasTestFailedEvents() &&
+               !$this->hasTestTriggeredPhpunitErrorEvents();
     }
 
-    public function wasSuccessfulAndNoTestHasIssues(): bool
+    public function hasIssues(): bool
     {
-        return $this->wasSuccessful() && !$this->hasTestsWithIssues();
+        return $this->hasTestsWithIssues() ||
+               $this->hasTestRunnerTriggeredWarningEvents();
     }
 
     public function hasTestsWithIssues(): bool

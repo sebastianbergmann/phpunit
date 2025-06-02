@@ -23,5 +23,5 @@ There was 1 PHPUnit test runner warning:
 
 1) Using comma-separated values with --test-suffix is deprecated and will no longer work in PHPUnit 12. You can use --test-suffix multiple times instead.
 
-WARNINGS!
+OK, but there were issues!
 Tests: 5, Assertions: 5, Warnings: 1.
