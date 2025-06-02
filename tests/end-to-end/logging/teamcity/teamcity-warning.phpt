@@ -35,5 +35,5 @@ There was 1 PHPUnit test runner warning:
   - Element 'foo': This element is not expected.
 
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.
