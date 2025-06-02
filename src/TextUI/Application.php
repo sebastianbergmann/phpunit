@@ -34,6 +34,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
+use PHPUnit\Logging\OpenTestReporting\CannotOpenUriForWritingException;
 use PHPUnit\Logging\OpenTestReporting\OtrXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
@@ -661,7 +662,7 @@ final readonly class Application
                     $configuration->logfileOtr(),
                     EventFacade::instance(),
                 );
-            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
+            } catch (CannotOpenUriForWritingException $e) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Cannot log test results in Open Test Reporting XML format to "%s": %s',
