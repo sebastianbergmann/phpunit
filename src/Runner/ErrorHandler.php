@@ -100,6 +100,12 @@ final class ErrorHandler
 
         $test = Event\Code\TestMethodBuilder::fromCallStack();
 
+        if ($errorNumber === E_USER_DEPRECATED) {
+            $deprecationFrame = $this->guessDeprecationFrame();
+            $errorFile        = $deprecationFrame['file'] ?? $errorFile;
+            $errorLine        = $deprecationFrame['line'] ?? $errorLine;
+        }
+
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
         $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
 
@@ -167,13 +173,11 @@ final class ErrorHandler
                 break;
 
             case E_USER_DEPRECATED:
-                $deprecationFrame = $this->guessDeprecationFrame();
-
                 Event\Facade::emitter()->testTriggeredDeprecation(
                     $test,
                     $errorString,
-                    $deprecationFrame['file'] ?? $errorFile,
-                    $deprecationFrame['line'] ?? $errorLine,
+                    $errorFile,
+                    $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
