@@ -25,5 +25,5 @@ There was 1 PHPUnit test runner warning:
 
 1) Cannot bootstrap extension because class PHPUnit\TestFixture\Event\MyExtension\MyExtensionBootstrap does not implement interface PHPUnit\Runner\Extension\Extension
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.

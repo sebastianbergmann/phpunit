@@ -24,5 +24,5 @@ Data set #2 has more arguments (3) than the test method accepts (2)
 
 %s:%d
 
-WARNINGS!
+OK, but there were issues!
 Tests: 4, Assertions: 4, Warnings: 1.

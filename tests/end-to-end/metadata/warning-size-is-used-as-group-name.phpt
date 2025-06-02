@@ -32,5 +32,5 @@ There were 6 PHPUnit test runner warnings:
 
 6) Group name "large" is not allowed for method PHPUnit\TestFixture\SizeGroups\MethodLevelTest::testOne
 
-WARNINGS!
+OK, but there were issues!
 Tests: 2, Assertions: 2, Warnings: 6.

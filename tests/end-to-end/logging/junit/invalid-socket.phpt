@@ -24,5 +24,5 @@ There was 1 PHPUnit test runner warning:
 
 1) Cannot log test results in JUnit XML format to "socket://hostname:port:wrong": "socket://hostname:port:wrong" does not match "socket://hostname:port" format
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.

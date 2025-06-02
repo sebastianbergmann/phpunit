@@ -27,5 +27,5 @@ Class PHPUnit\TestFixture\CodeCoverageTargeting\Warnings\SomeClass is targeted m
 
 %sDuplicateCoversTest.php:%d
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.

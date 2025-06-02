@@ -27,5 +27,5 @@ Time: %s, Memory: %s
 
 %sCoversClassCoversNothingTest.php:%d
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.

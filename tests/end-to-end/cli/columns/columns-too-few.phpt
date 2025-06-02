@@ -23,5 +23,5 @@ There was 1 PHPUnit test runner warning:
 
 1) Less than 16 columns requested, number of columns set to 16
 
-WARNINGS!
+OK, but there were issues!
 Tests: 3, Assertions: 3, Warnings: 1.

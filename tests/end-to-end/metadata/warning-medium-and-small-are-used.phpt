@@ -22,5 +22,5 @@ There was 1 PHPUnit test runner warning:
 
 1) #[Small] cannot be combined with #[Medium] or #[Large] for class PHPUnit\TestFixture\SizeCombinations\MediumSmallTest
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 1.

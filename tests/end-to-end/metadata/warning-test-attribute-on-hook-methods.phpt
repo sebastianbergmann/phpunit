@@ -44,5 +44,5 @@ There were 12 PHPUnit test runner warnings:
 
 12) Method PHPUnit\TestFixture\AttributesOnTemplateMethods\TestAttributeOnHookMethodsTest::after_method() cannot be used both as a hook method and as a test method
 
-WARNINGS!
+OK, but there were issues!
 Tests: 1, Assertions: 1, Warnings: 12.
