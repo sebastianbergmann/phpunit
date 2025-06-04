@@ -38,6 +38,7 @@ This feature is experimental and the generated XML may change to enhance complia
 
 ### Changed
 
+* [#6165](https://github.com/sebastianbergmann/phpunit/pull/6165): Collect deprecations triggered by autoloading while loading/building the test suite
 * A warning is now emitted when both `#[CoversNothing]` and `#[Covers*]` (or `#[Uses*]`) are used on a test class
 * A warning is now emitted when the same `#[Covers*]` (or `#[Uses*]`) attribute is used multiple times on a test class
 * A warning is now emitted when the same code is targeted by both `#[Covers*]` and `#[Uses*]` attributes
