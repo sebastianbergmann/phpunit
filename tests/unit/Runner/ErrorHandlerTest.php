@@ -31,5 +31,6 @@ final class ErrorHandlerTest extends TestCase
         $registeredDeprecations = $globalDeprecations->getValue($errorHandler);
         $this->assertCount(1, $registeredDeprecations);
         $this->assertSame('deprecation', $registeredDeprecations[0][1]);
+        $globalDeprecations->setValue($errorHandler, []);
     }
 }
