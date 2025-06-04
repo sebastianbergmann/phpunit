@@ -238,6 +238,7 @@ final class ErrorHandler
 
         $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
+
         $this->triggerGlobalDeprecations();
 
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
