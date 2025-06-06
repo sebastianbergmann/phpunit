@@ -47,4 +47,4 @@ This feature is experimental and the generated XML may change to enhance complia
 * A warning is now emitted when more than one of `#[Small]`, `#[Medium]`, or `#[Large]` is used on a test class
 * A warning is now emitted when a data provider provides data sets that have more values than the test method consumes using arguments
 
-[12.2.0]: https://github.com/sebastianbergmann/phpunit/compare/12.1...main
+[12.2.0]: https://github.com/sebastianbergmann/phpunit/compare/12.1.6...12.2.0
