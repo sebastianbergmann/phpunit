@@ -16,7 +16,6 @@ use function get_debug_type;
 use function is_array;
 use function is_int;
 use function is_string;
-use function method_exists;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
@@ -64,7 +63,9 @@ final readonly class DataProvider
             );
         }
 
-        $testMethodNumberOfParameters = (new ReflectionMethod($className, $methodName))->getNumberOfParameters();
+        $method                       = new ReflectionMethod($className, $methodName);
+        $testMethodNumberOfParameters = $method->getNumberOfParameters();
+        $testMethodIsNonVariadic      = !$method->isVariadic();
 
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
@@ -77,11 +78,7 @@ final readonly class DataProvider
                 );
             }
 
-            if ($testMethodNumberOfParameters < count($value)) {
-                assert(method_exists($className, $methodName));
-
-                $method = new ReflectionMethod($className, $methodName);
-
+            if ($testMethodIsNonVariadic && $testMethodNumberOfParameters < count($value)) {
                 Event\Facade::emitter()->testTriggeredPhpunitWarning(
                     new TestMethod(
                         $className,
