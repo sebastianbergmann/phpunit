@@ -1,5 +1,5 @@
 --TEST--
-phpunit ../../_files/DataProviderTooManyArguments.php
+phpunit ../../_files/DataProviderTooManyArgumentsTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -13,7 +13,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-W...                                                                4 / 4 (100%)
+W......                                                             7 / 7 (100%)
 
 Time: %s, Memory: %s
 
@@ -25,4 +25,4 @@ Data set #2 has more arguments (3) than the test method accepts (2)
 %s:%d
 
 OK, but there were issues!
-Tests: 4, Assertions: 4, Warnings: 1.
+Tests: 7, Assertions: 7, Warnings: 1.
