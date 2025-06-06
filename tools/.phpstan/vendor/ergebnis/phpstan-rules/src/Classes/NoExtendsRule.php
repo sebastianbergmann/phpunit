@@ -17,6 +17,7 @@ use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
 use PHPStan\Rules;
+use PHPUnit\Framework;
 
 /**
  * @implements Rules\Rule<Node\Stmt\Class_>
@@ -27,7 +28,7 @@ final class NoExtendsRule implements Rules\Rule
      * @var list<class-string>
      */
     private static array $defaultClassesAllowedToBeExtended = [
-        'PHPUnit\\Framework\\TestCase',
+        Framework\TestCase::class,
     ];
 
     /**

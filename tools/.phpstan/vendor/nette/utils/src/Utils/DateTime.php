@@ -76,12 +76,9 @@ class DateTime extends \DateTime implements \JsonSerializable
 		$s = sprintf('%04d-%02d-%02d %02d:%02d:%02.5F', $year, $month, $day, $hour, $minute, $second);
 		if (
 			!checkdate($month, $day, $year)
-			|| $hour < 0
-			|| $hour > 23
-			|| $minute < 0
-			|| $minute > 59
-			|| $second < 0
-			|| $second >= 60
+			|| $hour < 0 || $hour > 23
+			|| $minute < 0 || $minute > 59
+			|| $second < 0 || $second >= 60
 		) {
 			throw new Nette\InvalidArgumentException("Invalid date '$s'");
 		}
@@ -91,11 +88,11 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 
 	/**
-	 * Returns new DateTime object formatted according to the specified format.
+	 * Returns a new DateTime object formatted according to the specified format.
 	 */
 	public static function createFromFormat(
 		string $format,
-		string $time,
+		string $datetime,
 		string|\DateTimeZone|null $timezone = null,
 	): static|false
 	{
@@ -106,8 +103,82 @@ class DateTime extends \DateTime implements \JsonSerializable
 			$timezone = new \DateTimeZone($timezone);
 		}
 
-		$date = parent::createFromFormat($format, $time, $timezone);
+		$date = parent::createFromFormat($format, $datetime, $timezone);
 		return $date ? static::from($date) : false;
+	}
+
+
+	public function __construct(string $datetime = 'now', ?\DateTimeZone $timezone = null)
+	{
+		$this->apply($datetime, $timezone, true);
+	}
+
+
+	public function modify(string $modifier): static
+	{
+		$this->apply($modifier);
+		return $this;
+	}
+
+
+	public function setDate(int $year, int $month, int $day): static
+	{
+		if (!checkdate($month, $day, $year)) {
+			trigger_error(sprintf(self::class . ': The date %04d-%02d-%02d is not valid.', $year, $month, $day), E_USER_WARNING);
+		}
+		return parent::setDate($year, $month, $day);
+	}
+
+
+	public function setTime(int $hour, int $minute, int $second = 0, int $microsecond = 0): static
+	{
+		if (
+			$hour < 0 || $hour > 23
+			|| $minute < 0 || $minute > 59
+			|| $second < 0 || $second >= 60
+			|| $microsecond < 0 || $microsecond >= 1_000_000
+		) {
+			trigger_error(sprintf(self::class . ': The time %02d:%02d:%08.5F is not valid.', $hour, $minute, $second + $microsecond / 1_000_000), E_USER_WARNING);
+		}
+		return parent::setTime($hour, $minute, $second, $microsecond);
+	}
+
+
+	/**
+	 * Converts a relative time string (e.g. '10 minut') to seconds.
+	 */
+	public static function relativeToSeconds(string $relativeTime): int
+	{
+		return (new \DateTimeImmutable('1970-01-01 ' . $relativeTime, new \DateTimeZone('UTC')))
+			->getTimestamp();
+	}
+
+
+	private function apply(string $datetime, $timezone = null, bool $ctr = false): void
+	{
+		$relPart = '';
+		$absPart = preg_replace_callback(
+			'/[+-]?\s*\d+\s+((microsecond|millisecond|[mµu]sec)s?|[mµ]s|sec(ond)?s?|min(ute)?s?|hours?)\b/iu',
+			function ($m) use (&$relPart) {
+				$relPart .= $m[0] . ' ';
+				return '';
+			},
+			$datetime,
+		);
+
+		if ($ctr) {
+			parent::__construct($absPart, $timezone);
+			$this->handleErrors($datetime);
+		} elseif (trim($absPart)) {
+			parent::modify($absPart) && $this->handleErrors($datetime);
+		}
+
+		if ($relPart) {
+			$timezone ??= $this->getTimezone();
+			$this->setTimezone(new \DateTimeZone('UTC'));
+			parent::modify($relPart) && $this->handleErrors($datetime);
+			$this->setTimezone($timezone);
+		}
 	}
 
 
@@ -136,5 +207,15 @@ class DateTime extends \DateTime implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		return $modify ? $dolly->modify($modify) : $dolly;
+	}
+
+
+	private function handleErrors(string $value): void
+	{
+		$errors = self::getLastErrors();
+		$errors = array_merge($errors['errors'] ?? [], $errors['warnings'] ?? []);
+		if ($errors) {
+			trigger_error(self::class . ': ' . implode(', ', $errors) . " '$value'", E_USER_WARNING);
+		}
 	}
 }
