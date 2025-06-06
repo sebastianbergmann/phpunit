@@ -111,7 +111,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "12.2-dev"
+            "dev-main": "12.3-dev"
         }
     }
 }
