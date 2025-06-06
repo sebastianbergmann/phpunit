@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.2.1] - 2025-MM-DD
+
+### Fixed
+
+* [#6228](https://github.com/sebastianbergmann/phpunit/pull/6228): Variadic test methods should not warn about too many arguments from data provider
+
 ## [12.2.0] - 2025-06-06
 
 ### Added
@@ -47,4 +53,5 @@ This feature is experimental and the generated XML may change to enhance complia
 * A warning is now emitted when more than one of `#[Small]`, `#[Medium]`, or `#[Large]` is used on a test class
 * A warning is now emitted when a data provider provides data sets that have more values than the test method consumes using arguments
 
+[12.2.1]: https://github.com/sebastianbergmann/phpunit/compare/12.2.0...12.2.1
 [12.2.0]: https://github.com/sebastianbergmann/phpunit/compare/12.1.6...12.2.0
