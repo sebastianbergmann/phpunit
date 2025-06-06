@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules;
 
 /**
- * @internale
+ * @internal
  */
 final class ErrorIdentifier
 {
@@ -23,11 +23,6 @@ final class ErrorIdentifier
     private function __construct(string $value)
     {
         $this->value = $value;
-    }
-
-    public static function fromString(string $value): self
-    {
-        return new self($value);
     }
 
     public static function declareStrictTypes(): self
@@ -43,6 +38,11 @@ final class ErrorIdentifier
     public static function finalInAbstractClass(): self
     {
         return new self('finalInAbstractClass');
+    }
+
+    public static function invokeParentHookMethod(): self
+    {
+        return new self('invokeParentHookMethod');
     }
 
     public static function noCompact(): self

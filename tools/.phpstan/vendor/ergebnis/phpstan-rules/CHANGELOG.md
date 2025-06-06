@@ -6,7 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.9.0...main`][2.9.0...main].
+For a full diff see [`2.10.3...main`][2.10.3...main].
+
+## [`2.10.3`][2.10.3]
+
+For a full diff see [`2.10.2...2.10.3`][2.10.2...2.10.3].
+
+### Fixed
+
+- Adjusted `Methods\InvokeParentHookMethodRule` to ignore comments ([#944]), by [@localheinz]
+
+## [`2.10.2`][2.10.2]
+
+For a full diff see [`2.10.1...2.10.2`][2.10.1...2.10.2].
+
+### Fixed
+
+- Renamed error identifier for `Methods\InvokeParentHookMethodRule` ([#943]), by [@localheinz]
+
+## [`2.10.1`][2.10.1]
+
+For a full diff see [`2.10.0...2.10.1`][2.10.0...2.10.1].
+
+### Fixed
+
+- Fixed schema for configuration of `Methods\InvokeParentHookMethodRule` ([#940]), by [@localheinz]
+
+## [`2.10.0`][2.10.0]
+
+For a full diff see [`2.9.0...2.10.0`][2.9.0...2.10.0].
+
+### Added
+
+- Added `Methods\InvokeParentHookMethodRule`, which reports an error when a hook method that overrides a hook method in a parent class does not invoke the overridden hook method in the expected order ([#939]), by [@localheinz]
 
 ## [`2.9.0`][2.9.0]
 
@@ -512,6 +544,10 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.7.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.7.0
 [2.8.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.8.0
 [2.9.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.9.0
+[2.10.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.10.0
+[2.10.1]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.10.1
+[2.10.2]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.10.2
+[2.10.3]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.10.3
 
 [362c7ea...0.1.0]: https://github.com/ergebnis/phpstan-rules/compare/362c7ea...0.1.0
 [0.1.0...0.2.0]: https://github.com/ergebnis/phpstan-rules/compare/0.1.0...0.2.0
@@ -554,7 +590,11 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.6.1...2.7.0]: https://github.com/ergebnis/phpstan-rules/compare/2.6.1...2.7.0
 [2.7.0...2.8.0]: https://github.com/ergebnis/phpstan-rules/compare/2.7.0...2.8.0
 [2.8.0...2.9.0]: https://github.com/ergebnis/phpstan-rules/compare/2.8.0...2.9.0
-[2.9.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.9.0...main
+[2.9.0...2.10.0]: https://github.com/ergebnis/phpstan-rules/compare/2.9.0...2.10.0
+[2.10.0...2.10.1]: https://github.com/ergebnis/phpstan-rules/compare/2.10.0...2.10.1
+[2.10.1...2.10.2]: https://github.com/ergebnis/phpstan-rules/compare/2.10.1...2.10.2
+[2.10.2...2.10.3]: https://github.com/ergebnis/phpstan-rules/compare/2.10.2...2.10.3
+[2.10.3...main]: https://github.com/ergebnis/phpstan-rules/compare/2.10.3...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -640,6 +680,10 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#913]: https://github.com/ergebnis/phpstan-rules/pull/913
 [#914]: https://github.com/ergebnis/phpstan-rules/pull/914
 [#938]: https://github.com/ergebnis/phpstan-rules/pull/938
+[#939]: https://github.com/ergebnis/phpstan-rules/pull/939
+[#940]: https://github.com/ergebnis/phpstan-rules/pull/940
+[#943]: https://github.com/ergebnis/phpstan-rules/pull/943
+[#944]: https://github.com/ergebnis/phpstan-rules/pull/944
 
 [@cosmastech]: https://github.com/cosmastech
 [@enumag]: https://github.com/enumag

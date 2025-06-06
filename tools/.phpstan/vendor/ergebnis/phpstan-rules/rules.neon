@@ -37,6 +37,8 @@ conditionalTags:
 		phpstan.rules.rule: %ergebnis.noReturnByReference.enabled%
 	Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule:
 		phpstan.rules.rule: %ergebnis.finalInAbstractClass.enabled%
+	Ergebnis\PHPStan\Rules\Methods\InvokeParentHookMethodRule:
+		phpstan.rules.rule: %ergebnis.invokeParentHookMethod.enabled%
 	Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule:
 		phpstan.rules.rule: %ergebnis.noConstructorParameterWithDefaultValue.enabled%
 	Ergebnis\PHPStan\Rules\Methods\NoNullableReturnTypeDeclarationRule:
@@ -67,6 +69,9 @@ parameters:
 			enabled: %ergebnis.allRules%
 		finalInAbstractClass:
 			enabled: %ergebnis.allRules%
+		invokeParentHookMethod:
+			enabled: %ergebnis.allRules%
+			hookMethods: []
 		noAssignByReference:
 			enabled: %ergebnis.allRules%
 		noCompact:
@@ -119,6 +124,15 @@ parametersSchema:
 		])
 		finalInAbstractClass: structure([
 			enabled: bool(),
+		])
+		invokeParentHookMethod: structure([
+			enabled: bool(),
+			hookMethods: listOf(structure([
+				className: string(),
+				hasContent: anyOf("no", "yes"),
+				invocation: anyOf("any", "first", "last"),
+				methodName: string(),
+			]))
 		])
 		noAssignByReference: structure([
 			enabled: bool(),
@@ -241,6 +255,11 @@ services:
 
 	-
 		class: Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Methods\InvokeParentHookMethodRule
+		arguments:
+			hookMethods: %ergebnis.invokeParentHookMethod.hookMethods%
 
 	-
 		class: Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule

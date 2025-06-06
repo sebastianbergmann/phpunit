@@ -64,6 +64,7 @@ This package provides the following rules for use with [`phpstan/phpstan`](https
 - [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterwithnulldefaultvaluerule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoReturnByReferenceRule`](https://github.com/ergebnis/phpstan-rules#functionsnoreturnbyreferencerule)
 - [`Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule`](https://github.com/ergebnis/phpstan-rules#methodsfinalinabstractclassrule)
+- [`Ergebnis\PHPStan\Rules\Methods\InvokeParentHookMethodRule`](https://github.com/ergebnis/phpstan-rules#methodsinvokeparenthookmethodrule)
 - [`Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#methodsnoconstructorparameterwithdefaultvaluerule)
 - [`Ergebnis\PHPStan\Rules\Methods\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#methodsnonullablereturntypedeclarationrule)
 - [`Ergebnis\PHPStan\Rules\Methods\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#methodsnoparameterpassedbyreferencerule)
@@ -150,7 +151,7 @@ This rule reports an error when a class extends another class.
 
 By default, this rule allows the following classes to be extended:
 
-- [`PHPUnit\Framework\TestCase`](https://github.com/sebastianbergmann/phpunit/blob/7.5.2/src/Framework/TestCase.php)
+- [`PHPUnit\Framework\TestCase`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php)
 
 ##### Disabling the rule
 
@@ -445,6 +446,63 @@ parameters:
 		finalInAbstractClass:
 			enabled: false
 ```
+
+#### `Methods\InvokeParentHookMethodRule`
+
+This rule reports an error when a hook method that overrides a hook method in a parent class does not invoke the overridden hook method in the expected order.
+
+##### Defaults
+
+By default, this rule requires the following hook methods to be invoked before doing something in the overriding method:
+
+- [`Codeception\PHPUnit\TestCase::_setUp()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L11-L13)
+- [`Codeception\PHPUnit\TestCase::_setUpBeforeClass()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L25-L27)
+- [`Codeception\Test\Unit::_before()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L63-L65)
+- [`Codeception\Test\Unit::_setUp()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L34-L58)
+- [`PHPUnit\Framework\TestCase::assertPreConditions()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2073-L2075)
+- [`PHPUnit\Framework\TestCase::setUp()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2063-L2065)
+- [`PHPUnit\Framework\TestCase::setUpBeforeClass()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2055-L2057)
+
+By default, this rule requires the following hook methods to be invoked after doing something in the overriding method:
+
+- [`Codeception\PHPUnit\TestCase::_tearDown()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L18-L20)
+- [`Codeception\PHPUnit\TestCase::_tearDownAfterClass()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L32-L34)
+- [`Codeception\Test\Unit::_after()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L75-L77)
+- [`Codeception\Test\Unit::_tearDown()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L67-L70)
+- [`PHPUnit\Framework\TestCase::assertPostConditions()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2083-L2085)
+- [`PHPUnit\Framework\TestCase::tearDown()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2091-L2093)
+- [`PHPUnit\Framework\TestCase::tearDownAfterClass()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2098-L2100)
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		invokeParentHookMethod:
+			enabled: false
+```
+
+##### Configuring methods to invoke the parent method in the right order:
+
+You can set the `hookMethods` parameter to a list of hook methods:
+
+```neon
+parameters:
+	ergebnis:
+		invokeParentHookMethod:
+			hookMethods:
+				- className: "Example\Test\Functional\AbstractCest"
+					methodName: "_before"
+					hasContent: "yes"
+					invocation: "first"
+```
+
+- `className`: name of the class that declares the hook method
+- `methodName`: name of the hook method
+- `hasContent`: one of `"yes"`, `"no"`, `"maybe"`
+- `invocation`: one of `"any"` (needs to be invoked), `"first"` (needs to be invoked before all other statements in the overriding hook method, `"last"` (needs to be invoked after all other statements in the overriding hook method)
 
 #### `Methods\NoConstructorParameterWithDefaultValueRule`
 
