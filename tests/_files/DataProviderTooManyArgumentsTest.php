@@ -32,6 +32,12 @@ final class DataProviderTooManyArgumentsTest extends TestCase
         $this->assertSame($x1, $x2);
     }
 
+    #[DataProvider('provider')]
+    public function testMethodHavingVariadicParameter(bool $x1, ...$rest): void
+    {
+        $this->assertTrue($x1);
+    }
+
     public function testToNotHaveNoTests(): void
     {
         $this->assertTrue(true);
