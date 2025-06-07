@@ -15,7 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-F..S.FSFFS                                                        10 / 10 (100%)
+F....FSFFS                                                        10 / 10 (100%)
 
 Time: %s, Memory: %s
 
@@ -43,16 +43,13 @@ Failed asserting that 2 is identical to 3.
 
 --
 
-There were 3 skipped tests:
+There were 2 skipped tests:
 
-1) PHPUnit\TestFixture\Issue6222\Issue6222Test::testDependingOnTwoCasesPassing
-This test depends on "PHPUnit\TestFixture\Issue6222\Issue6222Test::testTwoCasesPassing" to pass
-
-2) PHPUnit\TestFixture\Issue6222\Issue6222Test::testDependingOnOneCasePassing
+1) PHPUnit\TestFixture\Issue6222\Issue6222Test::testDependingOnOneCasePassing
 This test depends on "PHPUnit\TestFixture\Issue6222\Issue6222Test::testOneCasePassing" to pass
 
-3) PHPUnit\TestFixture\Issue6222\Issue6222Test::testDependingOnZeroCasesPassing
+2) PHPUnit\TestFixture\Issue6222\Issue6222Test::testDependingOnZeroCasesPassing
 This test depends on "PHPUnit\TestFixture\Issue6222\Issue6222Test::testZeroCasesPassing" to pass
 
 FAILURES!
-Tests: 10, Assertions: 7, Failures: 4, Skipped: 3.
+Tests: 10, Assertions: 8, Failures: 4, Skipped: 2.
