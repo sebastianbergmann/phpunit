@@ -75,8 +75,8 @@ final readonly class TestSuiteBuilder
             $testSuite = (new TestSuiteMapper)->map(
                 $xmlConfigurationFile,
                 $configuration->testSuite(),
-                $configuration->includeTestSuite(),
-                $configuration->excludeTestSuite(),
+                $configuration->includeTestSuites(),
+                $configuration->excludeTestSuites(),
             );
         }
 

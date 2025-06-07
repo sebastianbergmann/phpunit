@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function explode;
+
 /**
  * @immutable
  *
@@ -1312,14 +1314,44 @@ final readonly class Configuration
         return $this->testSuite;
     }
 
+    /**
+     * @deprecated Use includeTestSuites() instead
+     */
     public function includeTestSuite(): string
     {
         return $this->includeTestSuite;
     }
 
+    /**
+     * @return list<non-empty-string>
+     */
+    public function includeTestSuites(): array
+    {
+        if ($this->includeTestSuite === '') {
+            return [];
+        }
+
+        return explode(',', $this->includeTestSuite);
+    }
+
+    /**
+     * @deprecated Use excludeTestSuites() instead
+     */
     public function excludeTestSuite(): string
     {
         return $this->excludeTestSuite;
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function excludeTestSuites(): array
+    {
+        if ($this->excludeTestSuite === '') {
+            return [];
+        }
+
+        return explode(',', $this->excludeTestSuite);
     }
 
     /**

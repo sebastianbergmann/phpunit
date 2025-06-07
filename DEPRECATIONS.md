@@ -20,6 +20,8 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 | [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PostConditionCalled::testCaseClass()`      | 12.1.0 | `PostConditionCalled::test()->className()`    |
 | [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PostConditionErrored::testCaseClass()`     | 12.1.0 | `PostConditionCalled::test()->className()`    |
 | [#6140](https://github.com/sebastianbergmann/phpunit/issues/6140) | `PostConditionFinished::testCaseClass()`    | 12.1.0 | `PostConditionCalled::test()->className()`    |
+| [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229) | `Configuration::includeTestSuite()`         | 12.3.0 | `Configuration::includeTestSuites()`          |
+| [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229) | `Configuration::excludeTestSuite()`         | 12.3.0 | `Configuration::excludeTestSuites()`          |
 
 ## Hard Deprecations
 

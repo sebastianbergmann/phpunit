@@ -66,8 +66,8 @@ final class TestSuiteBuilderTest extends TestCase
         return (new TestSuiteMapper)->map(
             $configuration->configurationFile(),
             $configuration->testSuite(),
-            $configuration->includeTestSuite(),
-            $configuration->excludeTestSuite(),
+            $configuration->includeTestSuites(),
+            $configuration->excludeTestSuites(),
         );
     }
 }
