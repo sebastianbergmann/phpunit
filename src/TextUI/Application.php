@@ -18,7 +18,6 @@ use function dirname;
 use function explode;
 use function function_exists;
 use function is_file;
-use function is_readable;
 use function method_exists;
 use function printf;
 use function realpath;
@@ -78,6 +77,9 @@ use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
+use PHPUnit\TextUI\Configuration\BootstrapLoader;
+use PHPUnit\TextUI\Configuration\BootstrapScriptDoesNotExistException;
+use PHPUnit\TextUI\Configuration\BootstrapScriptException;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -124,8 +126,10 @@ final readonly class Application
 
             (new PhpHandler)->handle($configuration->php());
 
-            if ($configuration->hasBootstrap()) {
-                $this->loadBootstrapScript($configuration->bootstrap());
+            try {
+                (new BootstrapLoader)->handle($configuration);
+            } catch (BootstrapScriptDoesNotExistException|BootstrapScriptException $e) {
+                $this->exitWithErrorMessage($e->getMessage());
             }
 
             $this->executeCommandsThatDoNotRequireTheTestSuite($configuration, $cliConfiguration);
@@ -353,48 +357,6 @@ final readonly class Application
         }
 
         exit(Result::EXCEPTION);
-    }
-
-    private function loadBootstrapScript(string $filename): void
-    {
-        if (!is_readable($filename)) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Cannot open bootstrap script "%s"',
-                    $filename,
-                ),
-            );
-        }
-
-        try {
-            include_once $filename;
-        } catch (Throwable $t) {
-            $message = sprintf(
-                'Error in bootstrap script: %s:%s%s%s%s',
-                $t::class,
-                PHP_EOL,
-                $t->getMessage(),
-                PHP_EOL,
-                $t->getTraceAsString(),
-            );
-
-            while ($t = $t->getPrevious()) {
-                $message .= sprintf(
-                    '%s%sPrevious error: %s:%s%s%s%s',
-                    PHP_EOL,
-                    PHP_EOL,
-                    $t::class,
-                    PHP_EOL,
-                    $t->getMessage(),
-                    PHP_EOL,
-                    $t->getTraceAsString(),
-                );
-            }
-
-            $this->exitWithErrorMessage($message);
-        }
-
-        EventFacade::emitter()->testRunnerBootstrapFinished($filename);
     }
 
     /**
