@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use const PHP_EOL;
+use function in_array;
 use function is_readable;
 use function sprintf;
 use PHPUnit\Event\Facade as EventFacade;
@@ -32,12 +33,32 @@ final class BootstrapLoader
             return;
         }
 
-        if (!is_readable($configuration->bootstrap())) {
-            throw new BootstrapScriptDoesNotExistException($configuration->bootstrap());
+        $this->load($configuration->bootstrap());
+
+        foreach ($configuration->bootstrapForTestSuite() as $testSuiteName => $bootstrapForTestSuite) {
+            if ($configuration->includeTestSuites() !== [] && !in_array($testSuiteName, $configuration->includeTestSuites(), true)) {
+                continue;
+            }
+
+            if ($configuration->excludeTestSuites() !== [] && in_array($testSuiteName, $configuration->excludeTestSuites(), true)) {
+                continue;
+            }
+
+            $this->load($bootstrapForTestSuite);
+        }
+    }
+
+    /**
+     * @param non-empty-string $filename
+     */
+    private function load(string $filename): void
+    {
+        if (!is_readable($filename)) {
+            throw new BootstrapScriptDoesNotExistException($filename);
         }
 
         try {
-            include_once $configuration->bootstrap();
+            include_once $filename;
         } catch (Throwable $t) {
             $message = sprintf(
                 'Error in bootstrap script: %s:%s%s%s%s',
@@ -64,6 +85,6 @@ final class BootstrapLoader
             throw new BootstrapScriptException($message);
         }
 
-        EventFacade::emitter()->testRunnerBootstrapFinished($configuration->bootstrap());
+        EventFacade::emitter()->testRunnerBootstrapFinished($filename);
     }
 }

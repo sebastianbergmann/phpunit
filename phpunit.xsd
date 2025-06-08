@@ -252,6 +252,7 @@
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="bootstrap" type="xs:string" use="optional"/>
     </xs:complexType>
     <xs:group name="testSuitePathGroup">
         <xs:sequence>

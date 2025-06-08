@@ -124,7 +124,7 @@ final readonly class Loader
             $this->groups($xpath),
             $this->logging($configurationFileRealpath, $xpath),
             $this->php($configurationFileRealpath, $xpath),
-            $this->phpunit($configurationFileRealpath, $document),
+            $this->phpunit($configurationFileRealpath, $document, $xpath),
             $this->testSuite($configurationFileRealpath, $xpath),
         );
     }
@@ -803,7 +803,7 @@ final readonly class Loader
         );
     }
 
-    private function phpunit(string $filename, DOMDocument $document): PHPUnit
+    private function phpunit(string $filename, DOMDocument $document, DOMXPath $xpath): PHPUnit
     {
         $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
         $defectsFirst        = false;
@@ -917,6 +917,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($document->documentElement, 'reverseDefectList', false),
             $requireCoverageMetadata,
             $bootstrap,
+            $this->bootstrapForTestSuite($filename, $xpath),
             $this->parseBooleanAttribute($document->documentElement, 'processIsolation', false),
             $this->parseBooleanAttribute($document->documentElement, 'failOnAllIssues', false),
             $this->parseBooleanAttribute($document->documentElement, 'failOnDeprecation', false),
@@ -991,6 +992,30 @@ final readonly class Loader
         }
 
         return $columns;
+    }
+
+    /**
+     * @return array<non-empty-string, non-empty-string>
+     */
+    private function bootstrapForTestSuite(string $filename, DOMXPath $xpath): array
+    {
+        $bootstrapForTestSuite = [];
+
+        foreach ($this->parseTestSuiteElements($xpath) as $element) {
+            if (!$element->hasAttribute('bootstrap')) {
+                continue;
+            }
+
+            $name      = $element->getAttribute('name');
+            $bootstrap = $element->getAttribute('bootstrap');
+
+            assert($name !== '');
+            assert($bootstrap !== '');
+
+            $bootstrapForTestSuite[$name] = $this->toAbsolutePath($filename, $bootstrap);
+        }
+
+        return $bootstrapForTestSuite;
     }
 
     private function testSuite(string $filename, DOMXPath $xpath): TestSuiteCollection

@@ -823,6 +823,7 @@ final readonly class Merger
             $cliConfiguration->arguments(),
             $configurationFile,
             $bootstrap,
+            $xmlConfiguration->phpunit()->bootstrapForTestSuite(),
             $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
