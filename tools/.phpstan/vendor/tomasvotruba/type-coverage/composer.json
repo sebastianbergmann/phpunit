@@ -1,0 +1,24 @@
+{
+    "name": "tomasvotruba/type-coverage",
+    "type": "phpstan-extension",
+    "description": "Measure type coverage of your project",
+    "license": "MIT",
+    "keywords": ["static analysis", "phpstan-extension"],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "phpstan/phpstan": "^2.0",
+        "nette/utils": "^3.2 || ^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TomasVotruba\\TypeCoverage\\": "src"
+        }
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "config/extension.neon"
+            ]
+        }
+    }
+}

@@ -57,6 +57,7 @@ final class MergerTest extends TestCase
         $this->assertTrue($fromFile->codeCoverage()->hasCobertura());
         $this->assertTrue($fromFile->codeCoverage()->hasCrap4j());
         $this->assertTrue($fromFile->codeCoverage()->hasHtml());
+        $this->assertTrue($fromFile->codeCoverage()->hasOpenClover());
         $this->assertTrue($fromFile->codeCoverage()->hasText());
         $this->assertTrue($fromFile->codeCoverage()->hasXml());
 
@@ -75,6 +76,7 @@ final class MergerTest extends TestCase
         $this->assertFalse($mergedConfig->hasCoverageCobertura());
         $this->assertFalse($mergedConfig->hasCoverageCrap4j());
         $this->assertFalse($mergedConfig->hasCoverageHtml());
+        $this->assertFalse($mergedConfig->hasCoverageOpenClover());
         $this->assertFalse($mergedConfig->hasCoverageText());
         $this->assertFalse($mergedConfig->hasCoverageXml());
 

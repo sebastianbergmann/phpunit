@@ -13,7 +13,6 @@ class MethodWIthVariadicVariables
 {
     public function testVariadic(string $foo, mixed ...$arguments): array
     {
-
         return [$foo, ...$arguments];
     }
 }

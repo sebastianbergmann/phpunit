@@ -55,11 +55,19 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         return count($this->metadata);
     }
 
+    /**
+     * @phpstan-assert-if-true 0 $this->count()
+     * @phpstan-assert-if-true array{} $this->asArray()
+     */
     public function isEmpty(): bool
     {
         return $this->count() === 0;
     }
 
+    /**
+     * @phpstan-assert-if-true positive-int $this->count()
+     * @phpstan-assert-if-true non-empty-list<Metadata> $this->asArray()
+     */
     public function isNotEmpty(): bool
     {
         return $this->count() > 0;
@@ -160,12 +168,52 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isCoversNamespace(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversNamespace(),
+            ),
+        );
+    }
+
     public function isCoversClass(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isCoversClass(),
+            ),
+        );
+    }
+
+    public function isCoversClassesThatExtendClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isCoversClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversClassesThatImplementInterface(),
+            ),
+        );
+    }
+
+    public function isCoversTrait(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCoversTrait(),
             ),
         );
     }
@@ -463,6 +511,26 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isRequiresEnvironmentVariable(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRequiresEnvironmentVariable(),
+            ),
+        );
+    }
+
+    public function isWithEnvironmentVariable(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isWithEnvironmentVariable(),
+            ),
+        );
+    }
+
     public function isRequiresSetting(): self
     {
         return new self(
@@ -493,12 +561,52 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isUsesNamespace(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesNamespace(),
+            ),
+        );
+    }
+
     public function isUsesClass(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isUsesClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatExtendClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatExtendClass(),
+            ),
+        );
+    }
+
+    public function isUsesClassesThatImplementInterface(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesClassesThatImplementInterface(),
+            ),
+        );
+    }
+
+    public function isUsesTrait(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesTrait(),
             ),
         );
     }

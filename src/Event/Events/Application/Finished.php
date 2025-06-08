@@ -39,6 +39,9 @@ final readonly class Finished implements Event
         return $this->shellExitCode;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

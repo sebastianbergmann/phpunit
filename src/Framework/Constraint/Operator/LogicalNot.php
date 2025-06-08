@@ -60,7 +60,7 @@ final class LogicalNot extends UnaryOperator
             $positives,
         );
 
-        if (count($matches) > 0) {
+        if (count($matches) >= 3) {
             $nonInput = $matches[2];
 
             $negatedString = preg_replace(

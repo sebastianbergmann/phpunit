@@ -14,7 +14,7 @@ use function file_put_contents;
 use function ksort;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use XMLWriter;
 
 /**
@@ -108,7 +108,7 @@ final readonly class ListTestsAsXmlCommand implements Command
 
         foreach ($groups as $groupName => $testIds) {
             $writer->startElement('group');
-            $writer->writeAttribute('name', $groupName);
+            $writer->writeAttribute('name', (string) $groupName);
 
             foreach ($testIds as $testId) {
                 $writer->startElement('test');

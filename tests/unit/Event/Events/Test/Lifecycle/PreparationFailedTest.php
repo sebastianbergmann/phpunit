@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
+use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
@@ -21,14 +24,17 @@ final class PreparationFailedTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
+        $throwable     = ThrowableBuilder::from(new Exception('message'));
 
         $event = new PreparationFailed(
             $telemetryInfo,
             $test,
+            $throwable,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testCanBeRepresentedAsString(): void
@@ -36,8 +42,9 @@ final class PreparationFailedTest extends AbstractEventTestCase
         $event = new PreparationFailed(
             $this->telemetryInfo(),
             $this->testValueObject(),
+            ThrowableBuilder::from(new Exception('message')),
         );
 
-        $this->assertSame('Test Preparation Failed (FooTest::testBar)', $event->asString());
+        $this->assertSame('Test Preparation Failed (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
     }
 }

@@ -25,6 +25,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('UseBaselineTest.php')
     // Issue5795Test.php contains required whitespace that would be cleaned up
     ->notName('Issue5795Test.php')
+    // Hook methods that should be protected must be public in TestAttributeOnHookMethodsTest.php
+    ->notName('TestAttributeOnHookMethodsTest.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
@@ -35,6 +37,9 @@ $config->setFinder($finder)
         'array_indentation' => true,
         'array_push' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'attribute_empty_parentheses' => [
+            'use_parentheses' => false,
+        ],
         'backtick_to_shell_exec' => true,
         'binary_operator_spaces' => [
             'operators' => [
@@ -171,7 +176,23 @@ $config->setFinder($finder)
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
-        'no_extra_blank_lines' => true,
+        'no_extra_blank_lines' => [
+            'tokens' => [
+                'attribute',
+                'break',
+                'case',
+                'continue',
+                'curly_brace_block',
+                'default',
+                'extra',
+                'parenthesis_brace_block',
+                'return',
+                'square_brace_block',
+                'switch',
+                'throw',
+                'use',
+            ],
+        ],
         'no_homoglyph_names' => true,
         'no_leading_import_slash' => true,
         'no_leading_namespace_whitespace' => true,

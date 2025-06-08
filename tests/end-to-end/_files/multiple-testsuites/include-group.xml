@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd">
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+
+        <testsuite name="end-to-end">
+            <directory>tests/end-to-end</directory>
+        </testsuite>
+    </testsuites>
+
+    <groups>
+        <include>
+            <group>default</group>
+        </include>
+    </groups>
+</phpunit>

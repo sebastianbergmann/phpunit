@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
@@ -41,7 +40,7 @@ trait MockObjectApi
 
     abstract public function __phpunit_unsetInvocationMocker(): void;
 
-    public function expects(InvocationOrder $matcher): InvocationMockerBuilder
+    public function expects(InvocationOrder $matcher): InvocationStubber
     {
         return $this->__phpunit_getInvocationHandler()->expects($matcher);
     }

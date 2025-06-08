@@ -18,7 +18,10 @@ use function version_compare;
  */
 final readonly class MigrationBuilder
 {
-    private const AVAILABLE_MIGRATIONS = [
+    /**
+     * @var non-empty-array<non-empty-string, non-empty-list<class-string>>
+     */
+    private const array AVAILABLE_MIGRATIONS = [
         '8.5' => [
             RemoveLogTypes::class,
         ],
@@ -64,6 +67,10 @@ final readonly class MigrationBuilder
             MoveCoverageDirectoriesToSource::class,
         ],
 
+        '10.4' => [
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
+        ],
+
         '10.5' => [
             RemoveRegisterMockObjectsFromTestArgumentsRecursivelyAttribute::class,
         ],
@@ -77,14 +84,12 @@ final readonly class MigrationBuilder
             RemoveCoverageElementCacheDirectoryAttribute::class,
         ],
 
-        '11.4' => [
-            RemoveCoverageElementIncludeUncoveredFilesAttribute::class,
+        '11.2' => [
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
         ],
     ];
 
     /**
-     * @throws MigrationBuilderException
-     *
      * @return non-empty-list<Migration>
      */
     public function build(string $fromVersion): array

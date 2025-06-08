@@ -63,6 +63,6 @@ final class PHPTest extends TestCase
     {
         $this->assertNotEmpty((new PHP)->extensions());
         $this->assertIsList((new PHP)->extensions());
-        $this->assertContainsOnly('string', (new PHP)->extensions());
+        $this->assertContainsOnlyString((new PHP)->extensions());
     }
 }

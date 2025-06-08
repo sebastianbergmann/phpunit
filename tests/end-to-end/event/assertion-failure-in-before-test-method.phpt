@@ -21,9 +21,12 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
 Before Test Method Called (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest)
+Before Test Method Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest)
+Failed asserting that false is true.
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::beforeTest
 Test Preparation Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
+Failed asserting that false is true.
 Test Failed (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Event\AssertionFailureInSetUpTest::testOne)

@@ -22,7 +22,7 @@ final readonly class UsesFunction extends Metadata
     private string $functionName;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param non-empty-string $functionName
      */
     public function __construct(int $level, string $functionName)
@@ -43,13 +43,5 @@ final readonly class UsesFunction extends Metadata
     public function functionName(): string
     {
         return $this->functionName;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function asStringForCodeUnitMapper(): string
-    {
-        return '::' . $this->functionName;
     }
 }

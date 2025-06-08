@@ -22,8 +22,8 @@ use PHPUnit\Runner\Version;
  */
 final readonly class UpdateSchemaLocation implements Migration
 {
-    private const NAMESPACE_URI              = 'http://www.w3.org/2001/XMLSchema-instance';
-    private const LOCAL_NAME_SCHEMA_LOCATION = 'noNamespaceSchemaLocation';
+    private const string NAMESPACE_URI              = 'http://www.w3.org/2001/XMLSchema-instance';
+    private const string LOCAL_NAME_SCHEMA_LOCATION = 'noNamespaceSchemaLocation';
 
     public function migrate(DOMDocument $document): void
     {

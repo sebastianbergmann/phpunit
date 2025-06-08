@@ -22,7 +22,7 @@ class Issue2830Test extends TestCase
     }
 
     #[DataProvider('simpleDataProvider')]
-    public function testMethodUsesDataProvider(): void
+    public function testMethodUsesDataProvider(string $foo): void
     {
         $this->assertTrue(true);
     }

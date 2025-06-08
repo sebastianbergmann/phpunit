@@ -19,7 +19,6 @@ use const E_ERROR;
 use const E_NOTICE;
 use const E_PARSE;
 use const E_RECOVERABLE_ERROR;
-use const E_STRICT;
 use const E_USER_DEPRECATED;
 use const E_USER_ERROR;
 use const E_USER_NOTICE;
@@ -32,6 +31,7 @@ use function defined;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
+use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
@@ -50,14 +50,18 @@ use PHPUnit\Util\ExcludeList;
  */
 final class ErrorHandler
 {
-    private const UNHANDLEABLE_LEVELS         = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
-    private const INSUPPRESSIBLE_LEVELS       = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
+    private const int UNHANDLEABLE_LEVELS     = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
+    private const int INSUPPRESSIBLE_LEVELS   = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
     private static ?self $instance            = null;
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly Source $source;
-    private readonly SourceFilter $sourceFilter;
+
+    /**
+     * @var list<array{int, string, string, int}>
+     */
+    private array $globalDeprecations = [];
 
     /**
      * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
@@ -71,8 +75,7 @@ final class ErrorHandler
 
     private function __construct(Source $source)
     {
-        $this->source       = $source;
-        $this->sourceFilter = new SourceFilter;
+        $this->source = $source;
     }
 
     /**
@@ -91,11 +94,17 @@ final class ErrorHandler
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/5956
          */
-        if (defined('E_STRICT') && $errorNumber === @E_STRICT) {
+        if (defined('E_STRICT') && $errorNumber === 2048) {
             $errorNumber = E_NOTICE;
         }
 
         $test = Event\Code\TestMethodBuilder::fromCallStack();
+
+        if ($errorNumber === E_USER_DEPRECATED) {
+            $deprecationFrame = $this->guessDeprecationFrame();
+            $errorFile        = $deprecationFrame['file'] ?? $errorFile;
+            $errorLine        = $deprecationFrame['line'] ?? $errorLine;
+        }
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
         $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
@@ -164,17 +173,16 @@ final class ErrorHandler
                 break;
 
             case E_USER_DEPRECATED:
-                $deprecationFrame = $this->guessDeprecationFrame();
-
                 Event\Facade::emitter()->testTriggeredDeprecation(
                     $test,
                     $errorString,
-                    $deprecationFrame['file'] ?? $errorFile,
-                    $deprecationFrame['line'] ?? $errorLine,
+                    $errorFile,
+                    $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
                     $this->trigger($test, true),
+                    $this->stackTrace(),
                 );
 
                 break;
@@ -197,6 +205,23 @@ final class ErrorHandler
         return false;
     }
 
+    public function deprecationHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
+    {
+        $this->globalDeprecations[] = [$errorNumber, $errorString, $errorFile, $errorLine];
+
+        return true;
+    }
+
+    public function registerDeprecationHandler(): void
+    {
+        set_error_handler([self::$instance, 'deprecationHandler'], E_USER_DEPRECATED);
+    }
+
+    public function restoreDeprecationHandler(): void
+    {
+        restore_error_handler();
+    }
+
     public function enable(): void
     {
         if ($this->enabled) {
@@ -213,6 +238,8 @@ final class ErrorHandler
 
         $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
+
+        $this->triggerGlobalDeprecations();
 
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
     }
@@ -269,15 +296,19 @@ final class ErrorHandler
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
-        if (isset($trace[0]['file']) &&
-            ($trace[0]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[0]['file']))) {
-            $triggeredInFirstPartyCode = true;
+        if (isset($trace[0]['file'])) {
+            if ($trace[0]['file'] === $test->file()) {
+                return IssueTrigger::test();
+            }
+
+            if (SourceFilter::instance()->includes($trace[0]['file'])) {
+                $triggeredInFirstPartyCode = true;
+            }
         }
 
         if (isset($trace[1]['file']) &&
             ($trace[1]['file'] === $test->file() ||
-            $this->sourceFilter->includes($this->source, $trace[1]['file']))) {
+            SourceFilter::instance()->includes($trace[1]['file']))) {
             $triggerCalledFromFirstPartyCode = true;
         }
 
@@ -353,7 +384,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class?: class-string, function?: string, type: string}>
+     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string}>
      */
     private function errorStackTrace(): array
     {
@@ -387,5 +418,42 @@ final class ErrorHandler
             $frame['class'] === $method['className'] &&
             isset($frame['function']) &&
             $frame['function'] === $method['methodName'];
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function stackTrace(): string
+    {
+        $buffer      = '';
+        $excludeList = new ExcludeList(true);
+
+        foreach ($this->errorStackTrace() as $frame) {
+            /**
+             * @see https://github.com/sebastianbergmann/phpunit/issues/6043
+             */
+            if (!isset($frame['file'])) {
+                continue;
+            }
+
+            if ($excludeList->isExcluded($frame['file'])) {
+                continue;
+            }
+
+            $buffer .= sprintf(
+                "%s:%s\n",
+                $frame['file'],
+                $frame['line'] ?? '?',
+            );
+        }
+
+        return $buffer;
+    }
+
+    private function triggerGlobalDeprecations(): void
+    {
+        foreach ($this->globalDeprecations ?? [] as $d) {
+            $this->__invoke(...$d);
+        }
     }
 }

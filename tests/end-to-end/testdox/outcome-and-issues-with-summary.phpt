@@ -92,11 +92,6 @@ This test did not perform any assertions
 1) %sOutcomeAndIssuesTest.php:48
 message
 
-Triggered by:
-
-* PHPUnit\TestFixture\TestDox\OutcomeAndIssuesTest::testSuccessButWarning
-  %sOutcomeAndIssuesTest.php:44
-
 --
 
 1 test triggered 1 notice:
@@ -104,22 +99,12 @@ Triggered by:
 1) %sOutcomeAndIssuesTest.php:41
 message
 
-Triggered by:
-
-* PHPUnit\TestFixture\TestDox\OutcomeAndIssuesTest::testSuccessButNotice
-  %sOutcomeAndIssuesTest.php:37
-
 --
 
 1 test triggered 1 deprecation:
 
 1) %sOutcomeAndIssuesTest.php:34
 message
-
-Triggered by:
-
-* PHPUnit\TestFixture\TestDox\OutcomeAndIssuesTest::testSuccessButDeprecation
-  %sOutcomeAndIssuesTest.php:30
 
 ERRORS!
 Tests: 9, Assertions: 5, Errors: 1, Failures: 1, Warnings: 1, Deprecations: 1, Notices: 1, Skipped: 1, Incomplete: 1, Risky: 1.

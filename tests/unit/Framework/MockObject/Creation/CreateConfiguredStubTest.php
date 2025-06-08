@@ -24,7 +24,7 @@ final class CreateConfiguredStubTest extends TestCase
 {
     public function testCreatesTestStubForInterfaceOrExtendableClassWithReturnValueConfigurationForMultipleMethods(): void
     {
-        $stub = $this->createConfiguredStub(
+        $double = $this->createConfiguredStub(
             InterfaceWithReturnTypeDeclaration::class,
             [
                 'doSomething'     => true,
@@ -32,7 +32,7 @@ final class CreateConfiguredStubTest extends TestCase
             ],
         );
 
-        $this->assertTrue($stub->doSomething());
-        $this->assertSame(1, $stub->doSomethingElse(0));
+        $this->assertTrue($double->doSomething());
+        $this->assertSame(1, $double->doSomethingElse(0));
     }
 }

@@ -1,15 +1,10 @@
 --TEST--
-phpunit --display-incomplete --display-skipped --display-deprecations --display-errors --display-notices --display-warnings ../_files/OutcomesAndIssuesTest
+phpunit --display-all-issues ../_files/OutcomesAndIssuesTest
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--display-incomplete';
-$_SERVER['argv'][] = '--display-skipped';
-$_SERVER['argv'][] = '--display-deprecations';
-$_SERVER['argv'][] = '--display-errors';
-$_SERVER['argv'][] = '--display-notices';
-$_SERVER['argv'][] = '--display-warnings';
+$_SERVER['argv'][] = '--display-all-issues';
 $_SERVER['argv'][] = __DIR__ . '/../_files/OutcomesAndIssuesTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -107,42 +102,17 @@ skipped message
 1) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithWarning
-  %sOutcomesAndIssuesTest.php:%d
-
 2) %sOutcomesAndIssuesTest.php:%d
 warning message
-
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
-  %sOutcomesAndIssuesTest.php:%d
 
 3) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithWarning
-  %sOutcomesAndIssuesTest.php:%d
-
 4) %sOutcomesAndIssuesTest.php:%d
 warning message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithWarning
-  %sOutcomesAndIssuesTest.php:%d
-
 5) %sOutcomesAndIssuesTest.php:%d
 warning message
-
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithWarning
-  %sOutcomesAndIssuesTest.php:%d
 
 --
 
@@ -151,42 +121,17 @@ Triggered by:
 1) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithNotice
-  %sOutcomesAndIssuesTest.php:%d
-
 2) %sOutcomesAndIssuesTest.php:%d
 notice message
-
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
-  %sOutcomesAndIssuesTest.php:%d
 
 3) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithNotice
-  %sOutcomesAndIssuesTest.php:%d
-
 4) %sOutcomesAndIssuesTest.php:%d
 notice message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithNotice
-  %sOutcomesAndIssuesTest.php:%d
-
 5) %sOutcomesAndIssuesTest.php:%d
 notice message
-
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithNotice
-  %sOutcomesAndIssuesTest.php:%d
 
 --
 
@@ -195,42 +140,17 @@ Triggered by:
 1) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSuccessWithDeprecation
-  %sOutcomesAndIssuesTest.php:%d
-
 2) %sOutcomesAndIssuesTest.php:%d
 deprecation message
-
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
-  %sOutcomesAndIssuesTest.php:%d
 
 3) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
-  %sOutcomesAndIssuesTest.php:%d
-
 4) %sOutcomesAndIssuesTest.php:%d
 deprecation message
 
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testIncompleteWithDeprecation
-  %sOutcomesAndIssuesTest.php:%d
-
 5) %sOutcomesAndIssuesTest.php:%d
 deprecation message
-
-Triggered by:
-
-* PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithDeprecation
-  %sOutcomesAndIssuesTest.php:%d
 
 ERRORS!
 Tests: 17, Assertions: 7, Errors: 3, Failures: 3, Warnings: 5, Deprecations: 5, Notices: 5, Skipped: 3, Incomplete: 3, Risky: 1.

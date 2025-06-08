@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const PHP_VERSION;
-use function explode;
 use function in_array;
 use function is_dir;
 use function is_file;
@@ -34,26 +33,26 @@ use SebastianBergmann\FileIterator\Facade;
 final readonly class TestSuiteMapper
 {
     /**
-     * @param non-empty-string $xmlConfigurationFile,
+     * @param non-empty-string       $xmlConfigurationFile
+     * @param list<non-empty-string> $includeTestSuites
+     * @param list<non-empty-string> $excludeTestSuites
      *
      * @throws RuntimeException
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException
      */
-    public function map(string $xmlConfigurationFile, TestSuiteCollection $configuredTestSuites, string $namesOfIncludedTestSuites, string $namesOfExcludedTestSuites): TestSuiteObject
+    public function map(string $xmlConfigurationFile, TestSuiteCollection $configuredTestSuites, array $includeTestSuites, array $excludeTestSuites): TestSuiteObject
     {
         try {
-            $namesOfIncludedTestSuitesAsArray = $namesOfIncludedTestSuites ? explode(',', $namesOfIncludedTestSuites) : [];
-            $excludedTestSuitesAsArray        = $namesOfExcludedTestSuites ? explode(',', $namesOfExcludedTestSuites) : [];
-            $result                           = TestSuiteObject::empty($xmlConfigurationFile);
-            $processed                        = [];
+            $result    = TestSuiteObject::empty($xmlConfigurationFile);
+            $processed = [];
 
             foreach ($configuredTestSuites as $configuredTestSuite) {
-                if (!empty($namesOfIncludedTestSuitesAsArray) && !in_array($configuredTestSuite->name(), $namesOfIncludedTestSuitesAsArray, true)) {
+                if ($includeTestSuites !== [] && !in_array($configuredTestSuite->name(), $includeTestSuites, true)) {
                     continue;
                 }
 
-                if (!empty($excludedTestSuitesAsArray) && in_array($configuredTestSuite->name(), $excludedTestSuitesAsArray, true)) {
+                if ($excludeTestSuites !== [] && in_array($configuredTestSuite->name(), $excludeTestSuites, true)) {
                     continue;
                 }
 
@@ -87,7 +86,7 @@ final readonly class TestSuiteMapper
 
                     foreach ($files as $file) {
                         if (isset($processed[$file])) {
-                            EventFacade::emitter()->testRunnerTriggeredWarning(
+                            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                                 sprintf(
                                     'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
                                     $file,
@@ -116,7 +115,7 @@ final readonly class TestSuiteMapper
                     }
 
                     if (isset($processed[$file->path()])) {
-                        EventFacade::emitter()->testRunnerTriggeredWarning(
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
                                 $file->path(),

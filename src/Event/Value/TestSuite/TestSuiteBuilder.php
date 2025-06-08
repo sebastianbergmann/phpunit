@@ -11,6 +11,7 @@ namespace PHPUnit\Event\TestSuite;
 
 use function assert;
 use function class_exists;
+use function count;
 use function explode;
 use function method_exists;
 use PHPUnit\Event\Code\Test;
@@ -19,7 +20,7 @@ use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -40,6 +41,7 @@ final readonly class TestSuiteBuilder
         self::process($testSuite, $tests);
 
         if ($testSuite instanceof DataProviderTestSuite) {
+            assert(count(explode('::', $testSuite->name())) === 2);
             [$className, $methodName] = explode('::', $testSuite->name());
 
             assert(class_exists($className));

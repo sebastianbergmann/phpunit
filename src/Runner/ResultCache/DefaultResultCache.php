@@ -33,15 +33,8 @@ use PHPUnit\Util\Filesystem;
  */
 final class DefaultResultCache implements ResultCache
 {
-    /**
-     * @var int
-     */
-    private const VERSION = 1;
-
-    /**
-     * @var string
-     */
-    private const DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
+    private const int VERSION                          = 1;
+    private const string DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
     private readonly string $cacheFilename;
 
     /**
@@ -85,6 +78,17 @@ final class DefaultResultCache implements ResultCache
     public function time(string $id): float
     {
         return $this->times[$id] ?? 0.0;
+    }
+
+    public function mergeWith(self $other): void
+    {
+        foreach ($other->defects as $id => $defect) {
+            $this->defects[$id] = $defect;
+        }
+
+        foreach ($other->times as $id => $time) {
+            $this->times[$id] = $time;
+        }
     }
 
     public function load(): void

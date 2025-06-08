@@ -22,7 +22,7 @@ final readonly class RequiresOperatingSystemFamily extends Metadata
     private string $operatingSystemFamily;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param non-empty-string $operatingSystemFamily
      */
     protected function __construct(int $level, string $operatingSystemFamily)

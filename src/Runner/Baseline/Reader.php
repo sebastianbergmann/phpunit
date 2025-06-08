@@ -12,7 +12,7 @@ namespace PHPUnit\Runner\Baseline;
 use const DIRECTORY_SEPARATOR;
 use function assert;
 use function dirname;
-use function file_exists;
+use function is_file;
 use function realpath;
 use function sprintf;
 use function str_replace;
@@ -36,7 +36,7 @@ final readonly class Reader
      */
     public function read(string $baselineFile): Baseline
     {
-        if (!file_exists($baselineFile)) {
+        if (!is_file($baselineFile)) {
             throw new CannotLoadBaselineException(
                 sprintf(
                     'Cannot read baseline %s, file does not exist',
@@ -50,7 +50,8 @@ final readonly class Reader
         } catch (XmlException $e) {
             throw new CannotLoadBaselineException(
                 sprintf(
-                    'Cannot read baseline: %s',
+                    'Cannot read baseline %s: %s',
+                    $baselineFile,
                     trim($e->getMessage()),
                 ),
             );
@@ -89,8 +90,8 @@ final readonly class Reader
                     $description = $issueElement->textContent;
 
                     assert($line > 0);
-                    assert(!empty($hash));
-                    assert(!empty($description));
+                    assert($hash !== '');
+                    assert($description !== '');
 
                     $baseline->add(Issue::from($file, $line, $hash, $description));
                 }

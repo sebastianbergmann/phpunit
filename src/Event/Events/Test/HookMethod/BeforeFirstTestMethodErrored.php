@@ -66,11 +66,14 @@ final readonly class BeforeFirstTestMethodErrored implements Event
         return $this->throwable;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->throwable->message();
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 

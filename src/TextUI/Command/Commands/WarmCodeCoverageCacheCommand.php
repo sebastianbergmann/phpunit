@@ -63,7 +63,8 @@ final readonly class WarmCodeCoverageCacheCommand implements Command
 
         print 'Warming cache for static analysis ... ';
 
-        (new CacheWarmer)->warmCache(
+        /** @phpstan-ignore new.internalClass,method.internalClass */
+        $statistics = (new CacheWarmer)->warmCache(
             $this->configuration->coverageCacheDirectory(),
             !$this->configuration->disableCodeCoverageIgnore(),
             $this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
@@ -71,8 +72,16 @@ final readonly class WarmCodeCoverageCacheCommand implements Command
         );
 
         printf(
-            '[%s]%s',
+            '[%s]%s%s%d file%s processed, %d cache hit%s, %d cache miss%s%s',
             $timer->stop()->asString(),
+            PHP_EOL,
+            PHP_EOL,
+            $statistics['cacheHits'] + $statistics['cacheMisses'],
+            ($statistics['cacheHits'] + $statistics['cacheMisses']) !== 1 ? 's' : '',
+            $statistics['cacheHits'],
+            $statistics['cacheHits'] !== 1 ? 's' : '',
+            $statistics['cacheMisses'],
+            $statistics['cacheMisses'] !== 1 ? 'es' : '',
             PHP_EOL,
         );
 

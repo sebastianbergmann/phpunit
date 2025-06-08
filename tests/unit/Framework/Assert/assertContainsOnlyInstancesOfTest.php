@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use stdClass;
@@ -19,15 +20,37 @@ use stdClass;
 #[Small]
 final class assertContainsOnlyInstancesOfTest extends TestCase
 {
-    public function testSucceedsWhenConstraintEvaluatesToTrue(): void
+    /**
+     * @return non-empty-list<array{0: class-string, 1: iterable}>
+     */
+    public static function successProvider(): array
     {
-        $this->assertContainsOnlyInstancesOf(stdClass::class, [new stdClass]);
+        return [
+            [stdClass::class, [new stdClass]],
+        ];
     }
 
-    public function testFailsWhenConstraintEvaluatesToFalse(): void
+    /**
+     * @return non-empty-list<array{0: class-string, 1: iterable}>
+     */
+    public static function failureProvider(): array
+    {
+        return [
+            [stdClass::class, [null]],
+        ];
+    }
+
+    #[DataProvider('successProvider')]
+    public function testSucceedsWhenConstraintEvaluatesToTrue(string $type, iterable $haystack): void
+    {
+        $this->assertContainsOnlyInstancesOf($type, $haystack);
+    }
+
+    #[DataProvider('failureProvider')]
+    public function testFailsWhenConstraintEvaluatesToFalse(string $type, iterable $haystack): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertContainsOnlyInstancesOf(stdClass::class, [new stdClass, null]);
+        $this->assertContainsOnlyInstancesOf($type, $haystack);
     }
 }

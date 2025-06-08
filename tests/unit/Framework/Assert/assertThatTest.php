@@ -11,8 +11,11 @@ namespace PHPUnit\Framework;
 
 use const INF;
 use const NAN;
+use function fclose;
+use function fopen;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\Book;
@@ -121,6 +124,80 @@ final class assertThatTest extends TestCase
         $this->assertThat(['foo'], $this->containsOnly('string'));
     }
 
+    public function testAssertThatContainsOnlyArray(): void
+    {
+        $this->assertThat([[]], $this->containsOnlyArray());
+    }
+
+    public function testAssertThatContainsOnlyBool(): void
+    {
+        $this->assertThat([true], $this->containsOnlyBool());
+    }
+
+    public function testAssertThatContainsOnlyCallable(): void
+    {
+        $callable = static function (): void
+        {};
+
+        $this->assertThat([$callable], $this->containsOnlyCallable());
+    }
+
+    public function testAssertThatContainsOnlyFloat(): void
+    {
+        $this->assertThat([0.0], $this->containsOnlyFloat());
+    }
+
+    public function testAssertThatContainsOnlyInt(): void
+    {
+        $this->assertThat([0], $this->containsOnlyInt());
+    }
+
+    public function testAssertThatContainsOnlyIterable(): void
+    {
+        $this->assertThat([[]], $this->containsOnlyIterable());
+    }
+
+    public function testAssertThatContainsOnlyNull(): void
+    {
+        $this->assertThat([null], $this->containsOnlyNull());
+    }
+
+    public function testAssertThatContainsOnlyNumeric(): void
+    {
+        $this->assertThat(['0.0'], $this->containsOnlyNumeric());
+    }
+
+    public function testAssertThatContainsOnlyObject(): void
+    {
+        $this->assertThat([new stdClass], $this->containsOnlyObject());
+    }
+
+    public function testAssertThatContainsOnlyResource(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+
+        $this->assertThat([$resource], $this->containsOnlyResource());
+    }
+
+    public function testAssertThatContainsOnlyClosedResource(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+
+        fclose($resource);
+
+        $this->assertThat([$resource], $this->containsOnlyClosedResource());
+    }
+
+    public function testAssertThatContainsOnlyScalar(): void
+    {
+        $this->assertThat(['string'], $this->containsOnlyScalar());
+    }
+
+    public function testAssertThatContainsOnlyString(): void
+    {
+        $this->assertThat(['string'], $this->containsOnlyString());
+    }
+
     public function testAssertThatContainsOnlyInstancesOf(): void
     {
         $this->assertThat([new Book], $this->containsOnlyInstancesOf(Book::class));
@@ -169,9 +246,75 @@ final class assertThatTest extends TestCase
         $this->assertThat(new stdClass, $this->isInstanceOf(stdClass::class));
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testAssertThatIsType(): void
     {
         $this->assertThat('string', $this->isType('string'));
+    }
+
+    public function testAssertThatIsArray(): void
+    {
+        $this->assertThat([], $this->isArray());
+    }
+
+    public function testAssertThatIsBool(): void
+    {
+        $this->assertThat(true, $this->isBool());
+    }
+
+    public function testAssertThatIsCallable(): void
+    {
+        $this->assertThat(static function (): void
+        {}, $this->isCallable());
+    }
+
+    public function testAssertThatIsFloat(): void
+    {
+        $this->assertThat(0.0, $this->isFloat());
+    }
+
+    public function testAssertThatIsInt(): void
+    {
+        $this->assertThat(0, $this->isInt());
+    }
+
+    public function testAssertThatIsIterable(): void
+    {
+        $this->assertThat([], $this->isIterable());
+    }
+
+    public function testAssertThatIsNumeric(): void
+    {
+        $this->assertThat('0.0', $this->isNumeric());
+    }
+
+    public function testAssertThatIsObject(): void
+    {
+        $this->assertThat(new stdClass, $this->isObject());
+    }
+
+    public function testAssertThatIsResource(): void
+    {
+        $this->assertThat(fopen(__FILE__, 'r'), $this->isResource());
+    }
+
+    public function testAssertThatIsClosedResource(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+
+        fclose($resource);
+
+        $this->assertThat($resource, $this->isClosedResource());
+    }
+
+    public function testAssertThatIsScalar(): void
+    {
+        $this->assertThat('string', $this->isScalar());
+    }
+
+    public function testAssertThatIsString(): void
+    {
+        $this->assertThat('string', $this->isString());
     }
 
     public function testAssertThatIsEmpty(): void

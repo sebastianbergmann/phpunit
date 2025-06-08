@@ -52,6 +52,9 @@ final readonly class Sorted implements Event
         return $this->resolveDependencies;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return 'Test Suite Sorted';

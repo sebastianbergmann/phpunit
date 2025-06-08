@@ -89,11 +89,11 @@ final class NamePrettifier
             $className = substr($className, strlen('Test'));
         }
 
-        if (empty($className)) {
+        if ($className === '') {
             $className = 'UnnamedTests';
         }
 
-        if (!empty($parts)) {
+        if ($parts !== []) {
             $parts[]            = $className;
             $fullyQualifiedName = implode('\\', $parts);
         } else {
@@ -246,21 +246,7 @@ final class NamePrettifier
             $value = $providedDataValues[$i++] ?? null;
 
             if (is_object($value)) {
-                $reflector = new ReflectionObject($value);
-
-                if ($reflector->isEnum()) {
-                    $enumReflector = new ReflectionEnum($value);
-
-                    if ($enumReflector->isBacked()) {
-                        $value = $value->value;
-                    } else {
-                        $value = $value->name;
-                    }
-                } elseif ($reflector->hasMethod('__toString')) {
-                    $value = (string) $value;
-                } else {
-                    $value = $value::class;
-                }
+                $value = $this->objectToString($value);
             }
 
             if (!is_scalar($value)) {
@@ -288,11 +274,35 @@ final class NamePrettifier
 
         if ($colorize) {
             $providedData = array_map(
-                static fn ($value) => Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true)),
+                static fn (mixed $value) => Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true)),
                 $providedData,
             );
         }
 
         return $providedData;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function objectToString(object $value): string
+    {
+        $reflector = new ReflectionObject($value);
+
+        if ($reflector->isEnum()) {
+            $enumReflector = new ReflectionEnum($value);
+
+            if ($enumReflector->isBacked()) {
+                return (string) $value->value;
+            }
+
+            return $value->name;
+        }
+
+        if ($reflector->hasMethod('__toString')) {
+            return $value->__toString();
+        }
+
+        return $value::class;
     }
 }

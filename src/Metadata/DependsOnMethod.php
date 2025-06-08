@@ -29,7 +29,7 @@ final readonly class DependsOnMethod extends Metadata
     private bool $shallowClone;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param class-string     $className
      * @param non-empty-string $methodName
      */

@@ -65,9 +65,11 @@ Execution:
   --fail-on-risky                    Signal failure using shell exit code when a test was considered risky
   --fail-on-deprecation              Signal failure using shell exit code when a deprecation was triggered
   --fail-on-phpunit-deprecation      Signal failure using shell exit code when a PHPUnit deprecation was triggered
+  --fail-on-phpunit-notice           Signal failure using shell exit code when a PHPUnit notice was triggered
   --fail-on-notice                   Signal failure using shell exit code when a notice was triggered
   --fail-on-skipped                  Signal failure using shell exit code when a test was skipped
   --fail-on-incomplete               Signal failure using shell exit code when a test was marked incomplete
+  --fail-on-all-issues               Signal failure using shell exit code when an issue is triggered
 
   --cache-result                     Write test results to cache file
   --do-not-cache-result              Do not write test results to cache file
@@ -90,9 +92,11 @@ Reporting:
   --display-skipped                  Display details for skipped tests
   --display-deprecations             Display details for deprecations triggered by tests
   --display-phpunit-deprecations     Display details for PHPUnit deprecations
+  --display-phpunit-notices          Display details for PHPUnit notices
   --display-errors                   Display details for errors triggered by tests
   --display-notices                  Display details for notices triggered by tests
   --display-warnings                 Display details for warnings triggered by tests
+  --display-all-issues               Display details for all issues that are triggered
   --reverse-list                     Print defects in reverse order
 
   --teamcity                         Replace default progress and result output with TeamCity format
@@ -100,10 +104,12 @@ Reporting:
   --testdox-summary                  Repeat TestDox output for tests with errors, failures, or issues
 
   --debug                            Replace default progress and result output with debugging information
+  --with-telemetry                   Include telemetry information in debugging information output
 
 Logging:
 
   --log-junit <file>                 Write test results in JUnit XML format to file
+  --log-otr <file>                   Write test results in Open Test Reporting XML format to file
   --log-teamcity <file>              Write test results in TeamCity format to file
   --testdox-html <file>              Write test results in TestDox format (HTML) to file
   --testdox-text <file>              Write test results in TestDox format (plain text) to file
@@ -114,6 +120,7 @@ Logging:
 Code Coverage:
 
   --coverage-clover <file>           Write code coverage report in Clover XML format to file
+  --coverage-openclover <file>       Write code coverage report in OpenClover XML format to file
   --coverage-cobertura <file>        Write code coverage report in Cobertura XML format to file
   --coverage-crap4j <file>           Write code coverage report in Crap4J XML format to file
   --coverage-html <dir>              Write code coverage report in HTML format to directory

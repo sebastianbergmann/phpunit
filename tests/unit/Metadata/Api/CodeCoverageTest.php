@@ -9,232 +9,135 @@
  */
 namespace PHPUnit\Metadata\Api;
 
-use function array_merge;
-use function range;
+use function array_shift;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\CoverageClassTest;
-use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
-use PHPUnit\TestFixture\CoverageFunctionTest;
-use PHPUnit\TestFixture\CoverageMethodNothingTest;
-use PHPUnit\TestFixture\CoverageMethodTest;
-use PHPUnit\TestFixture\CoverageNoneTest;
-use PHPUnit\TestFixture\CoveredClassUsingCoveredTraitTest;
-use PHPUnit\TestFixture\InterfaceAsTargetWithAttributeTest;
-use PHPUnit\TestFixture\InvalidClassTargetWithAttributeTest;
-use PHPUnit\TestFixture\InvalidFunctionTargetTest;
-use PHPUnit\TestFixture\Test3194;
+use PHPUnit\TestFixture\CoversClassOnClassTest;
+use PHPUnit\TestFixture\CoversNothingOnClassTest;
+use PHPUnit\TestFixture\CoversNothingOnMethodTest;
+use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
+use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
+use PHPUnit\TestFixture\NoCoverageAttributesTest;
+use SebastianBergmann\CodeCoverage\Test\Target\Class_;
+use SebastianBergmann\CodeCoverage\Test\Target\ClassesThatExtendClass;
+use SebastianBergmann\CodeCoverage\Test\Target\ClassesThatImplementInterface;
+use SebastianBergmann\CodeCoverage\Test\Target\Function_;
+use SebastianBergmann\CodeCoverage\Test\Target\Method;
+use SebastianBergmann\CodeCoverage\Test\Target\Namespace_;
+use SebastianBergmann\CodeCoverage\Test\Target\Trait_;
 
 #[CoversClass(CodeCoverage::class)]
 #[Small]
 #[Group('metadata')]
 final class CodeCoverageTest extends TestCase
 {
-    public static function linesToBeCoveredProvider(): array
-    {
-        return [
-            [
-                [],
-                CoverageNoneTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(12, 29)),
-                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(12, 27)),
-                ],
-                CoverageClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClassUsingCoveredTrait.php' => range(12, 27),
-                    TEST_FILES_PATH . 'CoveredTrait.php'                  => range(12, 18),
-                ],
-                CoveredClassUsingCoveredTraitTest::class,
-                'testSomething',
-            ],
-
-            [
-                false,
-                CoverageMethodNothingTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . '3194.php' => array_merge(range(15, 21), range(23, 31)),
-                ],
-                Test3194::class,
-                'testOne',
-            ],
-        ];
-    }
-
-    public static function linesToBeUsedProvider(): array
-    {
-        return [
-            [
-                [],
-                CoverageNoneTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php'       => array_merge(range(12, 29)),
-                    TEST_FILES_PATH . 'CoveredParentClass.php' => array_merge(range(12, 27)),
-                ],
-                CoverageClassTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClass.php' => range(14, 18),
-                ],
-                CoverageMethodTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredClassUsingCoveredTrait.php' => range(12, 27),
-                    TEST_FILES_PATH . 'CoveredTrait.php'                  => range(12, 18),
-                ],
-                CoveredClassUsingCoveredTraitTest::class,
-                'testSomething',
-            ],
-
-            [
-                [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
-                ],
-                CoverageFunctionTest::class,
-                'testSomething',
-            ],
-        ];
-    }
-
+    /**
+     * @return non-empty-list<array{0: bool, 1: class-string}>
+     */
     public static function canSkipCoverageProvider(): array
     {
         return [
-            [CoverageClassTest::class, false],
-            [CoverageClassWithoutAnnotationsTest::class, false],
-            [CoverageMethodNothingTest::class, true],
+            [false, NoCoverageAttributesTest::class],
+            [false, CoversClassOnClassTest::class],
+            [true, CoversNothingOnClassTest::class],
+            [true, CoversNothingOnMethodTest::class],
         ];
     }
 
-    /**
-     * @param class-string $className
-     */
-    #[DataProvider('linesToBeCoveredProvider')]
-    public function testLinesToBeCoveredCanBeDetermined(array|false $expected, string $className, string $methodName): void
+    #[TestDox('Maps #[Covers*()] metadata to phpunit/php-code-coverage TargetCollection')]
+    public function testMapsCoversMetadataToCodeCoverageTargetCollection(): void
     {
-        $this->assertEqualsCanonicalizing(
-            $expected,
-            (new CodeCoverage)->linesToBeCovered(
-                $className,
-                $methodName,
-            ),
-        );
+        $targets = (new CodeCoverage)->coversTargets(CoversTest::class, 'testOne');
+
+        $this->assertNotFalse($targets);
+        $this->assertCount(7, $targets);
+
+        $targets = $targets->asArray();
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Namespace_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute', $target->namespace());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Class_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->className());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(ClassesThatExtendClass::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->className());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(ClassesThatImplementInterface::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->interfaceName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Trait_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait', $target->traitName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Method::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->className());
+        $this->assertSame('method', $target->methodName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Function_::class, $target);
+        $this->assertSame('f', $target->functionName());
     }
 
-    /**
-     * @param class-string $className
-     */
-    #[DataProvider('linesToBeUsedProvider')]
-    public function testLinesToBeUsedCanBeDetermined(array|false $expected, string $className, string $methodName): void
+    #[TestDox('Maps #[Uses*()] metadata to phpunit/php-code-coverage TargetCollection')]
+    public function testMapsUsesMetadataToCodeCoverageTargetCollection(): void
     {
-        $this->assertEqualsCanonicalizing(
-            $expected,
-            (new CodeCoverage)->linesToBeUsed(
-                $className,
-                $methodName,
-            ),
-        );
+        $targets = (new CodeCoverage)->usesTargets(UsesTest::class, 'testOne');
+
+        $this->assertNotFalse($targets);
+        $this->assertCount(7, $targets);
+
+        $targets = $targets->asArray();
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Namespace_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute', $target->namespace());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Class_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->className());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(ClassesThatExtendClass::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->className());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(ClassesThatImplementInterface::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->interfaceName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Trait_::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait', $target->traitName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Method::class, $target);
+        $this->assertSame('PHPUnit\TestFixture\Metadata\Attribute\Example', $target->className());
+        $this->assertSame('method', $target->methodName());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Function_::class, $target);
+        $this->assertSame('f', $target->functionName());
     }
 
     /**
      * @param class-string $testCase
      */
     #[DataProvider('canSkipCoverageProvider')]
-    public function testWhetherCollectionOfCodeCoverageDataCanBeSkippedCanBeDetermined(string $testCase, bool $expectedCanSkip): void
+    public function testWhetherCollectionOfCodeCoverageDataCanBeSkippedCanBeDetermined(bool $expected, string $testCase): void
     {
         $test             = new $testCase('testSomething');
         $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test::class, $test->name());
         $canSkipCoverage  = !$coverageRequired;
 
-        $this->assertEquals($expectedCanSkip, $canSkipCoverage);
-    }
-
-    public function testRejectsInterfaceAsCoversClassTargetWithAttribute(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Interface "Throwable" is not a valid target for code coverage');
-
-        (new CodeCoverage)->linesToBeCovered(InterfaceAsTargetWithAttributeTest::class, 'testOne');
-    }
-
-    public function testRejectsInterfaceAsUsesClassTargetWithAttribute(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('Interface "Throwable" is not a valid target for code coverage');
-
-        (new CodeCoverage)->linesToBeUsed(InterfaceAsTargetWithAttributeTest::class, 'testOne');
-    }
-
-    public function testRejectsInvalidCoversClassTargetWithAttribute(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('"InvalidClass" is not a valid target for code coverage');
-
-        (new CodeCoverage)->linesToBeCovered(InvalidClassTargetWithAttributeTest::class, 'testOne');
-    }
-
-    public function testRejectsInvalidUsesClassTargetWithAttribute(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('"InvalidClass" is not a valid target for code coverage');
-
-        (new CodeCoverage)->linesToBeUsed(InvalidClassTargetWithAttributeTest::class, 'testOne');
-    }
-
-    public function testRejectsInvalidCoversFunctionTarget(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('::invalid_function is not a valid target for code coverage');
-
-        (new CodeCoverage)->linesToBeCovered(InvalidFunctionTargetTest::class, 'testOne');
-    }
-
-    public function testRejectsInvalidUsesFunctionTarget(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-        $this->expectExceptionMessage('::invalid_function is not a valid target for code coverage');
-
-        (new CodeCoverage)->linesToBeUsed(InvalidFunctionTargetTest::class, 'testOne');
+        $this->assertSame($expected, $canSkipCoverage);
     }
 }

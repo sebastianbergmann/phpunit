@@ -59,7 +59,7 @@ final class JsonMatches extends Constraint
             return false;
         }
 
-        return $recodedOther == $recodedValue;
+        return $recodedOther === $recodedValue;
     }
 
     /**

@@ -22,6 +22,8 @@ Test Suite Started (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTes
 Test Preparation Started (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)
 Post Condition Method Called (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::postCondition)
+Post Condition Method Failed (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::postCondition)
+Failed asserting that false is true.
 Post Condition Method Finished:
 - PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::postCondition
 Test Failed (PHPUnit\TestFixture\Event\AssertionFailureInPostConditionTest::testOne)

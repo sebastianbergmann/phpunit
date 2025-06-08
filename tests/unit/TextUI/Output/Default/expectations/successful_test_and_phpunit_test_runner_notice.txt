@@ -1,0 +1,6 @@
+There was 1 PHPUnit test runner notice:
+
+1) message
+
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Notices: 1.

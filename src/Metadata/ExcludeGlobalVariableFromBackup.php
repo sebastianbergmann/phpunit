@@ -22,7 +22,7 @@ final readonly class ExcludeGlobalVariableFromBackup extends Metadata
     private string $globalVariableName;
 
     /**
-     * @param 0|1              $level
+     * @param int<0, 1>        $level
      * @param non-empty-string $globalVariableName
      */
     protected function __construct(int $level, string $globalVariableName)

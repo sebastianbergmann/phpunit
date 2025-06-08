@@ -11,9 +11,7 @@ namespace PHPUnit\TextUI\Output;
 
 use const PHP_EOL;
 use function assert;
-use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
@@ -41,10 +39,6 @@ final class Facade
     private static ?SummaryPrinter $summaryPrinter             = null;
     private static bool $defaultProgressPrinter                = false;
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     public static function init(Configuration $configuration, bool $extensionReplacesProgressOutput, bool $extensionReplacesResultOutput): Printer
     {
         self::createPrinter($configuration);
@@ -79,7 +73,7 @@ final class Facade
     /**
      * @param ?array<string, TestResultCollection> $testDoxResult
      */
-    public static function printResult(TestResult $result, ?array $testDoxResult, Duration $duration): void
+    public static function printResult(TestResult $result, ?array $testDoxResult, Duration $duration, bool $stackTraceForDeprecations): void
     {
         assert(self::$printer !== null);
 
@@ -92,11 +86,11 @@ final class Facade
         }
 
         if (self::$testDoxResultPrinter !== null && $testDoxResult !== null) {
-            self::$testDoxResultPrinter->print($testDoxResult);
+            self::$testDoxResultPrinter->print($result, $testDoxResult);
         }
 
         if (self::$defaultResultPrinter !== null) {
-            self::$defaultResultPrinter->print($result);
+            self::$defaultResultPrinter->print($result, $stackTraceForDeprecations);
         }
 
         if (self::$summaryPrinter !== null) {
@@ -204,18 +198,19 @@ final class Facade
         if ($configuration->outputIsTestDox()) {
             self::$defaultResultPrinter = new DefaultResultPrinter(
                 self::$printer,
+                $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
                 true,
-                true,
-                $configuration->displayDetailsOnPhpunitDeprecations(),
-                false,
-                false,
+                $configuration->displayDetailsOnPhpunitNotices() || $configuration->displayDetailsOnAllIssues(),
                 true,
                 false,
                 false,
-                $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
-                $configuration->displayDetailsOnTestsThatTriggerErrors(),
-                $configuration->displayDetailsOnTestsThatTriggerNotices(),
-                $configuration->displayDetailsOnTestsThatTriggerWarnings(),
+                true,
+                false,
+                false,
+                $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->reverseDefectList(),
             );
         }
@@ -239,18 +234,19 @@ final class Facade
 
         self::$defaultResultPrinter = new DefaultResultPrinter(
             self::$printer,
+            $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
+            true,
+            $configuration->displayDetailsOnPhpunitNotices() || $configuration->displayDetailsOnAllIssues(),
             true,
             true,
-            $configuration->displayDetailsOnPhpunitDeprecations(),
             true,
             true,
-            true,
-            $configuration->displayDetailsOnIncompleteTests(),
-            $configuration->displayDetailsOnSkippedTests(),
-            $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
-            $configuration->displayDetailsOnTestsThatTriggerErrors(),
-            $configuration->displayDetailsOnTestsThatTriggerNotices(),
-            $configuration->displayDetailsOnTestsThatTriggerWarnings(),
+            $configuration->displayDetailsOnIncompleteTests() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnSkippedTests() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
             $configuration->reverseDefectList(),
         );
     }
@@ -270,10 +266,6 @@ final class Facade
         );
     }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     private static function createUnexpectedOutputPrinter(): void
     {
         assert(self::$printer !== null);

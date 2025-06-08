@@ -18,10 +18,10 @@ namespace PHPUnit\TextUI\Command;
  */
 final readonly class Result
 {
-    public const SUCCESS   = 0;
-    public const FAILURE   = 1;
-    public const EXCEPTION = 2;
-    public const CRASH     = 255;
+    public const int SUCCESS   = 0;
+    public const int FAILURE   = 1;
+    public const int EXCEPTION = 2;
+    public const int CRASH     = 255;
     private string $output;
     private int $shellExitCode;
 

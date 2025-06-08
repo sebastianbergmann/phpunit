@@ -64,9 +64,9 @@ final class Generator
     use TemplateLoader;
 
     /**
-     * @var array<non-empty-string, true>
+     * @var non-empty-array<non-empty-string, true>
      */
-    private const EXCLUDED_METHOD_NAMES = [
+    private const array EXCLUDED_METHOD_NAMES = [
         '__CLASS__'       => true,
         '__DIR__'         => true,
         '__FILE__'        => true,
@@ -87,8 +87,9 @@ final class Generator
     /**
      * Returns a test double for the specified class.
      *
+     * @param class-string            $type
      * @param ?list<non-empty-string> $methods
-     * @param list<mixed>             $arguments
+     * @param array<mixed>            $arguments
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
@@ -117,7 +118,7 @@ final class Generator
             $callOriginalClone,
         );
 
-        $object = $this->getObject(
+        $object = $this->instantiate(
             $mock,
             $callOriginalConstructor,
             $arguments,
@@ -139,7 +140,7 @@ final class Generator
      * @param list<class-string> $interfaces
      *
      * @throws RuntimeException
-     * @throws UnknownTypeException
+     * @throws UnknownInterfaceException
      */
     public function testDoubleForInterfaceIntersection(array $interfaces, bool $mockObject, bool $returnValueGeneration = true): MockObject|Stub
     {
@@ -149,7 +150,7 @@ final class Generator
 
         foreach ($interfaces as $interface) {
             if (!interface_exists($interface)) {
-                throw new UnknownTypeException($interface);
+                throw new UnknownInterfaceException($interface);
             }
         }
 
@@ -193,6 +194,8 @@ final class Generator
 
         eval($template->render());
 
+        assert(interface_exists($intersectionName));
+
         return $this->testDouble(
             $intersectionName,
             $mockObject,
@@ -201,6 +204,7 @@ final class Generator
     }
 
     /**
+     * @param class-string            $type
      * @param ?list<non-empty-string> $methods
      *
      * @throws ClassIsEnumerationException
@@ -245,6 +249,8 @@ final class Generator
     }
 
     /**
+     * @param class-string $className
+     *
      * @throws ReflectionException
      *
      * @return list<DoubledMethod>
@@ -292,7 +298,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(DoubledClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function instantiate(DoubledClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 
@@ -336,6 +342,7 @@ final class Generator
     }
 
     /**
+     * @param class-string            $type
      * @param ?list<non-empty-string> $explicitMethods
      *
      * @throws ClassIsEnumerationException
@@ -451,7 +458,7 @@ final class Generator
 
         if (is_array($explicitMethods)) {
             foreach ($explicitMethods as $methodName) {
-                if ($class !== null && $class->hasMethod($methodName)) {
+                if ($class->hasMethod($methodName)) {
                     $method = $class->getMethod($methodName);
 
                     if ($this->canMethodBeDoubled($method)) {
@@ -536,7 +543,9 @@ final class Generator
     }
 
     /**
-     * @return array{className: non-empty-string, originalClassName: non-empty-string, fullClassName: non-empty-string, namespaceName: string}
+     * @param class-string $type
+     *
+     * @return array{className: class-string, originalClassName: class-string, fullClassName: class-string, namespaceName: string}
      */
     private function generateClassName(string $type, string $className, string $prefix): array
     {
@@ -600,7 +609,7 @@ final class Generator
             if (!in_array($mockClassName['originalClassName'], $additionalInterfaces, true)) {
                 $buffer .= ', ';
 
-                if (!empty($mockClassName['namespaceName'])) {
+                if ($mockClassName['namespaceName'] !== '') {
                     $buffer .= $mockClassName['namespaceName'] . '\\';
                 }
 
@@ -610,7 +619,7 @@ final class Generator
             $buffer .= sprintf(
                 '%s extends %s%s implements %s',
                 $mockClassName['className'],
-                !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
+                $mockClassName['namespaceName'] !== '' ? $mockClassName['namespaceName'] . '\\' : '',
                 $mockClassName['originalClassName'],
                 $interfaces,
             );
@@ -700,7 +709,7 @@ final class Generator
      *
      * @throws ReflectionException
      *
-     * @phpstan-ignore missingType.generics
+     * @phpstan-ignore missingType.generics, throws.unusedType
      */
     private function reflectClass(string $className): ReflectionClass
     {

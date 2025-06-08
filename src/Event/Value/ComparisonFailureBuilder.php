@@ -28,19 +28,19 @@ final readonly class ComparisonFailureBuilder
             return null;
         }
 
-        if (!$t->getComparisonFailure()) {
+        if ($t->getComparisonFailure() === null) {
             return null;
         }
 
         $expectedAsString = $t->getComparisonFailure()->getExpectedAsString();
 
-        if (empty($expectedAsString)) {
+        if ($expectedAsString === '') {
             $expectedAsString = self::mapScalarValueToString($t->getComparisonFailure()->getExpected());
         }
 
         $actualAsString = $t->getComparisonFailure()->getActualAsString();
 
-        if (empty($actualAsString)) {
+        if ($actualAsString === '') {
             $actualAsString = self::mapScalarValueToString($t->getComparisonFailure()->getActual());
         }
 

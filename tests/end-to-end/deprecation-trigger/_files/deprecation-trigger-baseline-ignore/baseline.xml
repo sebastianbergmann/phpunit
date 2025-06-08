@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<files version="1">
+ <file path="vendor/ThirdPartyClass.php">
+  <line number="4" hash="67f46da0ae62f1f93b33314db1c7a53dd56f4f49">
+   <issue><![CDATA[deprecation in third-party code]]></issue>
+  </line>
+ </file>
+</files>

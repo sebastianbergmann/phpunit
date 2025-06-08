@@ -58,6 +58,9 @@ final readonly class ConsideredRisky implements Event
         return $this->message;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

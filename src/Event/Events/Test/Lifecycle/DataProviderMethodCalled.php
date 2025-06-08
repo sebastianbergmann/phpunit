@@ -47,6 +47,9 @@ final readonly class DataProviderMethodCalled implements Event
         return $this->dataProviderMethod;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

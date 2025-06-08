@@ -130,7 +130,7 @@ final readonly class Invocation implements SelfDescribing
                     $this->parameters,
                 ),
             ),
-            $this->returnType ? sprintf(': %s', $this->returnType) : '',
+            $this->returnType !== '' ? sprintf(': %s', $this->returnType) : '',
         );
     }
 

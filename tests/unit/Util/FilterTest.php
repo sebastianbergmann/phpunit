@@ -23,6 +23,6 @@ final class FilterTest extends TestCase
         $first  = new Exception('first', 123, null);
         $second = new Exception('second', 345, $first);
 
-        $this->assertSame(Filter::getFilteredStacktrace($second), Filter::getFilteredStacktrace($first));
+        $this->assertSame(Filter::stackTraceFromThrowableAsString($second), Filter::stackTraceFromThrowableAsString($first));
     }
 }

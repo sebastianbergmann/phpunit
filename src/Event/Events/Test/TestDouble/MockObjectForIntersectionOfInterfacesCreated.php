@@ -50,6 +50,9 @@ final readonly class MockObjectForIntersectionOfInterfacesCreated implements Eve
         return $this->interfaces;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

@@ -96,11 +96,14 @@ final readonly class ErrorTriggered implements Event
         return $this->suppressed;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 
@@ -111,8 +114,10 @@ final readonly class ErrorTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered Error (%s)%s',
+            'Test Triggered Error (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

@@ -11,7 +11,6 @@ namespace PHPUnit\Runner\ResultCache;
 
 use function round;
 use PHPUnit\Event\Event;
-use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\ConsideredRisky;
@@ -21,7 +20,6 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
@@ -36,10 +34,6 @@ final class ResultCacheHandler
     private ?HRTime $time  = null;
     private int $testSuite = 0;
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     public function __construct(ResultCache $cache, Facade $facade)
     {
         $this->cache = $cache;
@@ -136,10 +130,6 @@ final class ResultCacheHandler
         return round($event->telemetryInfo()->time()->duration($this->time)->asFloat(), 3);
     }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     private function registerSubscribers(Facade $facade): void
     {
         $facade->registerSubscribers(

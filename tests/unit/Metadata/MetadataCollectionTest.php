@@ -48,6 +48,7 @@ use stdClass;
 #[UsesClass(RequiresPhpExtension::class)]
 #[UsesClass(RequiresPhpunit::class)]
 #[UsesClass(RequiresPhpunitExtension::class)]
+#[UsesClass(RequiresEnvironmentVariable::class)]
 #[UsesClass(RequiresSetting::class)]
 #[UsesClass(RunClassInSeparateProcess::class)]
 #[UsesClass(RunInSeparateProcess::class)]
@@ -177,12 +178,44 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isBefore());
     }
 
+    public function test_Can_be_filtered_for_CoversNamespace(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversNamespace();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversNamespace());
+    }
+
     public function test_Can_be_filtered_for_CoversClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversClass();
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isCoversClass());
+    }
+
+    public function test_Can_be_filtered_for_CoversClassesThatExtendClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversClassesThatExtendClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversClassesThatExtendClass());
+    }
+
+    public function test_Can_be_filtered_for_CoversClassesThatImplementInterface(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversClassesThatImplementInterface();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversClassesThatImplementInterface());
+    }
+
+    public function test_Can_be_filtered_for_CoversTrait(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversTrait();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversTrait());
     }
 
     public function test_Can_be_filtered_for_CoversFunction(): void
@@ -386,6 +419,22 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresPhpunitExtension());
     }
 
+    public function test_Can_be_filtered_for_RequiresEnvironmentVariable(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresEnvironmentVariable();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresEnvironmentVariable());
+    }
+
+    public function test_Can_be_filtered_for_WithEnvironmentVariable(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isWithEnvironmentVariable();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isWithEnvironmentVariable());
+    }
+
     public function test_Can_be_filtered_for_RequiresSetting(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresSetting();
@@ -442,12 +491,44 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isTestWith());
     }
 
+    public function test_Can_be_filtered_for_UsesNamespace(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesNamespace();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesNamespace());
+    }
+
     public function test_Can_be_filtered_for_UsesClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesClass();
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isUsesClass());
+    }
+
+    public function test_Can_be_filtered_for_UsesClassesThatExtendClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesClassesThatExtendClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesClassesThatExtendClass());
+    }
+
+    public function test_Can_be_filtered_for_UsesClassesThatImplementInterface(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesClassesThatImplementInterface();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesClassesThatImplementInterface());
+    }
+
+    public function test_Can_be_filtered_for_UsesTrait(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesTrait();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesTrait());
     }
 
     public function test_Can_be_filtered_for_UsesFunction(): void
@@ -484,7 +565,11 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::backupStaticPropertiesOnClass(true),
                 Metadata::beforeClass(0),
                 Metadata::before(0),
+                Metadata::coversNamespace(''),
                 Metadata::coversClass(''),
+                Metadata::coversClassesThatExtendClass(''),
+                Metadata::coversClassesThatImplementInterface(''),
+                Metadata::coversTrait(''),
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
@@ -519,6 +604,7 @@ final class MetadataCollectionTest extends TestCase
                     ),
                 ),
                 Metadata::requiresPhpunitExtensionOnClass(stdClass::class),
+                Metadata::requiresEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::requiresSettingOnClass('foo', 'bar'),
                 Metadata::runClassInSeparateProcess(),
                 Metadata::runInSeparateProcess(),
@@ -526,9 +612,14 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::testDoxOnClass(''),
                 Metadata::test(),
                 Metadata::testWith([]),
+                Metadata::usesNamespace(''),
                 Metadata::usesClass(''),
+                Metadata::usesClassesThatExtendClass(''),
+                Metadata::usesClassesThatImplementInterface(''),
+                Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
+                Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],
         );

@@ -2,6 +2,7 @@
 <phpunit>
     <logging>
         <junit outputFile="junit.xml"/>
+        <otr outputFile="otr.xml"/>
         <teamcity outputFile="teamcity.txt"/>
         <testdoxHtml outputFile="testdox.html"/>
         <testdoxText outputFile="testdox.txt"/>

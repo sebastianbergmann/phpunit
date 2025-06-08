@@ -21,13 +21,13 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\UserNoticeTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
-Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
+Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Finished (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNotice)
 Test Preparation Started (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
 Test Prepared (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
-Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
+Test Triggered Notice (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast) in %s:%d
 message
 Test Passed (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)
 Test Finished (PHPUnit\TestFixture\Event\UserNoticeTest::testUserNoticeErrorGetLast)

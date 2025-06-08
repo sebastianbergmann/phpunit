@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -23,11 +25,13 @@ final readonly class PreparationFailed implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Code\Test $test;
+    private Throwable $throwable;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
+        $this->throwable     = $throwable;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -40,11 +44,26 @@ final readonly class PreparationFailed implements Event
         return $this->test;
     }
 
+    public function throwable(): Throwable
+    {
+        return $this->throwable;
+    }
+
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
+        $message = $this->throwable->message();
+
+        if ($message !== '') {
+            $message = PHP_EOL . $message;
+        }
+
         return sprintf(
-            'Test Preparation Failed (%s)',
+            'Test Preparation Failed (%s)%s',
             $this->test->id(),
+            $message,
         );
     }
 }

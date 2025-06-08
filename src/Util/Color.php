@@ -34,17 +34,17 @@ use function trim;
 final class Color
 {
     /**
-     * @var array<string,string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private const WHITESPACE_MAP = [
+    private const array WHITESPACE_MAP = [
         ' '  => '·',
         "\t" => '⇥',
     ];
 
     /**
-     * @var array<string,string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private const WHITESPACE_EOL_MAP = [
+    private const array WHITESPACE_EOL_MAP = [
         ' '  => '·',
         "\t" => '⇥',
         "\n" => '↵',
@@ -52,9 +52,9 @@ final class Color
     ];
 
     /**
-     * @var array<string,string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private static array $ansiCodes = [
+    private const array ANSI_CODES = [
         'reset'      => '0',
         'bold'       => '1',
         'dim'        => '2',
@@ -90,12 +90,12 @@ final class Color
         $styles = [];
 
         foreach ($codes as $code) {
-            if (isset(self::$ansiCodes[$code])) {
-                $styles[] = self::$ansiCodes[$code];
+            if (isset(self::ANSI_CODES[$code])) {
+                $styles[] = self::ANSI_CODES[$code];
             }
         }
 
-        if (empty($styles)) {
+        if ($styles === []) {
             return $buffer;
         }
 
@@ -138,7 +138,7 @@ final class Color
             $last        = count($path) - 1;
             $path[$last] = preg_replace_callback(
                 '/([\-_.]+|phpt$)/',
-                static fn ($matches) => self::dim($matches[0]),
+                static fn (array $matches) => self::dim($matches[0]),
                 $path[$last],
             );
         }
@@ -161,7 +161,7 @@ final class Color
 
         return preg_replace_callback(
             '/\s+/',
-            static fn ($matches) => self::dim(strtr($matches[0], $replaceMap)),
+            static fn (array $matches) => self::dim(strtr($matches[0], $replaceMap)),
             $buffer,
         );
     }

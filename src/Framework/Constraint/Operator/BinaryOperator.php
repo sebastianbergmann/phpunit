@@ -25,7 +25,7 @@ abstract class BinaryOperator extends Operator
     protected function __construct(mixed ...$constraints)
     {
         $this->constraints = array_map(
-            fn ($constraint): Constraint => $this->checkConstraint($constraint),
+            fn (mixed $constraint): Constraint => $this->checkConstraint($constraint),
             $constraints,
         );
     }
@@ -99,7 +99,7 @@ abstract class BinaryOperator extends Operator
      */
     protected function reduce(): Constraint
     {
-        if ($this->arity() === 1 && $this->constraints[0] instanceof Operator) {
+        if (count($this->constraints) === 1 && $this->constraints[0] instanceof Operator) {
             return $this->constraints[0]->reduce();
         }
 

@@ -59,11 +59,14 @@ final readonly class PhpunitErrorTriggered implements Event
         return $this->message;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = trim($this->message);
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 

@@ -118,11 +118,14 @@ final readonly class PhpDeprecationTriggered implements Event
         return $this->trigger;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 
@@ -141,8 +144,10 @@ final readonly class PhpDeprecationTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered PHP Deprecation (%s)%s',
+            'Test Triggered PHP Deprecation (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

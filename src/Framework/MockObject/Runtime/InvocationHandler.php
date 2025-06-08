@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject;
 
 use function strtolower;
 use Exception;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Throwable;
 
@@ -28,7 +27,7 @@ final class InvocationHandler
     private array $matchers = [];
 
     /**
-     * @var array<string,Matcher>
+     * @var array<non-empty-string, Matcher>
      */
     private array $matcherMap = [];
 
@@ -60,6 +59,8 @@ final class InvocationHandler
 
     /**
      * Looks up the match builder with identification $id and returns it.
+     *
+     * @param non-empty-string $id
      */
     public function lookupMatcher(string $id): ?Matcher
     {
@@ -69,6 +70,8 @@ final class InvocationHandler
     /**
      * Registers a matcher with the identification $id. The matcher can later be
      * looked up using lookupMatcher() to figure out if it has been invoked.
+     *
+     * @param non-empty-string $id
      *
      * @throws MatcherAlreadyRegisteredException
      */
@@ -81,12 +84,12 @@ final class InvocationHandler
         $this->matcherMap[$id] = $matcher;
     }
 
-    public function expects(InvocationOrder $rule): InvocationMocker
+    public function expects(InvocationOrder $rule): InvocationStubber
     {
         $matcher = new Matcher($rule);
         $this->addMatcher($matcher);
 
-        return new InvocationMocker(
+        return new InvocationStubberImplementation(
             $this,
             $matcher,
             ...$this->configurableMethods,

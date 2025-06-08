@@ -22,7 +22,7 @@ final readonly class CoversClass extends Metadata
     private string $className;
 
     /**
-     * @param 0|1          $level
+     * @param int<0, 1>    $level
      * @param class-string $className
      */
     protected function __construct(int $level, string $className)
@@ -41,16 +41,6 @@ final readonly class CoversClass extends Metadata
      * @return class-string
      */
     public function className(): string
-    {
-        return $this->className;
-    }
-
-    /**
-     * @return class-string
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function asStringForCodeUnitMapper(): string
     {
         return $this->className;
     }

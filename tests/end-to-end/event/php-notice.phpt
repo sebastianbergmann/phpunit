@@ -22,9 +22,9 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\PhpNoticeTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Prepared (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
-Test Triggered PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
+Test Triggered PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice) in %s:%d
 Only variables should be assigned by reference
-Test Triggered PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice, suppressed using operator)
+Test Triggered PHP Notice (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice, suppressed using operator) in %s:%d
 Only variables should be assigned by reference
 Test Passed (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)
 Test Finished (PHPUnit\TestFixture\Event\PhpNoticeTest::testPhpNotice)

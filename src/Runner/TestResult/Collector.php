@@ -11,12 +11,15 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use function array_values;
 use function assert;
+use function count;
 use function implode;
 use function str_contains;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AfterLastTestMethodErrored;
+use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
@@ -29,19 +32,20 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
+use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 
@@ -53,11 +57,10 @@ use PHPUnit\TestRunner\TestResult\Issues\Issue;
 final class Collector
 {
     private readonly IssueFilter $issueFilter;
-    private int $numberOfTests                       = 0;
-    private int $numberOfTestsRun                    = 0;
-    private int $numberOfAssertions                  = 0;
-    private bool $prepared                           = false;
-    private bool $currentTestSuiteForTestClassFailed = false;
+    private int $numberOfTests      = 0;
+    private int $numberOfTestsRun   = 0;
+    private int $numberOfAssertions = 0;
+    private bool $prepared          = false;
 
     /**
      * @var non-negative-int
@@ -65,12 +68,12 @@ final class Collector
     private int $numberOfIssuesIgnoredByBaseline = 0;
 
     /**
-     * @var list<BeforeFirstTestMethodErrored|Errored>
+     * @var list<AfterLastTestMethodErrored|BeforeFirstTestMethodErrored|Errored>
      */
     private array $testErroredEvents = [];
 
     /**
-     * @var list<Failed>
+     * @var list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>
      */
     private array $testFailedEvents = [];
 
@@ -105,19 +108,29 @@ final class Collector
     private array $testTriggeredPhpunitErrorEvents = [];
 
     /**
+     * @var array<string,list<PhpunitNoticeTriggered>>
+     */
+    private array $testTriggeredPhpunitNoticeEvents = [];
+
+    /**
      * @var array<string,list<PhpunitWarningTriggered>>
      */
     private array $testTriggeredPhpunitWarningEvents = [];
 
     /**
-     * @var list<TestRunnerWarningTriggered>
-     */
-    private array $testRunnerTriggeredWarningEvents = [];
-
-    /**
      * @var list<TestRunnerDeprecationTriggered>
      */
     private array $testRunnerTriggeredDeprecationEvents = [];
+
+    /**
+     * @var list<TestRunnerNoticeTriggered>
+     */
+    private array $testRunnerTriggeredNoticeEvents = [];
+
+    /**
+     * @var list<TestRunnerWarningTriggered>
+     */
+    private array $testRunnerTriggeredWarningEvents = [];
 
     /**
      * @var array<non-empty-string, Issue>
@@ -154,10 +167,6 @@ final class Collector
      */
     private array $phpWarnings = [];
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
         $facade->registerSubscribers(
@@ -168,6 +177,9 @@ final class Collector
             new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new BeforeTestClassMethodErroredSubscriber($this),
+            new BeforeTestClassMethodFailedSubscriber($this),
+            new AfterTestClassMethodErroredSubscriber($this),
+            new AfterTestClassMethodFailedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
@@ -180,10 +192,12 @@ final class Collector
             new TestTriggeredPhpNoticeSubscriber($this),
             new TestTriggeredPhpunitDeprecationSubscriber($this),
             new TestTriggeredPhpunitErrorSubscriber($this),
+            new TestTriggeredPhpunitNoticeSubscriber($this),
             new TestTriggeredPhpunitWarningSubscriber($this),
             new TestTriggeredPhpWarningSubscriber($this),
             new TestTriggeredWarningSubscriber($this),
             new TestRunnerTriggeredDeprecationSubscriber($this),
+            new TestRunnerTriggeredNoticeSubscriber($this),
             new TestRunnerTriggeredWarningSubscriber($this),
         );
 
@@ -204,8 +218,10 @@ final class Collector
             $this->testMarkedIncompleteEvents,
             $this->testTriggeredPhpunitDeprecationEvents,
             $this->testTriggeredPhpunitErrorEvents,
+            $this->testTriggeredPhpunitNoticeEvents,
             $this->testTriggeredPhpunitWarningEvents,
             $this->testRunnerTriggeredDeprecationEvents,
+            $this->testRunnerTriggeredNoticeEvents,
             $this->testRunnerTriggeredWarningEvents,
             array_values($this->errors),
             array_values($this->deprecations),
@@ -241,16 +257,10 @@ final class Collector
         if (!$testSuite->isForTestClass()) {
             return;
         }
-
-        $this->currentTestSuiteForTestClassFailed = false;
     }
 
     public function testSuiteFinished(TestSuiteFinished $event): void
     {
-        if ($this->currentTestSuiteForTestClassFailed) {
-            return;
-        }
-
         $testSuite = $event->testSuite();
 
         if ($testSuite->isWithName()) {
@@ -259,10 +269,17 @@ final class Collector
 
         if ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
+            assert(count($testSuite->tests()->asArray()) > 0);
 
             $test = $testSuite->tests()->asArray()[0];
 
             assert($test instanceof TestMethod);
+
+            foreach ($this->testFailedEvents as $testFailedEvent) {
+                if ($testFailedEvent->test()->isTestMethod() && $testFailedEvent->test()->methodName() === $test->methodName()) {
+                    return;
+                }
+            }
 
             PassedTests::instance()->testMethodPassed($test, null);
 
@@ -295,11 +312,26 @@ final class Collector
         $this->numberOfTestsRun++;
     }
 
+    public function beforeTestClassMethodFailed(BeforeFirstTestMethodFailed $event): void
+    {
+        $this->testFailedEvents[] = $event;
+
+        $this->numberOfTestsRun++;
+    }
+
+    public function afterTestClassMethodErrored(AfterLastTestMethodErrored $event): void
+    {
+        $this->testErroredEvents[] = $event;
+    }
+
+    public function afterTestClassMethodFailed(AfterLastTestMethodFailed $event): void
+    {
+        $this->testFailedEvents[] = $event;
+    }
+
     public function testErrored(Errored $event): void
     {
         $this->testErroredEvents[] = $event;
-
-        $this->currentTestSuiteForTestClassFailed = true;
 
         /*
          * @todo Eliminate this special case
@@ -316,8 +348,6 @@ final class Collector
     public function testFailed(Failed $event): void
     {
         $this->testFailedEvents[] = $event;
-
-        $this->currentTestSuiteForTestClassFailed = true;
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
@@ -363,6 +393,7 @@ final class Collector
                 $event->line(),
                 $event->message(),
                 $event->test(),
+                $event->stackTrace(),
             );
 
             return;
@@ -406,6 +437,15 @@ final class Collector
         }
 
         $this->testTriggeredPhpunitDeprecationEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpunitNotice(PhpunitNoticeTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpunitNoticeEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpunitNoticeEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpunitNoticeEvents[$event->test()->id()][] = $event;
     }
 
     public function testTriggeredError(ErrorTriggered $event): void
@@ -565,6 +605,11 @@ final class Collector
         $this->testRunnerTriggeredDeprecationEvents[] = $event;
     }
 
+    public function testRunnerTriggeredNotice(TestRunnerNoticeTriggered $event): void
+    {
+        $this->testRunnerTriggeredNoticeEvents[] = $event;
+    }
+
     public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void
     {
         $this->testRunnerTriggeredWarningEvents[] = $event;
@@ -572,49 +617,49 @@ final class Collector
 
     public function hasErroredTests(): bool
     {
-        return !empty($this->testErroredEvents);
+        return $this->testErroredEvents !== [];
     }
 
     public function hasFailedTests(): bool
     {
-        return !empty($this->testFailedEvents);
+        return $this->testFailedEvents !== [];
     }
 
     public function hasRiskyTests(): bool
     {
-        return !empty($this->testConsideredRiskyEvents);
+        return $this->testConsideredRiskyEvents !== [];
     }
 
     public function hasSkippedTests(): bool
     {
-        return !empty($this->testSkippedEvents);
+        return $this->testSkippedEvents !== [];
     }
 
     public function hasIncompleteTests(): bool
     {
-        return !empty($this->testMarkedIncompleteEvents);
+        return $this->testMarkedIncompleteEvents !== [];
     }
 
     public function hasDeprecations(): bool
     {
-        return !empty($this->deprecations) ||
-               !empty($this->phpDeprecations) ||
-               !empty($this->testTriggeredPhpunitDeprecationEvents) ||
-               !empty($this->testRunnerTriggeredDeprecationEvents);
+        return $this->deprecations !== [] ||
+               $this->phpDeprecations !== [] ||
+               $this->testTriggeredPhpunitDeprecationEvents !== [] ||
+               $this->testRunnerTriggeredDeprecationEvents !== [];
     }
 
     public function hasNotices(): bool
     {
-        return !empty($this->notices) ||
-               !empty($this->phpNotices);
+        return $this->notices !== [] ||
+               $this->phpNotices !== [];
     }
 
     public function hasWarnings(): bool
     {
-        return !empty($this->warnings) ||
-               !empty($this->phpWarnings) ||
-               !empty($this->testTriggeredPhpunitWarningEvents) ||
-               !empty($this->testRunnerTriggeredWarningEvents);
+        return $this->warnings !== [] ||
+               $this->phpWarnings !== [] ||
+               $this->testTriggeredPhpunitWarningEvents !== [] ||
+               $this->testRunnerTriggeredWarningEvents !== [];
     }
 
     /**

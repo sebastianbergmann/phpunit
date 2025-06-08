@@ -112,11 +112,11 @@ $buffer .= $constraintMethods;
 $buffer .= <<<'EOT'
 if (!function_exists('PHPUnit\Framework\callback')) {
     /**
-     * @psalm-template CallbackInput of mixed
+     * @template CallbackInput of mixed
      *
-     * @psalm-param callable(CallbackInput $callback): bool $callback
+     * @param callable(CallbackInput $callback): bool $callback
      *
-     * @psalm-return Callback<CallbackInput>
+     * @return Callback<CallbackInput>
      */
     function callback(callable $callback): Callback
     {
@@ -200,62 +200,10 @@ if (!function_exists('PHPUnit\Framework\atMost')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\returnValue')) {
-    function returnValue(mixed $value): ReturnStub
-    {
-        return new ReturnStub($value);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnValueMap')) {
-    function returnValueMap(array $valueMap): ReturnValueMapStub
-    {
-        return new ReturnValueMapStub($valueMap);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnArgument')) {
-    function returnArgument(int $argumentIndex): ReturnArgumentStub
-    {
-        return new ReturnArgumentStub($argumentIndex);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnCallback')) {
-    function returnCallback(callable $callback): ReturnCallbackStub
-    {
-        return new ReturnCallbackStub($callback);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\returnSelf')) {
-    /**
-     * Returns the current object.
-     *
-     * This method is useful when mocking a fluent interface.
-     */
-    function returnSelf(): ReturnSelfStub
-    {
-        return new ReturnSelfStub;
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\throwException')) {
     function throwException(\Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
-    /**
-     * @param mixed $value , ...
-     */
-    function onConsecutiveCalls(): ConsecutiveCallsStub
-    {
-        $arguments = \func_get_args();
-
-        return new ConsecutiveCallsStub($arguments);
     }
 }
 

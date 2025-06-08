@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function array_slice;
+use function assert;
 use function dirname;
 use function explode;
 use function implode;
@@ -34,7 +35,7 @@ final class Version
         }
 
         if (self::$version === '') {
-            self::$version = (new VersionId('12.0', dirname(__DIR__, 2)))->asString();
+            self::$version = (new VersionId('12.3', dirname(__DIR__, 2)))->asString();
         }
 
         return self::$version;
@@ -59,7 +60,10 @@ final class Version
      */
     public static function majorVersionNumber(): int
     {
-        return (int) explode('.', self::series())[0];
+        $majorVersion = (int) explode('.', self::series())[0];
+        assert($majorVersion > 0);
+
+        return $majorVersion;
     }
 
     /**

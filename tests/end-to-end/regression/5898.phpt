@@ -21,6 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%s5898.phpt, 1 test)
 Test Preparation Started (%s5898.phpt)
 Test Prepared (%s5898.phpt)
+Child Process Started
+Child Process Finished
 Test Passed (%s5898.phpt)
 Test Finished (%s5898.phpt)
 Test Suite Finished (%s5898.phpt, 1 test)

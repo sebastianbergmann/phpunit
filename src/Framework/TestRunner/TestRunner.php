@@ -10,9 +10,13 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_diff_assoc;
+use function array_intersect;
+use function array_unique;
 use function assert;
 use function extension_loaded;
 use function sprintf;
+use function xdebug_is_debugger_active;
 use AssertionError;
 use PHPUnit\Event\Facade;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
@@ -22,8 +26,9 @@ use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
+use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
@@ -45,7 +50,6 @@ final class TestRunner
     }
 
     /**
-     * @throws CodeCoverageException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
@@ -56,10 +60,22 @@ final class TestRunner
 
         $codeCoverageMetadataApi = new CodeCoverageMetadataApi;
 
+        $coversTargets = $codeCoverageMetadataApi->coversTargets(
+            $test::class,
+            $test->name(),
+        );
+
+        $usesTargets = $codeCoverageMetadataApi->usesTargets(
+            $test::class,
+            $test->name(),
+        );
+
         $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor(
             $test::class,
             $test->name(),
         );
+
+        $this->performSanityChecks($test, $coversTargets, $usesTargets, $shouldCodeCoverageBeCollected);
 
         $error      = false;
         $failure    = false;
@@ -134,36 +150,18 @@ final class TestRunner
         }
 
         if ($collectCodeCoverage) {
-            $append           = !$risky && !$incomplete && !$skipped;
-            $linesToBeCovered = [];
-            $linesToBeUsed    = [];
+            $append = !$risky && !$incomplete && !$skipped;
 
-            if ($append) {
-                try {
-                    $linesToBeCovered = $codeCoverageMetadataApi->linesToBeCovered(
-                        $test::class,
-                        $test->name(),
-                    );
-
-                    $linesToBeUsed = $codeCoverageMetadataApi->linesToBeUsed(
-                        $test::class,
-                        $test->name(),
-                    );
-                } catch (InvalidCoversTargetException $cce) {
-                    Facade::emitter()->testTriggeredPhpunitWarning(
-                        $test->valueObjectForEvents(),
-                        $cce->getMessage(),
-                    );
-
-                    $append = false;
-                }
+            if (!$append) {
+                $coversTargets = false;
+                $usesTargets   = null;
             }
 
             try {
                 CodeCoverage::instance()->stop(
                     $append,
-                    $linesToBeCovered,
-                    $linesToBeUsed,
+                    $coversTargets,
+                    $usesTargets,
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
                 Facade::emitter()->testConsideredRisky(
@@ -172,7 +170,7 @@ final class TestRunner
                     PHP_EOL .
                     $cce->getMessage(),
                 );
-            } catch (OriginalCodeCoverageException $cce) {
+            } catch (CodeCoverageException $cce) {
                 $error = true;
 
                 $e = $e ?? $cce;
@@ -213,7 +211,7 @@ final class TestRunner
             Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(
-                    'This test printed output: %s',
+                    'Test code or tested code printed unexpected output: %s',
                     $test->output(),
                 ),
             );
@@ -234,7 +232,23 @@ final class TestRunner
     private function hasCoverageMetadata(string $className, string $methodName): bool
     {
         foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if ($metadata->isCoversNamespace()) {
+                return true;
+            }
+
+            if ($metadata->isCoversTrait()) {
+                return true;
+            }
+
             if ($metadata->isCoversClass()) {
+                return true;
+            }
+
+            if ($metadata->isCoversClassesThatExtendClass()) {
+                return true;
+            }
+
+            if ($metadata->isCoversClassesThatImplementInterface()) {
                 return true;
             }
 
@@ -271,7 +285,7 @@ final class TestRunner
             return false;
         }
 
-        if (!(($this->configuration->defaultTimeLimit() || $test->size()->isKnown()))) {
+        if (!(($this->configuration->defaultTimeLimit() > 0 || $test->size()->isKnown()))) {
             return false;
         }
 
@@ -323,5 +337,62 @@ final class TestRunner
         }
 
         return true;
+    }
+
+    private function performSanityChecks(TestCase $test, TargetCollection $coversTargets, TargetCollection $usesTargets, bool $shouldCodeCoverageBeCollected): void
+    {
+        if (!$shouldCodeCoverageBeCollected) {
+            if ($coversTargets->isNotEmpty() || $usesTargets->isNotEmpty()) {
+                Facade::emitter()->testTriggeredPhpunitWarning(
+                    $test->valueObjectForEvents(),
+                    '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
+                );
+            }
+        }
+
+        $coversAsString = [];
+        $usesAsString   = [];
+
+        foreach ($coversTargets as $coversTarget) {
+            $coversAsString[] = $coversTarget->description();
+        }
+
+        foreach ($usesTargets as $usesTarget) {
+            $usesAsString[] = $usesTarget->description();
+        }
+
+        $coversDuplicates = array_unique(array_diff_assoc($coversAsString, array_unique($coversAsString)));
+        $usesDuplicates   = array_unique(array_diff_assoc($usesAsString, array_unique($usesAsString)));
+        $coversAndUses    = array_intersect($coversAsString, $usesAsString);
+
+        foreach ($coversDuplicates as $target) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    '%s is targeted multiple times by the same "Covers" attribute',
+                    $target,
+                ),
+            );
+        }
+
+        foreach ($usesDuplicates as $target) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    '%s is targeted multiple times by the same "Uses" attribute',
+                    $target,
+                ),
+            );
+        }
+
+        foreach ($coversAndUses as $target) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    '%s is targeted by both "Covers" and "Uses" attributes',
+                    $target,
+                ),
+            );
+        }
     }
 }

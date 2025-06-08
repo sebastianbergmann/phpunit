@@ -15,7 +15,7 @@ use function in_array;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 

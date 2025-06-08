@@ -21,17 +21,18 @@ final class BeforeTestMethodFinishedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testClassName = 'Test';
+        $test          = $this->testValueObject();
         $calledMethods = $this->calledMethods();
 
         $event = new BeforeTestMethodFinished(
             $telemetryInfo,
-            $testClassName,
+            $test,
             ...$calledMethods,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($test, $event->test());
+        $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 
@@ -39,7 +40,7 @@ final class BeforeTestMethodFinishedTest extends AbstractEventTestCase
     {
         $event = new BeforeTestMethodFinished(
             $this->telemetryInfo(),
-            'Test',
+            $this->testValueObject(),
             ...$this->calledMethods(),
         );
 

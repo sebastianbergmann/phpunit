@@ -20,10 +20,10 @@ use function stripos;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
-use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -32,10 +32,10 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\TextUI\Output\Printer;
 
@@ -49,12 +49,8 @@ final class TeamCityLogger
     private readonly Printer $printer;
     private bool $isSummaryTestCountPrinted = false;
     private ?HRTime $time                   = null;
-    private ?int $flowId;
+    private ?int $flowId                    = null;
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     public function __construct(Printer $printer, Facade $facade)
     {
         $this->printer = $printer;
@@ -146,7 +142,9 @@ final class TeamCityLogger
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             $this->time = $event->telemetryInfo()->time();
+            // @codeCoverageIgnoreEnd
         }
 
         $this->writeMessage(
@@ -182,6 +180,46 @@ final class TeamCityLogger
     /**
      * @throws InvalidArgumentException
      */
+    public function testSuiteSkipped(TestSuiteSkipped $event): void
+    {
+        if ($this->time === null) {
+            $this->time = $event->telemetryInfo()->time();
+        }
+
+        $parameters = [
+            'name'    => $event->testSuite()->name(),
+            'message' => $event->message(),
+        ];
+
+        $parameters['duration'] = $this->duration($event);
+
+        $this->writeMessage('testIgnored', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function beforeFirstTestMethodErrored(BeforeFirstTestMethodErrored $event): void
+    {
+        if ($this->time === null) {
+            $this->time = $event->telemetryInfo()->time();
+        }
+
+        $parameters = [
+            'name'     => $event->testClassName(),
+            'message'  => $this->message($event->throwable()),
+            'details'  => $this->details($event->throwable()),
+            'duration' => $this->duration($event),
+        ];
+
+        $this->writeMessage('testFailed', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testErrored(Errored $event): void
     {
         if ($this->time === null) {
@@ -205,7 +243,9 @@ final class TeamCityLogger
     public function testFailed(Failed $event): void
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             $this->time = $event->telemetryInfo()->time();
+            // @codeCoverageIgnoreEnd
         }
 
         $parameters = [
@@ -230,7 +270,9 @@ final class TeamCityLogger
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             $this->time = $event->telemetryInfo()->time();
+            // @codeCoverageIgnoreEnd
         }
 
         $this->writeMessage(
@@ -265,10 +307,6 @@ final class TeamCityLogger
         $this->printer->flush();
     }
 
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
     private function registerSubscribers(Facade $facade): void
     {
         $facade->registerSubscribers(
@@ -280,8 +318,10 @@ final class TeamCityLogger
             new TestFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
+            new TestSuiteSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
+            new TestSuiteBeforeFirstTestMethodErroredSubscriber($this),
         );
     }
 
@@ -299,7 +339,7 @@ final class TeamCityLogger
     {
         $this->printer->print(
             sprintf(
-                "\n##teamcity[%s",
+                '##teamcity[%s',
                 $eventName,
             ),
         );
@@ -327,7 +367,9 @@ final class TeamCityLogger
     private function duration(Event $event): int
     {
         if ($this->time === null) {
+            // @codeCoverageIgnoreStart
             return 0;
+            // @codeCoverageIgnoreEnd
         }
 
         return (int) round($event->telemetryInfo()->time()->duration($this->time)->asFloat() * 1000);
@@ -350,7 +392,7 @@ final class TeamCityLogger
 
         $buffer = $throwable->className();
 
-        if (!empty($throwable->message())) {
+        if ($throwable->message() !== '') {
             $buffer .= ': ' . $throwable->message();
         }
 

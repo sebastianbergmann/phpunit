@@ -21,10 +21,27 @@ use PHPUnit\Event\Telemetry;
 final readonly class ExtensionLoadedFromPhar implements Event
 {
     private Telemetry\Info $telemetryInfo;
+
+    /**
+     * @var non-empty-string
+     */
     private string $filename;
+
+    /**
+     * @var non-empty-string
+     */
     private string $name;
+
+    /**
+     * @var non-empty-string
+     */
     private string $version;
 
+    /**
+     * @param non-empty-string $filename
+     * @param non-empty-string $name
+     * @param non-empty-string $version
+     */
     public function __construct(Telemetry\Info $telemetryInfo, string $filename, string $name, string $version)
     {
         $this->telemetryInfo = $telemetryInfo;
@@ -38,21 +55,33 @@ final readonly class ExtensionLoadedFromPhar implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function filename(): string
     {
         return $this->filename;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function version(): string
     {
         return $this->version;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

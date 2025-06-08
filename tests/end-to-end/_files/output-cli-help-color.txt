@@ -86,12 +86,16 @@
                                      a deprecation was triggered
   [32m--fail-on-phpunit-deprecation     [0m Signal failure using shell exit code when
                                      a PHPUnit deprecation was triggered
+  [32m--fail-on-phpunit-notice          [0m Signal failure using shell exit code when
+                                     a PHPUnit notice was triggered
   [32m--fail-on-notice                  [0m Signal failure using shell exit code when
                                      a notice was triggered
   [32m--fail-on-skipped                 [0m Signal failure using shell exit code when
                                      a test was skipped
   [32m--fail-on-incomplete              [0m Signal failure using shell exit code when
                                      a test was marked incomplete
+  [32m--fail-on-all-issues              [0m Signal failure using shell exit code when
+                                     an issue is triggered
 
   [32m--cache-result                    [0m Write test results to cache file
   [32m--do-not-cache-result             [0m Do not write test results to cache file
@@ -120,12 +124,15 @@
   [32m--display-deprecations            [0m Display details for deprecations triggered
                                      by tests
   [32m--display-phpunit-deprecations    [0m Display details for PHPUnit deprecations
+  [32m--display-phpunit-notices         [0m Display details for PHPUnit notices
   [32m--display-errors                  [0m Display details for errors triggered by
                                      tests
   [32m--display-notices                 [0m Display details for notices triggered by
                                      tests
   [32m--display-warnings                [0m Display details for warnings triggered by
                                      tests
+  [32m--display-all-issues              [0m Display details for all issues that are
+                                     triggered
   [32m--reverse-list                    [0m Print defects in reverse order
 
   [32m--teamcity                        [0m Replace default progress and result output
@@ -137,11 +144,15 @@
 
   [32m--debug                           [0m Replace default progress and result output
                                      with debugging information
+  [32m--with-telemetry                  [0m Include telemetry information in debugging
+                                     information output
 
 [33mLogging:[0m
 
   [32m--log-junit [36m<file>[0m                [0m Write test results in JUnit XML format to
                                      file
+  [32m--log-otr [36m<file>[0m                  [0m Write test results in Open Test Reporting
+                                     XML format to file
   [32m--log-teamcity [36m<file>[0m             [0m Write test results in TeamCity format to
                                      file
   [32m--testdox-html [36m<file>[0m             [0m Write test results in TestDox format
@@ -158,6 +169,8 @@
 
   [32m--coverage-clover [36m<file>[0m          [0m Write code coverage report in Clover XML
                                      format to file
+  [32m--coverage-openclover [36m<file>[0m      [0m Write code coverage report in OpenClover
+                                     XML format to file
   [32m--coverage-cobertura [36m<file>[0m       [0m Write code coverage report in Cobertura
                                      XML format to file
   [32m--coverage-crap4j [36m<file>[0m          [0m Write code coverage report in Crap4J XML

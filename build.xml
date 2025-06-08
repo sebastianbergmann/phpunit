@@ -48,6 +48,19 @@
             <arg value="--no-progress"/>
             <arg value="update"/>
         </exec>
+
+        <exec executable="${basedir}/tools/composer" dir="${basedir}/tools/.phpstan" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer" dir="${basedir}/tools/.phpstan" taskname="composer">
+            <arg value="bump"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-ansi"/>
+        </exec>
     </target>
 
     <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
@@ -174,20 +187,6 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/sebastian/code-unit/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-code-unit/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/sebastian-code-unit">
-            <fileset dir="${basedir}/vendor/sebastian/code-unit/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/sebastian/code-unit-reverse-lookup/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-code-unit-reverse-lookup/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/sebastian-code-unit-reverse-lookup">
-            <fileset dir="${basedir}/vendor/sebastian/code-unit-reverse-lookup/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/sebastian/comparator/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-comparator/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-comparator">
             <fileset dir="${basedir}/vendor/sebastian/comparator/src">
@@ -272,6 +271,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/staabm/side-effects-detector/LICENSE" tofile="${basedir}/build/tmp/phar/staabm-side-effects-detector/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/staabm-side-effects-detector">
+            <fileset dir="${basedir}/vendor/staabm/side-effects-detector/lib">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/tmp/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
@@ -285,6 +291,18 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
+        <!-- https://github.com/sebastianbergmann/phpunit/issues/6092 -->
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Expr/ArrayItem.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Expr/ClosureUse.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/DNumber.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/Encapsed.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/EncapsedStringPart.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Scalar/LNumber.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/DeclareDeclare.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/PropertyProperty.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/StaticVar.php"/>
+        <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/UseUse.php"/>
 
         <copy file="${basedir}/vendor/phar-io/manifest/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-manifest/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/phar-io-manifest">
@@ -333,9 +351,9 @@
             <arg path="${basedir}/build/tmp/phar" />
         </exec>
 
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Filter"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Filter"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/class.tpl"  token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/class.tpl"  token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/method.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>

@@ -27,7 +27,7 @@ final class TraversableContainsEqual extends TraversableContains
         }
 
         foreach ($other as $element) {
-            /* @noinspection TypeUnsafeComparisonInspection */
+            /** @phpstan-ignore equal.notAllowed */
             if ($this->value() == $element) {
                 return true;
             }

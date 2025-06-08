@@ -24,9 +24,9 @@ use ReflectionClass;
 #[Small]
 final class TestSuiteSorterTest extends TestCase
 {
-    private const IGNORE_DEPENDENCIES                   = false;
-    private const RESOLVE_DEPENDENCIES                  = true;
-    private const MULTI_DEPENDENCY_TEST_EXECUTION_ORDER = [
+    private const bool IGNORE_DEPENDENCIES                    = false;
+    private const bool RESOLVE_DEPENDENCIES                   = true;
+    private const array MULTI_DEPENDENCY_TEST_EXECUTION_ORDER = [
         MultiDependencyTest::class . '::testOne',
         MultiDependencyTest::class . '::testTwo',
         MultiDependencyTest::class . '::testThree',

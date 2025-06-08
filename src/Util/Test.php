@@ -9,7 +9,14 @@
  */
 namespace PHPUnit\Util;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const DEBUG_BACKTRACE_PROVIDE_OBJECT;
+use function debug_backtrace;
+use function in_array;
 use function str_starts_with;
+use function strtolower;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry;
 use ReflectionMethod;
 
@@ -20,6 +27,20 @@ use ReflectionMethod;
  */
 final readonly class Test
 {
+    /**
+     * @throws NoTestCaseObjectOnCallStackException
+     */
+    public static function currentTestCase(): TestCase
+    {
+        foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+            if (isset($frame['object']) && $frame['object'] instanceof TestCase) {
+                return $frame['object'];
+            }
+        }
+
+        throw new NoTestCaseObjectOnCallStackException;
+    }
+
     public static function isTestMethod(ReflectionMethod $method): bool
     {
         if (!$method->isPublic()) {
@@ -36,5 +57,30 @@ final readonly class Test
         );
 
         return $metadata->isTest()->isNotEmpty();
+    }
+
+    public static function isHookMethod(ReflectionMethod $method): bool
+    {
+        $defaultNames = [
+            'setupbeforeclass',
+            'setup',
+            'assertpreconditions',
+            'assertpostconditions',
+            'teardown',
+            'teardownafterclass',
+        ];
+
+        if (in_array(strtolower($method->getName()), $defaultNames, true)) {
+            return true;
+        }
+
+        $metadata = Registry::parser()->forMethod($method->getDeclaringClass()->getName(), $method->getName());
+
+        return $metadata->isBeforeClass()->isNotEmpty() ||
+               $metadata->isBefore()->isNotEmpty() ||
+               $metadata->isPreCondition()->isNotEmpty() ||
+               $metadata->isPostCondition()->isNotEmpty() ||
+               $metadata->isAfter()->isNotEmpty() ||
+               $metadata->isAfterClass()->isNotEmpty();
     }
 }

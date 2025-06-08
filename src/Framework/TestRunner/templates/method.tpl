@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
-use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
@@ -42,10 +42,31 @@ function __phpunit_run_isolated_test()
 
     require_once '{filename}';
 
+    $configuration = ConfigurationRegistry::get();
+
     if ({collectCodeCoverageInformation}) {
-        CodeCoverage::instance()->init(ConfigurationRegistry::get(), CodeCoverageFilterRegistry::instance(), true);
-        CodeCoverage::instance()->ignoreLines({linesToBeIgnored});
+        CodeCoverage::instance()->init($configuration, CodeCoverageFilterRegistry::instance(), true);
     }
+
+    $deprecationTriggers = [
+        'functions' => [],
+        'methods'   => [],
+    ];
+
+    foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
+        $deprecationTriggers['functions'][] = $function;
+    }
+
+    foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
+        [$className, $methodName] = explode('::', $method);
+
+        $deprecationTriggers['methods'][] = [
+            'className'  => $className,
+            'methodName' => $methodName,
+        ];
+    }
+
+    ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
 
     $test = new {className}('{methodName}');
 
@@ -81,7 +102,7 @@ function __phpunit_run_isolated_test()
     file_put_contents(
         '{processResultFile}',
         serialize(
-            [
+            (object)[
                 'testResult'    => $test->result(),
                 'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
                 'numAssertions' => $test->numberOfAssertionsPerformed(),

@@ -27,10 +27,10 @@ final class LogicalOrTest extends TestCase
         return [
             [
                 true,
-                'is of type boolean or is true',
+                'is of type bool or is true',
                 '',
                 self::logicalOr(
-                    self::isType('boolean'),
+                    self::isBool(),
                     self::isTrue(),
                 ),
                 true,
@@ -38,10 +38,10 @@ final class LogicalOrTest extends TestCase
 
             [
                 true,
-                'is of type boolean or is equal to true',
+                'is of type bool or is equal to true',
                 '',
                 self::logicalOr(
-                    self::isType('boolean'),
+                    self::isBool(),
                     true,
                 ),
                 true,
@@ -49,12 +49,12 @@ final class LogicalOrTest extends TestCase
 
             [
                 true,
-                'is true or is of type boolean and is false',
+                'is true or is of type bool and is false',
                 '',
                 self::logicalOr(
                     self::isTrue(),
                     self::logicalAnd(
-                        self::isType('boolean'),
+                        self::isBool(),
                         self::isFalse(),
                     ),
                 ),
@@ -63,11 +63,11 @@ final class LogicalOrTest extends TestCase
 
             [
                 false,
-                'is of type boolean or is of type string',
-                'Failed asserting that 0 is of type boolean or is of type string.',
+                'is of type bool or is of type string',
+                'Failed asserting that 0 is of type bool or is of type string.',
                 self::logicalOr(
-                    self::isType('boolean'),
-                    self::isType('string'),
+                    self::isBool(),
+                    self::isString(),
                 ),
                 0,
             ],
@@ -98,7 +98,7 @@ final class LogicalOrTest extends TestCase
     public function testIsCountable(): void
     {
         $constraint = $this->logicalOr(
-            $this->isType('bool'),
+            $this->isBool(),
             true,
         );
 

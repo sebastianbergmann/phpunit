@@ -41,13 +41,17 @@ final readonly class EventLogger implements Tracer
     {
         $telemetryInfo = $this->telemetryInfo($event);
         $indentation   = PHP_EOL . str_repeat(' ', strlen($telemetryInfo));
-        $lines         = preg_split('/\r\n|\r|\n/', $event->asString());
-
-        $flags = FILE_APPEND;
+        $flags         = FILE_APPEND;
 
         if (!(PHP_OS_FAMILY === 'Windows' || PHP_OS_FAMILY === 'Darwin') ||
             $this->path !== 'php://stdout') {
             $flags |= LOCK_EX;
+        }
+
+        $lines = preg_split('/\r\n|\r|\n/', $event->asString());
+
+        if ($lines === false) {
+            $lines = [];
         }
 
         file_put_contents(

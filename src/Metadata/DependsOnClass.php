@@ -24,7 +24,7 @@ final readonly class DependsOnClass extends Metadata
     private bool $shallowClone;
 
     /**
-     * @param 0|1          $level
+     * @param int<0, 1>    $level
      * @param class-string $className
      */
     protected function __construct(int $level, string $className, bool $deepClone, bool $shallowClone)

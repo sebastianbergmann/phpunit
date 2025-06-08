@@ -26,11 +26,11 @@ final class CreatePartialMockTest extends TestCase
 {
     public function testCreatesPartialMockObjectForExtendableClass(): void
     {
-        $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
+        $double = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
 
-        $mock->expects($this->once())->method('doSomethingElse')->willReturn(true);
+        $double->expects($this->once())->method('doSomethingElse')->willReturn(true);
 
-        $this->assertTrue($mock->doSomething());
+        $this->assertTrue($double->doSomething());
     }
 
     public function testCannotCreatePartialMockObjectForExtendableClassWithDuplicateMethods(): void
@@ -43,10 +43,10 @@ final class CreatePartialMockTest extends TestCase
 
     public function testMethodOfPartialMockThatIsNotConfigurableCannotBeConfigured(): void
     {
-        $mock = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
+        $double = $this->createPartialMock(ExtendableClass::class, ['doSomethingElse']);
 
         try {
-            $mock->expects($this->once())->method('doSomething')->willReturn(true);
+            $double->expects($this->once())->method('doSomething')->willReturn(true);
         } catch (MethodCannotBeConfiguredException $e) {
             $this->assertSame('Trying to configure method "doSomething" which cannot be configured because it does not exist, has not been specified, is final, or is static', $e->getMessage());
 

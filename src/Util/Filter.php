@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use function array_unshift;
 use function defined;
 use function in_array;
+use function is_array;
 use function is_file;
 use function realpath;
 use function sprintf;
@@ -30,41 +31,48 @@ final readonly class Filter
     /**
      * @throws Exception
      */
-    public static function getFilteredStacktrace(Throwable $t, bool $unwrap = true): string
+    public static function stackTraceFromThrowableAsString(Throwable $t, bool $unwrap = true): string
     {
-        $filteredStacktrace = '';
-
         if ($t instanceof PhptAssertionFailedError) {
-            $eTrace = $t->syntheticTrace();
-            $eFile  = $t->syntheticFile();
-            $eLine  = $t->syntheticLine();
+            $stackTrace = $t->syntheticTrace();
+            $file       = $t->syntheticFile();
+            $line       = $t->syntheticLine();
         } elseif ($t instanceof Exception) {
-            $eTrace = $t->getSerializableTrace();
-            $eFile  = $t->getFile();
-            $eLine  = $t->getLine();
+            $stackTrace = $t->getSerializableTrace();
+            $file       = $t->getFile();
+            $line       = $t->getLine();
         } else {
-            if ($unwrap && $t->getPrevious()) {
+            if ($unwrap && $t->getPrevious() !== null) {
                 $t = $t->getPrevious();
             }
 
-            $eTrace = $t->getTrace();
-            $eFile  = $t->getFile();
-            $eLine  = $t->getLine();
+            $stackTrace = $t->getTrace();
+            $file       = $t->getFile();
+            $line       = $t->getLine();
         }
 
-        if (!self::frameExists($eTrace, $eFile, $eLine)) {
+        if (!self::frameExists($stackTrace, $file, $line)) {
             array_unshift(
-                $eTrace,
-                ['file' => $eFile, 'line' => $eLine],
+                $stackTrace,
+                ['file' => $file, 'line' => $line],
             );
         }
 
+        return self::stackTraceAsString($stackTrace);
+    }
+
+    /**
+     * @param list<array{file: string, line: ?int, class?: class-string, function?: string, type: string}> $frames
+     */
+    private static function stackTraceAsString(array $frames): string
+    {
+        $buffer      = '';
         $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
         $excludeList = new ExcludeList;
 
-        foreach ($eTrace as $frame) {
+        foreach ($frames as $frame) {
             if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
-                $filteredStacktrace .= sprintf(
+                $buffer .= sprintf(
                     "%s:%s\n",
                     $frame['file'],
                     $frame['line'] ?? '?',
@@ -72,7 +80,7 @@ final readonly class Filter
             }
         }
 
-        return $filteredStacktrace;
+        return $buffer;
     }
 
     /**
@@ -104,7 +112,9 @@ final readonly class Filter
 
     private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
     {
-        return (empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+        return (!isset($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                !is_array($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'] === [] ||
                 !in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) &&
                 !$excludeList->isExcluded($file);
     }

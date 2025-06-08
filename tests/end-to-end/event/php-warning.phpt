@@ -22,9 +22,9 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\PhpWarningTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Prepared (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
-Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
+Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning) in %s:%d
 Undefined variable $b
-Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning, suppressed using operator)
+Test Triggered PHP Warning (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning, suppressed using operator) in %s:%d
 Undefined variable $b
 Test Passed (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)
 Test Finished (PHPUnit\TestFixture\Event\PhpWarningTest::testPhpWarning)

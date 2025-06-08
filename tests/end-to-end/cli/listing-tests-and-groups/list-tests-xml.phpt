@@ -21,10 +21,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
   <testClass name="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest" file="%sExampleTest.php">
    <testMethod id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testOne" name="testOne"/>
    <testMethod id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testTwo" name="testTwo"/>
+   <testMethod id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testThree" name="testThree"/>
   </testClass>
   <phpt file="%sexample.phpt"/>
  </tests>
  <groups>
+  <group name="3">
+   <test id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testThree"/>
+  </group>
   <group name="one">
    <test id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testOne"/>
   </group>

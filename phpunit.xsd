@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation source="https://phpunit.de/documentation.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 12.0 may be structured.
+            This Schema file defines the rules by which the XML configuration file of PHPUnit 12.3 may be structured.
         </xs:documentation>
         <xs:appinfo source="https://phpunit.de/documentation.html"/>
     </xs:annotation>
@@ -64,6 +64,7 @@
             </xs:element>
         </xs:all>
         <xs:attribute name="pathCoverage" type="xs:boolean" default="false"/>
+        <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
         <xs:attribute name="ignoreDeprecatedCodeUnits" type="xs:boolean" default="false"/>
         <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
     </xs:complexType>
@@ -177,8 +178,10 @@
         <xs:attribute name="numberOfTestsBeforeGarbageCollection" type="xs:integer" default="100"/>
         <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnPhpunitNotice" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnNotice" type="xs:boolean" default="false"/>
@@ -211,10 +214,12 @@
         <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
+        <xs:attribute name="displayDetailsOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnIncompleteTests" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnSkippedTests" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnPhpunitDeprecations" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayDetailsOnPhpunitNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
@@ -247,6 +252,7 @@
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="bootstrap" type="xs:string" use="optional"/>
     </xs:complexType>
     <xs:group name="testSuitePathGroup">
         <xs:sequence>
@@ -284,6 +290,7 @@
             <xs:element name="cobertura" type="logToFileType" minOccurs="0"/>
             <xs:element name="crap4j" type="coverageReportCrap4JType" minOccurs="0" />
             <xs:element name="html" type="coverageReportHtmlType" minOccurs="0" />
+            <xs:element name="openclover" type="logToFileType" minOccurs="0"/>
             <xs:element name="php" type="logToFileType" minOccurs="0" />
             <xs:element name="text" type="coverageReportTextType" minOccurs="0" />
             <xs:element name="xml" type="logToDirectoryType" minOccurs="0" />
@@ -292,6 +299,7 @@
     <xs:group name="loggingGroup">
         <xs:all>
             <xs:element name="junit" type="logToFileType" minOccurs="0" />
+            <xs:element name="otr" type="logToFileType" minOccurs="0" />
             <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxText" type="logToFileType" minOccurs="0" />

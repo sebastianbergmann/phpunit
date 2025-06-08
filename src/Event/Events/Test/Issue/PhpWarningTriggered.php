@@ -103,11 +103,14 @@ final readonly class PhpWarningTriggered implements Event
         return $this->ignoredByBaseline;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         $message = $this->message;
 
-        if (!empty($message)) {
+        if ($message !== '') {
             $message = PHP_EOL . $message;
         }
 
@@ -122,8 +125,10 @@ final readonly class PhpWarningTriggered implements Event
         }
 
         return sprintf(
-            'Test Triggered PHP Warning (%s)%s',
+            'Test Triggered PHP Warning (%s) in %s:%d%s',
             implode(', ', $details),
+            $this->file,
+            $this->line,
             $message,
         );
     }

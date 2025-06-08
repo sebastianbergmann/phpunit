@@ -23,8 +23,15 @@ final readonly class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Code\Test $test;
+
+    /**
+     * @var non-negative-int
+     */
     private int $numberOfAssertionsPerformed;
 
+    /**
+     * @param non-negative-int $numberOfAssertionsPerformed
+     */
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $numberOfAssertionsPerformed)
     {
         $this->telemetryInfo               = $telemetryInfo;
@@ -42,11 +49,17 @@ final readonly class Finished implements Event
         return $this->test;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function numberOfAssertionsPerformed(): int
     {
         return $this->numberOfAssertionsPerformed;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return sprintf(

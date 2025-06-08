@@ -116,7 +116,7 @@ final class DirectDispatcher implements SubscribableDispatcher
     public function handleThrowable(Throwable $t): void
     {
         if ($this->isThrowableFromThirdPartySubscriber($t)) {
-            Facade::emitter()->testRunnerTriggeredWarning(
+            Facade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Exception in third-party event subscriber: %s%s%s',
                     $t->getMessage(),

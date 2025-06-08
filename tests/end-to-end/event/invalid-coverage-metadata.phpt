@@ -16,11 +16,18 @@ $_SERVER['argv'][] = '--debug';
 require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+--CLEAN--
+<?php declare(strict_types=1);
+require __DIR__ . '/../../_files/delete_directory.php';
+
+delete_directory(__DIR__ . '/_files/invalid-coverage-metadata/.phpunit.cache');
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (1 test)
+Static Analysis for Code Coverage Started
+Static Analysis for Code Coverage Finished (0 cache hits, 1 cache misses)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
@@ -31,7 +38,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\InvalidCoverageMetadata\Inva
 Test Prepared (PHPUnit\TestFixture\Event\InvalidCoverageMetadata\InvalidCoverageMetadataTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\InvalidCoverageMetadata\InvalidCoverageMetadataTest::testOne)
 Test Triggered PHPUnit Warning (PHPUnit\TestFixture\Event\InvalidCoverageMetadata\InvalidCoverageMetadataTest::testOne)
-"PHPUnit\TestFixture\Event\InvalidCoverageMetadata\This\Does\Not\Exist" is not a valid target for code coverage
+Class PHPUnit\TestFixture\Event\InvalidCoverageMetadata\This\Does\Not\Exist is not a valid target for code coverage
 Test Finished (PHPUnit\TestFixture\Event\InvalidCoverageMetadata\InvalidCoverageMetadataTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidCoverageMetadata\InvalidCoverageMetadataTest, 1 test)
 Test Suite Finished (default, 1 test)

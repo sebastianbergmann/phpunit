@@ -79,14 +79,14 @@ final class MultipleDataProviderTest extends TestCase
     #[DataProvider('providerA')]
     #[DataProvider('providerB')]
     #[DataProvider('providerC')]
-    public function testOne(): void
+    public function testOne($one, $two, $three): void
     {
     }
 
     #[DataProvider('providerD')]
     #[DataProvider('providerE')]
     #[DataProvider('providerF')]
-    public function testTwo(): void
+    public function testTwo($one, $two, $three): void
     {
     }
 }

@@ -21,14 +21,13 @@ final readonly class Generator
     /**
      * @var string
      */
-    private const TEMPLATE = <<<'EOT'
+    private const string TEMPLATE = <<<'EOT'
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="{schema_location}"
          bootstrap="{bootstrap_script}"
          cacheDirectory="{cache_directory}"
          executionOrder="depends,defects"
-         shortenArraysForExportThreshold="10"
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
