@@ -54,7 +54,7 @@ abstract readonly class JobRunner
             $result->stderr(),
         );
 
-        EventFacade::emitter()->testRunnerFinishedChildProcess($result->stdout(), $result->stderr());
+        EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
     }
 
     abstract public function run(Job $job): Result;

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 ### Added
 
 * [#3795](https://github.com/sebastianbergmann/phpunit/issues/3795): Bootstrap scripts specific to test suites
+* `TestRunner\ChildProcessErrored` event
 * `Configuration::includeTestSuites()` and `Configuration::excludeTestSuites()`
 
 ### Deprecated

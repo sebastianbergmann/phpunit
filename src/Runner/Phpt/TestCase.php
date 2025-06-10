@@ -177,7 +177,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             ),
         );
 
-        EventFacade::emitter()->testRunnerFinishedChildProcess($jobResult->stdout(), $jobResult->stderr());
+        EventFacade::emitter()->childProcessFinished($jobResult->stdout(), $jobResult->stderr());
 
         $output = $jobResult->stdout();
 
@@ -344,7 +344,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
             $output = $jobResult->stdout();
 
-            EventFacade::emitter()->testRunnerFinishedChildProcess($output, $jobResult->stderr());
+            EventFacade::emitter()->childProcessFinished($output, $jobResult->stderr());
         } else {
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
@@ -436,7 +436,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 ),
             );
 
-            EventFacade::emitter()->testRunnerFinishedChildProcess($result->stdout(), $result->stderr());
+            EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
 
             return;
         }
