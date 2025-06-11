@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
 use function floor;
 use function sprintf;
-use function str_contains;
 use function str_repeat;
 use function strlen;
 use PHPUnit\Event\Facade;
@@ -23,6 +22,7 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TextUI\Configuration\Source;
@@ -41,13 +41,14 @@ final class ProgressPrinter
     private readonly bool $colors;
     private readonly int $numberOfColumns;
     private readonly Source $source;
-    private int $column             = 0;
-    private int $numberOfTests      = 0;
-    private int $numberOfTestsWidth = 0;
-    private int $maxColumn          = 0;
-    private int $numberOfTestsRun   = 0;
-    private ?TestStatus $status     = null;
-    private bool $prepared          = false;
+    private int $column               = 0;
+    private int $numberOfTests        = 0;
+    private int $numberOfTestsWidth   = 0;
+    private int $maxColumn            = 0;
+    private int $numberOfTestsRun     = 0;
+    private ?TestStatus $status       = null;
+    private bool $prepared            = false;
+    private bool $childProcessErrored = false;
 
     public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source)
     {
@@ -248,10 +249,7 @@ final class ProgressPrinter
 
     public function testErrored(Errored $event): void
     {
-        /*
-         * @todo Eliminate this special case
-         */
-        if (str_contains($event->asString(), 'Test was run in child process and ended unexpectedly')) {
+        if ($this->childProcessErrored) {
             $this->updateTestStatus(TestStatus::error());
 
             return;
@@ -286,8 +284,14 @@ final class ProgressPrinter
             $this->printProgressForError();
         }
 
-        $this->status   = null;
-        $this->prepared = false;
+        $this->status              = null;
+        $this->prepared            = false;
+        $this->childProcessErrored = false;
+    }
+
+    public function childProcessErrored(ChildProcessErrored $event): void
+    {
+        $this->childProcessErrored = true;
     }
 
     private function registerSubscribers(Facade $facade): void
@@ -310,6 +314,7 @@ final class ProgressPrinter
             new TestTriggeredPhpunitWarningSubscriber($this),
             new TestTriggeredPhpWarningSubscriber($this),
             new TestTriggeredWarningSubscriber($this),
+            new ChildProcessErroredSubscriber($this),
         );
     }
 

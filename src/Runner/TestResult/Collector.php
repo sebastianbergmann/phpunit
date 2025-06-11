@@ -13,7 +13,6 @@ use function array_values;
 use function assert;
 use function count;
 use function implode;
-use function str_contains;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
@@ -37,6 +36,7 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
@@ -57,10 +57,11 @@ use PHPUnit\TestRunner\TestResult\Issues\Issue;
 final class Collector
 {
     private readonly IssueFilter $issueFilter;
-    private int $numberOfTests      = 0;
-    private int $numberOfTestsRun   = 0;
-    private int $numberOfAssertions = 0;
-    private bool $prepared          = false;
+    private int $numberOfTests        = 0;
+    private int $numberOfTestsRun     = 0;
+    private int $numberOfAssertions   = 0;
+    private bool $prepared            = false;
+    private bool $childProcessErrored = false;
 
     /**
      * @var non-negative-int
@@ -199,6 +200,7 @@ final class Collector
             new TestRunnerTriggeredDeprecationSubscriber($this),
             new TestRunnerTriggeredNoticeSubscriber($this),
             new TestRunnerTriggeredWarningSubscriber($this),
+            new ChildProcessErroredSubscriber($this),
         );
 
         $this->issueFilter = $issueFilter;
@@ -302,7 +304,8 @@ final class Collector
 
         $this->numberOfTestsRun++;
 
-        $this->prepared = false;
+        $this->prepared            = false;
+        $this->childProcessErrored = false;
     }
 
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
@@ -333,10 +336,7 @@ final class Collector
     {
         $this->testErroredEvents[] = $event;
 
-        /*
-         * @todo Eliminate this special case
-         */
-        if (str_contains($event->asString(), 'Test was run in child process and ended unexpectedly')) {
+        if ($this->childProcessErrored) {
             return;
         }
 
@@ -613,6 +613,11 @@ final class Collector
     public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void
     {
         $this->testRunnerTriggeredWarningEvents[] = $event;
+    }
+
+    public function childProcessErrored(ChildProcessErrored $event): void
+    {
+        $this->childProcessErrored = true;
     }
 
     public function hasErroredTests(): bool
