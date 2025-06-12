@@ -286,21 +286,6 @@ parameters:
 			enabled: false
 ```
 
-#### `Expressions\NoEvalRule`
-
-This rule reports an error when the language construct [`eval()`](https://www.php.net/eval) is used.
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noEval:
-			enabled: false
-```
-
 #### `Expressions\NoErrorSuppressionRule`
 
 This rule reports an error when [`@`](https://www.php.net/manual/en/language.operators.errorcontrol.php) is used to suppress errors.
@@ -313,6 +298,21 @@ You can set the `enabled` parameter to `false` to disable this rule.
 parameters:
 	ergebnis:
 		noErrorSuppression:
+			enabled: false
+```
+
+#### `Expressions\NoEvalRule`
+
+This rule reports an error when the language construct [`eval()`](https://www.php.net/eval) is used.
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noEval:
 			enabled: false
 ```
 
