@@ -107,6 +107,10 @@ use Throwable;
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
+    /**
+     * @var non-empty-string
+     */
+    protected string $providerName;
     private ?bool $backupGlobals = null;
 
     /**
@@ -373,6 +377,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function setGroups(array $groups): void
     {
         $this->groups = $groups;
+    }
+
+    public function getProviderName(): string
+    {
+        return $this->providerName;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setProviderName(string $providerName): self
+    {
+        $this->providerName = $providerName;
+
+        return $this;
     }
 
     /**
