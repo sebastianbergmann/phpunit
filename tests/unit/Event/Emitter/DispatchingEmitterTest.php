@@ -1547,7 +1547,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\TestProxyCreated::class, $event);
 
         $this->assertSame($className, $event->className());
-        $this->assertSame("Array &0 [\n    0 => 'foo',\n]", $event->constructorArguments());
+        $this->assertSame("'foo'", $event->constructorArguments());
     }
 
     #[TestDox('testCreatedStub() emits Test\TestStubCreated event')]

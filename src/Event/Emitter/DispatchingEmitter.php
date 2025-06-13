@@ -644,7 +644,7 @@ final class DispatchingEmitter implements Emitter
             new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
-                Exporter::export($constructorArguments),
+                Exporter::shortenedRecursiveExport($constructorArguments),
             ),
         );
     }

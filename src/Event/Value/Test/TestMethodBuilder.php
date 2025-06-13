@@ -67,14 +67,14 @@ final readonly class TestMethodBuilder
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                Exporter::export($testCase->providedData()),
+                Exporter::shortenedRecursiveExport($testCase->providedData()),
                 $testCase->dataSetAsStringWithData(),
             );
         }
 
         if ($testCase->hasDependencyInput()) {
             $testData[] = DataFromTestDependency::from(
-                Exporter::export($testCase->dependencyInput()),
+                Exporter::shortenedRecursiveExport($testCase->dependencyInput()),
             );
         }
 

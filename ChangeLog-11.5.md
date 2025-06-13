@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Fixed
 
 * [#6222](https://github.com/sebastianbergmann/phpunit/issues/6222): Data Provider seems to mess up Test Dependencies
+* `shortenArraysForExportThreshold` XML configuration setting has no effect on all arrays exported for event-related value objects
 
 ## [11.5.22] - 2025-06-06
 
