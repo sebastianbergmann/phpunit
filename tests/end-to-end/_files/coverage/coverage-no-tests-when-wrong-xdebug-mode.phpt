@@ -5,11 +5,13 @@ Don't run tests when wrong xdebug mode is set
 if (!extension_loaded('xdebug')) {
     print 'skip: Extension xdebug must be loaded.';
 }
+--ENV--
+XDEBUG_MODE=debug
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
-$_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/coverage/coverage-no-tests-when-wrong-xdebug-mode.phpt');
+$_SERVER['argv'][] = '--coverage-html';
+$_SERVER['argv'][] = 'my_coverage_folder';
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
@@ -18,9 +20,11 @@ require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
+Configuration: %s
 
-.                                                                   1 / 1 (100%)
+There was 1 PHPUnit test runner warning:
 
-Time: %s, Memory: %s
+1) XDEBUG_MODE=coverage (environment variable) or xdebug.mode=coverage (PHP configuration setting) has to be set
 
-OK (1 test, 1 assertion)
+No tests executed!
+
