@@ -5,8 +5,6 @@ Don't run tests when coverage driver is not loaded
 if (extension_loaded('xdebug') || extension_loaded('pcov')) {
     print 'skip: No debug driver should be loaded.';
 }
---ENV--
-XDEBUG_MODE=debug
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
