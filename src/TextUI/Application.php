@@ -44,6 +44,7 @@ use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\CodeCoverageInitializationStatus;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
@@ -201,7 +202,7 @@ final readonly class Application
                 $this->execute(new ShowHelpCommand(Result::FAILURE));
             }
 
-            CodeCoverage::instance()->init(
+            $coverageInitializationStatus = CodeCoverage::instance()->init(
                 $configuration,
                 CodeCoverageFilterRegistry::instance(),
                 $extensionRequiresCodeCoverageCollection,
@@ -220,13 +221,18 @@ final readonly class Application
             $timer = new Timer;
             $timer->start();
 
-            $runner = new TestRunner;
+            if (
+                $coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
+                $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCESSFULLY
+            ) {
+                $runner = new TestRunner;
 
-            $runner->run(
-                $configuration,
-                $resultCache,
-                $testSuite,
-            );
+                $runner->run(
+                    $configuration,
+                    $resultCache,
+                    $testSuite,
+                );
+            }
 
             $duration = $timer->stop();
 
