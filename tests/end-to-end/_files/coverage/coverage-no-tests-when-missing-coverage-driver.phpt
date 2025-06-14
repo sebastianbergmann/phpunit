@@ -5,23 +5,26 @@ Don't run tests when coverage driver is not loaded
 if (extension_loaded('xdebug') || extension_loaded('pcov')) {
     print 'skip: No debug driver should be loaded.';
 }
+--ENV--
+XDEBUG_MODE=debug
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
-$_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/coverage/coverage-no-tests-when-missing-coverage-driver.phpt');
+$_SERVER['argv'][] = '--coverage-html';
+$_SERVER['argv'][] = 'my_coverage_folder';
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
---EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
+Configuration: %s
 
-.                                                                   1 / 1 (100%)
+There was 1 PHPUnit test runner warning:
 
-Time: %s, Memory: %s
+1) No code coverage driver available
 
-OK (1 test, 1 assertion)
+No tests executed!
+
