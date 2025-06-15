@@ -1,0 +1,35 @@
+{
+    "name": "php-cs-fixer/shim",
+    "description": "A tool to automatically fix PHP code style",
+    "license": "MIT",
+    "type": "application",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Dariusz Rumiński",
+            "email": "dariusz.ruminski@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-json": "*",
+        "ext-tokenizer": "*"
+    },
+    "replace": {
+        "friendsofphp/php-cs-fixer": "self.version"
+    },
+    "suggest": {
+        "ext-dom": "For handling output formats in XML",
+        "ext-mbstring": "For handling non-UTF8 characters."
+    },
+    "bin": [
+        "php-cs-fixer",
+        "php-cs-fixer.phar"
+    ],
+    "config": {
+        "sort-packages": true
+    }
+}

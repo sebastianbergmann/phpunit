@@ -1,0 +1,6 @@
+{
+    "require-dev": {
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.27",
+        "php-cs-fixer/shim": "^3.75"
+    }
+}
