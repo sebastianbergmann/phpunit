@@ -8,6 +8,8 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF;
 
+require __DIR__ . '/tools/.php-cs-fixer/vendor/kubawerlos/php-cs-fixer-custom-fixers/bootstrap.php';
+
 $finder = PhpCsFixer\Finder::create()
     ->files()
     ->in(__DIR__ . '/src')
@@ -29,6 +31,7 @@ $finder = PhpCsFixer\Finder::create()
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
+    ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers)
     ->setRiskyAllowed(true)
     ->setRules([
         'align_multiline_comment' => true,
@@ -371,6 +374,11 @@ $config->setFinder($finder)
         ],
         'void_return' => true,
         'whitespace_after_comma_in_array' => true,
+        PhpCsFixerCustomFixers\Fixer\PhpdocTagNoNamedArgumentsFixer::name() => [
+            'directory' => __DIR__ . '/src/',
+            'description' => 'Parameter names are not covered by the backward compatibility promise for PHPUnit'
+        ]
+
     ]);
 
 $config->setCacheFile(__DIR__ . '/.php-cs-fixer.cache/' . json_decode((string) @file_get_contents('composer.json'), true)["extra"]["branch-alias"]["dev-main"] ?? 'unknown');
