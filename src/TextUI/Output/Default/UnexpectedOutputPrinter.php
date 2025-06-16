@@ -14,6 +14,9 @@ use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\PrintedUnexpectedOutputSubscriber;
 use PHPUnit\TextUI\Output\Printer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final readonly class UnexpectedOutputPrinter implements PrintedUnexpectedOutputSubscriber
 {
     private Printer $printer;
