@@ -198,7 +198,7 @@ final class Help
                 ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
                 ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
                 ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests that have no declared size'],
-                ['arg'    => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
+                ['arg'    => '--do-not-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
                 ['spacer' => ''],
 
                 ['arg'    => '--stop-on-defect', 'desc' => 'Stop after first error, failure, warning, or risky test'],

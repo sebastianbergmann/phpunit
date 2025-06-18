@@ -11,7 +11,7 @@ $logfile = tempnam(sys_get_temp_dir(), __FILE__);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--dont-report-useless-tests';
+$_SERVER['argv'][] = '--do-not-report-useless-tests';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = $logfile;
 $_SERVER['argv'][] = __DIR__ . '/../_files/TypeErrorTest.php';
