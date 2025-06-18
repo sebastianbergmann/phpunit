@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use PHPUnit\TestRunner\TestResult\TestResult;
+use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -22,8 +23,18 @@ final readonly class ShellExitCodeCalculator
     private const int FAILURE_EXIT   = 1;
     private const int EXCEPTION_EXIT = 2;
 
-    public function calculate(bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, TestResult $result): int
+    public function calculate(Configuration $configuration, TestResult $result): int
     {
+        $failOnDeprecation        = $configuration->failOnDeprecation() || $configuration->failOnAllIssues();
+        $failOnPhpunitDeprecation = $configuration->failOnPhpunitDeprecation() || $configuration->failOnAllIssues();
+        $failOnPhpunitNotice      = $configuration->failOnPhpunitNotice() || $configuration->failOnAllIssues();
+        $failOnEmptyTestSuite     = $configuration->failOnEmptyTestSuite() || $configuration->failOnAllIssues();
+        $failOnIncomplete         = $configuration->failOnIncomplete() || $configuration->failOnAllIssues();
+        $failOnNotice             = $configuration->failOnNotice() || $configuration->failOnAllIssues();
+        $failOnRisky              = $configuration->failOnRisky() || $configuration->failOnAllIssues();
+        $failOnSkipped            = $configuration->failOnSkipped() || $configuration->failOnAllIssues();
+        $failOnWarning            = $configuration->failOnWarning() || $configuration->failOnAllIssues();
+
         $returnCode = self::FAILURE_EXIT;
 
         if ($result->wasSuccessful()) {
