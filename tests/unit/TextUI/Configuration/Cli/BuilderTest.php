@@ -1983,15 +1983,6 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->reportUselessTests());
     }
 
-    #[TestDox('--dont-report-useless-tests')]
-    public function testDontReportUselessTests(): void
-    {
-        $configuration = (new Builder)->fromParameters(['--dont-report-useless-tests']);
-
-        $this->assertTrue($configuration->hasReportUselessTests());
-        $this->assertFalse($configuration->reportUselessTests());
-    }
-
     public function testDoNotReportUselessTestsMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);
