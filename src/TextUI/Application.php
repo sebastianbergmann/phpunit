@@ -271,14 +271,7 @@ final class Application
             }
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
-                $configuration->failOnDeprecation() || $configuration->failOnAllIssues(),
-                $configuration->failOnPhpunitDeprecation() || $configuration->failOnAllIssues(),
-                $configuration->failOnEmptyTestSuite() || $configuration->failOnAllIssues(),
-                $configuration->failOnIncomplete() || $configuration->failOnAllIssues(),
-                $configuration->failOnNotice() || $configuration->failOnAllIssues(),
-                $configuration->failOnRisky() || $configuration->failOnAllIssues(),
-                $configuration->failOnSkipped() || $configuration->failOnAllIssues(),
-                $configuration->failOnWarning() || $configuration->failOnAllIssues(),
+                $configuration,
                 $result,
             );
 
