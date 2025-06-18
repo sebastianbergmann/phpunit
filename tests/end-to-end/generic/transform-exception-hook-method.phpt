@@ -3,7 +3,7 @@ https://github.com/sebastianbergmann/phpunit/issues/5300
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
-$_SERVER['argv'][] = '--dont-report-useless-tests';
+$_SERVER['argv'][] = '--do-not-report-useless-tests';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/transform-exception-hook-method';
 

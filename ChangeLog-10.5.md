@@ -2,6 +2,16 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.47] - 2025-MM-DD
+
+### Added
+
+* `--do-not-report-useless-tests` CLI option as a replacement for `--dont-report-useless-tests`
+
+### Deprecated
+
+* `--dont-report-useless-tests` CLI option (use `--do-not-report-useless-tests` instead)
+
 ## [10.5.46] - 2025-05-02
 
 ### Added
@@ -414,6 +424,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.47]: https://github.com/sebastianbergmann/phpunit/compare/10.5.46...10.5
 [10.5.46]: https://github.com/sebastianbergmann/phpunit/compare/10.5.45...10.5.46
 [10.5.45]: https://github.com/sebastianbergmann/phpunit/compare/10.5.44...10.5.45
 [10.5.44]: https://github.com/sebastianbergmann/phpunit/compare/10.5.43...10.5.44
