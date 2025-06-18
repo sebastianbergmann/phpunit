@@ -60,7 +60,7 @@
   [32m--enforce-time-limit              [0m Enforce time limit based on test size
   [32m--default-time-limit [36m<sec>[0m        [0m Timeout in seconds for tests that have no
                                      declared size
-  [32m--dont-report-useless-tests       [0m Do not report tests that do not test
+  [32m--do-not-report-useless-tests     [0m Do not report tests that do not test
                                      anything
 
   [32m--stop-on-defect                  [0m Stop after first error, failure, warning,

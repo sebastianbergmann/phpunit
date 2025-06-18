@@ -103,6 +103,7 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'do-not-report-useless-tests',
         'dont-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -834,6 +835,7 @@ final class Builder
 
                     break;
 
+                case '--do-not-report-useless-tests':
                 case '--dont-report-useless-tests':
                     $reportUselessTests = false;
 

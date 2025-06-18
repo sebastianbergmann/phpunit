@@ -4,7 +4,7 @@ phpunit --log-teamcity php://stdout ../../_files/ExceptionStackTest.php
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--dont-report-useless-tests';
+$_SERVER['argv'][] = '--do-not-report-useless-tests';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-teamcity';
 $_SERVER['argv'][] = 'php://stdout';

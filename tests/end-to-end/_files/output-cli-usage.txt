@@ -48,7 +48,7 @@ Execution:
   --disallow-test-output             Be strict about output during tests
   --enforce-time-limit               Enforce time limit based on test size
   --default-time-limit <sec>         Timeout in seconds for tests that have no declared size
-  --dont-report-useless-tests        Do not report tests that do not test anything
+  --do-not-report-useless-tests      Do not report tests that do not test anything
 
   --stop-on-defect                   Stop after first error, failure, warning, or risky test
   --stop-on-error                    Stop after first error
