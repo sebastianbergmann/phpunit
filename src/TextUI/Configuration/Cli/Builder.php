@@ -103,6 +103,7 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'do-not-report-useless-tests',
         'dont-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -834,7 +835,16 @@ final class Builder
 
                     break;
 
+                case '--do-not-report-useless-tests':
+                    $reportUselessTests = false;
+
+                    break;
+
                 case '--dont-report-useless-tests':
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                        'Option --dont-report-useless-tests is deprecated, use --do-not-report-useless-tests instead',
+                    );
+
                     $reportUselessTests = false;
 
                     break;
