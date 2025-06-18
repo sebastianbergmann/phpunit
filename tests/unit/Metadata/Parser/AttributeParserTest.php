@@ -60,6 +60,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithArray;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -127,6 +128,7 @@ use PHPUnit\Metadata\WithEnvironmentVariable;
 #[CoversClass(Small::class)]
 #[CoversClass(TestDox::class)]
 #[CoversClass(Test::class)]
+#[CoversClass(TestWithArray::class)]
 #[CoversClass(TestWithJson::class)]
 #[CoversClass(TestWith::class)]
 #[CoversClass(Ticket::class)]

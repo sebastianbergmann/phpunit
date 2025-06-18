@@ -74,6 +74,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithArray;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -867,6 +868,15 @@ final readonly class AttributeParser implements Parser
                         json_decode($attributeInstance->json(), true, 512, JSON_THROW_ON_ERROR),
                         $attributeInstance->name(),
                     );
+
+                    break;
+                case TestWithArray::class:
+                    assert($attributeInstance instanceof TestWithArray);
+
+                    foreach ($attributeInstance->arrayOfCases() as $name => $case) {
+                        assert(is_array($case));
+                        $result[] = Metadata::testWith($case, is_int($name) ? null : $name);
+                    }
 
                     break;
 
