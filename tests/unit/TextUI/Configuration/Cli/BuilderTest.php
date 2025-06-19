@@ -1440,7 +1440,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnDeprecation();
+        $configuration->doNotFailOnDeprecation();
     }
 
     #[TestDox('--do-not-fail-on-phpunit-deprecation')]
@@ -1460,7 +1460,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnPhpunitDeprecation();
+        $configuration->doNotFailOnPhpunitDeprecation();
     }
 
     #[TestDox('--do-not-fail-on-empty-test-suite')]
@@ -1480,7 +1480,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnEmptyTestSuite();
+        $configuration->doNotFailOnEmptyTestSuite();
     }
 
     #[TestDox('--do-not-fail-on-incomplete')]
@@ -1500,7 +1500,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnIncomplete();
+        $configuration->doNotFailOnIncomplete();
     }
 
     #[TestDox('--do-not-fail-on-notice')]
@@ -1520,7 +1520,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnNotice();
+        $configuration->doNotFailOnNotice();
     }
 
     #[TestDox('--do-not-fail-on-risky')]
@@ -1540,7 +1540,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnRisky();
+        $configuration->doNotFailOnRisky();
     }
 
     #[TestDox('--do-not-fail-on-skipped')]
@@ -1560,7 +1560,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnSkipped();
+        $configuration->doNotFailOnSkipped();
     }
 
     #[TestDox('--do-not-fail-on-warning')]
@@ -1580,7 +1580,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnWarning();
+        $configuration->doNotFailOnWarning();
     }
 
     #[TestDox('--stop-on-defect')]
