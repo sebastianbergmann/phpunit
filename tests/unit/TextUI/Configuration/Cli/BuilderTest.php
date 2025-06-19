@@ -1540,7 +1540,7 @@ final class BuilderTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $configuration->failOnPhpunitNotice();
+        $configuration->doNotFailOnPhpunitNotice();
     }
 
     #[TestDox('--do-not-fail-on-empty-test-suite')]
