@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Added
 
+* [#6239](https://github.com/sebastianbergmann/phpunit/issues/6239): `--do-not-fail-on-deprecation`, `--do-not-fail-on-phpunit-deprecation`, `--do-not-fail-on-empty-test-suite`, `--do-not-fail-on-incomplete`, `--do-not-fail-on-notice`, `--do-not-fail-on-risky`, `--do-not-fail-on-skipped`, and `--do-not-fail-on-warning` CLI options
 * `--do-not-report-useless-tests` CLI option as a replacement for `--dont-report-useless-tests`
 
 ### Deprecated

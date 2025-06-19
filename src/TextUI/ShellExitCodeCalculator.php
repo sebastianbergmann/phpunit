@@ -25,14 +25,89 @@ final readonly class ShellExitCodeCalculator
 
     public function calculate(Configuration $configuration, TestResult $result): int
     {
-        $failOnDeprecation        = $configuration->failOnDeprecation() || $configuration->failOnAllIssues();
-        $failOnPhpunitDeprecation = $configuration->failOnPhpunitDeprecation() || $configuration->failOnAllIssues();
-        $failOnEmptyTestSuite     = $configuration->failOnEmptyTestSuite() || $configuration->failOnAllIssues();
-        $failOnIncomplete         = $configuration->failOnIncomplete() || $configuration->failOnAllIssues();
-        $failOnNotice             = $configuration->failOnNotice() || $configuration->failOnAllIssues();
-        $failOnRisky              = $configuration->failOnRisky() || $configuration->failOnAllIssues();
-        $failOnSkipped            = $configuration->failOnSkipped() || $configuration->failOnAllIssues();
-        $failOnWarning            = $configuration->failOnWarning() || $configuration->failOnAllIssues();
+        $failOnDeprecation        = false;
+        $failOnPhpunitDeprecation = false;
+        $failOnEmptyTestSuite     = false;
+        $failOnIncomplete         = false;
+        $failOnNotice             = false;
+        $failOnRisky              = false;
+        $failOnSkipped            = false;
+        $failOnWarning            = false;
+
+        if ($configuration->failOnAllIssues()) {
+            $failOnDeprecation        = true;
+            $failOnPhpunitDeprecation = true;
+            $failOnEmptyTestSuite     = true;
+            $failOnIncomplete         = true;
+            $failOnNotice             = true;
+            $failOnRisky              = true;
+            $failOnSkipped            = true;
+            $failOnWarning            = true;
+        }
+
+        if ($configuration->failOnDeprecation()) {
+            $failOnDeprecation = true;
+        }
+
+        if ($configuration->doNotFailOnDeprecation()) {
+            $failOnDeprecation = false;
+        }
+
+        if ($configuration->failOnPhpunitDeprecation()) {
+            $failOnPhpunitDeprecation = true;
+        }
+
+        if ($configuration->doNotFailOnPhpunitDeprecation()) {
+            $failOnPhpunitDeprecation = false;
+        }
+
+        if ($configuration->failOnEmptyTestSuite()) {
+            $failOnEmptyTestSuite = true;
+        }
+
+        if ($configuration->doNotFailOnEmptyTestSuite()) {
+            $failOnEmptyTestSuite = false;
+        }
+
+        if ($configuration->failOnIncomplete()) {
+            $failOnIncomplete = true;
+        }
+
+        if ($configuration->doNotFailOnIncomplete()) {
+            $failOnIncomplete = false;
+        }
+
+        if ($configuration->failOnNotice()) {
+            $failOnNotice = true;
+        }
+
+        if ($configuration->doNotFailOnNotice()) {
+            $failOnNotice = false;
+        }
+
+        if ($configuration->failOnRisky()) {
+            $failOnRisky = true;
+        }
+
+        if ($configuration->doNotFailOnRisky()) {
+            $failOnRisky = false;
+        }
+
+        if ($configuration->failOnSkipped()) {
+            $failOnSkipped = true;
+        }
+
+        if ($configuration->doNotFailOnSkipped()) {
+            $failOnSkipped = false;
+        }
+
+        if ($configuration->failOnWarning()) {
+            $failOnWarning = true;
+        }
+
+        if ($configuration->doNotFailOnWarning()) {
+            $failOnWarning = false;
+        }
 
         $returnCode = self::FAILURE_EXIT;
 

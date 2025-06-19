@@ -3,196 +3,220 @@
 
 [33mConfiguration:[0m
 
-  [32m--bootstrap [36m<file>[0m                [0m A PHP script that is included before the
-                                     tests run
-  [32m-c|--configuration [36m<file>[0m         [0m Read configuration from XML file
-  [32m--no-configuration                [0m Ignore default configuration file
-                                     (phpunit.xml)
-  [32m--extension [36m<class>[0m               [0m Register test runner extension with
-                                     bootstrap <class>
-  [32m--no-extensions                   [0m Do not register test runner extensions
-  [32m--include-path [36m<path(s)>[0m          [0m Prepend PHP's include_path with given
-                                     path(s)
-  [32m-d [36m<key[=value]>[0m                  [0m Sets a php.ini value
-  [32m--cache-directory [36m<dir>[0m           [0m Specify cache directory
-  [32m--generate-configuration          [0m Generate configuration file with suggested
-                                     settings
-  [32m--migrate-configuration           [0m Migrate configuration file to current
-                                     format
-  [32m--generate-baseline [36m<file>[0m        [0m Generate baseline for issues
-  [32m--use-baseline [36m<file>[0m             [0m Use baseline to ignore issues
-  [32m--ignore-baseline                 [0m Do not use baseline to ignore issues
+  [32m--bootstrap [36m<file>[0m                  [0m A PHP script that is included before the
+                                       tests run
+  [32m-c|--configuration [36m<file>[0m           [0m Read configuration from XML file
+  [32m--no-configuration                  [0m Ignore default configuration file
+                                       (phpunit.xml)
+  [32m--extension [36m<class>[0m                 [0m Register test runner extension with
+                                       bootstrap <class>
+  [32m--no-extensions                     [0m Do not register test runner extensions
+  [32m--include-path [36m<path(s)>[0m            [0m Prepend PHP's include_path with given
+                                       path(s)
+  [32m-d [36m<key[=value]>[0m                    [0m Sets a php.ini value
+  [32m--cache-directory [36m<dir>[0m             [0m Specify cache directory
+  [32m--generate-configuration            [0m Generate configuration file with
+                                       suggested settings
+  [32m--migrate-configuration             [0m Migrate configuration file to current
+                                       format
+  [32m--generate-baseline [36m<file>[0m          [0m Generate baseline for issues
+  [32m--use-baseline [36m<file>[0m               [0m Use baseline to ignore issues
+  [32m--ignore-baseline                   [0m Do not use baseline to ignore issues
 
 [33mSelection:[0m
 
-  [32m--list-suites                     [0m List available test suites
-  [32m--testsuite [36m<name>[0m                [0m Only run tests from the specified test
-                                     suite(s)
-  [32m--exclude-testsuite [36m<name>[0m        [0m Exclude tests from the specified test
-                                     suite(s)
-  [32m--list-groups                     [0m List available test groups
-  [32m--group [36m<name>[0m                    [0m Only run tests from the specified group(s)
-  [32m--exclude-group [36m<name>[0m            [0m Exclude tests from the specified group(s)
-  [32m--covers [36m<name>[0m                   [0m Only run tests that intend to cover <name>
-  [32m--uses [36m<name>[0m                     [0m Only run tests that intend to use <name>
-  [32m--requires-php-extension [36m<name>[0m   [0m Only run tests that require PHP extension
-                                     <name>
-  [32m--list-test-files                 [0m List available test files
-  [32m--list-tests                      [0m List available tests
-  [32m--list-tests-xml [36m<file>[0m           [0m List available tests in XML format
-  [32m--filter [36m<pattern>[0m                [0m Filter which tests to run
-  [32m--exclude-filter [36m<pattern>[0m        [0m Exclude tests for the specified filter
-                                     pattern
-  [32m--test-suffix [36m<suffixes>[0m          [0m Only search for test in files with
-                                     specified suffix(es). Default:
-                                     Test.php,.phpt
+  [32m--list-suites                       [0m List available test suites
+  [32m--testsuite [36m<name>[0m                  [0m Only run tests from the specified test
+                                       suite(s)
+  [32m--exclude-testsuite [36m<name>[0m          [0m Exclude tests from the specified test
+                                       suite(s)
+  [32m--list-groups                       [0m List available test groups
+  [32m--group [36m<name>[0m                      [0m Only run tests from the specified
+                                       group(s)
+  [32m--exclude-group [36m<name>[0m              [0m Exclude tests from the specified
+                                       group(s)
+  [32m--covers [36m<name>[0m                     [0m Only run tests that intend to cover
+                                       <name>
+  [32m--uses [36m<name>[0m                       [0m Only run tests that intend to use <name>
+  [32m--requires-php-extension [36m<name>[0m     [0m Only run tests that require PHP
+                                       extension <name>
+  [32m--list-test-files                   [0m List available test files
+  [32m--list-tests                        [0m List available tests
+  [32m--list-tests-xml [36m<file>[0m             [0m List available tests in XML format
+  [32m--filter [36m<pattern>[0m                  [0m Filter which tests to run
+  [32m--exclude-filter [36m<pattern>[0m          [0m Exclude tests for the specified filter
+                                       pattern
+  [32m--test-suffix [36m<suffixes>[0m            [0m Only search for test in files with
+                                       specified suffix(es). Default:
+                                       Test.php,.phpt
 
 [33mExecution:[0m
 
-  [32m--process-isolation               [0m Run each test in a separate PHP process
-  [32m--globals-backup                  [0m Backup and restore $GLOBALS for each test
-  [32m--static-backup                   [0m Backup and restore static properties for
-                                     each test
+  [32m--process-isolation                 [0m Run each test in a separate PHP process
+  [32m--globals-backup                    [0m Backup and restore $GLOBALS for each
+                                       test
+  [32m--static-backup                     [0m Backup and restore static properties for
+                                       each test
 
-  [32m--strict-coverage                 [0m Be strict about code coverage metadata
-  [32m--strict-global-state             [0m Be strict about changes to global state
-  [32m--disallow-test-output            [0m Be strict about output during tests
-  [32m--enforce-time-limit              [0m Enforce time limit based on test size
-  [32m--default-time-limit [36m<sec>[0m        [0m Timeout in seconds for tests that have no
-                                     declared size
-  [32m--do-not-report-useless-tests     [0m Do not report tests that do not test
-                                     anything
+  [32m--strict-coverage                   [0m Be strict about code coverage metadata
+  [32m--strict-global-state               [0m Be strict about changes to global state
+  [32m--disallow-test-output              [0m Be strict about output during tests
+  [32m--enforce-time-limit                [0m Enforce time limit based on test size
+  [32m--default-time-limit [36m<sec>[0m          [0m Timeout in seconds for tests that have
+                                       no declared size
+  [32m--do-not-report-useless-tests       [0m Do not report tests that do not test
+                                       anything
 
-  [32m--stop-on-defect                  [0m Stop after first error, failure, warning,
-                                     or risky test
-  [32m--stop-on-error                   [0m Stop after first error
-  [32m--stop-on-failure                 [0m Stop after first failure
-  [32m--stop-on-warning                 [0m Stop after first warning
-  [32m--stop-on-risky                   [0m Stop after first risky test
-  [32m--stop-on-deprecation             [0m Stop after first test that triggered a
-                                     deprecation
-  [32m--stop-on-notice                  [0m Stop after first test that triggered a
-                                     notice
-  [32m--stop-on-skipped                 [0m Stop after first skipped test
-  [32m--stop-on-incomplete              [0m Stop after first incomplete test
+  [32m--stop-on-defect                    [0m Stop after first error, failure,
+                                       warning, or risky test
+  [32m--stop-on-error                     [0m Stop after first error
+  [32m--stop-on-failure                   [0m Stop after first failure
+  [32m--stop-on-warning                   [0m Stop after first warning
+  [32m--stop-on-risky                     [0m Stop after first risky test
+  [32m--stop-on-deprecation               [0m Stop after first test that triggered a
+                                       deprecation
+  [32m--stop-on-notice                    [0m Stop after first test that triggered a
+                                       notice
+  [32m--stop-on-skipped                   [0m Stop after first skipped test
+  [32m--stop-on-incomplete                [0m Stop after first incomplete test
 
-  [32m--fail-on-empty-test-suite        [0m Signal failure using shell exit code when
-                                     no tests were run
-  [32m--fail-on-warning                 [0m Signal failure using shell exit code when
-                                     a warning was triggered
-  [32m--fail-on-risky                   [0m Signal failure using shell exit code when
-                                     a test was considered risky
-  [32m--fail-on-deprecation             [0m Signal failure using shell exit code when
-                                     a deprecation was triggered
-  [32m--fail-on-phpunit-deprecation     [0m Signal failure using shell exit code when
-                                     a PHPUnit deprecation was triggered
-  [32m--fail-on-notice                  [0m Signal failure using shell exit code when
-                                     a notice was triggered
-  [32m--fail-on-skipped                 [0m Signal failure using shell exit code when
-                                     a test was skipped
-  [32m--fail-on-incomplete              [0m Signal failure using shell exit code when
-                                     a test was marked incomplete
-  [32m--fail-on-all-issues              [0m Signal failure using shell exit code when
-                                     an issue is triggered
+  [32m--fail-on-empty-test-suite          [0m Signal failure using shell exit code
+                                       when no tests were run
+  [32m--fail-on-warning                   [0m Signal failure using shell exit code
+                                       when a warning was triggered
+  [32m--fail-on-risky                     [0m Signal failure using shell exit code
+                                       when a test was considered risky
+  [32m--fail-on-deprecation               [0m Signal failure using shell exit code
+                                       when a deprecation was triggered
+  [32m--fail-on-phpunit-deprecation       [0m Signal failure using shell exit code
+                                       when a PHPUnit deprecation was triggered
+  [32m--fail-on-notice                    [0m Signal failure using shell exit code
+                                       when a notice was triggered
+  [32m--fail-on-skipped                   [0m Signal failure using shell exit code
+                                       when a test was skipped
+  [32m--fail-on-incomplete                [0m Signal failure using shell exit code
+                                       when a test was marked incomplete
+  [32m--fail-on-all-issues                [0m Signal failure using shell exit code
+                                       when an issue is triggered
 
-  [32m--cache-result                    [0m Write test results to cache file
-  [32m--do-not-cache-result             [0m Do not write test results to cache file
+  [32m--do-not-fail-on-empty-test-suite   [0m Do not signal failure using shell exit
+                                       code when no tests were run
+  [32m--do-not-fail-on-warning            [0m Do not signal failure using shell exit
+                                       code when a warning was triggered
+  [32m--do-not-fail-on-risky              [0m Do not signal failure using shell exit
+                                       code when a test was considered risky
+  [32m--do-not-fail-on-deprecation        [0m Do not signal failure using shell exit
+                                       code when a deprecation was triggered
+  [32m--do-not-fail-on-phpunit-deprecation[0m Do not signal failure using shell exit
+                                       code when a PHPUnit deprecation was
+                                       triggered
+  [32m--do-not-fail-on-notice             [0m Do not signal failure using shell exit
+                                       code when a notice was triggered
+  [32m--do-not-fail-on-skipped            [0m Do not signal failure using shell exit
+                                       code when a test was skipped
+  [32m--do-not-fail-on-incomplete         [0m Do not signal failure using shell exit
+                                       code when a test was marked incomplete
 
-  [32m--order-by [36m<order>[0m                [0m Run tests in order:
-                                     default|defects|depends|duration|no-depends|random|reverse|size
-  [32m--random-order-seed [36m<N>[0m           [0m Use the specified random seed when running
-                                     tests in random order
+  [32m--cache-result                      [0m Write test results to cache file
+  [32m--do-not-cache-result               [0m Do not write test results to cache file
+
+  [32m--order-by [36m<order>[0m                  [0m Run tests in order:
+                                       default|defects|depends|duration|no-depends|random|reverse|size
+  [32m--random-order-seed [36m<N>[0m             [0m Use the specified random seed when
+                                       running tests in random order
 
 [33mReporting:[0m
 
-  [32m--colors [36m<flag>[0m                   [0m Use colors in output ("never", "auto" or
-                                     "always")
-  [32m--columns [36m<n>[0m                     [0m Number of columns to use for progress
-                                     output
-  [32m--columns max                     [0m Use maximum number of columns for progress
-                                     output
-  [32m--stderr                          [0m Write to STDERR instead of STDOUT
+  [32m--colors [36m<flag>[0m                     [0m Use colors in output ("never", "auto" or
+                                       "always")
+  [32m--columns [36m<n>[0m                       [0m Number of columns to use for progress
+                                       output
+  [32m--columns max                       [0m Use maximum number of columns for
+                                       progress output
+  [32m--stderr                            [0m Write to STDERR instead of STDOUT
 
-  [32m--no-progress                     [0m Disable output of test execution progress
-  [32m--no-results                      [0m Disable output of test results
-  [32m--no-output                       [0m Disable all output
+  [32m--no-progress                       [0m Disable output of test execution
+                                       progress
+  [32m--no-results                        [0m Disable output of test results
+  [32m--no-output                         [0m Disable all output
 
-  [32m--display-incomplete              [0m Display details for incomplete tests
-  [32m--display-skipped                 [0m Display details for skipped tests
-  [32m--display-deprecations            [0m Display details for deprecations triggered
-                                     by tests
-  [32m--display-phpunit-deprecations    [0m Display details for PHPUnit deprecations
-  [32m--display-errors                  [0m Display details for errors triggered by
-                                     tests
-  [32m--display-notices                 [0m Display details for notices triggered by
-                                     tests
-  [32m--display-warnings                [0m Display details for warnings triggered by
-                                     tests
-  [32m--display-all-issues              [0m Display details for all issues that are
-                                     triggered
-  [32m--reverse-list                    [0m Print defects in reverse order
+  [32m--display-incomplete                [0m Display details for incomplete tests
+  [32m--display-skipped                   [0m Display details for skipped tests
+  [32m--display-deprecations              [0m Display details for deprecations
+                                       triggered by tests
+  [32m--display-phpunit-deprecations      [0m Display details for PHPUnit deprecations
+  [32m--display-errors                    [0m Display details for errors triggered by
+                                       tests
+  [32m--display-notices                   [0m Display details for notices triggered by
+                                       tests
+  [32m--display-warnings                  [0m Display details for warnings triggered
+                                       by tests
+  [32m--display-all-issues                [0m Display details for all issues that are
+                                       triggered
+  [32m--reverse-list                      [0m Print defects in reverse order
 
-  [32m--teamcity                        [0m Replace default progress and result output
-                                     with TeamCity format
-  [32m--testdox                         [0m Replace default result output with TestDox
-                                     format
-  [32m--testdox-summary                 [0m Repeat TestDox output for tests with
-                                     errors, failures, or issues
+  [32m--teamcity                          [0m Replace default progress and result
+                                       output with TeamCity format
+  [32m--testdox                           [0m Replace default result output with
+                                       TestDox format
+  [32m--testdox-summary                   [0m Repeat TestDox output for tests with
+                                       errors, failures, or issues
 
-  [32m--debug                           [0m Replace default progress and result output
-                                     with debugging information
+  [32m--debug                             [0m Replace default progress and result
+                                       output with debugging information
 
 [33mLogging:[0m
 
-  [32m--log-junit [36m<file>[0m                [0m Write test results in JUnit XML format to
-                                     file
-  [32m--log-teamcity [36m<file>[0m             [0m Write test results in TeamCity format to
-                                     file
-  [32m--testdox-html [36m<file>[0m             [0m Write test results in TestDox format
-                                     (HTML) to file
-  [32m--testdox-text [36m<file>[0m             [0m Write test results in TestDox format
-                                     (plain text) to file
-  [32m--log-events-text [36m<file>[0m          [0m Stream events as plain text to file
-  [32m--log-events-verbose-text [36m<file>[0m  [0m Stream events as plain text with extended
-                                     information to file
-  [32m--no-logging                      [0m Ignore logging configured in the XML
-                                     configuration file
+  [32m--log-junit [36m<file>[0m                  [0m Write test results in JUnit XML format
+                                       to file
+  [32m--log-teamcity [36m<file>[0m               [0m Write test results in TeamCity format to
+                                       file
+  [32m--testdox-html [36m<file>[0m               [0m Write test results in TestDox format
+                                       (HTML) to file
+  [32m--testdox-text [36m<file>[0m               [0m Write test results in TestDox format
+                                       (plain text) to file
+  [32m--log-events-text [36m<file>[0m            [0m Stream events as plain text to file
+  [32m--log-events-verbose-text [36m<file>[0m    [0m Stream events as plain text with
+                                       extended information to file
+  [32m--no-logging                        [0m Ignore logging configured in the XML
+                                       configuration file
 
 [33mCode Coverage:[0m
 
-  [32m--coverage-clover [36m<file>[0m          [0m Write code coverage report in Clover XML
-                                     format to file
-  [32m--coverage-cobertura [36m<file>[0m       [0m Write code coverage report in Cobertura
-                                     XML format to file
-  [32m--coverage-crap4j [36m<file>[0m          [0m Write code coverage report in Crap4J XML
-                                     format to file
-  [32m--coverage-html [36m<dir>[0m             [0m Write code coverage report in HTML format
-                                     to directory
-  [32m--coverage-php [36m<file>[0m             [0m Write serialized code coverage data to
-                                     file
-  [32m--coverage-text=[36m<file>[0m            [0m Write code coverage report in text format
-                                     to file [default: standard output]
-  [32m--only-summary-for-coverage-text  [0m Option for code coverage report in text
-                                     format: only show summary
-  [32m--show-uncovered-for-coverage-text[0m Option for code coverage report in text
-                                     format: show uncovered files
-  [32m--coverage-xml [36m<dir>[0m              [0m Write code coverage report in XML format
-                                     to directory
-  [32m--warm-coverage-cache             [0m Warm static analysis cache
-  [32m--coverage-filter [36m<dir>[0m           [0m Include <dir> in code coverage reporting
-  [32m--path-coverage                   [0m Report path coverage in addition to line
-                                     coverage
-  [32m--disable-coverage-ignore         [0m Disable metadata for ignoring code
-                                     coverage
-  [32m--no-coverage                     [0m Ignore code coverage reporting configured
-                                     in the XML configuration file
+  [32m--coverage-clover [36m<file>[0m            [0m Write code coverage report in Clover XML
+                                       format to file
+  [32m--coverage-cobertura [36m<file>[0m         [0m Write code coverage report in Cobertura
+                                       XML format to file
+  [32m--coverage-crap4j [36m<file>[0m            [0m Write code coverage report in Crap4J XML
+                                       format to file
+  [32m--coverage-html [36m<dir>[0m               [0m Write code coverage report in HTML
+                                       format to directory
+  [32m--coverage-php [36m<file>[0m               [0m Write serialized code coverage data to
+                                       file
+  [32m--coverage-text=[36m<file>[0m              [0m Write code coverage report in text
+                                       format to file [default: standard
+                                       output]
+  [32m--only-summary-for-coverage-text    [0m Option for code coverage report in text
+                                       format: only show summary
+  [32m--show-uncovered-for-coverage-text  [0m Option for code coverage report in text
+                                       format: show uncovered files
+  [32m--coverage-xml [36m<dir>[0m                [0m Write code coverage report in XML format
+                                       to directory
+  [32m--warm-coverage-cache               [0m Warm static analysis cache
+  [32m--coverage-filter [36m<dir>[0m             [0m Include <dir> in code coverage reporting
+  [32m--path-coverage                     [0m Report path coverage in addition to line
+                                       coverage
+  [32m--disable-coverage-ignore           [0m Disable metadata for ignoring code
+                                       coverage
+  [32m--no-coverage                       [0m Ignore code coverage reporting
+                                       configured in the XML configuration file
 
 [33mMiscellaneous:[0m
 
-  [32m-h|--help                         [0m Prints this usage information
-  [32m--version                         [0m Prints the version and exits
-  [32m--atleast-version [36m<min>[0m           [0m Checks that version is greater than <min>
-                                     and exits
-  [32m--check-version                   [0m Checks whether PHPUnit is the latest
-                                     version and exits
+  [32m-h|--help                           [0m Prints this usage information
+  [32m--version                           [0m Prints the version and exits
+  [32m--atleast-version [36m<min>[0m             [0m Checks that version is greater than
+                                       <min> and exits
+  [32m--check-version                     [0m Checks whether PHPUnit is the latest
+                                       version and exits
 
