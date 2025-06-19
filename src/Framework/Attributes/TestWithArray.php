@@ -19,6 +19,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final readonly class TestWithArray
 {
+    /**
+     * @var array<array<mixed>>
+     */
     private array $cases;
 
     /**
@@ -29,6 +32,9 @@ final readonly class TestWithArray
         $this->cases = $arrayOfCases;
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public function arrayOfCases(): array
     {
         return $this->cases;

@@ -21,6 +21,7 @@ use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\TestWith;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
@@ -1120,6 +1121,7 @@ abstract class AttributeParserTestCase extends TestCase
         /** @see TestWithTest::testTestWithArrayBasic() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTestWithArrayBasic');
         $this->assertCount(1, $metadata);
+        /** @var TestWith $firstCase */
         $firstCase = $metadata->asArray()[0];
         $this->assertTrue($firstCase->isTestWith());
         $this->assertSame([1, true], $firstCase->data());
@@ -1128,6 +1130,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         /** @see TestWithTest::testTestWithArrayNamedCase() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTestWithArrayNamedCase')->isTestWith();
+        /** @var TestWith $firstCase */
         $firstCase = $metadata->asArray()[0];
         $this->assertTrue($firstCase->hasName());
         $this->assertSame('firstCase', $firstCase->name());
@@ -1135,6 +1138,7 @@ abstract class AttributeParserTestCase extends TestCase
         /** @see TestWithTest::testTestWithArrayManyCasesWithMixedNames() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTestWithArrayManyCasesWithMixedNames')->isTestWith();
         $this->assertCount(3, $metadata);
+        /** @var TestWith[] $cases */
         $cases = $metadata->asArray();
         $this->assertSame('odds', $cases[0]->name());
         $this->assertNull($cases[1]->name());
@@ -1142,6 +1146,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         /** @see TestWithTest::testMultipleTestWithArray() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testMultipleTestWithArray')->isTestWith();
+        /** @var TestWith[] $cases */
         $cases = $metadata->asArray();
         $this->assertSame([5], $cases[0]->data());
         $this->assertSame([6], $cases[1]->data());
