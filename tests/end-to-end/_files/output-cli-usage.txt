@@ -5,139 +5,150 @@ Usage:
 
 Configuration:
 
-  --bootstrap <file>                 A PHP script that is included before the tests run
-  -c|--configuration <file>          Read configuration from XML file
-  --no-configuration                 Ignore default configuration file (phpunit.xml)
-  --extension <class>                Register test runner extension with bootstrap <class>
-  --no-extensions                    Do not register test runner extensions
-  --include-path <path(s)>           Prepend PHP's include_path with given path(s)
-  -d <key[=value]>                   Sets a php.ini value
-  --cache-directory <dir>            Specify cache directory
-  --generate-configuration           Generate configuration file with suggested settings
-  --migrate-configuration            Migrate configuration file to current format
-  --generate-baseline <file>         Generate baseline for issues
-  --use-baseline <file>              Use baseline to ignore issues
-  --ignore-baseline                  Do not use baseline to ignore issues
+  --bootstrap <file>                   A PHP script that is included before the tests run
+  -c|--configuration <file>            Read configuration from XML file
+  --no-configuration                   Ignore default configuration file (phpunit.xml)
+  --extension <class>                  Register test runner extension with bootstrap <class>
+  --no-extensions                      Do not register test runner extensions
+  --include-path <path(s)>             Prepend PHP's include_path with given path(s)
+  -d <key[=value]>                     Sets a php.ini value
+  --cache-directory <dir>              Specify cache directory
+  --generate-configuration             Generate configuration file with suggested settings
+  --migrate-configuration              Migrate configuration file to current format
+  --generate-baseline <file>           Generate baseline for issues
+  --use-baseline <file>                Use baseline to ignore issues
+  --ignore-baseline                    Do not use baseline to ignore issues
 
 Selection:
 
-  --list-suites                      List available test suites
-  --testsuite <name>                 Only run tests from the specified test suite(s)
-  --exclude-testsuite <name>         Exclude tests from the specified test suite(s)
-  --list-groups                      List available test groups
-  --group <name>                     Only run tests from the specified group(s)
-  --exclude-group <name>             Exclude tests from the specified group(s)
-  --covers <name>                    Only run tests that intend to cover <name>
-  --uses <name>                      Only run tests that intend to use <name>
-  --requires-php-extension <name>    Only run tests that require PHP extension <name>
-  --list-test-files                  List available test files
-  --list-tests                       List available tests
-  --list-tests-xml <file>            List available tests in XML format
-  --filter <pattern>                 Filter which tests to run
-  --exclude-filter <pattern>         Exclude tests for the specified filter pattern
-  --test-suffix <suffixes>           Only search for test in files with specified suffix(es). Default: Test.php,.phpt
+  --list-suites                        List available test suites
+  --testsuite <name>                   Only run tests from the specified test suite(s)
+  --exclude-testsuite <name>           Exclude tests from the specified test suite(s)
+  --list-groups                        List available test groups
+  --group <name>                       Only run tests from the specified group(s)
+  --exclude-group <name>               Exclude tests from the specified group(s)
+  --covers <name>                      Only run tests that intend to cover <name>
+  --uses <name>                        Only run tests that intend to use <name>
+  --requires-php-extension <name>      Only run tests that require PHP extension <name>
+  --list-test-files                    List available test files
+  --list-tests                         List available tests
+  --list-tests-xml <file>              List available tests in XML format
+  --filter <pattern>                   Filter which tests to run
+  --exclude-filter <pattern>           Exclude tests for the specified filter pattern
+  --test-suffix <suffixes>             Only search for test in files with specified suffix(es). Default: Test.php,.phpt
 
 Execution:
 
-  --process-isolation                Run each test in a separate PHP process
-  --globals-backup                   Backup and restore $GLOBALS for each test
-  --static-backup                    Backup and restore static properties for each test
+  --process-isolation                  Run each test in a separate PHP process
+  --globals-backup                     Backup and restore $GLOBALS for each test
+  --static-backup                      Backup and restore static properties for each test
 
-  --strict-coverage                  Be strict about code coverage metadata
-  --strict-global-state              Be strict about changes to global state
-  --disallow-test-output             Be strict about output during tests
-  --enforce-time-limit               Enforce time limit based on test size
-  --default-time-limit <sec>         Timeout in seconds for tests that have no declared size
-  --do-not-report-useless-tests      Do not report tests that do not test anything
+  --strict-coverage                    Be strict about code coverage metadata
+  --strict-global-state                Be strict about changes to global state
+  --disallow-test-output               Be strict about output during tests
+  --enforce-time-limit                 Enforce time limit based on test size
+  --default-time-limit <sec>           Timeout in seconds for tests that have no declared size
+  --do-not-report-useless-tests        Do not report tests that do not test anything
 
-  --stop-on-defect                   Stop after first error, failure, warning, or risky test
-  --stop-on-error                    Stop after first error
-  --stop-on-failure                  Stop after first failure
-  --stop-on-warning                  Stop after first warning
-  --stop-on-risky                    Stop after first risky test
-  --stop-on-deprecation              Stop after first test that triggered a deprecation
-  --stop-on-notice                   Stop after first test that triggered a notice
-  --stop-on-skipped                  Stop after first skipped test
-  --stop-on-incomplete               Stop after first incomplete test
+  --stop-on-defect                     Stop after first error, failure, warning, or risky test
+  --stop-on-error                      Stop after first error
+  --stop-on-failure                    Stop after first failure
+  --stop-on-warning                    Stop after first warning
+  --stop-on-risky                      Stop after first risky test
+  --stop-on-deprecation                Stop after first test that triggered a deprecation
+  --stop-on-notice                     Stop after first test that triggered a notice
+  --stop-on-skipped                    Stop after first skipped test
+  --stop-on-incomplete                 Stop after first incomplete test
 
-  --fail-on-empty-test-suite         Signal failure using shell exit code when no tests were run
-  --fail-on-warning                  Signal failure using shell exit code when a warning was triggered
-  --fail-on-risky                    Signal failure using shell exit code when a test was considered risky
-  --fail-on-deprecation              Signal failure using shell exit code when a deprecation was triggered
-  --fail-on-phpunit-deprecation      Signal failure using shell exit code when a PHPUnit deprecation was triggered
-  --fail-on-phpunit-notice           Signal failure using shell exit code when a PHPUnit notice was triggered
-  --fail-on-notice                   Signal failure using shell exit code when a notice was triggered
-  --fail-on-skipped                  Signal failure using shell exit code when a test was skipped
-  --fail-on-incomplete               Signal failure using shell exit code when a test was marked incomplete
-  --fail-on-all-issues               Signal failure using shell exit code when an issue is triggered
+  --fail-on-empty-test-suite           Signal failure using shell exit code when no tests were run
+  --fail-on-warning                    Signal failure using shell exit code when a warning was triggered
+  --fail-on-risky                      Signal failure using shell exit code when a test was considered risky
+  --fail-on-deprecation                Signal failure using shell exit code when a deprecation was triggered
+  --fail-on-phpunit-deprecation        Signal failure using shell exit code when a PHPUnit deprecation was triggered
+  --fail-on-phpunit-notice             Signal failure using shell exit code when a PHPUnit notice was triggered
+  --fail-on-notice                     Signal failure using shell exit code when a notice was triggered
+  --fail-on-skipped                    Signal failure using shell exit code when a test was skipped
+  --fail-on-incomplete                 Signal failure using shell exit code when a test was marked incomplete
+  --fail-on-all-issues                 Signal failure using shell exit code when an issue is triggered
 
-  --cache-result                     Write test results to cache file
-  --do-not-cache-result              Do not write test results to cache file
+  --do-not-fail-on-empty-test-suite    Do not signal failure using shell exit code when no tests were run
+  --do-not-fail-on-warning             Do not signal failure using shell exit code when a warning was triggered
+  --do-not-fail-on-risky               Do not signal failure using shell exit code when a test was considered risky
+  --do-not-fail-on-deprecation         Do not signal failure using shell exit code when a deprecation was triggered
+  --do-not-fail-on-phpunit-deprecation Do not signal failure using shell exit code when a PHPUnit deprecation was triggered
+  --do-not-fail-on-phpunit-notice      Do not signal failure using shell exit code when a PHPUnit notice was triggered
+  --do-not-fail-on-notice              Do not signal failure using shell exit code when a notice was triggered
+  --do-not-fail-on-skipped             Do not signal failure using shell exit code when a test was skipped
+  --do-not-fail-on-incomplete          Do not signal failure using shell exit code when a test was marked incomplete
 
-  --order-by <order>                 Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size
-  --random-order-seed <N>            Use the specified random seed when running tests in random order
+  --cache-result                       Write test results to cache file
+  --do-not-cache-result                Do not write test results to cache file
+
+  --order-by <order>                   Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size
+  --random-order-seed <N>              Use the specified random seed when running tests in random order
 
 Reporting:
 
-  --colors <flag>                    Use colors in output ("never", "auto" or "always")
-  --columns <n>                      Number of columns to use for progress output
-  --columns max                      Use maximum number of columns for progress output
-  --stderr                           Write to STDERR instead of STDOUT
+  --colors <flag>                      Use colors in output ("never", "auto" or "always")
+  --columns <n>                        Number of columns to use for progress output
+  --columns max                        Use maximum number of columns for progress output
+  --stderr                             Write to STDERR instead of STDOUT
 
-  --no-progress                      Disable output of test execution progress
-  --no-results                       Disable output of test results
-  --no-output                        Disable all output
+  --no-progress                        Disable output of test execution progress
+  --no-results                         Disable output of test results
+  --no-output                          Disable all output
 
-  --display-incomplete               Display details for incomplete tests
-  --display-skipped                  Display details for skipped tests
-  --display-deprecations             Display details for deprecations triggered by tests
-  --display-phpunit-deprecations     Display details for PHPUnit deprecations
-  --display-phpunit-notices          Display details for PHPUnit notices
-  --display-errors                   Display details for errors triggered by tests
-  --display-notices                  Display details for notices triggered by tests
-  --display-warnings                 Display details for warnings triggered by tests
-  --display-all-issues               Display details for all issues that are triggered
-  --reverse-list                     Print defects in reverse order
+  --display-incomplete                 Display details for incomplete tests
+  --display-skipped                    Display details for skipped tests
+  --display-deprecations               Display details for deprecations triggered by tests
+  --display-phpunit-deprecations       Display details for PHPUnit deprecations
+  --display-phpunit-notices            Display details for PHPUnit notices
+  --display-errors                     Display details for errors triggered by tests
+  --display-notices                    Display details for notices triggered by tests
+  --display-warnings                   Display details for warnings triggered by tests
+  --display-all-issues                 Display details for all issues that are triggered
+  --reverse-list                       Print defects in reverse order
 
-  --teamcity                         Replace default progress and result output with TeamCity format
-  --testdox                          Replace default result output with TestDox format
-  --testdox-summary                  Repeat TestDox output for tests with errors, failures, or issues
+  --teamcity                           Replace default progress and result output with TeamCity format
+  --testdox                            Replace default result output with TestDox format
+  --testdox-summary                    Repeat TestDox output for tests with errors, failures, or issues
 
-  --debug                            Replace default progress and result output with debugging information
-  --with-telemetry                   Include telemetry information in debugging information output
+  --debug                              Replace default progress and result output with debugging information
+  --with-telemetry                     Include telemetry information in debugging information output
 
 Logging:
 
-  --log-junit <file>                 Write test results in JUnit XML format to file
-  --log-otr <file>                   Write test results in Open Test Reporting XML format to file
-  --log-teamcity <file>              Write test results in TeamCity format to file
-  --testdox-html <file>              Write test results in TestDox format (HTML) to file
-  --testdox-text <file>              Write test results in TestDox format (plain text) to file
-  --log-events-text <file>           Stream events as plain text to file
-  --log-events-verbose-text <file>   Stream events as plain text with extended information to file
-  --no-logging                       Ignore logging configured in the XML configuration file
+  --log-junit <file>                   Write test results in JUnit XML format to file
+  --log-otr <file>                     Write test results in Open Test Reporting XML format to file
+  --log-teamcity <file>                Write test results in TeamCity format to file
+  --testdox-html <file>                Write test results in TestDox format (HTML) to file
+  --testdox-text <file>                Write test results in TestDox format (plain text) to file
+  --log-events-text <file>             Stream events as plain text to file
+  --log-events-verbose-text <file>     Stream events as plain text with extended information to file
+  --no-logging                         Ignore logging configured in the XML configuration file
 
 Code Coverage:
 
-  --coverage-clover <file>           Write code coverage report in Clover XML format to file
-  --coverage-openclover <file>       Write code coverage report in OpenClover XML format to file
-  --coverage-cobertura <file>        Write code coverage report in Cobertura XML format to file
-  --coverage-crap4j <file>           Write code coverage report in Crap4J XML format to file
-  --coverage-html <dir>              Write code coverage report in HTML format to directory
-  --coverage-php <file>              Write serialized code coverage data to file
-  --coverage-text=<file>             Write code coverage report in text format to file [default: standard output]
-  --only-summary-for-coverage-text   Option for code coverage report in text format: only show summary
-  --show-uncovered-for-coverage-text Option for code coverage report in text format: show uncovered files
-  --coverage-xml <dir>               Write code coverage report in XML format to directory
-  --warm-coverage-cache              Warm static analysis cache
-  --coverage-filter <dir>            Include <dir> in code coverage reporting
-  --path-coverage                    Report path coverage in addition to line coverage
-  --disable-coverage-ignore          Disable metadata for ignoring code coverage
-  --no-coverage                      Ignore code coverage reporting configured in the XML configuration file
+  --coverage-clover <file>             Write code coverage report in Clover XML format to file
+  --coverage-openclover <file>         Write code coverage report in OpenClover XML format to file
+  --coverage-cobertura <file>          Write code coverage report in Cobertura XML format to file
+  --coverage-crap4j <file>             Write code coverage report in Crap4J XML format to file
+  --coverage-html <dir>                Write code coverage report in HTML format to directory
+  --coverage-php <file>                Write serialized code coverage data to file
+  --coverage-text=<file>               Write code coverage report in text format to file [default: standard output]
+  --only-summary-for-coverage-text     Option for code coverage report in text format: only show summary
+  --show-uncovered-for-coverage-text   Option for code coverage report in text format: show uncovered files
+  --coverage-xml <dir>                 Write code coverage report in XML format to directory
+  --warm-coverage-cache                Warm static analysis cache
+  --coverage-filter <dir>              Include <dir> in code coverage reporting
+  --path-coverage                      Report path coverage in addition to line coverage
+  --disable-coverage-ignore            Disable metadata for ignoring code coverage
+  --no-coverage                        Ignore code coverage reporting configured in the XML configuration file
 
 Miscellaneous:
 
-  -h|--help                          Prints this usage information
-  --version                          Prints the version and exits
-  --atleast-version <min>            Checks that version is greater than <min> and exits
-  --check-version                    Checks whether PHPUnit is the latest version and exits
+  -h|--help                            Prints this usage information
+  --version                            Prints the version and exits
+  --atleast-version <min>              Checks that version is greater than <min> and exits
+  --check-version                      Checks whether PHPUnit is the latest version and exits
+
