@@ -112,6 +112,14 @@ final class Builder
         'fail-on-risky',
         'fail-on-skipped',
         'fail-on-warning',
+        'do-not-fail-on-deprecation',
+        'do-not-fail-on-phpunit-deprecation',
+        'do-not-fail-on-empty-test-suite',
+        'do-not-fail-on-incomplete',
+        'do-not-fail-on-notice',
+        'do-not-fail-on-risky',
+        'do-not-fail-on-skipped',
+        'do-not-fail-on-warning',
         'stop-on-defect',
         'stop-on-deprecation',
         'stop-on-error',
@@ -211,6 +219,14 @@ final class Builder
         $failOnRisky                       = null;
         $failOnSkipped                     = null;
         $failOnWarning                     = null;
+        $doNotFailOnDeprecation            = null;
+        $doNotFailOnPhpunitDeprecation     = null;
+        $doNotFailOnEmptyTestSuite         = null;
+        $doNotFailOnIncomplete             = null;
+        $doNotFailOnNotice                 = null;
+        $doNotFailOnRisky                  = null;
+        $doNotFailOnSkipped                = null;
+        $doNotFailOnWarning                = null;
         $stopOnDefect                      = null;
         $stopOnDeprecation                 = null;
         $stopOnError                       = null;
@@ -579,42 +595,178 @@ final class Builder
                     break;
 
                 case '--fail-on-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnDeprecation,
+                        '--fail-on-deprecation',
+                        '--do-not-fail-on-deprecation',
+                    );
+
                     $failOnDeprecation = true;
 
                     break;
 
                 case '--fail-on-phpunit-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnPhpunitDeprecation,
+                        '--fail-on-phpunit-deprecation',
+                        '--do-not-fail-on-phpunit-deprecation',
+                    );
+
                     $failOnPhpunitDeprecation = true;
 
                     break;
 
                 case '--fail-on-empty-test-suite':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnEmptyTestSuite,
+                        '--fail-on-empty-test-suite',
+                        '--do-not-fail-on-empty-test-suite',
+                    );
+
                     $failOnEmptyTestSuite = true;
 
                     break;
 
                 case '--fail-on-incomplete':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnIncomplete,
+                        '--fail-on-incomplete',
+                        '--do-not-fail-on-incomplete',
+                    );
+
                     $failOnIncomplete = true;
 
                     break;
 
                 case '--fail-on-notice':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnNotice,
+                        '--fail-on-notice',
+                        '--do-not-fail-on-notice',
+                    );
+
                     $failOnNotice = true;
 
                     break;
 
                 case '--fail-on-risky':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnRisky,
+                        '--fail-on-risky',
+                        '--do-not-fail-on-risky',
+                    );
+
                     $failOnRisky = true;
 
                     break;
 
                 case '--fail-on-skipped':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnSkipped,
+                        '--fail-on-skipped',
+                        '--do-not-fail-on-skipped',
+                    );
+
                     $failOnSkipped = true;
 
                     break;
 
                 case '--fail-on-warning':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnWarning,
+                        '--fail-on-warning',
+                        '--do-not-fail-on-warning',
+                    );
+
                     $failOnWarning = true;
+
+                    break;
+
+                case '--do-not-fail-on-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $failOnDeprecation,
+                        '--do-not-fail-on-deprecation',
+                        '--fail-on-deprecation',
+                    );
+
+                    $doNotFailOnDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-phpunit-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $failOnPhpunitDeprecation,
+                        '--do-not-fail-on-phpunit-deprecation',
+                        '--fail-on-phpunit-deprecation',
+                    );
+
+                    $doNotFailOnPhpunitDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-empty-test-suite':
+                    $this->warnWhenOptionsConflict(
+                        $failOnEmptyTestSuite,
+                        '--do-not-fail-on-empty-test-suite',
+                        '--fail-on-empty-test-suite',
+                    );
+
+                    $doNotFailOnEmptyTestSuite = true;
+
+                    break;
+
+                case '--do-not-fail-on-incomplete':
+                    $this->warnWhenOptionsConflict(
+                        $failOnIncomplete,
+                        '--do-not-fail-on-incomplete',
+                        '--fail-on-incomplete',
+                    );
+
+                    $doNotFailOnIncomplete = true;
+
+                    break;
+
+                case '--do-not-fail-on-notice':
+                    $this->warnWhenOptionsConflict(
+                        $failOnNotice,
+                        '--do-not-fail-on-notice',
+                        '--fail-on-notice',
+                    );
+
+                    $doNotFailOnNotice = true;
+
+                    break;
+
+                case '--do-not-fail-on-risky':
+                    $this->warnWhenOptionsConflict(
+                        $failOnRisky,
+                        '--do-not-fail-on-risky',
+                        '--fail-on-risky',
+                    );
+
+                    $doNotFailOnRisky = true;
+
+                    break;
+
+                case '--do-not-fail-on-skipped':
+                    $this->warnWhenOptionsConflict(
+                        $failOnSkipped,
+                        '--do-not-fail-on-skipped',
+                        '--fail-on-skipped',
+                    );
+
+                    $doNotFailOnSkipped = true;
+
+                    break;
+
+                case '--do-not-fail-on-warning':
+                    $this->warnWhenOptionsConflict(
+                        $failOnWarning,
+                        '--do-not-fail-on-warning',
+                        '--fail-on-warning',
+                    );
+
+                    $doNotFailOnWarning = true;
 
                     break;
 
@@ -949,6 +1101,14 @@ final class Builder
             $failOnRisky,
             $failOnSkipped,
             $failOnWarning,
+            $doNotFailOnDeprecation,
+            $doNotFailOnPhpunitDeprecation,
+            $doNotFailOnEmptyTestSuite,
+            $doNotFailOnIncomplete,
+            $doNotFailOnNotice,
+            $doNotFailOnRisky,
+            $doNotFailOnSkipped,
+            $doNotFailOnWarning,
             $stopOnDefect,
             $stopOnDeprecation,
             $stopOnError,
@@ -1034,5 +1194,23 @@ final class Builder
                 ),
             );
         }
+    }
+
+    /**
+     * @psalm-param non-empty-string $option
+     */
+    private function warnWhenOptionsConflict(?bool $current, string $option, string $opposite): void
+    {
+        if ($current === null) {
+            return;
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                'Options %s and %s cannot be used together',
+                $option,
+                $opposite,
+            ),
+        );
     }
 }
