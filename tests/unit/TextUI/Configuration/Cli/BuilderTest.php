@@ -1523,6 +1523,26 @@ final class BuilderTest extends TestCase
         $configuration->failOnPhpunitDeprecation();
     }
 
+    #[TestDox('--do-not-fail-on-phpunit-notice')]
+    public function testDoNotFailOnPhpunitNotice(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-phpunit-notice']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnPhpunitNotice());
+        $this->assertTrue($configuration->doNotFailOnPhpunitNotice());
+    }
+
+    public function testDoNotFailOnPhpunitNoticeMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnPhpunitNotice());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnPhpunitNotice();
+    }
+
     #[TestDox('--do-not-fail-on-empty-test-suite')]
     public function testDoNotFailOnEmptyTestSuite(): void
     {
