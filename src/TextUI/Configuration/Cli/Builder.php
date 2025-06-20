@@ -1337,7 +1337,7 @@ final class Builder
     }
 
     /**
-     * @psalm-param non-empty-string $option
+     * @param non-empty-string $option
      */
     private function warnWhenOptionsConflict(?bool $current, string $option, string $opposite): void
     {
