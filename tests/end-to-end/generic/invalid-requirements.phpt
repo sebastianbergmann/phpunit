@@ -25,4 +25,4 @@ There were 2 PHPUnit test runner warnings:
 2) Method PHPUnit\TestFixture\InvalidRequirementsTest::testInvalidVersionConstraint is annotated using an invalid version requirement: Version constraint ~~9.0 is not supported.
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 2.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 2.

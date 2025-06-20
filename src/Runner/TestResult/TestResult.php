@@ -388,14 +388,6 @@ final readonly class TestResult
 
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringPhpunitWarnings() &&
-               !$this->hasTestTriggeredPhpunitErrorEvents() &&
-               !$this->hasTestRunnerTriggeredWarningEvents() &&
-               !$this->hasTestTriggeredPhpunitWarningEvents();
-    }
-
-    public function wasSuccessfulIgnoringPhpunitWarnings(): bool
-    {
         return !$this->hasTestErroredEvents() &&
                !$this->hasTestFailedEvents() &&
                !$this->hasTestTriggeredPhpunitErrorEvents();
@@ -414,7 +406,8 @@ final readonly class TestResult
                $this->hasDeprecations() ||
                !empty($this->errors) ||
                $this->hasNotices() ||
-               $this->hasWarnings();
+               $this->hasWarnings() ||
+               $this->hasPhpunitWarnings();
     }
 
     /**
@@ -517,6 +510,17 @@ final readonly class TestResult
                count($this->testRunnerTriggeredDeprecationEvents);
     }
 
+    public function hasPhpunitWarnings(): bool
+    {
+        return $this->numberOfPhpunitWarnings() > 0;
+    }
+
+    public function numberOfPhpunitWarnings(): int
+    {
+        return count($this->testTriggeredPhpunitWarningEvents) +
+               count($this->testRunnerTriggeredWarningEvents);
+    }
+
     public function numberOfDeprecations(): int
     {
         return count($this->deprecations) +
@@ -544,9 +548,7 @@ final readonly class TestResult
     public function numberOfWarnings(): int
     {
         return count($this->warnings) +
-               count($this->phpWarnings) +
-               count($this->testTriggeredPhpunitWarningEvents) +
-               count($this->testRunnerTriggeredWarningEvents);
+               count($this->phpWarnings);
     }
 
     public function hasIncompleteTests(): bool

@@ -111,6 +111,7 @@ final class Builder
         'fail-on-all-issues',
         'fail-on-deprecation',
         'fail-on-phpunit-deprecation',
+        'fail-on-phpunit-warning',
         'fail-on-empty-test-suite',
         'fail-on-incomplete',
         'fail-on-notice',
@@ -119,6 +120,7 @@ final class Builder
         'fail-on-warning',
         'do-not-fail-on-deprecation',
         'do-not-fail-on-phpunit-deprecation',
+        'do-not-fail-on-phpunit-warning',
         'do-not-fail-on-empty-test-suite',
         'do-not-fail-on-incomplete',
         'do-not-fail-on-notice',
@@ -220,6 +222,7 @@ final class Builder
         $failOnAllIssues                   = null;
         $failOnDeprecation                 = null;
         $failOnPhpunitDeprecation          = null;
+        $failOnPhpunitWarning              = null;
         $failOnEmptyTestSuite              = null;
         $failOnIncomplete                  = null;
         $failOnNotice                      = null;
@@ -228,6 +231,7 @@ final class Builder
         $failOnWarning                     = null;
         $doNotFailOnDeprecation            = null;
         $doNotFailOnPhpunitDeprecation     = null;
+        $doNotFailOnPhpunitWarning         = null;
         $doNotFailOnEmptyTestSuite         = null;
         $doNotFailOnIncomplete             = null;
         $doNotFailOnNotice                 = null;
@@ -704,6 +708,17 @@ final class Builder
 
                     break;
 
+                case '--fail-on-phpunit-warning':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnPhpunitWarning,
+                        '--fail-on-phpunit-warning',
+                        '--do-not-fail-on-phpunit-warning',
+                    );
+
+                    $failOnPhpunitWarning = true;
+
+                    break;
+
                 case '--fail-on-empty-test-suite':
                     $this->warnWhenOptionsConflict(
                         $doNotFailOnEmptyTestSuite,
@@ -789,6 +804,17 @@ final class Builder
                     );
 
                     $doNotFailOnPhpunitDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-phpunit-warning':
+                    $this->warnWhenOptionsConflict(
+                        $failOnPhpunitWarning,
+                        '--do-not-fail-on-phpunit-warning',
+                        '--fail-on-phpunit-warning',
+                    );
+
+                    $doNotFailOnPhpunitWarning = true;
 
                     break;
 
@@ -1201,6 +1227,7 @@ final class Builder
             $failOnAllIssues,
             $failOnDeprecation,
             $failOnPhpunitDeprecation,
+            $failOnPhpunitWarning,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnNotice,
@@ -1209,6 +1236,7 @@ final class Builder
             $failOnWarning,
             $doNotFailOnDeprecation,
             $doNotFailOnPhpunitDeprecation,
+            $doNotFailOnPhpunitWarning,
             $doNotFailOnEmptyTestSuite,
             $doNotFailOnIncomplete,
             $doNotFailOnNotice,

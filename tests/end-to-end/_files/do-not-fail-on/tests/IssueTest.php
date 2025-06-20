@@ -13,10 +13,31 @@ use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use function trigger_error;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
 
 final class IssueTest extends TestCase
 {
+    public function testThatTriggersPhpunitDeprecation(): void
+    {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'message',
+        );
+
+        $this->assertTrue(true);
+    }
+
+    public function testThatTriggersPhpunitWarning(): void
+    {
+        EventFacade::emitter()->testTriggeredPhpunitWarning(
+            $this->valueObjectForEvents(),
+            'message',
+        );
+
+        $this->assertTrue(true);
+    }
+
     public function testThatTriggersDeprecation(): void
     {
         trigger_error('message', E_USER_DEPRECATED);
