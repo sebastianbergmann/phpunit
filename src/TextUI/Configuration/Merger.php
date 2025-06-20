@@ -131,6 +131,12 @@ final class Merger
             $failOnPhpunitDeprecation = $xmlConfiguration->phpunit()->failOnPhpunitDeprecation();
         }
 
+        if ($cliConfiguration->hasFailOnPhpunitWarning()) {
+            $failOnPhpunitWarning = $cliConfiguration->failOnPhpunitWarning();
+        } else {
+            $failOnPhpunitWarning = $xmlConfiguration->phpunit()->failOnPhpunitWarning();
+        }
+
         if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
             $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
         } else {
@@ -177,6 +183,12 @@ final class Merger
 
         if ($cliConfiguration->hasDoNotFailOnPhpunitDeprecation()) {
             $doNotFailOnPhpunitDeprecation = $cliConfiguration->doNotFailOnPhpunitDeprecation();
+        }
+
+        $doNotFailOnPhpunitWarning = false;
+
+        if ($cliConfiguration->hasDoNotFailOnPhpunitWarning()) {
+            $doNotFailOnPhpunitWarning = $cliConfiguration->doNotFailOnPhpunitWarning();
         }
 
         $doNotFailOnEmptyTestSuite = false;
@@ -849,6 +861,7 @@ final class Merger
             $failOnAllIssues,
             $failOnDeprecation,
             $failOnPhpunitDeprecation,
+            $failOnPhpunitWarning,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnNotice,
@@ -857,6 +870,7 @@ final class Merger
             $failOnWarning,
             $doNotFailOnDeprecation,
             $doNotFailOnPhpunitDeprecation,
+            $doNotFailOnPhpunitWarning,
             $doNotFailOnEmptyTestSuite,
             $doNotFailOnIncomplete,
             $doNotFailOnNotice,

@@ -24,5 +24,5 @@ There was 1 PHPUnit test runner warning:
 1) Bootstrapping of extension PHPUnit\TestFixture\Event\MyExtension\MyExtensionBootstrap failed: message
 %A
 
-WARNINGS!
-Tests: 1, Assertions: 1, Warnings: 1.
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.

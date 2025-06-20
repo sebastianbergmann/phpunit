@@ -25,5 +25,5 @@ There was 1 PHPUnit test runner warning:
 
 %snd%sag%s
 
-WARNINGS!
-Tests: 1, Assertions: 1, Warnings: 1, Deprecations: 1.
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1, Deprecations: 1.

@@ -830,6 +830,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'failOnAllIssues', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnDeprecation', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnPhpunitDeprecation', false),
+            $this->getBooleanAttribute($document->documentElement, 'failOnPhpunitWarning', true),
             $this->getBooleanAttribute($document->documentElement, 'failOnEmptyTestSuite', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnIncomplete', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnNotice', false),

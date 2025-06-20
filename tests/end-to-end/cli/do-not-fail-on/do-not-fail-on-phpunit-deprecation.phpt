@@ -4,11 +4,11 @@ todo
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--debug';
-$_SERVER['argv'][] = '--do-not-fail-on-incomplete';
+$_SERVER['argv'][] = '--do-not-fail-on-phpunit-deprecation';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/do-not-fail-on/phpunit.xml';
 $_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'testThatIsIncomplete';
+$_SERVER['argv'][] = 'testThatTriggersPhpunitDeprecation';
 
 require __DIR__ . '/../../../bootstrap.php';
 
@@ -25,11 +25,13 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%sphpunit.xml, 1 test)
 Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\DoNotFailOn\IssueTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatIsIncomplete)
-Test Prepared (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatIsIncomplete)
-Test Marked Incomplete (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatIsIncomplete)
+Test Preparation Started (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatTriggersPhpunitDeprecation)
+Test Prepared (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatTriggersPhpunitDeprecation)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatTriggersPhpunitDeprecation)
 message
-Test Finished (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatIsIncomplete)
+Assertion Succeeded (Constraint: is true, Value: true)
+Test Passed (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatTriggersPhpunitDeprecation)
+Test Finished (PHPUnit\TestFixture\DoNotFailOn\IssueTest::testThatTriggersPhpunitDeprecation)
 Test Suite Finished (PHPUnit\TestFixture\DoNotFailOn\IssueTest, 1 test)
 Test Suite Finished (default, 1 test)
 Test Suite Finished (%sphpunit.xml, 1 test)

@@ -23,5 +23,5 @@ There was 1 PHPUnit test runner warning:
 
 1) Cannot bootstrap extension because class Does\Not\Exist does not exist
 
-WARNINGS!
-Tests: 1, Assertions: 1, Warnings: 1.
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.

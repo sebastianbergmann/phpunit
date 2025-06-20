@@ -42,7 +42,8 @@ final class SummaryPrinter
             return;
         }
 
-        if ($result->wasSuccessfulAndNoTestHasIssues() &&
+        if ($result->wasSuccessful() &&
+            !$result->hasIssues() &&
             !$result->hasTestSuiteSkippedEvents() &&
             !$result->hasTestSkippedEvents()) {
             $this->printWithColor(
@@ -64,15 +65,15 @@ final class SummaryPrinter
         $color = 'fg-black, bg-yellow';
 
         if ($result->wasSuccessful()) {
-            if (!$result->hasTestsWithIssues()) {
+            if ($result->hasIssues()) {
                 $this->printWithColor(
                     $color,
-                    'OK, but some tests were skipped!',
+                    'OK, but there were issues!',
                 );
             } else {
                 $this->printWithColor(
                     $color,
-                    'OK, but there were issues!',
+                    'OK, but some tests were skipped!',
                 );
             }
         } else {
@@ -90,21 +91,6 @@ final class SummaryPrinter
                     $color,
                     'FAILURES!',
                 );
-            } elseif ($result->hasWarnings()) {
-                $this->printWithColor(
-                    $color,
-                    'WARNINGS!',
-                );
-            } elseif ($result->hasDeprecations()) {
-                $this->printWithColor(
-                    $color,
-                    'DEPRECATIONS!',
-                );
-            } elseif ($result->hasNotices()) {
-                $this->printWithColor(
-                    $color,
-                    'NOTICES!',
-                );
             }
         }
 
@@ -112,6 +98,7 @@ final class SummaryPrinter
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString($result->numberOfErrors(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
+        $this->printCountString($result->numberOfPhpunitWarnings(), 'PHPUnit Warnings', $color);
         $this->printCountString($result->numberOfWarnings(), 'Warnings', $color);
         $this->printCountString($result->numberOfPhpOrUserDeprecations(), 'Deprecations', $color);
         $this->printCountString($result->numberOfPhpunitDeprecations(), 'PHPUnit Deprecations', $color);

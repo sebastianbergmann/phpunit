@@ -16,7 +16,7 @@ require __DIR__ . '/../../../bootstrap.php';
 --EXPECTF--
 PHPUnit Started (%s)
 Test Runner Configured
-Test Suite Loaded (6 tests)
+Test Suite Loaded (8 tests)
 Event Facade Sealed
 Test Runner Started
 Test Suite Sorted

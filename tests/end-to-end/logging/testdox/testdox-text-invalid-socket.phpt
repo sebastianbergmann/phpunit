@@ -24,5 +24,5 @@ There was 1 PHPUnit test runner warning:
 
 1) Cannot log test results in TestDox plain text format to "socket://hostname:port:wrong": "socket://hostname:port:wrong" does not match "socket://hostname:port" format
 
-WARNINGS!
-Tests: 1, Assertions: 1, Warnings: 1.
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
