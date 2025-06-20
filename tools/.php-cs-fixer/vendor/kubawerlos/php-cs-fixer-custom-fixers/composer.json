@@ -1,0 +1,68 @@
+{
+    "name": "kubawerlos/php-cs-fixer-custom-fixers",
+    "description": "A set of custom fixers for PHP CS Fixer",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Kuba Werłos",
+            "email": "werlos@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-filter": "*",
+        "ext-tokenizer": "*",
+        "friendsofphp/php-cs-fixer": "^3.61.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6.22 || 10.5.45 || ^11.5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpCsFixerCustomFixers\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpCsFixerCustomFixersDev\\": ".dev-tools/src",
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": [
+            "@prepare-dev-tools",
+            "php-cs-fixer check --ansi --show-progress=dots --diff --verbose",
+            "@composer --no-interaction --working-dir=.dev-tools analyse"
+        ],
+        "apply-php_unit_attributes": [
+            "@prepare-dev-tools",
+            "php-cs-fixer fix --quiet --rules=php_unit_attributes || exit 0"
+        ],
+        "apply-typed_class_constant": [
+            "@prepare-dev-tools",
+            "php-cs-fixer fix --quiet --rules=PhpCsFixerCustomFixers/typed_class_constant || exit 0"
+        ],
+        "fix": [
+            "@prepare-dev-tools",
+            "php-cs-fixer fix --ansi --verbose || exit 0",
+            "@composer --no-interaction --working-dir=.dev-tools fix"
+        ],
+        "infection": [
+            "@prepare-dev-tools",
+            "@composer --working-dir=.dev-tools infection"
+        ],
+        "prepare-dev-tools": [
+            "@putenv PHP_CS_FIXER_IGNORE_ENV=1",
+            "@composer --working-dir=.dev-tools --quiet install --classmap-authoritative"
+        ],
+        "test": [
+            "phpunit"
+        ],
+        "verify": [
+            "@analyse",
+            "@test",
+            "@infection"
+        ]
+    }
+}
