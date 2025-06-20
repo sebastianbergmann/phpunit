@@ -20,8 +20,6 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * generate diff output of the failed expectations.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ExpectationFailedException extends AssertionFailedError
 {
