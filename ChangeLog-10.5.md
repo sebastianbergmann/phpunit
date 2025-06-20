@@ -14,6 +14,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * `--dont-report-useless-tests` CLI option (use `--do-not-report-useless-tests` instead)
 
+### Fixed
+
+* [#6243](https://github.com/sebastianbergmann/phpunit/issues/6243): Constraints cannot be implemented without using internal class `ExpectationFailedException`
+
 ## [10.5.46] - 2025-05-02
 
 ### Added
