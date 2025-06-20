@@ -66,6 +66,7 @@ Execution:
   --fail-on-deprecation                Signal failure using shell exit code when a deprecation was triggered
   --fail-on-phpunit-deprecation        Signal failure using shell exit code when a PHPUnit deprecation was triggered
   --fail-on-phpunit-notice             Signal failure using shell exit code when a PHPUnit notice was triggered
+  --fail-on-phpunit-warning            Signal failure using shell exit code when a PHPUnit warning was triggered
   --fail-on-notice                     Signal failure using shell exit code when a notice was triggered
   --fail-on-skipped                    Signal failure using shell exit code when a test was skipped
   --fail-on-incomplete                 Signal failure using shell exit code when a test was marked incomplete
@@ -77,6 +78,7 @@ Execution:
   --do-not-fail-on-deprecation         Do not signal failure using shell exit code when a deprecation was triggered
   --do-not-fail-on-phpunit-deprecation Do not signal failure using shell exit code when a PHPUnit deprecation was triggered
   --do-not-fail-on-phpunit-notice      Do not signal failure using shell exit code when a PHPUnit notice was triggered
+  --do-not-fail-on-phpunit-warning     Do not signal failure using shell exit code when a PHPUnit warning was triggered
   --do-not-fail-on-notice              Do not signal failure using shell exit code when a notice was triggered
   --do-not-fail-on-skipped             Do not signal failure using shell exit code when a test was skipped
   --do-not-fail-on-incomplete          Do not signal failure using shell exit code when a test was marked incomplete

@@ -28,6 +28,7 @@ final readonly class ShellExitCodeCalculator
         $failOnDeprecation        = false;
         $failOnPhpunitDeprecation = false;
         $failOnPhpunitNotice      = false;
+        $failOnPhpunitWarning     = true;
         $failOnEmptyTestSuite     = false;
         $failOnIncomplete         = false;
         $failOnNotice             = false;
@@ -39,6 +40,7 @@ final readonly class ShellExitCodeCalculator
             $failOnDeprecation        = true;
             $failOnPhpunitDeprecation = true;
             $failOnPhpunitNotice      = true;
+            $failOnPhpunitWarning     = true;
             $failOnEmptyTestSuite     = true;
             $failOnIncomplete         = true;
             $failOnNotice             = true;
@@ -69,6 +71,14 @@ final readonly class ShellExitCodeCalculator
 
         if ($configuration->doNotFailOnPhpunitNotice()) {
             $failOnPhpunitNotice = false;
+        }
+
+        if ($configuration->failOnPhpunitWarning()) {
+            $failOnPhpunitWarning = true;
+        }
+
+        if ($configuration->doNotFailOnPhpunitWarning()) {
+            $failOnPhpunitWarning = false;
         }
 
         if ($configuration->failOnEmptyTestSuite()) {
@@ -129,38 +139,40 @@ final readonly class ShellExitCodeCalculator
             $returnCode = self::FAILURE_EXIT;
         }
 
-        if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
-            if ($failOnDeprecation && $result->hasPhpOrUserDeprecations()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnDeprecation && $result->hasPhpOrUserDeprecations()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnPhpunitDeprecation && $result->hasPhpunitDeprecations()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnPhpunitDeprecation && $result->hasPhpunitDeprecations()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnPhpunitNotice && $result->hasPhpunitNotices()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnPhpunitNotice && $result->hasPhpunitNotices()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnIncomplete && $result->hasIncompleteTests()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnPhpunitWarning && $result->hasPhpunitWarnings()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnNotice && $result->hasNotices()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnIncomplete && $result->hasIncompleteTests()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnRisky && $result->hasRiskyTests()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnNotice && $result->hasNotices()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnSkipped && $result->hasSkippedTests()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnRisky && $result->hasRiskyTests()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
 
-            if ($failOnWarning && $result->hasWarnings()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
+        if ($failOnSkipped && $result->hasSkippedTests()) {
+            $returnCode = self::FAILURE_EXIT;
+        }
+
+        if ($failOnWarning && $result->hasWarnings()) {
+            $returnCode = self::FAILURE_EXIT;
         }
 
         if ($result->hasErrors()) {

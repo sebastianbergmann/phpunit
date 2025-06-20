@@ -22,4 +22,4 @@ There was 1 PHPUnit test runner warning:
 1) Class PHPUnit\TestFixture\Issue5364\BarTest declared in %sBarTest.php does not extend PHPUnit\Framework\TestCase
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 1.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.

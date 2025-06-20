@@ -24,4 +24,4 @@ There was 1 PHPUnit test runner warning:
 1) Cannot add file %sExampleTest.php to test suite "two" as it was already added to test suite "one"
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 1.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
