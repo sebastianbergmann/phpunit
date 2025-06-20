@@ -27,7 +27,7 @@ final class ShellExitCodeCalculator
     {
         $failOnDeprecation        = false;
         $failOnPhpunitDeprecation = false;
-        $failOnPhpunitWarning     = false;
+        $failOnPhpunitWarning     = true;
         $failOnEmptyTestSuite     = false;
         $failOnIncomplete         = false;
         $failOnNotice             = false;
