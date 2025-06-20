@@ -1363,6 +1363,26 @@ final class BuilderTest extends TestCase
         $configuration->failOnPhpunitNotice();
     }
 
+    #[TestDox('--fail-on-phpunit-warning')]
+    public function testFailOnPhpunitWarning(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-phpunit-warning']);
+
+        $this->assertTrue($configuration->hasFailOnPhpunitWarning());
+        $this->assertTrue($configuration->failOnPhpunitWarning());
+    }
+
+    public function testFailOnPhpunitWarningMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnPhpunitWarning());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnPhpunitWarning();
+    }
+
     #[TestDox('--fail-on-empty-test-suite')]
     public function testFailOnEmptyTestSuite(): void
     {

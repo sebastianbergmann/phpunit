@@ -923,6 +923,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($document->documentElement, 'failOnDeprecation', false),
             $this->parseBooleanAttribute($document->documentElement, 'failOnPhpunitDeprecation', false),
             $this->parseBooleanAttribute($document->documentElement, 'failOnPhpunitNotice', false),
+            $this->parseBooleanAttribute($document->documentElement, 'failOnPhpunitWarning', true),
             $this->parseBooleanAttribute($document->documentElement, 'failOnEmptyTestSuite', false),
             $this->parseBooleanAttribute($document->documentElement, 'failOnIncomplete', false),
             $this->parseBooleanAttribute($document->documentElement, 'failOnNotice', false),

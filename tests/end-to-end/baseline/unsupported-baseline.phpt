@@ -24,4 +24,4 @@ There was 1 PHPUnit test runner warning:
 1) Cannot read baseline %sbaseline.xml, version 0 is not supported
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 1.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.

@@ -28,4 +28,4 @@ Time: %s, Memory: %s
 %sCoversClassCoversNothingTest.php:%d
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 1.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.

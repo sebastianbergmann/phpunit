@@ -92,6 +92,8 @@
                                        when a PHPUnit deprecation was triggered
   [32m--fail-on-phpunit-notice            [0m Signal failure using shell exit code
                                        when a PHPUnit notice was triggered
+  [32m--fail-on-phpunit-warning           [0m Signal failure using shell exit code
+                                       when a PHPUnit warning was triggered
   [32m--fail-on-notice                    [0m Signal failure using shell exit code
                                        when a notice was triggered
   [32m--fail-on-skipped                   [0m Signal failure using shell exit code
@@ -114,6 +116,9 @@
                                        triggered
   [32m--do-not-fail-on-phpunit-notice     [0m Do not signal failure using shell exit
                                        code when a PHPUnit notice was triggered
+  [32m--do-not-fail-on-phpunit-warning    [0m Do not signal failure using shell exit
+                                       code when a PHPUnit warning was
+                                       triggered
   [32m--do-not-fail-on-notice             [0m Do not signal failure using shell exit
                                        code when a notice was triggered
   [32m--do-not-fail-on-skipped            [0m Do not signal failure using shell exit

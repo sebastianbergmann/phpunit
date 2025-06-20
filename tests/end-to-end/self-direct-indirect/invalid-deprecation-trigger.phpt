@@ -29,4 +29,4 @@ There were 3 PHPUnit test runner warnings:
 3) Method DoesNotExist::doesNotExist cannot be configured as a deprecation trigger because it is not declared
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 3.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 3.

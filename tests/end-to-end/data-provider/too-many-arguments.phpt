@@ -25,4 +25,4 @@ Data set #2 has more arguments (3) than the test method accepts (2)
 %s:%d
 
 OK, but there were issues!
-Tests: 7, Assertions: 7, Warnings: 1.
+Tests: 7, Assertions: 7, PHPUnit Warnings: 1.
