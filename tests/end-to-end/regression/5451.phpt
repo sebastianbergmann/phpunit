@@ -25,7 +25,7 @@ Time: %s, Memory: %s
 There was 1 PHPUnit error:
 
 1) PHPUnit\TestFixture\Issue5451\Issue5451Test::testWithErrorInDataProvider
-The data provider specified for PHPUnit\TestFixture\Issue5451\Issue5451Test::testWithErrorInDataProvider is invalid
+The data provider dataProviderThatTriggersPhpError specified for PHPUnit\TestFixture\Issue5451\Issue5451Test::testWithErrorInDataProvider is invalid
 Call to a member function bar() on array
 
 %s%eIssue5451Test.php:26

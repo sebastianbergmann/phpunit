@@ -15,5 +15,5 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 There were errors:
 
-The data provider specified for PHPUnit\TestFixture\Issue5908\Issue5908Test::testOne is invalid
+The data provider provider specified for PHPUnit\TestFixture\Issue5908\Issue5908Test::testOne is invalid
 message
