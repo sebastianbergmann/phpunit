@@ -67,6 +67,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
+use PHPUnit\Framework\Attributes\Retry;
 use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -881,6 +882,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof WithoutErrorHandler);
 
                     $result[] = Metadata::withoutErrorHandler();
+
+                    break;
+
+                case Retry::class:
+                    assert($attributeInstance instanceof Retry);
+
+                    $result[] = Metadata::retry($attributeInstance->maxRetries(), $attributeInstance->delay(), $attributeInstance->retryOn());
 
                     break;
             }
