@@ -12,7 +12,7 @@ All notable changes of the PHPUnit 12.2 release series are documented in this fi
 
 ### Deprecated
 
-* `--dont-report-useless-tests` CLI option (use `--do-not-report-useless-tests` instead)
+* [#6240](https://github.com/sebastianbergmann/phpunit/issues/6240): `--dont-report-useless-tests` CLI option (use `--do-not-report-useless-tests` instead)
 
 ### Fixed
 
