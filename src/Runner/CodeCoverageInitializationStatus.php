@@ -12,6 +12,6 @@ namespace PHPUnit\Runner;
 enum CodeCoverageInitializationStatus
 {
     case NOT_REQUESTED;
-    case SUCCESSFULLY;
+    case SUCCEEDED;
     case FAILED;
 }

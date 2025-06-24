@@ -155,7 +155,7 @@ final class CodeCoverage
             );
         }
 
-        return CodeCoverageInitializationStatus::SUCCESSFULLY;
+        return CodeCoverageInitializationStatus::SUCCEEDED;
     }
 
     /**
