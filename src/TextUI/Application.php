@@ -221,10 +221,8 @@ final readonly class Application
             $timer = new Timer;
             $timer->start();
 
-            if (
-                $coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
-                $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED
-            ) {
+            if ($coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
+                $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
                 $runner = new TestRunner;
 
                 $runner->run(
