@@ -10,6 +10,10 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 * `TestRunner\ChildProcessErrored` event
 * `Configuration::includeTestSuites()` and `Configuration::excludeTestSuites()`
 
+### Changed
+
+* [#6237](https://github.com/sebastianbergmann/phpunit/issues/6237): Do not run tests when code coverage is requested but the Xdebug mode is configured incorrectly
+
 ### Deprecated
 
 * [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229): `Configuration::includeTestSuite()`, use `Configuration::includeTestSuites()` instead
