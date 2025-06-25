@@ -50,6 +50,7 @@ use function sprintf;
 use function str_contains;
 use function stream_get_contents;
 use function stream_get_meta_data;
+use function sys_get_temp_dir;
 use function tmpfile;
 use function trim;
 use AssertionError;
@@ -1282,6 +1283,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
 
         try {
+            assert($capture !== false, sprintf('Failed to create tmp file. Directory "%s" is not writable.', sys_get_temp_dir()));
+
             /** @phpstan-ignore method.dynamicName */
             $testResult = $this->{$this->methodName}(...$testArguments);
 
