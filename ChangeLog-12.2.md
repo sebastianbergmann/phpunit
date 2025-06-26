@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 12.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [12.2.4] - 2025-MM-DD
+## [12.2.4] - 2025-06-26
 
 ### Changed
 
@@ -82,7 +82,7 @@ This feature is experimental and the generated XML may change to enhance complia
 * A warning is now emitted when more than one of `#[Small]`, `#[Medium]`, or `#[Large]` is used on a test class
 * A warning is now emitted when a data provider provides data sets that have more values than the test method consumes using arguments
 
-[12.2.4]: https://github.com/sebastianbergmann/phpunit/compare/12.2.3...12.2
+[12.2.4]: https://github.com/sebastianbergmann/phpunit/compare/12.2.3...12.2.4
 [12.2.3]: https://github.com/sebastianbergmann/phpunit/compare/12.2.2...12.2.3
 [12.2.2]: https://github.com/sebastianbergmann/phpunit/compare/12.2.1...12.2.2
 [12.2.1]: https://github.com/sebastianbergmann/phpunit/compare/12.2.0...12.2.1
