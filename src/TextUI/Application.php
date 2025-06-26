@@ -621,8 +621,9 @@ final readonly class Application
         if ($configuration->hasLogfileOtr()) {
             try {
                 new OtrXmlLogger(
-                    $configuration->logfileOtr(),
                     EventFacade::instance(),
+                    $configuration->logfileOtr(),
+                    $configuration->includeGitInformationInOtrLogfile(),
                 );
             } catch (CannotOpenUriForWritingException $e) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(

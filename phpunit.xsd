@@ -300,7 +300,7 @@
     <xs:group name="loggingGroup">
         <xs:all>
             <xs:element name="junit" type="logToFileType" minOccurs="0" />
-            <xs:element name="otr" type="logToFileType" minOccurs="0" />
+            <xs:element name="otr" type="otrType" minOccurs="0" />
             <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxText" type="logToFileType" minOccurs="0" />
@@ -311,6 +311,10 @@
     </xs:complexType>
     <xs:complexType name="logToDirectoryType">
         <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="otrType">
+        <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
+        <xs:attribute name="includeGitInformation" type="xs:boolean" default="false"/>
     </xs:complexType>
     <xs:complexType name="coverageReportCrap4JType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
