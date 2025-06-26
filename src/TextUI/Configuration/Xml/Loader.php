@@ -156,6 +156,7 @@ final readonly class Loader
                         (string) $this->parseStringAttribute($element, 'outputFile'),
                     ),
                 ),
+                $this->parseBooleanAttribute($element, 'includeGitInformation', false),
             );
         }
 

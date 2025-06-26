@@ -652,6 +652,14 @@ final readonly class Merger
             $logfileOtr = $xmlConfiguration->logging()->otr()->target()->path();
         }
 
+        $includeGitInformationInOtrLogfile = false;
+
+        if ($cliConfiguration->hasIncludeGitInformationInOtrLogfile()) {
+            $includeGitInformationInOtrLogfile = $cliConfiguration->includeGitInformationInOtrLogfile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasOtr()) {
+            $includeGitInformationInOtrLogfile = $xmlConfiguration->logging()->otr()->includeGitInformation();
+        }
+
         if ($cliConfiguration->hasTestdoxHtmlFile()) {
             $logfileTestdoxHtml = $cliConfiguration->testdoxHtmlFile();
         } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxHtml()) {
@@ -1005,6 +1013,7 @@ final readonly class Merger
             $logfileTeamcity,
             $logfileJunit,
             $logfileOtr,
+            $includeGitInformationInOtrLogfile,
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logEventsText,
