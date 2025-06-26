@@ -12,4 +12,4 @@ require_once __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-assert(!empty($name))
+Missing "name" attribute in /phpunit/testsuite in %sconfiguration.testsuite_no_name.xml!

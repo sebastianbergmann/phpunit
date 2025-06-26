@@ -18,6 +18,7 @@ use function explode;
 use function is_numeric;
 use function preg_match;
 use function realpath;
+use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strlen;
@@ -1084,7 +1085,15 @@ final readonly class Loader
 
             $name = $element->getAttribute('name');
 
-            assert(!empty($name));
+            if (empty($name)) {
+                throw new Exception(
+                    sprintf(
+                        'Missing "name" attribute in %s in %s!',
+                        $element->getNodePath(),
+                        $filename,
+                    ),
+                );
+            }
 
             $testSuites[] = new TestSuiteConfiguration(
                 $name,
