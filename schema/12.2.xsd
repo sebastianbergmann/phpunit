@@ -182,6 +182,7 @@
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitNotice" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnPhpunitWarning" type="xs:boolean" default="true"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnNotice" type="xs:boolean" default="false"/>
@@ -298,7 +299,7 @@
     <xs:group name="loggingGroup">
         <xs:all>
             <xs:element name="junit" type="logToFileType" minOccurs="0" />
-            <xs:element name="otr" type="logToFileType" minOccurs="0" />
+            <xs:element name="otr" type="otrType" minOccurs="0" />
             <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />
             <xs:element name="testdoxText" type="logToFileType" minOccurs="0" />
@@ -309,6 +310,10 @@
     </xs:complexType>
     <xs:complexType name="logToDirectoryType">
         <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="otrType">
+        <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
+        <xs:attribute name="includeGitInformation" type="xs:boolean" default="false"/>
     </xs:complexType>
     <xs:complexType name="coverageReportCrap4JType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
