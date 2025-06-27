@@ -12,6 +12,8 @@ namespace PHPUnit\Metadata\Parser;
 use const JSON_THROW_ON_ERROR;
 use function assert;
 use function class_exists;
+use function is_array;
+use function is_int;
 use function json_decode;
 use function method_exists;
 use function sprintf;
@@ -870,6 +872,7 @@ final readonly class AttributeParser implements Parser
                     );
 
                     break;
+
                 case TestWithArray::class:
                     assert($attributeInstance instanceof TestWithArray);
 

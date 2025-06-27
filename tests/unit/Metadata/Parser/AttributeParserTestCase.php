@@ -1121,6 +1121,7 @@ abstract class AttributeParserTestCase extends TestCase
         /** @see TestWithTest::testTestWithArrayBasic() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTestWithArrayBasic');
         $this->assertCount(1, $metadata);
+
         /** @var TestWith $firstCase */
         $firstCase = $metadata->asArray()[0];
         $this->assertTrue($firstCase->isTestWith());
@@ -1130,6 +1131,7 @@ abstract class AttributeParserTestCase extends TestCase
 
         /** @see TestWithTest::testTestWithArrayNamedCase() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTestWithArrayNamedCase')->isTestWith();
+
         /** @var TestWith $firstCase */
         $firstCase = $metadata->asArray()[0];
         $this->assertTrue($firstCase->hasName());
@@ -1138,6 +1140,7 @@ abstract class AttributeParserTestCase extends TestCase
         /** @see TestWithTest::testTestWithArrayManyCasesWithMixedNames() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTestWithArrayManyCasesWithMixedNames')->isTestWith();
         $this->assertCount(3, $metadata);
+
         /** @var TestWith[] $cases */
         $cases = $metadata->asArray();
         $this->assertSame('odds', $cases[0]->name());
@@ -1146,12 +1149,12 @@ abstract class AttributeParserTestCase extends TestCase
 
         /** @see TestWithTest::testMultipleTestWithArray() */
         $metadata = $this->parser()->forMethod(TestWithTest::class, 'testMultipleTestWithArray')->isTestWith();
+
         /** @var TestWith[] $cases */
         $cases = $metadata->asArray();
         $this->assertSame([5], $cases[0]->data());
         $this->assertSame([6], $cases[1]->data());
     }
-
 
     #[TestDox('Parses #[TestWithJson] attribute on method')]
     public function test_parses_TestWithJson_attribute_on_method(): void
