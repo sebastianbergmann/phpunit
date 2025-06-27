@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
 use const PHP_VERSION;
 use function assert;
 use function defined;
@@ -18,6 +19,7 @@ use function explode;
 use function is_numeric;
 use function preg_match;
 use function realpath;
+use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strlen;
@@ -74,6 +76,7 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -113,18 +116,33 @@ final readonly class Loader
 
         assert($configurationFileRealpath !== false && $configurationFileRealpath !== '');
 
-        return new LoadedFromFileConfiguration(
-            $configurationFileRealpath,
-            (new Validator)->validate($document, $xsdFilename),
-            $this->extensions($xpath),
-            $this->source($configurationFileRealpath, $xpath),
-            $this->codeCoverage($configurationFileRealpath, $xpath),
-            $this->groups($xpath),
-            $this->logging($configurationFileRealpath, $xpath),
-            $this->php($configurationFileRealpath, $xpath),
-            $this->phpunit($configurationFileRealpath, $document),
-            $this->testSuite($configurationFileRealpath, $xpath),
-        );
+        $validationResult = (new Validator)->validate($document, $xsdFilename);
+
+        try {
+            return new LoadedFromFileConfiguration(
+                $configurationFileRealpath,
+                $validationResult,
+                $this->extensions($xpath),
+                $this->source($configurationFileRealpath, $xpath),
+                $this->codeCoverage($configurationFileRealpath, $xpath),
+                $this->groups($xpath),
+                $this->logging($configurationFileRealpath, $xpath),
+                $this->php($configurationFileRealpath, $xpath),
+                $this->phpunit($configurationFileRealpath, $document),
+                $this->testSuite($configurationFileRealpath, $xpath),
+            );
+        } catch (Throwable $t) {
+            $message = sprintf(
+                'Cannot load XML configuration file %s',
+                $configurationFileRealpath,
+            );
+
+            if ($validationResult->hasValidationErrors()) {
+                $message .= ' because it has validation errors:' . PHP_EOL . $validationResult->asString();
+            }
+
+            throw new Exception($message, previous: $t);
+        }
     }
 
     private function logging(string $filename, DOMXPath $xpath): Logging
