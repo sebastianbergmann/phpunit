@@ -116,7 +116,7 @@ final class PassedTests
         return $size->isGreaterThan($other);
     }
 
-    public function hasReturnValue(string $method): mixed
+    public function hasReturnValue(string $method): bool
     {
         $returnType = (new ReflectionMethod(...explode('::', $method)))->getReturnType();
 
