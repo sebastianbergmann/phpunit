@@ -18,7 +18,6 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\CoversClassOnClassTest;
 use PHPUnit\TestFixture\CoversNothingOnClassTest;
-use PHPUnit\TestFixture\CoversNothingOnMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\NoCoverageAttributesTest;
@@ -44,7 +43,6 @@ final class CodeCoverageTest extends TestCase
             [false, NoCoverageAttributesTest::class],
             [false, CoversClassOnClassTest::class],
             [true, CoversNothingOnClassTest::class],
-            [true, CoversNothingOnMethodTest::class],
         ];
     }
 

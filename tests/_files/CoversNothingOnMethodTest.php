@@ -20,5 +20,7 @@ final class CoversNothingOnMethodTest extends TestCase
         $o = new CoveredClass;
 
         $o->publicMethod();
+
+        $this->assertTrue(true);
     }
 }
