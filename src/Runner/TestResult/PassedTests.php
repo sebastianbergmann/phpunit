@@ -11,11 +11,14 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use function array_merge;
 use function assert;
+use function explode;
 use function in_array;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\TestSize\Known;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
+use ReflectionMethod;
+use ReflectionNamedType;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -111,6 +114,13 @@ final class PassedTests
         assert($size instanceof Known);
 
         return $size->isGreaterThan($other);
+    }
+
+    public function hasReturnValue(string $method): bool
+    {
+        $returnType = (new ReflectionMethod(...explode('::', $method)))->getReturnType();
+
+        return !$returnType instanceof ReflectionNamedType || !in_array($returnType->getName(), ['never', 'void'], true);
     }
 
     public function returnValue(string $method): mixed
