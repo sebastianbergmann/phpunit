@@ -1044,15 +1044,6 @@ final class Builder
 
                     break;
 
-                case '--dont-report-useless-tests':
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                        'Option --dont-report-useless-tests is deprecated, use --do-not-report-useless-tests instead',
-                    );
-
-                    $reportUselessTests = false;
-
-                    break;
-
                 case '--strict-coverage':
                     $strictCoverage = true;
 
