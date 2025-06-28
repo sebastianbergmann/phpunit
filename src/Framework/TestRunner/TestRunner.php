@@ -70,10 +70,7 @@ final class TestRunner
             $test->name(),
         );
 
-        $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor(
-            $test::class,
-            $test->name(),
-        );
+        $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
 
         $this->performSanityChecks($test, $coversTargets, $usesTargets, $shouldCodeCoverageBeCollected);
 

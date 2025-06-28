@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use function assert;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversClassesThatExtendClass;
 use PHPUnit\Metadata\CoversClassesThatImplementInterface;
@@ -145,20 +146,17 @@ final class CodeCoverage
         return TargetCollection::fromArray($targets);
     }
 
-    /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
-     */
-    public function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
+    public function shouldCodeCoverageBeCollectedFor(TestCase $test): bool
     {
-        $metadataForClass  = Registry::parser()->forClass($className);
-        $metadataForMethod = Registry::parser()->forMethod($className, $methodName);
+        $className  = $test::class;
+        $methodName = $test->name();
+        $parser     = Registry::parser();
 
-        if ($metadataForMethod->isCoversNothing()->isNotEmpty()) {
+        if ($parser->forMethod($className, $methodName)->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 
-        if ($metadataForClass->isCoversNothing()->isNotEmpty()) {
+        if ($parser->forClass($className)->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 

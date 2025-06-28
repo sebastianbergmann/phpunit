@@ -135,7 +135,7 @@ final class CodeCoverageTest extends TestCase
     public function testWhetherCollectionOfCodeCoverageDataCanBeSkippedCanBeDetermined(bool $expected, string $testCase): void
     {
         $test             = new $testCase('testSomething');
-        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test::class, $test->name());
+        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test);
         $canSkipCoverage  = !$coverageRequired;
 
         $this->assertSame($expected, $canSkipCoverage);
