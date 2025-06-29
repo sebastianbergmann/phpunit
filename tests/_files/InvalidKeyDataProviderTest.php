@@ -13,17 +13,17 @@ use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class DuplicateKeyDataProviderTest extends TestCase
+final class InvalidKeyDataProviderTest extends TestCase
 {
     public static function dataProvider(): Generator
     {
-        yield 'foo' => ['foo'];
+        yield true => [true];
 
-        yield 'foo' => ['bar'];
+        yield false => [false];
     }
 
     #[DataProvider('dataProvider')]
-    public function test(string $arg): void
+    public function test(bool $arg): void
     {
     }
 }

@@ -11,7 +11,9 @@ namespace PHPUnit\Framework;
 
 use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
+use PHPUnit\TestFixture\TestBuilder\TestWithDataProvider;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
 #[CoversClass(TestCase::class)]
@@ -82,5 +84,11 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($methodName);
 
         $this->assertSame($methodName, $testCase->nameWithDataSet());
+    }
+
+    #[DataProviderExternal(TestWithDataProvider::class, 'provider')]
+    public function testKnowProviderName(): void
+    {
+        $this->assertEquals('provider', $this->getProviderName());
     }
 }
