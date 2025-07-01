@@ -20,6 +20,10 @@ All notable changes of the PHPUnit 12.2 release series are documented in this fi
 
 * Including information about the Git repository (such as the commit hash and branch name) in the Open Test Reporting XML format is now an opt-in feature that can be enabled via the `--include-git-information` CLI option or the `includeGitInformation` attribute in the XML configuration file
 
+### Fixed
+
+* If Git information is included in the Open Test Reporting XML format (see above), any credentials that may be configured as part the `remote.origin.url` setting in Git were written to the `originUrl` attribute of `<git:repository>` elements. For example, when cloning a GitHub repository using a URL like `https://username:password@github.com/organization/repository.git` both username and password were included in the XML report. Since this report may be shared, published, or archived (for example, on a CI server) while including this information, this was reported as a potential security vulnerability ([CVE-2025-53103](https://github.com/junit-team/junit-framework/security/advisories/GHSA-m43g-m425-p68x)). Any credentials are now removed before writing them to the XML report.
+
 ## [12.2.3] - 2025-06-20
 
 ### Added
