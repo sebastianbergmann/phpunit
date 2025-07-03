@@ -14,12 +14,11 @@ use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use Throwable;
 
-/**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- */
 interface InvocationStubber
 {
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @param Constraint|non-empty-string|PropertyHook $constraint
      *
      * @return $this
@@ -27,6 +26,8 @@ interface InvocationStubber
     public function method(Constraint|PropertyHook|string $constraint): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @param non-empty-string $id
      *
      * @return $this
@@ -34,6 +35,8 @@ interface InvocationStubber
     public function id(string $id): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @param non-empty-string $id
      *
      * @return $this
@@ -46,26 +49,36 @@ interface InvocationStubber
     public function with(mixed ...$arguments): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function withAnyParameters(): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function will(Stub $stub): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturn(mixed $value, mixed ...$nextValues): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturnReference(mixed &$reference): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @param array<int, array<int, mixed>> $valueMap
      *
      * @return $this
@@ -73,26 +86,36 @@ interface InvocationStubber
     public function willReturnMap(array $valueMap): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturnArgument(int $argumentIndex): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturnCallback(callable $callback): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturnSelf(): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturnOnConsecutiveCalls(mixed ...$values): self;
 
     /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willThrowException(Throwable $exception): self;
