@@ -85,7 +85,7 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: ./tools/composer update --no-interaction --no-ansi --no-progress
+        run: ./tools/composer install --no-interaction --no-ansi --no-progress
 
       - name: Run PHPStan
         run: ./tools/phpstan analyse --no-progress --error-format=github
@@ -132,10 +132,10 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
+        run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite unit --order-by depends,random
+        run: ./phpunit --testsuite unit --order-by depends,random
 
   end-to-end-tests:
     name: End-to-End Tests
@@ -190,10 +190,10 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
+        run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end --order-by depends,random
+        run: ./phpunit --testsuite end-to-end --order-by depends,random
 
   code-coverage:
     name: Code Coverage
