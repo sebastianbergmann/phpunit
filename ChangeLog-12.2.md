@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.2 release series are documented in this fi
 ### Fixed
 
 * [#6104](https://github.com/sebastianbergmann/phpunit/issues/6104): Test with dependencies and data provider fails
+* [#6163](https://github.com/sebastianbergmann/phpunit/issues/6163): `@no-named-arguments` leads to static analysis errors for variadic arguments
 
 ## [12.2.5] - 2025-06-27
 
