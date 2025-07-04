@@ -85,7 +85,7 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: ./tools/composer update --no-interaction --no-ansi --no-progress
+        run: ./tools/composer install --no-interaction --no-ansi --no-progress
 
       - name: Run PHPStan
         run: ./tools/phpstan analyse --no-progress --error-format=github
