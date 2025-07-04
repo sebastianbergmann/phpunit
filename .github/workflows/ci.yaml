@@ -133,10 +133,10 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
+        run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite unit --order-by depends,random
+        run: ./phpunit --testsuite unit --order-by depends,random
 
   end-to-end-tests:
     name: End-to-End Tests
@@ -181,10 +181,10 @@ jobs:
           tools: none
 
       - name: Install dependencies with Composer
-        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
+        run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end --order-by depends,random
+        run: ./phpunit --testsuite end-to-end --order-by depends,random
 
   code-coverage:
     name: Code Coverage
