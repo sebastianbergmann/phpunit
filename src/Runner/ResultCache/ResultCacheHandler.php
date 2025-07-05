@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Framework\Reorderable;
 use function round;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Facade;
@@ -146,5 +144,4 @@ final class ResultCacheHandler
             new TestFinishedSubscriber($this),
         );
     }
-
 }
