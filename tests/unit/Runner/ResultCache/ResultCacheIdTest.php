@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -42,6 +43,14 @@ final class ResultCacheIdTest extends TestCase
         $this->assertInstanceOf(Reorderable::class, $reorderable);
 
         $this->assertSame('PHPUnit\Runner\ResultCache\ResultCacheIdTest::testReorderableResultCacheId', ResultCacheId::fromReorderable($reorderable)->asString());
+    }
+
+    public function testPhptResultCacheId(): void
+    {
+        $file     = 'test.phpt';
+        $phptTest = new Phpt($file);
+
+        $this->assertSame('test.phpt', ResultCacheId::fromTest($phptTest)->asString());
     }
 
     private static function testMethod(): TestMethod
