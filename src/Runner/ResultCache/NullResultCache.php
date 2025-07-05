@@ -18,20 +18,20 @@ use PHPUnit\Framework\TestStatus\TestStatus;
  */
 final readonly class NullResultCache implements ResultCache
 {
-    public function setStatus(string $id, TestStatus $status): void
+    public function setStatus(ResultCacheId $id, TestStatus $status): void
     {
     }
 
-    public function status(string $id): TestStatus
+    public function status(ResultCacheId $id): TestStatus
     {
         return TestStatus::unknown();
     }
 
-    public function setTime(string $id, float $time): void
+    public function setTime(ResultCacheId $id, float $time): void
     {
     }
 
-    public function time(string $id): float
+    public function time(ResultCacheId $id): float
     {
         return 0;
     }

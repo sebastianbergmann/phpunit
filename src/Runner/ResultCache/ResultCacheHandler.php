@@ -63,7 +63,7 @@ final class ResultCacheHandler
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->cache->setStatus(
-            $event->test()->name(),
+            ResultCacheId::fromTest($event->test()),
             TestStatus::incomplete($event->throwable()->message()),
         );
     }
@@ -71,7 +71,7 @@ final class ResultCacheHandler
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         $this->cache->setStatus(
-            $event->test()->name(),
+            ResultCacheId::fromTest($event->test()),
             TestStatus::risky($event->message()),
         );
     }
@@ -79,7 +79,7 @@ final class ResultCacheHandler
     public function testErrored(Errored $event): void
     {
         $this->cache->setStatus(
-            $event->test()->name(),
+            ResultCacheId::fromTest($event->test()),
             TestStatus::error($event->throwable()->message()),
         );
     }
@@ -87,7 +87,7 @@ final class ResultCacheHandler
     public function testFailed(Failed $event): void
     {
         $this->cache->setStatus(
-            $event->test()->name(),
+            ResultCacheId::fromTest($event->test()),
             TestStatus::failure($event->throwable()->message()),
         );
     }
@@ -99,11 +99,11 @@ final class ResultCacheHandler
     public function testSkipped(Skipped $event): void
     {
         $this->cache->setStatus(
-            $event->test()->name(),
+            ResultCacheId::fromTest($event->test()),
             TestStatus::skipped($event->message()),
         );
 
-        $this->cache->setTime($event->test()->name(), $this->duration($event));
+        $this->cache->setTime(ResultCacheId::fromTest($event->test()), $this->duration($event));
     }
 
     /**
@@ -112,7 +112,7 @@ final class ResultCacheHandler
      */
     public function testFinished(Finished $event): void
     {
-        $this->cache->setTime($event->test()->name(), $this->duration($event));
+        $this->cache->setTime(ResultCacheId::fromTest($event->test()), $this->duration($event));
 
         $this->time = null;
     }
