@@ -19,7 +19,7 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
-#[CoversClass(DefaultResultCache::class)]
+#[CoversClass(ResultCacheId::class)]
 #[Small]
 final class ResultCacheIdTest extends TestCase
 {
