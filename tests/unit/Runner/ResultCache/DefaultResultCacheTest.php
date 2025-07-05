@@ -25,7 +25,7 @@ final class DefaultResultCacheTest extends TestCase
 {
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void
     {
-        $this->assertSame(0.0, (new DefaultResultCache)->time('doesNotExist'));
+        $this->assertSame(0.0, (new DefaultResultCache)->time(ResultCacheId::fromTestClassAndMethodName(self::class, 'doesNotExist')));
     }
 
     public function testReadsCacheFromProvidedFilename(): void
@@ -34,37 +34,38 @@ final class DefaultResultCacheTest extends TestCase
         $cache     = new DefaultResultCache($cacheFile);
         $cache->load();
 
-        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testOne')->isUnknown());
-        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isSkipped());
+        $this->assertTrue($cache->status(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, 'testOne'))->isUnknown());
+        $this->assertTrue($cache->status(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, 'testFive'))->isSkipped());
     }
 
     public function testDoesClearCacheBeforeLoad(): void
     {
-        $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
-        $cache     = new DefaultResultCache($cacheFile);
-        $cache->setStatus('someTest', TestStatus::failure());
+        $cacheFile     = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
+        $cache         = new DefaultResultCache($cacheFile);
+        $resultCacheId = ResultCacheId::fromTestClassAndMethodName(self::class, 'someTest');
+        $cache->setStatus($resultCacheId, TestStatus::failure());
 
-        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isUnknown());
+        $this->assertTrue($cache->status(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, 'testFive'))->isUnknown());
 
         $cache->load();
 
-        $this->assertTrue($cache->status(MultiDependencyTest::class . '::someTest')->isUnknown());
-        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isSkipped());
+        $this->assertTrue($cache->status(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, 'someTest'))->isUnknown());
+        $this->assertTrue($cache->status(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, 'testFive'))->isSkipped());
     }
 
     public function testCanPersistCacheToFile(): void
     {
-        $cacheFile = tempnam(sys_get_temp_dir(), 'phpunit_');
-        $cache     = new DefaultResultCache($cacheFile);
-        $testName  = 'test' . uniqid('', true);
+        $cacheFile     = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $cache         = new DefaultResultCache($cacheFile);
+        $resultCacheId = ResultCacheId::fromTestClassAndMethodName(self::class, 'test' . uniqid('', true));
 
-        $cache->setStatus($testName, TestStatus::skipped());
+        $cache->setStatus($resultCacheId, TestStatus::skipped());
         $cache->persist();
 
         $cache = new DefaultResultCache($cacheFile);
         $cache->load();
 
-        $this->assertTrue($cache->status($testName)->isSkipped());
+        $this->assertTrue($cache->status($resultCacheId)->isSkipped());
 
         unlink($cacheFile);
     }
@@ -72,28 +73,28 @@ final class DefaultResultCacheTest extends TestCase
     public function testCanBeMerged(): void
     {
         $cacheSourceOne = new DefaultResultCache;
-        $cacheSourceOne->setStatus('status.a', TestStatus::skipped());
-        $cacheSourceOne->setStatus('status.b', TestStatus::incomplete());
-        $cacheSourceOne->setTime('time.a', 1);
-        $cacheSourceOne->setTime('time.b', 2);
+        $cacheSourceOne->setStatus(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.a'), TestStatus::skipped());
+        $cacheSourceOne->setStatus(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.b'), TestStatus::incomplete());
+        $cacheSourceOne->setTime(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.a'), 1);
+        $cacheSourceOne->setTime(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.b'), 2);
         $cacheSourceTwo = new DefaultResultCache;
-        $cacheSourceTwo->setStatus('status.c', TestStatus::failure());
-        $cacheSourceTwo->setTime('time.c', 4);
+        $cacheSourceTwo->setStatus(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.c'), TestStatus::failure());
+        $cacheSourceTwo->setTime(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.c'), 4);
 
         $sum = new DefaultResultCache;
         $sum->mergeWith($cacheSourceOne);
 
-        $this->assertSame(TestStatus::skipped()->asString(), $sum->status('status.a')->asString());
-        $this->assertSame(TestStatus::incomplete()->asString(), $sum->status('status.b')->asString());
-        $this->assertNotSame(TestStatus::failure()->asString(), $sum->status('status.c')->asString());
+        $this->assertSame(TestStatus::skipped()->asString(), $sum->status(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.a'))->asString());
+        $this->assertSame(TestStatus::incomplete()->asString(), $sum->status(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.b'))->asString());
+        $this->assertNotSame(TestStatus::failure()->asString(), $sum->status(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.c'))->asString());
 
-        $this->assertSame(1.0, $sum->time('time.a'));
-        $this->assertSame(2.0, $sum->time('time.b'));
-        $this->assertNotSame(4.0, $sum->time('time.c'));
+        $this->assertSame(1.0, $sum->time(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.a')));
+        $this->assertSame(2.0, $sum->time(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.b')));
+        $this->assertNotSame(4.0, $sum->time(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.c')));
 
         $sum->mergeWith($cacheSourceTwo);
 
-        $this->assertSame(TestStatus::failure()->asString(), $sum->status('status.c')->asString());
-        $this->assertSame(4.0, $sum->time('time.c'));
+        $this->assertSame(TestStatus::failure()->asString(), $sum->status(ResultCacheId::fromTestClassAndMethodName(self::class, 'status.c'))->asString());
+        $this->assertSame(4.0, $sum->time(ResultCacheId::fromTestClassAndMethodName(self::class, 'time.c')));
     }
 }

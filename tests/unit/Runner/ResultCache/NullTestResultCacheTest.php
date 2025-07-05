@@ -23,7 +23,7 @@ final class NullTestResultCacheTest extends TestCase
         $cache->load();
         $cache->persist();
 
-        $this->assertTrue($cache->status('testName')->isUnknown());
-        $this->assertSame(0.0, $cache->time('testName'));
+        $this->assertTrue($cache->status(ResultCacheId::fromTestClassAndMethodName(self::class, 'testName'))->isUnknown());
+        $this->assertSame(0.0, $cache->time(ResultCacheId::fromTestClassAndMethodName(self::class, 'testName')));
     }
 }

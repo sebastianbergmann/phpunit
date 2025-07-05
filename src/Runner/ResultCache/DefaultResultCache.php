@@ -63,28 +63,28 @@ final class DefaultResultCache implements ResultCache
         $this->cacheFilename = $filepath ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
     }
 
-    public function setStatus(string $id, TestStatus $status): void
+    public function setStatus(ResultCacheId $id, TestStatus $status): void
     {
         if ($status->isSuccess()) {
             return;
         }
 
-        $this->defects[$id] = $status;
+        $this->defects[$id->asString()] = $status;
     }
 
-    public function status(string $id): TestStatus
+    public function status(ResultCacheId $id): TestStatus
     {
-        return $this->defects[$id] ?? TestStatus::unknown();
+        return $this->defects[$id->asString()] ?? TestStatus::unknown();
     }
 
-    public function setTime(string $id, float $time): void
+    public function setTime(ResultCacheId $id, float $time): void
     {
-        $this->times[$id] = $time;
+        $this->times[$id->asString()] = $time;
     }
 
-    public function time(string $id): float
+    public function time(ResultCacheId $id): float
     {
-        return $this->times[$id] ?? 0.0;
+        return $this->times[$id->asString()] ?? 0.0;
     }
 
     public function mergeWith(self $other): void
