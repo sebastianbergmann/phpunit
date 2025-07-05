@@ -87,8 +87,9 @@ class TestCaseTest extends TestCase
     }
 
     #[DataProviderExternal(TestWithDataProvider::class, 'provider')]
-    public function testKnowProviderName(): void
+    public function testKnowProviderName(int $zero): void
     {
+        $this->assertEquals(0, $zero);
         $this->assertEquals('provider', $this->getProviderName());
     }
 }
