@@ -15,6 +15,7 @@ use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
@@ -33,6 +34,14 @@ final class ResultCacheIdTest extends TestCase
     public function testResultCacheId($expectedString, ResultCacheId $cacheId): void
     {
         $this->assertSame($expectedString, $cacheId->asString());
+    }
+
+    public function testReorderableResultCacheId(): void
+    {
+        $reorderable = $this;
+        $this->assertInstanceOf(Reorderable::class, $reorderable);
+
+        $this->assertSame('PHPUnit\Runner\ResultCache\ResultCacheIdTest::testReorderableResultCacheId', ResultCacheId::fromReorderable($reorderable)->asString());
     }
 
     private static function testMethod(): TestMethod
