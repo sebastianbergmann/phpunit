@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\ResultCache;
 
 use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\TestCase;
 
@@ -22,6 +23,10 @@ final readonly class ResultCacheId
 {
     public static function fromTest(Test $test): self
     {
+        if ($test instanceof TestMethod) {
+            return new self($test->className() . '::' . $test->name());
+        }
+
         return new self($test->id());
     }
 
