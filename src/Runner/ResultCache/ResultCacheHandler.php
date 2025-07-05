@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Framework\Reorderable;
 use function round;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Facade;
@@ -63,7 +65,7 @@ final class ResultCacheHandler
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->cache->setStatus(
-            $event->test()->id(),
+            $this->getTestSortId($event),
             TestStatus::incomplete($event->throwable()->message()),
         );
     }
@@ -71,7 +73,7 @@ final class ResultCacheHandler
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         $this->cache->setStatus(
-            $event->test()->id(),
+            $this->getTestSortId($event),
             TestStatus::risky($event->message()),
         );
     }
@@ -79,7 +81,7 @@ final class ResultCacheHandler
     public function testErrored(Errored $event): void
     {
         $this->cache->setStatus(
-            $event->test()->id(),
+            $this->getTestSortId($event),
             TestStatus::error($event->throwable()->message()),
         );
     }
@@ -87,7 +89,7 @@ final class ResultCacheHandler
     public function testFailed(Failed $event): void
     {
         $this->cache->setStatus(
-            $event->test()->id(),
+            $this->getTestSortId($event),
             TestStatus::failure($event->throwable()->message()),
         );
     }
@@ -99,11 +101,11 @@ final class ResultCacheHandler
     public function testSkipped(Skipped $event): void
     {
         $this->cache->setStatus(
-            $event->test()->id(),
+            $this->getTestSortId($event),
             TestStatus::skipped($event->message()),
         );
 
-        $this->cache->setTime($event->test()->id(), $this->duration($event));
+        $this->cache->setTime($this->getTestSortId($event), $this->duration($event));
     }
 
     /**
@@ -112,7 +114,7 @@ final class ResultCacheHandler
      */
     public function testFinished(Finished $event): void
     {
-        $this->cache->setTime($event->test()->id(), $this->duration($event));
+        $this->cache->setTime($this->getTestSortId($event), $this->duration($event));
 
         $this->time = null;
     }
@@ -143,5 +145,16 @@ final class ResultCacheHandler
             new TestSkippedSubscriber($this),
             new TestFinishedSubscriber($this),
         );
+    }
+
+    private function getTestSortId(Event $event): string
+    {
+        $test = $event->test();
+
+        if ($test instanceof TestMethod) {
+            return $test->name();
+        }
+
+        return $test->id();
     }
 }
