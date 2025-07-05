@@ -31,7 +31,7 @@ final class ResultCacheIdTest extends TestCase
     }
 
     #[DataProvider('provideResultCacheIds')]
-    public function testResultCacheId($expectedString, ResultCacheId $cacheId): void
+    public function testResultCacheId(string $expectedString, ResultCacheId $cacheId): void
     {
         $this->assertSame($expectedString, $cacheId->asString());
     }
