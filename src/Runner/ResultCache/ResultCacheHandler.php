@@ -65,7 +65,7 @@ final class ResultCacheHandler
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->cache->setStatus(
-            $this->getTestSortId($event),
+            $event->test()->name(),
             TestStatus::incomplete($event->throwable()->message()),
         );
     }
@@ -73,7 +73,7 @@ final class ResultCacheHandler
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         $this->cache->setStatus(
-            $this->getTestSortId($event),
+            $event->test()->name(),
             TestStatus::risky($event->message()),
         );
     }
@@ -81,7 +81,7 @@ final class ResultCacheHandler
     public function testErrored(Errored $event): void
     {
         $this->cache->setStatus(
-            $this->getTestSortId($event),
+            $event->test()->name(),
             TestStatus::error($event->throwable()->message()),
         );
     }
@@ -89,7 +89,7 @@ final class ResultCacheHandler
     public function testFailed(Failed $event): void
     {
         $this->cache->setStatus(
-            $this->getTestSortId($event),
+            $event->test()->name(),
             TestStatus::failure($event->throwable()->message()),
         );
     }
@@ -101,11 +101,11 @@ final class ResultCacheHandler
     public function testSkipped(Skipped $event): void
     {
         $this->cache->setStatus(
-            $this->getTestSortId($event),
+            $event->test()->name(),
             TestStatus::skipped($event->message()),
         );
 
-        $this->cache->setTime($this->getTestSortId($event), $this->duration($event));
+        $this->cache->setTime($event->test()->name(), $this->duration($event));
     }
 
     /**
@@ -114,7 +114,7 @@ final class ResultCacheHandler
      */
     public function testFinished(Finished $event): void
     {
-        $this->cache->setTime($this->getTestSortId($event), $this->duration($event));
+        $this->cache->setTime($event->test()->name(), $this->duration($event));
 
         $this->time = null;
     }
@@ -147,14 +147,4 @@ final class ResultCacheHandler
         );
     }
 
-    private function getTestSortId(Event $event): string
-    {
-        $test = $event->test();
-
-        if ($test instanceof TestMethod) {
-            return $test->name();
-        }
-
-        return $test->id();
-    }
 }
