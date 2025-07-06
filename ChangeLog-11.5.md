@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Fixed
 
 * [#6254](https://github.com/sebastianbergmann/phpunit/issues/6254): `defects,random`configuration is supported by implementation, but it is not allowed by the XML configuration file schema
+* [#6259](https://github.com/sebastianbergmann/phpunit/issues/6259): Order of tests which use data from data providers is not affected by test sorting
 
 ## [11.5.26] - 2025-07-04
 
