@@ -197,8 +197,9 @@ final readonly class DataProvider
 
                         throw InvalidDataProviderException::forProvider(
                             sprintf(
-                                'The key "%s" has already been defined by a previous data provider',
+                                'The key "%s" has already been defined by provider %s',
                                 $key,
+                                $result[$key]->getProviderLabel(),
                             ),
                             $providerLabel,
                         );
