@@ -73,8 +73,9 @@ final readonly class DataProvider
             if (!is_array($value)) {
                 throw InvalidDataProviderException::forProvider(
                     sprintf(
-                        'Data set %s is invalid, expected array but got %s',
+                        'Data set %s provided by %s is invalid, expected array but got %s',
                         $this->formatKey($key),
+                        $providedData->getProviderLabel(),
                         get_debug_type($value),
                     ),
                     $providedData->getProviderLabel(),
@@ -96,8 +97,9 @@ final readonly class DataProvider
                         Event\TestData\TestDataCollection::fromArray([]),
                     ),
                     sprintf(
-                        'Data set %s has more arguments (%d) than the test method accepts (%d)',
+                        'Data set %s provided by %s has more arguments (%d) than the test method accepts (%d)',
                         $this->formatKey($key),
+                        $providedData->getProviderLabel(),
                         count($value),
                         $testMethodNumberOfParameters,
                     ),
