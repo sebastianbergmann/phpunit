@@ -15,6 +15,7 @@ use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @immutable
@@ -26,14 +27,14 @@ final readonly class BeforeFirstTestMethodFailed implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @var class-string
+     * @var class-string<TestCase>
      */
     private string $testClassName;
     private Code\ClassMethod $calledMethod;
     private Throwable $throwable;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod $calledMethod, Throwable $throwable)
     {
@@ -49,7 +50,7 @@ final readonly class BeforeFirstTestMethodFailed implements Event
     }
 
     /**
-     * @return class-string
+     * @return class-string<TestCase>
      */
     public function testClassName(): string
     {

@@ -27,7 +27,9 @@ use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\Configuration\Configuration;
+use SebastianBergmann\Comparator\Comparator;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -367,7 +369,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -384,7 +386,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -402,7 +404,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -420,7 +422,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -577,7 +579,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $className
+     * @param class-string<Comparator> $className
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1190,7 +1192,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1207,7 +1209,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1225,7 +1227,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1243,7 +1245,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException

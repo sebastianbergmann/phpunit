@@ -15,7 +15,9 @@ use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\TestSuite;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\Configuration\Configuration;
+use SebastianBergmann\Comparator\Comparator;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -80,22 +82,22 @@ interface Emitter
     public function testPreparationFailed(Code\Test $test, Throwable $throwable): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function beforeFirstTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function beforeFirstTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function beforeFirstTestMethodFailed(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function beforeFirstTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
@@ -118,7 +120,7 @@ interface Emitter
     public function testPrepared(Code\Test $test): void;
 
     /**
-     * @param class-string $className
+     * @param class-string<Comparator> $className
      */
     public function testRegisteredComparator(string $className): void;
 
@@ -267,22 +269,22 @@ interface Emitter
     public function afterTestMethodFinished(TestMethod $test, ClassMethod ...$calledMethods): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function afterLastTestMethodCalled(string $testClassName, ClassMethod $calledMethod): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function afterLastTestMethodErrored(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function afterLastTestMethodFailed(string $testClassName, ClassMethod $calledMethod, Throwable $throwable): void;
 
     /**
-     * @param class-string $testClassName
+     * @param class-string<TestCase> $testClassName
      */
     public function afterLastTestMethodFinished(string $testClassName, ClassMethod ...$calledMethods): void;
 
