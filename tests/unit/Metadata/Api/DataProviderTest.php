@@ -195,7 +195,7 @@ final class DataProviderTest extends TestCase
     public function testTestWithAttributeWithDuplicateKey(): void
     {
         $this->expectException(InvalidDataProviderException::class);
-        $this->expectExceptionMessage('The key "foo" has already been defined by a previous TestWith attribute');
+        $this->expectExceptionMessage('The key "foo" has already been defined by TestWith#0 attribute');
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithDuplicateName');
