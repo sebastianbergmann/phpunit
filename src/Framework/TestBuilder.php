@@ -13,6 +13,7 @@ use function array_merge;
 use function assert;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\Api\ProvidedData;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
@@ -76,7 +77,7 @@ final readonly class TestBuilder
     /**
      * @param non-empty-string                                                                                                                                                  $methodName
      * @param class-string<TestCase>                                                                                                                                            $className
-     * @param array<array<mixed>>                                                                                                                                               $data
+     * @param array<ProvidedData>                                                                                                                                               $data
      * @param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @param list<non-empty-string>                                                                                                                                            $groups
      */
@@ -94,7 +95,7 @@ final readonly class TestBuilder
         foreach ($data as $_dataName => $_data) {
             $_test = new $className($methodName);
 
-            $_test->setData($_dataName, $_data);
+            $_test->setData($_dataName, $_data->getData());
 
             $this->configureTestCase(
                 $_test,

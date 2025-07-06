@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use Throwable;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -16,4 +18,30 @@ namespace PHPUnit\Framework;
  */
 final class InvalidDataProviderException extends Exception
 {
+    private ?string $providerLabel = null;
+
+    public static function forException(Throwable $e, string $providerLabel): self
+    {
+        $exception = new self(
+            $e->getMessage(),
+            $e->getCode(),
+            $e,
+        );
+        $exception->providerLabel = $providerLabel;
+
+        return $exception;
+    }
+
+    public static function forProvider(string $message, string $providerLabel): self
+    {
+        $exception                = new self($message);
+        $exception->providerLabel = $providerLabel;
+
+        return $exception;
+    }
+
+    public function getProviderLabel(): ?string
+    {
+        return $this->providerLabel;
+    }
 }

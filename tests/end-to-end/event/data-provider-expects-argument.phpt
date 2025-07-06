@@ -18,7 +18,7 @@ Data Provider Method Called (PHPUnit\TestFixture\Event\ArgumentDataProviderTest:
 Data Provider Method Finished for PHPUnit\TestFixture\Event\ArgumentDataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\ArgumentDataProviderTest::values
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\ArgumentDataProviderTest::testSuccess)
-The data provider specified for PHPUnit\TestFixture\Event\ArgumentDataProviderTest::testSuccess is invalid
+The data provider PHPUnit\TestFixture\Event\ArgumentDataProviderTest::values specified for PHPUnit\TestFixture\Event\ArgumentDataProviderTest::testSuccess is invalid
 Data Provider method PHPUnit\TestFixture\Event\ArgumentDataProviderTest::values() expects an argument
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\ArgumentDataProviderTest".)
 Test Suite Loaded (0 tests)

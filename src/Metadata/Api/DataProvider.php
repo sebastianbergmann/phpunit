@@ -40,7 +40,7 @@ final readonly class DataProvider
      *
      * @throws InvalidDataProviderException
      *
-     * @return ?array<array<mixed>>
+     * @return ?array<ProvidedData>
      */
     public function providedData(string $className, string $methodName): ?array
     {
@@ -67,14 +67,17 @@ final readonly class DataProvider
         $testMethodNumberOfParameters = $method->getNumberOfParameters();
         $testMethodIsNonVariadic      = !$method->isVariadic();
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $providedData) {
+            $value = $providedData->getData();
+
             if (!is_array($value)) {
-                throw new InvalidDataProviderException(
+                throw InvalidDataProviderException::forProvider(
                     sprintf(
                         'Data set %s is invalid, expected array but got %s',
                         $this->formatKey($key),
                         get_debug_type($value),
                     ),
+                    $providedData->getProviderLabel(),
                 );
             }
 
@@ -111,7 +114,7 @@ final readonly class DataProvider
      *
      * @throws InvalidDataProviderException
      *
-     * @return array<array<mixed>>
+     * @return array<ProvidedData>
      */
     private function dataProvidedByMethods(string $className, string $methodName, MetadataCollection $dataProvider): array
     {
@@ -122,6 +125,7 @@ final readonly class DataProvider
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
 
+            $providerLabel      = $_dataProvider->className() . '::' . $_dataProvider->methodName();
             $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
 
             Event\Facade::emitter()->dataProviderMethodCalled(
@@ -135,32 +139,35 @@ final readonly class DataProvider
                 $method = new ReflectionMethod($_dataProvider->className(), $_dataProvider->methodName());
 
                 if (!$method->isPublic()) {
-                    throw new InvalidDataProviderException(
+                    throw InvalidDataProviderException::forProvider(
                         sprintf(
                             'Data Provider method %s::%s() is not public',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
+                        $providerLabel,
                     );
                 }
 
                 if (!$method->isStatic()) {
-                    throw new InvalidDataProviderException(
+                    throw InvalidDataProviderException::forProvider(
                         sprintf(
                             'Data Provider method %s::%s() is not static',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
+                        $providerLabel,
                     );
                 }
 
                 if ($method->getNumberOfParameters() > 0) {
-                    throw new InvalidDataProviderException(
+                    throw InvalidDataProviderException::forProvider(
                         sprintf(
                             'Data Provider method %s::%s() expects an argument',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
+                        $providerLabel,
                     );
                 }
 
@@ -175,16 +182,12 @@ final readonly class DataProvider
                     ...$methodsCalled,
                 );
 
-                throw new InvalidDataProviderException(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e,
-                );
+                throw InvalidDataProviderException::forException($e, $providerLabel);
             }
 
             foreach ($data as $key => $value) {
                 if (is_int($key)) {
-                    $result[] = $value;
+                    $result[] = new ProvidedData($providerLabel, $value);
                 } elseif (is_string($key)) {
                     if (array_key_exists($key, $result)) {
                         Event\Facade::emitter()->dataProviderMethodFinished(
@@ -192,22 +195,24 @@ final readonly class DataProvider
                             ...$methodsCalled,
                         );
 
-                        throw new InvalidDataProviderException(
+                        throw InvalidDataProviderException::forProvider(
                             sprintf(
                                 'The key "%s" has already been defined by a previous data provider',
                                 $key,
                             ),
+                            $providerLabel,
                         );
                     }
 
-                    $result[$key] = $value;
+                    $result[$key] = new ProvidedData($providerLabel, $value);
                 } else {
                     // @codeCoverageIgnoreStart
-                    throw new InvalidDataProviderException(
+                    throw InvalidDataProviderException::forProvider(
                         sprintf(
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
                         ),
+                        $providerLabel,
                     );
                     // @codeCoverageIgnoreEnd
                 }
@@ -223,11 +228,13 @@ final readonly class DataProvider
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return array<ProvidedData>
      */
     private function dataProvidedByMetadata(MetadataCollection $testWith): array
     {
         $result = [];
+
+        $providerLabel = 'TestWith attribute';
 
         foreach ($testWith as $_testWith) {
             assert($_testWith instanceof TestWith);
@@ -236,17 +243,18 @@ final readonly class DataProvider
                 $key = $_testWith->name();
 
                 if (array_key_exists($key, $result)) {
-                    throw new InvalidDataProviderException(
+                    throw InvalidDataProviderException::forProvider(
                         sprintf(
                             'The key "%s" has already been defined by a previous TestWith attribute',
                             $key,
                         ),
+                        $providerLabel,
                     );
                 }
 
-                $result[$key] = $_testWith->data();
+                $result[$key] = new ProvidedData($providerLabel, $_testWith->data());
             } else {
-                $result[] = $_testWith->data();
+                $result[] = new ProvidedData($providerLabel, $_testWith->data());
             }
         }
 

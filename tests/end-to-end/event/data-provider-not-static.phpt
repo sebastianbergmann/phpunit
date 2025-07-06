@@ -18,7 +18,7 @@ Data Provider Method Called (PHPUnit\TestFixture\Event\DynamicDataProviderTest::
 Data Provider Method Finished for PHPUnit\TestFixture\Event\DynamicDataProviderTest::testSuccess:
 - PHPUnit\TestFixture\Event\DynamicDataProviderTest::values
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\DynamicDataProviderTest::testSuccess)
-The data provider specified for PHPUnit\TestFixture\Event\DynamicDataProviderTest::testSuccess is invalid
+The data provider PHPUnit\TestFixture\Event\DynamicDataProviderTest::values specified for PHPUnit\TestFixture\Event\DynamicDataProviderTest::testSuccess is invalid
 Data Provider method PHPUnit\TestFixture\Event\DynamicDataProviderTest::values() is not static
 Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\DynamicDataProviderTest".)
 Test Suite Loaded (0 tests)

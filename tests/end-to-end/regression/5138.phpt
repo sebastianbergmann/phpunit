@@ -17,7 +17,7 @@ Configuration: %s
 There was 1 PHPUnit error:
 
 1) PHPUnit\TestFixture\Issue5138Test::testOne
-The data provider specified for PHPUnit\TestFixture\Issue5138Test::testOne is invalid
+The data provider PHPUnit\TestFixture\Issue5138Test::provideData specified for PHPUnit\TestFixture\Issue5138Test::testOne is invalid
 message
 
 %s:%d
