@@ -92,6 +92,7 @@ final class Builder
         'list-tests-xml=',
         'log-junit=',
         'log-otr=',
+        'include-git-information',
         'log-teamcity=',
         'migrate-configuration',
         'no-configuration',
@@ -103,6 +104,7 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'do-not-report-useless-tests',
         'dont-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -114,12 +116,23 @@ final class Builder
         'fail-on-deprecation',
         'fail-on-phpunit-deprecation',
         'fail-on-phpunit-notice',
+        'fail-on-phpunit-warning',
         'fail-on-empty-test-suite',
         'fail-on-incomplete',
         'fail-on-notice',
         'fail-on-risky',
         'fail-on-skipped',
         'fail-on-warning',
+        'do-not-fail-on-deprecation',
+        'do-not-fail-on-phpunit-deprecation',
+        'do-not-fail-on-phpunit-notice',
+        'do-not-fail-on-phpunit-warning',
+        'do-not-fail-on-empty-test-suite',
+        'do-not-fail-on-incomplete',
+        'do-not-fail-on-notice',
+        'do-not-fail-on-risky',
+        'do-not-fail-on-skipped',
+        'do-not-fail-on-warning',
         'stop-on-defect',
         'stop-on-deprecation==',
         'stop-on-error',
@@ -220,12 +233,23 @@ final class Builder
         $failOnDeprecation                 = null;
         $failOnPhpunitDeprecation          = null;
         $failOnPhpunitNotice               = null;
+        $failOnPhpunitWarning              = null;
         $failOnEmptyTestSuite              = null;
         $failOnIncomplete                  = null;
         $failOnNotice                      = null;
         $failOnRisky                       = null;
         $failOnSkipped                     = null;
         $failOnWarning                     = null;
+        $doNotFailOnDeprecation            = null;
+        $doNotFailOnPhpunitDeprecation     = null;
+        $doNotFailOnPhpunitNotice          = null;
+        $doNotFailOnPhpunitWarning         = null;
+        $doNotFailOnEmptyTestSuite         = null;
+        $doNotFailOnIncomplete             = null;
+        $doNotFailOnNotice                 = null;
+        $doNotFailOnRisky                  = null;
+        $doNotFailOnSkipped                = null;
+        $doNotFailOnWarning                = null;
         $stopOnDefect                      = null;
         $stopOnDeprecation                 = null;
         $specificDeprecationToStopOn       = null;
@@ -252,6 +276,7 @@ final class Builder
         $iniSettings                       = [];
         $junitLogfile                      = null;
         $otrLogfile                        = null;
+        $includeGitInformation             = null;
         $listGroups                        = false;
         $listSuites                        = false;
         $listTestFiles                     = false;
@@ -583,6 +608,11 @@ final class Builder
 
                     break;
 
+                case '--include-git-information':
+                    $includeGitInformation = true;
+
+                    break;
+
                 case '--log-teamcity':
                     $teamcityLogfile = $option[1];
 
@@ -661,47 +691,222 @@ final class Builder
                     break;
 
                 case '--fail-on-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnDeprecation,
+                        '--fail-on-deprecation',
+                        '--do-not-fail-on-deprecation',
+                    );
+
                     $failOnDeprecation = true;
 
                     break;
 
                 case '--fail-on-phpunit-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnPhpunitDeprecation,
+                        '--fail-on-phpunit-deprecation',
+                        '--do-not-fail-on-phpunit-deprecation',
+                    );
+
                     $failOnPhpunitDeprecation = true;
 
                     break;
 
                 case '--fail-on-phpunit-notice':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnPhpunitNotice,
+                        '--fail-on-phpunit-notice',
+                        '--do-not-fail-on-phpunit-notice',
+                    );
+
                     $failOnPhpunitNotice = true;
 
                     break;
 
+                case '--fail-on-phpunit-warning':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnPhpunitWarning,
+                        '--fail-on-phpunit-warning',
+                        '--do-not-fail-on-phpunit-warning',
+                    );
+
+                    $failOnPhpunitWarning = true;
+
+                    break;
+
                 case '--fail-on-empty-test-suite':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnEmptyTestSuite,
+                        '--fail-on-empty-test-suite',
+                        '--do-not-fail-on-empty-test-suite',
+                    );
+
                     $failOnEmptyTestSuite = true;
 
                     break;
 
                 case '--fail-on-incomplete':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnIncomplete,
+                        '--fail-on-incomplete',
+                        '--do-not-fail-on-incomplete',
+                    );
+
                     $failOnIncomplete = true;
 
                     break;
 
                 case '--fail-on-notice':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnNotice,
+                        '--fail-on-notice',
+                        '--do-not-fail-on-notice',
+                    );
+
                     $failOnNotice = true;
 
                     break;
 
                 case '--fail-on-risky':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnRisky,
+                        '--fail-on-risky',
+                        '--do-not-fail-on-risky',
+                    );
+
                     $failOnRisky = true;
 
                     break;
 
                 case '--fail-on-skipped':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnSkipped,
+                        '--fail-on-skipped',
+                        '--do-not-fail-on-skipped',
+                    );
+
                     $failOnSkipped = true;
 
                     break;
 
                 case '--fail-on-warning':
+                    $this->warnWhenOptionsConflict(
+                        $doNotFailOnWarning,
+                        '--fail-on-warning',
+                        '--do-not-fail-on-warning',
+                    );
+
                     $failOnWarning = true;
+
+                    break;
+
+                case '--do-not-fail-on-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $failOnDeprecation,
+                        '--do-not-fail-on-deprecation',
+                        '--fail-on-deprecation',
+                    );
+
+                    $doNotFailOnDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-phpunit-deprecation':
+                    $this->warnWhenOptionsConflict(
+                        $failOnPhpunitDeprecation,
+                        '--do-not-fail-on-phpunit-deprecation',
+                        '--fail-on-phpunit-deprecation',
+                    );
+
+                    $doNotFailOnPhpunitDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-phpunit-notice':
+                    $this->warnWhenOptionsConflict(
+                        $failOnPhpunitNotice,
+                        '--do-not-fail-on-phpunit-notice',
+                        '--fail-on-phpunit-notice',
+                    );
+
+                    $doNotFailOnPhpunitNotice = true;
+
+                    break;
+
+                case '--do-not-fail-on-phpunit-warning':
+                    $this->warnWhenOptionsConflict(
+                        $failOnPhpunitWarning,
+                        '--do-not-fail-on-phpunit-warning',
+                        '--fail-on-phpunit-warning',
+                    );
+
+                    $doNotFailOnPhpunitWarning = true;
+
+                    break;
+
+                case '--do-not-fail-on-empty-test-suite':
+                    $this->warnWhenOptionsConflict(
+                        $failOnEmptyTestSuite,
+                        '--do-not-fail-on-empty-test-suite',
+                        '--fail-on-empty-test-suite',
+                    );
+
+                    $doNotFailOnEmptyTestSuite = true;
+
+                    break;
+
+                case '--do-not-fail-on-incomplete':
+                    $this->warnWhenOptionsConflict(
+                        $failOnIncomplete,
+                        '--do-not-fail-on-incomplete',
+                        '--fail-on-incomplete',
+                    );
+
+                    $doNotFailOnIncomplete = true;
+
+                    break;
+
+                case '--do-not-fail-on-notice':
+                    $this->warnWhenOptionsConflict(
+                        $failOnNotice,
+                        '--do-not-fail-on-notice',
+                        '--fail-on-notice',
+                    );
+
+                    $doNotFailOnNotice = true;
+
+                    break;
+
+                case '--do-not-fail-on-risky':
+                    $this->warnWhenOptionsConflict(
+                        $failOnRisky,
+                        '--do-not-fail-on-risky',
+                        '--fail-on-risky',
+                    );
+
+                    $doNotFailOnRisky = true;
+
+                    break;
+
+                case '--do-not-fail-on-skipped':
+                    $this->warnWhenOptionsConflict(
+                        $failOnSkipped,
+                        '--do-not-fail-on-skipped',
+                        '--fail-on-skipped',
+                    );
+
+                    $doNotFailOnSkipped = true;
+
+                    break;
+
+                case '--do-not-fail-on-warning':
+                    $this->warnWhenOptionsConflict(
+                        $failOnWarning,
+                        '--do-not-fail-on-warning',
+                        '--fail-on-warning',
+                    );
+
+                    $doNotFailOnWarning = true;
 
                     break;
 
@@ -834,7 +1039,16 @@ final class Builder
 
                     break;
 
+                case '--do-not-report-useless-tests':
+                    $reportUselessTests = false;
+
+                    break;
+
                 case '--dont-report-useless-tests':
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                        'Option --dont-report-useless-tests is deprecated, use --do-not-report-useless-tests instead',
+                    );
+
                     $reportUselessTests = false;
 
                     break;
@@ -1055,12 +1269,23 @@ final class Builder
             $failOnDeprecation,
             $failOnPhpunitDeprecation,
             $failOnPhpunitNotice,
+            $failOnPhpunitWarning,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnNotice,
             $failOnRisky,
             $failOnSkipped,
             $failOnWarning,
+            $doNotFailOnDeprecation,
+            $doNotFailOnPhpunitDeprecation,
+            $doNotFailOnPhpunitNotice,
+            $doNotFailOnPhpunitWarning,
+            $doNotFailOnEmptyTestSuite,
+            $doNotFailOnIncomplete,
+            $doNotFailOnNotice,
+            $doNotFailOnRisky,
+            $doNotFailOnSkipped,
+            $doNotFailOnWarning,
             $stopOnDefect,
             $stopOnDeprecation,
             $specificDeprecationToStopOn,
@@ -1087,6 +1312,7 @@ final class Builder
             $iniSettings,
             $junitLogfile,
             $otrLogfile,
+            $includeGitInformation,
             $listGroups,
             $listSuites,
             $listTestFiles,
@@ -1155,5 +1381,23 @@ final class Builder
                 ),
             );
         }
+    }
+
+    /**
+     * @param non-empty-string $option
+     */
+    private function warnWhenOptionsConflict(?bool $current, string $option, string $opposite): void
+    {
+        if ($current === null) {
+            return;
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                'Options %s and %s cannot be used together',
+                $option,
+                $opposite,
+            ),
+        );
     }
 }

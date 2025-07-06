@@ -1475,6 +1475,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return true;
             }
 
+            if (!$passedTests->hasReturnValue($dependencyTarget)) {
+                return true;
+            }
+
             $returnValue = $passedTests->returnValue($dependencyTarget);
 
             if ($dependency->deepClone()) {

@@ -127,7 +127,7 @@ final readonly class DefaultJobRunner extends JobRunner
             // @codeCoverageIgnoreEnd
         }
 
-        Facade::emitter()->testRunnerStartedChildProcess();
+        Facade::emitter()->childProcessStarted();
 
         fwrite($pipes[0], $job->code());
         fclose($pipes[0]);

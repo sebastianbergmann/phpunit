@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "ergebnis/phpstan-rules",
-            "version": "2.10.3",
-            "version_normalized": "2.10.3.0",
+            "version": "2.10.5",
+            "version_normalized": "2.10.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/phpstan-rules.git",
-                "reference": "a69bfa59f5b5faeca844054595a0d4ffcf5a8d23"
+                "reference": "719a53e793e2417da46d497f21fb8d2f007ecb78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/a69bfa59f5b5faeca844054595a0d4ffcf5a8d23",
-                "reference": "a69bfa59f5b5faeca844054595a0d4ffcf5a8d23",
+                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/719a53e793e2417da46d497f21fb8d2f007ecb78",
+                "reference": "719a53e793e2417da46d497f21fb8d2f007ecb78",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +38,7 @@
                 "symfony/finder": "^5.4.45",
                 "symfony/process": "^5.4.47"
             },
-            "time": "2025-06-03T09:06:44+00:00",
+            "time": "2025-06-23T17:35:58+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {

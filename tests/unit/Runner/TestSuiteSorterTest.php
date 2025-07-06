@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
+use PHPUnit\Runner\ResultCache\ResultCacheId;
+use PHPUnit\TestFixture\FaillingDataProviderTest;
 use PHPUnit\TestFixture\MultiDependencyTest;
 use ReflectionClass;
 
@@ -435,6 +437,74 @@ final class TestSuiteSorterTest extends TestCase
         return $data;
     }
 
+    /**
+     * A data provider for testing defects execution reordering options based on FaillingDataProviderTest.
+     */
+    public static function defectsSorterWithDataProviderProvider(): array
+    {
+        return [
+            // The most simple situation should work as normal
+            'default, no defects' => [
+                TestSuiteSorter::ORDER_DEFAULT,
+                self::IGNORE_DEPENDENCIES,
+                [
+                    'testOne'                                => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "good1"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "good2"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "good3"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "fail1"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "fail2"' => ['state' => TestStatus::success(), 'time' => 1],
+                ],
+                [
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good1"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good2"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "fail1"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good3"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "fail2"',
+                    FaillingDataProviderTest::class . '::testOne',
+                ],
+            ],
+
+            // Running with an empty cache should not spook the TestSuiteSorter
+            'default, empty result cache' => [
+                TestSuiteSorter::ORDER_DEFAULT,
+                self::IGNORE_DEPENDENCIES,
+                [
+                    // empty result cache
+                ],
+                [
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good1"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good2"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "fail1"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good3"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "fail2"',
+                    FaillingDataProviderTest::class . '::testOne',
+                ],
+            ],
+
+            'default, defects' => [
+                TestSuiteSorter::ORDER_DEFAULT,
+                self::IGNORE_DEPENDENCIES,
+                [
+                    'testOne'                                => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "good1"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "good2"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "good3"' => ['state' => TestStatus::success(), 'time' => 1],
+                    'testWithProvider with data set "fail1"' => ['state' => TestStatus::error(), 'time' => 1],
+                    'testWithProvider with data set "fail2"' => ['state' => TestStatus::error(), 'time' => 1],
+                ],
+                [
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "fail1"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "fail2"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good1"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good2"',
+                    FaillingDataProviderTest::class . '::testWithProvider with data set "good3"',
+                    FaillingDataProviderTest::class . '::testOne',
+                ],
+            ],
+        ];
+    }
+
     public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
     {
         $suite = TestSuite::empty('test suite name');
@@ -503,6 +573,42 @@ final class TestSuiteSorterTest extends TestCase
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
     }
 
+    public function testCanSetRandomizationWithDefectsFirst(): void
+    {
+        $cache = new DefaultResultCache;
+
+        $runState = [
+            'testOne'   => ['state' => TestStatus::success(), 'time' => 1],
+            'testTwo'   => ['state' => TestStatus::success(), 'time' => 1],
+            'testThree' => ['state' => TestStatus::error(), 'time' => 1],
+            'testFour'  => ['state' => TestStatus::success(), 'time' => 1],
+            'testFive'  => ['state' => TestStatus::error(), 'time' => 1],
+        ];
+
+        foreach ($runState as $testName => $data) {
+            $cache->setStatus(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, $testName), $data['state']);
+            $cache->setTime(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, $testName), $data['time']);
+        }
+
+        $sorter = new TestSuiteSorter($cache);
+
+        $suite = TestSuite::empty('test suite name');
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+
+        mt_srand(54321);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $expectedOrder = [
+            MultiDependencyTest::class . '::testFive',
+            MultiDependencyTest::class . '::testThree',
+            MultiDependencyTest::class . '::testTwo',
+            MultiDependencyTest::class . '::testFour',
+            MultiDependencyTest::class . '::testOne',
+        ];
+
+        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
+    }
+
     public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
     {
         $suite = TestSuite::empty('test suite name');
@@ -552,7 +658,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache = new DefaultResultCache;
 
         foreach ($testTimes as $testName => $time) {
-            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $time);
+            $cache->setTime(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, $testName), $time);
         }
 
         $sorter = new TestSuiteSorter($cache);
@@ -576,8 +682,27 @@ final class TestSuiteSorterTest extends TestCase
         $cache = new DefaultResultCache;
 
         foreach ($runState as $testName => $data) {
-            $cache->setStatus(MultiDependencyTest::class . '::' . $testName, $data['state']);
-            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $data['time']);
+            $cache->setStatus(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, $testName), $data['state']);
+            $cache->setTime(ResultCacheId::fromTestClassAndMethodName(MultiDependencyTest::class, $testName), $data['time']);
+        }
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $this->assertSame($expected, $sorter->getExecutionOrder());
+    }
+
+    #[DataProvider('defectsSorterWithDataProviderProvider')]
+    public function testSuiteSorterDefectsWithDataProviderTest(int $order, bool $resolveDependencies, array $runState, array $expected): void
+    {
+        $suite = TestSuite::empty('test suite name');
+        $suite->addTestSuite(new ReflectionClass(FaillingDataProviderTest::class));
+
+        $cache = new DefaultResultCache;
+
+        foreach ($runState as $testName => $data) {
+            $cache->setStatus(ResultCacheId::fromTestClassAndMethodName(FaillingDataProviderTest::class, $testName), $data['state']);
+            $cache->setTime(ResultCacheId::fromTestClassAndMethodName(FaillingDataProviderTest::class, $testName), $data['time']);
         }
 
         $sorter = new TestSuiteSorter($cache);

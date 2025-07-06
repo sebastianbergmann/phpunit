@@ -42,7 +42,7 @@ final class SummaryPrinter
             return;
         }
 
-        if ($result->wasSuccessfulIgnoringPhpunitWarnings() &&
+        if ($result->wasSuccessful() &&
             !$result->hasIssues() &&
             !$result->hasTestSuiteSkippedEvents() &&
             !$result->hasTestSkippedEvents()) {
@@ -64,7 +64,7 @@ final class SummaryPrinter
 
         $color = 'fg-black, bg-yellow';
 
-        if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
+        if ($result->wasSuccessful()) {
             if ($result->hasIssues()) {
                 $this->printWithColor(
                     $color,
@@ -98,6 +98,7 @@ final class SummaryPrinter
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString($result->numberOfErrors(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
+        $this->printCountString($result->numberOfPhpunitWarnings(), 'PHPUnit Warnings', $color);
         $this->printCountString($result->numberOfWarnings(), 'Warnings', $color);
         $this->printCountString($result->numberOfPhpOrUserDeprecations(), 'Deprecations', $color);
         $this->printCountString($result->numberOfPhpunitDeprecations(), 'PHPUnit Deprecations', $color);

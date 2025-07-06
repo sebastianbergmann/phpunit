@@ -34,7 +34,7 @@ Class PHPUnit\TestFixture\Issue5351\DoesNotExist is not a valid target for code 
 %sGreeterTest.php:18
 
 OK, but there were issues!
-Tests: 1, Assertions: 1, Warnings: 1.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
 
 
 Code Coverage Report:

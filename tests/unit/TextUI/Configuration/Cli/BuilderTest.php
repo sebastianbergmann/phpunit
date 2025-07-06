@@ -1363,6 +1363,26 @@ final class BuilderTest extends TestCase
         $configuration->failOnPhpunitNotice();
     }
 
+    #[TestDox('--fail-on-phpunit-warning')]
+    public function testFailOnPhpunitWarning(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-phpunit-warning']);
+
+        $this->assertTrue($configuration->hasFailOnPhpunitWarning());
+        $this->assertTrue($configuration->failOnPhpunitWarning());
+    }
+
+    public function testFailOnPhpunitWarningMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnPhpunitWarning());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnPhpunitWarning();
+    }
+
     #[TestDox('--fail-on-empty-test-suite')]
     public function testFailOnEmptyTestSuite(): void
     {
@@ -1481,6 +1501,186 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->failOnWarning();
+    }
+
+    #[TestDox('--do-not-fail-on-deprecation')]
+    public function testDoNotFailOnDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-deprecation']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnDeprecation());
+        $this->assertTrue($configuration->doNotFailOnDeprecation());
+    }
+
+    public function testDoNotFailOnDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnDeprecation();
+    }
+
+    #[TestDox('--do-not-fail-on-phpunit-deprecation')]
+    public function testDoNotFailOnPhpunitDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-phpunit-deprecation']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnPhpunitDeprecation());
+        $this->assertTrue($configuration->doNotFailOnPhpunitDeprecation());
+    }
+
+    public function testDoNotFailOnPhpunitDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnPhpunitDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnPhpunitDeprecation();
+    }
+
+    #[TestDox('--do-not-fail-on-phpunit-notice')]
+    public function testDoNotFailOnPhpunitNotice(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-phpunit-notice']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnPhpunitNotice());
+        $this->assertTrue($configuration->doNotFailOnPhpunitNotice());
+    }
+
+    public function testDoNotFailOnPhpunitNoticeMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnPhpunitNotice());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnPhpunitNotice();
+    }
+
+    #[TestDox('--do-not-fail-on-empty-test-suite')]
+    public function testDoNotFailOnEmptyTestSuite(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-empty-test-suite']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnEmptyTestSuite());
+        $this->assertTrue($configuration->doNotFailOnEmptyTestSuite());
+    }
+
+    public function testDoNotFailOnEmptyTestSuiteMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnEmptyTestSuite());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnEmptyTestSuite();
+    }
+
+    #[TestDox('--do-not-fail-on-incomplete')]
+    public function testDoNotFailOnIncomplete(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-incomplete']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnIncomplete());
+        $this->assertTrue($configuration->doNotFailOnIncomplete());
+    }
+
+    public function testDoNotFailOnIncompleteMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnIncomplete());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnIncomplete();
+    }
+
+    #[TestDox('--do-not-fail-on-notice')]
+    public function testDoNotFailOnNotice(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-notice']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnNotice());
+        $this->assertTrue($configuration->doNotFailOnNotice());
+    }
+
+    public function testDoNotFailOnNoticeMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnNotice());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnNotice();
+    }
+
+    #[TestDox('--do-not-fail-on-risky')]
+    public function testDoNotFailOnRisky(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-risky']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnRisky());
+        $this->assertTrue($configuration->doNotFailOnRisky());
+    }
+
+    public function testDoNotFailOnRiskyMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnRisky());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnRisky();
+    }
+
+    #[TestDox('--do-not-fail-on-skipped')]
+    public function testDoNotFailOnSkipped(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-skipped']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnSkipped());
+        $this->assertTrue($configuration->doNotFailOnSkipped());
+    }
+
+    public function testDoNotFailOnSkippedMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnSkipped());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnSkipped();
+    }
+
+    #[TestDox('--do-not-fail-on-warning')]
+    public function testDoNotFailOnWarning(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-warning']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnWarning());
+        $this->assertTrue($configuration->doNotFailOnWarning());
+    }
+
+    public function testDoNotFailOnWarningMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnWarning());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnWarning();
     }
 
     #[TestDox('--stop-on-defect')]
@@ -1974,16 +2174,16 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->version());
     }
 
-    #[TestDox('--dont-report-useless-tests')]
-    public function testDontReportUselessTests(): void
+    #[TestDox('--do-not-report-useless-tests')]
+    public function testDoNotReportUselessTests(): void
     {
-        $configuration = (new Builder)->fromParameters(['--dont-report-useless-tests']);
+        $configuration = (new Builder)->fromParameters(['--do-not-report-useless-tests']);
 
         $this->assertTrue($configuration->hasReportUselessTests());
         $this->assertFalse($configuration->reportUselessTests());
     }
 
-    public function testDontReportUselessTestsMayNotBeConfigured(): void
+    public function testDoNotReportUselessTestsMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);
 

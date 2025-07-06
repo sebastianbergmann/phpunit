@@ -288,9 +288,11 @@ interface Emitter
 
     public function testSuiteFinished(TestSuite $testSuite): void;
 
-    public function testRunnerStartedChildProcess(): void;
+    public function childProcessStarted(): void;
 
-    public function testRunnerFinishedChildProcess(string $stdout, string $stderr): void;
+    public function childProcessErrored(): void;
+
+    public function childProcessFinished(string $stdout, string $stderr): void;
 
     public function testRunnerStartedStaticAnalysisForCodeCoverage(): void;
 

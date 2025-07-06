@@ -125,6 +125,12 @@ final readonly class Merger
             $failOnPhpunitNotice = $xmlConfiguration->phpunit()->failOnPhpunitNotice();
         }
 
+        if ($cliConfiguration->hasFailOnPhpunitWarning()) {
+            $failOnPhpunitWarning = $cliConfiguration->failOnPhpunitWarning();
+        } else {
+            $failOnPhpunitWarning = $xmlConfiguration->phpunit()->failOnPhpunitWarning();
+        }
+
         if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
             $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
         } else {
@@ -159,6 +165,66 @@ final readonly class Merger
             $failOnWarning = $cliConfiguration->failOnWarning();
         } else {
             $failOnWarning = $xmlConfiguration->phpunit()->failOnWarning();
+        }
+
+        $doNotFailOnDeprecation = false;
+
+        if ($cliConfiguration->hasDoNotFailOnDeprecation()) {
+            $doNotFailOnDeprecation = $cliConfiguration->doNotFailOnDeprecation();
+        }
+
+        $doNotFailOnPhpunitDeprecation = false;
+
+        if ($cliConfiguration->hasDoNotFailOnPhpunitDeprecation()) {
+            $doNotFailOnPhpunitDeprecation = $cliConfiguration->doNotFailOnPhpunitDeprecation();
+        }
+
+        $doNotFailOnPhpunitNotice = false;
+
+        if ($cliConfiguration->hasDoNotFailOnPhpunitNotice()) {
+            $doNotFailOnPhpunitNotice = $cliConfiguration->doNotFailOnPhpunitNotice();
+        }
+
+        $doNotFailOnPhpunitWarning = false;
+
+        if ($cliConfiguration->hasDoNotFailOnPhpunitWarning()) {
+            $doNotFailOnPhpunitWarning = $cliConfiguration->doNotFailOnPhpunitWarning();
+        }
+
+        $doNotFailOnEmptyTestSuite = false;
+
+        if ($cliConfiguration->hasDoNotFailOnEmptyTestSuite()) {
+            $doNotFailOnEmptyTestSuite = $cliConfiguration->doNotFailOnEmptyTestSuite();
+        }
+
+        $doNotFailOnIncomplete = false;
+
+        if ($cliConfiguration->hasDoNotFailOnIncomplete()) {
+            $doNotFailOnIncomplete = $cliConfiguration->doNotFailOnIncomplete();
+        }
+
+        $doNotFailOnNotice = false;
+
+        if ($cliConfiguration->hasDoNotFailOnNotice()) {
+            $doNotFailOnNotice = $cliConfiguration->doNotFailOnNotice();
+        }
+
+        $doNotFailOnRisky = false;
+
+        if ($cliConfiguration->hasDoNotFailOnRisky()) {
+            $doNotFailOnRisky = $cliConfiguration->doNotFailOnRisky();
+        }
+
+        $doNotFailOnSkipped = false;
+
+        if ($cliConfiguration->hasDoNotFailOnSkipped()) {
+            $doNotFailOnSkipped = $cliConfiguration->doNotFailOnSkipped();
+        }
+
+        $doNotFailOnWarning = false;
+
+        if ($cliConfiguration->hasDoNotFailOnWarning()) {
+            $doNotFailOnWarning = $cliConfiguration->doNotFailOnWarning();
         }
 
         if ($cliConfiguration->hasStopOnDefect()) {
@@ -586,6 +652,14 @@ final readonly class Merger
             $logfileOtr = $xmlConfiguration->logging()->otr()->target()->path();
         }
 
+        $includeGitInformationInOtrLogfile = false;
+
+        if ($cliConfiguration->hasIncludeGitInformationInOtrLogfile()) {
+            $includeGitInformationInOtrLogfile = $cliConfiguration->includeGitInformationInOtrLogfile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasOtr()) {
+            $includeGitInformationInOtrLogfile = $xmlConfiguration->logging()->otr()->includeGitInformation();
+        }
+
         if ($cliConfiguration->hasTestdoxHtmlFile()) {
             $logfileTestdoxHtml = $cliConfiguration->testdoxHtmlFile();
         } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxHtml()) {
@@ -875,12 +949,23 @@ final readonly class Merger
             $failOnDeprecation,
             $failOnPhpunitDeprecation,
             $failOnPhpunitNotice,
+            $failOnPhpunitWarning,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnNotice,
             $failOnRisky,
             $failOnSkipped,
             $failOnWarning,
+            $doNotFailOnDeprecation,
+            $doNotFailOnPhpunitDeprecation,
+            $doNotFailOnPhpunitNotice,
+            $doNotFailOnPhpunitWarning,
+            $doNotFailOnEmptyTestSuite,
+            $doNotFailOnIncomplete,
+            $doNotFailOnNotice,
+            $doNotFailOnRisky,
+            $doNotFailOnSkipped,
+            $doNotFailOnWarning,
             $stopOnDefect,
             $stopOnDeprecation,
             $specificDeprecationToStopOn,
@@ -929,6 +1014,7 @@ final readonly class Merger
             $logfileTeamcity,
             $logfileJunit,
             $logfileOtr,
+            $includeGitInformationInOtrLogfile,
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logEventsText,

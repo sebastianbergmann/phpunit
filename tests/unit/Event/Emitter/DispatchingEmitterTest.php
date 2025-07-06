@@ -18,6 +18,8 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\SystemGarbageCollectorStatusProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Event\TestRunner\ChildProcessErrored;
+use PHPUnit\Event\TestRunner\ChildProcessErroredSubscriber;
 use PHPUnit\Event\TestRunner\ChildProcessFinished;
 use PHPUnit\Event\TestRunner\ChildProcessFinishedSubscriber;
 use PHPUnit\Event\TestRunner\ChildProcessStarted;
@@ -658,8 +660,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(GarbageCollectionTriggered::class, $subscriber->lastRecordedEvent());
     }
 
-    #[TestDox('testRunnerStartedChildProcess() emits TestRunner\ChildProcessStarted event')]
-    public function testTestRunnerStartedChildProcessEmitsTestRunnerChildProcessStartedEvent(): void
+    #[TestDox('childProcessStarted() emits TestRunner\ChildProcessStarted event')]
+    public function testChildProcessStartedEmitsTestRunnerChildProcessStartedEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements ChildProcessStartedSubscriber
         {
@@ -682,14 +684,44 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testRunnerStartedChildProcess();
+        $emitter->childProcessStarted();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(ChildProcessStarted::class, $subscriber->lastRecordedEvent());
     }
 
-    #[TestDox('testRunnerFinishedChildProcess() emits TestRunner\ChildProcessFinished event')]
-    public function testTestRunnerFinishedChildProcessEmitsTestRunnerChildProcessFinishedEvent(): void
+    #[TestDox('childProcessErrored() emits TestRunner\ChildProcessErrored event')]
+    public function testChildProcessErroredEmitsTestRunnerChildProcessStartedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements ChildProcessErroredSubscriber
+        {
+            public function notify(ChildProcessErrored $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            ChildProcessErroredSubscriber::class,
+            ChildProcessErrored::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->childProcessErrored();
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+        $this->assertInstanceOf(ChildProcessErrored::class, $subscriber->lastRecordedEvent());
+    }
+
+    #[TestDox('childProcessFinished() emits TestRunner\ChildProcessFinished event')]
+    public function testChildProcessFinishedEmitsTestRunnerChildProcessFinishedEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements ChildProcessFinishedSubscriber
         {
@@ -715,7 +747,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $stdout = 'stdout';
         $stderr = 'stderr';
 
-        $emitter->testRunnerFinishedChildProcess($stdout, $stderr);
+        $emitter->childProcessFinished($stdout, $stderr);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 

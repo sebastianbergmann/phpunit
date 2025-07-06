@@ -64,6 +64,7 @@
             </xs:element>
         </xs:all>
         <xs:attribute name="pathCoverage" type="xs:boolean" default="false"/>
+        <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
         <xs:attribute name="ignoreDeprecatedCodeUnits" type="xs:boolean" default="false"/>
         <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
     </xs:complexType>
@@ -117,6 +118,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="default"/>
             <xs:enumeration value="defects"/>
+            <xs:enumeration value="defects,random"/>
             <xs:enumeration value="depends"/>
             <xs:enumeration value="depends,defects"/>
             <xs:enumeration value="depends,duration"/>
@@ -180,6 +182,7 @@
         <xs:attribute name="failOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnPhpunitWarning" type="xs:boolean" default="true"/>
         <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnNotice" type="xs:boolean" default="false"/>
