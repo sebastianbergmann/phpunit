@@ -233,6 +233,7 @@ final readonly class DataProvider
 
         foreach ($testWith as $i => $_testWith) {
             assert($_testWith instanceof TestWith);
+
             $providerLabel = sprintf('TestWith#%s attribute', $i);
 
             if ($_testWith->hasName()) {
