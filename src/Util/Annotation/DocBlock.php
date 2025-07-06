@@ -169,6 +169,8 @@ final class DocBlock
     }
 
     /**
+     * @throws Warning if the requirements version constraint is not well-formed
+     *
      * @psalm-return array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
      *   setting?: array<string, string>,
@@ -177,8 +179,6 @@ final class DocBlock
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
-     *
-     * @throws Warning if the requirements version constraint is not well-formed
      */
     public function requirements(): array
     {

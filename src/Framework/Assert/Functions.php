@@ -1487,12 +1487,12 @@ if (!function_exists('PHPUnit\Framework\assertSame')) {
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     *
      * @psalm-template ExpectedType
      *
      * @psalm-param ExpectedType $expected
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @psalm-assert =ExpectedType $actual
      *
@@ -1529,13 +1529,13 @@ if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws Exception
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @psalm-assert =ExpectedType $actual
      *
@@ -1553,13 +1553,13 @@ if (!function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws Exception
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @psalm-assert !ExpectedType $actual
      *

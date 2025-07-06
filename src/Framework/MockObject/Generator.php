@@ -293,8 +293,6 @@ EOT;
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws ClassIsReadonlyException
@@ -306,6 +304,8 @@ EOT;
      * @throws RuntimeException
      * @throws UnknownClassException
      * @throws UnknownTypeException
+     *
+     * @psalm-return MockObject&RealInstanceType
      */
     public function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, ?array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {

@@ -1389,12 +1389,12 @@ abstract class Assert
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType
      *
      * @psalm-param ExpectedType $expected
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert =ExpectedType $actual
      */
@@ -1433,13 +1433,13 @@ abstract class Assert
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-assert =ExpectedType $actual
      */
@@ -1459,13 +1459,13 @@ abstract class Assert
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !ExpectedType $actual
      */

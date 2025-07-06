@@ -2038,11 +2038,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @psalm-param class-string|null $classOrInterface
+     *
      * @throws ClassNotFoundException
      * @throws DoubleException
      * @throws InterfaceNotFoundException
-     *
-     * @psalm-param class-string|null $classOrInterface
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4141
      */
