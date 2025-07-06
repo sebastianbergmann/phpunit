@@ -71,14 +71,13 @@ final readonly class DataProvider
             $value = $providedData->getData();
 
             if (!is_array($value)) {
-                throw InvalidDataProviderException::forProvider(
+                throw new InvalidDataProviderException(
                     sprintf(
                         'Data set %s provided by %s is invalid, expected array but got %s',
                         $this->formatKey($key),
                         $providedData->getProviderLabel(),
                         get_debug_type($value),
                     ),
-                    $providedData->getProviderLabel(),
                 );
             }
 
@@ -141,35 +140,32 @@ final readonly class DataProvider
                 $method = new ReflectionMethod($_dataProvider->className(), $_dataProvider->methodName());
 
                 if (!$method->isPublic()) {
-                    throw InvalidDataProviderException::forProvider(
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() is not public',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
-                        $providerLabel,
                     );
                 }
 
                 if (!$method->isStatic()) {
-                    throw InvalidDataProviderException::forProvider(
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() is not static',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
-                        $providerLabel,
                     );
                 }
 
                 if ($method->getNumberOfParameters() > 0) {
-                    throw InvalidDataProviderException::forProvider(
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() expects an argument',
                             $_dataProvider->className(),
                             $_dataProvider->methodName(),
                         ),
-                        $providerLabel,
                     );
                 }
 
@@ -197,25 +193,23 @@ final readonly class DataProvider
                             ...$methodsCalled,
                         );
 
-                        throw InvalidDataProviderException::forProvider(
+                        throw new InvalidDataProviderException(
                             sprintf(
                                 'The key "%s" has already been defined by provider %s',
                                 $key,
                                 $result[$key]->getProviderLabel(),
                             ),
-                            $providerLabel,
                         );
                     }
 
                     $result[$key] = new ProvidedData($providerLabel, $value);
                 } else {
                     // @codeCoverageIgnoreStart
-                    throw InvalidDataProviderException::forProvider(
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
                         ),
-                        $providerLabel,
                     );
                     // @codeCoverageIgnoreEnd
                 }
@@ -246,12 +240,11 @@ final readonly class DataProvider
                 $key = $_testWith->name();
 
                 if (array_key_exists($key, $result)) {
-                    throw InvalidDataProviderException::forProvider(
+                    throw new InvalidDataProviderException(
                         sprintf(
                             'The key "%s" has already been defined by a previous TestWith attribute',
                             $key,
                         ),
-                        $providerLabel,
                     );
                 }
 

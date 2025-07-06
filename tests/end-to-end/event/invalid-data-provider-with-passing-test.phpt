@@ -18,7 +18,7 @@ Data Provider Method Called (PHPUnit\TestFixture\Event\InvalidDataProviderWithOn
 Data Provider Method Finished for PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne:
 - PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne)
-The data provider PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider specified for PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne is invalid
+The data provider specified for PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::testOne is invalid
 Data set #0 provided by PHPUnit\TestFixture\Event\InvalidDataProviderWithOneTestPassingTest::provider is invalid, expected array but got int
 Test Suite Loaded (1 test)
 Test Runner Started
