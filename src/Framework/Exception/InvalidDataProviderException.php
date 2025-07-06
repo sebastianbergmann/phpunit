@@ -32,14 +32,6 @@ final class InvalidDataProviderException extends Exception
         return $exception;
     }
 
-    public static function forProvider(string $message, string $providerLabel): self
-    {
-        $exception                = new self($message);
-        $exception->providerLabel = $providerLabel;
-
-        return $exception;
-    }
-
     public function getProviderLabel(): ?string
     {
         return $this->providerLabel;
