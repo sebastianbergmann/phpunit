@@ -1473,12 +1473,12 @@ if (!\function_exists('PHPUnit\Framework\assertSame')) {
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType
      *
      * @psalm-param ExpectedType $expected
+     *
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert =ExpectedType $actual
      *
@@ -1557,13 +1557,13 @@ if (!\function_exists('PHPUnit\Framework\assertInstanceOf')) {
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-assert =ExpectedType $actual
      *
@@ -1581,15 +1581,15 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeInstanceOf')) {
      *
      * @param object|string $classOrObject
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      *
      * @codeCoverageIgnore
      *
      * @psalm-param class-string $expected
+     *
+     * @throws InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertAttributeInstanceOf
      */
@@ -1603,13 +1603,13 @@ if (!\function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !ExpectedType $actual
      *
@@ -1627,15 +1627,15 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotInstanceOf')) {
      *
      * @param object|string $classOrObject
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      *
      * @codeCoverageIgnore
      *
      * @psalm-param class-string $expected
+     *
+     * @throws InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertAttributeNotInstanceOf
      */
