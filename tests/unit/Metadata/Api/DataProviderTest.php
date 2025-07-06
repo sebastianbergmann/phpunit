@@ -30,7 +30,9 @@ final class DataProviderTest extends TestCase
      */
     public function testMultipleDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testOne');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testOne'),
+        );
 
         $this->assertCount(9, $dataSets);
 
@@ -51,7 +53,9 @@ final class DataProviderTest extends TestCase
 
     public function testMultipleYieldIteratorDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testTwo');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testTwo'),
+        );
 
         $this->assertCount(9, $dataSets);
 
@@ -72,7 +76,9 @@ final class DataProviderTest extends TestCase
 
     public function testWithVariousIterableDataProvidersFromParent(): void
     {
-        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testFromParent');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testFromParent'),
+        );
 
         $this->assertEquals([
             ['J'],
@@ -89,7 +95,9 @@ final class DataProviderTest extends TestCase
 
     public function testWithVariousIterableDataProvidersInParent(): void
     {
-        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testInParent');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testInParent'),
+        );
 
         $this->assertEquals([
             ['J'],
@@ -106,7 +114,9 @@ final class DataProviderTest extends TestCase
 
     public function testWithVariousIterableAbstractDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testAbstract');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testAbstract'),
+        );
 
         $this->assertEquals([
             ['S'],
@@ -123,7 +133,9 @@ final class DataProviderTest extends TestCase
 
     public function testWithVariousIterableStaticDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testStatic');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testStatic'),
+        );
 
         $this->assertEquals([
             ['A'],
@@ -140,7 +152,9 @@ final class DataProviderTest extends TestCase
 
     public function testWithVariousIterableNonStaticDataProviders(): void
     {
-        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testNonStatic');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testNonStatic'),
+        );
 
         $this->assertEquals([
             ['S'],
@@ -166,7 +180,9 @@ final class DataProviderTest extends TestCase
 
     public function testTestWithAttribute(): void
     {
-        $dataSets = (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithAttribute');
+        $dataSets = $this->getRawDataFromProvidedData(
+            (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithAttribute'),
+        );
 
         $this->assertSame([
             'foo' => ['a', 'b'],
@@ -192,5 +208,21 @@ final class DataProviderTest extends TestCase
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');
+    }
+
+    /**
+     * @param array<ProvidedData> $providedData
+     *
+     * @return array<mixed>
+     */
+    private function getRawDataFromProvidedData(array $providedData): array
+    {
+        $raw = [];
+
+        foreach ($providedData as $key => $data) {
+            $raw[$key] = $data->getData();
+        }
+
+        return $raw;
     }
 }

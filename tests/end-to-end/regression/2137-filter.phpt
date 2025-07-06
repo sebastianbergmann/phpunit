@@ -18,13 +18,13 @@ Runtime: %s
 There were 2 PHPUnit errors:
 
 1) PHPUnit\TestFixture\Issue2137Test::testBrandService
-The data provider specified for PHPUnit\TestFixture\Issue2137Test::testBrandService is invalid
+The data provider PHPUnit\TestFixture\Issue2137Test::provideBrandService specified for PHPUnit\TestFixture\Issue2137Test::testBrandService is invalid
 Data set #0 is invalid, expected array but got stdClass
 
 %s:%d
 
 2) PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid
-The data provider specified for PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid is invalid
+The data provider PHPUnit\TestFixture\Issue2137Test::provideBrandService specified for PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid is invalid
 Data set #0 is invalid, expected array but got stdClass
 
 %s:%d

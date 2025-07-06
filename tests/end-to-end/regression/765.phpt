@@ -25,7 +25,7 @@ Time: %s, Memory: %s
 There was 1 PHPUnit error:
 
 1) PHPUnit\TestFixture\Issue765Test::testDependent
-The data provider specified for PHPUnit\TestFixture\Issue765Test::testDependent is invalid
+The data provider PHPUnit\TestFixture\Issue765Test::dependentProvider specified for PHPUnit\TestFixture\Issue765Test::testDependent is invalid
 <no message>
 
 %s:%d

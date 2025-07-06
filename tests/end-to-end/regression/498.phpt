@@ -18,7 +18,7 @@ Runtime: %s
 There was 1 PHPUnit error:
 
 1) PHPUnit\TestFixture\Issue498Test::shouldBeFalse
-The data provider specified for PHPUnit\TestFixture\Issue498Test::shouldBeFalse is invalid
+The data provider PHPUnit\TestFixture\Issue498Test::shouldBeFalseDataProvider specified for PHPUnit\TestFixture\Issue498Test::shouldBeFalse is invalid
 Can't create the data
 
 %s:%d
