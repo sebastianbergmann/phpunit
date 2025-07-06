@@ -231,10 +231,9 @@ final readonly class DataProvider
     {
         $result = [];
 
-        $providerLabel = 'TestWith attribute';
-
-        foreach ($testWith as $_testWith) {
+        foreach ($testWith as $i => $_testWith) {
             assert($_testWith instanceof TestWith);
+            $providerLabel = sprintf('TestWith#%s attribute', $i);
 
             if ($_testWith->hasName()) {
                 $key = $_testWith->name();
@@ -242,8 +241,9 @@ final readonly class DataProvider
                 if (array_key_exists($key, $result)) {
                     throw new InvalidDataProviderException(
                         sprintf(
-                            'The key "%s" has already been defined by a previous TestWith attribute',
+                            'The key "%s" has already been defined by %s',
                             $key,
+                            $result[$key]->getProviderLabel(),
                         ),
                     );
                 }
