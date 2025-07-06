@@ -119,10 +119,10 @@ final class Issue
      * @psalm-param non-empty-string $file
      * @psalm-param positive-int $line
      *
-     * @psalm-return non-empty-string
-     *
      * @throws FileDoesNotExistException
      * @throws FileDoesNotHaveLineException
+     *
+     * @psalm-return non-empty-string
      */
     private static function calculateHash(string $file, int $line): string
     {

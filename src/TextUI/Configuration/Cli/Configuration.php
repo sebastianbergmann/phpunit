@@ -2048,9 +2048,9 @@ final class Configuration
     }
 
     /**
-     * @psalm-return non-empty-list<non-empty-string>
-     *
      * @throws Exception
+     *
+     * @psalm-return non-empty-list<non-empty-string>
      */
     public function testSuffixes(): array
     {

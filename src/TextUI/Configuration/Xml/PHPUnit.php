@@ -387,9 +387,9 @@ final class PHPUnit
     }
 
     /**
-     * @psalm-return non-empty-string
-     *
      * @throws Exception
+     *
+     * @psalm-return non-empty-string
      */
     public function extensionsDirectory(): string
     {

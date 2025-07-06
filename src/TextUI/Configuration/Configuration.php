@@ -890,9 +890,9 @@ final class Configuration
     }
 
     /**
-     * @psalm-return non-empty-string
-     *
      * @throws NoPharExtensionDirectoryException
+     *
+     * @psalm-return non-empty-string
      */
     public function pharExtensionDirectory(): string
     {
@@ -1203,9 +1203,9 @@ final class Configuration
     }
 
     /**
-     * @psalm-return list<string>
-     *
      * @throws FilterNotConfiguredException
+     *
+     * @psalm-return list<string>
      */
     public function testsCovering(): array
     {
@@ -1225,9 +1225,9 @@ final class Configuration
     }
 
     /**
-     * @psalm-return list<string>
-     *
      * @throws FilterNotConfiguredException
+     *
+     * @psalm-return list<string>
      */
     public function testsUsing(): array
     {

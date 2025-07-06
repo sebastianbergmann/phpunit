@@ -1244,11 +1244,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
      * @throws NoPreviousThrowableException
+     *
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createMock(string $originalClassName): MockObject
     {
@@ -1296,11 +1296,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
      * @throws NoPreviousThrowableException
+     *
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
@@ -1322,10 +1322,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
+     *
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
@@ -1352,10 +1352,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
+     *
+     * @psalm-return MockObject&RealInstanceType
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5240
      */
@@ -1383,10 +1383,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return MockObject&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
+     *
+     * @psalm-return MockObject&RealInstanceType
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5241
      */
@@ -2347,11 +2347,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return Stub&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
      * @throws NoPreviousThrowableException
+     *
+     * @psalm-return Stub&RealInstanceType
      */
     protected static function createStub(string $originalClassName): Stub
     {
@@ -2393,11 +2393,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return Stub&RealInstanceType
-     *
      * @throws InvalidArgumentException
      * @throws MockObjectException
      * @throws NoPreviousThrowableException
+     *
+     * @psalm-return Stub&RealInstanceType
      */
     final protected static function createConfiguredStub(string $originalClassName, array $configuration): Stub
     {

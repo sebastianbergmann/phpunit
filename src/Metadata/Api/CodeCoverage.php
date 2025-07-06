@@ -48,9 +48,9 @@ final class CodeCoverage
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
-     * @psalm-return array<string,list<int>>|false
-     *
      * @throws CodeCoverageException
+     *
+     * @psalm-return array<string,list<int>>|false
      */
     public function linesToBeCovered(string $className, string $methodName): array|false
     {
@@ -130,9 +130,9 @@ final class CodeCoverage
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
-     * @psalm-return array<string,list<int>>
-     *
      * @throws CodeCoverageException
+     *
+     * @psalm-return array<string,list<int>>
      */
     public function linesToBeUsed(string $className, string $methodName): array
     {

@@ -114,6 +114,8 @@ final class DocBlock
     }
 
     /**
+     * @throws InvalidVersionRequirementException
+     *
      * @psalm-return array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
      *   setting?: array<string, string>,
@@ -122,8 +124,6 @@ final class DocBlock
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
-     *
-     * @throws InvalidVersionRequirementException
      */
     public function requirements(): array
     {

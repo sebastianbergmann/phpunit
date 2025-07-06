@@ -440,9 +440,9 @@ final class AnnotationParser implements Parser
     }
 
     /**
-     * @psalm-return list<Metadata>
-     *
      * @throws InvalidVersionOperatorException
+     *
+     * @psalm-return list<Metadata>
      */
     private function parseRequirements(array $requirements, string $level): array
     {
