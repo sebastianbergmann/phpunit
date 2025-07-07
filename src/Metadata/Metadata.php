@@ -535,6 +535,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param null|non-empty-string $messagePattern
+     */
+    public static function ignorePHPUnitWarnings(?string $messagePattern): IgnorePHPUnitWarnings
+    {
+        return new IgnorePHPUnitWarnings(self::METHOD_LEVEL, $messagePattern);
+    }
+
+    /**
      * @param int<0, 1> $level
      */
     protected function __construct(int $level)
@@ -966,6 +974,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true WithoutErrorHandler $this
      */
     public function isWithoutErrorHandler(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true IgnorePHPUnitWarnings $this
+     */
+    public function isIgnorePHPUnitWarnings(): bool
     {
         return false;
     }
