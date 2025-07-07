@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use function assert;
+use function class_exists;
 use function memory_reset_peak_usage;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
@@ -28,6 +29,8 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\IgnorePHPUnitWarnings;
+use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\Comparator\Comparator;
 
@@ -1008,6 +1011,17 @@ final class DispatchingEmitter implements Emitter
      */
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void
     {
+        if (
+            $test->isTestMethod() &&
+            class_exists($test->className()) &&
+            ($metadata = Registry::parser()->forMethod($test->className(), $test->methodName())->isIgnoreWarnings())->isNotEmpty() &&
+            ($ignoreWarnings = $metadata->asArray()[0] ?? null) !== null &&
+            $ignoreWarnings instanceof IgnorePHPUnitWarnings &&
+            $ignoreWarnings->shouldIgnore($message)
+        ) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\PhpunitWarningTriggered(
                 $this->telemetryInfo(),

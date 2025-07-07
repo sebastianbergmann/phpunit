@@ -52,6 +52,7 @@ use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
+use PHPUnit\Framework\Attributes\IgnorePHPUnitWarnings;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -881,6 +882,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof WithoutErrorHandler);
 
                     $result[] = Metadata::withoutErrorHandler();
+
+                    break;
+
+                case IgnorePHPUnitWarnings::class:
+                    assert($attributeInstance instanceof IgnorePHPUnitWarnings);
+
+                    $result[] = Metadata::ignorePHPUnitWarnings($attributeInstance->messagePattern());
 
                     break;
             }
