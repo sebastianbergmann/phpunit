@@ -53,6 +53,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
+use PHPUnit\Framework\Attributes\Retry;
 use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -139,6 +140,7 @@ use PHPUnit\Metadata\WithEnvironmentVariable;
 #[CoversClass(UsesTrait::class)]
 #[CoversClass(WithEnvironmentVariable::class)]
 #[CoversClass(WithoutErrorHandler::class)]
+#[CoversClass(Retry::class)]
 #[Small]
 #[Group('metadata')]
 #[Group('metadata/attributes')]

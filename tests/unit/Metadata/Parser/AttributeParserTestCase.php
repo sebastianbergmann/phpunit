@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Parser;
 
 use function assert;
+use LogicException;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
@@ -21,6 +22,7 @@ use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\Retry;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
@@ -57,6 +59,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresSettingTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RetryTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
@@ -1041,6 +1044,38 @@ abstract class AttributeParserTestCase extends TestCase
         assert($withEnvironmentVariable instanceof WithEnvironmentVariable);
         $this->assertSame('bar', $withEnvironmentVariable->environmentVariableName());
         $this->assertSame('baz', $withEnvironmentVariable->value());
+    }
+
+    #[TestDox('Parses #[Retry] attribute on method')]
+    public function test_parses_Retry_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RetryTest::class, 'testOne')->isRetry();
+
+        $this->assertCount(3, $metadata);
+
+        /** @var Retry $retryOne */
+        $retryOne = $metadata->asArray()[0];
+        $this->assertTrue($retryOne->isRetry());
+        $this->assertInstanceOf(Retry::class, $retryOne);
+        $this->assertSame(1, $retryOne->maxRetries());
+        $this->assertSame(0, $retryOne->delay());
+        $this->assertNull($retryOne->retryOn());
+
+        /** @var Retry $retryTwo */
+        $retryTwo = $metadata->asArray()[1];
+        $this->assertTrue($retryTwo->isRetry());
+        $this->assertInstanceOf(Retry::class, $retryTwo);
+        $this->assertSame(2, $retryTwo->maxRetries());
+        $this->assertSame(1, $retryTwo->delay());
+        $this->assertNull($retryTwo->retryOn());
+
+        /** @var Retry $retryThree */
+        $retryThree = $metadata->asArray()[2];
+        $this->assertTrue($retryThree->isRetry());
+        $this->assertInstanceOf(Retry::class, $retryThree);
+        $this->assertSame(3, $retryThree->maxRetries());
+        $this->assertSame(0, $retryThree->delay());
+        $this->assertSame(LogicException::class, $retryThree->retryOn());
     }
 
     #[TestDox('Parses #[RequiresSetting] attribute on method')]

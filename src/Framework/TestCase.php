@@ -46,6 +46,7 @@ use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
 use function set_exception_handler;
+use function sleep;
 use function sprintf;
 use function str_contains;
 use function stream_get_contents;
@@ -79,6 +80,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\Retry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
@@ -1274,7 +1276,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws ExpectationFailedException
      * @throws Throwable
      */
-    private function runTest(): mixed
+    private function runTest(int $attempt = 0): mixed
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
@@ -1306,6 +1308,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
+                $metadata = $this->getRetryMetadata($exception, $attempt);
+
+                if (null !== $metadata) {
+                    return $this->retryTest($metadata, $attempt);
+                }
+
                 throw $exception;
             }
 
@@ -2300,6 +2308,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (isset($trace[0]['class']) && $trace[0]['class'] === InvokedCount::class) {
             $this->numberOfAssertionsPerformed++;
         }
+    }
+
+    private function getRetryMetadata(Throwable $th, int $attempt): ?Retry
+    {
+        foreach (MetadataRegistry::parser()->forMethod($this::class, $this->name())->isRetry() as $metadata) {
+            assert($metadata instanceof Retry);
+
+            if ($metadata->maxRetries() > $attempt && (null === $metadata->retryOn() || $th instanceof ($metadata->retryOn()))) {
+                return $metadata;
+            }
+        }
+
+        return null;
+    }
+
+    private function retryTest(Retry $metadata, int $attempt): mixed
+    {
+        if ($metadata->delay() > 0) {
+            sleep($metadata->delay());
+        }
+
+        return $this->runTest(++$attempt);
     }
 
     /**
