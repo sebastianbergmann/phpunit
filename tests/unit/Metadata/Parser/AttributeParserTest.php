@@ -38,6 +38,7 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePHPUnitWarnings;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -139,6 +140,7 @@ use PHPUnit\Metadata\WithEnvironmentVariable;
 #[CoversClass(UsesTrait::class)]
 #[CoversClass(WithEnvironmentVariable::class)]
 #[CoversClass(WithoutErrorHandler::class)]
+#[CoversClass(IgnorePHPUnitWarnings::class)]
 #[Small]
 #[Group('metadata')]
 #[Group('metadata/attributes')]

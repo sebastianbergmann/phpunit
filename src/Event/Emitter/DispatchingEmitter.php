@@ -1014,7 +1014,7 @@ final class DispatchingEmitter implements Emitter
         if (
             $test->isTestMethod() &&
             class_exists($test->className()) &&
-            ($metadata = Registry::parser()->forMethod($test->className(), $test->methodName())->isIgnoreWarnings())->isNotEmpty() &&
+            ($metadata = Registry::parser()->forMethod($test->className(), $test->methodName())->isIgnorePHPUnitWarnings())->isNotEmpty() &&
             ($ignoreWarnings = $metadata->asArray()[0] ?? null) !== null &&
             $ignoreWarnings instanceof IgnorePHPUnitWarnings &&
             $ignoreWarnings->shouldIgnore($message)

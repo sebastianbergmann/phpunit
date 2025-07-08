@@ -641,7 +641,7 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isIgnoreWarnings(): self
+    public function isIgnorePHPUnitWarnings(): self
     {
         return new self(
             ...array_filter(
