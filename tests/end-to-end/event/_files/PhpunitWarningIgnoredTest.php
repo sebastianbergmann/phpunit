@@ -54,6 +54,17 @@ final class PhpunitWarningIgnoredTest extends TestCase
         $this->assertTrue(true);
     }
 
+    #[IgnorePhpunitWarnings('warning/error(.*)')]
+    public function testPhpunitWarningWithSlashInRegex(): void
+    {
+        EventFacade::emitter()->testTriggeredPhpunitWarning(
+            $this->valueObjectForEvents(),
+            'warning/error message',
+        );
+
+        $this->assertTrue(true);
+    }
+
     #[IgnorePhpunitWarnings('warn(.*)mess(.*)')]
     public function testPhpunitWarningWithWrongPattern(): void
     {
