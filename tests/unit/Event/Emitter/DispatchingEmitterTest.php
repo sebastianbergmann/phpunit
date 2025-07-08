@@ -15,6 +15,7 @@ use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\SystemGarbageCollectorStatusProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -2508,7 +2509,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $test    = $this->testValueObject();
+        $test    = TestMethodBuilder::fromTestCase($this);
         $message = 'message';
 
         $emitter->testTriggeredPhpunitWarning(
@@ -2523,6 +2524,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\PhpunitWarningTriggered::class, $event);
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
+        $this->assertFalse($event->ignoredByTest());
     }
 
     #[TestDox('testPrintedUnexpectedOutput() emits Test\PrintedUnexpectedOutput event')]

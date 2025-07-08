@@ -21,6 +21,6 @@ final readonly class TestTriggeredPhpunitWarningSubscriber extends Subscriber im
 {
     public function notify(PhpunitWarningTriggered $event): void
     {
-        $this->printer()->testTriggeredPhpunitWarning();
+        $this->printer()->testTriggeredPhpunitWarning($event);
     }
 }

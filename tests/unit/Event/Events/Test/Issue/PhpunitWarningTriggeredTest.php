@@ -23,16 +23,32 @@ final class PhpunitWarningTriggeredTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
         $message       = 'message';
+        $ignoredByTest = false;
 
         $event = new PhpunitWarningTriggered(
             $telemetryInfo,
             $test,
             $message,
+            $ignoredByTest,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
+        $this->assertSame($ignoredByTest, $event->ignoredByTest());
         $this->assertSame('Test Triggered PHPUnit Warning (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
+    }
+
+    public function testCanBeIgnoredByTest(): void
+    {
+        $event = new PhpunitWarningTriggered(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+            'message',
+            true,
+        );
+
+        $this->assertTrue($event->ignoredByTest());
+        $this->assertSame('Test Triggered PHPUnit Warning (FooTest::testBar, ignored by test)' . PHP_EOL . 'message', $event->asString());
     }
 }

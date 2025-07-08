@@ -20,6 +20,7 @@ use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ChildProcessErrored;
@@ -228,8 +229,12 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::warning());
     }
 
-    public function testTriggeredPhpunitWarning(): void
+    public function testTriggeredPhpunitWarning(PhpunitWarningTriggered $event): void
     {
+        if ($event->ignoredByTest()) {
+            return;
+        }
+
         $this->updateTestStatus(TestStatus::warning());
     }
 

@@ -593,6 +593,10 @@ final class Collector
 
     public function testTriggeredPhpunitWarning(PhpunitWarningTriggered $event): void
     {
+        if ($event->ignoredByTest()) {
+            return;
+        }
+
         if (!isset($this->testTriggeredPhpunitWarningEvents[$event->test()->id()])) {
             $this->testTriggeredPhpunitWarningEvents[$event->test()->id()] = [];
         }

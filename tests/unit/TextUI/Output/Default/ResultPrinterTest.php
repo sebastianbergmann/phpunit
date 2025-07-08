@@ -383,6 +383,7 @@ final class ResultPrinterTest extends TestCase
                                 self::telemetryInfo(),
                                 self::testMethod(),
                                 'message',
+                                false,
                             ),
                         ],
                     ],
