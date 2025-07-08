@@ -41,6 +41,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsMethodTest;
+use PHPUnit\TestFixture\Metadata\Attribute\IgnorePHPUnitWarningsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
@@ -832,6 +833,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isIgnorePhpunitDeprecations());
+    }
+
+    #[TestDox('Parses #[IgnorePHPUnitWarnings] attribute on method')]
+    public function test_parses_IgnorePHPUnitWarnings_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(IgnorePHPUnitWarningsTest::class, 'testOne')->isIgnorePHPUnitWarnings();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnorePHPUnitWarnings());
     }
 
     #[TestDox('Parses #[PostCondition] attribute on method')]
