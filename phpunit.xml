@@ -6,6 +6,7 @@
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true"
+         executionOrder="defects"
          colors="true">
     <testsuites>
         <testsuite name="unit">
