@@ -7,39 +7,34 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Framework\Attributes;
 
-use function preg_match;
+use Attribute;
 
 /**
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IgnorePHPUnitWarnings extends Metadata
+#[Attribute(Attribute::TARGET_METHOD)]
+final readonly class IgnorePhpunitWarnings
 {
     /** @var null|non-empty-string */
     private ?string $messagePattern;
 
     /**
-     * @param int<0, 1>             $level
      * @param null|non-empty-string $messagePattern
      */
-    protected function __construct(int $level, null|string $messagePattern)
+    public function __construct(null|string $messagePattern = null)
     {
-        parent::__construct($level);
-
         $this->messagePattern = $messagePattern;
     }
 
-    public function isIgnorePHPUnitWarnings(): true
+    /**
+     * @return null|non-empty-string
+     */
+    public function messagePattern(): ?string
     {
-        return true;
-    }
-
-    public function shouldIgnore(string $message): bool
-    {
-        return $this->messagePattern === null ||
-            (bool) preg_match("/{$this->messagePattern}/", $message);
+        return $this->messagePattern;
     }
 }

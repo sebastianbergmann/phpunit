@@ -14,9 +14,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(IgnorePHPUnitWarnings::class)]
+#[CoversClass(IgnorePhpunitWarnings::class)]
 #[Small]
-final class IgnorePHPUnitWarningsTest extends TestCase
+final class IgnorePhpunitWarningsTest extends TestCase
 {
     public static function shouldIgnoreProvider(): array
     {
@@ -32,7 +32,7 @@ final class IgnorePHPUnitWarningsTest extends TestCase
     #[DataProvider('shouldIgnoreProvider')]
     public function testShouldIgnore(?string $messagePattern, string $message, bool $expected): void
     {
-        $metadata = Metadata::ignorePHPUnitWarnings($messagePattern);
+        $metadata = Metadata::ignorePhpunitWarnings($messagePattern);
 
         $this->assertSame($expected, $metadata->shouldIgnore($message));
     }

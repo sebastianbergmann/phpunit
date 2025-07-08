@@ -9,25 +9,13 @@
  */
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
-use PHPUnit\Framework\Attributes\IgnorePHPUnitWarnings;
+use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
 use PHPUnit\Framework\TestCase;
 
-final class IgnorePHPUnitWarningsTest extends TestCase
+final class IgnorePhpunitWarningsTest extends TestCase
 {
-    #[IgnorePHPUnitWarnings]
+    #[IgnorePhpunitWarnings]
     public function testOne(): void
-    {
-        $this->assertTrue(true);
-    }
-
-    #[IgnorePHPUnitWarnings('warning.*pattern')]
-    public function testTwo(): void
-    {
-        $this->assertTrue(true);
-    }
-
-    #[IgnorePHPUnitWarnings('exact message')]
-    public function testThree(): void
     {
         $this->assertTrue(true);
     }

@@ -641,12 +641,12 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isIgnorePHPUnitWarnings(): self
+    public function isIgnorePhpunitWarnings(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isIgnorePHPUnitWarnings(),
+                static fn (Metadata $metadata): bool => $metadata->isIgnorePhpunitWarnings(),
             ),
         );
     }
