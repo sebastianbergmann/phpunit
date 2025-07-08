@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture\Event;
 
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnorePHPUnitWarnings;
+use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
 use PHPUnit\Framework\TestCase;
 
 final class PhpunitWarningIgnoredTest extends TestCase
@@ -21,7 +21,7 @@ final class PhpunitWarningIgnoredTest extends TestCase
         yield [true];
     }
 
-    #[IgnorePHPUnitWarnings]
+    #[IgnorePhpunitWarnings]
     public function testPhpunitWarning(): void
     {
         EventFacade::emitter()->testTriggeredPhpunitWarning(
@@ -32,7 +32,7 @@ final class PhpunitWarningIgnoredTest extends TestCase
         $this->assertTrue(true);
     }
 
-    #[IgnorePHPUnitWarnings('warning message')]
+    #[IgnorePhpunitWarnings('warning message')]
     public function testPhpunitWarningWithExactMessage(): void
     {
         EventFacade::emitter()->testTriggeredPhpunitWarning(
@@ -43,7 +43,7 @@ final class PhpunitWarningIgnoredTest extends TestCase
         $this->assertTrue(true);
     }
 
-    #[IgnorePHPUnitWarnings('warn(.*)mess(.*)')]
+    #[IgnorePhpunitWarnings('warn(.*)mess(.*)')]
     public function testPhpunitWarningWithRegex(): void
     {
         EventFacade::emitter()->testTriggeredPhpunitWarning(
@@ -54,7 +54,7 @@ final class PhpunitWarningIgnoredTest extends TestCase
         $this->assertTrue(true);
     }
 
-    #[IgnorePHPUnitWarnings('warn(.*)mess(.*)')]
+    #[IgnorePhpunitWarnings('warn(.*)mess(.*)')]
     public function testPhpunitWarningWithWrongPattern(): void
     {
         EventFacade::emitter()->testTriggeredPhpunitWarning(
@@ -66,7 +66,7 @@ final class PhpunitWarningIgnoredTest extends TestCase
     }
 
     #[DataProvider('dataProvider')]
-    #[IgnorePHPUnitWarnings]
+    #[IgnorePhpunitWarnings]
     public function testTooManyArgumentsInDataProvider(): void
     {
         $this->assertTrue(true);

@@ -29,7 +29,7 @@ use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\IgnorePHPUnitWarnings;
+use PHPUnit\Metadata\IgnorePhpunitWarnings;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\Comparator\Comparator;
@@ -1014,9 +1014,9 @@ final class DispatchingEmitter implements Emitter
         if (
             $test->isTestMethod() &&
             class_exists($test->className()) &&
-            ($metadata = Registry::parser()->forMethod($test->className(), $test->methodName())->isIgnorePHPUnitWarnings())->isNotEmpty() &&
+            ($metadata = Registry::parser()->forMethod($test->className(), $test->methodName())->isIgnorePhpunitWarnings())->isNotEmpty() &&
             ($ignoreWarnings = $metadata->asArray()[0] ?? null) !== null &&
-            $ignoreWarnings instanceof IgnorePHPUnitWarnings &&
+            $ignoreWarnings instanceof IgnorePhpunitWarnings &&
             $ignoreWarnings->shouldIgnore($message)
         ) {
             return;
