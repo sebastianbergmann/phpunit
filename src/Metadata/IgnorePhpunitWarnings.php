@@ -40,6 +40,6 @@ final readonly class IgnorePhpunitWarnings extends Metadata
     public function shouldIgnore(string $message): bool
     {
         return $this->messagePattern === null ||
-            (bool) preg_match("/{$this->messagePattern}/", $message);
+            (bool) preg_match('{' . $this->messagePattern . '}', $message);
     }
 }

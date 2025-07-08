@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-...W.                                                               5 / 5 (100%)
+....W.                                                              6 / 6 (100%)
 
 Time: %s, Memory: %s
 
@@ -26,4 +26,4 @@ another message
 %sPhpunitWarningIgnoredTest.php:%d
 
 OK, but there were issues!
-Tests: 5, Assertions: 5, PHPUnit Warnings: 1.
+Tests: 6, Assertions: 6, PHPUnit Warnings: 1.
