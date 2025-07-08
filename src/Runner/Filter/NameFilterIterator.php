@@ -12,7 +12,6 @@ namespace PHPUnit\Runner\Filter;
 use function end;
 use function preg_match;
 use function sprintf;
-use function str_replace;
 use function substr;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
@@ -116,15 +115,10 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
                 );
             }
 
-            // Escape delimiters in regular expression. Do NOT use preg_quote,
-            // to keep magic characters.
+            // Do NOT use preg_quote, to keep magic characters.
             $filter = sprintf(
-                '/%s/i',
-                str_replace(
-                    '/',
-                    '\\/',
-                    $filter,
-                ),
+                '{%s}i',
+                $filter,
             );
         }
 
