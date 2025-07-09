@@ -15,10 +15,11 @@ if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl
 }
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--enforce-time-limit';
-$_SERVER['argv'][3] = '--default-time-limit=10';
-$_SERVER['argv'][4] = __DIR__ . '/2085/Issue2085Test.php';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--enforce-time-limit';
+$_SERVER['argv'][] = '--default-time-limit=10';
+$_SERVER['argv'][] = __DIR__ . '/2085/Issue2085Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

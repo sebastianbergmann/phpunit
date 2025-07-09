@@ -2,9 +2,10 @@
 https://github.com/sebastianbergmann/phpunit/issues/3904
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][3] = 'Issue3904';
-$_SERVER['argv'][4] = __DIR__ . '/3904/Issue3904_2Test.php';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = 'Issue3904';
+$_SERVER['argv'][] = __DIR__ . '/3904/Issue3904_2Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 

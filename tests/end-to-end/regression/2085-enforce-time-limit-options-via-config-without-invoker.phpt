@@ -15,9 +15,10 @@ if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/2085/configuration_enforce_time_limit_options.xml';
-$_SERVER['argv'][3] = __DIR__ . '/2085/Issue2085Test.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/2085/configuration_enforce_time_limit_options.xml';
+$_SERVER['argv'][] = __DIR__ . '/2085/Issue2085Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
