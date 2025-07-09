@@ -90,14 +90,6 @@ final class NamePrettifierTest extends TestCase
             ],
             [
                 'This is a test',
-                'testThisIsATest',
-            ],
-            [
-                'This is a test',
-                'testThisIsATest2',
-            ],
-            [
-                'This is a test',
                 'this_is_a_test',
             ],
             [
@@ -207,5 +199,13 @@ final class NamePrettifierTest extends TestCase
     public function test_TestCase_can_be_prettified(string $expected, TestCase $testCase, bool $colorize): void
     {
         $this->assertSame($expected, (new NamePrettifier)->prettifyTestCase($testCase, $colorize));
+    }
+
+    public function testStripsNumericSuffixFromTestMethodNameWhenTestMethodNameWithoutThatSuffixWasPreviouslyProcessed(): void
+    {
+        $namePrettifier = new NamePrettifier;
+
+        $this->assertSame('This is a test', $namePrettifier->prettifyTestMethodName('testThisIsATest'));
+        $this->assertSame('This is a test', $namePrettifier->prettifyTestMethodName('testThisIsATest2'));
     }
 }
