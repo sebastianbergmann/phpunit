@@ -132,7 +132,8 @@ final class NamePrettifierTest extends TestCase
      */
     public static function objectProvider(): array
     {
-        $object = new class {
+        $object = new class
+        {
             public function __toString(): string
             {
                 return 'object as string';
