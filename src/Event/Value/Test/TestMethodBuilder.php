@@ -26,17 +26,23 @@ use PHPUnit\Util\Test as TestUtil;
  */
 final readonly class TestMethodBuilder
 {
-    public static function fromTestCase(TestCase $testCase): TestMethod
+    public static function fromTestCase(TestCase $testCase, bool $useTestCaseForTestDox = true): TestMethod
     {
         $methodName = $testCase->name();
         $location   = Reflection::sourceLocationFor($testCase::class, $methodName);
+
+        if ($useTestCaseForTestDox) {
+            $testDox = TestDoxBuilder::fromTestCase($testCase);
+        } else {
+            $testDox = TestDoxBuilder::fromClassNameAndMethodName($testCase::class, $testCase->name());
+        }
 
         return new TestMethod(
             $testCase::class,
             $methodName,
             $location['file'],
             $location['line'],
-            TestDoxBuilder::fromTestCase($testCase),
+            $testDox,
             MetadataRegistry::parser()->forClassAndMethod($testCase::class, $methodName),
             self::dataFor($testCase),
         );
