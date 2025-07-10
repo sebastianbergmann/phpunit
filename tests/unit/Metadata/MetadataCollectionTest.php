@@ -475,6 +475,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isTestDox());
     }
 
+    public function test_Can_be_filtered_for_TestDoxFormatter(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isTestDoxFormatter();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isTestDoxFormatter());
+    }
+
     public function test_Can_be_filtered_for_Test(): void
     {
         $collection = $this->collectionWithOneOfEach()->isTest();
@@ -610,6 +618,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::runInSeparateProcess(),
                 Metadata::runTestsInSeparateProcesses(),
                 Metadata::testDoxOnClass(''),
+                Metadata::testDoxFormatter('', ''),
                 Metadata::test(),
                 Metadata::testWith([]),
                 Metadata::usesNamespace(''),

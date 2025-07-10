@@ -464,6 +464,15 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     */
+    public static function testDoxFormatter(string $className, string $methodName): TestDoxFormatter
+    {
+        return new TestDoxFormatter(self::METHOD_LEVEL, $className, $methodName);
+    }
+
+    /**
      * @param array<array<mixed>> $data
      * @param ?non-empty-string   $name
      */
@@ -902,6 +911,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true TestDox $this
      */
     public function isTestDox(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true TestDoxFormatter $this
+     */
+    public function isTestDoxFormatter(): bool
     {
         return false;
     }

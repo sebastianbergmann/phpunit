@@ -10,6 +10,8 @@
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestDoxFormatter;
+use PHPUnit\Framework\Attributes\TestDoxFormatterExternal;
 use PHPUnit\Framework\TestCase;
 
 #[TestDox('text')]
@@ -17,6 +19,16 @@ final class TestDoxTest extends TestCase
 {
     #[TestDox('text')]
     public function testOne(): void
+    {
+    }
+
+    #[TestDoxFormatter('methodName')]
+    public function testTwo(): void
+    {
+    }
+
+    #[TestDoxFormatterExternal('ClassName', 'methodName')]
+    public function testThree(): void
     {
     }
 }

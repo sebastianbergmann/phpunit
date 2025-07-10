@@ -1098,6 +1098,27 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
+    #[TestDox('Parses #[TestDoxFormatter] attribute on method')]
+    public function test_parses_TestDoxFormatter_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(TestDoxTest::class, 'testTwo')->isTestDoxFormatter();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestDoxFormatter());
+        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[TestDoxFormatterExternal] attribute on method')]
+    public function test_parses_TestDoxFormatterExternal_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(TestDoxTest::class, 'testThree')->isTestDoxFormatter();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestDoxFormatter());
+        $this->assertSame('ClassName', $metadata->asArray()[0]->className());
+        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
+    }
+
     #[TestDox('Parses #[TestWith] attribute on method')]
     public function test_parses_TestWith_attribute_on_method(): void
     {

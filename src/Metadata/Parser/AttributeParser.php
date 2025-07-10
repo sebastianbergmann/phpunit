@@ -74,6 +74,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestDoxFormatter;
+use PHPUnit\Framework\Attributes\TestDoxFormatterExternal;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
@@ -851,6 +853,20 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof TestDox);
 
                     $result[] = Metadata::testDoxOnMethod($attributeInstance->text());
+
+                    break;
+
+                case TestDoxFormatter::class:
+                    assert($attributeInstance instanceof TestDoxFormatter);
+
+                    $result[] = Metadata::testDoxFormatter($className, $attributeInstance->methodName());
+
+                    break;
+
+                case TestDoxFormatterExternal::class:
+                    assert($attributeInstance instanceof TestDoxFormatterExternal);
+
+                    $result[] = Metadata::testDoxFormatter($attributeInstance->className(), $attributeInstance->methodName());
 
                     break;
 

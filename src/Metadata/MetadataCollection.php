@@ -551,6 +551,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isTestDoxFormatter(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isTestDoxFormatter(),
+            ),
+        );
+    }
+
     public function isTestWith(): self
     {
         return new self(

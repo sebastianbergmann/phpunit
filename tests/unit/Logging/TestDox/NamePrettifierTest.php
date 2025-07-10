@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -143,6 +144,9 @@ final class NamePrettifierTest extends TestCase
         $testWithDataAndTestDoxPlaceholders = new TestDoxTest('testFour');
         $testWithDataAndTestDoxPlaceholders->setData('a', $data);
 
+        $testWithTestDoxFormatter = new TestDoxTest('testFive');
+        $testWithTestDoxFormatter->setData(0, [new DateTimeImmutable('2025-07-09')]);
+
         return [
             [
                 'One',
@@ -167,6 +171,11 @@ final class NamePrettifierTest extends TestCase
             [
                 'This is a custom test description with placeholders array true 0.0 1 string object as string stdClass Test test null \'\' default',
                 $testWithDataAndTestDoxPlaceholders,
+                false,
+            ],
+            [
+                'This is a custom description: 2025-07-09',
+                $testWithTestDoxFormatter,
                 false,
             ],
         ];
