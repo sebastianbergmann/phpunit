@@ -117,6 +117,10 @@ final class NamePrettifierTest extends TestCase
                 'Sets redirect header on 302',
                 'testSetsRedirectHeaderOn302',
             ],
+            [
+                '100 users',
+                'test100Users',
+            ],
         ];
     }
 

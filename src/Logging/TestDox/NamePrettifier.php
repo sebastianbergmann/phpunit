@@ -183,7 +183,7 @@ final class NamePrettifier
             }
         }
 
-        return $buffer;
+        return trim($buffer);
     }
 
     public function prettifyTestCase(TestCase $test, bool $colorize): string
