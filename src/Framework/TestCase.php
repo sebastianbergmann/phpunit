@@ -843,17 +843,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function dataSetAsString(): string
     {
-        $buffer = '';
-
         if ($this->data !== []) {
             if (is_int($this->dataName)) {
-                $buffer .= sprintf(' with data set #%d', $this->dataName);
-            } else {
-                $buffer .= sprintf(' with data set "%s"', $this->dataName);
+                return sprintf(' with data set #%d', $this->dataName);
             }
+
+            return sprintf(' with data set "%s"', $this->dataName);
         }
 
-        return $buffer;
+        return '';
     }
 
     /**
