@@ -24,7 +24,7 @@ Formatter Method Does Not Exist (PHPUnit\TestFixture\TestDox\FormatterMethodDoes
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\TestDox\FormatterMethodDoesNotExistTest::testOne with data set #0 ('string')
+1) PHPUnit\TestFixture\TestDox\FormatterMethodDoesNotExistTest::testOne#0 with data ('string')
 Method PHPUnit\TestFixture\TestDox\FormatterMethodDoesNotExistTest::formatter() cannot be used as a TestDox formatter because it does not exist
 
 %sFormatterMethodDoesNotExistTest.php:%d

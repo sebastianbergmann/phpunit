@@ -20,8 +20,8 @@ Runtime:       %s
 Time: %s, Memory: %s
 
 Text from class-level TestDox metadata
- ✔ Text from method-level TestDox metadata for successful test with data set "data set name"
- ✘ Text from method-level TestDox metadata for failing test with data set "data set name"
+ ✔ Text from method-level TestDox metadata for successful test with data set "@data set name"
+ ✘ Text from method-level TestDox metadata for failing test with data set "@data set name"
    │
    │ Failed asserting that false is true.
    │

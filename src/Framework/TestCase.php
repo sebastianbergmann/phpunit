@@ -855,24 +855,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns the data set as a string compatible with the --filter CLI option.
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function dataSetAsFilterString(): string
-    {
-        if ($this->data !== []) {
-            if (is_int($this->dataName)) {
-                return sprintf('#%d', $this->dataName);
-            }
-
-            return sprintf('%s', $this->dataName);
-        }
-
-        return '';
-    }
-
-    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function dataSetAsStringWithData(): string
@@ -881,8 +863,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return '';
         }
 
-        return $this->dataSetAsString() . sprintf(
-            ' (%s)',
+        return sprintf(
+            '%s with data (%s)',
+            $this->dataSetAsFilterString(),
             Exporter::shortenedRecursiveExport($this->data),
         );
     }
@@ -1282,6 +1265,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected function onNotSuccessfulTest(Throwable $t): never
     {
         throw $t;
+    }
+
+    /**
+     * Returns the data set as a string compatible with the --filter CLI option.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    private function dataSetAsFilterString(): string
+    {
+        if ($this->data !== []) {
+            if (is_int($this->dataName)) {
+                return sprintf('#%d', $this->dataName);
+            }
+
+            return sprintf('@%s', $this->dataName);
+        }
+
+        return '';
     }
 
     /**

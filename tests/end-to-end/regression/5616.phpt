@@ -19,7 +19,7 @@ Time: %s, Memory: %s MB
 
 There was 1 failure:
 
-1) PHPUnit\TestFixture\Issue5616\Issue5616Test::testOne with data set #0 (1, '2', 3.0, true)
+1) PHPUnit\TestFixture\Issue5616\Issue5616Test::testOne#0 with data (1, '2', 3.0, true)
 Failed asserting that false is true.
 
 %sIssue5616Test.php:%d

@@ -29,7 +29,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) PHPUnit\TestFixture\TeamCity\DataProviderTest::testOne with data set #1 (false)
+1) PHPUnit\TestFixture\TeamCity\DataProviderTest::testOne#1 with data (false)
 Failed asserting that false is true.
 
 %sDataProviderTest.php:28

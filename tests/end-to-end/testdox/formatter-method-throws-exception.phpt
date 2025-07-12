@@ -24,7 +24,7 @@ Formatter Method Throws Exception (PHPUnit\TestFixture\TestDox\FormatterMethodTh
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\TestDox\FormatterMethodThrowsExceptionTest::testOne with data set #0 ('string')
+1) PHPUnit\TestFixture\TestDox\FormatterMethodThrowsExceptionTest::testOne#0 with data ('string')
 TestDox formatter PHPUnit\TestFixture\TestDox\FormatterMethodThrowsExceptionTest::formatter() triggered an error: message
 %sFormatterMethodThrowsExceptionTest.php:%d
 
