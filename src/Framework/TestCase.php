@@ -845,10 +845,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         if ($this->data !== []) {
             if (is_int($this->dataName)) {
-                return sprintf(' with data set #%d', $this->dataName);
+                return sprintf(' with data set %s', $this->dataSetAsFilterString());
             }
 
-            return sprintf(' with data set "%s"', $this->dataName);
+            return sprintf(' with data set "%s"', $this->dataSetAsFilterString());
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns the data set as a string compatible with the --filter CLI option.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function dataSetAsFilterString(): string
+    {
+        if ($this->data !== []) {
+            if (is_int($this->dataName)) {
+                return sprintf('#%d', $this->dataName);
+            }
+
+            return sprintf('%s', $this->dataName);
         }
 
         return '';
