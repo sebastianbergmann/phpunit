@@ -22,7 +22,7 @@ class TestCaseTest extends TestCase
 {
     protected static int $testStatic = 456;
 
-    public static function provideDataSetAsStringWithData(): iterable
+    public static function provideDataSetAsStringWithDataProvider(): iterable
     {
         yield ['', 'dataSet', []];
 
@@ -94,7 +94,7 @@ class TestCaseTest extends TestCase
         $this->assertSame($methodName, $testCase->nameWithDataSet());
     }
 
-    #[DataProvider('provideDataSetAsStringWithData')]
+    #[DataProvider('provideDataSetAsStringWithDataProvider')]
     public function testDataSetAsStringWithData(string $expectedData, int|string $dataName, array $data): void
     {
         $testCase = new TestWithDifferentNames('testWithName');
