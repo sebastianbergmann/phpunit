@@ -19,7 +19,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) PHPUnit\TestFixture\DataProviderDependencyResultTest::testAdd with data set #2 (2, 0)
+1) PHPUnit\TestFixture\DataProviderDependencyResultTest::testAdd#2 with data (2, 0)
 Error: Cannot use positional argument after named argument during unpacking
 
 ERRORS!

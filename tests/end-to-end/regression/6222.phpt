@@ -26,17 +26,17 @@ Failed asserting that false is true.
 
 %sIssue6222Test.php:%d
 
-2) PHPUnit\TestFixture\Issue6222\Issue6222Test::testOneCasePassing with data set #1 (2)
+2) PHPUnit\TestFixture\Issue6222\Issue6222Test::testOneCasePassing#1 with data (2)
 Failed asserting that 2 is identical to 1.
 
 %sIssue6222Test.php:%d
 
-3) PHPUnit\TestFixture\Issue6222\Issue6222Test::testZeroCasesPassing with data set #0 (1)
+3) PHPUnit\TestFixture\Issue6222\Issue6222Test::testZeroCasesPassing#0 with data (1)
 Failed asserting that 1 is identical to 3.
 
 %sIssue6222Test.php:%d
 
-4) PHPUnit\TestFixture\Issue6222\Issue6222Test::testZeroCasesPassing with data set #1 (2)
+4) PHPUnit\TestFixture\Issue6222\Issue6222Test::testZeroCasesPassing#1 with data (2)
 Failed asserting that 2 is identical to 3.
 
 %sIssue6222Test.php:%d

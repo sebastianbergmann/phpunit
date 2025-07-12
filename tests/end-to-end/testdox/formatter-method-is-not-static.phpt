@@ -24,7 +24,7 @@ Formatter Method Is Not Static (PHPUnit\TestFixture\TestDox\FormatterMethodIsNot
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\TestDox\FormatterMethodIsNotStaticTest::testOne with data set #0 ('string')
+1) PHPUnit\TestFixture\TestDox\FormatterMethodIsNotStaticTest::testOne#0 with data ('string')
 Method PHPUnit\TestFixture\TestDox\FormatterMethodIsNotStaticTest::formatter() cannot be used as a TestDox formatter because it is not static
 
 %sFormatterMethodIsNotStaticTest.php:%d

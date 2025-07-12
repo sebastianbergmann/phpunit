@@ -24,7 +24,7 @@ Formatter Method Is Not Public (PHPUnit\TestFixture\TestDox\FormatterMethodIsNot
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\TestDox\FormatterMethodIsNotPublicTest::testOne with data set #0 ('string')
+1) PHPUnit\TestFixture\TestDox\FormatterMethodIsNotPublicTest::testOne#0 with data ('string')
 Method PHPUnit\TestFixture\TestDox\FormatterMethodIsNotPublicTest::formatter() cannot be used as a TestDox formatter because it is not public
 
 %sFormatterMethodIsNotPublicTest.php:%d
