@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
@@ -20,6 +21,15 @@ use PHPUnit\TestFixture\TestWithDifferentNames;
 class TestCaseTest extends TestCase
 {
     protected static int $testStatic = 456;
+
+    public static function provideDataSetAsStringWithData(): iterable
+    {
+        yield ['', 'dataSet', []];
+
+        yield ["#0 with data ('foo', 'bar')", 0, ['foo', 'bar']];
+
+        yield ["@dataSet with data ('foo', 'bar')", 'dataSet', ['foo', 'bar']];
+    }
 
     public static function setUpBeforeClass(): void
     {
@@ -82,5 +92,14 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($methodName);
 
         $this->assertSame($methodName, $testCase->nameWithDataSet());
+    }
+
+    #[DataProvider('provideDataSetAsStringWithData')]
+    public function testDataSetAsStringWithData(string $expectedData, int|string $dataName, array $data): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+        $testCase->setData($dataName, $data);
+
+        $this->assertSame($expectedData, $testCase->dataSetAsStringWithData());
     }
 }
