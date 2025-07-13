@@ -52,6 +52,25 @@ final readonly class DataProvider
         }
 
         if ($dataProvider->isNotEmpty()) {
+            if ($testWith->isNotEmpty()) {
+                $method = new ReflectionMethod($className, $methodName);
+
+                Event\Facade::emitter()->testTriggeredPhpunitWarning(
+                    new TestMethod(
+                        $className,
+                        $methodName,
+                        $method->getFileName(),
+                        $method->getStartLine(),
+                        Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                            $className,
+                            $methodName,
+                        ),
+                        MetadataCollection::fromArray([]),
+                        Event\TestData\TestDataCollection::fromArray([]),
+                    ),
+                    'Mixing #[DataProvider] and #[TestWith] attributes is not supported, only the data provided by #[DataProvider] will be used',
+                );
+            }
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
         } else {
             $data = $this->dataProvidedByMetadata($testWith);
