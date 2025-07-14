@@ -75,11 +75,29 @@ function __phpunit_run_isolated_test()
     $test->setInIsolation(true);
 
     ob_end_clean();
+    $output = '';
+    $testCalledExit = true;
+    register_shutdown_function(function() use ($test, $output, $dispatcher, $testCalledExit) {
+        file_put_contents(
+            '{processResultFile}',
+            serialize(
+                (object)[
+                    'testResult'          => $test->result(),
+                    'codeCoverage'        => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
+                    'numAssertions'       => $test->numberOfAssertionsPerformed(),
+                    'testCalledExit'      => $testCalledExit,
+                    'expectedProcessExit' => $test->getExpectedProcessExitCode(),
+                    'output'              => $output,
+                    'events'              => $dispatcher->flush(),
+                    'passedTests'         => PassedTests::instance(),
+                ]
+            )
+        );
+    });
 
     $test->run();
 
-    $output = '';
-
+    $testCalledExit = false;
     if (!$test->expectsOutput()) {
         $output = $test->output();
     }
@@ -98,20 +116,6 @@ function __phpunit_run_isolated_test()
             @rewind(STDOUT);
         }
     }
-
-    file_put_contents(
-        '{processResultFile}',
-        serialize(
-            (object)[
-                'testResult'    => $test->result(),
-                'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
-                'numAssertions' => $test->numberOfAssertionsPerformed(),
-                'output'        => $output,
-                'events'        => $dispatcher->flush(),
-                'passedTests'   => PassedTests::instance()
-            ]
-        )
-    );
 }
 
 function __phpunit_error_handler($errno, $errstr, $errfile, $errline)

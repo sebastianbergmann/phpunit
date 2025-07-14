@@ -147,6 +147,12 @@ final readonly class DefaultJobRunner extends JobRunner
             fclose($pipes[2]);
         }
 
+        $exitCode = 0;
+        $processStatus = proc_get_status($process);
+        if ($processStatus['running'] === false) {
+            $exitCode = $processStatus['exitcode'];
+        }
+
         proc_close($process);
 
         if ($temporaryFile !== null) {
@@ -156,7 +162,7 @@ final readonly class DefaultJobRunner extends JobRunner
         assert($stdout !== false);
         assert($stderr !== false);
 
-        return new Result($stdout, $stderr);
+        return new Result($stdout, $stderr, $exitCode);
     }
 
     /**

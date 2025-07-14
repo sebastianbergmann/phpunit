@@ -197,6 +197,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
     private bool $expectErrorLog              = false;
+    private ?int $expectProcessExit           = null;
 
     /**
      * @var list<Comparator>
@@ -1042,6 +1043,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function expectOutputString(string $expectedString): void
     {
         $this->outputExpectedString = $expectedString;
+    }
+
+    final protected function expectProcessExit(int $exitCode): void
+    {
+        $this->expectProcessExit = $exitCode;
+    }
+
+    final public function getExpectedProcessExitCode(): ?int
+    {
+        return $this->expectProcessExit;
     }
 
     final protected function expectErrorLog(): void

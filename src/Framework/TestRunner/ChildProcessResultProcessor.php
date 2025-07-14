@@ -37,7 +37,7 @@ final readonly class ChildProcessResultProcessor
         $this->codeCoverage = $codeCoverage;
     }
 
-    public function process(Test $test, string $serializedProcessResult, string $stderr): void
+    public function process(Test $test, string $serializedProcessResult, string $stderr, int $exitCode): void
     {
         if ($stderr !== '') {
             $exception = new Exception(trim($stderr));
@@ -72,6 +72,16 @@ final readonly class ChildProcessResultProcessor
             );
 
             return;
+        }
+
+        if ($childResult->expectedProcessExit !== null && $childResult->testCalledExit === true) {
+            assert($test instanceof TestCase);
+
+            $test->assertSame($childResult->expectedProcessExit, $exitCode, 'Process exit-code expectation failed');
+        } elseif ($childResult->expectedProcessExit !== null && $childResult->testCalledExit === false) {
+            $test->fail('Process expected exit() to be called but test did not call it');
+        } elseif ($childResult->expectedProcessExit === null && $childResult->testCalledExit === false) {
+            $test->fail('Process called exit() but the test did not expect it');
         }
 
         $this->eventFacade->forward($childResult->events);
