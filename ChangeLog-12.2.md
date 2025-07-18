@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.2.8] - 2025-MM-DD
+
+### Fixed
+
+* [#6274](https://github.com/sebastianbergmann/phpunit/issues/6274): Infinite recursion when code coverage report in OpenClover XML format is configured in XML configuration file
+
 ## [12.2.7] - 2025-07-11
 
 ### Fixed
@@ -107,6 +113,7 @@ This feature is experimental and the generated XML may change to enhance complia
 * A warning is now emitted when more than one of `#[Small]`, `#[Medium]`, or `#[Large]` is used on a test class
 * A warning is now emitted when a data provider provides data sets that have more values than the test method consumes using arguments
 
+[12.2.8]: https://github.com/sebastianbergmann/phpunit/compare/12.2.7...12.2
 [12.2.7]: https://github.com/sebastianbergmann/phpunit/compare/12.2.6...12.2.7
 [12.2.6]: https://github.com/sebastianbergmann/phpunit/compare/12.2.5...12.2.6
 [12.2.5]: https://github.com/sebastianbergmann/phpunit/compare/12.2.4...12.2.5

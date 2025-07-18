@@ -184,7 +184,7 @@ final readonly class CodeCoverage
             );
         }
 
-        return $this->openClover();
+        return $this->openClover;
     }
 
     /**
