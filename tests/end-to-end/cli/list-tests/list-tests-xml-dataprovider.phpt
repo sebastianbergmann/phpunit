@@ -16,7 +16,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 <?xml version="1.0"?>
 <tests>
- <testCaseClass name="PHPUnit\TestFixture\DataProviderTest">
+ <testCaseClass name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php">
   <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#0" name="testAdd" groups="default" dataSet="#0"/>
   <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#1" name="testAdd" groups="default" dataSet="#1"/>
   <testCaseMethod id="PHPUnit\TestFixture\DataProviderTest::testAdd#2" name="testAdd" groups="default" dataSet="#2"/>

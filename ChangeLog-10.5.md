@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [Unreleased]
+
+### Fixed
+
+* [#6097](https://github.com/sebastianbergmann/phpunit/issues/6097): `--list-tests-xml` file attribute shows incorrect path for tests inheriting from abstract classes
+
 ## [10.5.48] - 2025-07-11
 
 ### Fixed

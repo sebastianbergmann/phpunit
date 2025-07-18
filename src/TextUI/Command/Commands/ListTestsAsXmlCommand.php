@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function assert;
 use function file_put_contents;
 use function implode;
 use function sprintf;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\Configuration\Registry;
 use RecursiveIteratorIterator;
+use ReflectionClass;
 use XMLWriter;
 
 /**
@@ -58,6 +60,10 @@ final class ListTestsAsXmlCommand implements Command
 
                     $writer->startElement('testCaseClass');
                     $writer->writeAttribute('name', $test::class);
+
+                    $classFile = (new ReflectionClass($test))->getFileName();
+                    assert($classFile !== false);
+                    $writer->writeAttribute('file', $classFile);
 
                     $currentTestCase = $test::class;
                 }
