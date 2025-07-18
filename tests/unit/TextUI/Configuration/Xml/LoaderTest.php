@@ -193,6 +193,9 @@ final class LoaderTest extends TestCase
         $this->assertTrue($codeCoverage->hasClover());
         $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
 
+        $this->assertTrue($codeCoverage->hasOpenClover());
+        $this->assertSame(TEST_FILES_PATH . 'openclover.xml', $codeCoverage->openClover()->target()->path());
+
         $this->assertTrue($codeCoverage->hasCobertura());
         $this->assertSame(TEST_FILES_PATH . 'cobertura.xml', $codeCoverage->cobertura()->target()->path());
 
