@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithArray;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\TestCase;
 
@@ -35,6 +36,43 @@ final class TestWithTest extends TestCase
 
     #[TestWithJson('[1, 2, 3]', 'Name2')]
     public function testTwoWithName($one, $two, $three): void
+    {
+        $this->assertTrue(true);
+    }
+
+    #[TestWithArray([
+        [1, true],
+    ])]
+    public function testTestWithArrayBasic($one, $two): void
+    {
+        $this->assertTrue(true);
+    }
+
+    #[TestWithArray([
+        'firstCase' => [2, false],
+    ])]
+    public function testTestWithArrayNamedCase($one, $two): void
+    {
+        $this->assertTrue(true);
+    }
+
+    #[TestWithArray([
+        'odds' => [1, 3],
+        [-1, 0],
+        'evens' => [2, 4],
+    ])]
+    public function testTestWithArrayManyCasesWithMixedNames($one, $two): void
+    {
+        $this->assertTrue(true);
+    }
+
+    #[TestWithArray([
+        [5],
+    ])]
+    #[TestWithArray([
+        [6],
+    ])]
+    public function testMultipleTestWithArray($one): void
     {
         $this->assertTrue(true);
     }
