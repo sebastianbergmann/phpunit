@@ -68,7 +68,7 @@ final readonly class DataProvider
                         MetadataCollection::fromArray([]),
                         Event\TestData\TestDataCollection::fromArray([]),
                     ),
-                    'Mixing #[DataProvider] and #[TestWith] attributes is not supported, only the data provided by #[DataProvider] will be used',
+                    'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
                 );
             }
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
