@@ -1,5 +1,5 @@
 --TEST--
-phpunit ../_files/TestWithAttributeAndDataProviderTest.php
+phpunit ../_files/TestWithJsonAttributeAndDataProviderTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
