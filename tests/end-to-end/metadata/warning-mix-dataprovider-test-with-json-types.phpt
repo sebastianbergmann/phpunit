@@ -4,7 +4,7 @@ phpunit ../_files/TestWithAttributeAndDataProviderTest.php
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/../_files/TestWithAttributeAndDataProviderTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/TestWithJsonAttributeAndDataProviderTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -20,10 +20,10 @@ Time: %s, Memory: %s
 
 1 test triggered 1 PHPUnit warning:
 
-1) PHPUnit\TestFixture\TestWithAttributeAndDataProviderTest::testWithDifferentProviderTypes
-Mixing #[DataProvider] and #[TestWith] attributes is not supported, only the data provided by #[DataProvider] will be used
+1) PHPUnit\TestFixture\TestWithJsonAttributeAndDataProviderTest::testWithDifferentProviderTypes
+Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used
 
-%sTestWithAttributeAndDataProviderTest.php:%d
+%sTestWithJsonAttributeAndDataProviderTest.php:%d
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
