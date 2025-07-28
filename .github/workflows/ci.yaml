@@ -10,6 +10,7 @@ name: CI
 
 env:
   COMPOSER_ROOT_VERSION: "9.6.x-dev"
+  PHP_VERSION: 8.4
 
 permissions:
   contents: read
@@ -27,7 +28,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: ${{ env.PHP_VERSION }}
           extensions: none, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
           coverage: none
           tools: none
@@ -52,7 +53,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: ${{ env.PHP_VERSION }}
           extensions: none, iconv, json, phar, tokenizer
           coverage: none
           tools: none
@@ -210,7 +211,7 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: ${{ env.PHP_VERSION }}
           coverage: xdebug
           extensions: none, curl, dom, json, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
@@ -258,7 +259,7 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: ${{ env.PHP_VERSION }}
           coverage: none
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
