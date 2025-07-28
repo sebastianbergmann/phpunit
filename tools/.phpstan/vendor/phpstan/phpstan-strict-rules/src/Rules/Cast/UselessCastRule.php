@@ -55,12 +55,12 @@ class UselessCastRule implements Rule
 					return $ruleErrorBuilder;
 				}
 
-				$expressionTypeWithoutPhpDoc = $scope->getNativeType($node->expr);
-				if ($castType->isSuperTypeOf($expressionTypeWithoutPhpDoc)->yes()) {
+				if (!$this->treatPhpDocTypesAsCertainTip) {
 					return $ruleErrorBuilder;
 				}
 
-				if (!$this->treatPhpDocTypesAsCertainTip) {
+				$expressionTypeWithoutPhpDoc = $scope->getNativeType($node->expr);
+				if ($castType->isSuperTypeOf($expressionTypeWithoutPhpDoc)->yes()) {
 					return $ruleErrorBuilder;
 				}
 
