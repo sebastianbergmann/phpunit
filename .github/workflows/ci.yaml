@@ -10,6 +10,7 @@ name: CI
 
 env:
   COMPOSER_ROOT_VERSION: "8.5.x-dev"
+  PHP_VERSION: 8.4
 
 permissions:
   contents: read
@@ -27,7 +28,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: ${{ env.PHP_VERSION }}
           extensions: none, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
           coverage: none
           tools: none
@@ -52,7 +53,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: ${{ env.PHP_VERSION }}
           extensions: none, iconv, json, phar, tokenizer
           coverage: none
           tools: none
