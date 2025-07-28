@@ -24,11 +24,29 @@ can be checked before you run the actual line.
 
 ## Sponsors
 
+Want your logo here? [Learn more »](https://phpstan.org/sponsor)
+
+### Gold Sponsors
+
+<a href="https://ma.tt/"><img src="website/src/images/sponsor/matt.png" alt="Matt Mullenweg" width="290" height="64"></a>
+<a href="https://mojam.co/"><img src="website/src/images/sponsor/mojam.png" alt="Mojam" width="290" height="64"></a>
+
+<br><br>
+
+### Silver Sponsors
+
+<a href="https://www.startupjobs.cz/startup/shipmonk"><img src="website/src/images/sponsor/shipmonk.jpg" alt="ShipMonk" width="290" height="64"></a>
+<a href="https://www.shopware.com/en/"><img src="website/src/images/sponsor/shopware.png" alt="Shopware" width="284" height="64"></a>
+
+<br><br>
+
+### Bronze Sponsors
+
 <a href="https://coders.thecodingmachine.com/phpstan"><img src="website/src/images/sponsor/tcm.png" alt="TheCodingMachine" width="247" height="64"></a>
 &nbsp;&nbsp;&nbsp;
 <a href="https://packagist.com/?utm_source=phpstan&utm_medium=readme&utm_campaign=sponsorlogo"><img src="website/src/images/sponsor/packagist.png" alt="Private Packagist" width="283" height="64"></a>
 <br>
-<a href="https://www.cdn77.com/"><img src="website/src/images/sponsor/cdn77.png" alt="CDN77" width="283" height="64"></a>
+<a href="https://www.cdn77.com/"><img src="website/src/images/sponsor/cdn77.png" alt="CDN77" width="290" height="64"></a>
 &nbsp;&nbsp;&nbsp;
 <a href="https://blackfire.io/docs/introduction?utm_source=phpstan&utm_medium=github_readme&utm_campaign=logo"><img src="website/src/images/sponsor/blackfire.png" alt="Blackfire.io" width="254" height="64"></a>
 <br>
@@ -36,7 +54,7 @@ can be checked before you run the actual line.
 &nbsp;&nbsp;&nbsp;
 <a href="https://www.fame.fi/"><img src="website/src/images/sponsor/fame.png" alt="Fame Helsinki" width="283" height="64"></a>
 <br>
-<a href="https://www.startupjobs.cz/startup/shipmonk"><img src="website/src/images/sponsor/shipmonk.jpg" alt="ShipMonk" width="290" height="64"></a>
+<a href="https://werkenbijbelsimpel.nl/en/about-us/"><img src="website/src/images/sponsor/belsimpel.png" alt="Belsimpel" width="284" height="64"></a>
 &nbsp;&nbsp;&nbsp;
 <a href="https://togetter.com/"><img src="website/src/images/sponsor/togetter.png" alt="Togetter" width="283" height="64"></a>
 <br>
@@ -48,7 +66,7 @@ can be checked before you run the actual line.
 &nbsp;&nbsp;&nbsp;
 <a href="https://www.edgenext.com/"><img src="website/src/images/sponsor/edgenext.png" alt="EdgeNext" width="283" height="64"></a>
 <br>
-<a href="https://www.shopware.com/en/"><img src="website/src/images/sponsor/shopware.png" alt="Shopware" width="284" height="64"></a>
+<a href="https://route4me.com/"><img src="website/src/images/sponsor/route4me.png" alt="Route4Me: Route Optimizer and Route Planner Software" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
 <a href="https://craftcms.com/"><img src="website/src/images/sponsor/craftcms.png" alt="Craft CMS" width="283" height="64"></a>
 <br>
@@ -62,15 +80,10 @@ can be checked before you run the actual line.
 <br>
 <a href="https://www.shoptet.cz/"><img src="website/src/images/sponsor/shoptet.png" alt="Shoptet" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
-<a href="https://route4me.com/"><img src="website/src/images/sponsor/route4me.png" alt="Route4Me: Route Optimizer and Route Planner Software" width="283" height="64"></a>
-<br>
-<a href="https://werkenbijbelsimpel.nl/en/about-us/"><img src="website/src/images/sponsor/belsimpel.png" alt="Belsimpel" width="284" height="64"></a>
-&nbsp;&nbsp;&nbsp;
 
 
-[**You can now sponsor my open-source work on PHPStan through GitHub Sponsors.**](https://github.com/sponsors/ondrejmirtes)
 
-Does GitHub already have your 💳? Do you use PHPStan to find 🐛 before they reach production? [Send a couple of 💸 a month my way too.](https://github.com/sponsors/ondrejmirtes) Thank you!
+[**You can sponsor my open-source work on PHPStan through GitHub Sponsors and also directly.**](https://phpstan.org/sponsor)
 
 One-time donations [through Revolut.me](https://revolut.me/ondrejmirtes) are also accepted. To request an invoice, [contact me](mailto:ondrej@mirtes.cz) through e-mail.
 

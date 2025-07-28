@@ -6,31 +6,29 @@
 
 [PHPStan](https://phpstan.org/) focuses on finding bugs in your code. But in PHP there's a lot of leeway in how stuff can be written. This repository contains additional rules that revolve around strictly and strongly typed code with no loose casting for those who want additional safety in extremely defensive programming:
 
-* Require booleans in `if`, `elseif`, ternary operator, after `!`, and on both sides of `&&` and `||`.
-* Require booleans in `while` and `do while` loop conditions.
-* Require numeric operands or arrays in `+` and numeric operands in `-`/`*`/`/`/`**`/`%`.
-* Require numeric operand in `$var++`, `$var--`, `++$var`and `--$var`.
-* These functions contain a `$strict` parameter for better type safety, it must be set to `true`:
-  * `in_array` (3rd parameter)
-  * `array_search` (3rd parameter)
-  * `array_keys` (3rd parameter; only if the 2nd parameter `$search_value` is provided)
-  * `base64_decode` (2nd parameter)
-* Variables assigned in `while` loop condition and `for` loop initial assignment cannot be used after the loop.
-* Variables set in foreach that's always looped thanks to non-empty arrays cannot be used after the loop.
-* Types in `switch` condition and `case` value must match. PHP compares them loosely by default and that can lead to unexpected results.
-* Check that statically declared methods are called statically.
-* Disallow `empty()` - it's a very loose comparison (see [manual](https://php.net/empty)), it's recommended to use more strict one.
-* Disallow short ternary operator (`?:`) - implies weak comparison, it's recommended to use null coalesce operator (`??`) or ternary operator with strict condition.
-* Disallow variable variables (`$$foo`, `$this->$method()` etc.)
-* Disallow overwriting variables with foreach key and value variables
-* Always true `instanceof`, type-checking `is_*` functions and strict comparisons `===`/`!==`. These checks can be turned off by setting `checkAlwaysTrueInstanceof`/`checkAlwaysTrueCheckTypeFunctionCall`/`checkAlwaysTrueStrictComparison` to false.
-* Correct case for referenced and called function names.
-* Correct case for inherited and implemented method names.
-* Contravariance for parameter types and covariance for return types in inherited methods (also known as Liskov substitution principle - LSP)
-* Check LSP even for static methods
-* Require calling parent constructor
-* Disallow usage of backtick operator (`` $ls = `ls -la` ``)
-* Closure should use `$this` directly instead of using `$this` variable indirectly
+| Configuration Parameters               | Rule Description                                                                                        |
+|:---------------------------------------|:--------------------------------------------------------------------------------------------------------|
+| `booleansInConditions`                 | Require booleans in `if`, `elseif`, ternary operator, after `!`, and on both sides of `&&` and `\|\|`.  |
+| `booleansInLoopConditions`             | Require booleans in `while` and `do while` loop conditions.                                             |
+| `numericOperandsInArithmeticOperators` | Require numeric operand in `+$var`, `-$var`, `$var++`, `$var--`, `++$var` and `--$var`. |
+| `numericOperandsInArithmeticOperators` | Require numeric operand in `$var++`, `$var--`, `++$var`and `--$var`.                                    |
+| `strictFunctionCalls`                  | These functions contain a `$strict` parameter for better type safety, it must be set to `true`:<br>* `in_array` (3rd parameter)<br>* `array_search` (3rd parameter)<br>* `array_keys` (3rd parameter; only if the 2nd parameter `$search_value` is provided)<br>* `base64_decode` (2nd parameter). |
+| `overwriteVariablesWithLoop`           | Variables assigned in `while` loop condition and `for` loop initial assignment cannot be used after the loop.  |
+| `overwriteVariablesWithLoop`           | Variables set in foreach that's always looped thanks to non-empty arrays cannot be used after the loop. |
+| `switchConditionsMatchingType`         | Types in `switch` condition and `case` value must match. PHP compares them loosely by default and that can lead to  unexpected results. |
+| `dynamicCallOnStaticMethod`            | Check that statically declared methods are called statically.                                           |
+| `disallowedEmpty`                      | Disallow `empty()` - it's a very loose comparison (see [manual](https://php.net/empty)), it's recommended to use more  strict one. |
+| `disallowedShortTernary`               | Disallow short ternary operator (`?:`) - implies weak comparison, it's recommended to use null coalesce operator (`??`)  or ternary operator with strict condition. |
+| `noVariableVariables`                  | Disallow variable variables (`$$foo`, `$this->$method()` etc.).                                         |
+| `overwriteVariablesWithLoop`           | Disallow overwriting variables with foreach key and value variables.                                    |
+| `checkAlwaysTrueInstanceof`, `checkAlwaysTrueCheckTypeFunctionCall`, `checkAlwaysTrueStrictComparison` | Always true `instanceof`, type-checking `is_*` functions and strict comparisons `===`/`!==`. These checks can be turned off by setting `checkAlwaysTrueInstanceof`, `checkAlwaysTrueCheckTypeFunctionCall` and `checkAlwaysTrueStrictComparison` to false. |
+|                                        | Correct case for referenced and called function names.                                                  |
+| `matchingInheritedMethodNames`         | Correct case for inherited and implemented method names.                                                |
+|                                        | Contravariance for parameter types and covariance for return types in inherited methods (also known as Liskov substitution principle - LSP).|
+|                                        | Check LSP even for static methods.                                                                      |
+| `requireParentConstructorCall`         | Require calling parent constructor.                                                                     |
+| `disallowedBacktick`                   | Disallow usage of backtick operator (`` $ls = `ls -la` ``).                                             |
+| `closureUsesThis`                      | Closure should use `$this` directly instead of using `$this` variable indirectly.                       |
 
 Additional rules are coming in subsequent releases!
 
@@ -84,7 +82,7 @@ parameters:
 		illegalConstructorMethodCall: false
 ```
 
-Aside from introducing new custom rules, phpstan-strict-rules also [change the default values of some configuration parameters](https://github.com/phpstan/phpstan-strict-rules/blob/1.6.x/rules.neon#L1) that are present in PHPStan itself. These parameters are [documented on phpstan.org](https://phpstan.org/config-reference#stricter-analysis).
+Aside from introducing new custom rules, phpstan-strict-rules also [change the default values of some configuration parameters](./rules.neon#L1) that are present in PHPStan itself. These parameters are [documented on phpstan.org](https://phpstan.org/config-reference#stricter-analysis).
 
 ## Enabling rules one-by-one
 
@@ -107,4 +105,4 @@ parameters:
 		booleansInConditions: true
 ```
 
-Even with `strictRules.allRules` set to `false`, part of this package is still in effect. That's because phpstan-strict-rules also [change the default values of some configuration parameters](https://github.com/phpstan/phpstan-strict-rules/blob/1.6.x/rules.neon#L1) that are present in PHPStan itself. These parameters are [documented on phpstan.org](https://phpstan.org/config-reference#stricter-analysis).
+Even with `strictRules.allRules` set to `false`, part of this package is still in effect. That's because phpstan-strict-rules also [change the default values of some configuration parameters](./rules.neon#L1) that are present in PHPStan itself. These parameters are [documented on phpstan.org](https://phpstan.org/config-reference#stricter-analysis).
