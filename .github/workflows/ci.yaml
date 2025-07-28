@@ -11,7 +11,6 @@ name: CI
 env:
   COMPOSER_ROOT_VERSION: "8.5.x-dev"
   PHP_VERSION: 8.4
-  UNSTABLE_PHP_VERSION: 8.5
 
 permissions:
   contents: read
@@ -142,13 +141,7 @@ jobs:
       - name: Install dependencies with Composer
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
-      - name: Run tests with PHPUnit using stable PHP version
-        if: matrix.php-version != ${{ env.UNSTABLE_PHP_VERSION }}
-        run: php ./phpunit --testsuite unit
-
-      - name: Run tests with PHPUnit using unstable PHP version
-        if: matrix.php-version == ${{ env.UNSTABLE_PHP_VERSION }}
-        continue-on-error: true
+      - name: Run tests with PHPUnit
         run: php ./phpunit --testsuite unit
 
   end-to-end-tests:
@@ -200,13 +193,7 @@ jobs:
       - name: Install dependencies with Composer
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
-      - name: Run tests with PHPUnit using stable PHP version
-        if: matrix.php-version != ${{ env.UNSTABLE_PHP_VERSION }}
-        run: php ./phpunit --testsuite end-to-end
-
-      - name: Run tests with PHPUnit using unstable PHP version
-        if: matrix.php-version == ${{ env.UNSTABLE_PHP_VERSION }}
-        continue-on-error: true
+      - name: Run tests with PHPUnit
         run: php ./phpunit --testsuite end-to-end
 
   code-coverage:
