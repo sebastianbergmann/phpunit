@@ -43,3 +43,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
   </group>
  </groups>
 </testSuite>%A
+Wrote list of tests that would have been run to php://stdout
