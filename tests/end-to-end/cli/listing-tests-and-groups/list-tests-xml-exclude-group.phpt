@@ -19,7 +19,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 <?xml version="1.0"?>
 <testSuite xmlns="https://xml.phpunit.de/testSuite">
  <tests>
-  <testClass name="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleExtendingAbstractTest" file="%ExampleExtendingAbstractTest.php">
+  <testClass name="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleExtendingAbstractTest" file="%sExampleExtendingAbstractTest.php">
    <testMethod id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleExtendingAbstractTest::testOne" name="testOne"/>
   </testClass>
   <testClass name="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest" file="%sExampleTest.php">
