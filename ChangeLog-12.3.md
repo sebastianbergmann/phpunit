@@ -16,6 +16,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 
 * [#6237](https://github.com/sebastianbergmann/phpunit/issues/6237): Do not run tests when code coverage analysis is requested but code coverage data cannot be collected
 * [#6272](https://github.com/sebastianbergmann/phpunit/issues/6272): Use `@<data-set-name>` format (compatible with `--filter` CLI option) in defect messages
+* [#6273](https://github.com/sebastianbergmann/phpunit/pull/6273): Warn when `#[DataProvider*]` attributes are mixed with `#[TestWith*]` attributes
 
 ### Deprecated
 
