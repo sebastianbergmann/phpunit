@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\BankAccountTest;
+use PHPUnit\TestFixture\ConcreteTestClassExtendingAbstractTestClassWithoutTestSuffixTest;
 use ReflectionClass;
 
 #[CoversClass(Reflection::class)]
@@ -28,6 +29,17 @@ final class ReflectionTest extends TestCase
                 'line' => 22,
             ],
             Reflection::sourceLocationFor(BankAccountTest::class, 'testBalanceIsInitiallyZero'),
+        );
+    }
+
+    public function testFindsSourceLocationForMethodInAbstractTestCase(): void
+    {
+        $this->assertSame(
+            [
+                'file' => realpath(__DIR__ . '/../../_files/abstract/without-test-suffix/AbstractTestCase.php'),
+                'line' => 16,
+            ],
+            Reflection::sourceLocationFor(ConcreteTestClassExtendingAbstractTestClassWithoutTestSuffixTest::class, 'testOne'),
         );
     }
 
