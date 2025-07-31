@@ -65,6 +65,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\Constraint\Dictionary\IsIdenticalKeysValues;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 
@@ -1760,6 +1761,21 @@ abstract class Assert
                 new IsIdentical($expected),
             ),
             $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays have the same keys and values for those keys.
+     * The order of the keys is ignored.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertSameDictionaryKeysValues(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new IsIdenticalKeysValues($expected),
+            $message
         );
     }
 
