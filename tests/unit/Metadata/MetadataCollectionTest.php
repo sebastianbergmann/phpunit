@@ -331,6 +331,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isIgnorePhpunitDeprecations());
     }
 
+    public function test_Can_be_filtered_for_IgnorePhpunitWarnings(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnorePhpunitWarnings();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnorePhpunitWarnings());
+    }
+
     public function test_Can_be_filtered_for_PostCondition(): void
     {
         $collection = $this->collectionWithOneOfEach()->isPostCondition();
@@ -563,14 +571,6 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isWithoutErrorHandler());
     }
 
-    public function test_Can_be_filtered_for_IgnorePhpunitWarnings(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isIgnorePhpunitWarnings();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isIgnorePhpunitWarnings());
-    }
-
     private function collectionWithOneOfEach(): MetadataCollection
     {
         return MetadataCollection::fromArray(
@@ -599,6 +599,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::groupOnClass(''),
                 Metadata::ignoreDeprecationsOnClass(),
                 Metadata::ignorePhpunitDeprecationsOnClass(),
+                Metadata::ignorePhpunitWarnings(null),
                 Metadata::postCondition(0),
                 Metadata::preCondition(0),
                 Metadata::preserveGlobalStateOnClass(true),
@@ -638,7 +639,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesMethod('', ''),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
-                Metadata::ignorePhpunitWarnings(null),
             ],
         );
     }
