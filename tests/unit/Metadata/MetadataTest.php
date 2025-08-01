@@ -26,7 +26,9 @@ final class MetadataTest extends TestCase
 {
     public function testCanBeAfter(): void
     {
-        $metadata = Metadata::after(0);
+        $priority = 0;
+
+        $metadata = Metadata::after($priority);
 
         $this->assertTrue($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -85,11 +87,14 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($priority, $metadata->priority());
     }
 
     public function testCanBeAfterClass(): void
     {
-        $metadata = Metadata::afterClass(0);
+        $priority = 0;
+
+        $metadata = Metadata::afterClass($priority);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertTrue($metadata->isAfterClass());
@@ -148,6 +153,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($priority, $metadata->priority());
     }
 
     public function testCanBeBackupGlobalsOnClass(): void
@@ -408,7 +414,9 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBeforeClass(): void
     {
-        $metadata = Metadata::beforeClass(0);
+        $priority = 0;
+
+        $metadata = Metadata::beforeClass($priority);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -467,11 +475,14 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($priority, $metadata->priority());
     }
 
     public function testCanBeBefore(): void
     {
-        $metadata = Metadata::before(0);
+        $priority = 0;
+
+        $metadata = Metadata::before($priority);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -529,6 +540,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($priority, $metadata->priority());
     }
 
     public function testCanBeCoversClass(): void
@@ -2464,7 +2476,9 @@ final class MetadataTest extends TestCase
 
     public function testCanBePreCondition(): void
     {
-        $metadata = Metadata::preCondition(0);
+        $priority = 0;
+
+        $metadata = Metadata::preCondition($priority);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2523,11 +2537,14 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($priority, $metadata->priority());
     }
 
     public function testCanBePostCondition(): void
     {
-        $metadata = Metadata::postCondition(0);
+        $priority = 0;
+
+        $metadata = Metadata::postCondition($priority);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2586,6 +2603,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($priority, $metadata->priority());
     }
 
     public function testCanBePreserveGlobalStateOnClass(): void
