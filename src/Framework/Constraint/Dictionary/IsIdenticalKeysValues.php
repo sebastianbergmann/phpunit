@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace PHPUnit\Framework\Constraint\Dictionary;
 
 use function array_key_exists;
-use function assert;
 use function in_array;
 use function is_array;
 use function is_object;
@@ -48,13 +47,36 @@ final class IsIdenticalKeysValues extends Constraint
      */
     public function evaluate(mixed $other, string $description = '', bool $returnResult = false): bool
     {
-        assert(is_array($this->value));
-        assert(is_array($other));
-
         // cribbed from `src/Framework/Constraint/Equality/IsEqualCanonicalizing.php`
         try {
-            $this->compareDictionary($this->value, $other);
+            if (!is_array($this->value)) {
+                throw new ComparisonFailure(
+                    gettype([]),
+                    gettype($this->value),
+                    (new Exporter)->export(gettype([])),
+                    (new Exporter)->export(gettype($this->value)),
+                    sprintf(
+                        '%s is not an instance of %s',
+                        (new Exporter)->export(gettype($this->value)),
+                        (new Exporter)->export(gettype([])),
+                    )
+                );
+            }
+            if (!is_array($other)) {
+                throw new ComparisonFailure(
+                    gettype([]),
+                    gettype($other),
+                    (new Exporter)->export(gettype([])),
+                    (new Exporter)->export(gettype($other)),
+                    sprintf(
+                        '%s is not an instance of %s',
+                        (new Exporter)->export(gettype($other)),
+                        (new Exporter)->export(gettype([])),
+                    )
+                );
+            }
 
+            $this->compareDictionary($this->value, $other);
         } catch (ComparisonFailure $f) {
             if ($returnResult) {
                 return false;

@@ -30,16 +30,32 @@ final class IsIdenticalKeysValuesTest extends TestCase
             'expected is not an array' => [
                 false,
                 'is identical to \'not-array\'',
-                'assert(is_array($this->value))',
-                '',
+                '\'string\' is not an instance of \'array\'',
+                <<<'EOT'
+'string' is not an instance of 'array'
+--- Expected
++++ Actual
+@@ @@
+-'array'
++'string'
+EOT
+,
                 'not-array',
                 [],
             ],
             'actual is not an array' => [
                 false,
-                'is identical to Array &0 []',
-                'assert(is_array($other))',
-                '',
+                'is identical to Array &%d []',
+                '\'string\' is not an instance of \'array\'',
+                <<<'EOT'
+'string' is not an instance of 'array'
+--- Expected
++++ Actual
+@@ @@
+-'array'
++'string'
+EOT
+                ,
                 [],
                 'not-array',
             ],
