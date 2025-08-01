@@ -71,6 +71,7 @@ final readonly class DataProvider
                     'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
                 );
             }
+
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
         } else {
             $data = $this->dataProvidedByMetadata($testWith);
