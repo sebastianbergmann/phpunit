@@ -60,6 +60,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestDoxFormatter;
+use PHPUnit\Framework\Attributes\TestDoxFormatterExternal;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
@@ -127,6 +129,8 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(RunTestsInSeparateProcesses::class)]
 #[CoversClass(Small::class)]
 #[CoversClass(TestDox::class)]
+#[CoversClass(TestDoxFormatter::class)]
+#[CoversClass(TestDoxFormatterExternal::class)]
 #[CoversClass(Test::class)]
 #[CoversClass(TestWithJson::class)]
 #[CoversClass(TestWith::class)]
