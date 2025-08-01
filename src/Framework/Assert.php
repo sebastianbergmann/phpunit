@@ -1770,7 +1770,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      */
-    final public static function assertSameDictionaryKeysValues(array $expected, array $actual, string $message = ''): void
+    final public static function assertSameDictionaryKeysValues(mixed $expected, mixed $actual, string $message = ''): void
     {
         self::assertThat(
             $actual,

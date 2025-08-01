@@ -46,7 +46,7 @@ final class IsIdenticalKeysValues extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): bool
     {
         assert(is_array($this->value));
         assert(is_array($other));
@@ -54,6 +54,7 @@ final class IsIdenticalKeysValues extends Constraint
         // cribbed from `src/Framework/Constraint/Equality/IsEqualCanonicalizing.php`
         try {
             $this->compareDictionary($this->value, $other);
+
         } catch (ComparisonFailure $f) {
             if ($returnResult) {
                 return false;
@@ -64,7 +65,6 @@ final class IsIdenticalKeysValues extends Constraint
                 $f,
             );
         }
-
         return true;
     }
 
@@ -80,6 +80,7 @@ final class IsIdenticalKeysValues extends Constraint
      * cribbed from `vendor/sebastian/comparator/src/ArrayComparator.php`
      * This potentially should be a dictionarycomparator or type-strict arraycomparator.
      */
+    /** @phpstan-ignore missingType.iterableValue, missingType.iterableValue, missingType.iterableValue */
     private function compareDictionary(array $expected, array $actual, array &$processed = []): void
     {
         $remaining        = $actual;
@@ -204,6 +205,7 @@ final class IsIdenticalKeysValues extends Constraint
      * cribbed from `vendor/sebastian/comparator/src/ObjectComparator.php`
      * this potentially should be a type-strict objectcomparator.
      */
+    /** @phpstan-ignore missingType.iterableValue */
     private function compareObjects(object $expected, object $actual, array &$processed = []): void
     {
         if ($actual::class !== $expected::class) {
@@ -251,6 +253,7 @@ final class IsIdenticalKeysValues extends Constraint
     /**
      * cribbed from `vendor/sebastian/comparator/src/ObjectComparator.php`.
      */
+    /** @phpstan-ignore missingType.iterableValue */
     private function toArray(object $object): array
     {
         return (new Exporter)->toArray($object);
