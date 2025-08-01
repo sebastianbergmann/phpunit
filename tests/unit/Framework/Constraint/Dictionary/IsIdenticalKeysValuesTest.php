@@ -39,7 +39,7 @@ final class IsIdenticalKeysValuesTest extends TestCase
 -'array'
 +'string'
 EOT
-,
+                ,
                 'not-array',
                 [],
             ],

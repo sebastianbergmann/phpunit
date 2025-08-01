@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PHPUnit\Framework\Constraint\Dictionary;
 
 use function array_key_exists;
+use function gettype;
 use function in_array;
 use function is_array;
 use function is_object;
@@ -59,9 +60,10 @@ final class IsIdenticalKeysValues extends Constraint
                         '%s is not an instance of %s',
                         (new Exporter)->export(gettype($this->value)),
                         (new Exporter)->export(gettype([])),
-                    )
+                    ),
                 );
             }
+
             if (!is_array($other)) {
                 throw new ComparisonFailure(
                     gettype([]),
@@ -72,7 +74,7 @@ final class IsIdenticalKeysValues extends Constraint
                         '%s is not an instance of %s',
                         (new Exporter)->export(gettype($other)),
                         (new Exporter)->export(gettype([])),
-                    )
+                    ),
                 );
             }
 
@@ -87,6 +89,7 @@ final class IsIdenticalKeysValues extends Constraint
                 $f,
             );
         }
+
         return true;
     }
 
