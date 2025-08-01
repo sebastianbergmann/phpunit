@@ -70,10 +70,10 @@ use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\Attributes\UsesTrait;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Metadata\InvalidAttributeException;
-use PHPUnit\Metadata\WithEnvironmentVariable;
 
 #[CoversClass(AttributeParser::class)]
 #[CoversClass(AfterClass::class)]
