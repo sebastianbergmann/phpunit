@@ -563,6 +563,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isWithoutErrorHandler());
     }
 
+    public function test_Can_be_filtered_for_IgnorePhpunitWarnings(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isIgnorePhpunitWarnings();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isIgnorePhpunitWarnings());
+    }
+
     private function collectionWithOneOfEach(): MetadataCollection
     {
         return MetadataCollection::fromArray(
@@ -630,6 +638,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesMethod('', ''),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
+                Metadata::ignorePhpunitWarnings(null),
             ],
         );
     }
