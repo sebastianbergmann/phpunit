@@ -1837,6 +1837,23 @@ if (!function_exists('PHPUnit\Framework\assertNotSame')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertSameDictionaryKeysValues')) {
+    /**
+     * Assert that two arrays have the same keys and values for those keys.
+     *  The order of the keys is ignored.
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertSameDictionaryKeysValues
+     */
+    function assertSameDictionaryKeysValues(mixed $expected, mixed $actual, string $message = ''): void
+    {
+        Assert::assertSameDictionaryKeysValues(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
     /**
      * Asserts that a variable is of a given type.
