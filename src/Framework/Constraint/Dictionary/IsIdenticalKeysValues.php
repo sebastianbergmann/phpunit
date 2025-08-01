@@ -1,9 +1,25 @@
 <?php
 
 declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Framework\Constraint\Dictionary;
 
+use function array_key_exists;
+use function assert;
+use function in_array;
+use function is_array;
+use function is_object;
+use function sprintf;
+use function str_replace;
+use function substr_replace;
+use function trim;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -42,11 +58,13 @@ final class IsIdenticalKeysValues extends Constraint
             if ($returnResult) {
                 return false;
             }
+
             throw new ExpectationFailedException(
                 trim($description . "\n" . $f->getMessage()),
-                $f
+                $f,
             );
         }
+
         return true;
     }
 
@@ -60,15 +78,15 @@ final class IsIdenticalKeysValues extends Constraint
 
     /**
      * cribbed from `vendor/sebastian/comparator/src/ArrayComparator.php`
-     * This potentially should be a dictionarycomparator or type-strict arraycomparator
+     * This potentially should be a dictionarycomparator or type-strict arraycomparator.
      */
     private function compareDictionary(array $expected, array $actual, array &$processed = []): void
     {
-        $remaining = $actual;
-        $actualAsString = "Array (\n";
+        $remaining        = $actual;
+        $actualAsString   = "Array (\n";
         $expectedAsString = "Array (\n";
-        $equal = true;
-        $exporter = new Exporter;
+        $equal            = true;
+        $exporter         = new Exporter;
 
         foreach ($expected as $key => $value) {
             unset($remaining[$key]);
@@ -80,6 +98,7 @@ final class IsIdenticalKeysValues extends Constraint
                     $exporter->shortenedExport($value),
                 );
                 $equal = false;
+
                 continue;
             }
 
@@ -94,12 +113,13 @@ final class IsIdenticalKeysValues extends Constraint
                             $exporter->export($actual[$key]),
                         );
 
-                    // expected array, got array
+                        // expected array, got array
                     case is_array($value) && is_array($actual[$key]):
                         $this->compareDictionary($value, $actual[$key]);
+
                         break;
 
-                    // type mismatch, expected object, got something else
+                        // type mismatch, expected object, got something else
                     case is_object($value) && !is_object($actual[$key]):
                         throw new ComparisonFailure(
                             $value,
@@ -108,16 +128,18 @@ final class IsIdenticalKeysValues extends Constraint
                             $exporter->export($actual[$key]),
                         );
 
-                    // type mismatch, expected object, got object
+                        // type mismatch, expected object, got object
                     case is_object($value) && is_object($actual[$key]):
                         $this->compareObjects($value, $actual[$key], $processed);
+
                         break;
 
-                    // both are not array, both are not objects, strict comparison check
+                        // both are not array, both are not objects, strict comparison check
                     default:
                         if ($value === $actual[$key]) {
                             continue 2;
                         }
+
                         throw new ComparisonFailure(
                             $value,
                             $actual[$key],
@@ -141,14 +163,14 @@ final class IsIdenticalKeysValues extends Constraint
                     "    %s => %s\n",
                     $exporter->export($key),
                     $e->getExpectedAsString() !== '' ? $this->indent(
-                        $e->getExpectedAsString()
+                        $e->getExpectedAsString(),
                     ) : $exporter->shortenedExport($e->getExpected()),
                 );
                 $actualAsString .= sprintf(
                     "    %s => %s\n",
                     $exporter->export($key),
                     $e->getActualAsString() !== '' ? $this->indent(
-                        $e->getActualAsString()
+                        $e->getActualAsString(),
                     ) : $exporter->shortenedExport($e->getActual()),
                 );
                 $equal = false;
@@ -180,9 +202,9 @@ final class IsIdenticalKeysValues extends Constraint
 
     /**
      * cribbed from `vendor/sebastian/comparator/src/ObjectComparator.php`
-     * this potentially should be a type-strict objectcomparator
+     * this potentially should be a type-strict objectcomparator.
      */
-    private function compareObjects(object $expected, object $actual, array &$processed = [])
+    private function compareObjects(object $expected, object $actual, array &$processed = []): void
     {
         if ($actual::class !== $expected::class) {
             $exporter = new Exporter;
@@ -207,9 +229,11 @@ final class IsIdenticalKeysValues extends Constraint
         }
 
         $processed[] = [$actual, $expected];
+
         if ($actual === $expected) {
             return;
         }
+
         try {
             $this->compareDictionary($this->toArray($expected), $this->toArray($actual), $processed);
         } catch (ComparisonFailure $e) {
@@ -225,7 +249,7 @@ final class IsIdenticalKeysValues extends Constraint
     }
 
     /**
-     * cribbed from `vendor/sebastian/comparator/src/ObjectComparator.php`
+     * cribbed from `vendor/sebastian/comparator/src/ObjectComparator.php`.
      */
     private function toArray(object $object): array
     {
@@ -233,7 +257,7 @@ final class IsIdenticalKeysValues extends Constraint
     }
 
     /**
-     * cribbed from `vendor/sebastian/comparator/src/ArrayComparator.php`
+     * cribbed from `vendor/sebastian/comparator/src/ArrayComparator.php`.
      */
     private function indent(string $lines): string
     {

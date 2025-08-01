@@ -1,7 +1,14 @@
 <?php
 
 declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Framework\Constraint\Dictionary;
 
 use AssertionError;
@@ -43,7 +50,7 @@ is identical to Array &%d [
     'a' => 0,
 ]
 EOT
-,
+                ,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
 Failed asserting that two arrays are equal.
@@ -56,7 +63,7 @@ Failed asserting that two arrays are equal.
  )
 
 EOT
-,
+                ,
                 ['a' => 0],
                 [0],
             ],
@@ -67,7 +74,7 @@ is identical to Array &%d [
     0 => 0,
 ]
 EOT
-,
+                ,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
 Failed asserting that two arrays are equal.
@@ -80,7 +87,7 @@ Failed asserting that two arrays are equal.
  )
 
 EOT
-,
+                ,
                 [0],
                 ['a' => 0],
             ],
@@ -91,7 +98,7 @@ is identical to Array &%d [
     'a' => Array &%d [],
 ]
 EOT
-,
+                ,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
 Failed asserting that two arrays are equal.
@@ -104,7 +111,7 @@ Failed asserting that two arrays are equal.
  )
 
 EOT
-,
+                ,
                 ['a' => []],
                 ['a' => 0],
             ],
@@ -115,7 +122,7 @@ is identical to Array &%d [
     'a' => stdClass Object #%d (),
 ]
 EOT
-,
+                ,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
 Failed asserting that two arrays are equal.
@@ -128,8 +135,8 @@ Failed asserting that two arrays are equal.
  )
 
 EOT
-,
-                ['a' => new stdClass()],
+                ,
+                ['a' => new stdClass],
                 ['a' => 0],
             ],
             'expected object value does not match actual object value' => [
@@ -141,7 +148,7 @@ is identical to Array &%d [
     ),
 ]
 EOT
-,
+                ,
                 'Failed asserting that two arrays are equal.',
                 <<<'EOT'
 Failed asserting that two arrays are equal.
@@ -156,7 +163,7 @@ Failed asserting that two arrays are equal.
  )
 
 EOT
-,
+                ,
                 ['a' => self::stdClass('a', 1)],
                 ['a' => self::stdClass('a', '1')],
             ],
@@ -176,18 +183,18 @@ is identical to Array &%d [
     1 => 1,
 ]
 EOT
-,
+                ,
                 '',
                 '',
                 [
                     'string' => 'string',
-                    true => true,
-                    1 => 1,
+                    true     => true,
+                    1        => 1,
                 ],
                 [
                     'string' => 'string',
-                    true => true,
-                    1 => 1,
+                    true     => true,
+                    1        => 1,
                 ],
             ],
             'value equality (string, bool, int, float, object, array, dictionary)' => [
@@ -220,39 +227,39 @@ is identical to Array &%d [
     ],
 ]
 EOT
-,
+                ,
                 '',
                 '',
                 [
-                    'string' => 'string',
-                    true => true,
-                    1 => 1,
-                    2 => 2.5,
-                    'object' => self::stdClass('key', 'value'),
-                    'array' => [1, 2, 3],
+                    'string'     => 'string',
+                    true         => true,
+                    1            => 1,
+                    2            => 2.5,
+                    'object'     => self::stdClass('key', 'value'),
+                    'array'      => [1, 2, 3],
                     'dictionary' => [
                         'string' => 'string',
-                        true => true,
-                        1 => 1,
-                        2 => 2.5,
+                        true     => true,
+                        1        => 1,
+                        2        => 2.5,
                         'object' => self::stdClass('key', 'value'),
-                        'array' => [1, 2, 3],
+                        'array'  => [1, 2, 3],
                     ],
                 ],
                 [
-                    'string' => 'string',
-                    true => true,
-                    1 => 1,
-                    2 => 2.5,
-                    'object' => self::stdClass('key', 'value'),
-                    'array' => [1, 2, 3],
+                    'string'     => 'string',
+                    true         => true,
+                    1            => 1,
+                    2            => 2.5,
+                    'object'     => self::stdClass('key', 'value'),
+                    'array'      => [1, 2, 3],
                     'dictionary' => [
                         'string' => 'string',
-                        true => true,
-                        1 => 1,
-                        2 => 2.5,
+                        true     => true,
+                        1        => 1,
+                        2        => 2.5,
                         'object' => self::stdClass('key', 'value'),
-                        'array' => [1, 2, 3],
+                        'array'  => [1, 2, 3],
                     ],
                 ],
             ],
@@ -272,19 +279,22 @@ EOT
 
         try {
             $this->assertSame($result, $constraint->evaluate($actual, returnResult: true));
+
             if ($result) {
                 return;
             }
             $constraint->evaluate($actual);
         } catch (AssertionError $e) {
             $this->assertSame($failureDescription, $e->getMessage());
+
             return;
         } catch (ExpectationFailedException $e) {
             $this->assertSame($failureDescription, $e->getMessage());
             $this->assertStringMatchesFormat(
                 $comparisonFailureAsString,
-                $e->getComparisonFailure() ? $e->getComparisonFailure()->toString() : ''
+                $e->getComparisonFailure() ? $e->getComparisonFailure()->toString() : '',
             );
+
             return;
         }
 

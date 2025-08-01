@@ -25,6 +25,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
+use PHPUnit\Framework\Constraint\Dictionary\IsIdenticalKeysValues;
 use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
@@ -65,7 +66,6 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
-use PHPUnit\Framework\Constraint\Dictionary\IsIdenticalKeysValues;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 
@@ -1775,7 +1775,7 @@ abstract class Assert
         self::assertThat(
             $actual,
             new IsIdenticalKeysValues($expected),
-            $message
+            $message,
         );
     }
 

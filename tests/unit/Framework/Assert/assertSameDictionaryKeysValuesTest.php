@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
@@ -21,36 +28,36 @@ final class assertSameDictionaryKeysValuesTest extends TestCase
         return [
             [
                 [
-                    'string' => 'string',
-                    true => true,
-                    1 => 1,
-                    2 => 2.5,
-                    'object' => new stdClass(),
-                    'array' => [1, 2, 3],
+                    'string'     => 'string',
+                    true         => true,
+                    1            => 1,
+                    2            => 2.5,
+                    'object'     => new stdClass,
+                    'array'      => [1, 2, 3],
                     'dictionary' => [
                         'string' => 'string',
-                        true => true,
-                        1 => 1,
-                        2 => 2.5,
-                        'object' => new stdClass(),
-                        'array' => [1, 2, 3],
+                        true     => true,
+                        1        => 1,
+                        2        => 2.5,
+                        'object' => new stdClass,
+                        'array'  => [1, 2, 3],
                     ],
                 ],
                 [
                     'dictionary' => [
-                        'object' => new stdClass(),
-                        'array' => [1, 2, 3],
+                        'object' => new stdClass,
+                        'array'  => [1, 2, 3],
                         'string' => 'string',
-                        true => true,
-                        1 => 1,
-                        2 => 2.5,
+                        true     => true,
+                        1        => 1,
+                        2        => 2.5,
                     ],
                     'string' => 'string',
-                    true => true,
-                    1 => 1,
-                    2 => 2.5,
-                    'object' => new stdClass(),
-                    'array' => [1, 2, 3],
+                    true     => true,
+                    1        => 1,
+                    2        => 2.5,
+                    'object' => new stdClass,
+                    'array'  => [1, 2, 3],
                 ],
             ],
         ];
@@ -64,25 +71,25 @@ final class assertSameDictionaryKeysValuesTest extends TestCase
         return [
             [
                 [
-                    'string' => 'string',
-                    true => true,
-                    1 => 1,
-                    2 => 2.5,
-                    'object' => new stdClass(),
-                    'array' => [1, 2, 3],
+                    'string'     => 'string',
+                    true         => true,
+                    1            => 1,
+                    2            => 2.5,
+                    'object'     => new stdClass,
+                    'array'      => [1, 2, 3],
                     'dictionary' => [
                         'string' => 'string',
-                        true => true,
-                        1 => 1,
-                        2 => 2.5,
-                        'object' => new stdClass(),
-                        'array' => [1, 2, 3],
+                        true     => true,
+                        1        => 1,
+                        2        => 2.5,
+                        'object' => new stdClass,
+                        'array'  => [1, 2, 3],
                     ],
                 ],
                 [
                     'string' => 'string',
-                    true => true,
-                    1 => 1,
+                    true     => true,
+                    1        => 1,
                 ],
             ],
         ];
