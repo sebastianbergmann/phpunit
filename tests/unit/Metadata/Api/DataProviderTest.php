@@ -220,7 +220,7 @@ final class DataProviderTest extends TestCase
         $raw = [];
 
         foreach ($providedData as $key => $data) {
-            $raw[$key] = $data->getData();
+            $raw[$key] = $data->value();
         }
 
         return $raw;

@@ -87,14 +87,14 @@ final readonly class DataProvider
         $testMethodIsNonVariadic      = !$method->isVariadic();
 
         foreach ($data as $key => $providedData) {
-            $value = $providedData->getData();
+            $value = $providedData->value();
 
             if (!is_array($value)) {
                 throw new InvalidDataProviderException(
                     sprintf(
                         'Data set %s provided by %s is invalid, expected array but got %s',
                         $this->formatKey($key),
-                        $providedData->getProviderLabel(),
+                        $providedData->label(),
                         get_debug_type($value),
                     ),
                 );
@@ -117,7 +117,7 @@ final readonly class DataProvider
                     sprintf(
                         'Data set %s provided by %s has more arguments (%d) than the test method accepts (%d)',
                         $this->formatKey($key),
-                        $providedData->getProviderLabel(),
+                        $providedData->label(),
                         count($value),
                         $testMethodNumberOfParameters,
                     ),
@@ -140,7 +140,11 @@ final readonly class DataProvider
     {
         $testMethod    = new Event\Code\ClassMethod($className, $methodName);
         $methodsCalled = [];
-        $result        = [];
+
+        /**
+         * @var array<ProvidedData> $result
+         */
+        $result = [];
 
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
@@ -216,7 +220,7 @@ final readonly class DataProvider
                             sprintf(
                                 'The key "%s" has already been defined by provider %s',
                                 $key,
-                                $result[$key]->getProviderLabel(),
+                                $result[$key]->label(),
                             ),
                         );
                     }
@@ -261,7 +265,7 @@ final readonly class DataProvider
                         sprintf(
                             'The key "%s" has already been defined by %s',
                             $key,
-                            $result[$key]->getProviderLabel(),
+                            $result[$key]->label(),
                         ),
                     );
                 }
