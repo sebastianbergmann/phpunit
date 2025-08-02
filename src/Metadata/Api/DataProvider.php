@@ -55,11 +55,11 @@ final readonly class DataProvider
             return null;
         }
 
-        $method = new ReflectionMethod($className, $methodName);
+        $testMethod = new ReflectionMethod($className, $methodName);
 
         if ($dataProvider->isNotEmpty()) {
             if ($testWith->isNotEmpty()) {
-                $this->triggerWarningForMixingOfDataProviderAndTestWith($method);
+                $this->triggerWarningForMixingOfDataProviderAndTestWith($testMethod);
             }
 
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
@@ -67,8 +67,8 @@ final readonly class DataProvider
             $data = $this->dataProvidedByMetadata($testWith);
         }
 
-        $testMethodNumberOfParameters = $method->getNumberOfParameters();
-        $testMethodIsNonVariadic      = !$method->isVariadic();
+        $testMethodNumberOfParameters = $testMethod->getNumberOfParameters();
+        $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
         foreach ($data as $key => $providedData) {
             $value = $providedData->getData();
@@ -86,7 +86,7 @@ final readonly class DataProvider
 
             if ($testMethodIsNonVariadic && $testMethodNumberOfParameters < count($value)) {
                 $this->triggerWarningForArgumentCount(
-                    $method,
+                    $testMethod,
                     $this->formatKey($key),
                     $providedData->getProviderLabel(),
                     count($value),
