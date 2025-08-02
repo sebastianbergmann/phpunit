@@ -171,14 +171,12 @@ final readonly class DataProvider
 
             foreach ($data as $key => $value) {
                 if (!is_int($key) && !is_string($key)) {
-                    // @codeCoverageIgnoreStart
                     throw new InvalidDataProviderException(
                         sprintf(
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
                         ),
                     );
-                    // @codeCoverageIgnoreEnd
                 }
 
                 if (is_int($key)) {
