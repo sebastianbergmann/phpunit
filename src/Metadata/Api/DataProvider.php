@@ -55,10 +55,10 @@ final readonly class DataProvider
             return null;
         }
 
+        $method = new ReflectionMethod($className, $methodName);
+
         if ($dataProvider->isNotEmpty()) {
             if ($testWith->isNotEmpty()) {
-                $method = new ReflectionMethod($className, $methodName);
-
                 Event\Facade::emitter()->testTriggeredPhpunitWarning(
                     new TestMethod(
                         $className,
@@ -87,7 +87,6 @@ final readonly class DataProvider
             );
         }
 
-        $method                       = new ReflectionMethod($className, $methodName);
         $testMethodNumberOfParameters = $method->getNumberOfParameters();
         $testMethodIsNonVariadic      = !$method->isVariadic();
 
