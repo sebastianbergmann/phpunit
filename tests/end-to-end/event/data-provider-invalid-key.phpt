@@ -15,6 +15,8 @@ PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
 Data Provider Method Called (PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::provider for test method PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::testOne)
+Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::testOne:
+- PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::provider
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::testOne is invalid
 The key must be an integer or a string, float given

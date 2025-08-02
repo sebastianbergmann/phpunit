@@ -186,6 +186,11 @@ final readonly class DataProvider
 
                     $result[$key] = $value;
                 } else {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethod,
+                        ...$methodsCalled,
+                    );
+
                     throw new InvalidDataProviderException(
                         sprintf(
                             'The key must be an integer or a string, %s given',
