@@ -16,6 +16,7 @@ use function get_debug_type;
 use function is_array;
 use function is_int;
 use function is_string;
+use function method_exists;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
@@ -44,6 +45,8 @@ final readonly class DataProvider
      */
     public function providedData(string $className, string $methodName): ?array
     {
+        assert(method_exists($className, $methodName));
+
         $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
         $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
 
