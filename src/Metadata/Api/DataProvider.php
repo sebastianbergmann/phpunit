@@ -91,26 +91,12 @@ final readonly class DataProvider
             }
 
             if ($testMethodIsNonVariadic && $testMethodNumberOfParameters < count($value)) {
-                Event\Facade::emitter()->testTriggeredPhpunitWarning(
-                    new TestMethod(
-                        $className,
-                        $methodName,
-                        $method->getFileName(),
-                        $method->getStartLine(),
-                        Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                            $className,
-                            $methodName,
-                        ),
-                        MetadataCollection::fromArray([]),
-                        Event\TestData\TestDataCollection::fromArray([]),
-                    ),
-                    sprintf(
-                        'Data set %s provided by %s has more arguments (%d) than the test method accepts (%d)',
-                        $this->formatKey($key),
-                        $providedData->getProviderLabel(),
-                        count($value),
-                        $testMethodNumberOfParameters,
-                    ),
+                $this->triggerWarningForArgumentCount(
+                    $method,
+                    $this->formatKey($key),
+                    $providedData->getProviderLabel(),
+                    count($value),
+                    $testMethodNumberOfParameters,
                 );
             }
         }
@@ -293,6 +279,31 @@ final readonly class DataProvider
                 Event\TestData\TestDataCollection::fromArray([]),
             ),
             'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
+        );
+    }
+
+    private function triggerWarningForArgumentCount(ReflectionMethod $method, string $key, string $label, int $numberOfValues, int $testMethodNumberOfParameters): void
+    {
+        Event\Facade::emitter()->testTriggeredPhpunitWarning(
+            new TestMethod(
+                $method->getDeclaringClass()->getName(),
+                $method->getName(),
+                $method->getFileName(),
+                $method->getStartLine(),
+                Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                    $method->getDeclaringClass()->getName(),
+                    $method->getName(),
+                ),
+                MetadataCollection::fromArray([]),
+                Event\TestData\TestDataCollection::fromArray([]),
+            ),
+            sprintf(
+                'Data set %s provided by %s has more arguments (%d) than the test method accepts (%d)',
+                $key,
+                $label,
+                $numberOfValues,
+                $testMethodNumberOfParameters,
+            ),
         );
     }
 }
