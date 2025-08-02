@@ -15,8 +15,8 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use stdClass;
 
-#[CoversMethod(Assert::class, 'assertSameDictionaryKeysValuesTest')]
-#[TestDox('assertSameDictionaryKeysValuesTest()')]
+#[CoversMethod(Assert::class, 'assertSameDictionaryKeysValues')]
+#[TestDox('assertSameDictionaryKeysValues()')]
 #[Small]
 final class assertSameDictionaryKeysValuesTest extends TestCase
 {
