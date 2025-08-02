@@ -266,18 +266,7 @@ final readonly class DataProvider
     private function triggerWarningForMixingOfDataProviderAndTestWith(ReflectionMethod $method): void
     {
         Event\Facade::emitter()->testTriggeredPhpunitWarning(
-            new TestMethod(
-                $method->getDeclaringClass()->getName(),
-                $method->getName(),
-                $method->getFileName(),
-                $method->getStartLine(),
-                Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                    $method->getDeclaringClass()->getName(),
-                    $method->getName(),
-                ),
-                MetadataCollection::fromArray([]),
-                Event\TestData\TestDataCollection::fromArray([]),
-            ),
+            $this->testValueObject($method),
             'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
         );
     }
@@ -285,18 +274,7 @@ final readonly class DataProvider
     private function triggerWarningForArgumentCount(ReflectionMethod $method, string $key, string $label, int $numberOfValues, int $testMethodNumberOfParameters): void
     {
         Event\Facade::emitter()->testTriggeredPhpunitWarning(
-            new TestMethod(
-                $method->getDeclaringClass()->getName(),
-                $method->getName(),
-                $method->getFileName(),
-                $method->getStartLine(),
-                Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                    $method->getDeclaringClass()->getName(),
-                    $method->getName(),
-                ),
-                MetadataCollection::fromArray([]),
-                Event\TestData\TestDataCollection::fromArray([]),
-            ),
+            $this->testValueObject($method),
             sprintf(
                 'Data set %s provided by %s has more arguments (%d) than the test method accepts (%d)',
                 $key,
@@ -304,6 +282,22 @@ final readonly class DataProvider
                 $numberOfValues,
                 $testMethodNumberOfParameters,
             ),
+        );
+    }
+
+    private function testValueObject(ReflectionMethod $method): TestMethod
+    {
+        return new TestMethod(
+            $method->getDeclaringClass()->getName(),
+            $method->getName(),
+            $method->getFileName(),
+            $method->getStartLine(),
+            Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                $method->getDeclaringClass()->getName(),
+                $method->getName(),
+            ),
+            MetadataCollection::fromArray([]),
+            Event\TestData\TestDataCollection::fromArray([]),
         );
     }
 }
