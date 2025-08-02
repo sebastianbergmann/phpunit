@@ -67,12 +67,6 @@ final readonly class DataProvider
             $data = $this->dataProvidedByMetadata($testWith);
         }
 
-        if ($data === []) {
-            throw new InvalidDataProviderException(
-                'Empty data set provided by data provider',
-            );
-        }
-
         $testMethodNumberOfParameters = $method->getNumberOfParameters();
         $testMethodIsNonVariadic      = !$method->isVariadic();
 
@@ -215,6 +209,12 @@ final readonly class DataProvider
             $testMethod,
             ...$methodsCalled,
         );
+
+        if ($result === []) {
+            throw new InvalidDataProviderException(
+                'Empty data set provided by data provider',
+            );
+        }
 
         return $result;
     }
