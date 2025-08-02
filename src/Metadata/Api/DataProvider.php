@@ -155,6 +155,11 @@ final readonly class DataProvider
 
             foreach ($data as $key => $value) {
                 if (!is_int($key) && !is_string($key)) {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethodValueObject,
+                        ...$methodsCalled,
+                    );
+
                     throw new InvalidDataProviderException(
                         sprintf(
                             'The key must be an integer or a string, %s given',
