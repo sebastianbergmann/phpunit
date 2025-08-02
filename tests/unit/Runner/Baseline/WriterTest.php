@@ -10,9 +10,13 @@
 namespace PHPUnit\Runner\Baseline;
 
 use const DIRECTORY_SEPARATOR;
+use function getcwd;
+use function ltrim;
 use function realpath;
+use function str_replace;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
@@ -21,6 +25,15 @@ use PHPUnit\Framework\TestCase;
 final class WriterTest extends TestCase
 {
     private string $target;
+
+    public static function baselinePathProvider(): iterable
+    {
+        $absoluteBaselinePath = __DIR__ . '/../../../_files/baseline/expected.xml';
+
+        yield [$absoluteBaselinePath];
+
+        yield [ltrim(str_replace(getcwd(), '', $absoluteBaselinePath), DIRECTORY_SEPARATOR)];
+    }
 
     protected function setUp(): void
     {
@@ -32,11 +45,19 @@ final class WriterTest extends TestCase
         @unlink($this->target);
     }
 
-    public function testWritesBaselineToFileInXmlFormat(): void
+    #[DataProvider('baselinePathProvider')]
+    public function testWritesBaselineToFileInXmlFormat(string $baselinePath): void
     {
         (new Writer)->write($this->target, $this->baseline());
 
-        $this->assertXmlFileEqualsXmlFile(__DIR__ . '/../../../_files/baseline/expected.xml', $this->target);
+        $this->assertXmlFileEqualsXmlFile($baselinePath, $this->target);
+    }
+
+    public function testItThrowsExceptionIfBaseLinePathDoesNotExists(): void
+    {
+        $this->expectException(CannotWriteBaselineException::class);
+
+        (new Writer)->write('/path/to/invalid', $this->baseline());
     }
 
     private function baseline(): Baseline
