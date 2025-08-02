@@ -98,14 +98,16 @@ final readonly class DataProvider
             $methodsCalled[] = $dataProviderMethod;
 
             try {
-                $method = new ReflectionMethod($_dataProvider->className(), $_dataProvider->methodName());
+                $method     = new ReflectionMethod($_dataProvider->className(), $_dataProvider->methodName());
+                $className  = $_dataProvider->className();
+                $methodName = $_dataProvider->methodName();
 
                 if (!$method->isPublic()) {
                     throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() is not public',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
+                            $className,
+                            $methodName,
                         ),
                     );
                 }
@@ -114,8 +116,8 @@ final readonly class DataProvider
                     throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() is not static',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
+                            $className,
+                            $methodName,
                         ),
                     );
                 }
@@ -124,14 +126,11 @@ final readonly class DataProvider
                     throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() expects an argument',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
+                            $className,
+                            $methodName,
                         ),
                     );
                 }
-
-                $className  = $_dataProvider->className();
-                $methodName = $_dataProvider->methodName();
 
                 /** @phpstan-ignore staticMethod.dynamicName */
                 $data = $className::$methodName();
@@ -140,8 +139,8 @@ final readonly class DataProvider
                     throw new InvalidDataProviderException(
                         sprintf(
                             'Data Provider method %s::%s() does not return an iterable',
-                            $_dataProvider->className(),
-                            $_dataProvider->methodName(),
+                            $className,
+                            $methodName,
                         ),
                     );
                 }
