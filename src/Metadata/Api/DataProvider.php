@@ -105,7 +105,11 @@ final readonly class DataProvider
      */
     private function dataProvidedByMethods(ReflectionMethod $testMethod, MetadataCollection $dataProvider): array
     {
-        $testMethod    = new Event\Code\ClassMethod($testMethod->getDeclaringClass()->getName(), $testMethod->getName());
+        $testMethodValueObject = new Event\Code\ClassMethod(
+            $testMethod->getDeclaringClass()->getName(),
+            $testMethod->getName(),
+        );
+
         $methodsCalled = [];
         $result        = [];
 
@@ -116,7 +120,7 @@ final readonly class DataProvider
             $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
 
             Event\Facade::emitter()->dataProviderMethodCalled(
-                $testMethod,
+                $testMethodValueObject,
                 $dataProviderMethod,
             );
 
@@ -162,7 +166,7 @@ final readonly class DataProvider
                 $data = $className::$methodName();
             } catch (Throwable $e) {
                 Event\Facade::emitter()->dataProviderMethodFinished(
-                    $testMethod,
+                    $testMethodValueObject,
                     ...$methodsCalled,
                 );
 
@@ -187,7 +191,7 @@ final readonly class DataProvider
 
                 if (array_key_exists($key, $result)) {
                     Event\Facade::emitter()->dataProviderMethodFinished(
-                        $testMethod,
+                        $testMethodValueObject,
                         ...$methodsCalled,
                     );
 
@@ -205,7 +209,7 @@ final readonly class DataProvider
         }
 
         Event\Facade::emitter()->dataProviderMethodFinished(
-            $testMethod,
+            $testMethodValueObject,
             ...$methodsCalled,
         );
 
