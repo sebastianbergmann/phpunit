@@ -59,21 +59,7 @@ final readonly class DataProvider
 
         if ($dataProvider->isNotEmpty()) {
             if ($testWith->isNotEmpty()) {
-                Event\Facade::emitter()->testTriggeredPhpunitWarning(
-                    new TestMethod(
-                        $className,
-                        $methodName,
-                        $method->getFileName(),
-                        $method->getStartLine(),
-                        Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
-                            $className,
-                            $methodName,
-                        ),
-                        MetadataCollection::fromArray([]),
-                        Event\TestData\TestDataCollection::fromArray([]),
-                    ),
-                    'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
-                );
+                $this->triggerWarningForMixingOfDataProviderAndTestWith($method);
             }
 
             $data = $this->dataProvidedByMethods($className, $methodName, $dataProvider);
@@ -289,5 +275,24 @@ final readonly class DataProvider
     private function formatKey(int|string $key): string
     {
         return is_int($key) ? '#' . $key : '"' . $key . '"';
+    }
+
+    private function triggerWarningForMixingOfDataProviderAndTestWith(ReflectionMethod $method): void
+    {
+        Event\Facade::emitter()->testTriggeredPhpunitWarning(
+            new TestMethod(
+                $method->getDeclaringClass()->getName(),
+                $method->getName(),
+                $method->getFileName(),
+                $method->getStartLine(),
+                Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                    $method->getDeclaringClass()->getName(),
+                    $method->getName(),
+                ),
+                MetadataCollection::fromArray([]),
+                Event\TestData\TestDataCollection::fromArray([]),
+            ),
+            'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
+        );
     }
 }
