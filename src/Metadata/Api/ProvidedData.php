@@ -9,21 +9,38 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final readonly class ProvidedData
 {
-    public function __construct(
-        private string $providerLabel,
-        private mixed $data
-    ) {
+    /**
+     * @var non-empty-string
+     */
+    private string $label;
+    private mixed $value;
+
+    /**
+     * @param non-empty-string $label
+     */
+    public function __construct(string $label, mixed $value)
+    {
+        $this->label = $label;
+        $this->value = $value;
     }
 
-    public function getData(): mixed
+    /**
+     * @return non-empty-string
+     */
+    public function label(): string
     {
-        return $this->data;
+        return $this->label;
     }
 
-    public function getProviderLabel(): string
+    public function value(): mixed
     {
-        return $this->providerLabel;
+        return $this->value;
     }
 }

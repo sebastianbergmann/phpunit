@@ -95,7 +95,7 @@ final readonly class TestBuilder
         foreach ($data as $_dataName => $_data) {
             $_test = new $className($methodName);
 
-            $_test->setData($_dataName, $_data->getData());
+            $_test->setData($_dataName, $_data->value());
 
             $this->configureTestCase(
                 $_test,
