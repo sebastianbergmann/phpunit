@@ -20,11 +20,13 @@ final readonly class Result
 {
     private string $stdout;
     private string $stderr;
+    private int $exitCode;
 
-    public function __construct(string $stdout, string $stderr)
+    public function __construct(string $stdout, string $stderr, int $exitCode)
     {
         $this->stdout = $stdout;
         $this->stderr = $stderr;
+        $this->exitCode = $exitCode;
     }
 
     public function stdout(): string
@@ -35,5 +37,10 @@ final readonly class Result
     public function stderr(): string
     {
         return $this->stderr;
+    }
+
+    public function exitCode(): int
+    {
+        return $this->exitCode;
     }
 }
