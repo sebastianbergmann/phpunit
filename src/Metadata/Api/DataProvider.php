@@ -21,6 +21,7 @@ use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\InvalidDataProviderException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -36,8 +37,8 @@ use Throwable;
 final readonly class DataProvider
 {
     /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
      *
      * @throws InvalidDataProviderException
      *
@@ -133,8 +134,8 @@ final readonly class DataProvider
     }
 
     /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
      *
      * @throws InvalidDataProviderException
      *
