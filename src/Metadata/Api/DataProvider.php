@@ -15,6 +15,7 @@ use function count;
 use function get_debug_type;
 use function is_array;
 use function is_int;
+use function is_iterable;
 use function is_string;
 use function method_exists;
 use function sprintf;
@@ -134,6 +135,16 @@ final readonly class DataProvider
 
                 /** @phpstan-ignore staticMethod.dynamicName */
                 $data = $className::$methodName();
+
+                if (!is_iterable($data)) {
+                    throw new InvalidDataProviderException(
+                        sprintf(
+                            'Data Provider method %s::%s() does not return an iterable',
+                            $_dataProvider->className(),
+                            $_dataProvider->methodName(),
+                        ),
+                    );
+                }
             } catch (Throwable $e) {
                 Event\Facade::emitter()->dataProviderMethodFinished(
                     $testMethodValueObject,
