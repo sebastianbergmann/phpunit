@@ -170,26 +170,7 @@ final readonly class DataProvider
             }
 
             foreach ($data as $key => $value) {
-                if (is_int($key)) {
-                    $result[] = new ProvidedData($providerLabel, $value);
-                } elseif (is_string($key)) {
-                    if (array_key_exists($key, $result)) {
-                        Event\Facade::emitter()->dataProviderMethodFinished(
-                            $testMethod,
-                            ...$methodsCalled,
-                        );
-
-                        throw new InvalidDataProviderException(
-                            sprintf(
-                                'The key "%s" has already been defined by provider %s',
-                                $key,
-                                $result[$key]->getProviderLabel(),
-                            ),
-                        );
-                    }
-
-                    $result[$key] = new ProvidedData($providerLabel, $value);
-                } else {
+                if (!is_int($key) && !is_string($key)) {
                     // @codeCoverageIgnoreStart
                     throw new InvalidDataProviderException(
                         sprintf(
@@ -199,6 +180,29 @@ final readonly class DataProvider
                     );
                     // @codeCoverageIgnoreEnd
                 }
+
+                if (is_int($key)) {
+                    $result[] = new ProvidedData($providerLabel, $value);
+
+                    continue;
+                }
+
+                if (array_key_exists($key, $result)) {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethod,
+                        ...$methodsCalled,
+                    );
+
+                    throw new InvalidDataProviderException(
+                        sprintf(
+                            'The key "%s" has already been defined by provider %s',
+                            $key,
+                            $result[$key]->getProviderLabel(),
+                        ),
+                    );
+                }
+
+                $result[$key] = new ProvidedData($providerLabel, $value);
             }
         }
 
