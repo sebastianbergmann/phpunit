@@ -16,10 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final readonly class TestWith extends Metadata
 {
-    /**
-     * @var array<array<mixed>>
-     */
-    private array $data;
+    private mixed $data;
 
     /**
      * @var ?non-empty-string
@@ -27,11 +24,10 @@ final readonly class TestWith extends Metadata
     private ?string $name;
 
     /**
-     * @param 0|1                 $level
-     * @param array<array<mixed>> $data
-     * @param ?non-empty-string   $name
+     * @param 0|1               $level
+     * @param ?non-empty-string $name
      */
-    protected function __construct(int $level, array $data, ?string $name = null)
+    protected function __construct(int $level, mixed $data, ?string $name = null)
     {
         parent::__construct($level);
 
@@ -44,10 +40,7 @@ final readonly class TestWith extends Metadata
         return true;
     }
 
-    /**
-     * @return array<array<mixed>>
-     */
-    public function data(): array
+    public function data(): mixed
     {
         return $this->data;
     }
