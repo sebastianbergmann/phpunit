@@ -413,7 +413,7 @@ abstract class Metadata
         return new TestDox(self::METHOD_LEVEL, $text);
     }
 
-    public static function testWith(array $data): TestWith
+    public static function testWith(mixed $data): TestWith
     {
         return new TestWith(self::METHOD_LEVEL, $data);
     }
