@@ -28,15 +28,17 @@ final readonly class DataProviderExternal
      * @var non-empty-string
      */
     private string $methodName;
+    private bool $validateArgumentCount;
 
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct(string $className, string $methodName, bool $validateArgumentCount = true)
     {
-        $this->className  = $className;
-        $this->methodName = $methodName;
+        $this->className             = $className;
+        $this->methodName            = $methodName;
+        $this->validateArgumentCount = $validateArgumentCount;
     }
 
     /**
@@ -53,5 +55,10 @@ final readonly class DataProviderExternal
     public function methodName(): string
     {
         return $this->methodName;
+    }
+
+    public function validateArgumentCount(): bool
+    {
+        return $this->validateArgumentCount;
     }
 }

@@ -589,7 +589,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
-                Metadata::dataProvider('', ''),
+                Metadata::dataProvider('', '', true),
                 Metadata::dependsOnClass('', false, false),
                 Metadata::dependsOnMethod('', '', false, false),
                 Metadata::disableReturnValueGenerationForTestDoubles(),

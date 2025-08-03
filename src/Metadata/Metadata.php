@@ -138,9 +138,9 @@ abstract readonly class Metadata
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public static function dataProvider(string $className, string $methodName): DataProvider
+    public static function dataProvider(string $className, string $methodName, bool $validateArgumentCount): DataProvider
     {
-        return new DataProvider(self::METHOD_LEVEL, $className, $methodName);
+        return new DataProvider(self::METHOD_LEVEL, $className, $methodName, $validateArgumentCount);
     }
 
     /**

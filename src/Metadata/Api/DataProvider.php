@@ -81,14 +81,17 @@ final readonly class DataProvider
             $testMethod->getName(),
         );
 
-        $methodsCalled = [];
-        $result        = [];
+        $methodsCalled                = [];
+        $result                       = [];
+        $testMethodNumberOfParameters = $testMethod->getNumberOfParameters();
+        $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
 
-            $providerLabel      = $_dataProvider->className() . '::' . $_dataProvider->methodName();
-            $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
+            $providerLabel         = $_dataProvider->className() . '::' . $_dataProvider->methodName();
+            $dataProviderMethod    = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
+            $validateArgumentCount = $testMethodIsNonVariadic && $_dataProvider->validateArgumentCount();
 
             Event\Facade::emitter()->dataProviderMethodCalled(
                 $testMethodValueObject,
@@ -168,6 +171,32 @@ final readonly class DataProvider
                     );
                 }
 
+                if (!is_array($value)) {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethodValueObject,
+                        ...$methodsCalled,
+                    );
+
+                    throw new InvalidDataProviderException(
+                        sprintf(
+                            'Data set %s provided by %s is invalid, expected array but got %s',
+                            $this->formatKey($key),
+                            $providerLabel,
+                            get_debug_type($value),
+                        ),
+                    );
+                }
+
+                if ($validateArgumentCount && $testMethodNumberOfParameters < count($value)) {
+                    $this->triggerWarningForArgumentCount(
+                        $testMethod,
+                        $this->formatKey($key),
+                        $providerLabel,
+                        count($value),
+                        $testMethodNumberOfParameters,
+                    );
+                }
+
                 if (is_int($key)) {
                     $result[] = new ProvidedData($providerLabel, $value);
 
@@ -204,8 +233,6 @@ final readonly class DataProvider
             );
         }
 
-        $this->validate($testMethod, $result);
-
         return $result;
     }
 
@@ -240,22 +267,10 @@ final readonly class DataProvider
             }
         }
 
-        $this->validate($testMethod, $result);
-
-        return $result;
-    }
-
-    /**
-     * @param array<ProvidedData> $data
-     *
-     * @throws InvalidDataProviderException
-     */
-    private function validate(ReflectionMethod $testMethod, array $data): void
-    {
         $testMethodNumberOfParameters = $testMethod->getNumberOfParameters();
         $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
-        foreach ($data as $key => $providedData) {
+        foreach ($result as $key => $providedData) {
             $value = $providedData->value();
 
             if (!is_array($value)) {
@@ -279,6 +294,8 @@ final readonly class DataProvider
                 );
             }
         }
+
+        return $result;
     }
 
     /**
