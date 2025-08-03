@@ -13,6 +13,7 @@ use const FILE_IGNORE_NEW_LINES;
 use function assert;
 use function file;
 use function is_file;
+use function preg_match;
 use function sha1;
 use PHPUnit\Runner\FileDoesNotExistException;
 
@@ -112,7 +113,7 @@ final readonly class Issue
         return $this->file() === $other->file() &&
                $this->line() === $other->line() &&
                $this->hash() === $other->hash() &&
-               $this->description() === $other->description();
+               ($this->description() === $other->description() || preg_match('{' . $this->description() . '}', $other->description()) > 0);
     }
 
     /**

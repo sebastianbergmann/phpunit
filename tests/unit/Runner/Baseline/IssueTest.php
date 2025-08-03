@@ -50,6 +50,11 @@ final class IssueTest extends TestCase
         $this->assertFalse($this->issue()->equals($this->anotherIssue()));
     }
 
+    public function testIsComparableWithRegex(): void
+    {
+        $this->assertTrue($this->issueWithRegex()->equals($this->issue()));
+    }
+
     public function testCannotBeCreatedForFileThatDoesNotExist(): void
     {
         $this->expectException(FileDoesNotExistException::class);
@@ -81,6 +86,16 @@ final class IssueTest extends TestCase
             10,
             null,
             'Undefined variable $b',
+        );
+    }
+
+    private function issueWithRegex(): Issue
+    {
+        return Issue::from(
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            '(.)*',
         );
     }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<files version="1">
+ <file path="tests/UseBaselineTest.php">
+  <line number="20" hash="bee8cf8f19af95867fd8c6092e6813ae06cc12a9">
+   <issue><![CDATA[deprecation \d{3}]]></issue>
+  </line>
+ </file>
+</files>
