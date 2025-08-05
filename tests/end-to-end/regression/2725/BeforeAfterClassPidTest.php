@@ -12,10 +12,8 @@ namespace PHPUnit\TestFixture\Issue2725;
 use function getmypid;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BeforeClass;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-#[RunClassInSeparateProcess]
 class BeforeAfterClassPidTest extends TestCase
 {
     public const PID_VARIABLE = 'current_pid';
