@@ -6,6 +6,7 @@ disable_functions=proc_open
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = __DIR__ . '/4391/RunClassInSeparateProcessClassTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';

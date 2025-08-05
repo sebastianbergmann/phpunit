@@ -11,10 +11,8 @@ namespace PHPUnit\TestFixture\Issue4391;
 
 use Exception;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-#[RunClassInSeparateProcess]
 #[RequiresPhpunit('< 10')]
 final class RunClassInSeparateProcessClassTest extends TestCase
 {
