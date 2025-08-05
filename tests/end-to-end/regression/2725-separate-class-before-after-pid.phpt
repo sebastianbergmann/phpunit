@@ -4,6 +4,7 @@ GH-2725: Verify that @runClassInSeparateProcess runs @beforeclass and @afterclas
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = __DIR__ . '/2725/BeforeAfterClassPidTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
