@@ -13,7 +13,6 @@ use function restore_error_handler;
 use function restore_exception_handler;
 use function set_error_handler;
 use function set_exception_handler;
-use Closure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\ErrorHandler;
 use Throwable;
@@ -48,7 +47,7 @@ class Issue5592Test extends TestCase
         $previous = set_exception_handler([$this, 'addedAndRemovedExceptionHandler']);
         restore_exception_handler();
 
-        $this->assertInstanceOf(Closure::class, $previous);
+        $this->assertSame('global5592ExceptionHandler', $previous);
         $this->assertTrue(true);
     }
 
@@ -56,7 +55,7 @@ class Issue5592Test extends TestCase
     {
         $previous = set_exception_handler([$this, 'addedExceptionHandler']);
 
-        $this->assertInstanceOf(Closure::class, $previous);
+        $this->assertSame('global5592ExceptionHandler', $previous);
         $this->assertTrue(false);
     }
 
