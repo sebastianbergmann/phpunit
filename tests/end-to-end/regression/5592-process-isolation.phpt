@@ -52,4 +52,4 @@ Test code or tested code removed error handlers other than its own
 %sIssue5592Test.php:%i
 
 FAILURES!
-Tests: 6, Assertions: 6, Failures: 4, Risky: 1.
+Tests: 6, Assertions: 10, Failures: 4, Risky: 1.

@@ -14,19 +14,25 @@ use function restore_exception_handler;
 use function set_error_handler;
 use function set_exception_handler;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\ErrorHandler;
+use Throwable;
 
 class Issue5592Test extends TestCase
 {
     public function testAddedAndRemovedErrorHandler(): void
     {
-        set_error_handler(static fn () => false);
+        $previous = set_error_handler([$this, 'addedAndRemovedErrorHandler']);
         restore_error_handler();
+
+        $this->assertInstanceOf(ErrorHandler::class, $previous);
         $this->assertTrue(true);
     }
 
     public function testAddedErrorHandler(): void
     {
-        set_error_handler(static fn () => false);
+        $previous = set_error_handler([$this, 'addedErrorHandler']);
+
+        $this->assertInstanceOf(ErrorHandler::class, $previous);
         $this->assertTrue(false);
     }
 
@@ -38,14 +44,18 @@ class Issue5592Test extends TestCase
 
     public function testAddedAndRemovedExceptionHandler(): void
     {
-        set_exception_handler(static fn () => null);
+        $previous = set_exception_handler([$this, 'addedAndRemovedExceptionHandler']);
         restore_exception_handler();
+
+        $this->assertNull($previous);
         $this->assertTrue(true);
     }
 
     public function testAddedExceptionHandler(): void
     {
-        set_exception_handler(static fn () => null);
+        $previous = set_exception_handler([$this, 'addedExceptionHandler']);
+
+        $this->assertNull($previous);
         $this->assertTrue(false);
     }
 
@@ -53,5 +63,21 @@ class Issue5592Test extends TestCase
     {
         restore_exception_handler();
         $this->assertTrue(false);
+    }
+
+    public function addedAndRemovedErrorHandler($errno, $errstr, $errfile, $errline): void
+    {
+    }
+
+    public function addedErrorHandler($errno, $errstr, $errfile, $errline): void
+    {
+    }
+
+    public function addedAndRemovedExceptionHandler(Throwable $exception): void
+    {
+    }
+
+    public function addedExceptionHandler(Throwable $exception): void
+    {
     }
 }
