@@ -20,7 +20,7 @@ Time: %s, Memory: %s
 
 1 test triggered 1 deprecation:
 
-1) %s/end-to-end/regression/6279/TriggersDeprecationInDataProviderTest.php:24
+1) %sTriggersDeprecationInDataProviderTest.php:24
 some deprecation
 
 OK, but there were issues!
