@@ -7,7 +7,11 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = __DIR__ . '/5592/Issue5592TestIsolation.php';
 
-set_exception_handler(static fn () => null);
+function global5592IsolationExceptionHandler(Throwable $exception): void
+{
+}
+
+set_exception_handler('global5592IsolationExceptionHandler');
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
