@@ -66,12 +66,14 @@ class Issue5592Test extends TestCase
         $this->assertTrue(false);
     }
 
-    public function addedAndRemovedErrorHandler($errno, $errstr, $errfile, $errline): void
+    public function addedAndRemovedErrorHandler($errno, $errstr, $errfile, $errline): bool
     {
+        return false;
     }
 
-    public function addedErrorHandler($errno, $errstr, $errfile, $errline): void
+    public function addedErrorHandler($errno, $errstr, $errfile, $errline): bool
     {
+        return false;
     }
 
     public function addedAndRemovedExceptionHandler(Throwable $exception): void
