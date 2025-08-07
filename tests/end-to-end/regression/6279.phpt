@@ -14,14 +14,28 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.D.                                                                 3 / 3 (100%)
+.D.DD                                                               5 / 5 (100%)
 
 Time: %s, Memory: %s
 
-1 test triggered 1 deprecation:
+3 tests triggered 3 deprecations:
 
-1) %sTriggersDeprecationInDataProviderTest.php:24
+1) %sTriggersDeprecationInDataProviderTest.php:25
 some deprecation
 
+Triggered by:
+
+* PHPUnit\TestFixture\Issue6279\TriggersDeprecationInDataProviderTest::method2#0
+  %sTriggersDeprecationInDataProviderTest.php:38
+
+* PHPUnit\TestFixture\Issue6279\TriggersDeprecationInDataProviderTest::method4#0
+  %sTriggersDeprecationInDataProviderTest.php:51
+
+2) %sTriggersDeprecationInDataProviderTest.php:65
+first
+
+3) %sTriggersDeprecationInDataProviderTest.php:66
+second
+
 OK, but there were issues!
-Tests: 3, Assertions: 3, Deprecations: 1.
+Tests: 5, Assertions: 5, Deprecations: 3.
