@@ -22,5 +22,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-
-Fatal error: Access level to PHPUnit\TestFixture\B::someFunction() must be public (as in class PHPUnit\TestFixture\A) in %sB.php on line %i
+Fatal error: Premature end of PHP process. Use display_errors=On to see the error message.
