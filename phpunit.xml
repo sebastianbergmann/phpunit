@@ -17,6 +17,7 @@
 
         <testsuite name="end-to-end">
             <directory suffix=".phpt">tests/end-to-end/baseline</directory>
+            <directory suffix=".phpt">tests/end-to-end/check-php-version</directory>
             <directory suffix=".phpt">tests/end-to-end/cli</directory>
             <directory suffix=".phpt">tests/end-to-end/data-provider</directory>
             <directory suffix=".phpt">tests/end-to-end/deprecation-trigger</directory>

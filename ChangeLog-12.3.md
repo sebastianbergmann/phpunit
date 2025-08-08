@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 
 ## [12.3.1] - 2025-MM-DD
 
+### Added
+
+* [#6297](https://github.com/sebastianbergmann/phpunit/issues/6297): `--check-php-configuration` CLI option for checking whether PHP is configured for testing
+
 ### Changed
 
 * `#[IgnorePhpunitDeprecations]` is now considered for test runner deprecations (where applicable)
