@@ -23,6 +23,8 @@ final class ShutdownHandler
 
     public static function setMessage(string $message): void
     {
+        self::register();
+
         self::$message = $message;
     }
 
@@ -31,7 +33,7 @@ final class ShutdownHandler
         self::$message = '';
     }
 
-    public static function register(): void
+    private static function register(): void
     {
         if (self::$registered) {
             return;
