@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use function constant, current, defined, end, explode, file_get_contents, implode, ltrim, next, ord, strrchr, strtolower, substr;
+use const PHP_VERSION_ID, T_AS, T_CLASS, T_COMMENT, T_CURLY_OPEN, T_DOC_COMMENT, T_DOLLAR_OPEN_CURLY_BRACES, T_ENUM, T_INTERFACE, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAMESPACE, T_NS_SEPARATOR, T_STRING, T_TRAIT, T_USE, T_WHITESPACE, TOKEN_PARSE;
 
 
 /**
@@ -33,7 +35,6 @@ final class Reflection
 	}
 
 
-	/** @deprecated use native ReflectionParameter::getDefaultValue() */
 	public static function getParameterDefaultValue(\ReflectionParameter $param): mixed
 	{
 		if ($param->isDefaultValueConstant()) {

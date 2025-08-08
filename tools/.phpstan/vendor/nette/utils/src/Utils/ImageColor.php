@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use function hexdec, ltrim, max, min, round, strlen;
 
 
 /**

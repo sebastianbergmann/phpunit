@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\Utils;
 
+use function explode, is_string, str_contains;
+
 
 /**
  * ReflectionMethod preserving the original class name.

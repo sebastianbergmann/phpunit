@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use function defined, is_int, json_decode, json_encode, json_last_error, json_last_error_msg;
+use const JSON_BIGINT_AS_STRING, JSON_FORCE_OBJECT, JSON_HEX_AMP, JSON_HEX_APOS, JSON_HEX_QUOT, JSON_HEX_TAG, JSON_OBJECT_AS_ARRAY, JSON_PRESERVE_ZERO_FRACTION, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE;
 
 
 /**

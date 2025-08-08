@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use function array_merge, checkdate, implode, is_numeric, is_string, preg_replace_callback, sprintf, time, trim;
 
 
 /**
@@ -45,7 +46,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	public static function from(string|int|\DateTimeInterface|null $time): static
 	{
 		if ($time instanceof \DateTimeInterface) {
-			return new static($time->format('Y-m-d H:i:s.u'), $time->getTimezone());
+			return static::createFromInterface($time);
 
 		} elseif (is_numeric($time)) {
 			if ($time <= self::YEAR) {
@@ -96,10 +97,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 		string|\DateTimeZone|null $timezone = null,
 	): static|false
 	{
-		if ($timezone === null) {
-			$timezone = new \DateTimeZone(date_default_timezone_get());
-
-		} elseif (is_string($timezone)) {
+		if (is_string($timezone)) {
 			$timezone = new \DateTimeZone($timezone);
 		}
 
@@ -149,7 +147,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 */
 	public static function relativeToSeconds(string $relativeTime): int
 	{
-		return (new \DateTimeImmutable('1970-01-01 ' . $relativeTime, new \DateTimeZone('UTC')))
+		return (new self('@0 ' . $relativeTime))
 			->getTimestamp();
 	}
 
@@ -158,7 +156,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	{
 		$relPart = '';
 		$absPart = preg_replace_callback(
-			'/[+-]?\s*\d+\s+((microsecond|millisecond|[mµu]sec)s?|[mµ]s|sec(ond)?s?|min(ute)?s?|hours?)\b/iu',
+			'/[+-]?\s*\d+\s+((microsecond|millisecond|[mµu]sec)s?|[mµ]s|sec(ond)?s?|min(ute)?s?|hours?)(\s+ago)?\b/iu',
 			function ($m) use (&$relPart) {
 				$relPart .= $m[0] . ' ';
 				return '';

@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use function is_array, is_int, is_string;
+use const IMG_BMP, IMG_FLIP_BOTH, IMG_FLIP_HORIZONTAL, IMG_FLIP_VERTICAL, IMG_GIF, IMG_JPG, IMG_PNG, IMG_WEBP, PATHINFO_EXTENSION;
 
 
 /**
@@ -771,7 +773,7 @@ class Image
 
 	public function __clone()
 	{
-		ob_start(function () {});
+		ob_start(fn() => '');
 		imagepng($this->image, null, 0);
 		$this->setImageResource(imagecreatefromstring(ob_get_clean()));
 	}
@@ -794,7 +796,7 @@ class Image
 	/**
 	 * Prevents serialization.
 	 */
-	public function __sleep(): array
+	public function __serialize(): array
 	{
 		throw new Nette\NotSupportedException('You cannot serialize or unserialize ' . self::class . ' instances.');
 	}

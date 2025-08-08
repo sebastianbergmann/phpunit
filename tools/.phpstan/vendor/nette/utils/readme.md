@@ -41,7 +41,7 @@ The recommended way to install is via Composer:
 composer require nette/utils
 ```
 
-Nette Utils 4.0 is compatible with PHP 8.0 to 8.4.
+Nette Utils 4.0 is compatible with PHP 8.0 to 8.5.
 
  <!---->
 
