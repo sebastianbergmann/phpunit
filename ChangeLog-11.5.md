@@ -4,9 +4,15 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ## [11.5.29] - 2025-MM-DD
 
+### Changed
+
+* `#[IgnorePhpunitDeprecations]` is now considered for test runner deprecations (where applicable)
+
 ### Fixed
 
 * [#6160](https://github.com/sebastianbergmann/phpunit/issues/6160): Baseline file in a subdirectory contains absolute paths
+* Errors due to invalid data provided using `#[TestWith]` or `#[TestWithJson]` attributes are now properly reported
+* The `DataProviderMethodFinished` event is now also emitted when the provided data set has an invalid key
 
 ## [11.5.28] - 2025-07-31
 
