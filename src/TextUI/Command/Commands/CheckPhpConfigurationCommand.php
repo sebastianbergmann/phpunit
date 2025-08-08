@@ -133,7 +133,9 @@ final readonly class CheckPhpConfigurationCommand implements Command
             return 'ok';
         }
 
+        // @codeCoverageIgnoreStart
         return Color::colorizeTextBox('fg-green, bold', 'ok');
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -145,6 +147,8 @@ final readonly class CheckPhpConfigurationCommand implements Command
             return 'not ok';
         }
 
+        // @codeCoverageIgnoreStart
         return Color::colorizeTextBox('fg-red, bold', 'not ok');
+        // @codeCoverageIgnoreEnd
     }
 }
