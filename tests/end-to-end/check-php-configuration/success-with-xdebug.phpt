@@ -5,19 +5,19 @@ phpunit --check-php-configuration (success, Xdebug loaded)
 if (!extension_loaded('xdebug')) {
     print 'skip: Extension Xdebug must be loaded.';
 }
+--INI--
+display_errors=1
+display_startup_errors=1
+error_reporting=-1
+xdebug.show_exception_trace=0
+zend.assertions=1
+assert.exception=1
+memory_limit=-1
 --FILE--
 <?php
 $_SERVER['argv'][] = '--check-php-configuration';
 
 require_once __DIR__ . '/../../bootstrap.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-ini_set('error_reporting', -1);
-ini_set('xdebug.show_exception_trace', 0);
-ini_set('zend.assertions', 1);
-ini_set('assert.exception', 1);
-ini_set('memory_limit', -1);
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 ?>
