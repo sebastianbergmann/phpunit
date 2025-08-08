@@ -1,6 +1,4 @@
 --TEST--
-Silent failure of PHP fatal errors
-
 https://github.com/sebastianbergmann/phpunit/issues/6294
 --SKIPIF--
 <?php declare(strict_types=1);
