@@ -41,6 +41,7 @@ final class Builder
         'do-not-cache-result',
         'cache-directory=',
         'check-version',
+        'check-php-configuration',
         'colors==',
         'columns=',
         'configuration=',
@@ -196,6 +197,7 @@ final class Builder
         $bootstrap                         = null;
         $cacheDirectory                    = null;
         $cacheResult                       = null;
+        $checkPhpConfiguration             = false;
         $checkVersion                      = false;
         $colors                            = null;
         $columns                           = null;
@@ -1133,6 +1135,11 @@ final class Builder
 
                     break;
 
+                case '--check-php-configuration':
+                    $checkPhpConfiguration = true;
+
+                    break;
+
                 case '--check-version':
                     $checkVersion = true;
 
@@ -1242,6 +1249,7 @@ final class Builder
             $bootstrap,
             $cacheDirectory,
             $cacheResult,
+            $checkPhpConfiguration,
             $checkVersion,
             $colors,
             $columns,
