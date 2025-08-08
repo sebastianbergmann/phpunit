@@ -1,10 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/6294
---SKIPIF--
-<?php declare(strict_types=1);
-if (version_compare(PHP_VERSION, '8.5.0-dev', '>=')) {
-    print 'skip: PHP < 8.5 is required.';
-}
 --INI--
 display_errors=0
 --FILE--
