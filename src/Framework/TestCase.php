@@ -1295,7 +1295,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
-        $capture          = tmpfile();
+        $capture = tmpfile();
+        assert($capture !== false);
         $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
 
         try {
@@ -1330,9 +1331,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             return null;
         } finally {
-            if ($capture !== false) {
-                fclose($capture);
-            }
+            fclose($capture);
 
             ini_set('error_log', $errorLogPrevious);
         }
