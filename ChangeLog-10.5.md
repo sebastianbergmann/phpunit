@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ## [10.5.49] - 2025-MM-DD
 
+### Added
+
+* [#6297](https://github.com/sebastianbergmann/phpunit/issues/6297): `--check-php-configuration` CLI option for checking whether PHP is configured for testing
+
 ### Fixed
 
 * Errors due to invalid data provided using `#[TestWith]` or `#[TestWithJson]` attributes are now properly reported
