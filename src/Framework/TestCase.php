@@ -1297,6 +1297,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $capture = tmpfile();
         assert($capture !== false);
+        ini_set('display_errors', 1);
         $errorLogPrevious = ini_set('error_log', stream_get_meta_data($capture)['uri']);
 
         try {
