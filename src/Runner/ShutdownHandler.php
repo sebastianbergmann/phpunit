@@ -18,8 +18,8 @@ use function register_shutdown_function;
  */
 final class ShutdownHandler
 {
-    public static bool $registered = false;
-    private static string $message = '';
+    private static bool $registered = false;
+    private static string $message  = '';
 
     public static function setMessage(string $message): void
     {
