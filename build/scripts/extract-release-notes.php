@@ -44,11 +44,27 @@ if ($buffer === '') {
     exit(1);
 }
 
-printf(
-    '%s%s---%s[How to install or update PHPUnit](https://docs.phpunit.de/en/%s/installation.html)%s',
-    $buffer,
-    PHP_EOL,
-    PHP_EOL,
-    $versionSeries,
-    PHP_EOL,
+print $buffer . PHP_EOL;
+
+$template = <<<'EOT'
+
+---
+
+Learn how to install or update PHPUnit {{versionSeries}} in the [documentation](https://docs.phpunit.de/en/{{versionSeries}}/installation.html).
+
+#### Keep up to date with PHPUnit:
+
+* You can follow [@phpunit@phpc.social](https://phpc.social/@phpunit) to stay up to date with PHPUnit's development.
+* You can subscribe to the [PHPUnit Updates](https://t8cbf4509.emailsys1a.net/275/973/33ad04f4be/subscribe/form.html?_g=1752156344) newsletter to receive updates about and tips for PHPUnit.
+
+EOT;
+
+print str_replace(
+    [
+        '{{versionSeries}}',
+    ],
+    [
+        $versionSeries,
+    ],
+    $template,
 );

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\Utils;
 
+use const IMAGETYPE_BMP, IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP;
+
 
 /**
  * Type of image file.

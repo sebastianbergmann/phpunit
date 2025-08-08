@@ -11,6 +11,8 @@ namespace Nette\Utils;
 
 use Nette;
 use Random\Randomizer;
+use function strlen;
+use const PHP_VERSION_ID;
 
 
 /**
