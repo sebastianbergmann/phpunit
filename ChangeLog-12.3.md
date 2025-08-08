@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 ### Fixed
 
 * [#6160](https://github.com/sebastianbergmann/phpunit/issues/6160): Baseline file in a subdirectory contains absolute paths
+* [#6294](https://github.com/sebastianbergmann/phpunit/issues/6294): Silent failure of PHP fatal errors
 * Errors due to invalid data provided using `#[TestWith]` or `#[TestWithJson]` attributes are now properly reported
 * The `DataProviderMethodFinished` event is now also emitted when the provided data set has an invalid key
 
