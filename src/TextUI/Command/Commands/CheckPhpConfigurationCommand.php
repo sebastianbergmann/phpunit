@@ -81,7 +81,9 @@ final readonly class CheckPhpConfigurationCommand implements Command
         foreach (self::SETTINGS as $name => $setting) {
             foreach ($setting['requiredExtensions'] as $extension) {
                 if (!extension_loaded($extension)) {
+                    // @codeCoverageIgnoreStart
                     continue 2;
+                    // @codeCoverageIgnoreEnd
                 }
             }
 
