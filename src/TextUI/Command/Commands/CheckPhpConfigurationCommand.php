@@ -16,6 +16,8 @@ use function max;
 use function sprintf;
 use function strlen;
 use PHPUnit\Runner\Version;
+use PHPUnit\Util\Color;
+use SebastianBergmann\Environment\Console;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -64,6 +66,12 @@ final readonly class CheckPhpConfigurationCommand implements Command
             'requiredExtensions'    => [],
         ],
     ];
+    private bool $colorize;
+
+    public function __construct()
+    {
+        $this->colorize = (new Console)->hasColorSupport();
+    }
 
     public function execute(): Result
     {
@@ -78,9 +86,9 @@ final readonly class CheckPhpConfigurationCommand implements Command
             }
 
             if (ini_get($name) === $setting['expectedValue']) {
-                $check = 'ok';
+                $check = $this->ok();
             } else {
-                $check         = 'not ok';
+                $check         = $this->notOk();
                 $shellExitCode = 1;
             }
 
@@ -114,5 +122,29 @@ final readonly class CheckPhpConfigurationCommand implements Command
         }
 
         return Result::from($buffer, $shellExitCode);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function ok(): string
+    {
+        if (!$this->colorize) {
+            return 'ok';
+        }
+
+        return Color::colorizeTextBox('fg-green, bold', 'ok');
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function notOk(): string
+    {
+        if (!$this->colorize) {
+            return 'not ok';
+        }
+
+        return Color::colorizeTextBox('fg-red, bold', 'not ok');
     }
 }
