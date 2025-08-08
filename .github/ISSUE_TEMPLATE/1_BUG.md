@@ -13,6 +13,7 @@ labels: type/bug
 - Please fill in this template according to your issue.
 - Please keep the table shown below at the top of your issue.
 - Please include the output of "composer info | sort" if you installed PHPUnit using Composer.
+- Please include the output of "phpunit --check-php-configuration".
 - Please post code as text (using proper markup). Do not post screenshots of code.
 - Please make sure that you have configured your PHP interpreter like so: `error_reporting=-1`, `zend.assertions=1`.
 - Please remove this comment before submitting your issue.
