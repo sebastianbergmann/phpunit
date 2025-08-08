@@ -207,6 +207,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.4"
+          - "8.5"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -225,7 +232,7 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ env.PHP_VERSION }}
+          php-version: ${{ matrix.php-version }}
           coverage: xdebug
           extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter
           ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
