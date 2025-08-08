@@ -224,4 +224,6 @@
                                        <min> and exits
   [32m--check-version                     [0m Checks whether PHPUnit is the latest
                                        version and exits
+  [32m--check-php-configuration           [0m Checks whether PHP configuration follows
+                                       best practices
 

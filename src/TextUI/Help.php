@@ -315,6 +315,7 @@ final class Help
             ['arg' => '--version', 'desc' => 'Prints the version and exits'],
             ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than <min> and exits'],
             ['arg' => '--check-version', 'desc' => 'Checks whether PHPUnit is the latest version and exits'],
+            ['arg' => '--check-php-configuration', 'desc' => 'Checks whether PHP configuration follows best practices'],
         ];
 
         return $elements;
