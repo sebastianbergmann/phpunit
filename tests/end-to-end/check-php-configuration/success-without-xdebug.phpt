@@ -11,6 +11,13 @@ $_SERVER['argv'][] = '--check-php-configuration';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('error_reporting', -1);
+ini_set('zend.assertions', 1);
+ini_set('assert.exception', 1);
+ini_set('memory_limit', -1);
+
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 ?>
 --EXPECTF--
