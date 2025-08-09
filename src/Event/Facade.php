@@ -16,6 +16,7 @@ use function version_compare;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Php81GarbageCollectorStatusProvider;
 use PHPUnit\Event\Telemetry\Php83GarbageCollectorStatusProvider;
+use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -92,7 +93,11 @@ final class Facade
      */
     public function initForIsolation(HRTime $offset): CollectingDispatcher
     {
-        $dispatcher = new CollectingDispatcher;
+        DeprecationCollector::initForIsolation();
+
+        $dispatcher = new CollectingDispatcher(
+            new DirectDispatcher($this->typeMap()),
+        );
 
         $this->emitter = new DispatchingEmitter(
             $dispatcher,
