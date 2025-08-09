@@ -63,6 +63,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestDoxFormatter;
 use PHPUnit\Framework\Attributes\TestDoxFormatterExternal;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithArray;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -132,6 +133,7 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(TestDoxFormatter::class)]
 #[CoversClass(TestDoxFormatterExternal::class)]
 #[CoversClass(Test::class)]
+#[CoversClass(TestWithArray::class)]
 #[CoversClass(TestWithJson::class)]
 #[CoversClass(TestWith::class)]
 #[CoversClass(Ticket::class)]
