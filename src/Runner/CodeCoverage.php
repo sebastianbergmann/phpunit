@@ -132,7 +132,7 @@ final class CodeCoverage
             ini_get('opcache.enable_cli') === '1'
         ) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                'Code coverage might produce unreliable results when OPCache is enabled.',
+                'Code coverage might produce unreliable results when OPCache is enabled',
             );
         }
 
