@@ -36,6 +36,7 @@ use PHPUnit\Event;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
 use PHPUnit\TextUI\Configuration\Registry;
@@ -62,6 +63,12 @@ final class ErrorHandler
      * @var list<array{int, string, string, int}>
      */
     private array $globalDeprecations = [];
+
+    /**
+     * @var array<string, list<array{int, string, string, int}>>
+     */
+    private array $testCaseContextDeprecations = [];
+    private ?string $testCaseContext           = null;
 
     /**
      * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
@@ -207,7 +214,11 @@ final class ErrorHandler
 
     public function deprecationHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        $this->globalDeprecations[] = [$errorNumber, $errorString, $errorFile, $errorLine];
+        if ($this->testCaseContext !== null) {
+            $this->testCaseContextDeprecations[$this->testCaseContext][] = [$errorNumber, $errorString, $errorFile, $errorLine];
+        } else {
+            $this->globalDeprecations[] = [$errorNumber, $errorString, $errorFile, $errorLine];
+        }
 
         return true;
     }
@@ -222,7 +233,7 @@ final class ErrorHandler
         restore_error_handler();
     }
 
-    public function enable(): void
+    public function enable(TestCase $test): void
     {
         if ($this->enabled) {
             return;
@@ -239,7 +250,7 @@ final class ErrorHandler
         $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
 
-        $this->triggerGlobalDeprecations();
+        $this->triggerGlobalDeprecations($test);
 
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
     }
@@ -269,6 +280,16 @@ final class ErrorHandler
     public function useDeprecationTriggers(array $deprecationTriggers): void
     {
         $this->deprecationTriggers = $deprecationTriggers;
+    }
+
+    public function enterTestCaseContext(string $methodName): void
+    {
+        $this->testCaseContext = $methodName;
+    }
+
+    public function leaveTestCaseContext(): void
+    {
+        $this->testCaseContext = null;
     }
 
     /**
@@ -450,9 +471,13 @@ final class ErrorHandler
         return $buffer;
     }
 
-    private function triggerGlobalDeprecations(): void
+    private function triggerGlobalDeprecations(TestCase $test): void
     {
         foreach ($this->globalDeprecations ?? [] as $d) {
+            $this->__invoke(...$d);
+        }
+
+        foreach ($this->testCaseContextDeprecations[$test->name()] ?? [] as $d) {
             $this->__invoke(...$d);
         }
     }
