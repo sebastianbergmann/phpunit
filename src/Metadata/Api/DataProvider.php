@@ -13,13 +13,16 @@ use function array_key_exists;
 use function assert;
 use function count;
 use function get_debug_type;
+use function is_a;
 use function is_array;
 use function is_int;
 use function is_string;
 use function sprintf;
+use function str_starts_with;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\InvalidDataProviderException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -148,6 +151,19 @@ final readonly class DataProvider
 
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
+
+            if (is_a($_dataProvider->className(), TestCase::class, true) &&
+                str_starts_with($_dataProvider->methodName(), 'test')) {
+                Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'The name of the data provider method %s::%s() used by test method %s::%s() begins with "test", therefore PHPUnit also treats it as a test method',
+                        $_dataProvider->className(),
+                        $_dataProvider->methodName(),
+                        $className,
+                        $methodName,
+                    ),
+                );
+            }
 
             $providerLabel      = $_dataProvider->className() . '::' . $_dataProvider->methodName();
             $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
