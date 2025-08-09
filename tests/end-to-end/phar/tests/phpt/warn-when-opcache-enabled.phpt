@@ -20,6 +20,8 @@ $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = '--bootstrap';
 $_SERVER['argv'][] = __DIR__.'/../../src/autoload.php';
+$_SERVER['argv'][] = '--coverage-filter';
+$_SERVER['argv'][] = __DIR__.'/../../src/';
 $_SERVER['argv'][] = __DIR__.'/../standard/GreeterTest.php';
 
 require_once __DIR__ . '/../../../../bootstrap.php';
@@ -31,7 +33,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
-WW                                                                  2 / 2 (100%)
+..                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s MB
 
