@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\ErrorHandler;
 use Throwable;
 
-class Issue5592Test extends TestCase
+class Issue5592TestIsolation extends TestCase
 {
     public function testAddedAndRemovedErrorHandler(): void
     {
@@ -47,7 +47,7 @@ class Issue5592Test extends TestCase
         $previous = set_exception_handler([$this, 'addedAndRemovedExceptionHandler']);
         restore_exception_handler();
 
-        $this->assertSame('global5592ExceptionHandler', $previous);
+        $this->assertNull($previous);
         $this->assertTrue(true);
     }
 
@@ -55,7 +55,7 @@ class Issue5592Test extends TestCase
     {
         $previous = set_exception_handler([$this, 'addedExceptionHandler']);
 
-        $this->assertSame('global5592ExceptionHandler', $previous);
+        $this->assertNull($previous);
         $this->assertTrue(false);
     }
 

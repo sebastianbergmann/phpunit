@@ -6,7 +6,11 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/5592/Issue5592Test.php';
 
-set_exception_handler(static fn () => null);
+function global5592ExceptionHandler(Throwable $exception): void
+{
+}
+
+set_exception_handler('global5592ExceptionHandler');
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
@@ -66,4 +70,4 @@ Test code or tested code removed exception handlers other than its own
 %sIssue5592Test.php:%i
 
 FAILURES!
-Tests: 6, Assertions: 6, Failures: 4, Risky: 4.
+Tests: 6, Assertions: 10, Failures: 4, Risky: 4.
