@@ -24,7 +24,7 @@ use SebastianBergmann\Environment\Console;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class CheckPhpConfigurationCommand implements Command
+final readonly class CheckPhpConfigurationCommand implements Command
 {
     /**
      * @var non-empty-array<non-empty-string, array{expectedValue: non-empty-string, valueForConfiguration: non-empty-string, requiredExtensions: list<non-empty-string>}>
@@ -66,7 +66,7 @@ final class CheckPhpConfigurationCommand implements Command
             'requiredExtensions'    => [],
         ],
     ];
-    private readonly bool $colorize;
+    private bool $colorize;
 
     public function __construct()
     {
