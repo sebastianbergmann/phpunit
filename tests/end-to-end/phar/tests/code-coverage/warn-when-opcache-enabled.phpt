@@ -21,6 +21,8 @@ $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/warn-when-opcache-enabled/phpunit.xml';
 
+require_once __DIR__ . '/warn-when-opcache-enabled/src/Greeter.php';
+
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
