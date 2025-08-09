@@ -7,6 +7,7 @@
     <testsuites>
         <testsuite name="default">
             <directory>tests/standard</directory>
+            <directory>tests/code-coverage</directory>
             <directory suffix="phpt">tests/phpt</directory>
         </testsuite>
     </testsuites>
