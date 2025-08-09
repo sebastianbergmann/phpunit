@@ -44,7 +44,7 @@
         "sebastian/exporter": "^7.0.0",
         "sebastian/global-state": "^8.0.0",
         "sebastian/object-enumerator": "^7.0.0",
-        "sebastian/type": "^6.0.2",
+        "sebastian/type": "^6.0.3",
         "sebastian/version": "^6.0.0",
         "staabm/side-effects-detector": "^1.0.5"
     },
