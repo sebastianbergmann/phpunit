@@ -923,6 +923,16 @@
       <code><![CDATA[include_once $filename]]></code>
     </UnresolvableInclude>
   </file>
+  <file src="src/TextUI/Command/Commands/CheckPhpConfigurationCommand.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[Color::colorizeTextBox('fg-green, bold', 'ok')]]></code>
+      <code><![CDATA[Color::colorizeTextBox('fg-red, bold', 'not ok')]]></code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType>
+      <code><![CDATA[non-empty-string]]></code>
+      <code><![CDATA[non-empty-string]]></code>
+    </MoreSpecificReturnType>
+  </file>
   <file src="src/TextUI/Configuration/Builder.php">
     <MissingThrowsDocblock>
       <code><![CDATA[Registry::init(
