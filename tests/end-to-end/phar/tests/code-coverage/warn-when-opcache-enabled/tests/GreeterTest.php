@@ -17,6 +17,8 @@ final class GreeterTest extends TestCase
 {
     public function testGreets(): void
     {
+        require_once __DIR__ . '/../src/Greeter.php';
+
         $this->assertSame('Hello world!', (new Greeter)->greet());
     }
 }

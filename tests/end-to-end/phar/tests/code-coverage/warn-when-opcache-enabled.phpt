@@ -18,10 +18,6 @@ if (!function_exists('opcache_compile_file')) {
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-text';
-$_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/warn-when-opcache-enabled/phpunit.xml';
-
-require_once __DIR__ . '/warn-when-opcache-enabled/src/Greeter.php';
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
