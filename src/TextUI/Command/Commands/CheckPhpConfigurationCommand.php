@@ -29,7 +29,7 @@ final readonly class CheckPhpConfigurationCommand implements Command
     /**
      * @var non-empty-array<non-empty-string, array{expectedValue: non-empty-string, valueForConfiguration: non-empty-string, requiredExtensions: list<non-empty-string>}>
      */
-    private const array SETTINGS = [
+    private const SETTINGS = [
         'display_errors' => [
             'expectedValue'         => '1',
             'valueForConfiguration' => 'On',
