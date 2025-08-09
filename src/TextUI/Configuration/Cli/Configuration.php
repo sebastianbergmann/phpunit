@@ -30,6 +30,7 @@ final class Configuration
     private readonly ?string $cacheDirectory;
     private readonly ?bool $cacheResult;
     private readonly ?string $cacheResultFile;
+    private readonly bool $checkPhpConfiguration;
     private readonly bool $checkVersion;
     private readonly ?string $colors;
     private readonly null|int|string $columns;
