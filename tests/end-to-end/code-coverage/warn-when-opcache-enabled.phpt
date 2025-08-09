@@ -37,7 +37,7 @@ Time: %s, Memory: %s MB
 
 There was 1 PHPUnit test runner warning:
 
-1) Code coverage might produce unreliable results when OPCache is enabled.
+1) Code coverage might produce unreliable results when OPCache is enabled
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
