@@ -3,7 +3,7 @@ https://github.com/sebastianbergmann/php-code-coverage/issues/1022
 --INI--
 opcache.enable_cli=1
 opcache.jit=disable
-pcov.directory=tests/end-to-end/phar/tests/code-coverage/warn-when-opcache-enabled/src/
+pcov.directory=tests/end-to-end/phar/src/
 --SKIPIF--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
@@ -18,6 +18,9 @@ if (!function_exists('opcache_compile_file')) {
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-text';
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__.'/../../src/autoload.php';
+$_SERVER['argv'][] = __DIR__.'/../standard/GreeterTest.php';
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
@@ -28,14 +31,11 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
-.                                                                   1 / 1 (100%)
+WW                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s MB
 
 There was 1 PHPUnit test runner warning:
 
 1) Code coverage might produce unreliable results when OPCache is enabled
-
-OK, but there were issues!
-Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
 %A
