@@ -75,10 +75,10 @@ final class TraversableContainsIdenticalTest extends ConstraintTestCase
         $c->foo = 'baz';
 
         $storageWithA = new SplObjectStorage;
-        $storageWithA->attach($a);
+        $storageWithA->offsetSet($a);
 
         $storageWithoutA = new SplObjectStorage;
-        $storageWithoutA->attach($b);
+        $storageWithoutA->offsetSet($b);
 
         $constraint = new TraversableContainsIdentical($a);
 
