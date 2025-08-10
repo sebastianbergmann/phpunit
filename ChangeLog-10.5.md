@@ -7,6 +7,8 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Changed
 
 * [#6300](https://github.com/sebastianbergmann/phpunit/issues/6300): Emit warning when the name of a data provider method begins with `test`
+* Do not use `ReflectionProperty::setAccessible()` with PHP >= 8.1
+* Do not use `SplObjectStorage` methods that will be deprecated in PHP 8.5
 
 ## [10.5.49] - 2025-08-09
 
