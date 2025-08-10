@@ -65,9 +65,9 @@ final class assertEqualsTest extends TestCase
         $object1  = new SampleClass(4, 8, 15);
         $object2  = new SampleClass(4, 8, 15);
         $storage1 = new SplObjectStorage;
-        $storage1->attach($object1);
+        $storage1->offsetSet($object1);
         $storage2 = new SplObjectStorage;
-        $storage2->attach($object1);
+        $storage2->offsetSet($object1);
 
         return [
             // arrays
@@ -159,9 +159,9 @@ final class assertEqualsTest extends TestCase
         $object2  = new SampleClass(16, 23, 42);
         $object3  = new SampleClass(4, 8, 15);
         $storage1 = new SplObjectStorage;
-        $storage1->attach($object1);
+        $storage1->offsetSet($object1);
         $storage2 = new SplObjectStorage;
-        $storage2->attach($object3); // same content, different object
+        $storage2->offsetSet($object3); // same content, different object
 
         $file = TEST_FILES_PATH . 'foo.xml';
 
