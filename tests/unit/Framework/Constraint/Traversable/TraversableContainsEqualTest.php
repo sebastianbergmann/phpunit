@@ -28,7 +28,7 @@ final class TraversableContainsEqualTest extends TestCase
         $o = new stdClass;
 
         $s = new SplObjectStorage;
-        $s->attach($o);
+        $s->offsetSet($o);
 
         return [
             [

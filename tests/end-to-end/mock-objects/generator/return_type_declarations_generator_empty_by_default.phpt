@@ -19,13 +19,10 @@ $generator = new \PHPUnit\Framework\MockObject\Generator\Generator;
 
 $mock = $generator->testDouble('Foo', false, false);
 
-var_dump(iterator_to_array($mock->forTraversable()));
-var_dump(iterator_to_array($mock->forGenerator()));
-var_dump(iterator_to_array($mock->forIterable()));
+print count(iterator_to_array($mock->forTraversable())) . PHP_EOL;
+print count(iterator_to_array($mock->forGenerator())) . PHP_EOL;
+print count(iterator_to_array($mock->forIterable())) . PHP_EOL;
 --EXPECTF--
-array(0) {
-}
-array(0) {
-}
-array(0) {
-}
+0
+0
+0
