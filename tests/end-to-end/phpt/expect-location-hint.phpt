@@ -1,5 +1,10 @@
 --TEST--
 PHPT EXPECT comparison returns correct code location hint
+--SKIPIF--
+<?php declare(strict_types=1);
+if (extension_loaded('xdebug')) {
+    print 'skip: Extension xdebug must not be loaded.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
