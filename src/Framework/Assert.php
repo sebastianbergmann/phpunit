@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_EOL;
+use const PHP_VERSION;
 use function array_key_exists;
 use function array_shift;
 use function array_unshift;
@@ -33,6 +34,7 @@ use function preg_match;
 use function preg_split;
 use function sprintf;
 use function strpos;
+use function version_compare;
 use ArrayAccess;
 use Countable;
 use DOMAttr;
@@ -3514,9 +3516,15 @@ abstract class Assert
                     return $object->{$attributeName};
                 }
 
-                $attribute->setAccessible(true);
+                if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                    $attribute->setAccessible(true);
+                }
+
                 $value = $attribute->getValue($object);
-                $attribute->setAccessible(false);
+
+                if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                    $attribute->setAccessible(false);
+                }
 
                 return $value;
             } catch (ReflectionException $e) {
