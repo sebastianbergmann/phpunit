@@ -45,7 +45,7 @@
         "sebastian/exporter": "^5.1.2",
         "sebastian/global-state": "^6.0.2",
         "sebastian/object-enumerator": "^5.0.0",
-        "sebastian/recursion-context": "^5.0.0",
+        "sebastian/recursion-context": "^5.0.1",
         "sebastian/type": "^4.0.0",
         "sebastian/version": "^4.0.1"
     },
