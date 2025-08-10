@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Changed
 
 * Do not use `ReflectionProperty::setAccessible()` with PHP >= 8.1
+* Do not use `SplObjectStorage` methods that will be deprecated in PHP 8.5
 
 ## [8.5.42] - 2025-05-02
 

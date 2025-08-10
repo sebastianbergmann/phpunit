@@ -153,7 +153,7 @@ EOF
         $storage = new SplObjectStorage;
         $this->assertFalse($constraint->evaluate($storage, '', true));
 
-        $storage->attach($object);
+        $storage->offsetSet($object);
         $this->assertTrue($constraint->evaluate($storage, '', true));
     }
 

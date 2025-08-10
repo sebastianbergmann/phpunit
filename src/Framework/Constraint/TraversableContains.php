@@ -70,7 +70,7 @@ final class TraversableContains extends Constraint
     protected function matches($other): bool
     {
         if ($other instanceof SplObjectStorage) {
-            return $other->contains($this->value);
+            return $other->offsetExists($this->value);
         }
 
         if (is_object($this->value)) {
