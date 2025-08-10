@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use const PHP_VERSION;
 use function class_uses;
 use function func_get_args;
 use function get_class;
 use function get_parent_class;
 use function sprintf;
+use function version_compare;
 use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -1352,7 +1354,11 @@ EOF
         $refl = new ReflectionObject($this);
         $refl = $refl->getParentClass();
         $prop = $refl->getProperty('mockObjects');
-        $prop->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $prop->setAccessible(true);
+        }
+
         $prop->setValue($this, []);
     }
 }

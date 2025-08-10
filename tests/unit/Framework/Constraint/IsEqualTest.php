@@ -105,10 +105,10 @@ EOF
         $d->c            = $c;
 
         $storage1 = new SplObjectStorage;
-        $storage1->attach($a);
-        $storage1->attach($b);
+        $storage1->offsetSet($a);
+        $storage1->offsetSet($b);
         $storage2 = new SplObjectStorage;
-        $storage2->attach($b);
+        $storage2->offsetSet($b);
         $storage1hash = spl_object_hash($storage1);
         $storage2hash = spl_object_hash($storage2);
 
