@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 
 ### Changed
 
+* Do not use `ReflectionProperty::setAccessible()` with PHP >= 8.1
 * Do not use `SplObjectStorage` methods that will be deprecated in PHP 8.5
 
 ## [9.6.23] - 2025-05-02

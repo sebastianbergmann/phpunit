@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const PHP_VERSION;
 use function array_map;
 use function sprintf;
+use function version_compare;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\BooleanConstraint;
 use PHPUnit\TestFixture\CountConstraint;
@@ -395,7 +397,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $constraint = new $className($operand);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame("'whatever' " . $expected, $method->invokeArgs($constraint, ['whatever']));
     }
@@ -427,7 +432,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
             ->willReturn($string);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expected = "'whatever' " . $string;
 
@@ -459,7 +467,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
             ->method('toString');
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expected = "'whatever' " . $string;
 
@@ -499,7 +510,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
             ->method('toString');
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expected = "'whatever' " . $string;
 
@@ -543,7 +557,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
             ->willReturn($string);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expected = "'whatever' " . $string;
 
@@ -585,7 +602,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
             ->method('toString');
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expected = "'whatever' " . $string;
 
@@ -627,7 +647,10 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
             ->willReturn($string);
 
         $method = (new ReflectionMethod($className, 'failureDescription'));
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expected = $this->getOperatorName() . "( 'whatever' " . $string . ' )';
 

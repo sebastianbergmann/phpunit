@@ -1356,7 +1356,9 @@ EOF
         $prop = $refl->getProperty('mockObjects');
 
         if (version_compare(PHP_VERSION, '8.1.0', '<')) {
-            $prop->setAccessible(true);
+            if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                $prop->setAccessible(true);
+            }
         }
 
         $prop->setValue($this, []);

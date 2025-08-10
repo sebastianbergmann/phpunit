@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const PHP_VERSION;
 use function array_fill;
 use function array_map;
 use function array_slice;
@@ -18,6 +19,7 @@ use function decbin;
 use function implode;
 use function sprintf;
 use function str_split;
+use function version_compare;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\BooleanConstraint;
 use PHPUnit\TestFixture\CountConstraint;
@@ -425,7 +427,10 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             ->willReturn('is the only');
 
         $method = new ReflectionMethod($className, 'failureDescription');
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame("'whatever' is the only", $method->invoke($operator, 'whatever'));
     }
@@ -533,7 +538,10 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             ->willReturn('is fifth or later');
 
         $method = new ReflectionMethod($className, 'failureDescription');
-        $method->setAccessible(true);
+
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $method->setAccessible(true);
+        }
 
         $expectedToString = self::operatorJoinStrings([
             'is first',
