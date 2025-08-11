@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class TriggersDeprecationInDataProviderTest extends TestCase
+class TriggersDeprecationInDataProvider1Test extends TestCase
 {
     public static function dataProvider(): iterable
     {
@@ -68,5 +68,11 @@ class TriggersDeprecationInDataProviderTest extends TestCase
     public function method5(bool $value): void
     {
         $this->assertTrue($value);
+    }
+
+    #[Test]
+    public function methodWithSameNameThanInAnotherTest(): void
+    {
+        $this->assertTrue(true);
     }
 }
