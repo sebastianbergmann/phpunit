@@ -25,7 +25,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Checking whether PHP is configured according to https://docs.phpunit.de/en/%s/installation.html#configuring-php-for-development
 
-display_errors = On         ... not ok
+display_errors = On         ... not ok (0)
 display_startup_errors = On ... ok
 error_reporting = -1        ... ok
 zend.assertions = 1         ... ok

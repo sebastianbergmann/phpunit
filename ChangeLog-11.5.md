@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Changed
 
+* [#6308](https://github.com/sebastianbergmann/phpunit/pull/6308): Improve output of `--check-php-configuration`
 * The version number for the test result cache file has been incremented to reflect that its structure for PHPUnit 11.5 is not compatible with its structure for PHPUnit 8.5 and PHPUnit 9.6
 
 ### Fixed
