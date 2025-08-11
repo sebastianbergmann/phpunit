@@ -36,7 +36,7 @@ final class DefaultResultCache implements ResultCache
     /**
      * @var int
      */
-    private const VERSION = 1;
+    private const VERSION = 2;
 
     /**
      * @var string

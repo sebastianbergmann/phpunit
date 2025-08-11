@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ## [11.5.32] - 2025-MM-DD
 
+### Changed
+
+* The version number for the test result cache file has been incremented to reflect that its structure for PHPUnit 11.5 is not compatible with its structure for PHPUnit 8.5 and PHPUnit 9.6
+
 ### Fixed
 
 * [#6281](https://github.com/sebastianbergmann/phpunit/issues/6281): Exceptions raised in after-test method are not reported for skipped tests
