@@ -87,10 +87,12 @@ final readonly class CheckPhpConfigurationCommand implements Command
                 }
             }
 
-            if (ini_get($name) === $setting['expectedValue']) {
+            $actualValue = ini_get($name);
+
+            if ($actualValue === $setting['expectedValue']) {
                 $check = $this->ok();
             } else {
-                $check         = $this->notOk();
+                $check         = $this->notOk($actualValue);
                 $shellExitCode = 1;
             }
 
@@ -143,14 +145,16 @@ final readonly class CheckPhpConfigurationCommand implements Command
     /**
      * @return non-empty-string
      */
-    private function notOk(): string
+    private function notOk(string $actualValue): string
     {
+        $message = sprintf('not ok (%s)', $actualValue);
+
         if (!$this->colorize) {
-            return 'not ok';
+            return $message;
         }
 
         // @codeCoverageIgnoreStart
-        return Color::colorizeTextBox('fg-red, bold', 'not ok');
+        return Color::colorizeTextBox('fg-red, bold', $message);
         // @codeCoverageIgnoreEnd
     }
 }
