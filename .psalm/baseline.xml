@@ -926,7 +926,7 @@
   <file src="src/TextUI/Command/Commands/CheckPhpConfigurationCommand.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[Color::colorizeTextBox('fg-green, bold', 'ok')]]></code>
-      <code><![CDATA[Color::colorizeTextBox('fg-red, bold', 'not ok')]]></code>
+      <code><![CDATA[Color::colorizeTextBox('fg-red, bold', $message)]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
       <code><![CDATA[non-empty-string]]></code>
