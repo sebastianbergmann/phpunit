@@ -48,6 +48,7 @@ final readonly class TestBuilder
         if ($this->requirementsSatisfied($className, $methodName)) {
             try {
                 ErrorHandler::instance()->enterTestCaseContext($methodName);
+
                 $data = (new DataProvider)->providedData($className, $methodName);
             } finally {
                 ErrorHandler::instance()->leaveTestCaseContext();
