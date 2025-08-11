@@ -38,6 +38,10 @@ final class assertDirectoryIsNotReadableTest extends TestCase
 
     protected function tearDown(): void
     {
+        if (!isset($this->directory)) {
+            return;
+        }
+
         @rmdir($this->directory);
     }
 
