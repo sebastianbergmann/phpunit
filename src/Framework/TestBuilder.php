@@ -47,7 +47,7 @@ final readonly class TestBuilder
 
         if ($this->requirementsSatisfied($className, $methodName)) {
             try {
-                ErrorHandler::instance()->enterTestCaseContext($methodName);
+                ErrorHandler::instance()->enterTestCaseContext($className, $methodName);
 
                 $data = (new DataProvider)->providedData($className, $methodName);
             } finally {

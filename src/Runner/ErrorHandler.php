@@ -282,9 +282,9 @@ final class ErrorHandler
         $this->deprecationTriggers = $deprecationTriggers;
     }
 
-    public function enterTestCaseContext(string $methodName): void
+    public function enterTestCaseContext(string $className, string $methodName): void
     {
-        $this->testCaseContext = $methodName;
+        $this->testCaseContext = $this->testCaseContext($className, $methodName);
     }
 
     public function leaveTestCaseContext(): void
@@ -477,8 +477,15 @@ final class ErrorHandler
             $this->__invoke(...$d);
         }
 
-        foreach ($this->testCaseContextDeprecations[$test->name()] ?? [] as $d) {
+        $testCaseContext = $this->testCaseContext($test::class, $test->name());
+
+        foreach ($this->testCaseContextDeprecations[$testCaseContext] ?? [] as $d) {
             $this->__invoke(...$d);
         }
+    }
+
+    private function testCaseContext(string $className, string $methodName): string
+    {
+        return "{$className}::{$methodName}";
     }
 }
