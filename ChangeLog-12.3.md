@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 
 ## [12.3.4] - 2025-MM-DD
 
+### Changed
+
+* The version number for the test result cache file has been incremented to reflect that its structure for PHPUnit 12.3 is not compatible with its structure for PHPUnit 8.5 and PHPUnit 9.6
+
 ### Fixed
 
 * [#6279](https://github.com/sebastianbergmann/phpunit/issues/6279): Deprecation triggered in data provider method affects all test methods using that data provider method
