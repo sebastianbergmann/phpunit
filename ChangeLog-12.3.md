@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 ### Fixed
 
 * [#6279](https://github.com/sebastianbergmann/phpunit/issues/6279): Deprecation triggered in data provider method affects all test methods using that data provider method
+* [#6281](https://github.com/sebastianbergmann/phpunit/issues/6281): Exceptions raised in after-test method are not reported for skipped tests
 
 ## [12.3.3] - 2025-08-11
 
