@@ -5,7 +5,7 @@ https://github.com/sebastianbergmann/phpunit/issues/6279
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--display-deprecations';
-$_SERVER['argv'][] = __DIR__ . '/6279/TriggersDeprecationInDataProviderTest.php';
+$_SERVER['argv'][] = __DIR__ . '/6279/';
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
@@ -14,11 +14,11 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.D.DD                                                               5 / 5 (100%)
+.D.DD..DD.                                                        10 / 10 (100%)
 
 Time: %s, Memory: %s
 
-3 tests triggered 3 deprecations:
+5 tests triggered 5 deprecations:
 
 1) %sTriggersDeprecationInDataProviderTest.php:26
 some deprecation
@@ -37,5 +37,11 @@ first
 3) %sTriggersDeprecationInDataProviderTest.php:34
 second
 
+4) %sTriggersDeprecationInDataProviderUsingIgnoreDeprecationsTest.php:32
+some deprecation 2
+
+5) %sTriggersDeprecationInDataProviderUsingIgnoreDeprecationsTest.php:39
+some deprecation 3
+
 OK, but there were issues!
-Tests: 5, Assertions: 5, Deprecations: 3.
+Tests: 10, Assertions: 10, Deprecations: 5.
