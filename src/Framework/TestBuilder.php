@@ -23,6 +23,7 @@ use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 
@@ -47,7 +48,13 @@ final readonly class TestBuilder
         $data = null;
 
         if ($this->requirementsSatisfied($className, $methodName)) {
-            $data = (new DataProvider)->providedData($className, $methodName);
+            try {
+                ErrorHandler::instance()->enterTestCaseContext($methodName);
+
+                $data = (new DataProvider)->providedData($className, $methodName);
+            } finally {
+                ErrorHandler::instance()->leaveTestCaseContext();
+            }
         }
 
         if ($data !== null) {
