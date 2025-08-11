@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.3.4] - 2025-MM-DD
+
+### Fixed
+
+* [#6279](https://github.com/sebastianbergmann/phpunit/issues/6279): Deprecation triggered in data provider method affects all test methods using that data provider method
+
 ## [12.3.3] - 2025-08-11
 
 ### Fixed
@@ -54,6 +60,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 * [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229): `Configuration::excludeTestSuite()`, use `Configuration::excludeTestSuites()` instead
 * [#6246](https://github.com/sebastianbergmann/phpunit/issues/6246): Using `#[CoversNothing]` on a test method
 
+[12.3.4]: https://github.com/sebastianbergmann/phpunit/compare/12.3.3...12.3
 [12.3.3]: https://github.com/sebastianbergmann/phpunit/compare/12.3.2...12.3.3
 [12.3.2]: https://github.com/sebastianbergmann/phpunit/compare/12.3.1...12.3.2
 [12.3.1]: https://github.com/sebastianbergmann/phpunit/compare/12.3.0...12.3.1
