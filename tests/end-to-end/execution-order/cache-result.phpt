@@ -27,7 +27,7 @@ Time: %s, Memory: %s
 
 OK, but some tests were skipped!
 Tests: 5, Assertions: 3, Skipped: 2.
-{"version":1,"defects":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":1,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":1},"times":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFive":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testTwo":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testOne":%f}}
+{"version":2,"defects":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":1,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":1},"times":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFive":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testTwo":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testOne":%f}}
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__) . DIRECTORY_SEPARATOR . 'test-results');
