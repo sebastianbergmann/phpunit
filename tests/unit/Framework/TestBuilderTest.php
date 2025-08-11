@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\TestBuilder\TestWithClassLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithDataProvider;
@@ -42,7 +41,6 @@ final class TestBuilderTest extends TestCase
         $this->assertTrue($test->metadata()->isRunTestsInSeparateProcesses()->isEmpty());
     }
 
-    #[IgnorePhpunitDeprecations]
     public function testBuildsTestWithClassLevelMetadataForIsolation(): void
     {
         $test = (new TestBuilder)->build(
@@ -58,7 +56,6 @@ final class TestBuilderTest extends TestCase
         $this->assertSame('testOne', $test->methodName());
         $this->assertTrue($test->metadata()->isBackupGlobals()->asArray()[0]->enabled());
         $this->assertTrue($test->metadata()->isBackupStaticProperties()->asArray()[0]->enabled());
-        $this->assertTrue($test->metadata()->isRunClassInSeparateProcess()->isNotEmpty());
         $this->assertTrue($test->metadata()->isRunTestsInSeparateProcesses()->isNotEmpty());
     }
 
