@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.5.31] - 2025-08-11
+
+### Fixed
+
+* [#6304](https://github.com/sebastianbergmann/phpunit/issues/6304): PHPUnit 11.5.29 hangs when a test runner deprecation is triggered and process isolation is used (this reverts "`#[IgnorePhpunitDeprecations]` is now considered for test runner deprecations" from PHPUnit 11.5.29)
+
 ## [11.5.30] - 2025-08-10
 
 ### Changed
@@ -280,6 +286,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * [#6055](https://github.com/sebastianbergmann/phpunit/issues/6055): `assertNotContainsOnly()` (use `assertContainsNotOnlyArray()`, `assertContainsNotOnlyBool()`, `assertContainsNotOnlyCallable()`, `assertContainsNotOnlyFloat()`, `assertContainsNotOnlyInt()`, `assertContainsNotOnlyIterable()`, `assertContainsNotOnlyNumeric()`, `assertContainsNotOnlyObject()`, `assertContainsNotOnlyResource()`, `assertContainsNotOnlyClosedResource()`, `assertContainsNotOnlyScalar()`, or `assertContainsNotOnlyString()` instead)
 * [#6059](https://github.com/sebastianbergmann/phpunit/issues/6059): `containsOnly()` (use `containsOnlyArray()`, `containsOnlyBool()`, `containsOnlyCallable()`, `containsOnlyFloat()`, `containsOnlyInt()`, `containsOnlyIterable()`, `containsOnlyNumeric()`, `containsOnlyObject()`, `containsOnlyResource()`, `containsOnlyClosedResource()`, `containsOnlyScalar()`, or `containsOnlyString()` instead)
 
+[11.5.31]: https://github.com/sebastianbergmann/phpunit/compare/11.5.30...11.5.31
 [11.5.30]: https://github.com/sebastianbergmann/phpunit/compare/11.5.29...11.5.30
 [11.5.29]: https://github.com/sebastianbergmann/phpunit/compare/11.5.28...11.5.29
 [11.5.28]: https://github.com/sebastianbergmann/phpunit/compare/11.5.27...11.5.28
