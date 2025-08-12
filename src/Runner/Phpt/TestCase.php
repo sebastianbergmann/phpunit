@@ -27,6 +27,7 @@ use function preg_match;
 use function preg_replace;
 use function preg_split;
 use function realpath;
+use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strncasecmp;
@@ -347,6 +348,15 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             EventFacade::emitter()->childProcessFinished($output, $jobResult->stderr());
         } else {
             $output = $this->runCodeInLocalSandbox($skipIfCode);
+        }
+
+        if (str_contains($output, 'Fatal error:')) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'SKIPIF section triggered a fatal error: %s',
+                    $output,
+                ),
+            );
         }
 
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
