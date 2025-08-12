@@ -22,4 +22,6 @@ There was 1 PHPUnit test runner warning:
 
 1) SKIPIF section triggered a fatal error: 
 Warning: require(%afile.php): Failed to open stream: No such file or directory in Standard input code on line %d
+
+Fatal error: Uncaught Error: Failed opening required%a
 %A
