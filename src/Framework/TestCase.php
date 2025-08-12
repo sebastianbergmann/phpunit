@@ -219,7 +219,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<non-empty-string>
      */
     private array $expectedUserDeprecationMessageRegularExpression = [];
-    private false|string $previousErrorLogTarget                   = false;
+
+    /**
+     * @var false|resource
+     */
+    private mixed $errorLogCapture               = false;
+    private false|string $previousErrorLogTarget = false;
 
     /**
      * @param non-empty-string $name
@@ -1299,35 +1304,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
-        $capture = $this->startErrorLogCapture();
+        $this->startErrorLogCapture();
 
         try {
             /** @phpstan-ignore method.dynamicName */
             $testResult = $this->{$this->methodName}(...$testArguments);
 
-            if ($capture !== false) {
-                $errorLogOutput = stream_get_contents($capture);
-
-                if ($this->expectErrorLog) {
-                    $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
-                } else {
-                    if ($errorLogOutput !== false) {
-                        print $this->stripDateFromErrorLog($errorLogOutput);
-                    }
-                }
-            } elseif ($this->expectErrorLog) {
-                $this->markTestIncomplete('Could not create writable error_log file.');
-            }
+            $this->verifyErrorLogExpectation();
         } catch (Throwable $exception) {
-            if ($capture !== false) {
-                if (!$this->expectErrorLog) {
-                    $errorLogOutput = stream_get_contents($capture);
-
-                    if ($errorLogOutput !== false) {
-                        print $this->stripDateFromErrorLog($errorLogOutput);
-                    }
-                }
-            }
+            $this->handleErrorLogError();
 
             if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
@@ -1337,15 +1322,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             return null;
         } finally {
-            if ($capture !== false) {
-                ShutdownHandler::resetMessage();
-
-                fclose($capture);
-
-                if ($this->previousErrorLogTarget !== false) {
-                    ini_set('error_log', $this->previousErrorLogTarget);
-                }
-            }
+            $this->stopErrorLogCapture();
         }
 
         $this->expectedExceptionWasNotRaised();
@@ -2336,28 +2313,72 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    /**
-     * @return false|resource
-     */
-    private function startErrorLogCapture(): mixed
+    private function startErrorLogCapture(): void
     {
         if (ini_get('display_errors') === '0') {
             ShutdownHandler::setMessage('Fatal error: Premature end of PHP process. Use display_errors=On to see the error message.');
         }
 
-        $capture = tmpfile();
+        $errorLogCapture = tmpfile();
 
-        if ($capture !== false) {
-            $capturePath = stream_get_meta_data($capture)['uri'];
+        if ($errorLogCapture !== false) {
+            $capturePath = stream_get_meta_data($errorLogCapture)['uri'];
 
             if (@is_writable($capturePath)) {
                 $this->previousErrorLogTarget = ini_set('error_log', $capturePath);
             } else {
-                $capture = false;
+                $errorLogCapture = false;
             }
         }
 
-        return $capture;
+        $this->errorLogCapture = $errorLogCapture;
+    }
+
+    private function verifyErrorLogExpectation(): void
+    {
+        if ($this->errorLogCapture !== false) {
+            $errorLogOutput = stream_get_contents($this->errorLogCapture);
+
+            if ($this->expectErrorLog) {
+                $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
+            } else {
+                if ($errorLogOutput !== false) {
+                    print $this->stripDateFromErrorLog($errorLogOutput);
+                }
+            }
+        } elseif ($this->expectErrorLog) {
+            $this->markTestIncomplete('Could not create writable error_log file.');
+        }
+    }
+
+    private function handleErrorLogError(): void
+    {
+        if ($this->errorLogCapture !== false) {
+            if (!$this->expectErrorLog) {
+                $errorLogOutput = stream_get_contents($this->errorLogCapture);
+
+                if ($errorLogOutput !== false) {
+                    print $this->stripDateFromErrorLog($errorLogOutput);
+                }
+            }
+        }
+    }
+
+    private function stopErrorLogCapture(): void
+    {
+        if ($this->errorLogCapture !== false) {
+            ShutdownHandler::resetMessage();
+
+            fclose($this->errorLogCapture);
+
+            $this->errorLogCapture = false;
+
+            if ($this->previousErrorLogTarget !== false) {
+                ini_set('error_log', $this->previousErrorLogTarget);
+
+                $this->previousErrorLogTarget = false;
+            }
+        }
     }
 
     /**
