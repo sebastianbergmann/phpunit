@@ -9,7 +9,7 @@ XDEBUG_MODE=coverage
 <?php declare(strict_types=1);
 require __DIR__ . '/../_files/skip-if-requires-code-coverage-driver.php';
 
-if (!function_exists('opcache_compile_file')) {
+if (!extension_loaded('Zend OPcache')) {
     echo 'skip, opcache extension is not loaded';
 } elseif (ini_get('opcache.enable_cli') !== '1') {
     echo 'skip, opcache not enabled for CLI';
