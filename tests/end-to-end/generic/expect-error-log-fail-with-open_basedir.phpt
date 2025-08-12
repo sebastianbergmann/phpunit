@@ -33,10 +33,10 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest::testOne)
 Test Prepared (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest::testOne)
-Test Marked Incomplete (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest::testOne)
+Test Errored (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest::testOne)
 Could not create writable file for error_log()
 Test Finished (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\ExpectNoErrorLog\ExpectErrorLogFailTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)

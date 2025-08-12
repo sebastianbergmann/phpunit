@@ -2335,11 +2335,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->previousErrorLogTarget = ini_set('error_log', $capturePath);
     }
 
+    /**
+     * @throws ErrorLogNotWritableException
+     */
     private function verifyErrorLogExpectation(): void
     {
         if ($this->errorLogCapture === false) {
             if ($this->expectErrorLog) {
-                $this->markTestIncomplete('Could not create writable file for error_log()');
+                throw new ErrorLogNotWritableException;
             }
 
             return;
