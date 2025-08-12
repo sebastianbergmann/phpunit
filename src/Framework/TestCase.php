@@ -2339,7 +2339,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         if ($this->errorLogCapture === false) {
             if ($this->expectErrorLog) {
-                $this->markTestIncomplete('Could not create writable error_log file.');
+                $this->markTestIncomplete('Could not create writable file for error_log()');
             }
 
             return;
@@ -2348,7 +2348,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $errorLogOutput = stream_get_contents($this->errorLogCapture);
 
         if ($this->expectErrorLog) {
-            $this->assertNotEmpty($errorLogOutput, 'Test did not call error_log().');
+            $this->assertNotEmpty($errorLogOutput, 'error_log() was not called');
 
             return;
         }

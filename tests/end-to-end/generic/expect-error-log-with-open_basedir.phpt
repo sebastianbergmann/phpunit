@@ -25,7 +25,7 @@ Test Preparation Started (PHPUnit\TestFixture\ExpectErrorLog\ExpectErrorLogTest:
 Test Prepared (PHPUnit\TestFixture\ExpectErrorLog\ExpectErrorLogTest::testOne)
 logged a side effect
 Test Marked Incomplete (PHPUnit\TestFixture\ExpectErrorLog\ExpectErrorLogTest::testOne)
-Could not create writable error_log file.
+Could not create writable file for error_log()
 Test Finished (PHPUnit\TestFixture\ExpectErrorLog\ExpectErrorLogTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\ExpectErrorLog\ExpectErrorLogTest, 1 test)
 Test Runner Execution Finished
