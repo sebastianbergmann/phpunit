@@ -4,7 +4,7 @@ https://github.com/sebastianbergmann/phpunit/issues/6311
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/../phpt/phpt-invalid-require.phpt';
+$_SERVER['argv'][] = __DIR__ . '/../_files/phpt-skipif-invalid-require.phpt';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
