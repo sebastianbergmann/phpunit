@@ -350,6 +350,15 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
 
+        if (str_contains($output, 'Parse error:')) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'SKIPIF section triggered a parse error: %s',
+                    $output,
+                ),
+            );
+        }
+
         if (str_contains($output, 'Fatal error:')) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
