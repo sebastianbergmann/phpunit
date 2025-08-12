@@ -24,6 +24,7 @@ if (extension_loaded('pcov')) {
 
 if (!extension_loaded('xdebug')) {
     print 'skip: This test requires a code coverage driver';
+
     return;
 }
 
