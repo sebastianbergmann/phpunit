@@ -219,6 +219,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<non-empty-string>
      */
     private array $expectedUserDeprecationMessageRegularExpression = [];
+    private false|string $previousErrorLogTarget                   = false;
 
     /**
      * @param non-empty-string $name
@@ -1298,21 +1299,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
-        $capture = tmpfile();
-
-        if (ini_get('display_errors') === '0') {
-            ShutdownHandler::setMessage('Fatal error: Premature end of PHP process. Use display_errors=On to see the error message.');
-        }
-
-        if ($capture !== false) {
-            $capturePath = stream_get_meta_data($capture)['uri'];
-
-            if (@is_writable($capturePath)) {
-                $errorLogPrevious = ini_set('error_log', $capturePath);
-            } else {
-                $capture = false;
-            }
-        }
+        $capture = $this->startErrorLogCapture();
 
         try {
             /** @phpstan-ignore method.dynamicName */
@@ -1352,10 +1339,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } finally {
             if ($capture !== false) {
                 ShutdownHandler::resetMessage();
+
                 fclose($capture);
 
-                /** @phpstan-ignore variable.undefined (https://github.com/phpstan/phpstan/issues/12992) */
-                ini_set('error_log', $errorLogPrevious);
+                if ($this->previousErrorLogTarget !== false) {
+                    ini_set('error_log', $this->previousErrorLogTarget);
+                }
             }
         }
 
@@ -2345,6 +2334,30 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (isset($trace[0]['class']) && $trace[0]['class'] === InvokedCount::class) {
             $this->numberOfAssertionsPerformed++;
         }
+    }
+
+    /**
+     * @return false|resource
+     */
+    private function startErrorLogCapture(): mixed
+    {
+        if (ini_get('display_errors') === '0') {
+            ShutdownHandler::setMessage('Fatal error: Premature end of PHP process. Use display_errors=On to see the error message.');
+        }
+
+        $capture = tmpfile();
+
+        if ($capture !== false) {
+            $capturePath = stream_get_meta_data($capture)['uri'];
+
+            if (@is_writable($capturePath)) {
+                $this->previousErrorLogTarget = ini_set('error_log', $capturePath);
+            } else {
+                $capture = false;
+            }
+        }
+
+        return $capture;
     }
 
     /**
