@@ -196,6 +196,65 @@ jobs:
       - name: Run tests with PHPUnit
         run: php ./phpunit --testsuite end-to-end --order-by depends,random
 
+  end-to-end-tests-with-coverage-driver:
+    name: End-to-End Tests
+
+    needs:
+      - unit-tests
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+
+    env:
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+        php-version:
+          - "8.3"
+          - "8.4"
+          - "8.5"
+
+    steps:
+      - name: Configure Git to avoid issues with line endings
+        if: matrix.os == 'windows-latest'
+        run: git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: xdebug
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install dependencies with Composer
+        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
+
+      - name: Run tests with PHPUnit
+        run: php ./phpunit --testsuite end-to-end-with-coverage-driver --order-by depends,random
+
   code-coverage:
     name: Code Coverage
 
@@ -203,6 +262,7 @@ jobs:
 
     needs:
       - end-to-end-tests
+      - end-to-end-tests-with-coverage-driver
 
     runs-on: ubuntu-latest
     timeout-minutes: 10

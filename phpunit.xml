@@ -47,6 +47,10 @@
             <exclude>tests/end-to-end/self-direct-indirect/_files</exclude>
             <exclude>tests/end-to-end/testdox/_files</exclude>
         </testsuite>
+
+        <testsuite name="end-to-end-with-coverage-driver">
+            <directory suffix=".phpt">tests/end-to-end-with-coverage-driver/warn-when-opcache-enabled</directory>
+        </testsuite>
     </testsuites>
 
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
