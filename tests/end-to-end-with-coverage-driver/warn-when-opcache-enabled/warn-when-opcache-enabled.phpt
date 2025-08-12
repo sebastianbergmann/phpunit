@@ -3,6 +3,8 @@ https://github.com/sebastianbergmann/php-code-coverage/issues/1022
 --INI--
 opcache.enable_cli=1
 opcache.jit=disable
+--ENV--
+XDEBUG_MODE=coverage
 --SKIPIF--
 <?php declare(strict_types=1);
 require __DIR__ . '/../_files/skip-if-requires-code-coverage-driver.php';

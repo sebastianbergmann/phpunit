@@ -197,7 +197,7 @@ jobs:
         run: php ./phpunit --testsuite end-to-end --order-by depends,random
 
   end-to-end-tests-with-coverage-driver:
-    name: End-to-End Tests
+    name: End-to-End Tests with Coverage Driver
 
     needs:
       - unit-tests
