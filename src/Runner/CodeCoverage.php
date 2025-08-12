@@ -11,8 +11,6 @@ namespace PHPUnit\Runner;
 
 use function assert;
 use function file_put_contents;
-use function function_exists;
-use function ini_get;
 use function sprintf;
 use function sys_get_temp_dir;
 use PHPUnit\Event\Facade as EventFacade;
@@ -42,6 +40,7 @@ use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\Timer;
 
@@ -126,11 +125,9 @@ final class CodeCoverage
             $this->codeCoverage()->excludeUncoveredFiles();
         }
 
-        if (
-            // opcache is built-in since 8.5
-            function_exists('opcache_compile_file') &&
-            ini_get('opcache.enable_cli') === '1'
-        ) {
+        $runtime = new Runtime;
+
+        if ($runtime->isOpcacheActive()) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 'Code coverage might produce unreliable results when OPCache is enabled',
             );
