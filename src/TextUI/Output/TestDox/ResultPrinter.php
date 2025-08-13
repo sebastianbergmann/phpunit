@@ -177,7 +177,7 @@ final readonly class ResultPrinter
         }
 
         $this->printTestResultBodyStart($test);
-        $this->printThrowable($test);
+        $this->printThrowable($test->status(), $test->throwable());
         $this->printTestResultBodyEnd($test);
     }
 
@@ -207,10 +207,8 @@ final readonly class ResultPrinter
         $this->printer->print(PHP_EOL);
     }
 
-    private function printThrowable(TestDoxTestResult $test): void
+    private function printThrowable(TestStatus $status, Throwable $throwable): void
     {
-        $throwable = $test->throwable();
-
         assert($throwable instanceof Throwable);
 
         $message    = trim($throwable->description());
@@ -220,14 +218,14 @@ final readonly class ResultPrinter
         if (!empty($message) && $this->colors) {
             ['message' => $message, 'diff' => $diff] = $this->colorizeMessageAndDiff(
                 $message,
-                $this->messageColorFor($test->status()),
+                $this->messageColorFor($status),
             );
         }
 
         if (!empty($message)) {
             $this->printer->print(
                 $this->prefixLines(
-                    $this->prefixFor('message', $test->status()),
+                    $this->prefixFor('message', $status),
                     $message,
                 ),
             );
@@ -238,7 +236,7 @@ final readonly class ResultPrinter
         if (!empty($diff)) {
             $this->printer->print(
                 $this->prefixLines(
-                    $this->prefixFor('diff', $test->status()),
+                    $this->prefixFor('diff', $status),
                     $diff,
                 ),
             );
@@ -248,13 +246,13 @@ final readonly class ResultPrinter
 
         if (!empty($stackTrace)) {
             if (!empty($message) || !empty($diff)) {
-                $prefix = $this->prefixFor('default', $test->status());
+                $tracePrefix = $this->prefixFor('default', $status);
             } else {
-                $prefix = $this->prefixFor('trace', $test->status());
+                $tracePrefix = $this->prefixFor('trace', $status);
             }
 
             $this->printer->print(
-                $this->prefixLines($prefix, PHP_EOL . $stackTrace),
+                $this->prefixLines($tracePrefix, PHP_EOL . $stackTrace),
             );
         }
     }
