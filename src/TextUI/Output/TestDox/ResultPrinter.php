@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
 use function array_map;
-use function assert;
 use function explode;
 use function implode;
 use function preg_match;
@@ -177,7 +176,7 @@ final readonly class ResultPrinter
         }
 
         $this->printTestResultBodyStart($test);
-        $this->printThrowable($test);
+        $this->printThrowable($test->status(), $test->throwable());
         $this->printTestResultBodyEnd($test);
     }
 
@@ -207,12 +206,8 @@ final readonly class ResultPrinter
         $this->printer->print(PHP_EOL);
     }
 
-    private function printThrowable(TestDoxTestResult $test): void
+    private function printThrowable(TestStatus $status, Throwable $throwable): void
     {
-        $throwable = $test->throwable();
-
-        assert($throwable instanceof Throwable);
-
         $message    = trim($throwable->description());
         $stackTrace = $this->formatStackTrace($throwable->stackTrace());
         $diff       = '';
@@ -220,14 +215,14 @@ final readonly class ResultPrinter
         if ($message !== '' && $this->colors) {
             ['message' => $message, 'diff' => $diff] = $this->colorizeMessageAndDiff(
                 $message,
-                $this->messageColorFor($test->status()),
+                $this->messageColorFor($status),
             );
         }
 
         if ($message !== '') {
             $this->printer->print(
                 $this->prefixLines(
-                    $this->prefixFor('message', $test->status()),
+                    $this->prefixFor('message', $status),
                     $message,
                 ),
             );
@@ -238,7 +233,7 @@ final readonly class ResultPrinter
         if ($diff !== '') {
             $this->printer->print(
                 $this->prefixLines(
-                    $this->prefixFor('diff', $test->status()),
+                    $this->prefixFor('diff', $status),
                     $diff,
                 ),
             );
@@ -246,16 +241,40 @@ final readonly class ResultPrinter
             $this->printer->print(PHP_EOL);
         }
 
-        if ($stackTrace !== '') {
-            if ($message !== '' || $diff !== '') {
-                $prefix = $this->prefixFor('default', $test->status());
+        if (!empty($stackTrace)) {
+            if (!empty($message) || !empty($diff)) {
+                $tracePrefix = $this->prefixFor('default', $status);
             } else {
-                $prefix = $this->prefixFor('trace', $test->status());
+                $tracePrefix = $this->prefixFor('trace', $status);
             }
 
             $this->printer->print(
-                $this->prefixLines($prefix, PHP_EOL . $stackTrace),
+                $this->prefixLines($tracePrefix, PHP_EOL . $stackTrace),
             );
+        }
+
+        if ($throwable->hasPrevious()) {
+            $this->printer->print(PHP_EOL);
+
+            $this->printer->print(
+                $this->prefixLines(
+                    $this->prefixFor('default', $status),
+                    ' ',
+                ),
+            );
+
+            $this->printer->print(PHP_EOL);
+
+            $this->printer->print(
+                $this->prefixLines(
+                    $this->prefixFor('default', $status),
+                    'Caused by:',
+                ),
+            );
+
+            $this->printer->print(PHP_EOL);
+
+            $this->printThrowable($status, $throwable->previous());
         }
     }
 
