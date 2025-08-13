@@ -24,6 +24,8 @@ if (extension_loaded('pcov')) {
 
 if (!extension_loaded('xdebug')) {
     print 'skip: This test requires a code coverage driver';
+
+    return;
 }
 
 if (version_compare(phpversion('xdebug'), '3.1', '>=') && in_array('coverage', xdebug_info('mode'), true)) {
