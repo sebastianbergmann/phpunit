@@ -350,7 +350,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
 
-        $this->triggerWarningOnPhpErrors('SKIPIF', $output);
+        $this->triggerRunnerWarningOnPhpErrors('SKIPIF', $output);
 
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
@@ -446,7 +446,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($cleanCode);
         }
 
-        $this->triggerWarningOnPhpErrors('CLEAN', $output);
+        $this->triggerRunnerWarningOnPhpErrors('CLEAN', $output);
     }
 
     /**
@@ -685,7 +685,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         return $settings;
     }
 
-    private function triggerWarningOnPhpErrors(string $section, string $output): void
+    private function triggerRunnerWarningOnPhpErrors(string $section, string $output): void
     {
         if (str_contains($output, 'Parse error:')) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
