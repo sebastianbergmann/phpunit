@@ -350,23 +350,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
 
-        if (str_contains($output, 'Parse error:')) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                sprintf(
-                    'SKIPIF section triggered a parse error: %s',
-                    $output,
-                ),
-            );
-        }
-
-        if (str_contains($output, 'Fatal error:')) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                sprintf(
-                    'SKIPIF section triggered a fatal error: %s',
-                    $output,
-                ),
-            );
-        }
+        $this->triggerRunnerWarningOnPhpErrors('SKIPIF', $output);
 
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
@@ -448,19 +432,21 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $cleanCode = (new Renderer)->render($this->filename, $sections['CLEAN']);
 
         if ($this->shouldRunInSubprocess($sections, $cleanCode)) {
-            $result = JobRunnerRegistry::run(
+            $jobResult = JobRunnerRegistry::run(
                 new Job(
                     $cleanCode,
                     $this->settings($collectCoverage),
                 ),
             );
 
-            EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
+            $output = $jobResult->stdout();
 
-            return;
+            EventFacade::emitter()->childProcessFinished($jobResult->stdout(), $jobResult->stderr());
+        } else {
+            $output = $this->runCodeInLocalSandbox($cleanCode);
         }
 
-        $this->runCodeInLocalSandbox($cleanCode);
+        $this->triggerRunnerWarningOnPhpErrors('CLEAN', $output);
     }
 
     /**
@@ -697,5 +683,28 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         return $settings;
+    }
+
+    private function triggerRunnerWarningOnPhpErrors(string $section, string $output): void
+    {
+        if (str_contains($output, 'Parse error:')) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    '%s section triggered a parse error: %s',
+                    $section,
+                    $output,
+                ),
+            );
+        }
+
+        if (str_contains($output, 'Fatal error:')) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    '%s section triggered a fatal error: %s',
+                    $section,
+                    $output,
+                ),
+            );
+        }
     }
 }
