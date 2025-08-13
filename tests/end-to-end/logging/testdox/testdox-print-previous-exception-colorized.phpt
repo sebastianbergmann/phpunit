@@ -1,5 +1,10 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/5863
+--SKIPIF--
+<?php declare(strict_types=1);
+if (stripos(\PHP_OS, 'WIN') === 0) {
+    print 'skip: Colorized diff is different on Windows.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--display-errors';
