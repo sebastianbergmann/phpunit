@@ -250,10 +250,36 @@ final readonly class ResultPrinter
             } else {
                 $tracePrefix = $this->prefixFor('trace', $status);
             }
+        }
 
+        if ($stackTrace !== '') {
             $this->printer->print(
                 $this->prefixLines($tracePrefix, PHP_EOL . $stackTrace),
             );
+        }
+
+        if ($throwable->hasPrevious()) {
+            $this->printer->print(PHP_EOL);
+
+            $this->printer->print(
+                $this->prefixLines(
+                    $tracePrefix,
+                    ' ',
+                ),
+            );
+
+            $this->printer->print(PHP_EOL);
+
+            $this->printer->print(
+                $this->prefixLines(
+                    $tracePrefix,
+                    'Caused by:',
+                ),
+            );
+
+            $this->printer->print(PHP_EOL);
+
+            $this->printThrowable($status, $throwable->previous());
         }
     }
 
