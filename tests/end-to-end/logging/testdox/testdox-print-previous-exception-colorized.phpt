@@ -1,5 +1,5 @@
 --TEST--
-Testdox: print error message
+https://github.com/sebastianbergmann/phpunit/issues/5863
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--display-errors';
