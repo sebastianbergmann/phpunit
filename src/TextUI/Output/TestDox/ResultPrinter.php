@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
 use function array_map;
-use function assert;
 use function explode;
 use function implode;
 use function preg_match;
@@ -248,9 +247,7 @@ final readonly class ResultPrinter
             } else {
                 $tracePrefix = $this->prefixFor('trace', $status);
             }
-        }
 
-        if ($stackTrace !== '') {
             $this->printer->print(
                 $this->prefixLines($tracePrefix, PHP_EOL . $stackTrace),
             );
@@ -261,7 +258,7 @@ final readonly class ResultPrinter
 
             $this->printer->print(
                 $this->prefixLines(
-                    $tracePrefix,
+                    $this->prefixFor('default', $status),
                     ' ',
                 ),
             );
@@ -270,7 +267,7 @@ final readonly class ResultPrinter
 
             $this->printer->print(
                 $this->prefixLines(
-                    $tracePrefix,
+                    $this->prefixFor('default', $status),
                     'Caused by:',
                 ),
             );
