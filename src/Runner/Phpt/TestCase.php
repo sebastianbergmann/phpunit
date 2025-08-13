@@ -432,19 +432,21 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $cleanCode = (new Renderer)->render($this->filename, $sections['CLEAN']);
 
         if ($this->shouldRunInSubprocess($sections, $cleanCode)) {
-            $result = JobRunnerRegistry::run(
+            $jobResult = JobRunnerRegistry::run(
                 new Job(
                     $cleanCode,
                     $this->settings($collectCoverage),
                 ),
             );
 
-            EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
+            $output = $jobResult->stdout();
 
-            return;
+            EventFacade::emitter()->childProcessFinished($jobResult->stdout(), $jobResult->stderr());
+        } else {
+            $output = $this->runCodeInLocalSandbox($cleanCode);
         }
 
-        $this->runCodeInLocalSandbox($cleanCode);
+        $this->triggerWarningOnPhpErrors('CLEAN', $output);
     }
 
     /**
