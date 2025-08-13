@@ -241,8 +241,8 @@ final readonly class ResultPrinter
             $this->printer->print(PHP_EOL);
         }
 
-        if (!empty($stackTrace)) {
-            if (!empty($message) || !empty($diff)) {
+        if ($stackTrace !== '') {
+            if ($message !== '' || $diff !== '') {
                 $tracePrefix = $this->prefixFor('default', $status);
             } else {
                 $tracePrefix = $this->prefixFor('trace', $status);
