@@ -209,8 +209,6 @@ final readonly class ResultPrinter
 
     private function printThrowable(TestStatus $status, Throwable $throwable): void
     {
-        assert($throwable instanceof Throwable);
-
         $message    = trim($throwable->description());
         $stackTrace = $this->formatStackTrace($throwable->stackTrace());
         $diff       = '';
