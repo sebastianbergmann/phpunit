@@ -15,4 +15,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-Fatal error: Premature end of PHP process. Use display_errors=On to see the error message.
+Fatal error: Premature end of PHPUnit's PHP process. Use display_errors=On to see the error message.
