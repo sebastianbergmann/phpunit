@@ -353,7 +353,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (!$this->shouldRunInSeparateProcess() || $this->requirementsNotSatisfied()) {
             try {
-                ShutdownHandler::setMessage('Fatal error: Premature end of PHP process.');
+                ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process in %s.', $this->toString()));
                 (new TestRunner)->run($this);
             } finally {
                 ShutdownHandler::resetMessage();
