@@ -333,7 +333,7 @@ jobs:
           java-version: 11
 
       - name: Download PHAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/
@@ -389,7 +389,7 @@ jobs:
           java-version: 11
 
       - name: Download PHAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/
