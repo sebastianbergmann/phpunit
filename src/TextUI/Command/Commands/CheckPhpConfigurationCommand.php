@@ -32,47 +32,49 @@ final readonly class CheckPhpConfigurationCommand implements Command
     /**
      * @var non-empty-array<non-empty-string, array{expectedValue: list<int|non-empty-string>|non-empty-string, valueForConfiguration: non-empty-string, requiredExtensions: list<non-empty-string>}>
      */
-    private const array SETTINGS = [
-        'display_errors' => [
-            'expectedValue'         => '1',
-            'valueForConfiguration' => 'On',
-            'requiredExtensions'    => [],
-        ],
-        'display_startup_errors' => [
-            'expectedValue'         => '1',
-            'valueForConfiguration' => 'On',
-            'requiredExtensions'    => [],
-        ],
-        'error_reporting' => [
-            'expectedValue'         => ['-1', E_ALL],
-            'valueForConfiguration' => '-1',
-            'requiredExtensions'    => [],
-        ],
-        'xdebug.show_exception_trace' => [
-            'expectedValue'         => '0',
-            'valueForConfiguration' => '0',
-            'requiredExtensions'    => ['xdebug'],
-        ],
-        'zend.assertions' => [
-            'expectedValue'         => '1',
-            'valueForConfiguration' => '1',
-            'requiredExtensions'    => [],
-        ],
-        'assert.exception' => [
-            'expectedValue'         => '1',
-            'valueForConfiguration' => '1',
-            'requiredExtensions'    => [],
-        ],
-        'memory_limit' => [
-            'expectedValue'         => '-1',
-            'valueForConfiguration' => '-1',
-            'requiredExtensions'    => [],
-        ],
-    ];
+    private array $settings;
     private bool $colorize;
 
     public function __construct()
     {
+        $this->settings = [
+            'display_errors' => [
+                'expectedValue'         => '1',
+                'valueForConfiguration' => 'On',
+                'requiredExtensions'    => [],
+            ],
+            'display_startup_errors' => [
+                'expectedValue'         => '1',
+                'valueForConfiguration' => 'On',
+                'requiredExtensions'    => [],
+            ],
+            'error_reporting' => [
+                'expectedValue'         => ['-1', (string) E_ALL],
+                'valueForConfiguration' => '-1',
+                'requiredExtensions'    => [],
+            ],
+            'xdebug.show_exception_trace' => [
+                'expectedValue'         => '0',
+                'valueForConfiguration' => '0',
+                'requiredExtensions'    => ['xdebug'],
+            ],
+            'zend.assertions' => [
+                'expectedValue'         => '1',
+                'valueForConfiguration' => '1',
+                'requiredExtensions'    => [],
+            ],
+            'assert.exception' => [
+                'expectedValue'         => '1',
+                'valueForConfiguration' => '1',
+                'requiredExtensions'    => [],
+            ],
+            'memory_limit' => [
+                'expectedValue'         => '-1',
+                'valueForConfiguration' => '-1',
+                'requiredExtensions'    => [],
+            ],
+        ];
+
         $this->colorize = (new Console)->hasColorSupport();
     }
 
@@ -81,7 +83,7 @@ final readonly class CheckPhpConfigurationCommand implements Command
         $lines         = [];
         $shellExitCode = 0;
 
-        foreach (self::SETTINGS as $name => $setting) {
+        foreach ($this->settings as $name => $setting) {
             foreach ($setting['requiredExtensions'] as $extension) {
                 if (!extension_loaded($extension)) {
                     // @codeCoverageIgnoreStart
