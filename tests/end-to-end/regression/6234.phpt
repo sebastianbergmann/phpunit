@@ -14,4 +14,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-Fatal error: Premature end of PHP process in PHPUnit\TestFixture\Issue6234Test::testExitWithoutProcessIsolation.
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\Issue6234Test::testExitWithoutProcessIsolation.
