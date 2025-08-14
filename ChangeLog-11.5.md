@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ## [11.5.33] - 2025-MM-DD
 
+### Changed
+
+* [#6321](https://github.com/sebastianbergmann/phpunit/issues/6321): Allow `error_reporting=E_ALL` for `--check-php-configuration`
+
 ### Fixed
 
 * [#5863](https://github.com/sebastianbergmann/phpunit/issues/5863): TestDox printer does not show previous exception
