@@ -352,7 +352,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (!$this->shouldRunInSeparateProcess() || $this->requirementsNotSatisfied()) {
-            (new TestRunner)->run($this);
+            try {
+                ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $this->toString()));
+                (new TestRunner)->run($this);
+            } finally {
+                ShutdownHandler::resetMessage();
+            }
 
             return;
         }
@@ -2316,7 +2321,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function startErrorLogCapture(): void
     {
         if (ini_get('display_errors') === '0') {
-            ShutdownHandler::setMessage('Fatal error: Premature end of PHP process. Use display_errors=On to see the error message.');
+            ShutdownHandler::setMessage(
+                'Fatal error: Premature end of PHPUnit\'s PHP process. Use display_errors=On to see the error message.',
+            );
         }
 
         $errorLogCapture = tmpfile();

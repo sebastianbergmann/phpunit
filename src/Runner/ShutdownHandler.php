@@ -39,9 +39,13 @@ final class ShutdownHandler
             return;
         }
 
-        register_shutdown_function(static function (): void
-        {
-            print self::$message;
-        });
+        self::$registered = true;
+
+        register_shutdown_function(
+            static function (): void
+            {
+                print self::$message;
+            },
+        );
     }
 }
