@@ -9,9 +9,12 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+use const E_ALL;
 use const PHP_EOL;
 use function extension_loaded;
+use function in_array;
 use function ini_get;
+use function is_array;
 use function max;
 use function sprintf;
 use function strlen;
@@ -27,7 +30,7 @@ use SebastianBergmann\Environment\Console;
 final readonly class CheckPhpConfigurationCommand implements Command
 {
     /**
-     * @var non-empty-array<non-empty-string, array{expectedValue: non-empty-string, valueForConfiguration: non-empty-string, requiredExtensions: list<non-empty-string>}>
+     * @var non-empty-array<non-empty-string, array{expectedValue: list<int|non-empty-string>|non-empty-string, valueForConfiguration: non-empty-string, requiredExtensions: list<non-empty-string>}>
      */
     private const array SETTINGS = [
         'display_errors' => [
@@ -41,7 +44,7 @@ final readonly class CheckPhpConfigurationCommand implements Command
             'requiredExtensions'    => [],
         ],
         'error_reporting' => [
-            'expectedValue'         => '-1',
+            'expectedValue'         => ['-1', E_ALL],
             'valueForConfiguration' => '-1',
             'requiredExtensions'    => [],
         ],
@@ -89,7 +92,10 @@ final readonly class CheckPhpConfigurationCommand implements Command
 
             $actualValue = ini_get($name);
 
-            if ($actualValue === $setting['expectedValue']) {
+            if (
+                $actualValue === $setting['expectedValue'] ||
+                (is_array($setting['expectedValue']) && in_array($actualValue, $setting['expectedValue'], true))
+            ) {
                 $check = $this->ok();
             } else {
                 $check         = $this->notOk($actualValue);
