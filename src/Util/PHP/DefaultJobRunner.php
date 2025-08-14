@@ -23,6 +23,7 @@ use function ini_get_all;
 use function is_array;
 use function is_resource;
 use function proc_close;
+use function proc_get_status;
 use function proc_open;
 use function stream_get_contents;
 use function sys_get_temp_dir;
@@ -147,8 +148,9 @@ final readonly class DefaultJobRunner extends JobRunner
             fclose($pipes[2]);
         }
 
-        $exitCode = 0;
+        $exitCode      = 0;
         $processStatus = proc_get_status($process);
+
         if ($processStatus['running'] === false) {
             $exitCode = $processStatus['exitcode'];
         }

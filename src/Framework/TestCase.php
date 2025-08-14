@@ -961,6 +961,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $this->wasPrepared;
     }
 
+    final public function getExpectedProcessExitCode(): ?int
+    {
+        return $this->expectProcessExit;
+    }
+
     /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
@@ -1048,11 +1053,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function expectProcessExit(int $exitCode): void
     {
         $this->expectProcessExit = $exitCode;
-    }
-
-    final public function getExpectedProcessExitCode(): ?int
-    {
-        return $this->expectProcessExit;
     }
 
     final protected function expectErrorLog(): void

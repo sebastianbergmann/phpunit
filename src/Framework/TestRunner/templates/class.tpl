@@ -76,8 +76,9 @@ function __phpunit_run_isolated_test()
 
     ob_end_clean();
     $output = '';
+
     $testCalledExit = true;
-    register_shutdown_function(function() use ($test, $output, $dispatcher, $testCalledExit) {
+    register_shutdown_function(function() use ($test, $output, $dispatcher, &$testCalledExit) {
         file_put_contents(
             '{processResultFile}',
             serialize(

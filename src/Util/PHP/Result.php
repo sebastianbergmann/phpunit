@@ -24,8 +24,8 @@ final readonly class Result
 
     public function __construct(string $stdout, string $stderr, int $exitCode)
     {
-        $this->stdout = $stdout;
-        $this->stderr = $stderr;
+        $this->stdout   = $stdout;
+        $this->stderr   = $stderr;
         $this->exitCode = $exitCode;
     }
 
