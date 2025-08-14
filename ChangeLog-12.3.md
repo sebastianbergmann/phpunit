@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 
 ### Changed
 
+* [#6319](https://github.com/sebastianbergmann/phpunit/issues/6319): Detect premature end of PHPUnit's main PHP process
 * [#6321](https://github.com/sebastianbergmann/phpunit/issues/6321): Allow `error_reporting=E_ALL` for `--check-php-configuration`
 
 ### Fixed
