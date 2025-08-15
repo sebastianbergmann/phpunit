@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Fixed
 
 * [#5863](https://github.com/sebastianbergmann/phpunit/issues/5863): TestDox printer does not show previous exception
+* [#6102](https://github.com/sebastianbergmann/phpunit/issues/6102): `expectUserDeprecationMessage*()` fails when test is run in separate process
 
 ## [11.5.32] - 2025-08-12
 
