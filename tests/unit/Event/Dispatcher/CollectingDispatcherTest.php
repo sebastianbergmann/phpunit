@@ -19,14 +19,20 @@ final class CollectingDispatcherTest extends TestCase
 {
     public function testHasNoCollectedEventsWhenFlushedImmediatelyAfterCreation(): void
     {
-        $dispatcher = new CollectingDispatcher;
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
 
         $this->assertEmpty($dispatcher->flush());
     }
 
     public function testCollectsDispatchedEventsUntilFlushed(): void
     {
-        $dispatcher = new CollectingDispatcher;
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
         $event      = $this->createStub(Event::class);
 
         $dispatcher->dispatch($event);
