@@ -68,22 +68,26 @@ final class Facade
      */
     public static function collector(): Collector|InIsolationCollector
     {
-        if (self::$collector === null) {
-            if (self::$inIsolation) {
-                self::$collector = new InIsolationCollector(
-                    new IssueFilter(
-                        ConfigurationRegistry::get()->source(),
-                    ),
-                );
-            } else {
-                self::$collector = new Collector(
-                    EventFacade::instance(),
-                    new IssueFilter(
-                        ConfigurationRegistry::get()->source(),
-                    ),
-                );
-            }
+        if (self::$collector !== null) {
+            return self::$collector;
         }
+
+        $issueFilter = new IssueFilter(
+            ConfigurationRegistry::get()->source(),
+        );
+
+        if (self::$inIsolation) {
+            self::$collector = new InIsolationCollector(
+                $issueFilter,
+            );
+
+            return self::$collector;
+        }
+
+        self::$collector = new Collector(
+            EventFacade::instance(),
+            $issueFilter,
+        );
 
         return self::$collector;
     }
