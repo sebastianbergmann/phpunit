@@ -36,8 +36,9 @@ final class Facade
 
     public static function initForIsolation(): void
     {
-        self::$inIsolation = true;
         self::collector();
+
+        self::$inIsolation = true;
     }
 
     /**
