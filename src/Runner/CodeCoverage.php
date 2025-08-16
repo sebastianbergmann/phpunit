@@ -40,6 +40,7 @@ use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\Timer;
 
@@ -122,6 +123,14 @@ final class CodeCoverage
             $this->codeCoverage()->includeUncoveredFiles();
         } else {
             $this->codeCoverage()->excludeUncoveredFiles();
+        }
+
+        $runtime = new Runtime;
+
+        if ($runtime->isOpcacheActive()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Code coverage might produce unreliable results when OPCache is enabled',
+            );
         }
 
         if ($codeCoverageFilterRegistry->get()->isEmpty()) {
