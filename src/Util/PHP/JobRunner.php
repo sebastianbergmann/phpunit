@@ -52,6 +52,7 @@ abstract readonly class JobRunner
             $test,
             $processResult,
             $result->stderr(),
+            $result->exitCode(),
         );
 
         EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());

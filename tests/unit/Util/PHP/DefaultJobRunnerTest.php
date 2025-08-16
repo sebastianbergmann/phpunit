@@ -30,7 +30,7 @@ final class DefaultJobRunnerTest extends TestCase
     public static function provider(): Generator
     {
         yield 'output to stdout' => [
-            new Result('test', ''),
+            new Result('test', '', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -41,7 +41,7 @@ EOT
         ];
 
         yield 'output to stderr' => [
-            new Result('', 'test'),
+            new Result('', 'test', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -52,7 +52,7 @@ EOT
         ];
 
         yield 'output to stdout and stderr' => [
-            new Result('test-stdout', 'test-stderr'),
+            new Result('test-stdout', 'test-stderr', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -64,7 +64,7 @@ EOT
         ];
 
         yield 'stderr redirected to stdout' => [
-            new Result('test', ''),
+            new Result('test', '', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -76,7 +76,7 @@ EOT,
         ];
 
         yield 'configured environment variables' => [
-            new Result('test', ''),
+            new Result('test', '', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -88,7 +88,7 @@ EOT,
         ];
 
         yield 'arguments' => [
-            new Result('test', ''),
+            new Result('test', '', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -100,7 +100,7 @@ EOT,
         ];
 
         yield 'input from stdin' => [
-            new Result('test', ''),
+            new Result('test', '', 0),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
