@@ -1,0 +1,83 @@
+# https://docs.github.com/en/actions
+
+on:
+  schedule:
+    - cron: "15 0 * * *"
+  workflow_dispatch: ~
+
+name: Nightly
+
+permissions:
+  contents: read
+
+jobs:
+  run-tests:
+    name: Tests
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+
+    env:
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+        phpunit-branch:
+          - main
+          - 12.3
+          - 11.5
+          - 10.5
+          - 9.6
+          - 8.5
+
+        php-version:
+          - 8.1
+          - 8.2
+          - 8.3
+          - 8.4
+          - 8.5
+
+        exclude:
+          - phpunit-branch: main
+            php-version: 8.1
+          - phpunit-branch: main
+            php-version: 8.2
+          - phpunit-branch: 12.3
+            php-version: 8.1
+          - phpunit-branch: 12.3
+            php-version: 8.2
+          - phpunit-branch: 11.5
+            php-version: 8.1
+
+    steps:
+      - name: Configure Git to avoid issues with line endings
+        if: matrix.os == 'windows-latest'
+        run: git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ matrix.phpunit-branch }}
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install dependencies with Composer
+        run: php ./tools/composer install --no-ansi --no-interaction --no-progress
+
+      - name: Run unit tests with PHPUnit
+        run: php ./phpunit --testsuite unit --order-by depends,random
+
+      - name: Run end-to-end tests with PHPUnit
+        run: php ./phpunit --testsuite end-to-end --order-by depends,random
