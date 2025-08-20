@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.5.34] - 2025-08-20
+
+### Changed
+
+* Do not configure `report_memleaks` setting (which will be deprecated in PHP 8.5) for PHPT processes
+
 ## [11.5.33] - 2025-08-16
 
 ### Changed
@@ -308,6 +314,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * [#6055](https://github.com/sebastianbergmann/phpunit/issues/6055): `assertNotContainsOnly()` (use `assertContainsNotOnlyArray()`, `assertContainsNotOnlyBool()`, `assertContainsNotOnlyCallable()`, `assertContainsNotOnlyFloat()`, `assertContainsNotOnlyInt()`, `assertContainsNotOnlyIterable()`, `assertContainsNotOnlyNumeric()`, `assertContainsNotOnlyObject()`, `assertContainsNotOnlyResource()`, `assertContainsNotOnlyClosedResource()`, `assertContainsNotOnlyScalar()`, or `assertContainsNotOnlyString()` instead)
 * [#6059](https://github.com/sebastianbergmann/phpunit/issues/6059): `containsOnly()` (use `containsOnlyArray()`, `containsOnlyBool()`, `containsOnlyCallable()`, `containsOnlyFloat()`, `containsOnlyInt()`, `containsOnlyIterable()`, `containsOnlyNumeric()`, `containsOnlyObject()`, `containsOnlyResource()`, `containsOnlyClosedResource()`, `containsOnlyScalar()`, or `containsOnlyString()` instead)
 
+[11.5.34]: https://github.com/sebastianbergmann/phpunit/compare/11.5.33...11.5.34
 [11.5.33]: https://github.com/sebastianbergmann/phpunit/compare/11.5.32...11.5.33
 [11.5.32]: https://github.com/sebastianbergmann/phpunit/compare/11.5.31...11.5.32
 [11.5.31]: https://github.com/sebastianbergmann/phpunit/compare/11.5.30...11.5.31
