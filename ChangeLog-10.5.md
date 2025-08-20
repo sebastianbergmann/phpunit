@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.53] - 2025-08-20
+
+### Changed
+
+* Do not configure `report_memleaks` setting (which will be deprecated in PHP 8.5) for PHPT processes
+
 ## [10.5.52] - 2025-08-16
 
 ### Changed
@@ -466,6 +472,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.53]: https://github.com/sebastianbergmann/phpunit/compare/10.5.52...10.5.53
 [10.5.52]: https://github.com/sebastianbergmann/phpunit/compare/10.5.51...10.5.52
 [10.5.51]: https://github.com/sebastianbergmann/phpunit/compare/10.5.50...10.5.51
 [10.5.50]: https://github.com/sebastianbergmann/phpunit/compare/10.5.49...10.5.50
