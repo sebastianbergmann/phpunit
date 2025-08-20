@@ -735,7 +735,7 @@ The maintainers of this project ask contributors to follow the [code of conduct]
 
 The maintainers of this project provide limited support.
 
-You can support the maintenance of this project by [sponsoring @localheinz](https://github.com/sponsors/localheinz) or [requesting an invoice for services related to this project](mailto:am@localheinz.com?subject=ergebnis/phpstan-rules:%20Requesting%20invoice%20for%20services).
+You can support the maintenance of this project by [sponsoring @ergebnis](https://github.com/sponsors/ergebnis).
 
 ## PHP Version Support Policy
 

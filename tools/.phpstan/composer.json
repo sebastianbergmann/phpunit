@@ -4,7 +4,7 @@
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-strict-rules": "^2.0.6",
         "tomasvotruba/type-coverage": "^2.0.2",
-        "ergebnis/phpstan-rules": "^2.10.5"
+        "ergebnis/phpstan-rules": "^2.11.0"
     },
     "config": {
         "allow-plugins": {
