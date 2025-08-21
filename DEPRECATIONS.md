@@ -43,4 +43,4 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                              | Since  | Replacement                                          |
 |-------------------------------------------------------------------|------------------------------------------|--------|------------------------------------------------------|
-| [#6240](https://github.com/sebastianbergmann/phpunit/issues/6240) | `--dont-report-useless-tests` CLI option | 12.2.3 | Use `--dont-report-useless-tests` CLI option instead |
+| [#6240](https://github.com/sebastianbergmann/phpunit/issues/6240) | `--dont-report-useless-tests` CLI option | 12.2.3 | Use `--do-not-report-useless-tests` CLI option instead |
