@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
 #[RunTestsInSeparateProcesses]
-final class Issue6329Test extends TestCase
+final class Issue6329DeprecationIgnoredTest extends TestCase
 {
     #[IgnorePhpunitDeprecations]
     public function testOne(): void

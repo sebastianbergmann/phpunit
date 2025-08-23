@@ -5,7 +5,7 @@ https://github.com/sebastianbergmann/phpunit/issues/6329
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--display-phpunit-deprecations';
-$_SERVER['argv'][] = __DIR__ . '/6329/Issue6329Test.php';
+$_SERVER['argv'][] = __DIR__ . '/6329/Issue6329DeprecationIgnoredTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
