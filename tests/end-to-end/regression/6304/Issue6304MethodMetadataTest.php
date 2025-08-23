@@ -11,13 +11,13 @@ declare(strict_types=1);
  */
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group test
- *
- * @runTestsInSeparateProcesses
- */
-final class Issue6304Test extends TestCase
+final class Issue6304MethodMetadataTest extends TestCase
 {
+    /**
+     * @group test
+     *
+     * @runTestsInSeparateProcesses
+     */
     public function testOne(): void
     {
         $this->assertTrue(true);
