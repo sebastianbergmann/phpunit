@@ -29,6 +29,9 @@ final class MockClassTest extends TestCase
         $this->assertTrue(class_exists($mockName));
     }
 
+    /**
+     * @depends testGenerateClassFromSource
+     */
     public function testGenerateReturnsNameOfGeneratedClass(): void
     {
         $mockName = 'PHPUnit\TestFixture\MockObject\MockClassGenerated';
