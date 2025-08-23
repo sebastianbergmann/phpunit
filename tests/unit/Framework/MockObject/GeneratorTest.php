@@ -28,7 +28,6 @@ use PHPUnit\TestFixture\InterfaceWithSemiReservedMethodName;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 use PHPUnit\TestFixture\SingletonClass;
-use RuntimeException;
 use stdClass;
 use Throwable;
 
