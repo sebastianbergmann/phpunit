@@ -98,7 +98,7 @@ final class GeneratorTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $this->generator->getMock(stdClass::class, [], [], RuntimeException::class);
+        $this->generator->getMock(stdClass::class, [], [], \InvalidArgumentException::class);
     }
 
     public function testGetMockCanCreateNonExistingFunctions(): void
