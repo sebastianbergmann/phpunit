@@ -429,6 +429,8 @@ final class AnnotationParser implements Parser
         if (!empty($result) &&
             !isset(self::$deprecationEmittedForMethod[$className . '::' . $methodName]) &&
             !str_starts_with($className, 'PHPUnit\TestFixture')) {
+            self::$deprecationEmittedForMethod[$className . '::' . $methodName] = true;
+
             EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
                 sprintf(
                     'Metadata found in doc-comment for method %s::%s(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.',
@@ -436,8 +438,6 @@ final class AnnotationParser implements Parser
                     $methodName,
                 ),
             );
-
-            self::$deprecationEmittedForMethod[$className . '::' . $methodName] = true;
         }
 
         return MetadataCollection::fromArray($result);
