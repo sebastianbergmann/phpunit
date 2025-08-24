@@ -3,8 +3,6 @@
 on:
   pull_request: null
   push: null
-  schedule:
-    - cron: "15 0 * * *"
 
 name: CI
 
@@ -43,8 +41,6 @@ jobs:
   coding-guidelines:
     name: Coding Guidelines
 
-    if: github.event_name != 'schedule'
-
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -65,8 +61,6 @@ jobs:
 
   type-checker:
     name: Type Checker
-
-    if: github.event_name != 'schedule'
 
     needs:
       - dependency-validation
@@ -196,8 +190,6 @@ jobs:
   code-coverage:
     name: Code Coverage
 
-    if: github.event_name != 'schedule'
-
     needs:
       - end-to-end-tests
 
@@ -240,8 +232,6 @@ jobs:
 
   build-phar:
     name: Build PHAR
-
-    if: github.event_name != 'schedule'
 
     needs:
       - end-to-end-tests
@@ -288,8 +278,6 @@ jobs:
 
   test-phar:
     name: Test PHAR
-
-    if: github.event_name != 'schedule'
 
     needs:
       - build-phar
