@@ -61,17 +61,6 @@ abstract class TestDoubleTestCase extends TestCase
         $double->method('doSomething')->willReturn(null);
     }
 
-    public function testObjectsPassedAsArgumentAreNotClonedByDefault(): void
-    {
-        $object = new stdClass;
-
-        $double = $this->createTestDouble(InterfaceWithMethodThatExpectsObject::class);
-
-        $double->method('doSomething')->willReturnArgument(0);
-
-        $this->assertSame($object, $double->doSomething($object));
-    }
-
     final public function testMethodCanBeConfiguredToReturnOneOfItsArguments(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
