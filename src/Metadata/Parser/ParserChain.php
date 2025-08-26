@@ -12,6 +12,7 @@ namespace PHPUnit\Metadata\Parser;
 use function assert;
 use function class_exists;
 use function method_exists;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
@@ -37,13 +38,20 @@ final class ParserChain implements Parser
     {
         assert(class_exists($className));
 
-        $metadata = $this->attributeReader->forClass($className);
+        $attributes  = $this->attributeReader->forClass($className);
+        $annotations = $this->annotationReader->forClass($className);
 
-        if (!$metadata->isEmpty()) {
-            return $metadata;
+        if (!$attributes->isEmpty()) {
+            if (!$annotations->isEmpty()) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    'PHPDoc annotations will be ignored when attributes are declared',
+                );
+            }
+
+            return $attributes;
         }
 
-        return $this->annotationReader->forClass($className);
+        return $annotations;
     }
 
     /**
@@ -55,13 +63,20 @@ final class ParserChain implements Parser
         assert(class_exists($className));
         assert(method_exists($className, $methodName));
 
-        $metadata = $this->attributeReader->forMethod($className, $methodName);
+        $attributes  = $this->attributeReader->forMethod($className, $methodName);
+        $annotations = $this->annotationReader->forMethod($className, $methodName);
 
-        if (!$metadata->isEmpty()) {
-            return $metadata;
+        if (!$attributes->isEmpty()) {
+            if (!$annotations->isEmpty()) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    'PHPDoc annotations will be ignored when attributes are declared',
+                );
+            }
+
+            return $attributes;
         }
 
-        return $this->annotationReader->forMethod($className, $methodName);
+        return $annotations;
     }
 
     /**
