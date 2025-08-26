@@ -27,9 +27,9 @@ There was 1 PHPUnit test runner warning:
 There was 1 error:
 
 1) PHPUnit\TestFixture\Issue6335\Issue6335MethodTest::testOne
-ArgumentCountError: Too few arguments to function PHPUnit\TestFixture\Issue6335\Issue6335MethodTest::testOne(), 0 passed in %sTestCase.php on line 1548 and exactly 1 expected
+ArgumentCountError: Too few arguments to function PHPUnit\TestFixture\Issue6335\Issue6335MethodTest::testOne(), 0 passed in %sTestCase.php on line %d and exactly 1 expected
 
-%AIssue6335MethodTest.php:29
+%AIssue6335MethodTest.php:%d
 
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1, PHPUnit Warnings: 1.
