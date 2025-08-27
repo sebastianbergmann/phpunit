@@ -18,7 +18,6 @@ use function is_array;
 use function is_int;
 use function is_iterable;
 use function is_string;
-use function method_exists;
 use function sprintf;
 use function str_starts_with;
 use PHPUnit\Event;
@@ -49,10 +48,9 @@ final readonly class DataProvider
      */
     public function providedData(string $className, string $methodName): ?array
     {
-        assert(method_exists($className, $methodName));
-
-        $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
-        $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
+        $metadataCollection = MetadataRegistry::parser()->forMethod($className, $methodName);
+        $dataProvider       = $metadataCollection->isDataProvider();
+        $testWith           = $metadataCollection->isTestWith();
 
         if ($dataProvider->isEmpty() && $testWith->isEmpty()) {
             return null;

@@ -202,9 +202,10 @@ final class NamePrettifier
             return $this->prettifiedTestCases[$key];
         }
 
-        $testDox      = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isTestDox()->isMethodLevel();
-        $callback     = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isTestDoxFormatter();
-        $isCustomized = false;
+        $metadataCollection = MetadataRegistry::parser()->forMethod($test::class, $test->name());
+        $testDox            = $metadataCollection->isTestDox()->isMethodLevel();
+        $callback           = $metadataCollection->isTestDoxFormatter();
+        $isCustomized       = false;
 
         if ($testDox->isNotEmpty()) {
             $testDox = $testDox->asArray()[0];
