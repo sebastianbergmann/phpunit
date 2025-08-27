@@ -59,8 +59,9 @@ final readonly class DataProvider
      */
     public function providedData(string $className, string $methodName): ?array
     {
-        $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
-        $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
+        $metadataCollection = MetadataRegistry::parser()->forMethod($className, $methodName);
+        $dataProvider       = $metadataCollection->isDataProvider();
+        $testWith           = $metadataCollection->isTestWith();
 
         if ($dataProvider->isEmpty() && $testWith->isEmpty()) {
             return $this->dataProvidedByTestWithAnnotation($className, $methodName);
