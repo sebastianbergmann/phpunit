@@ -3,6 +3,8 @@ parameters:
     paths:
         - src
 
+    resultCachePath: %tmpDir%/phpunit-11.5.php
+
     treatPhpDocTypesAsCertain: false
 
     ignoreErrors:
