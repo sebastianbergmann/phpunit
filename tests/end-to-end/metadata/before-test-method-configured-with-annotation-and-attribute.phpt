@@ -19,6 +19,7 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\DeprecatedAnnotationsTestFixture\BeforeTestMethodWithAnnotationAndAttributeTest, 1 test)
+Test Runner Triggered Warning (PHPDoc annotations will be ignored when attributes are declared)
 Test Preparation Started (PHPUnit\DeprecatedAnnotationsTestFixture\BeforeTestMethodWithAnnotationAndAttributeTest::testOne)
 Before Test Method Called (PHPUnit\DeprecatedAnnotationsTestFixture\BeforeTestMethodWithAnnotationAndAttributeTest::beforeMethod)
 Before Test Method Finished:
@@ -30,4 +31,4 @@ Test Finished (PHPUnit\DeprecatedAnnotationsTestFixture\BeforeTestMethodWithAnno
 Test Suite Finished (PHPUnit\DeprecatedAnnotationsTestFixture\BeforeTestMethodWithAnnotationAndAttributeTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 1)
