@@ -23,6 +23,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -47,6 +58,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -71,6 +93,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -118,6 +151,17 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -166,6 +210,17 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -193,6 +248,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -240,6 +306,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -299,6 +376,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use local branch
+        shell: bash
+        run: |
+          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
+          git branch -D $BRANCH 2>/dev/null || true
+          git branch $BRANCH HEAD
+          git checkout $BRANCH
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
