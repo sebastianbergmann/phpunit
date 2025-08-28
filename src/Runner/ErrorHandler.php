@@ -26,9 +26,11 @@ use const E_USER_WARNING;
 use const E_WARNING;
 use function array_keys;
 use function array_values;
+use function assert;
 use function debug_backtrace;
 use function defined;
 use function error_reporting;
+use function preg_match;
 use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
@@ -37,6 +39,7 @@ use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\IgnoreDeprecations;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
 use PHPUnit\TextUI\Configuration\Registry;
@@ -114,7 +117,7 @@ final class ErrorHandler
         }
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
-        $ignoredByTest     = $test->metadata()->isIgnoreDeprecations()->isNotEmpty();
+        $ignoredByTest     = $this->deprecationIgnoredByTest($test, $errorString);
 
         switch ($errorNumber) {
             case E_NOTICE:
@@ -487,5 +490,23 @@ final class ErrorHandler
     private function testCaseContext(string $className, string $methodName): string
     {
         return "{$className}::{$methodName}";
+    }
+
+    private function deprecationIgnoredByTest(TestMethod $test, string $message): bool
+    {
+        $metadata = \PHPUnit\Metadata\Parser\Registry::parser()->forClassAndMethod($test->className(), $test->methodName())->isIgnoreDeprecations()->asArray();
+
+        foreach ($metadata as $metadatum) {
+            assert($metadatum instanceof IgnoreDeprecations);
+
+            $ignoreDeprecationMessagePattern = $metadatum->messagePattern();
+
+            if ($ignoreDeprecationMessagePattern === null ||
+                (bool) preg_match('{' . $ignoreDeprecationMessagePattern . '}', $message)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
