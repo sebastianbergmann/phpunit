@@ -296,7 +296,7 @@ final readonly class AttributeParser implements Parser
                 case IgnoreDeprecations::class:
                     assert($attributeInstance instanceof IgnoreDeprecations);
 
-                    $result[] = Metadata::ignoreDeprecationsOnClass();
+                    $result[] = Metadata::ignoreDeprecationsOnClass($attributeInstance->messagePattern());
 
                     break;
 
@@ -698,7 +698,7 @@ final readonly class AttributeParser implements Parser
                 case IgnoreDeprecations::class:
                     assert($attributeInstance instanceof IgnoreDeprecations);
 
-                    $result[] = Metadata::ignoreDeprecationsOnMethod();
+                    $result[] = Metadata::ignoreDeprecationsOnMethod($attributeInstance->messagePattern());
 
                     break;
 
