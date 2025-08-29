@@ -37,12 +37,12 @@ final readonly class ChildProcessResultProcessor
         $this->codeCoverage = $codeCoverage;
     }
 
-    public function process(Test $test, string $serializedProcessResult, string $stderr): void
+    public function process(Test $test, string $serializedProcessResult, string $stderr, int $exitCode): void
     {
+        assert($test instanceof TestCase);
+
         if ($stderr !== '') {
             $exception = new Exception(trim($stderr));
-
-            assert($test instanceof TestCase);
 
             $this->emitter->testErrored(
                 TestMethodBuilder::fromTestCase($test),
@@ -59,8 +59,6 @@ final readonly class ChildProcessResultProcessor
 
             $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
 
-            assert($test instanceof TestCase);
-
             $this->emitter->testErrored(
                 TestMethodBuilder::fromTestCase($test),
                 ThrowableBuilder::from($exception),
@@ -74,10 +72,24 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
+        try {
+            if ($childResult->expectedProcessExit !== null && $childResult->testCalledExit === true) {
+                Assert::assertSame($childResult->expectedProcessExit, $exitCode, 'Process exit-code expectation failed');
+            } elseif ($childResult->expectedProcessExit !== null && $childResult->testCalledExit === false) {
+                Assert::fail('Process expected exit() to be called but test did not call it');
+            } elseif ($childResult->expectedProcessExit === null && $childResult->testCalledExit === true) {
+                Assert::fail('Process called exit() but the test did not expect it');
+            }
+        } catch (AssertionFailedError $e) {
+            $this->emitter->testFailed(
+                TestMethodBuilder::fromTestCase($test),
+                ThrowableBuilder::from($e),
+                null,
+            );
+        }
+
         $this->eventFacade->forward($childResult->events);
         $this->passedTests->import($childResult->passedTests);
-
-        assert($test instanceof TestCase);
 
         $test->setResult($childResult->testResult);
         $test->addToAssertionCount($childResult->numAssertions);
