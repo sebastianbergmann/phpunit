@@ -16,7 +16,7 @@ use RuntimeException;
  * Class SetUpBeforeClassTest.
  *
  * Behaviour to test:
- * - setUp() errors reacht he the user
+ * - setUp() errors reach the user
  * - how many times is setUp() called?
  * - tests are not executed
  *
