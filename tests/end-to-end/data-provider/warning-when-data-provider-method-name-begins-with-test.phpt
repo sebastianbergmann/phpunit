@@ -14,8 +14,8 @@ require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
-Test Runner Triggered Warning (The name of the data provider method PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testProvider() used by test method PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testOne() begins with "test", therefore PHPUnit also treats it as a test method)
 Data Provider Method Called (PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testProvider for test method PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testOne)
+Test Runner Triggered Warning (Method PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testProvider() used by test method PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testOne() is also a test method)
 Data Provider Method Finished for PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testOne:
 - PHPUnit\TestFixture\DataProviderMethodNameStartsWithTestTest::testProvider
 Test Suite Loaded (2 tests)
