@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.5.36] - 2025-MM-DD
+
+### Fixed
+
+* [#6340](https://github.com/sebastianbergmann/phpunit/issues/6340): Implicitly enabled display of deprecation details is not disabled when it should be
+
 ## [11.5.35] - 2025-08-28
 
 ### Changed
@@ -320,6 +326,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * [#6055](https://github.com/sebastianbergmann/phpunit/issues/6055): `assertNotContainsOnly()` (use `assertContainsNotOnlyArray()`, `assertContainsNotOnlyBool()`, `assertContainsNotOnlyCallable()`, `assertContainsNotOnlyFloat()`, `assertContainsNotOnlyInt()`, `assertContainsNotOnlyIterable()`, `assertContainsNotOnlyNumeric()`, `assertContainsNotOnlyObject()`, `assertContainsNotOnlyResource()`, `assertContainsNotOnlyClosedResource()`, `assertContainsNotOnlyScalar()`, or `assertContainsNotOnlyString()` instead)
 * [#6059](https://github.com/sebastianbergmann/phpunit/issues/6059): `containsOnly()` (use `containsOnlyArray()`, `containsOnlyBool()`, `containsOnlyCallable()`, `containsOnlyFloat()`, `containsOnlyInt()`, `containsOnlyIterable()`, `containsOnlyNumeric()`, `containsOnlyObject()`, `containsOnlyResource()`, `containsOnlyClosedResource()`, `containsOnlyScalar()`, or `containsOnlyString()` instead)
 
+[11.5.36]: https://github.com/sebastianbergmann/phpunit/compare/11.5.35...11.5
 [11.5.35]: https://github.com/sebastianbergmann/phpunit/compare/11.5.34...11.5.35
 [11.5.34]: https://github.com/sebastianbergmann/phpunit/compare/11.5.33...11.5.34
 [11.5.33]: https://github.com/sebastianbergmann/phpunit/compare/11.5.32...11.5.33

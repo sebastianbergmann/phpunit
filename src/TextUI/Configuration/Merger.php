@@ -825,27 +825,27 @@ final readonly class Merger
             $displayDetailsOnAllIssues = true;
         }
 
-        if ($failOnDeprecation) {
+        if ($failOnDeprecation && !$doNotFailOnDeprecation) {
             $displayDetailsOnTestsThatTriggerDeprecations = true;
         }
 
-        if ($failOnPhpunitDeprecation) {
+        if ($failOnPhpunitDeprecation && !$doNotFailOnPhpunitDeprecation) {
             $displayDetailsOnPhpunitDeprecations = true;
         }
 
-        if ($failOnNotice) {
+        if ($failOnNotice && !$doNotFailOnNotice) {
             $displayDetailsOnTestsThatTriggerNotices = true;
         }
 
-        if ($failOnWarning) {
+        if ($failOnWarning && !$doNotFailOnWarning) {
             $displayDetailsOnTestsThatTriggerWarnings = true;
         }
 
-        if ($failOnIncomplete) {
+        if ($failOnIncomplete && !$doNotFailOnIncomplete) {
             $displayDetailsOnIncompleteTests = true;
         }
 
-        if ($failOnSkipped) {
+        if ($failOnSkipped && !$doNotFailOnSkipped) {
             $displayDetailsOnSkippedTests = true;
         }
 
