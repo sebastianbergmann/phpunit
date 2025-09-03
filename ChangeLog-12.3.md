@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 12.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [12.3.8] - 2025-MM-DD
+## [12.3.8] - 2025-09-03
 
 ### Fixed
 
@@ -97,7 +97,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 * [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229): `Configuration::excludeTestSuite()`, use `Configuration::excludeTestSuites()` instead
 * [#6246](https://github.com/sebastianbergmann/phpunit/issues/6246): Using `#[CoversNothing]` on a test method
 
-[12.3.8]: https://github.com/sebastianbergmann/phpunit/compare/12.3.7...12.3
+[12.3.8]: https://github.com/sebastianbergmann/phpunit/compare/12.3.7...12.3.8
 [12.3.7]: https://github.com/sebastianbergmann/phpunit/compare/12.3.6...12.3.7
 [12.3.6]: https://github.com/sebastianbergmann/phpunit/compare/12.3.5...12.3.6
 [12.3.5]: https://github.com/sebastianbergmann/phpunit/compare/12.3.4...12.3.5
