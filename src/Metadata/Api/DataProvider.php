@@ -15,7 +15,6 @@ use function array_key_exists;
 use function assert;
 use function explode;
 use function get_debug_type;
-use function is_a;
 use function is_array;
 use function is_int;
 use function is_string;
@@ -27,7 +26,6 @@ use function preg_replace;
 use function rtrim;
 use function sprintf;
 use function str_replace;
-use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
@@ -36,12 +34,12 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\InvalidDataProviderException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
 use PHPUnit\Util\Reflection;
+use PHPUnit\Util\Test;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
@@ -109,19 +107,6 @@ final class DataProvider
         foreach ($dataProvider as $_dataProvider) {
             assert($_dataProvider instanceof DataProviderMetadata);
 
-            if (is_a($_dataProvider->className(), TestCase::class, true) &&
-                str_starts_with($_dataProvider->methodName(), 'test')) {
-                Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'The name of the data provider method %s::%s() used by test method %s::%s() begins with "test", therefore PHPUnit also treats it as a test method',
-                        $_dataProvider->className(),
-                        $_dataProvider->methodName(),
-                        $className,
-                        $methodName,
-                    ),
-                );
-            }
-
             $dataProviderMethod = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
 
             Event\Facade::emitter()->dataProviderMethodCalled(
@@ -134,6 +119,19 @@ final class DataProvider
             try {
                 $class  = new ReflectionClass($_dataProvider->className());
                 $method = $class->getMethod($_dataProvider->methodName());
+
+                if (Test::isTestMethod($method)) {
+                    Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Method %s::%s() used by test method %s::%s() is also a test method',
+                            $_dataProvider->className(),
+                            $_dataProvider->methodName(),
+                            $className,
+                            $methodName,
+                        ),
+                    );
+                }
+
                 $object = null;
 
                 if (!$method->isPublic()) {
