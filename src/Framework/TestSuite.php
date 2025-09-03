@@ -106,7 +106,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 continue;
             }
 
-            if (TestUtil::isHookMethod($method)) {
+            if ((new HookMethods)->isHookMethod($method)) {
                 Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Method %s::%s() cannot be used both as a hook method and as a test method',
