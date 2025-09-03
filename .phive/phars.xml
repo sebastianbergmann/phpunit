@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
   <phar name="phpab" version="^1.29" installed="1.29.3" location="./tools/phpab" copy="true"/>
-  <phar name="php-cs-fixer" version="^3.80" installed="3.87.0" location="./tools/php-cs-fixer" copy="true"/>
+  <phar name="php-cs-fixer" version="^3.80" installed="3.87.1" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.18" installed="0.18.17" location="./tools/php-scoper" copy="true"/>
   <phar name="composer" version="^2.8" installed="2.8.11" location="./tools/composer" copy="true"/>
 </phive>
