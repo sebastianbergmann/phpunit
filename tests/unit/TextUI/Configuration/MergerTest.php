@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use function uniqid;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Merger;
@@ -82,5 +83,55 @@ final class MergerTest extends TestCase
 
         $this->assertTrue($mergedConfig->hasCoveragePhp());
         $this->assertSame($phpCoverage, $mergedConfig->coveragePhp());
+    }
+
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/6340')]
+    public function testIssue6340(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration-issue-6340.xml');
+
+        $this->assertTrue($fromFile->phpunit()->failOnPhpunitDeprecation());
+        $this->assertTrue($fromFile->phpunit()->failOnPhpunitNotice());
+        $this->assertTrue($fromFile->phpunit()->failOnDeprecation());
+        $this->assertTrue($fromFile->phpunit()->failOnNotice());
+        $this->assertTrue($fromFile->phpunit()->failOnWarning());
+        $this->assertTrue($fromFile->phpunit()->failOnIncomplete());
+        $this->assertTrue($fromFile->phpunit()->failOnSkipped());
+
+        $fromCli = (new Builder)->fromParameters([
+            '--do-not-fail-on-phpunit-deprecation',
+            '--do-not-fail-on-phpunit-notice',
+            '--do-not-fail-on-deprecation',
+            '--do-not-fail-on-notice',
+            '--do-not-fail-on-warning',
+            '--do-not-fail-on-incomplete',
+            '--do-not-fail-on-skipped',
+        ]);
+
+        $this->assertTrue($fromCli->doNotFailOnPhpunitDeprecation());
+        $this->assertTrue($fromCli->doNotFailOnPhpunitNotice());
+        $this->assertTrue($fromCli->doNotFailOnDeprecation());
+        $this->assertTrue($fromCli->doNotFailOnNotice());
+        $this->assertTrue($fromCli->doNotFailOnWarning());
+        $this->assertTrue($fromCli->doNotFailOnIncomplete());
+        $this->assertTrue($fromCli->doNotFailOnSkipped());
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->doNotFailOnPhpunitDeprecation());
+        $this->assertTrue($mergedConfig->doNotFailOnPhpunitNotice());
+        $this->assertTrue($mergedConfig->doNotFailOnDeprecation());
+        $this->assertTrue($mergedConfig->doNotFailOnNotice());
+        $this->assertTrue($mergedConfig->doNotFailOnWarning());
+        $this->assertTrue($mergedConfig->doNotFailOnIncomplete());
+        $this->assertTrue($mergedConfig->doNotFailOnSkipped());
+
+        $this->assertFalse($mergedConfig->displayDetailsOnPhpunitDeprecations());
+        $this->assertFalse($mergedConfig->displayDetailsOnPhpunitNotices());
+        $this->assertFalse($mergedConfig->displayDetailsOnTestsThatTriggerDeprecations());
+        $this->assertFalse($mergedConfig->displayDetailsOnTestsThatTriggerNotices());
+        $this->assertFalse($mergedConfig->displayDetailsOnTestsThatTriggerWarnings());
+        $this->assertFalse($mergedConfig->displayDetailsOnIncompleteTests());
+        $this->assertFalse($mergedConfig->displayDetailsOnSkippedTests());
     }
 }
