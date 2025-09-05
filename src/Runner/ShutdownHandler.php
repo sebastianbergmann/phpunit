@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function register_shutdown_function;
+use function rtrim;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -44,7 +45,7 @@ final class ShutdownHandler
         register_shutdown_function(
             static function (): void
             {
-                print self::$message;
+                print rtrim(self::$message) . "\n";
             },
         );
     }
