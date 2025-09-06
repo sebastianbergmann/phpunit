@@ -43,6 +43,7 @@ final readonly class Job
      */
     private ?string $input;
     private bool $redirectErrors;
+    private bool $requiresXdebug;
 
     /**
      * @param non-empty-string       $code
@@ -51,7 +52,7 @@ final readonly class Job
      * @param list<non-empty-string> $arguments
      * @param ?non-empty-string      $input
      */
-    public function __construct(string $code, array $phpSettings = [], array $environmentVariables = [], array $arguments = [], ?string $input = null, bool $redirectErrors = false)
+    public function __construct(string $code, array $phpSettings = [], array $environmentVariables = [], array $arguments = [], ?string $input = null, bool $redirectErrors = false, bool $requiresXdebug = false)
     {
         $this->code                 = $code;
         $this->phpSettings          = $phpSettings;
@@ -59,6 +60,7 @@ final readonly class Job
         $this->arguments            = $arguments;
         $this->input                = $input;
         $this->redirectErrors       = $redirectErrors;
+        $this->requiresXdebug       = $requiresXdebug;
     }
 
     /**
@@ -134,5 +136,10 @@ final readonly class Job
     public function redirectErrors(): bool
     {
         return $this->redirectErrors;
+    }
+
+    public function requiresXdebug(): bool
+    {
+        return $this->requiresXdebug;
     }
 }
