@@ -70,9 +70,9 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
         }
     }
 
-    public function __sleep(): array
+    public function __serialize(): array
     {
-        return array_keys(get_object_vars($this));
+        return get_object_vars($this);
     }
 
     /**
