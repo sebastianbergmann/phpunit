@@ -22,4 +22,16 @@ class ExceptionTest extends TestCase
         $this->assertContains('file', $actual);
         $this->assertContains('line', $actual);
     }
+
+    public function testExceptionSerialize(): void
+    {
+        $actual = (new Exception)->__serialize();
+
+        $this->assertCount(5, $actual);
+        $this->assertArrayHasKey('serializableTrace', $actual);
+        $this->assertArrayHasKey('message', $actual);
+        $this->assertArrayHasKey('code', $actual);
+        $this->assertArrayHasKey('file', $actual);
+        $this->assertArrayHasKey('line', $actual);
+    }
 }
