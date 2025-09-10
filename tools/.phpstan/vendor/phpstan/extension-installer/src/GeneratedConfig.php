@@ -21,7 +21,7 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.11.0',
+    'version' => '2.12.0',
     'phpstanVersionConstraint' => '>=2.1.8.0-dev, <3.0.0.0-dev',
   ),
   'phpstan/phpstan-strict-rules' => 
