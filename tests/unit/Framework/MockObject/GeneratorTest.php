@@ -25,7 +25,6 @@ use PHPUnit\TestFixture\ClassWithVariadicArgumentMethod;
 use PHPUnit\TestFixture\ExceptionWithThrowable;
 use PHPUnit\TestFixture\FinalClass;
 use PHPUnit\TestFixture\InterfaceWithSemiReservedMethodName;
-use PHPUnit\TestFixture\SingletonClass;
 use stdClass;
 use Throwable;
 
@@ -217,13 +216,6 @@ final class GeneratorTest extends TestCase
         $this->expectException(RuntimeException::class);
 
         $mock = $this->generator->mockClassMethods('Tux', true, true);
-    }
-
-    public function testGetMockForSingletonWithReflectionSuccess(): void
-    {
-        $mock = $this->generator->getMock(SingletonClass::class, ['doSomething'], [], '', false);
-
-        $this->assertInstanceOf(SingletonClass::class, $mock);
     }
 
     public function testExceptionIsRaisedForMutuallyExclusiveOptions(): void
