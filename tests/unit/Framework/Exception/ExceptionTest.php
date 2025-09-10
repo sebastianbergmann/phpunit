@@ -16,15 +16,15 @@ use PHPUnit\Framework\Attributes\Small;
 #[Small]
 final class ExceptionTest extends TestCase
 {
-    public function testExceptionSleep(): void
+    public function testExceptionSerialize(): void
     {
-        $actual = (new Exception)->__sleep();
+        $actual = (new Exception)->__serialize();
 
         $this->assertCount(5, $actual);
-        $this->assertContains('serializableTrace', $actual);
-        $this->assertContains('message', $actual);
-        $this->assertContains('code', $actual);
-        $this->assertContains('file', $actual);
-        $this->assertContains('line', $actual);
+        $this->assertArrayHasKey('serializableTrace', $actual);
+        $this->assertArrayHasKey('message', $actual);
+        $this->assertArrayHasKey('code', $actual);
+        $this->assertArrayHasKey('file', $actual);
+        $this->assertArrayHasKey('line', $actual);
     }
 }
