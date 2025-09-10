@@ -27,7 +27,6 @@ use PHPUnit\TestFixture\FinalClass;
 use PHPUnit\TestFixture\InterfaceWithSemiReservedMethodName;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 use PHPUnit\TestFixture\MockObject\ReadonlyClass;
-use PHPUnit\TestFixture\SingletonClass;
 use stdClass;
 use Throwable;
 
@@ -211,13 +210,6 @@ final class GeneratorTest extends TestCase
         $this->expectException(ReflectionException::class);
 
         $mock = $this->generator->mockClassMethods('Tux', true, true);
-    }
-
-    public function testGetMockForSingletonWithReflectionSuccess(): void
-    {
-        $mock = $this->generator->getMock(SingletonClass::class, ['doSomething'], [], '', false);
-
-        $this->assertInstanceOf(SingletonClass::class, $mock);
     }
 
     public function testExceptionIsRaisedForMutuallyExclusiveOptions(): void

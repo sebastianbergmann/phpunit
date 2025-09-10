@@ -71,6 +71,11 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
         return array_keys(get_object_vars($this));
     }
 
+    public function __serialize(): array
+    {
+        return get_object_vars($this);
+    }
+
     /**
      * Returns the serializable trace (without 'args').
      */
