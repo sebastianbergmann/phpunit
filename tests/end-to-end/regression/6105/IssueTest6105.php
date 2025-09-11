@@ -30,11 +30,11 @@ class IssueTest6105 extends TestCase
     public function test_case_2_check(): void
     {
         ob_start();
-        header('X-Test: Testing');
+        header('X-Test', 'Testing');
         print 'asd';
         $content = ob_get_clean();
 
         $this->assertSame('asd', $content);
-        $this->assertSame(['X-Test: Testing'], xdebug_get_headers());
+        $this->assertSame(['X-Test'], xdebug_get_headers());
     }
 }
