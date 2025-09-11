@@ -278,7 +278,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $this->filename;
     }
 
-    public function usesDataProvider(): bool
+    public function usesDataProvider(): false
     {
         return false;
     }
