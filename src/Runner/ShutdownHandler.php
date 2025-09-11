@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use const PHP_EOL;
 use function register_shutdown_function;
 use function rtrim;
 
@@ -45,7 +46,7 @@ final class ShutdownHandler
         register_shutdown_function(
             static function (): void
             {
-                print rtrim(self::$message) . "\n";
+                print rtrim(self::$message) . PHP_EOL;
             },
         );
     }
