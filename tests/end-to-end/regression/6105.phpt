@@ -1,9 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/6105
---SKIPIF--
-<?php if(!extension_loaded('xdebug')) {
-    print 'skip: xdebug is not loaded';
-}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
