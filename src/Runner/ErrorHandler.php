@@ -225,7 +225,7 @@ final class ErrorHandler
 
     public function registerDeprecationHandler(): void
     {
-        set_error_handler([self::$instance, 'deprecationHandler'], E_USER_DEPRECATED);
+        set_error_handler([self::$instance, 'deprecationHandler'], E_USER_DEPRECATED | E_DEPRECATED);
     }
 
     public function restoreDeprecationHandler(): void
