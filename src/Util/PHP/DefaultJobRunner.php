@@ -66,7 +66,6 @@ final readonly class DefaultJobRunner extends JobRunner
                 $job->arguments(),
                 null,
                 $job->redirectErrors(),
-                $job->requiresXdebug(),
             );
         }
 
@@ -193,12 +192,8 @@ final readonly class DefaultJobRunner extends JobRunner
                 ),
             );
 
-            if (
-                !CodeCoverage::instance()->isActive() &&
-                xdebug_is_debugger_active() === false &&
-                !$job->requiresXdebug()
-            ) {
-                // disable xdebug to speedup test execution
+            if (!CodeCoverage::instance()->isActive() &&
+                xdebug_is_debugger_active() === false) {
                 $phpSettings['xdebug.mode'] = 'xdebug.mode=off';
             }
         }

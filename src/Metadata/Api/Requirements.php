@@ -170,17 +170,4 @@ final readonly class Requirements
 
         return $notSatisfied;
     }
-
-    public function requiresXdebug(string $className, string $methodName): bool
-    {
-        foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isRequiresPhpExtension()) {
-                if ($metadata->extension() === 'xdebug') {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }
