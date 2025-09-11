@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Changed
 
-* [#6353](https://github.com/sebastianbergmann/phpunit/pull/6353): Disable performance optimization for tests requiring on Xdebug
+* [#6353](https://github.com/sebastianbergmann/phpunit/pull/6353): Disable performance optimization for tests requiring Xdebug
 
 ## [11.5.37] - 2025-09-11
 
