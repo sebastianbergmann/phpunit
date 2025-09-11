@@ -12,6 +12,7 @@ namespace IssueTest6105;
 use function header;
 use function ob_get_clean;
 use function ob_start;
+use function xdebug_get_headers;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
