@@ -60,7 +60,7 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 <br>
 <a href="https://join.rightcapital.com/?utm_source=phpstan&utm_medium=github&utm_campaign=sponsorship"><img src="website/src/images/sponsor/rightcapital.png" alt="RightCapital" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
-<a href="https://www.contentkingapp.com/?ref=php-developer&utm_source=phpstan&utm_medium=referral&utm_campaign=sponsorship"><img src="website/src/images/sponsor/contentking.png" alt="ContentKing" width="283" height="64"></a>
+<a href="https://www.shoptet.cz/"><img src="website/src/images/sponsor/shoptet.png" alt="Shoptet" width="283" height="64"></a>
 <br>
 <a href="https://zol.fr?utm_source=phpstan"><img src="website/src/images/sponsor/zol.png" alt="ZOL" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
@@ -78,8 +78,6 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 &nbsp;&nbsp;&nbsp;
 <a href="https://inviqa.com/"><img src="website/src/images/sponsor/inviqa.png" alt="Inviqa" width="254" height="65"></a>
 <br>
-<a href="https://www.shoptet.cz/"><img src="website/src/images/sponsor/shoptet.png" alt="Shoptet" width="283" height="64"></a>
-&nbsp;&nbsp;&nbsp;
 
 
 
