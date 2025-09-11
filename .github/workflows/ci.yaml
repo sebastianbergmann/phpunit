@@ -180,7 +180,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite unit --order-by depends,random
+        run: php ./phpunit --testsuite unit --order-by depends,random --display-all-issues
 
   end-to-end-tests:
     name: End-to-End Tests
@@ -240,7 +240,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end --order-by depends,random
+        run: php ./phpunit --testsuite end-to-end --order-by depends,random --display-all-issues
 
   code-coverage:
     name: Code Coverage
