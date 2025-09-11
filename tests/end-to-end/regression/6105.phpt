@@ -4,6 +4,21 @@ https://github.com/sebastianbergmann/phpunit/issues/6105
 <?php if(!extension_loaded('xdebug')) {
     print 'skip: xdebug is not loaded';
 }
+
+if (ini_get('xdebug.start_with_request') === "1") {
+    print 'skip: xdebug emits a warning when xdebug.start_with_request=1 which breaks output expectations';
+}
+
+$mode = getenv('XDEBUG_MODE');
+
+if ($mode === false || $mode === '') {
+    $mode = ini_get('xdebug.mode');
+}
+
+if ($mode === '') {
+    print 'skip: requires XDEBUG_MODE or xdebug.mode to be different from "off"';
+}
+
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
