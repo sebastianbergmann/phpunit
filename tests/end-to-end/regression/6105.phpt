@@ -1,8 +1,15 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/6105
 --SKIPIF--
-<?php if(!extension_loaded('xdebug')) {
-    print 'skip: xdebug is not loaded';
+<?php declare(strict_types=1);
+if (!extension_loaded('xdebug')) {
+    print 'skip: Xdebug is not loaded';
+}
+
+if (!in_array('develop', xdebug_info('mode'), true) &&
+    !in_array('debug', xdebug_info('mode'), true) &&
+    !in_array('coverage', xdebug_info('mode'), true)) {
+    print 'skip: Xdebug mode must include develop, debug, or coverage';
 }
 --FILE--
 <?php declare(strict_types=1);
