@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 12.3 release series are documented in this fi
 
 ### Changed
 
-* [#6353](https://github.com/sebastianbergmann/phpunit/pull/6353): Disable performance optimization for tests requiring on Xdebug
+* [#6353](https://github.com/sebastianbergmann/phpunit/pull/6353): Disable performance optimization for tests requiring Xdebug
 * [#6357](https://github.com/sebastianbergmann/phpunit/pull/6357): Also collect `E_DEPRECATED` issues when building the test suite
 
 ## [12.3.9] - 2025-09-11
