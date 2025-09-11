@@ -11,6 +11,10 @@ if (!in_array('develop', xdebug_info('mode'), true) &&
     !in_array('coverage', xdebug_info('mode'), true)) {
     print 'skip: Xdebug mode must include develop, debug, or coverage';
 }
+
+if (ini_get('xdebug.start_with_request') === '1') {
+    print 'skip: Xdebug emits a warning that breaks output expectations when xdebug.start_with_request=1 is configured';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
