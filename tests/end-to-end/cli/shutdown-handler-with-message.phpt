@@ -10,6 +10,15 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/WithExitTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
+// Destructs are called after register_shutdown_function callback
+$x = new class ()
+{
+    function __destruct()
+    {
+        print '----';
+    }
+};
+
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
@@ -17,3 +26,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 
 messageFatal error: Premature end of PHP process when running PHPUnit\TestFixture\WithExitTest::testWithMessage.
+----
