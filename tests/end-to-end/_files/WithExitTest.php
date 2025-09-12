@@ -16,14 +16,12 @@ final class WithExitTest extends TestCase
     public function testWithMessage(): void
     {
         $this->assertTrue(true);
-        $this->assertTrue(true);
 
-        exit('My Custom Exit Message');
+        exit('message');
     }
 
     public function testWithoutMessage(): void
     {
-        $this->assertTrue(true);
         $this->assertTrue(true);
 
         exit(1);
