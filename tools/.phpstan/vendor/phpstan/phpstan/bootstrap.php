@@ -92,6 +92,16 @@ final class PharAutoloader
 				require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php81/Php81.php';
 				require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php81/bootstrap.php';
 			}
+
+            if (
+                PHP_VERSION_ID < 80300
+                && empty ($GLOBALS['__composer_autoload_files']['662a729f963d39afe703c9d9b7ab4a8c'])
+                && !class_exists(\Symfony\Polyfill\Php83\Php83::class, false)
+            ) {
+                $GLOBALS['__composer_autoload_files']['662a729f963d39afe703c9d9b7ab4a8c'] = true;
+                require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php83/Php83.php';
+                require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php83/bootstrap.php';
+            }
 		}
 
 		$filename = str_replace('\\', DIRECTORY_SEPARATOR, $class);
