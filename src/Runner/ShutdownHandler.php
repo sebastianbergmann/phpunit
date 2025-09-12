@@ -46,7 +46,13 @@ final class ShutdownHandler
         register_shutdown_function(
             static function (): void
             {
-                print rtrim(self::$message) . PHP_EOL;
+                $message = rtrim(self::$message);
+
+                if ($message === '') {
+                    return;
+                }
+
+                print self::$message . PHP_EOL;
             },
         );
     }
