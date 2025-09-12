@@ -860,10 +860,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         if ($this->data !== []) {
             if (is_int($this->dataName)) {
-                return sprintf(' with data set %s', $this->dataSetAsFilterString());
+                return sprintf(' with data set #%s', $this->dataName);
             }
 
-            return sprintf(' with data set "%s"', $this->dataSetAsFilterString());
+            return sprintf(' with data set "%s"', $this->dataName);
         }
 
         return '';
