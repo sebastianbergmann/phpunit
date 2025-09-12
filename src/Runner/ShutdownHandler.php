@@ -52,7 +52,7 @@ final class ShutdownHandler
                     return;
                 }
 
-                print self::$message . PHP_EOL;
+                print $message . PHP_EOL;
             },
         );
     }
