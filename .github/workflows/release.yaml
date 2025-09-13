@@ -4,12 +4,20 @@ on:
   push:
     tags:
       - "**"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to Release'
+        required: true
 
 name: Release
 
 jobs:
   release:
     name: Release
+
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -28,9 +36,6 @@ jobs:
           coverage: none
           extensions: none
           tools: none
-
-      - name: Determine tag
-        run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Parse ChangeLog
         run: build/scripts/extract-release-notes.php ${{ env.RELEASE_TAG }} > release-notes.md
