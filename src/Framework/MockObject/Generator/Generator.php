@@ -64,9 +64,9 @@ final class Generator
     use TemplateLoader;
 
     /**
-     * @var non-empty-array<non-empty-string, true>
+     * @var null|non-empty-array<non-empty-string, true>
      */
-    private static $excludedMethodNames = [];
+    private static ?array $excludedMethodNames = null;
 
     /**
      * @var array<non-empty-string, DoubledClass>
@@ -640,7 +640,7 @@ final class Generator
 
     private function isMethodNameExcluded(string $name): bool
     {
-        if (self::$excludedMethodNames === []) {
+        if (self::$excludedMethodNames === null) {
             self::$excludedMethodNames = [
                 '__CLASS__'       => true,
                 '__DIR__'         => true,
