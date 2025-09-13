@@ -10,13 +10,12 @@
 namespace PHPUnit\TestFixture\Issue6366;
 
 use Exception;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 final class Issue6366Test extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testOne(): void
     {
         $this->createStub(Exception::class);
