@@ -66,18 +66,7 @@ final class Generator
     /**
      * @var non-empty-array<non-empty-string, true>
      */
-    private const array EXCLUDED_METHOD_NAMES = [
-        '__CLASS__'       => true,
-        '__DIR__'         => true,
-        '__FILE__'        => true,
-        '__FUNCTION__'    => true,
-        '__LINE__'        => true,
-        '__METHOD__'      => true,
-        '__NAMESPACE__'   => true,
-        '__TRAIT__'       => true,
-        '__clone'         => true,
-        '__halt_compiler' => true,
-    ];
+    private static $excludedMethodNames = [];
 
     /**
      * @var array<non-empty-string, DoubledClass>
@@ -651,7 +640,27 @@ final class Generator
 
     private function isMethodNameExcluded(string $name): bool
     {
-        return isset(self::EXCLUDED_METHOD_NAMES[$name]);
+        if (self::$excludedMethodNames === []) {
+            self::$excludedMethodNames = [
+                '__CLASS__'       => true,
+                '__DIR__'         => true,
+                '__FILE__'        => true,
+                '__FUNCTION__'    => true,
+                '__LINE__'        => true,
+                '__METHOD__'      => true,
+                '__NAMESPACE__'   => true,
+                '__TRAIT__'       => true,
+                '__clone'         => true,
+                '__halt_compiler' => true,
+            ];
+
+            if (version_compare(PHP_VERSION, '8.5', '>=')) {
+                self::$excludedMethodNames['__sleep']  = true;
+                self::$excludedMethodNames['__wakeup'] = true;
+            }
+        }
+
+        return isset(self::$excludedMethodNames[$name]);
     }
 
     /**
