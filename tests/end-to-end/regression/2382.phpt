@@ -1,10 +1,5 @@
 --TEST--
 #2382: Data Providers throw error with uncloneable object
---SKIPIF--
-<?php declare(strict_types=1);
-if (version_compare(PHP_VERSION, '8.5', '>=')) {
-    print 'skip: This test triggers a deprecation warning on PHP >= 8.5';
-}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
