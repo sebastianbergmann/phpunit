@@ -7,23 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\ExecutionOrder\DifferentSizes;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-final class TestWithDifferentDurations extends TestCase
+#[Small]
+#[CoversNothing]
+final class UnitTest extends TestCase
 {
     public function testOne(): void
-    {
-        $this->assertTrue(true);
-    }
-
-    public function testTwo(): void
-    {
-        $this->assertTrue(true);
-    }
-
-    public function testThree(): void
     {
         $this->assertTrue(true);
     }
