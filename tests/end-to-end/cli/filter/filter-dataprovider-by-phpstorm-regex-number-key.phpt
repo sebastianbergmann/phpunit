@@ -34,7 +34,7 @@ if (preg_match("/##teamcity\\[testStarted name='testTrue with data set #1' locat
     return 0;
 }
 
-if (preg_match('#php_qn://[^:]*::\\\\(.*)#', $matches[1], $locationHintMatches) !== 1) {
+if (preg_match('#php_qn://(?:[A-Z]:)?[^:]*::\\\\(.*)#', $matches[1], $locationHintMatches) !== 1) {
     echo "Failed to parse locationHint.\n";
     echo $matches[1];
 
