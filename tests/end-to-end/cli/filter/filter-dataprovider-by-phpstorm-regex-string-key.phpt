@@ -60,9 +60,9 @@ Runtime:       PHP %s
 
 ##teamcity[testCount count='1' flowId='%s']
 ##teamcity[testSuiteStarted name='CLI Arguments' flowId='%d']
-##teamcity[testSuiteStarted name='PHPUnit\TestFixture\DataProviderFilterTest' locationHint='php_qn://%s/DataProviderFilterTest.php::\PHPUnit\TestFixture\DataProviderFilterTest' flowId='%d']
-##teamcity[testSuiteStarted name='testFalse' locationHint='php_qn://%s/DataProviderFilterTest.php::\PHPUnit\TestFixture\DataProviderFilterTest::testFalse' flowId='%d']
-##teamcity[testStarted name='testFalse with data set "false test"' locationHint='php_qn://%s/DataProviderFilterTest.php::\PHPUnit\TestFixture\DataProviderFilterTest::testFalse with data set "false test"' flowId='%d']
+##teamcity[testSuiteStarted name='PHPUnit\TestFixture\DataProviderFilterTest' locationHint='php_qn://%sDataProviderFilterTest.php::\PHPUnit\TestFixture\DataProviderFilterTest' flowId='%d']
+##teamcity[testSuiteStarted name='testFalse' locationHint='php_qn://%sDataProviderFilterTest.php::\PHPUnit\TestFixture\DataProviderFilterTest::testFalse' flowId='%d']
+##teamcity[testStarted name='testFalse with data set "false test"' locationHint='php_qn://%sDataProviderFilterTest.php::\PHPUnit\TestFixture\DataProviderFilterTest::testFalse with data set "false test"' flowId='%d']
 ##teamcity[testFinished name='testFalse with data set "false test"' duration='%s' flowId='%d']
 ##teamcity[testSuiteFinished name='testFalse' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\DataProviderFilterTest' flowId='%d']
