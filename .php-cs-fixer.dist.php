@@ -27,6 +27,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('Issue5795Test.php')
     // Hook methods that should be protected must be public in TestAttributeOnHookMethodsTest.php
     ->notName('TestAttributeOnHookMethodsTest.php')
+    // InvokableConstraintAndPipeOperatorTest.php uses PHP 8.5 syntax
+    ->notName('InvokableConstraintAndPipeOperatorTest.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
