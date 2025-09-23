@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.4 release series are documented in this fi
 ### Added
 
 * [#6277](https://github.com/sebastianbergmann/phpunit/issues/6277): Allow tests to opt out of the validation that a data provider method does not provide data sets with more values than a test method accepts
+* [#6341](https://github.com/sebastianbergmann/phpunit/pull/6341): Support for regular expressions with `#[IgnoreDeprecations]` attribute
 
 ### Deprecated
 
