@@ -21,7 +21,7 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest::testOne)
 Test Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest::testOne)
-PHP 100 is required.
+PHP ^100.0 is required.
 Test Suite Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementMethodTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

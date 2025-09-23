@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class UnsatisfiedRequirementBeforeClassMethodTest extends TestCase
 {
-    #[RequiresPhp('100')]
+    #[RequiresPhp('^100.0')]
     public static function setUpBeforeClass(): void
     {
     }

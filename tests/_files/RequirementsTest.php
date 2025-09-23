@@ -29,18 +29,18 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhpunit('1.0')]
+    #[RequiresPhpunit('>= 1.0')]
     public function testTwo(): void
     {
     }
 
-    #[RequiresPhp('2.0')]
+    #[RequiresPhp('>= 2.0')]
     public function testThree(): void
     {
     }
 
-    #[RequiresPhpunit('2.0')]
-    #[RequiresPhp('1.0')]
+    #[RequiresPhpunit('>= 2.0')]
+    #[RequiresPhp('>= 1.0')]
     public function testFour(): void
     {
     }
@@ -96,7 +96,7 @@ final class RequirementsTest extends TestCase
     #[RequiresMethod('DoesNotExist', 'doesNotExist')]
     #[RequiresPhpExtension('testExtOne')]
     #[RequiresPhpExtension('testExt2')]
-    #[RequiresPhpExtension('testExtThree', '2.0')]
+    #[RequiresPhpExtension('testExtThree', '>= 2.0')]
     #[RequiresSetting('not_a_setting', 'Off')]
     public function testAllPossibleRequirements(): void
     {
@@ -122,12 +122,12 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhpunit('1111111')]
+    #[RequiresPhpunit('>= 1111111')]
     public function testAlwaysSkip(): void
     {
     }
 
-    #[RequiresPhp('9999999')]
+    #[RequiresPhp('>= 9999999')]
     public function testAlwaysSkip2(): void
     {
     }

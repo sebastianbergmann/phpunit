@@ -12,6 +12,7 @@ namespace PHPUnit\Metadata\Parser;
 use const JSON_THROW_ON_ERROR;
 use function assert;
 use function class_exists;
+use function is_numeric;
 use function json_decode;
 use function method_exists;
 use function sprintf;
@@ -349,8 +350,9 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhp);
 
                     $result[] = Metadata::requiresPhpOnClass(
-                        Requirement::from(
+                        $this->requirement(
                             $attributeInstance->versionRequirement(),
+                            $className,
                         ),
                     );
 
@@ -363,7 +365,10 @@ final readonly class AttributeParser implements Parser
                     $versionRequirement = $attributeInstance->versionRequirement();
 
                     if ($versionRequirement !== null) {
-                        $versionConstraint = Requirement::from($versionRequirement);
+                        $versionConstraint = $this->requirement(
+                            $versionRequirement,
+                            $className,
+                        );
                     }
 
                     $result[] = Metadata::requiresPhpExtensionOnClass(
@@ -377,8 +382,9 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhpunit);
 
                     $result[] = Metadata::requiresPhpunitOnClass(
-                        Requirement::from(
+                        $this->requirement(
                             $attributeInstance->versionRequirement(),
+                            $className,
                         ),
                     );
 
@@ -765,8 +771,10 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhp);
 
                     $result[] = Metadata::requiresPhpOnMethod(
-                        Requirement::from(
+                        $this->requirement(
                             $attributeInstance->versionRequirement(),
+                            $className,
+                            $methodName,
                         ),
                     );
 
@@ -779,7 +787,11 @@ final readonly class AttributeParser implements Parser
                     $versionRequirement = $attributeInstance->versionRequirement();
 
                     if ($versionRequirement !== null) {
-                        $versionConstraint = Requirement::from($versionRequirement);
+                        $versionConstraint = $this->requirement(
+                            $versionRequirement,
+                            $className,
+                            $methodName,
+                        );
                     }
 
                     $result[] = Metadata::requiresPhpExtensionOnMethod(
@@ -793,8 +805,10 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhpunit);
 
                     $result[] = Metadata::requiresPhpunitOnMethod(
-                        Requirement::from(
+                        $this->requirement(
                             $attributeInstance->versionRequirement(),
+                            $className,
+                            $methodName,
                         ),
                     );
 
@@ -946,6 +960,26 @@ final readonly class AttributeParser implements Parser
         );
 
         return true;
+    }
+
+    /**
+     * @param non-empty-string  $versionRequirement
+     * @param class-string      $testClassName
+     * @param ?non-empty-string $testMethodName
+     */
+    private function requirement(string $versionRequirement, string $testClassName, ?string $testMethodName = null): Requirement
+    {
+        if (is_numeric(trim($versionRequirement))) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                sprintf(
+                    'Test %s has attribute with version constraint string argument without explicit version comparison operator ("%s")',
+                    $this->testAsString($testClassName, $testMethodName),
+                    $versionRequirement,
+                ),
+            );
+        }
+
+        return Requirement::from($versionRequirement);
     }
 
     /**

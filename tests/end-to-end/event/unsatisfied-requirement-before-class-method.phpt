@@ -19,7 +19,7 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementBeforeClassMethodTest, 1 test)
-Test Suite Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementBeforeClassMethodTest, PHP 100 is required.)
+Test Suite Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementBeforeClassMethodTest, PHP ^100.0 is required.)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class UnsatisfiedRequirementMethodTest extends TestCase
 {
-    #[RequiresPhp('100')]
+    #[RequiresPhp('^100.0')]
     public function testOne(): void
     {
         $this->assertTrue(true);
