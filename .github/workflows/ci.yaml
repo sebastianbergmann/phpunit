@@ -46,6 +46,19 @@ jobs:
       - name: Ensure that composer.json is valid
         run: ./tools/composer validate --no-ansi --strict composer.json
 
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Ensure that dependencies can be installed
         run: ./tools/composer install --no-ansi --dry-run
 
@@ -112,6 +125,19 @@ jobs:
           coverage: none
           tools: none
 
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Install dependencies with Composer
         run: ./tools/composer install --no-interaction --no-ansi --no-progress
 
@@ -169,6 +195,19 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies with Composer
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
@@ -228,6 +267,19 @@ jobs:
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
 
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Install dependencies with Composer
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
@@ -266,6 +318,19 @@ jobs:
           extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter
           ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer cache directory
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies with Composer
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
