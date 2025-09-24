@@ -13,6 +13,7 @@ use function array_diff;
 use function array_merge;
 use function array_reverse;
 use function array_splice;
+use function assert;
 use function count;
 use function in_array;
 use function max;
@@ -152,9 +153,7 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            if (!$test instanceof Reorderable) {
-                continue;
-            }
+            assert($test instanceof Reorderable);
 
             if (!isset($this->defectSortOrder[$test->sortId()])) {
                 $this->defectSortOrder[$test->sortId()] = $this->cache->status($test->sortId())->asInt();
@@ -216,9 +215,8 @@ final class TestSuiteSorter
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
-        if (!($a instanceof Reorderable && $b instanceof Reorderable)) {
-            return 0;
-        }
+        assert($a instanceof Reorderable);
+        assert($b instanceof Reorderable);
 
         $priorityA = $this->defectSortOrder[$a->sortId()] ?? 0;
         $priorityB = $this->defectSortOrder[$b->sortId()] ?? 0;
@@ -241,9 +239,8 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
-        if (!($a instanceof Reorderable && $b instanceof Reorderable)) {
-            return 0;
-        }
+        assert($a instanceof Reorderable);
+        assert($b instanceof Reorderable);
 
         return $this->cache->time($a->sortId()) <=> $this->cache->time($b->sortId());
     }
