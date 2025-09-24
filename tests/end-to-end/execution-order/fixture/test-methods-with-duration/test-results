@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"PHPUnit\\TestFixture\\ExecutionOrder\\Duration\\FooTest::testOne":3.013,"PHPUnit\\TestFixture\\ExecutionOrder\\Duration\\FooTest::testTwo":1.001,"PHPUnit\\TestFixture\\ExecutionOrder\\Duration\\FooTest::testThree":2.001}}
