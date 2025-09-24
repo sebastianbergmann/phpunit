@@ -96,7 +96,9 @@ final class TestSuiteSorter
         ];
 
         if (!in_array($order, $allowedOrders, true)) {
+            // @codeCoverageIgnoreStart
             throw new InvalidOrderException;
+            // @codeCoverageIgnoreEnd
         }
 
         $allowedOrderDefects = [
@@ -105,7 +107,9 @@ final class TestSuiteSorter
         ];
 
         if (!in_array($orderDefects, $allowedOrderDefects, true)) {
+            // @codeCoverageIgnoreStart
             throw new InvalidOrderException;
+            // @codeCoverageIgnoreEnd
         }
 
         if ($suite instanceof TestSuite) {
