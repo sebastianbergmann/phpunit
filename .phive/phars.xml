@@ -4,5 +4,5 @@
   <phar name="php-cs-fixer" version="^3.80" installed="3.88.0" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.18" installed="0.18.17" location="./tools/php-scoper" copy="true"/>
   <phar name="composer" version="^2.8" installed="2.8.12" location="./tools/composer" copy="true"/>
-  <phar name="phpstan" version="^2.1" installed="2.1.28" location="./tools/phpstan" copy="true"/>
+  <phar name="phpstan" version="^2.1" installed="2.1.29" location="./tools/phpstan" copy="true"/>
 </phive>
