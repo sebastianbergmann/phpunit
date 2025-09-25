@@ -16,6 +16,11 @@
 	"autoload": {
 		"files": ["bootstrap.php"]
 	},
+    "source": {
+        "type": "git",
+        "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
+        "reference": "git"
+    },
 	"support": {
 		"issues": "https://github.com/phpstan/phpstan/issues",
 		"forum": "https://github.com/phpstan/phpstan/discussions",
