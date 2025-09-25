@@ -221,17 +221,17 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.28",
-            "version_normalized": "2.1.28.0",
+            "version": "2.1.29",
+            "version_normalized": "2.1.29.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "578fa296a166605d97b94091f724f1257185d278"
+                "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
+                "reference": "git"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/578fa296a166605d97b94091f724f1257185d278",
-                "reference": "578fa296a166605d97b94091f724f1257185d278",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
+                "reference": "d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
                 "shasum": ""
             },
             "require": {
@@ -240,7 +240,7 @@
             "conflict": {
                 "phpstan/phpstan-shim": "*"
             },
-            "time": "2025-09-19T08:58:49+00:00",
+            "time": "2025-09-25T06:58:18+00:00",
             "bin": [
                 "phpstan",
                 "phpstan.phar"
