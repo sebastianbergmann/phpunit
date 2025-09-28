@@ -27,7 +27,7 @@ final class ShellExitCodeCalculator
     {
         $failOnDeprecation        = false;
         $failOnPhpunitDeprecation = false;
-        $failOnPhpunitWarning     = true;
+        $failOnPhpunitWarning     = false;
         $failOnEmptyTestSuite     = false;
         $failOnIncomplete         = false;
         $failOnNotice             = false;
@@ -38,6 +38,7 @@ final class ShellExitCodeCalculator
         if ($configuration->failOnAllIssues()) {
             $failOnDeprecation        = true;
             $failOnPhpunitDeprecation = true;
+            $failOnPhpunitWarning     = true;
             $failOnEmptyTestSuite     = true;
             $failOnIncomplete         = true;
             $failOnNotice             = true;
@@ -60,6 +61,10 @@ final class ShellExitCodeCalculator
 
         if ($configuration->doNotFailOnPhpunitDeprecation()) {
             $failOnPhpunitDeprecation = false;
+        }
+
+        if ($configuration->failOnPhpunitWarning()) {
+            $failOnPhpunitWarning = true;
         }
 
         if ($configuration->doNotFailOnPhpunitWarning()) {
