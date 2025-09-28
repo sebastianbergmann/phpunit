@@ -27,7 +27,7 @@ final readonly class ShellExitCodeCalculator
     {
         $failOnDeprecation        = false;
         $failOnPhpunitDeprecation = false;
-        $failOnPhpunitWarning     = true;
+        $failOnPhpunitWarning     = false;
         $failOnEmptyTestSuite     = false;
         $failOnIncomplete         = false;
         $failOnNotice             = false;
@@ -38,7 +38,7 @@ final readonly class ShellExitCodeCalculator
         if ($configuration->failOnAllIssues()) {
             $failOnDeprecation        = true;
             $failOnPhpunitDeprecation = true;
-            $failOnPhpunitWarning     = false;
+            $failOnPhpunitWarning     = true;
             $failOnEmptyTestSuite     = true;
             $failOnIncomplete         = true;
             $failOnNotice             = true;
