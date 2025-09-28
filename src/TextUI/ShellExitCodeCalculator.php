@@ -38,7 +38,6 @@ final class ShellExitCodeCalculator
         if ($configuration->failOnAllIssues()) {
             $failOnDeprecation        = true;
             $failOnPhpunitDeprecation = true;
-            $failOnPhpunitWarning     = false;
             $failOnEmptyTestSuite     = true;
             $failOnIncomplete         = true;
             $failOnNotice             = true;
@@ -61,10 +60,6 @@ final class ShellExitCodeCalculator
 
         if ($configuration->doNotFailOnPhpunitDeprecation()) {
             $failOnPhpunitDeprecation = false;
-        }
-
-        if ($configuration->failOnPhpunitWarning()) {
-            $failOnPhpunitWarning = true;
         }
 
         if ($configuration->doNotFailOnPhpunitWarning()) {
