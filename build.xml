@@ -419,4 +419,15 @@
             <arg value="--coverage-text" />
         </exec>
     </target>
+
+    <target name="publish-phar" description="Publish PHAR on phar.phpunit.de">
+        <exec executable="sh" taskname="scp">
+            <arg value="-c" />
+            <arg value="scp build/artifacts/* phar:"/>
+        </exec>
+
+        <exec executable="ssh">
+            <arg line="phar ./publish-phars.sh" />
+        </exec>
+    </target>
 </project>
