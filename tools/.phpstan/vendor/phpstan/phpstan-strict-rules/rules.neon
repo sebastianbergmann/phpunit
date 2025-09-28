@@ -11,6 +11,7 @@ parameters:
 	reportStaticMethodSignatures: true
 	reportMaybesInPropertyPhpDocTypes: true
 	reportWrongPhpDocTypeInVarTag: true
+	checkStrictPrintfPlaceholderTypes: true
 	strictRules:
 		allRules: true
 		disallowedLooseComparison: %strictRules.allRules%
