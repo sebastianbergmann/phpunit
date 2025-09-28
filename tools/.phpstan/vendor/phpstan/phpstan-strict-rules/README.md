@@ -13,14 +13,12 @@
 | `numericOperandsInArithmeticOperators` | Require numeric operand in `+$var`, `-$var`, `$var++`, `$var--`, `++$var` and `--$var`. |
 | `numericOperandsInArithmeticOperators` | Require numeric operand in `$var++`, `$var--`, `++$var`and `--$var`.                                    |
 | `strictFunctionCalls`                  | These functions contain a `$strict` parameter for better type safety, it must be set to `true`:<br>* `in_array` (3rd parameter)<br>* `array_search` (3rd parameter)<br>* `array_keys` (3rd parameter; only if the 2nd parameter `$search_value` is provided)<br>* `base64_decode` (2nd parameter). |
-| `overwriteVariablesWithLoop`           | Variables assigned in `while` loop condition and `for` loop initial assignment cannot be used after the loop.  |
-| `overwriteVariablesWithLoop`           | Variables set in foreach that's always looped thanks to non-empty arrays cannot be used after the loop. |
+| `overwriteVariablesWithLoop`           | * Disallow overwriting variables with `foreach` key and value variables.<br>* Disallow overwriting variables with `for` loop initial assignment.                                                                   |
 | `switchConditionsMatchingType`         | Types in `switch` condition and `case` value must match. PHP compares them loosely by default and that can lead to  unexpected results. |
 | `dynamicCallOnStaticMethod`            | Check that statically declared methods are called statically.                                           |
 | `disallowedEmpty`                      | Disallow `empty()` - it's a very loose comparison (see [manual](https://php.net/empty)), it's recommended to use more  strict one. |
 | `disallowedShortTernary`               | Disallow short ternary operator (`?:`) - implies weak comparison, it's recommended to use null coalesce operator (`??`)  or ternary operator with strict condition. |
 | `noVariableVariables`                  | Disallow variable variables (`$$foo`, `$this->$method()` etc.).                                         |
-| `overwriteVariablesWithLoop`           | Disallow overwriting variables with foreach key and value variables.                                    |
 | `checkAlwaysTrueInstanceof`, `checkAlwaysTrueCheckTypeFunctionCall`, `checkAlwaysTrueStrictComparison` | Always true `instanceof`, type-checking `is_*` functions and strict comparisons `===`/`!==`. These checks can be turned off by setting `checkAlwaysTrueInstanceof`, `checkAlwaysTrueCheckTypeFunctionCall` and `checkAlwaysTrueStrictComparison` to false. |
 |                                        | Correct case for referenced and called function names.                                                  |
 | `matchingInheritedMethodNames`         | Correct case for inherited and implemented method names.                                                |

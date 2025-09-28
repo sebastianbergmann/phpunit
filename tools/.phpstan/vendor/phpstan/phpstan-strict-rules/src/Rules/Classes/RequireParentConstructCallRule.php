@@ -104,26 +104,27 @@ class RequireParentConstructCallRule implements Rule
 	 */
 	private function getParentConstructorClass($classReflection)
 	{
-		while ($classReflection->getParentClass() !== false) {
-			$constructor = $classReflection->getParentClass()->hasMethod('__construct') ? $classReflection->getParentClass()->getMethod('__construct') : null;
-			$constructorWithClassName = $classReflection->getParentClass()->hasMethod($classReflection->getParentClass()->getName()) ? $classReflection->getParentClass()->getMethod($classReflection->getParentClass()->getName()) : null;
+		$parentClass = $classReflection->getParentClass();
+		while ($parentClass !== false) {
+			$constructor = $parentClass->hasMethod('__construct') ? $parentClass->getMethod('__construct') : null;
+			$constructorWithClassName = $parentClass->hasMethod($parentClass->getName()) ? $parentClass->getMethod($parentClass->getName()) : null;
 			if (
 				(
 					$constructor !== null
-					&& $constructor->getDeclaringClass()->getName() === $classReflection->getParentClass()->getName()
+					&& $constructor->getDeclaringClass()->getName() === $parentClass->getName()
 					&& !$constructor->isAbstract()
 					&& !$constructor->isPrivate()
 					&& !$constructor->isDeprecated()
 				) || (
 					$constructorWithClassName !== null
-					&& $constructorWithClassName->getDeclaringClass()->getName() === $classReflection->getParentClass()->getName()
+					&& $constructorWithClassName->getDeclaringClass()->getName() === $parentClass->getName()
 					&& !$constructorWithClassName->isAbstract()
 				)
 			) {
-				return $classReflection->getParentClass();
+				return $parentClass;
 			}
 
-			$classReflection = $classReflection->getParentClass();
+			$parentClass = $parentClass->getParentClass();
 		}
 
 		return false;

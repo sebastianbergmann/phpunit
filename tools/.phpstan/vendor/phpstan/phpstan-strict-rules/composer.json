@@ -7,7 +7,7 @@
 	],
 	"require": {
 		"php": "^7.4 || ^8.0",
-		"phpstan/phpstan": "^2.0.4"
+		"phpstan/phpstan": "^2.1.29"
 	},
 	"require-dev": {
 		"php-parallel-lint/php-parallel-lint": "^1.2",
