@@ -7,7 +7,7 @@ on:
 name: CI
 
 env:
-  COMPOSER_ROOT_VERSION: "12.5.x-dev"
+  COMPOSER_ROOT_VERSION: "13.0.x-dev"
   PHP_VERSION: 8.4
 
 permissions:
