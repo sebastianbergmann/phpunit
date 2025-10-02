@@ -41,7 +41,7 @@ final class TestRunner
                 $configuration->resolveDependencies()) {
                 $resultCache->load();
 
-                (new TestSuiteSorter($resultCache))->reorderTestsInSuite(
+                new TestSuiteSorter($resultCache)->reorderTestsInSuite(
                     $suite,
                     $configuration->executionOrder(),
                     $configuration->resolveDependencies(),

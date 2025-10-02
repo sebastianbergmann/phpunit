@@ -76,7 +76,7 @@ final class TestResultCollector
             $testsByDeclaringClass = [];
 
             foreach ($tests as $test) {
-                $declaringClassName = (new ReflectionMethod($test->test()->className(), $test->test()->methodName()))->getDeclaringClass()->getName();
+                $declaringClassName = new ReflectionMethod($test->test()->className(), $test->test()->methodName())->getDeclaringClass()->getName();
 
                 if (!isset($testsByDeclaringClass[$declaringClassName])) {
                     $testsByDeclaringClass[$declaringClassName] = [];

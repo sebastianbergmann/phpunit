@@ -181,7 +181,7 @@ final class ReturnValueGenerator
     private function newInstanceOf(StubInternal $testStub, string $className, string $methodName): Stub
     {
         try {
-            $object    = (new ReflectionClass($testStub::class))->newInstanceWithoutConstructor();
+            $object    = new ReflectionClass($testStub::class)->newInstanceWithoutConstructor();
             $reflector = new ReflectionObject($object);
 
             $reflector->getProperty('__phpunit_state')->setValue(

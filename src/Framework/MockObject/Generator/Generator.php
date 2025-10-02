@@ -292,7 +292,7 @@ final class Generator
         $className = $mockClass->generate();
 
         try {
-            $object = (new ReflectionClass($className))->newInstanceWithoutConstructor();
+            $object = new ReflectionClass($className)->newInstanceWithoutConstructor();
             // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(

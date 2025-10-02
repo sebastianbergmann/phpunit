@@ -29,7 +29,7 @@ final readonly class RemoveLoggingElements implements Migration
 
     private function removeTestDoxElement(DOMDocument $document): void
     {
-        $nodes = (new DOMXPath($document))->query('logging/testdoxXml');
+        $nodes = new DOMXPath($document)->query('logging/testdoxXml');
 
         assert($nodes !== false);
 
@@ -44,7 +44,7 @@ final readonly class RemoveLoggingElements implements Migration
 
     private function removeTextElement(DOMDocument $document): void
     {
-        $nodes = (new DOMXPath($document))->query('logging/text');
+        $nodes = new DOMXPath($document)->query('logging/text');
 
         assert($nodes !== false);
 

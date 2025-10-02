@@ -49,7 +49,7 @@ final readonly class ListTestFilesCommand implements Command
 
         foreach ($this->tests as $test) {
             if ($test instanceof TestCase) {
-                $name = (new ReflectionClass($test))->getFileName();
+                $name = new ReflectionClass($test)->getFileName();
 
                 assert($name !== false);
 

@@ -310,7 +310,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $buffer = sprintf(
             '%s::%s',
-            (new ReflectionClass($this))->getName(),
+            new ReflectionClass($this)->getName(),
             $this->methodName,
         );
 

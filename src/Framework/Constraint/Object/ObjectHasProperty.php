@@ -49,7 +49,7 @@ final class ObjectHasProperty extends Constraint
             return false;
         }
 
-        return (new ReflectionObject($other))->hasProperty($this->propertyName);
+        return new ReflectionObject($other)->hasProperty($this->propertyName);
     }
 
     /**

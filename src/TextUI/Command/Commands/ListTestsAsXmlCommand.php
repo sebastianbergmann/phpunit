@@ -72,7 +72,7 @@ final readonly class ListTestsAsXmlCommand implements Command
                         $writer->endElement();
                     }
 
-                    $file = (new ReflectionClass($test))->getFileName();
+                    $file = new ReflectionClass($test)->getFileName();
 
                     assert($file !== false);
 

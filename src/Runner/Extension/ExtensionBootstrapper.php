@@ -66,7 +66,7 @@ final readonly class ExtensionBootstrapper
         }
 
         try {
-            $instance = (new ReflectionClass($className))->newInstance();
+            $instance = new ReflectionClass($className)->newInstance();
 
             assert($instance instanceof Extension);
 

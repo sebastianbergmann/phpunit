@@ -42,7 +42,7 @@ final class Callback extends Constraint
 
     public function isVariadic(): bool
     {
-        return (new ReflectionFunction(Closure::fromCallable($this->callback)))->isVariadic();
+        return new ReflectionFunction(Closure::fromCallable($this->callback))->isVariadic();
     }
 
     /**

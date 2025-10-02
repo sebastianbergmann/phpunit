@@ -206,7 +206,7 @@ final class ExcludeList
                 continue;
             }
 
-            $directory = (new ReflectionClass($className))->getFileName();
+            $directory = new ReflectionClass($className)->getFileName();
 
             for ($i = 0; $i < $parent; $i++) {
                 $directory = dirname($directory);
