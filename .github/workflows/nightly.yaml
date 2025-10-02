@@ -30,7 +30,8 @@ jobs:
 
         phpunit-branch:
           - main
-          - 12.3
+          - 12.5
+          - 12.4
           - 11.5
           - 10.5
           - 9.6
@@ -49,9 +50,15 @@ jobs:
             php-version: 8.1
           - phpunit-branch: main
             php-version: 8.2
-          - phpunit-branch: 12.3
+          - phpunit-branch: main
+            php-version: 8.3
+          - phpunit-branch: 12.5
             php-version: 8.1
-          - phpunit-branch: 12.3
+          - phpunit-branch: 12.5
+            php-version: 8.2
+          - phpunit-branch: 12.4
+            php-version: 8.1
+          - phpunit-branch: 12.4
             php-version: 8.2
           - phpunit-branch: 11.5
             php-version: 8.1
