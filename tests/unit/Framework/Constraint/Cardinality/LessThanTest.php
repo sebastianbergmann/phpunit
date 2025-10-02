@@ -58,7 +58,7 @@ final class LessThanTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is less than 0', (new LessThan(0))->toString());
+        $this->assertSame('is less than 0', new LessThan(0)->toString());
     }
 
     public function testIsCountable(): void

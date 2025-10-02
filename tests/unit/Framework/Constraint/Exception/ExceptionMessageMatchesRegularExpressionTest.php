@@ -69,7 +69,7 @@ final class ExceptionMessageMatchesRegularExpressionTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('exception message matches \'/.*/\'', (new ExceptionMessageMatchesRegularExpression('/.*/'))->toString());
+        $this->assertSame('exception message matches \'/.*/\'', new ExceptionMessageMatchesRegularExpression('/.*/')->toString());
     }
 
     public function testIsCountable(): void

@@ -59,7 +59,7 @@ final class StringEndsWithTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('ends with "suffix"', (new StringEndsWith('suffix'))->toString());
+        $this->assertSame('ends with "suffix"', new StringEndsWith('suffix')->toString());
     }
 
     public function testIsCountable(): void

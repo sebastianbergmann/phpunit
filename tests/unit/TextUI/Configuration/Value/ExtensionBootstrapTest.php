@@ -21,13 +21,13 @@ final class ExtensionBootstrapTest extends TestCase
     {
         $className = 'ClassName';
 
-        $this->assertSame($className, (new ExtensionBootstrap($className, []))->className());
+        $this->assertSame($className, new ExtensionBootstrap($className, [])->className());
     }
 
     public function testHasParameters(): void
     {
         $parameters = ['foo' => 'bar'];
 
-        $this->assertSame($parameters, (new ExtensionBootstrap('ClassName', $parameters))->parameters());
+        $this->assertSame($parameters, new ExtensionBootstrap('ClassName', $parameters)->parameters());
     }
 }

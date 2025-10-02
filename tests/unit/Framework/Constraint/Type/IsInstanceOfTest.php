@@ -78,8 +78,8 @@ final class IsInstanceOfTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is an instance of class stdClass', (new IsInstanceOf(stdClass::class))->toString());
-        $this->assertSame('is an instance of interface Throwable', (new IsInstanceOf(Throwable::class))->toString());
+        $this->assertSame('is an instance of class stdClass', new IsInstanceOf(stdClass::class)->toString());
+        $this->assertSame('is an instance of interface Throwable', new IsInstanceOf(Throwable::class)->toString());
     }
 
     public function testIsCountable(): void

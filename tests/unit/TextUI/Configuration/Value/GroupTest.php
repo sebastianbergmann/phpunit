@@ -21,6 +21,6 @@ final class GroupTest extends TestCase
     {
         $name = 'name';
 
-        $this->assertSame($name, (new Group($name))->name());
+        $this->assertSame($name, new Group($name)->name());
     }
 }

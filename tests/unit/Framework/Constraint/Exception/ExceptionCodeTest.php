@@ -58,7 +58,7 @@ final class ExceptionCodeTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('exception code is 1234', (new ExceptionCode(1234))->toString());
+        $this->assertSame('exception code is 1234', new ExceptionCode(1234)->toString());
     }
 
     public function testIsCountable(): void

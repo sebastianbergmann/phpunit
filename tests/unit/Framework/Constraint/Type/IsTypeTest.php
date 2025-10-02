@@ -139,7 +139,7 @@ final class IsTypeTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is of type array', (new IsType(NativeType::Array))->toString());
+        $this->assertSame('is of type array', new IsType(NativeType::Array)->toString());
     }
 
     public function testIsCountable(): void

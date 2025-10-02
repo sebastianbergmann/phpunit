@@ -108,7 +108,7 @@ final class TraversableContainsIdenticalTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('contains \'value\'', (new TraversableContainsIdentical('value'))->toString());
+        $this->assertSame('contains \'value\'', new TraversableContainsIdentical('value')->toString());
     }
 
     public function testIsCountable(): void

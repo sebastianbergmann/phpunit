@@ -58,7 +58,7 @@ final class StringEqualsStringIgnoringLineEndingsTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is equal to "string" ignoring line endings', (new StringEqualsStringIgnoringLineEndings('string'))->toString());
+        $this->assertSame('is equal to "string" ignoring line endings', new StringEqualsStringIgnoringLineEndings('string')->toString());
     }
 
     public function testIsCountable(): void

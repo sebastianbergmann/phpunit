@@ -21,6 +21,6 @@ final class FileTest extends TestCase
     {
         $path = 'path';
 
-        $this->assertSame($path, (new File($path))->path());
+        $this->assertSame($path, new File($path)->path());
     }
 }

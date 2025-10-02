@@ -19,12 +19,12 @@ final class ConstantTest extends TestCase
 {
     public function testHasName(): void
     {
-        $this->assertSame('name', (new Constant('name', 'value'))->name());
+        $this->assertSame('name', new Constant('name', 'value')->name());
     }
 
     public function testHasValue(): void
     {
-        $this->assertSame('value', (new Constant('name', 'value'))->value());
-        $this->assertSame(true, (new Constant('name', true))->value());
+        $this->assertSame('value', new Constant('name', 'value')->value());
+        $this->assertSame(true, new Constant('name', true)->value());
     }
 }

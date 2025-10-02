@@ -67,7 +67,7 @@ final class ExceptionTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('exception of type "Exception"', (new Exception(\Exception::class))->toString());
+        $this->assertSame('exception of type "Exception"', new Exception(\Exception::class)->toString());
     }
 
     public function testIsCountable(): void

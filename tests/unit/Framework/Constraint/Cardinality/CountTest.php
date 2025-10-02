@@ -118,7 +118,7 @@ final class CountTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('count matches 1', (new Count(1))->toString());
+        $this->assertSame('count matches 1', new Count(1)->toString());
     }
 
     public function testIsCountable(): void

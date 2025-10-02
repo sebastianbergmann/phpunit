@@ -21,6 +21,6 @@ final class DirectoryTest extends TestCase
     {
         $path = 'path';
 
-        $this->assertSame($path, (new Directory($path))->path());
+        $this->assertSame($path, new Directory($path)->path());
     }
 }

@@ -47,7 +47,7 @@ final class VersionComparisonOperatorTest extends TestCase
     #[TestDox('Can be created from "$string"')]
     public function testCanBeCreatedFromValidString(string $string): void
     {
-        $this->assertSame($string, (new VersionComparisonOperator($string))->asString());
+        $this->assertSame($string, new VersionComparisonOperator($string)->asString());
     }
 
     public function testCannotBeCreatedFromInvalidString(): void

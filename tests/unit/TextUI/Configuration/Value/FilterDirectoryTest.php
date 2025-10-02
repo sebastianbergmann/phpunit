@@ -21,20 +21,20 @@ final class FilterDirectoryTest extends TestCase
     {
         $path = 'path';
 
-        $this->assertSame($path, (new FilterDirectory($path, 'prefix', 'suffix'))->path());
+        $this->assertSame($path, new FilterDirectory($path, 'prefix', 'suffix')->path());
     }
 
     public function testHasPrefix(): void
     {
         $prefix = 'prefix';
 
-        $this->assertSame($prefix, (new FilterDirectory('path', $prefix, 'suffix'))->prefix());
+        $this->assertSame($prefix, new FilterDirectory('path', $prefix, 'suffix')->prefix());
     }
 
     public function testHasSuffix(): void
     {
         $suffix = 'suffix';
 
-        $this->assertSame($suffix, (new FilterDirectory('path', 'prefix', $suffix))->suffix());
+        $this->assertSame($suffix, new FilterDirectory('path', 'prefix', $suffix)->suffix());
     }
 }

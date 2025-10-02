@@ -21,7 +21,7 @@ final class SameSizeTest extends TestCase
 {
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('count matches 0', (new SameSize([]))->toString());
+        $this->assertSame('count matches 0', new SameSize([])->toString());
     }
 
     public function testIsCountable(): void

@@ -58,7 +58,7 @@ final class GreaterThanTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('is greater than 0', (new GreaterThan(0))->toString());
+        $this->assertSame('is greater than 0', new GreaterThan(0)->toString());
     }
 
     public function testIsCountable(): void

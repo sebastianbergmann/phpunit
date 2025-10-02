@@ -59,7 +59,7 @@ final class StringStartsWithTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('starts with "prefix"', (new StringStartsWith('prefix'))->toString());
+        $this->assertSame('starts with "prefix"', new StringStartsWith('prefix')->toString());
     }
 
     public function testIsCountable(): void

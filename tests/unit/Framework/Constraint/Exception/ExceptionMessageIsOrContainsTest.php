@@ -72,8 +72,8 @@ final class ExceptionMessageIsOrContainsTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('exception message contains \'message\'', (new ExceptionMessageIsOrContains('message'))->toString());
-        $this->assertSame('exception message is empty', (new ExceptionMessageIsOrContains(''))->toString());
+        $this->assertSame('exception message contains \'message\'', new ExceptionMessageIsOrContains('message')->toString());
+        $this->assertSame('exception message is empty', new ExceptionMessageIsOrContains('')->toString());
     }
 
     public function testIsCountable(): void

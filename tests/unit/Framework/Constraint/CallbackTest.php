@@ -54,7 +54,7 @@ final class CallbackTest extends TestCase
             }
         };
 
-        $this->assertTrue((new Callback($class))->isVariadic());
+        $this->assertTrue(new Callback($class)->isVariadic());
     }
 
     public function testIsNotVariadic(): void
@@ -66,7 +66,7 @@ final class CallbackTest extends TestCase
             }
         };
 
-        $this->assertFalse((new Callback($class))->isVariadic());
+        $this->assertFalse(new Callback($class)->isVariadic());
     }
 
     private function acceptingCallbackConstraint(): Callback

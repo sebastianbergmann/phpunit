@@ -79,7 +79,7 @@ final class SystemTest extends TestCase
             }
         };
 
-        $snapshot = (new System($clock, $memoryMeter, $garbageCollectorProvider))->snapshot();
+        $snapshot = new System($clock, $memoryMeter, $garbageCollectorProvider)->snapshot();
 
         $this->assertSame($time, $snapshot->time());
         $this->assertSame($memoryUsage, $snapshot->memoryUsage());

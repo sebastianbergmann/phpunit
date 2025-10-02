@@ -58,7 +58,7 @@ final class RegularExpressionTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('matches PCRE pattern "/.*/"', (new RegularExpression('/.*/'))->toString());
+        $this->assertSame('matches PCRE pattern "/.*/"', new RegularExpression('/.*/')->toString());
     }
 
     public function testIsCountable(): void

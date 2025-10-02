@@ -19,17 +19,17 @@ final class VariableTest extends TestCase
 {
     public function testHasName(): void
     {
-        $this->assertSame('name', (new Variable('name', 'value', false))->name());
+        $this->assertSame('name', new Variable('name', 'value', false)->name());
     }
 
     public function testHasValue(): void
     {
-        $this->assertSame('value', (new Variable('name', 'value', false))->value());
+        $this->assertSame('value', new Variable('name', 'value', false)->value());
     }
 
     public function testValueCanBeForced(): void
     {
-        $this->assertFalse((new Variable('name', 'value', false))->force());
-        $this->assertTrue((new Variable('name', 'value', true))->force());
+        $this->assertFalse(new Variable('name', 'value', false)->force());
+        $this->assertTrue(new Variable('name', 'value', true)->force());
     }
 }

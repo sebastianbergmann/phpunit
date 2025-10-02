@@ -225,7 +225,7 @@ final class StringContainsTest extends TestCase
     #[DataProvider('providesToStringRepresentationCases')]
     public function testCanBeRepresentedAsString(string $expected, string $needle, bool $ignoreCase, bool $ignoreLineEndings): void
     {
-        $this->assertSame($expected, (new StringContains($needle, $ignoreCase, $ignoreLineEndings))->toString());
+        $this->assertSame($expected, new StringContains($needle, $ignoreCase, $ignoreLineEndings)->toString());
     }
 
     public function testIsCountable(): void

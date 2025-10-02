@@ -19,11 +19,11 @@ final class IniSettingTest extends TestCase
 {
     public function testHasName(): void
     {
-        $this->assertSame('name', (new IniSetting('name', 'value'))->name());
+        $this->assertSame('name', new IniSetting('name', 'value')->name());
     }
 
     public function testHasValue(): void
     {
-        $this->assertSame('value', (new IniSetting('name', 'value'))->value());
+        $this->assertSame('value', new IniSetting('name', 'value')->value());
     }
 }

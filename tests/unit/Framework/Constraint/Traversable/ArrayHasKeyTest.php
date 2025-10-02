@@ -94,8 +94,8 @@ final class ArrayHasKeyTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('has the key 0', (new ArrayHasKey(0))->toString());
-        $this->assertSame('has the key \'key\'', (new ArrayHasKey('key'))->toString());
+        $this->assertSame('has the key 0', new ArrayHasKey(0)->toString());
+        $this->assertSame('has the key \'key\'', new ArrayHasKey('key')->toString());
     }
 
     public function testIsCountable(): void
