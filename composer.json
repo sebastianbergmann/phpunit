@@ -22,7 +22,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4.1",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -50,7 +50,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.3.0"
+            "php": "8.4.1"
         },
         "classmap-authoritative": true,
         "optimize-autoloader": true,

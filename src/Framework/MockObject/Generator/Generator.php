@@ -833,12 +833,6 @@ final class Generator
      */
     private function properties(?ReflectionClass $class): array
     {
-        if (version_compare('8.4.1', PHP_VERSION, '>')) {
-            // @codeCoverageIgnoreStart
-            return [];
-            // @codeCoverageIgnoreEnd
-        }
-
         if ($class === null) {
             return [];
         }
