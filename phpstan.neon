@@ -8,7 +8,7 @@ parameters:
         # exclude partial traits, which are only used in runtime generated code
         - src/Framework/MockObject/Runtime/Api
 
-    resultCachePath: %tmpDir%/phpunit-12.4.php
+    resultCachePath: %tmpDir%/phpunit-12.5.php
 
     checkTooWideReturnTypesInProtectedAndPublicMethods: true
     reportAlwaysTrueInLastCondition: true
