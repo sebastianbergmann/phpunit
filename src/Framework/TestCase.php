@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_any;
 use function array_keys;
 use function array_merge;
 use function array_reverse;
@@ -1363,15 +1364,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         foreach ($this->expectedUserDeprecationMessageRegularExpression as $deprecationExpectation) {
             $this->numberOfAssertionsPerformed++;
 
-            $expectedDeprecationTriggered = false;
-
-            foreach (DeprecationCollector::deprecations() as $deprecation) {
-                if (@preg_match($deprecationExpectation, $deprecation) > 0) {
-                    $expectedDeprecationTriggered = true;
-
-                    break;
-                }
-            }
+            $expectedDeprecationTriggered = array_any(
+                DeprecationCollector::deprecations(),
+                static fn (string $deprecation) => @preg_match($deprecationExpectation, $deprecation) > 0,
+            );
 
             if (!$expectedDeprecationTriggered) {
                 throw new ExpectationFailedException(
@@ -2281,13 +2277,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function isRegisteredFailure(Throwable $t): bool
     {
-        foreach (array_keys($this->failureTypes) as $failureType) {
-            if ($t instanceof $failureType) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            array_keys($this->failureTypes),
+            static fn (string $failureType) => $t instanceof $failureType,
+        );
     }
 
     /**

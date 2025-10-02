@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use function array_any;
 use function str_contains;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollectorFacade;
@@ -101,12 +102,12 @@ final class Facade
             return $deprecations !== [];
         }
 
-        foreach ($deprecations as $deprecation) {
-            if (str_contains($deprecation, $configuration->specificDeprecationToStopOn())) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $deprecations,
+            static fn (string $deprecation) => str_contains(
+                $deprecation,
+                $configuration->specificDeprecationToStopOn(),
+            ),
+        );
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function array_any;
 use function strtolower;
 use Exception;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
@@ -48,13 +49,10 @@ final class InvocationHandler
 
     public function hasMatchers(): bool
     {
-        foreach ($this->matchers as $matcher) {
-            if ($matcher->hasMatchers()) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $this->matchers,
+            static fn (Matcher $matcher) => $matcher->hasMatchers(),
+        );
     }
 
     /**

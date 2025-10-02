@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use const PHP_OS_FAMILY;
+use function array_any;
 use function assert;
 use function class_exists;
 use function defined;
@@ -186,13 +187,10 @@ final class ExcludeList
 
         self::initialize();
 
-        foreach (self::$directories as $directory) {
-            if (str_starts_with($file, $directory)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            self::$directories,
+            static fn (string $directory) => str_starts_with($file, $directory),
+        );
     }
 
     private static function initialize(): void
