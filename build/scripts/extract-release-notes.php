@@ -55,7 +55,7 @@ Learn how to install or update PHPUnit {{versionSeries}} in the [documentation](
 #### Keep up to date with PHPUnit:
 
 * You can follow [@phpunit@phpc.social](https://phpc.social/@phpunit) to stay up to date with PHPUnit's development.
-* You can subscribe to the [PHPUnit Updates](https://t8cbf4509.emailsys1a.net/275/973/33ad04f4be/subscribe/form.html?_g=1752156344) newsletter to receive updates about and tips for PHPUnit.
+* You can subscribe to the [PHPUnit Updates](https://phpunit.de/newsletter) newsletter to receive updates about and tips for PHPUnit.
 
 EOT;
 
