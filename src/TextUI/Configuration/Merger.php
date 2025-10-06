@@ -750,15 +750,25 @@ final readonly class Merger
             $excludeFilter = $cliConfiguration->excludeFilter();
         }
 
+        $ignoreTestSelectionInXmlConfiguration = false;
+
+        if ($cliConfiguration->hasAll()) {
+            $ignoreTestSelectionInXmlConfiguration = true;
+        }
+
+        $groups = [];
+
         if ($cliConfiguration->hasGroups()) {
             $groups = $cliConfiguration->groups();
-        } else {
+        } elseif (!$ignoreTestSelectionInXmlConfiguration) {
             $groups = $xmlConfiguration->groups()->include()->asArrayOfStrings();
         }
 
+        $excludeGroups = [];
+
         if ($cliConfiguration->hasExcludeGroups()) {
             $excludeGroups = $cliConfiguration->excludeGroups();
-        } else {
+        } elseif (!$ignoreTestSelectionInXmlConfiguration) {
             $excludeGroups = $xmlConfiguration->groups()->exclude()->asArrayOfStrings();
         }
 
@@ -891,12 +901,6 @@ final readonly class Merger
 
         if ($failOnSkipped && !$doNotFailOnSkipped) {
             $displayDetailsOnSkippedTests = true;
-        }
-
-        $ignoreTestSelectionInXmlConfiguration = false;
-
-        if ($cliConfiguration->hasAll()) {
-            $ignoreTestSelectionInXmlConfiguration = true;
         }
 
         return new Configuration(
