@@ -69,10 +69,6 @@ final readonly class ListTestSuitesCommand implements Command
 
         $configuration = Registry::get();
 
-        if ($configuration->hasDefaultTestSuite()) {
-            $buffer .= 'The defaultTestSuite (XML) and --list-suites (CLI) options cannot be combined, only the default test suite is shown' . PHP_EOL;
-        }
-
         if ($configuration->includeTestSuites() !== [] && !$configuration->hasDefaultTestSuite()) {
             $buffer .= 'The --testsuite and --list-suites options cannot be combined, --testsuite is ignored' . PHP_EOL;
         }

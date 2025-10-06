@@ -31,6 +31,10 @@ final readonly class TestSuiteFilterProcessor
     {
         $factory = new Factory;
 
+        if ($configuration->ignoreTestSelectionInXmlConfiguration()) {
+            return;
+        }
+
         if (!$configuration->hasFilter() &&
             !$configuration->hasGroups() &&
             !$configuration->hasExcludeGroups() &&

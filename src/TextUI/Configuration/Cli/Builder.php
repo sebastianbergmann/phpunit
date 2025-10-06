@@ -35,6 +35,7 @@ final class Builder
      * @var non-empty-list<non-empty-string>
      */
     private const array LONG_OPTIONS = [
+        'all',
         'atleast-version=',
         'bootstrap=',
         'cache-result',
@@ -189,6 +190,7 @@ final class Builder
             );
         }
 
+        $all                               = null;
         $atLeastVersion                    = null;
         $backupGlobals                     = null;
         $backupStaticProperties            = null;
@@ -317,6 +319,65 @@ final class Builder
             $optionAllowedMultipleTimes = false;
 
             switch ($option[0]) {
+                case '--all':
+                    $this->warnWhenOptionsConflict(
+                        $testSuite,
+                        '--all',
+                        '--testsuite',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $excludeTestSuite,
+                        '--all',
+                        '--exclude-testsuite',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $groups,
+                        '--all',
+                        '--group',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $excludeGroups,
+                        '--all',
+                        '--exclude-group',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $testsCovering,
+                        '--all',
+                        '--covers',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $testsUsing,
+                        '--all',
+                        '--uses',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $testsRequiringPhpExtension,
+                        '--all',
+                        '--requires-php-extension',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $filter,
+                        '--all',
+                        '--filter',
+                    );
+
+                    $this->warnWhenOptionsConflict(
+                        $excludeFilter,
+                        '--all',
+                        '--exclude-filter',
+                    );
+
+                    $all = true;
+
+                    break;
+
                 case '--colors':
                     $colors = \PHPUnit\TextUI\Configuration\Configuration::COLOR_AUTO;
 
@@ -451,21 +512,45 @@ final class Builder
                     break;
 
                 case '--filter':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--filter',
+                        '--all',
+                    );
+
                     $filter = $option[1];
 
                     break;
 
                 case '--exclude-filter':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--exclude-filter',
+                        '--all',
+                    );
+
                     $excludeFilter = $option[1];
 
                     break;
 
                 case '--testsuite':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--testsuite',
+                        '--all',
+                    );
+
                     $testSuite = $option[1];
 
                     break;
 
                 case '--exclude-testsuite':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--exclude-testsuite',
+                        '--all',
+                    );
+
                     $excludeTestSuite = $option[1];
 
                     break;
@@ -504,6 +589,12 @@ final class Builder
                     break;
 
                 case '--group':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--group',
+                        '--all',
+                    );
+
                     if ($groups === null) {
                         $groups = [];
                     }
@@ -515,6 +606,12 @@ final class Builder
                     break;
 
                 case '--exclude-group':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--exclude-group',
+                        '--all',
+                    );
+
                     if ($excludeGroups === null) {
                         $excludeGroups = [];
                     }
@@ -526,6 +623,12 @@ final class Builder
                     break;
 
                 case '--covers':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--covers',
+                        '--all',
+                    );
+
                     if ($testsCovering === null) {
                         $testsCovering = [];
                     }
@@ -537,6 +640,12 @@ final class Builder
                     break;
 
                 case '--uses':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--uses',
+                        '--all',
+                    );
+
                     if ($testsUsing === null) {
                         $testsUsing = [];
                     }
@@ -548,6 +657,12 @@ final class Builder
                     break;
 
                 case '--requires-php-extension':
+                    $this->warnWhenOptionsConflict(
+                        $all,
+                        '--requires-php-extension',
+                        '--all',
+                    );
+
                     if ($testsRequiringPhpExtension === null) {
                         $testsRequiringPhpExtension = [];
                     }
@@ -1232,6 +1347,7 @@ final class Builder
 
         return new Configuration(
             $options[1],
+            $all,
             $atLeastVersion,
             $backupGlobals,
             $backupStaticProperties,
@@ -1382,9 +1498,10 @@ final class Builder
     }
 
     /**
-     * @param non-empty-string $option
+     * @param null|array<non-empty-string>|bool|string $current
+     * @param non-empty-string                         $option
      */
-    private function warnWhenOptionsConflict(?bool $current, string $option, string $opposite): void
+    private function warnWhenOptionsConflict(null|array|bool|string $current, string $option, string $opposite): void
     {
         if ($current === null) {
             return;

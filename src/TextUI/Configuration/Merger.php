@@ -893,6 +893,12 @@ final readonly class Merger
             $displayDetailsOnSkippedTests = true;
         }
 
+        $ignoreTestSelectionInXmlConfiguration = false;
+
+        if ($cliConfiguration->hasAll()) {
+            $ignoreTestSelectionInXmlConfiguration = true;
+        }
+
         return new Configuration(
             $cliConfiguration->arguments(),
             $configurationFile,
@@ -1035,6 +1041,7 @@ final readonly class Merger
             $includeTestSuite,
             $excludeTestSuite,
             $xmlConfiguration->phpunit()->hasDefaultTestSuite() ? $xmlConfiguration->phpunit()->defaultTestSuite() : null,
+            $ignoreTestSelectionInXmlConfiguration,
             $testSuffixes,
             new Php(
                 DirectoryCollection::fromArray($includePaths),
