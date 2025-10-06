@@ -118,11 +118,6 @@ final class assertThatTest extends TestCase
         $this->assertThat('foo' . "\r\n", $this->stringEqualsStringIgnoringLineEndings('foo' . "\n"));
     }
 
-    public function testAssertThatContainsOnly(): void
-    {
-        $this->assertThat(['foo'], $this->containsOnly('string'));
-    }
-
     public function testAssertThatContainsOnlyArray(): void
     {
         $this->assertThat([[]], $this->containsOnlyArray());

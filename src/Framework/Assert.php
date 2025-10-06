@@ -2673,18 +2673,6 @@ abstract class Assert
         return new TraversableContainsIdentical($value);
     }
 
-    /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     *
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6060
-     */
-    final public static function containsOnly(string $type): TraversableContainsOnly
-    {
-        return TraversableContainsOnly::forNativeType(self::mapNativeType($type));
-    }
-
     final public static function containsOnlyArray(): TraversableContainsOnly
     {
         return TraversableContainsOnly::forNativeType(NativeType::Array);
@@ -3010,57 +2998,5 @@ abstract class Assert
     final public static function resetCount(): void
     {
         self::$count = 0;
-    }
-
-    private static function isNativeType(string $type): bool
-    {
-        return $type === 'array' ||
-               $type === 'bool' ||
-               $type === 'boolean' ||
-               $type === 'callable' ||
-               $type === 'double' ||
-               $type === 'float' ||
-               $type === 'int' ||
-               $type === 'integer' ||
-               $type === 'iterable' ||
-               $type === 'null' ||
-               $type === 'numeric' ||
-               $type === 'object' ||
-               $type === 'real' ||
-               $type === 'resource' ||
-               $type === 'resource (closed)' ||
-               $type === 'scalar' ||
-               $type === 'string';
-    }
-
-    /**
-     * @throws UnknownNativeTypeException
-     */
-    private static function mapNativeType(string $type): NativeType
-    {
-        if (!self::isNativeType($type)) {
-            throw new UnknownNativeTypeException($type);
-        }
-
-        /** @phpstan-ignore match.unhandled */
-        return match ($type) {
-            'array'             => NativeType::Array,
-            'bool'              => NativeType::Bool,
-            'boolean'           => NativeType::Bool,
-            'callable'          => NativeType::Callable,
-            'double'            => NativeType::Float,
-            'float'             => NativeType::Float,
-            'int'               => NativeType::Int,
-            'integer'           => NativeType::Int,
-            'iterable'          => NativeType::Iterable,
-            'null'              => NativeType::Null,
-            'numeric'           => NativeType::Numeric,
-            'object'            => NativeType::Object,
-            'real'              => NativeType::Float,
-            'resource'          => NativeType::Resource,
-            'resource (closed)' => NativeType::ClosedResource,
-            'scalar'            => NativeType::Scalar,
-            'string'            => NativeType::String,
-        };
     }
 }

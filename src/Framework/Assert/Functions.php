@@ -2927,13 +2927,6 @@ if (!function_exists('PHPUnit\Framework\containsIdentical')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\containsOnly')) {
-    function containsOnly(string $type): TraversableContainsOnly
-    {
-        return Assert::containsOnly(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\containsOnlyArray')) {
     function containsOnlyArray(): TraversableContainsOnly
     {

@@ -29,12 +29,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 ### Writing Tests
 
-#### Assertions, Constraints, and Expectations
-
-| Issue                                                             | Description                                          | Since  | Replacement                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|-------------------------------------------------------------------|------------------------------------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [#6059](https://github.com/sebastianbergmann/phpunit/issues/6059) | `Assert::containsOnly()`                             | 11.5.0 | Use `containsOnlyArray()`, `containsOnlyBool()`, `containsOnlyCallable()`, `containsOnlyFloat()`, `containsOnlyInt()`, `containsOnlyIterable()`, `containsOnlyNumeric()`, `containsOnlyObject()`, `containsOnlyResource()`, `containsOnlyClosedResource()`, `containsOnlyScalar()`, or `containsOnlyString()`  instead                                                                                                            |
-
 ### Attributes
 
 | Issue                                                             | Description                                                                                 | Since  | Replacement                                  |

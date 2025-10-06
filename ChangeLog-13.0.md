@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 * [#6054](https://github.com/sebastianbergmann/phpunit/issues/6054): `Assert::isType()`
 * [#6057](https://github.com/sebastianbergmann/phpunit/issues/6057): `assertContainsOnly()` and `assertNotContainsOnly()`
+* [#6061](https://github.com/sebastianbergmann/phpunit/issues/6061): `containsOnly()`
 * [#6076](https://github.com/sebastianbergmann/phpunit/issues/6076): Support for PHP 8.3
 
 [13.0.0]: https://github.com/sebastianbergmann/phpunit/compare/12.5...main
