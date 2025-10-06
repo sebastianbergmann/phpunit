@@ -1020,7 +1020,9 @@ final class DispatchingEmitter implements Emitter
             if (isset($metadata[0])) {
                 assert($metadata[0] instanceof IgnorePhpunitWarnings);
 
-                if ($metadata[0]->shouldIgnore($message)) {
+                $messagePattern = $metadata[0]->messagePattern();
+
+                if ($messagePattern === null || (bool) preg_match('{' . $messagePattern . '}', $message)) {
                     $ignoredByTest = true;
                 }
             }
