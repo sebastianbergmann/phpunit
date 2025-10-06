@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture\Event;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\TestCase;
 
-final class DeprecatedVersionConstraintTest extends TestCase
+final class InvalidVersionConstraintTest extends TestCase
 {
     #[RequiresPhp('100')]
     public function testOne(): void

@@ -348,12 +348,14 @@ final readonly class AttributeParser implements Parser
                 case RequiresPhp::class:
                     assert($attributeInstance instanceof RequiresPhp);
 
-                    $result[] = Metadata::requiresPhpOnClass(
-                        $this->requirement(
-                            $attributeInstance->versionRequirement(),
-                            $className,
-                        ),
+                    $requirement = $this->requirement(
+                        $attributeInstance->versionRequirement(),
+                        $className,
                     );
+
+                    if ($requirement !== null) {
+                        $result[] = Metadata::requiresPhpOnClass($requirement);
+                    }
 
                     break;
 
@@ -380,12 +382,14 @@ final readonly class AttributeParser implements Parser
                 case RequiresPhpunit::class:
                     assert($attributeInstance instanceof RequiresPhpunit);
 
-                    $result[] = Metadata::requiresPhpunitOnClass(
-                        $this->requirement(
-                            $attributeInstance->versionRequirement(),
-                            $className,
-                        ),
+                    $requirement = $this->requirement(
+                        $attributeInstance->versionRequirement(),
+                        $className,
                     );
+
+                    if ($requirement !== null) {
+                        $result[] = Metadata::requiresPhpunitOnClass($requirement);
+                    }
 
                     break;
 
@@ -764,13 +768,15 @@ final readonly class AttributeParser implements Parser
                 case RequiresPhp::class:
                     assert($attributeInstance instanceof RequiresPhp);
 
-                    $result[] = Metadata::requiresPhpOnMethod(
-                        $this->requirement(
-                            $attributeInstance->versionRequirement(),
-                            $className,
-                            $methodName,
-                        ),
+                    $requirement = $this->requirement(
+                        $attributeInstance->versionRequirement(),
+                        $className,
+                        $methodName,
                     );
+
+                    if ($requirement !== null) {
+                        $result[] = Metadata::requiresPhpOnMethod($requirement);
+                    }
 
                     break;
 
@@ -798,13 +804,15 @@ final readonly class AttributeParser implements Parser
                 case RequiresPhpunit::class:
                     assert($attributeInstance instanceof RequiresPhpunit);
 
-                    $result[] = Metadata::requiresPhpunitOnMethod(
-                        $this->requirement(
-                            $attributeInstance->versionRequirement(),
-                            $className,
-                            $methodName,
-                        ),
+                    $requirement = $this->requirement(
+                        $attributeInstance->versionRequirement(),
+                        $className,
+                        $methodName,
                     );
+
+                    if ($requirement !== null) {
+                        $result[] = Metadata::requiresPhpunitOnMethod($requirement);
+                    }
 
                     break;
 
@@ -961,16 +969,18 @@ final readonly class AttributeParser implements Parser
      * @param class-string      $testClassName
      * @param ?non-empty-string $testMethodName
      */
-    private function requirement(string $versionRequirement, string $testClassName, ?string $testMethodName = null): Requirement
+    private function requirement(string $versionRequirement, string $testClassName, ?string $testMethodName = null): ?Requirement
     {
         if (is_numeric(trim($versionRequirement))) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
-                    'Test %s has attribute with version constraint string argument without explicit version comparison operator ("%s")',
+                    'Test %s has attribute with version constraint string argument without explicit version comparison operator ("%s"), version constraint is ignored',
                     $this->testAsString($testClassName, $testMethodName),
                     $versionRequirement,
                 ),
             );
+
+            return null;
         }
 
         return Requirement::from($versionRequirement);
