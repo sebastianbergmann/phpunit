@@ -421,15 +421,6 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('value', $requirement->value());
     }
 
-    #[TestDox('Parses #[RunClassInSeparateProcess] attribute on class')]
-    public function test_parses_RunClassInSeparateProcess_attribute_on_class(): void
-    {
-        $metadata = $this->parser()->forClass(ProcessIsolationTest::class)->isRunClassInSeparateProcess();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRunClassInSeparateProcess());
-    }
-
     #[TestDox('Parses #[RunTestsInSeparateProcesses] attribute on class')]
     public function test_parses_RunTestsInSeparateProcesses_attribute_on_class(): void
     {

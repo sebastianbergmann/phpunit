@@ -54,7 +54,6 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
@@ -124,7 +123,6 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(RequiresPhpunitExtension::class)]
 #[CoversClass(RequiresEnvironmentVariable::class)]
 #[CoversClass(RequiresSetting::class)]
-#[CoversClass(RunClassInSeparateProcess::class)]
 #[CoversClass(RunInSeparateProcess::class)]
 #[CoversClass(RunTestsInSeparateProcesses::class)]
 #[CoversClass(Small::class)]

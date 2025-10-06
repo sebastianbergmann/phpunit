@@ -354,8 +354,6 @@
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl"            token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Filter"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/class.tpl"  token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/class.tpl"  token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/method.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Framework/TestRunner/templates/method.tpl" token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
 

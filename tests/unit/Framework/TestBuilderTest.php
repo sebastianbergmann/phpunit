@@ -37,7 +37,6 @@ final class TestBuilderTest extends TestCase
         $this->assertSame('testOne', $test->methodName());
         $this->assertTrue($test->metadata()->isBackupGlobals()->isEmpty());
         $this->assertTrue($test->metadata()->isBackupStaticProperties()->isEmpty());
-        $this->assertTrue($test->metadata()->isRunClassInSeparateProcess()->isEmpty());
         $this->assertTrue($test->metadata()->isRunTestsInSeparateProcesses()->isEmpty());
     }
 

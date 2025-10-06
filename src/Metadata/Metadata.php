@@ -433,11 +433,6 @@ abstract readonly class Metadata
         return new RequiresSetting(self::METHOD_LEVEL, $setting, $value);
     }
 
-    public static function runClassInSeparateProcess(): RunClassInSeparateProcess
-    {
-        return new RunClassInSeparateProcess(self::CLASS_LEVEL);
-    }
-
     public static function runTestsInSeparateProcesses(): RunTestsInSeparateProcesses
     {
         return new RunTestsInSeparateProcesses(self::CLASS_LEVEL);
@@ -764,14 +759,6 @@ abstract readonly class Metadata
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function isIgnorePhpunitDeprecations(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @phpstan-assert-if-true RunClassInSeparateProcess $this
-     */
-    public function isRunClassInSeparateProcess(): bool
     {
         return false;
     }

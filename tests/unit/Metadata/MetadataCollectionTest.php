@@ -50,7 +50,6 @@ use stdClass;
 #[UsesClass(RequiresPhpunitExtension::class)]
 #[UsesClass(RequiresEnvironmentVariable::class)]
 #[UsesClass(RequiresSetting::class)]
-#[UsesClass(RunClassInSeparateProcess::class)]
 #[UsesClass(RunInSeparateProcess::class)]
 #[UsesClass(RunTestsInSeparateProcesses::class)]
 #[UsesClass(Test::class)]
@@ -451,14 +450,6 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresSetting());
     }
 
-    public function test_Can_be_filtered_for_RunClassInSeparateProcess(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isRunClassInSeparateProcess();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isRunClassInSeparateProcess());
-    }
-
     public function test_Can_be_filtered_for_RunInSeparateProcess(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRunInSeparateProcess();
@@ -623,7 +614,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::requiresPhpunitExtensionOnClass(stdClass::class),
                 Metadata::requiresEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::requiresSettingOnClass('foo', 'bar'),
-                Metadata::runClassInSeparateProcess(),
                 Metadata::runInSeparateProcess(),
                 Metadata::runTestsInSeparateProcesses(),
                 Metadata::testDoxOnClass(''),

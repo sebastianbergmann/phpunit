@@ -69,7 +69,6 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
@@ -426,11 +425,6 @@ final readonly class AttributeParser implements Parser
                         $attributeInstance->setting(),
                         $attributeInstance->value(),
                     );
-
-                    break;
-
-                case RunClassInSeparateProcess::class:
-                    $result[] = Metadata::runClassInSeparateProcess();
 
                     break;
 

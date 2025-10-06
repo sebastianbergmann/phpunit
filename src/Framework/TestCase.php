@@ -134,7 +134,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<callable>
      */
     private ?array $backupGlobalExceptionHandlers   = null;
-    private ?bool $runClassInSeparateProcess        = null;
     private ?bool $runTestInSeparateProcess         = null;
     private bool $preserveGlobalState               = false;
     private bool $inIsolation                       = false;
@@ -365,7 +364,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         IsolatedTestRunnerRegistry::run(
             $this,
-            $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess,
             $this->preserveGlobalState,
             $this->requiresXdebug(),
         );
@@ -764,14 +762,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($this->runTestInSeparateProcess === null) {
             $this->runTestInSeparateProcess = $runTestInSeparateProcess;
         }
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function setRunClassInSeparateProcess(bool $runClassInSeparateProcess): void
-    {
-        $this->runClassInSeparateProcess = $runClassInSeparateProcess;
     }
 
     /**
@@ -1942,10 +1932,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($this->runTestInSeparateProcess) {
-            return true;
-        }
-
-        if ($this->runClassInSeparateProcess) {
             return true;
         }
 
