@@ -1414,14 +1414,6 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated Use includeTestSuites() instead
-     */
-    public function includeTestSuite(): string
-    {
-        return $this->includeTestSuite;
-    }
-
-    /**
      * @return list<non-empty-string>
      */
     public function includeTestSuites(): array
@@ -1431,14 +1423,6 @@ final readonly class Configuration
         }
 
         return explode(',', $this->includeTestSuite);
-    }
-
-    /**
-     * @deprecated Use excludeTestSuites() instead
-     */
-    public function excludeTestSuite(): string
-    {
-        return $this->excludeTestSuite;
     }
 
     /**

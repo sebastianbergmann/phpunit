@@ -4,13 +4,6 @@
 
 This functionality is currently [soft-deprecated](https://phpunit.de/backward-compatibility.html#soft-deprecation):
 
-### Extending PHPUnit
-
-| Issue                                                             | Description                                 | Since  | Replacement                                     |
-|-------------------------------------------------------------------|---------------------------------------------|--------|-------------------------------------------------|
-| [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229) | `Configuration::includeTestSuite()`         | 12.3.0 | `Configuration::includeTestSuites()`            |
-| [#6229](https://github.com/sebastianbergmann/phpunit/issues/6229) | `Configuration::excludeTestSuite()`         | 12.3.0 | `Configuration::excludeTestSuites()`            |
-
 ## Hard Deprecations
 
 This functionality is currently [hard-deprecated](https://phpunit.de/backward-compatibility.html#hard-deprecation):
