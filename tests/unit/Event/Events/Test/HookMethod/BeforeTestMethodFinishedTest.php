@@ -32,7 +32,6 @@ final class BeforeTestMethodFinishedTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 

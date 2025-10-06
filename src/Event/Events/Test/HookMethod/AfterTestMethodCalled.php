@@ -42,16 +42,6 @@ final readonly class AfterTestMethodCalled implements Event
         return $this->test;
     }
 
-    /**
-     * @return class-string
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6140
-     */
-    public function testClassName(): string
-    {
-        return $this->test->className();
-    }
-
     public function calledMethod(): Code\ClassMethod
     {
         return $this->calledMethod;

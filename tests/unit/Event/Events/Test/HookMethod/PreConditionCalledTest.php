@@ -32,7 +32,6 @@ final class PreConditionCalledTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame('FooTest', $event->testClassName());
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
