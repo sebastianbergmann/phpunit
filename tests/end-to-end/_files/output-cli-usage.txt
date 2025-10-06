@@ -21,6 +21,7 @@ Configuration:
 
 Selection:
 
+  --all                                Ignore test selection from XML configuration file
   --list-suites                        List available test suites
   --testsuite <name>                   Only run tests from the specified test suite(s)
   --exclude-testsuite <name>           Exclude tests from the specified test suite(s)

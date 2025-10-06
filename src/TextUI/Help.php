@@ -170,6 +170,7 @@ final class Help
             ],
 
             'Selection' => [
+                ['arg' => '--all', 'desc' => 'Ignore test selection from XML configuration file'],
                 ['arg' => '--list-suites', 'desc' => 'List available test suites'],
                 ['arg' => '--testsuite <name>', 'desc' => 'Only run tests from the specified test suite(s)'],
                 ['arg' => '--exclude-testsuite <name>', 'desc' => 'Exclude tests from the specified test suite(s)'],

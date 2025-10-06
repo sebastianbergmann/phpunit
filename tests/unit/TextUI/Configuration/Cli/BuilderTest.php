@@ -29,6 +29,26 @@ final class BuilderTest extends TestCase
         $this->assertSame(['argument'], $configuration->arguments());
     }
 
+    #[TestDox('--all')]
+    public function testAll(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--all']);
+
+        $this->assertTrue($configuration->hasAll());
+        $this->assertTrue($configuration->all());
+    }
+
+    public function testAllMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasAll());
+
+        $this->expectException(Exception::class);
+
+        $configuration->all();
+    }
+
     #[TestDox('--colors')]
     public function testColorsImplicitAuto(): void
     {

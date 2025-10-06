@@ -13,7 +13,5 @@ require_once __DIR__ . '/../../../bootstrap.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-The defaultTestSuite (XML) and --list-suites (CLI) options cannot be combined, only the default test suite is shown
-
 Available test suite:
  - unit (1 test)

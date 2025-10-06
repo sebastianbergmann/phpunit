@@ -25,6 +25,8 @@
 
 [33mSelection:[0m
 
+  [32m--all                               [0m Ignore test selection from XML
+                                       configuration file
   [32m--list-suites                       [0m List available test suites
   [32m--testsuite [36m<name>[0m                  [0m Only run tests from the specified test
                                        suite(s)

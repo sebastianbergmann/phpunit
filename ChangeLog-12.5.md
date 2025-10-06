@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ## [12.5.0] - 2025-12-05
 
+### Added
+
+* [#6376](https://github.com/sebastianbergmann/phpunit/issues/6376): `--all` CLI option to ignore test selection configured in XML configuration file
+
 [12.5.0]: https://github.com/sebastianbergmann/phpunit/compare/12.4...main
