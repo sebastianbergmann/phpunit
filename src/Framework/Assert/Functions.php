@@ -3265,13 +3265,6 @@ if (!function_exists('PHPUnit\Framework\isString')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\isType')) {
-    function isType(string $type): IsType
-    {
-        return Assert::isType(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\lessThan')) {
     function lessThan(mixed $value): LessThan
     {

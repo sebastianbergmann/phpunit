@@ -14,9 +14,7 @@ use const NAN;
 use function fclose;
 use function fopen;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\Book;
@@ -28,37 +26,6 @@ use stdClass;
 #[Small]
 final class assertThatTest extends TestCase
 {
-    /**
-     * @return non-empty-list<array{0: non-empty-string, 1: mixed}>
-     */
-    public static function typeProvider(): array
-    {
-        $closedResource = fopen(__FILE__, 'r');
-
-        fclose($closedResource);
-
-        return [
-            ['array', []],
-            ['bool', false],
-            ['boolean', false],
-            ['callable', static function (): void
-            {}],
-            ['double', 0.1],
-            ['float', 0.1],
-            ['int', 0],
-            ['integer', 0],
-            ['iterable', []],
-            ['null', null],
-            ['numeric', '0.0'],
-            ['object', new stdClass],
-            ['real', 0.1],
-            ['resource', fopen(__FILE__, 'r')],
-            ['resource (closed)', $closedResource],
-            ['scalar', 'string'],
-            ['string', 'string'],
-        ];
-    }
-
     #[DoesNotPerformAssertions]
     public function testAssertThatAnything(): void
     {
@@ -276,20 +243,6 @@ final class assertThatTest extends TestCase
     public function testAssertThatIsInstanceOf(): void
     {
         $this->assertThat(new stdClass, $this->isInstanceOf(stdClass::class));
-    }
-
-    #[DataProvider('typeProvider')]
-    #[IgnorePhpunitDeprecations]
-    public function testAssertThatIsType(string $type, mixed $value): void
-    {
-        $this->assertThat($value, $this->isType($type));
-    }
-
-    public function testUnknownNativeTypeCannotBeMapped(): void
-    {
-        $this->expectException(UnknownNativeTypeException::class);
-
-        $this->isType('unknown');
     }
 
     public function testAssertThatIsArray(): void

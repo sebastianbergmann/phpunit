@@ -3041,50 +3041,6 @@ abstract class Assert
         return new IsType(NativeType::String);
     }
 
-    /**
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     *
-     * @throws UnknownNativeTypeException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6053
-     */
-    final public static function isType(string $type): IsType
-    {
-        $constraint = new IsType(self::mapNativeType($type));
-
-        $replacement = match ($type) {
-            'array'             => 'isArray',
-            'bool'              => 'isBool',
-            'boolean'           => 'isBool',
-            'callable'          => 'isCallable',
-            'double'            => 'isFloat',
-            'float'             => 'isFloat',
-            'int'               => 'isInt',
-            'integer'           => 'isInt',
-            'iterable'          => 'isIterable',
-            'null'              => 'isNull',
-            'numeric'           => 'isNumeric',
-            'object'            => 'isObject',
-            'real'              => 'isFloat',
-            'resource'          => 'isResource',
-            'resource (closed)' => 'isClosedResource',
-            'scalar'            => 'isScalar',
-            'string'            => 'isString',
-        };
-
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            null,
-            sprintf(
-                'isType(\'%s\') is deprecated and will be removed in PHPUnit 13. ' .
-                'Please use the %s() method instead.',
-                $type,
-                $replacement,
-            ),
-        );
-
-        return $constraint;
-    }
-
     final public static function lessThan(mixed $value): LessThan
     {
         return new LessThan($value);
