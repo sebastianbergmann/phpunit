@@ -271,28 +271,6 @@ if (!function_exists('PHPUnit\Framework\assertNotContainsEquals')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
-    /**
-     * Asserts that a haystack contains only values of a given type.
-     *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6056
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertContainsOnly
-     */
-    function assertContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
-    {
-        Assert::assertContainsOnly(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertContainsOnlyArray')) {
     /**
      * Asserts that a haystack contains only values of type array.
@@ -574,28 +552,6 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
     function assertContainsOnlyInstancesOf(string $className, iterable $haystack, string $message = ''): void
     {
         Assert::assertContainsOnlyInstancesOf(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
-    /**
-     * Asserts that a haystack does not contain only values of a given type.
-     *
-     * @param 'array'|'bool'|'boolean'|'callable'|'double'|'float'|'int'|'integer'|'iterable'|'null'|'numeric'|'object'|'real'|'resource (closed)'|'resource'|'scalar'|'string' $type
-     * @param iterable<mixed>                                                                                                                                                   $haystack
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6056
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertNotContainsOnly
-     */
-    function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNativeType = null, string $message = ''): void
-    {
-        Assert::assertNotContainsOnly(...func_get_args());
     }
 }
 
