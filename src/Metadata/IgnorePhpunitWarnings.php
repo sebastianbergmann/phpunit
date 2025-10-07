@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Metadata;
 
-use function preg_match;
-
 /**
  * @immutable
  *

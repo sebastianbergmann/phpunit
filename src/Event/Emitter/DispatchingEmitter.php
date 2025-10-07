@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use function assert;
 use function memory_reset_peak_usage;
+use function preg_match;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
