@@ -62,21 +62,23 @@ final readonly class DataProvider
                 $this->triggerWarningForMixingOfDataProviderAndTestWith($testMethod);
             }
 
-            return $this->dataProvidedByMethods($testMethod, $dataProvider);
+            return $this->dataProvidedByMethods($className, $testMethod, $dataProvider);
         }
 
         return $this->dataProvidedByMetadata($testMethod, $testWith);
     }
 
     /**
+     * @param class-string<TestCase> $testClassName
+     *
      * @throws InvalidDataProviderException
      *
      * @return array<ProvidedData>
      */
-    private function dataProvidedByMethods(ReflectionMethod $testMethod, MetadataCollection $dataProvider): array
+    private function dataProvidedByMethods(string $testClassName, ReflectionMethod $testMethod, MetadataCollection $dataProvider): array
     {
         $testMethodValueObject = new Event\Code\ClassMethod(
-            $testMethod->getDeclaringClass()->getName(),
+            $testClassName,
             $testMethod->getName(),
         );
 
