@@ -1,7 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/pull/6364
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/pull/6364
 --FILE--
 <?php declare(strict_types=1);
 
