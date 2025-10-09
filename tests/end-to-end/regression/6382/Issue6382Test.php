@@ -9,16 +9,17 @@
  */
 namespace PHPUnit\TestFixture\Issue6382;
 
-use PHPUnit\Framework\TestCase;
 use Greg0ire\PhpunitReproducer\Child6382;
+use PHPUnit\Framework\TestCase;
 
 class Issue6382Test extends TestCase
 {
     public function testExample(): void
     {
-        require_once __DIR__.'/Ancestor.php';
-        require_once __DIR__.'/Child.php';
+        require_once __DIR__ . '/Ancestor.php';
 
-        new Child6382();
+        require_once __DIR__ . '/Child.php';
+
+        new Child6382;
     }
 }
