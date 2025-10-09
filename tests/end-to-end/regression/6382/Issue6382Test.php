@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture\Issue6382;
 
-use Greg0ire\PhpunitReproducer\Child6382;
 use PHPUnit\Framework\TestCase;
 
 class Issue6382Test extends TestCase

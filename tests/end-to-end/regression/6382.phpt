@@ -15,5 +15,5 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 
 
-Fatal error: Declaration of Greg0ire\PhpunitReproducer\Child6382::__invoke() must be compatible with Greg0ire\PhpunitReproducer\Ancestor6382::__invoke(): void in %sChild.php on line %d
+Fatal error: Declaration of PHPUnit\TestFixture\Issue6382\Child6382::__invoke() must be compatible with PHPUnit\TestFixture\Issue6382\Ancestor6382::__invoke(): void in %sChild.php on line %d
 %AFatal error: Premature end of PHP process when running PHPUnit\TestFixture\Issue6382\Issue6382Test::testExample.
