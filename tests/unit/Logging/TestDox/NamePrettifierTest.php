@@ -163,7 +163,7 @@ final class NamePrettifierTest extends TestCase
                 false,
             ],
             [
-                'Two with data set "@a"',
+                'Two with data set "a"',
                 $testWithDataWithStringKey,
                 false,
             ],
