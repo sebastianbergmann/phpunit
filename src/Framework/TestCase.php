@@ -1083,7 +1083,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Information for expected exception class, expected exception message, and
      * expected exception code are retrieved from a given Exception object.
      */
-    final protected function expectExceptionObject(\Throwable $exception): void
+    final protected function expectExceptionObject(Throwable $exception): void
     {
         $this->expectException($exception::class);
         $this->expectExceptionMessage($exception->getMessage());
