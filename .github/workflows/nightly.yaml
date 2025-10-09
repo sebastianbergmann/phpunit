@@ -50,8 +50,14 @@ jobs:
           - 8.6
 
         exclude:
+          - phpunit-branch: 8.5
+            php-version: 7.2
+          - phpunit-branch: 8.5
+            php-version: 7.3
           - phpunit-branch: 9.6
             php-version: 7.2
+          - phpunit-branch: 9.6
+            php-version: 7.3
           - phpunit-branch: 10.5
             php-version: 7.2
           - phpunit-branch: 10.5
