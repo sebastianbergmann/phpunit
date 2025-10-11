@@ -99,7 +99,7 @@ final class MockBuilder
         assert($object instanceof $this->type);
         assert($object instanceof MockObject);
 
-        $this->testCase->registerMockObject($object);
+        $this->testCase->registerMockObject($this->type, $object);
 
         return $object;
     }

@@ -179,7 +179,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private array $dependencyInput = [];
 
     /**
-     * @var list<MockObjectInternal>
+     * @var list<array{type: non-empty-string, mockObject: MockObjectInternal}>
      */
     private array $mockObjects = [];
     private TestStatus $status;
@@ -801,13 +801,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @template RealInstanceType of object
+     *
+     * @param class-string<RealInstanceType> $type
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function registerMockObject(MockObject $mockObject): void
+    final public function registerMockObject(string $type, MockObject $mockObject): void
     {
         assert($mockObject instanceof MockObjectInternal);
 
-        $this->mockObjects[] = $mockObject;
+        $this->mockObjects[] = [
+            'type'       => $type,
+            'mockObject' => $mockObject,
+        ];
     }
 
     /**
@@ -1159,7 +1166,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         assert($mock instanceof $type);
         assert($mock instanceof MockObject);
 
-        $this->registerMockObject($mock);
+        $this->registerMockObject($type, $mock);
 
         Event\Facade::emitter()->testCreatedMockObject($type);
 
@@ -1181,7 +1188,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         assert($mock instanceof MockObject);
 
-        $this->registerMockObject($mock);
+        $this->registerMockObject(implode('|', $interfaces), $mock);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
 
@@ -1376,12 +1383,23 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function verifyMockObjects(): void
     {
         foreach ($this->mockObjects as $mockObject) {
-            if ($mockObject->__phpunit_hasMatchers()) {
-                $this->numberOfAssertionsPerformed++;
+            if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
+                Event\Facade::emitter()->testTriggeredPhpunitNotice(
+                    $this->testValueObjectForEvents,
+                    sprintf(
+                        'No expectations were configured for the mock object for %s. ' .
+                        'You should refactor your test code and use a test stub instead.',
+                        $mockObject['type'],
+                    ),
+                );
+
+                continue;
             }
 
-            $mockObject->__phpunit_verify(
-                $this->shouldInvocationMockerBeReset($mockObject),
+            $this->numberOfAssertionsPerformed++;
+
+            $mockObject['mockObject']->__phpunit_verify(
+                $this->shouldInvocationMockerBeReset($mockObject['mockObject']),
             );
         }
     }

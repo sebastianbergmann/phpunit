@@ -17,4 +17,5 @@ Runtime: %s
 
 Time: %s, Memory: %s MB
 
-OK (2 tests, 4 assertions)
+OK, but there were issues!
+Tests: 2, Assertions: 4, PHPUnit Notices: 2.

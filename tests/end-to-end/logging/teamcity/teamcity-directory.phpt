@@ -133,4 +133,4 @@ This test did not perform any assertions
 %s%eStatusTest.php:%d
 
 ERRORS!
-Tests: 18, Assertions: 6, Errors: 6, Failures: 2, Skipped: 3, Incomplete: 2, Risky: 2.
+Tests: 18, Assertions: 6, Errors: 6, Failures: 2, PHPUnit Notices: 1, Skipped: 3, Incomplete: 2, Risky: 2.
