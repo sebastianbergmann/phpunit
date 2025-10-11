@@ -8,4 +8,8 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 * [#6376](https://github.com/sebastianbergmann/phpunit/issues/6376): `--all` CLI option to ignore test selection configured in XML configuration file
 
+### Changed
+
+* A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
+
 [12.5.0]: https://github.com/sebastianbergmann/phpunit/compare/12.4...main

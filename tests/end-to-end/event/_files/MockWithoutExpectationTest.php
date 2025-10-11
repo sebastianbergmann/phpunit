@@ -11,15 +11,11 @@ namespace PHPUnit\TestFixture\Event;
 
 use PHPUnit\Framework\TestCase;
 
-final class MockTest extends TestCase
+final class MockWithoutExpectationTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $mock = $this->createMock(Example::class);
-
-        $mock
-            ->expects($this->never())
-            ->method('doSomething');
+        $this->createMock(Example::class);
 
         $this->assertTrue(true);
     }
