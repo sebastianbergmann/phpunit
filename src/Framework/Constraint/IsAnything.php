@@ -23,6 +23,8 @@ final class IsAnything extends Constraint
      * If $returnResult is true, the result of the evaluation is returned as
      * a boolean value instead: true in case of success, false in case of a
      * failure.
+     *
+     * @throws void
      */
     public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
