@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 11.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [11.5.43] - 2025-MM-DD
+
+### Fixed
+
+* [#6391](https://github.com/sebastianbergmann/phpunit/issues/6391): Errors during backup of global variables and static properties are not reported
+
 ## [11.5.42] - 2025-09-28
 
 ### Fixed
@@ -358,6 +364,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 * [#6055](https://github.com/sebastianbergmann/phpunit/issues/6055): `assertNotContainsOnly()` (use `assertContainsNotOnlyArray()`, `assertContainsNotOnlyBool()`, `assertContainsNotOnlyCallable()`, `assertContainsNotOnlyFloat()`, `assertContainsNotOnlyInt()`, `assertContainsNotOnlyIterable()`, `assertContainsNotOnlyNumeric()`, `assertContainsNotOnlyObject()`, `assertContainsNotOnlyResource()`, `assertContainsNotOnlyClosedResource()`, `assertContainsNotOnlyScalar()`, or `assertContainsNotOnlyString()` instead)
 * [#6059](https://github.com/sebastianbergmann/phpunit/issues/6059): `containsOnly()` (use `containsOnlyArray()`, `containsOnlyBool()`, `containsOnlyCallable()`, `containsOnlyFloat()`, `containsOnlyInt()`, `containsOnlyIterable()`, `containsOnlyNumeric()`, `containsOnlyObject()`, `containsOnlyResource()`, `containsOnlyClosedResource()`, `containsOnlyScalar()`, or `containsOnlyString()` instead)
 
+[11.5.43]: https://github.com/sebastianbergmann/phpunit/compare/11.5.42...11.5
 [11.5.42]: https://github.com/sebastianbergmann/phpunit/compare/11.5.41...11.5.42
 [11.5.41]: https://github.com/sebastianbergmann/phpunit/compare/11.5.40...11.5.41
 [11.5.40]: https://github.com/sebastianbergmann/phpunit/compare/11.5.39...11.5.40

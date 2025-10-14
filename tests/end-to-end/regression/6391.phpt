@@ -1,7 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/6391
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/6391
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -26,10 +24,10 @@ Before First Test Method Called (TestFixture\Issue6391\Issue6391Test::setUpBefor
 Before First Test Method Finished:
 - TestFixture\Issue6391\Issue6391Test::setUpBeforeClass
 Test Preparation Started (TestFixture\Issue6391\Issue6391Test::testOne)
-Test Prepared (TestFixture\Issue6391\Issue6391Test::testOne)
-Test Passed (TestFixture\Issue6391\Issue6391Test::testOne)
-Test Finished (TestFixture\Issue6391\Issue6391Test::testOne)
+Test Preparation Failed (TestFixture\Issue6391\Issue6391Test::testOne)
+Test Errored (TestFixture\Issue6391\Issue6391Test::testOne)
+Object of class TestFixture\Issue6391\Issue6391 could not be converted to string
 Test Suite Finished (TestFixture\Issue6391\Issue6391Test, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)
