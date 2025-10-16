@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.4 release series are documented in this fi
 
 ## [12.4.2] - 2025-MM-DD
 
+### Changed
+
+* Skipped tests alone no longer lead to a yellow background for the test result summary
+
 ### Fixed
 
 * [#6391](https://github.com/sebastianbergmann/phpunit/issues/6391): Errors during backup of global variables and static properties are not reported
