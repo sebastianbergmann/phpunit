@@ -25,4 +25,4 @@ Exception: Some exception.
 %sExceptionInMockDestructor.php:%d
 
 ERRORS!
-Tests: 1, Assertions: 1, Errors: 1, PHPUnit Notices: 1.
+Tests: 1, Assertions: 1, Errors: 1.

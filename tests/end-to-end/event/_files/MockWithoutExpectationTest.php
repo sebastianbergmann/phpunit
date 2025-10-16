@@ -7,9 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Event;
+namespace TestFixture\PHPUnit\Event;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Event\Example;
 
 final class MockWithoutExpectationTest extends TestCase
 {

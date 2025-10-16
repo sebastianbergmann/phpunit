@@ -21,15 +21,15 @@ Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\MockWithoutExpectationTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\Event\MockWithoutExpectationTest::testSuccess)
-Test Prepared (PHPUnit\TestFixture\Event\MockWithoutExpectationTest::testSuccess)
+Test Suite Started (TestFixture\PHPUnit\Event\MockWithoutExpectationTest, 1 test)
+Test Preparation Started (TestFixture\PHPUnit\Event\MockWithoutExpectationTest::testSuccess)
+Test Prepared (TestFixture\PHPUnit\Event\MockWithoutExpectationTest::testSuccess)
 Mock Object Created (PHPUnit\TestFixture\Event\Example)
-Test Triggered PHPUnit Notice (PHPUnit\TestFixture\Event\MockWithoutExpectationTest::testSuccess)
+Test Triggered PHPUnit Notice (TestFixture\PHPUnit\Event\MockWithoutExpectationTest::testSuccess)
 No expectations were configured for the mock object for PHPUnit\TestFixture\Event\Example. You should refactor your test code and use a test stub instead.
-Test Passed (PHPUnit\TestFixture\Event\MockWithoutExpectationTest::testSuccess)
-Test Finished (PHPUnit\TestFixture\Event\MockWithoutExpectationTest::testSuccess)
-Test Suite Finished (PHPUnit\TestFixture\Event\MockWithoutExpectationTest, 1 test)
+Test Passed (TestFixture\PHPUnit\Event\MockWithoutExpectationTest::testSuccess)
+Test Finished (TestFixture\PHPUnit\Event\MockWithoutExpectationTest::testSuccess)
+Test Suite Finished (TestFixture\PHPUnit\Event\MockWithoutExpectationTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)
