@@ -51,6 +51,7 @@ use function set_error_handler;
 use function set_exception_handler;
 use function sprintf;
 use function str_contains;
+use function str_starts_with;
 use function stream_get_contents;
 use function stream_get_meta_data;
 use function tmpfile;
@@ -1384,14 +1385,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         foreach ($this->mockObjects as $mockObject) {
             if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
-                Event\Facade::emitter()->testTriggeredPhpunitNotice(
-                    $this->testValueObjectForEvents,
-                    sprintf(
-                        'No expectations were configured for the mock object for %s. ' .
-                        'You should refactor your test code and use a test stub instead.',
-                        $mockObject['type'],
-                    ),
-                );
+                if (!str_starts_with($this::class, 'PHPUnit\\')) {
+                    Event\Facade::emitter()->testTriggeredPhpunitNotice(
+                        $this->testValueObjectForEvents,
+                        sprintf(
+                            'No expectations were configured for the mock object for %s. ' .
+                            'You should refactor your test code and use a test stub instead.',
+                            $mockObject['type'],
+                        ),
+                    );
+                }
 
                 continue;
             }
