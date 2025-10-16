@@ -188,6 +188,11 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::deprecation());
     }
 
+    public function testTriggeredPhpunitNotice(): void
+    {
+        $this->updateTestStatus(TestStatus::notice());
+    }
+
     public function testConsideredRisky(): void
     {
         $this->updateTestStatus(TestStatus::risky());
@@ -316,6 +321,7 @@ final class ProgressPrinter
             new TestTriggeredPhpDeprecationSubscriber($this),
             new TestTriggeredPhpNoticeSubscriber($this),
             new TestTriggeredPhpunitDeprecationSubscriber($this),
+            new TestTriggeredPhpunitNoticeSubscriber($this),
             new TestTriggeredPhpunitWarningSubscriber($this),
             new TestTriggeredPhpWarningSubscriber($this),
             new TestTriggeredWarningSubscriber($this),
