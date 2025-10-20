@@ -158,6 +158,7 @@ final class Builder
         'log-events-verbose-text=',
         'version',
         'debug',
+        'repeat=',
         'with-telemetry',
         'extension=',
     ];
@@ -312,6 +313,7 @@ final class Builder
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
         $debug                             = false;
+        $repeat                            = 1;
         $withTelemetry                     = false;
         $extensions                        = [];
 
@@ -1211,6 +1213,11 @@ final class Builder
 
                     break;
 
+                case '--repeat':
+                    $repeat = (int) $option[1]; // todo: superior to 1
+
+                    break;
+
                 case '--with-telemetry':
                     $withTelemetry = true;
 
@@ -1363,6 +1370,7 @@ final class Builder
             $debug,
             $withTelemetry,
             $extensions,
+            $repeat,
         );
     }
 

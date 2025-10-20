@@ -97,7 +97,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
      */
-    public static function fromClassReflector(ReflectionClass $class, array $groups = []): static
+    public static function fromClassReflector(ReflectionClass $class, array $groups = [], int $repeat = 1): static
     {
         $testSuite = new static($class->getName());
 
@@ -118,7 +118,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 continue;
             }
 
-            $testSuite->addTestMethod($class, $method, $groups);
+            $testSuite->addTestMethod($class, $method, $groups, $repeat);
         }
 
         if ($testSuite->isEmpty()) {
@@ -146,7 +146,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @param list<non-empty-string> $groups
      */
-    public function addTest(Test $test, array $groups = []): void
+    public function addTest(Test $test, array $groups = [], int $repeat = 1): void
     {
         if ($test instanceof self) {
             $this->tests[] = $test;
@@ -158,7 +158,13 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         assert($test instanceof TestCase || $test instanceof PhptTestCase);
 
-        $this->tests[] = $test;
+        if ($test instanceof PhptTestCase) {
+            $this->tests[] = $test;
+        } else {
+            for ($i = 0; $i < $repeat; $i++) {
+                $this->tests[] = $test;
+            }
+        }
 
         $this->clearCaches();
 
@@ -191,7 +197,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @throws Exception
      */
-    public function addTestSuite(ReflectionClass $testClass, array $groups = []): void
+    public function addTestSuite(ReflectionClass $testClass, array $groups = [], int $repeat = 1): void
     {
         if ($testClass->isAbstract()) {
             throw new Exception(
@@ -212,7 +218,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass, $groups), $groups);
+        $this->addTest(self::fromClassReflector($testClass, $groups), $groups, $repeat);
     }
 
     /**
@@ -506,7 +512,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @throws Exception
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups): void
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups, int $repeat): void
     {
         $className  = $class->getName();
         $methodName = $method->getName();
@@ -562,6 +568,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $groups,
                 (new Groups)->groups($class->getName(), $methodName),
             ),
+            $repeat,
         );
     }
 
