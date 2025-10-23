@@ -1543,6 +1543,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::skipped($message);
     }
 
+    public function markSkippedForErrorInPreviousRepetition(): void
+    {
+        $message = 'Test repetition failure';
+
+        Event\Facade::emitter()->testSkipped(
+            $this->valueObjectForEvents(),
+            $message,
+        );
+
+        $this->status = TestStatus::skipped($message);
+    }
+
     private function startOutputBuffering(): void
     {
         ob_start();

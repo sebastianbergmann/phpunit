@@ -18,6 +18,6 @@ Runtime:       %s
 
 ....                                                                4 / 4 (100%)
 
-Time: 00:00, Memory: 16.00 MB
+Time: %s, Memory: %s MB
 
 OK (4 tests, 4 assertions)

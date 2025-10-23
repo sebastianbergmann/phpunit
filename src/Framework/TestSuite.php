@@ -158,12 +158,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         assert($test instanceof TestCase || $test instanceof PhptTestCase);
 
-        if ($test instanceof PhptTestCase) {
+        if ($test instanceof PhptTestCase || $repeat === 1) {
             $this->tests[] = $test;
         } else {
-            for ($i = 0; $i < $repeat; $i++) {
-                $this->tests[] = $test;
-            }
+            $this->tests[] = new RepeatTestSuite($test, $repeat);
         }
 
         $this->clearCaches();
