@@ -158,7 +158,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         assert($test instanceof TestCase || $test instanceof PhptTestCase);
 
-        if ($test instanceof PhptTestCase || $repeat === 1) {
+        if ($repeat === 1) {
             $this->tests[] = $test;
         } else {
             $this->tests[] = new RepeatTestSuite($test, $repeat);
@@ -231,11 +231,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @throws Exception
      */
-    public function addTestFile(string $filename, array $groups = []): void
+    public function addTestFile(string $filename, array $groups = [], int $repeat = 1): void
     {
         try {
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
-                $this->addTest(new PhptTestCase($filename));
+                $this->addTest(new PhptTestCase($filename), [], $repeat);
             } else {
                 $this->addTestSuite(
                     (new TestSuiteLoader)->load($filename),

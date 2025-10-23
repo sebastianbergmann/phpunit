@@ -100,7 +100,7 @@ final readonly class TestSuiteBuilder
                 $suite = TestSuite::empty($path);
             }
 
-            $suite->addTestFile($path);
+            $suite->addTestFile($path, [], $repeat);
 
             return $suite;
         }

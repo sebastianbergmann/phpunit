@@ -70,12 +70,14 @@ use Throwable;
  *
  * @see https://qa.php.net/phpt_details.php
  */
-final readonly class TestCase implements Reorderable, SelfDescribing, Test
+final class TestCase implements Reorderable, SelfDescribing, Test
 {
     /**
      * @var non-empty-string
      */
-    private string $filename;
+    private readonly string $filename;
+
+    private bool $passed = false;
 
     /**
      * @param non-empty-string $filename
@@ -242,6 +244,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $emitter->testPassed($this->valueObjectForEvents());
         }
 
+        $this->passed = $passed;
+
         $this->runClean($sections, CodeCoverage::instance()->isActive());
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
@@ -253,6 +257,11 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     public function getName(): string
     {
         return $this->toString();
+    }
+
+    public function passed(): bool
+    {
+        return $this->passed;
     }
 
     /**

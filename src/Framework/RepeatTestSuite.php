@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Event;
 
@@ -20,14 +22,14 @@ use PHPUnit\Event;
 final class RepeatTestSuite implements Test, Reorderable
 {
     /**
-     * @var non-empty-list<TestCase>
+     * @var non-empty-list<TestCase>|non-empty-list<PhptTestCase>
      */
     private array $tests;
 
     /**
      * @param positive-int $times
      */
-    public function __construct(TestCase $test, int $times)
+    public function __construct(TestCase|PhptTestCase $test, int $times)
     {
         $tests = [];
         for ($i = 0; $i < $times; $i++) {
@@ -44,22 +46,10 @@ final class RepeatTestSuite implements Test, Reorderable
 
     public function run(): void
     {
-        $defectOccurred = false;
-
-        foreach ($this->tests as $test) {
-            if ($defectOccurred) {
-                $test->markSkippedForErrorInPreviousRepetition();
-
-                continue;
-            }
-
-            $test->run();
-
-            if ($test->status()->isFailure() || $test->status()->isError()) {
-                $defectOccurred = true;
-
-                PassedTests::instance()->testMethodDidNotPass($test::class . '::' . $test->name());
-            }
+        if ($this->isPhptTestCase()) {
+            $this->runPhptTestCase();
+        } else {
+            $this->runTestCase();
         }
     }
 
@@ -83,8 +73,59 @@ final class RepeatTestSuite implements Test, Reorderable
         return $this->tests[0]->nameWithDataSet();
     }
 
-    public function valueObjectForEvents(): Event\Code\TestMethod
+    public function valueObjectForEvents(): Event\Code\TestMethod|Event\Code\Phpt
     {
         return $this->tests[0]->valueObjectForEvents();
+    }
+
+    private function runTestCase(): void
+    {
+        $defectOccurred = false;
+
+        foreach ($this->tests as $test) {
+            if ($defectOccurred) {
+                $test->markSkippedForErrorInPreviousRepetition();
+
+                continue;
+            }
+
+            $test->run();
+
+            if ($test->status()->isFailure() || $test->status()->isError()) {
+                $defectOccurred = true;
+
+                PassedTests::instance()->testMethodDidNotPass($test::class . '::' . $test->name());
+            }
+        }
+    }
+
+    private function runPhptTestCase(): void
+    {
+        $defectOccurred = false;
+
+        foreach ($this->tests as $test) {
+            if ($defectOccurred) {
+                EventFacade::emitter()->testSkipped(
+                    $this->valueObjectForEvents(),
+                    'Test repetition failure',
+                );
+
+                continue;
+            }
+
+            $test->run();
+
+            if (!$test->passed()) {
+                $defectOccurred = true;
+            }
+        }
+    }
+
+    /**
+     * @phpstan-assert-if-true non-empty-list<PhptTestCase> $this->tests
+     */
+    private function isPhptTestCase(): bool
+    {
+        return $this->tests[0] instanceof PhptTestCase;
     }
 }
