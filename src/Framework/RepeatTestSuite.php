@@ -20,7 +20,7 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RepeatTestSuite implements Reorderable, Test
+final readonly class RepeatTestSuite implements Reorderable, Test
 {
     /**
      * @var non-empty-list<PhptTestCase>|non-empty-list<TestCase>

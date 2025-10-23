@@ -965,6 +965,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $this->wasPrepared;
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function markSkippedForErrorInPreviousRepetition(): void
     {
         $message = 'Test repetition failure';
