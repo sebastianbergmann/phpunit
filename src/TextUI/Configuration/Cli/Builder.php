@@ -1214,7 +1214,13 @@ final class Builder
                     break;
 
                 case '--repeat':
-                    $repeat = (int) $option[1]; // todo: superior to 1
+                    $repeat = (int) $option[1];
+
+                    if ($repeat < 1) {
+                        throw new Exception(
+                            'The value for the --repeat option must be a positive integer',
+                        );
+                    }
 
                     break;
 

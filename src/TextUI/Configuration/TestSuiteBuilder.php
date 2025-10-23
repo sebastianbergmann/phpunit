@@ -90,6 +90,7 @@ final readonly class TestSuiteBuilder
     /**
      * @param non-empty-string       $path
      * @param list<non-empty-string> $suffixes
+     * @param positive-int $repeat
      *
      * @throws \PHPUnit\Framework\Exception
      */
@@ -137,6 +138,7 @@ final readonly class TestSuiteBuilder
     /**
      * @param list<non-empty-string> $paths
      * @param list<non-empty-string> $suffixes
+     * @param positive-int                                         $repeat
      *
      * @throws \PHPUnit\Framework\Exception
      */
