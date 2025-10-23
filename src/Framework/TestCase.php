@@ -965,6 +965,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $this->wasPrepared;
     }
 
+    public function markSkippedForErrorInPreviousRepetition(): void
+    {
+        $message = 'Test repetition failure';
+
+        Event\Facade::emitter()->testSkipped(
+            $this->valueObjectForEvents(),
+            $message,
+        );
+
+        $this->status = TestStatus::skipped($message);
+    }
+
     /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
@@ -1534,18 +1546,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             'This test depends on "%s" to pass',
             $dependency->getTarget(),
         );
-
-        Event\Facade::emitter()->testSkipped(
-            $this->valueObjectForEvents(),
-            $message,
-        );
-
-        $this->status = TestStatus::skipped($message);
-    }
-
-    public function markSkippedForErrorInPreviousRepetition(): void
-    {
-        $message = 'Test repetition failure';
 
         Event\Facade::emitter()->testSkipped(
             $this->valueObjectForEvents(),

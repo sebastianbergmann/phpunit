@@ -76,7 +76,6 @@ final class TestCase implements Reorderable, SelfDescribing, Test
      * @var non-empty-string
      */
     private readonly string $filename;
-
     private bool $passed = false;
 
     /**

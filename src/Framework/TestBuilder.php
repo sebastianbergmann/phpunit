@@ -36,7 +36,7 @@ final readonly class TestBuilder
      * @param ReflectionClass<TestCase> $theClass
      * @param non-empty-string          $methodName
      * @param list<non-empty-string>    $groups
-     * @param positive-int $repeat
+     * @param positive-int              $repeat
      *
      * @throws InvalidDataProviderException
      */
@@ -87,7 +87,7 @@ final readonly class TestBuilder
      * @param array<ProvidedData>                                                                                                                                               $data
      * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @param list<non-empty-string>                                                                                                                                            $groups
-     * @param positive-int $repeat
+     * @param positive-int                                                                                                                                                      $repeat
      */
     private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups, int $repeat = 1): DataProviderTestSuite
     {

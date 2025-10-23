@@ -9,29 +9,31 @@
  */
 namespace PHPUnit\Framework;
 
+use function count;
+use PHPUnit\Event;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\TestRunner\TestResult\PassedTests;
-use PHPUnit\Event;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RepeatTestSuite implements Test, Reorderable
+final class RepeatTestSuite implements Reorderable, Test
 {
     /**
-     * @var non-empty-list<TestCase>|non-empty-list<PhptTestCase>
+     * @var non-empty-list<PhptTestCase>|non-empty-list<TestCase>
      */
     private array $tests;
 
     /**
      * @param positive-int $times
      */
-    public function __construct(TestCase|PhptTestCase $test, int $times)
+    public function __construct(PhptTestCase|TestCase $test, int $times)
     {
         $tests = [];
+
         for ($i = 0; $i < $times; $i++) {
             $tests[] = clone $test;
         }
@@ -73,7 +75,7 @@ final class RepeatTestSuite implements Test, Reorderable
         return $this->tests[0]->nameWithDataSet();
     }
 
-    public function valueObjectForEvents(): Event\Code\TestMethod|Event\Code\Phpt
+    public function valueObjectForEvents(): Event\Code\Phpt|Event\Code\TestMethod
     {
         return $this->tests[0]->valueObjectForEvents();
     }

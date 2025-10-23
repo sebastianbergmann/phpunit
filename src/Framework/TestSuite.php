@@ -96,7 +96,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
-     * @param positive-int $repeat
+     * @param positive-int              $repeat
      */
     public static function fromClassReflector(ReflectionClass $class, array $groups = [], int $repeat = 1): static
     {
@@ -146,7 +146,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * Adds a test to the suite.
      *
      * @param list<non-empty-string> $groups
-     * @param positive-int $repeat
+     * @param positive-int           $repeat
      */
     public function addTest(Test $test, array $groups = [], int $repeat = 1): void
     {
@@ -194,7 +194,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @param ReflectionClass<TestCase> $testClass
      * @param list<non-empty-string>    $groups
-     * @param positive-int $repeat
+     * @param positive-int              $repeat
      *
      * @throws Exception
      */
@@ -231,7 +231,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * leaving the current test run untouched.
      *
      * @param list<non-empty-string> $groups
-     * @param positive-int $repeat
+     * @param positive-int           $repeat
      *
      * @throws Exception
      */
@@ -258,7 +258,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * Wrapper for addTestFile() that adds multiple test files.
      *
      * @param iterable<string> $fileNames
-     * @param positive-int $repeat
+     * @param positive-int     $repeat
      *
      * @throws Exception
      */
@@ -513,7 +513,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
-     * @param positive-int $repeat
+     * @param positive-int              $repeat
      *
      * @throws Exception
      */
