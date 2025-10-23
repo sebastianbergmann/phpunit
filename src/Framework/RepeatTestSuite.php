@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\Event;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -80,5 +81,10 @@ final class RepeatTestSuite implements Test, Reorderable
     public function nameWithDataSet(): string
     {
         return $this->tests[0]->nameWithDataSet();
+    }
+
+    public function valueObjectForEvents(): Event\Code\TestMethod
+    {
+        return $this->tests[0]->valueObjectForEvents();
     }
 }

@@ -39,7 +39,7 @@ final readonly class TestBuilder
      *
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = []): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $repeat = 1): Test
     {
         $className = $theClass->getName();
 
@@ -64,6 +64,7 @@ final readonly class TestBuilder
                 $this->shouldGlobalStateBePreserved($className, $methodName),
                 $this->backupSettings($className, $methodName),
                 $groups,
+                $repeat,
             );
         }
 
@@ -86,7 +87,7 @@ final readonly class TestBuilder
      * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      * @param list<non-empty-string>                                                                                                                                            $groups
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups, int $repeat = 1): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
@@ -109,7 +110,7 @@ final readonly class TestBuilder
                 $backupSettings,
             );
 
-            $dataProviderTestSuite->addTest($_test, $groups);
+            $dataProviderTestSuite->addTest($_test, $groups, $repeat);
         }
 
         return $dataProviderTestSuite;

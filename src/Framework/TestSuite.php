@@ -516,7 +516,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         $methodName = $method->getName();
 
         try {
-            $test = (new TestBuilder)->build($class, $methodName, $groups);
+            $test = (new TestBuilder)->build($class, $methodName, $groups, $repeat);
         } catch (InvalidDataProviderException $e) {
             if ($e->getProviderLabel() === null) {
                 $message = sprintf(

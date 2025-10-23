@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use PHPUnit\Framework\RepeatTestSuite;
 use function assert;
 use function class_exists;
 use function count;
@@ -107,7 +108,9 @@ final readonly class TestSuiteBuilder
                 continue;
             }
 
-            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+            if ($test instanceof TestCase ||
+                $test instanceof PhptTestCase ||
+                $test instanceof RepeatTestSuite) {
                 $tests[] = $test->valueObjectForEvents();
             }
         }
