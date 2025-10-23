@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\TestRunner\TestResult\PassedTests;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -54,6 +56,8 @@ final class RepeatTestSuite implements Test, Reorderable
 
             if ($test->status()->isFailure() || $test->status()->isError()) {
                 $defectOccurred = true;
+
+                PassedTests::instance()->testMethodDidNotPass($test::class . '::' . $test->name());
             }
         }
     }

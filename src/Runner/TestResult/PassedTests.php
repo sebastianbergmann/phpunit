@@ -84,6 +84,11 @@ final class PassedTests
         );
     }
 
+    public function testMethodDidNotPass(string $method): void
+    {
+        unset($this->passedTestMethods[$method]);
+    }
+
     /**
      * @param class-string $className
      */
