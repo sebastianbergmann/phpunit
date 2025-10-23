@@ -216,7 +216,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass, $groups), $groups, $repeat);
+        $this->addTest(self::fromClassReflector($testClass, $groups, $repeat), $groups, $repeat);
     }
 
     /**
@@ -240,6 +240,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $this->addTestSuite(
                     (new TestSuiteLoader)->load($filename),
                     $groups,
+                    $repeat,
                 );
             }
         } catch (RunnerException $e) {
@@ -256,10 +257,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @throws Exception
      */
-    public function addTestFiles(iterable $fileNames): void
+    public function addTestFiles(iterable $fileNames, int $repeat = 1): void
     {
         foreach ($fileNames as $filename) {
-            $this->addTestFile((string) $filename);
+            $this->addTestFile((string) $filename, [], $repeat);
         }
     }
 

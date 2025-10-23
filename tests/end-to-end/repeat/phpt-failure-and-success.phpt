@@ -16,8 +16,21 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-..                                                                  2 / 2 (100%)
+FS..                                                                4 / 4 (100%)
 
 Time: %s, Memory: %s MB
 
-OK (2 tests, 2 assertions)
+There was 1 failure:
+
+1) /home/niko/works/github.com/sebastianbergmann/phpunit/tests/end-to-end/repeat/_files/phpt/failure.phpt
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+-ko
++ok
+
+/home/niko/works/github.com/sebastianbergmann/phpunit/tests/end-to-end/repeat/_files/phpt/failure.phpt:8
+
+FAILURES!
+Tests: 4, Assertions: 3, Failures: 1, Skipped: 1.

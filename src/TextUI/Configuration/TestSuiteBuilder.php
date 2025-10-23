@@ -112,7 +112,7 @@ final readonly class TestSuiteBuilder
                 $suite = TestSuite::empty('CLI Arguments');
             }
 
-            $suite->addTestFiles($files);
+            $suite->addTestFiles($files, $repeat);
 
             return $suite;
         }
