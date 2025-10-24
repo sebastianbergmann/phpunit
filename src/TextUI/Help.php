@@ -276,6 +276,7 @@ final class Help
                 ['spacer' => ''],
 
                 ['arg' => '--debug', 'desc' => 'Replace default progress and result output with debugging information'],
+                ['arg' => '--repeat <times>', 'desc' => 'Runs the test(s) repeatedly'],
                 ['arg' => '--with-telemetry', 'desc' => 'Include telemetry information in debugging information output'],
             ],
 
