@@ -22,7 +22,7 @@ Time: %s, Memory: %s MB
 
 There was 1 failure:
 
-1) /home/niko/works/github.com/sebastianbergmann/phpunit/tests/end-to-end/repeat/_files/phpt/failure.phpt
+1) %s/phpunit/tests/end-to-end/repeat/_files/phpt/failure.phpt
 Failed asserting that string matches format description.
 --- Expected
 +++ Actual
@@ -30,7 +30,7 @@ Failed asserting that string matches format description.
 -ko
 +ok
 
-/home/niko/works/github.com/sebastianbergmann/phpunit/tests/end-to-end/repeat/_files/phpt/failure.phpt:8
+%s/phpunit/tests/end-to-end/repeat/_files/phpt/failure.phpt:%d
 
 FAILURES!
 Tests: 4, Assertions: 3, Failures: 1, Skipped: 1.

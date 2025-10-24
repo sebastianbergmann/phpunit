@@ -25,7 +25,7 @@ There was 1 failure:
 1) RepeatDependentTest::test2
 Failed asserting that false is true.
 
-%s/tests/end-to-end/repeat/_files/RepeatDependentTest.php:21
+%s/tests/end-to-end/repeat/_files/RepeatDependentTest.php:%d
 
 FAILURES!
 Tests: 8, Assertions: 5, Failures: 1, Skipped: 3.

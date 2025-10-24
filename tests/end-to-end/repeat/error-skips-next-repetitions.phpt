@@ -25,17 +25,17 @@ There were 3 failures:
 1) RepeatWithErrorsTest::test1
 Failed asserting that true is false.
 
-%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:9
+%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:%d
 
 2) RepeatWithErrorsTest::test2
 Failed asserting that true is false.
 
-%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:17
+%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:%d
 
 3) RepeatWithErrorsTest::test3
 Failed asserting that true is false.
 
-%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:28
+%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:%d
 
 FAILURES!
 Tests: 12, Assertions: 9, Failures: 3, Skipped: 3.

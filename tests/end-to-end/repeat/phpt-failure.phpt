@@ -30,7 +30,7 @@ Failed asserting that string matches format description.
 -ko
 +ok
 
-%s/tests/end-to-end/repeat/_files/phpt/failure.phpt:8
+%s/tests/end-to-end/repeat/_files/phpt/failure.phpt:%d
 
 FAILURES!
 Tests: 2, Assertions: 1, Failures: 1, Skipped: 1.
