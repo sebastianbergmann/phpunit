@@ -58,13 +58,13 @@ final readonly class TestSuiteBuilder
                 $testSuite = $this->testSuiteFromPath(
                     $arguments[0],
                     $configuration->testSuffixes(),
-                    $configuration->repeat(),
+                    $configuration->repeatTimes(),
                 );
             } else {
                 $testSuite = $this->testSuiteFromPathList(
                     $arguments,
                     $configuration->testSuffixes(),
-                    $configuration->repeat(),
+                    $configuration->repeatTimes(),
                 );
             }
         }
@@ -90,18 +90,18 @@ final readonly class TestSuiteBuilder
     /**
      * @param non-empty-string       $path
      * @param list<non-empty-string> $suffixes
-     * @param positive-int           $repeat
+     * @param positive-int           $repeatTimes
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    private function testSuiteFromPath(string $path, array $suffixes, int $repeat, ?TestSuite $suite = null): TestSuite
+    private function testSuiteFromPath(string $path, array $suffixes, int $repeatTimes, ?TestSuite $suite = null): TestSuite
     {
         if (str_ends_with($path, '.phpt') && is_file($path)) {
             if ($suite === null) {
                 $suite = TestSuite::empty($path);
             }
 
-            $suite->addTestFile($path, [], $repeat);
+            $suite->addTestFile($path, [], $repeatTimes);
 
             return $suite;
         }
@@ -113,7 +113,7 @@ final readonly class TestSuiteBuilder
                 $suite = TestSuite::empty('CLI Arguments');
             }
 
-            $suite->addTestFiles($files, $repeat);
+            $suite->addTestFiles($files, $repeatTimes);
 
             return $suite;
         }
@@ -127,10 +127,10 @@ final readonly class TestSuiteBuilder
         }
 
         if ($suite === null) {
-            return TestSuite::fromClassReflector($testClass, repeat: $repeat);
+            return TestSuite::fromClassReflector($testClass, [], $repeatTimes);
         }
 
-        $suite->addTestSuite($testClass, repeat: $repeat);
+        $suite->addTestSuite($testClass, [], $repeatTimes);
 
         return $suite;
     }
@@ -138,16 +138,16 @@ final readonly class TestSuiteBuilder
     /**
      * @param list<non-empty-string> $paths
      * @param list<non-empty-string> $suffixes
-     * @param positive-int           $repeat
+     * @param positive-int           $repeatTimes
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    private function testSuiteFromPathList(array $paths, array $suffixes, int $repeat): TestSuite
+    private function testSuiteFromPathList(array $paths, array $suffixes, int $repeatTimes): TestSuite
     {
         $suite = TestSuite::empty('CLI Arguments');
 
         foreach ($paths as $path) {
-            $this->testSuiteFromPath($path, $suffixes, $repeat, $suite);
+            $this->testSuiteFromPath($path, $suffixes, $repeatTimes, $suite);
         }
 
         return $suite;

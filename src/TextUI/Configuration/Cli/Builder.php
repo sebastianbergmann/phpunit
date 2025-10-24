@@ -313,7 +313,7 @@ final class Builder
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
         $debug                             = false;
-        $repeat                            = 1;
+        $repeatTimes                       = 1;
         $withTelemetry                     = false;
         $extensions                        = [];
 
@@ -1214,9 +1214,9 @@ final class Builder
                     break;
 
                 case '--repeat':
-                    $repeat = (int) $option[1];
+                    $repeatTimes = (int) $option[1];
 
-                    if ($repeat < 1) {
+                    if ($repeatTimes < 1) {
                         throw new Exception(
                             'The value for the --repeat option must be a positive integer',
                         );
@@ -1376,7 +1376,7 @@ final class Builder
             $debug,
             $withTelemetry,
             $extensions,
-            $repeat,
+            $repeatTimes,
         );
     }
 
