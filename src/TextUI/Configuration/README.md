@@ -1,21 +1,29 @@
+(this file can be removed before merging)
+
 SourceMapper Implementation Notes
 =================================
 
-Currently the `<directory>` element in `<include>` and `<exclude>` has the 
-attributes `prefix` and `suffix` and we also have `<file>` which specifies a
-single file.
-
-Our primary goal is to ensure that the source mapper needn't iterate over all
+The primary goal is to ensure that the source mapper needn't iterate over all
 included files recursively whenever the source map is required (for example
 when a deprecation is encountered PHPUnit needs to know if the deprecation was
 issued from source code within the project's responsiblity - i.e. source that
 is mapped). We can determine if a file is within the included source by
 converting the glob-patterns in the `<directory>` element to regexes.
 
-This is more complicated than it could be as the current matching logic
-depends on PHP's `glob` function - the implementation of which is not
-consistent across platforms and which has a number of rarely-used operators
-which while not common, would present a B/C break if they were removed.
+Currently the `<directory>` element in `<include>` and `<exclude>` has the 
+attributes `prefix` and `suffix` and we also have `<file>` which specifies a
+single file.
+
+This is more complicated than it could be:
+
+- Current matching/traversal logic depends on PHP's `glob` function - the implementation
+  of which is not consistent across platforms and which has a number of
+  rarely-used operators which while not common, would present a B/C break if
+  they were removed.
+
+
+
+
 
 How it works currently
 ----------------------
@@ -44,6 +52,8 @@ The Factory:
 - create a new PHPUnit `Iterator` passing a recursive iterator iterator
   directory iterator... (the iterator that iterates over the directories) that
   **follows symlinks and skips dots**.
+- the iterator also Excludes the excluded `<directory>` elements **but does
+  not take into account the prefixes or suffixes**.
 
 The Iterator:
 

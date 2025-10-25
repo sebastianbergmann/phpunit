@@ -63,7 +63,7 @@ final class SourceFilter
     public function includes(string $path): bool
     {
         $included = false;
-        $dirPath = dirname($path) . '/';
+        $dirPath = rtrim(dirname($path), '/') . '/';
         $filename = basename($path);
         foreach ($this->source->includeFiles() as $file) {
             if ($file->path() === $path) {
@@ -100,12 +100,12 @@ final class SourceFilter
      */
     public static function toGlob(FilterDirectory $directory): string
     {
-        $path = $directory->path();
+        $path = rtrim($directory->path(), '/');
 
         return sprintf(
             '{(%s)|(%s)}',
-            Glob::toRegEx(sprintf('%s/**/*', $directory->path()), 0, ''),
-            Glob::toRegEx(sprintf('%s/*', $directory->path()), 0, ''),
+            Glob::toRegEx(sprintf('%s/**/*', $path), 0, ''),
+            Glob::toRegEx(sprintf('%s/*', $path), 0, ''),
         );
     }
 

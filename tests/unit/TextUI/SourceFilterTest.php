@@ -80,6 +80,18 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     ),
                 ),
             ],
+            'file included using directory with trailing slash' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => true,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath() . '/', '', '.php'),
+                        ],
+                    ),
+                ),
+            ],
             'file included using directory, but excluded using file' => [
                 [
                     self::fixturePath('a/PrefixSuffix.php') => false,
@@ -167,18 +179,18 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     ),
                 ),
             ],
-            //'directory wildcard does not include files at same level' => [
-            //    [
-            //        self::fixturePath('a/PrefixSuffix.php') => false,
-            //    ],
-            //    self::createSource(
-            //        includeDirectories: FilterDirectoryCollection::fromArray(
-            //            [
-            //                new FilterDirectory(self::fixturePath(), 'a/*', '.php'),
-            //            ],
-            //        ),
-            //    ),
-            //],
+            'directory wildcard does not include files at same level' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), 'a/*', '.php'),
+                        ],
+                    ),
+                ),
+            ],
             'directory wildcard with suffix does not match files' => [
                 [
                     self::fixturePath('a/PrefixSuffix.php') => false,
