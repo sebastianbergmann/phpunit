@@ -50,11 +50,11 @@ final class SourceFilter
         $this->source                  = $source;
         $this->includeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
         {
-            return [$directory, Glob::toRegEx(self::toGlob($directory))];
+            return [$directory, self::toGlob($directory)];
         }, $source->includeDirectories()->asArray());
         $this->excludeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
         {
-            return [$directory, Glob::toRegEx(self::toGlob($directory))];
+            return [$directory, self::toGlob($directory)];
         }, $source->excludeDirectories()->asArray());
     }
 
@@ -95,8 +95,13 @@ final class SourceFilter
 
     public static function toGlob(FilterDirectory $directory): string
     {
-        $glob = sprintf('%s/**/*', $directory->path());
-        return $glob;
+        $path = $directory->path();
+
+        if (Glob::isDynamic($path)) {
+            return Glob::toRegEx($path);
+        }
+
+        return Glob::toRegEx(sprintf('%s/**/*', $directory->path()));
     }
 
     private static function filenameMatches(FilterDirectory $directory, string $filename): bool
