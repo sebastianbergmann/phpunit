@@ -115,8 +115,5 @@
         "branch-alias": {
             "dev-main": "13.0-dev"
         }
-    },
-    "require-dev": {
-        "symfony/var-dumper": "^7.3"
     }
 }
