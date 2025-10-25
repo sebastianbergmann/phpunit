@@ -416,7 +416,7 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
         foreach ($expectations as $file => $shouldInclude) {
             $this->assertFileExists($file);
             $expected[$file] = $shouldInclude;
-            $actual[$file]   = (new SourceFilter($source))->includes($file);
+            $actual[$file]   = new SourceFilter($source)->includes($file);
         }
         $this->assertEquals($expected, $actual);
     }
