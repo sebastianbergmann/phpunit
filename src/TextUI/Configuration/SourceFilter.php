@@ -9,8 +9,15 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use Webmozart\Glob\Glob;
 use function array_map;
+use function basename;
+use function dirname;
+use function preg_match;
+use function rtrim;
+use function sprintf;
+use function str_ends_with;
+use function str_starts_with;
+use Webmozart\Glob\Glob;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -44,6 +51,23 @@ final class SourceFilter
         return self::$instance;
     }
 
+    /**
+     * Convert the directory filter to a glob.
+     *
+     * To ensure that `foo/**` will match `foo/bar.php` we match both the
+     * globstar and the wildcard.
+     */
+    public static function toGlob(FilterDirectory $directory): string
+    {
+        $path = rtrim($directory->path(), '/');
+
+        return sprintf(
+            '{(%s)|(%s)}',
+            Glob::toRegEx(sprintf('%s/**/*', $path), 0, ''),
+            Glob::toRegEx(sprintf('%s/*', $path), 0, ''),
+        );
+    }
+
     public function __construct(Source $source)
     {
         $this->source                  = $source;
@@ -63,8 +87,9 @@ final class SourceFilter
     public function includes(string $path): bool
     {
         $included = false;
-        $dirPath = rtrim(dirname($path), '/') . '/';
+        $dirPath  = rtrim(dirname($path), '/') . '/';
         $filename = basename($path);
+
         foreach ($this->source->includeFiles() as $file) {
             if ($file->path() === $path) {
                 $included = true;
@@ -90,23 +115,6 @@ final class SourceFilter
         }
 
         return $included;
-    }
-
-    /**
-     * Convert the directory filter to a glob.
-     *
-     * To ensure that `foo/**` will match `foo/bar.php` we match both the
-     * globstar and the wildcard.
-     */
-    public static function toGlob(FilterDirectory $directory): string
-    {
-        $path = rtrim($directory->path(), '/');
-
-        return sprintf(
-            '{(%s)|(%s)}',
-            Glob::toRegEx(sprintf('%s/**/*', $path), 0, ''),
-            Glob::toRegEx(sprintf('%s/*', $path), 0, ''),
-        );
     }
 
     private static function filenameMatches(FilterDirectory $directory, string $filename): bool

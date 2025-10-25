@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function json_encode;
-use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -324,7 +322,7 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                 ),
             ],
             // this seems rather more like a bug
-            //'globstar with any single char prefix includes sibling files' => [
+            // 'globstar with any single char prefix includes sibling files' => [
             //    [
             //        self::fixturePath('a/PrefixSuffix.php')     => false,
             //        self::fixturePath('a/c/PrefixSuffix.php')   => true,
@@ -341,7 +339,7 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
             //            ],
             //        ),
             //    ),
-            //],
+            // ],
             'globstar with any more than a single char prefix does not include sibling files' => [
                 [
                     self::fixturePath('a/PrefixSuffix.php')     => false,
@@ -432,12 +430,13 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
     public function testDeterminesWhetherFileIsIncluded(array $expectations, Source $source): void
     {
         $expected = [];
-        $actual = [];
+        $actual   = [];
+
         foreach ($expectations as $file => $shouldInclude) {
             $this->assertFileExists($file);
             $expected[$file] = $shouldInclude;
-            $actual[$file] = (new SourceFilter($source))->includes($file);
+            $actual[$file]   = (new SourceFilter($source))->includes($file);
         }
-        self::assertEquals($expected, $actual);
+        $this->assertEquals($expected, $actual);
     }
 }
