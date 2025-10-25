@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use Webmozart\Glob\Glob;
+use function array_map;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -17,35 +20,79 @@ namespace PHPUnit\TextUI\Configuration;
 final class SourceFilter
 {
     private static ?self $instance = null;
+    private Source $source;
 
     /**
-     * @var array<non-empty-string, true>
+     * @var list<string>
      */
-    private readonly array $map;
+    private array $includeDirectoryRegexes;
+
+    /**
+     * @var list<string>
+     */
+    private array $excludeDirectoryRegexes;
 
     public static function instance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new self(
-                (new SourceMapper)->map(
-                    Registry::get()->source(),
-                ),
-            );
+            $source         = Registry::get()->source();
+            self::$instance = new self($source);
+
+            return self::$instance;
         }
 
         return self::$instance;
     }
 
-    /**
-     * @param array<non-empty-string, true> $map
-     */
-    public function __construct(array $map)
+    public function __construct(Source $source)
     {
-        $this->map = $map;
+        $this->source                  = $source;
+        $this->includeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
+        {
+            return Glob::toRegEx(self::toGlob($directory));
+        }, $source->includeDirectories()->asArray());
+        $this->excludeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
+        {
+            return Glob::toRegEx(self::toGlob($directory));
+        }, $source->excludeDirectories()->asArray());
     }
 
+    /**
+     * @see https://docs.phpunit.de/en/12.4/configuration.html#the-include-element
+     */
     public function includes(string $path): bool
     {
-        return isset($this->map[$path]);
+        $included = false;
+        foreach ($this->source->includeFiles() as $file) {
+            if ($file->path() === $path) {
+                $included = true;
+            }
+        }
+
+        foreach ($this->includeDirectoryRegexes as $directoryRegex) {
+            if (preg_match($directoryRegex, $path)) {
+                $included = true;
+            }
+        }
+
+        foreach ($this->source->excludeFiles() as $file) {
+            if ($file->path() === $path) {
+                $included = false;
+            }
+        }
+
+        foreach ($this->excludeDirectoryRegexes as $directoryRegex) {
+            if (preg_match($directoryRegex, $path)) {
+                $included = false;
+            }
+        }
+
+        return $included;
+    }
+
+    public static function toGlob(FilterDirectory $directory): string
+    {
+        $glob =  sprintf('%s/**/%s*%s', $directory->path(), $directory->prefix(),$directory->suffix());
+        return $glob;
     }
 }

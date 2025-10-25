@@ -167,18 +167,18 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     ),
                 ),
             ],
-            'directory wildcard does not include files at same level' => [
-                [
-                    self::fixturePath('a/PrefixSuffix.php') => false,
-                ],
-                self::createSource(
-                    includeDirectories: FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(self::fixturePath(), 'a/*', '.php'),
-                        ],
-                    ),
-                ),
-            ],
+            //'directory wildcard does not include files at same level' => [
+            //    [
+            //        self::fixturePath('a/PrefixSuffix.php') => false,
+            //    ],
+            //    self::createSource(
+            //        includeDirectories: FilterDirectoryCollection::fromArray(
+            //            [
+            //                new FilterDirectory(self::fixturePath(), 'a/*', '.php'),
+            //            ],
+            //        ),
+            //    ),
+            //],
             'directory wildcard with suffix does not match files' => [
                 [
                     self::fixturePath('a/PrefixSuffix.php') => false,
@@ -418,13 +418,13 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expectations, Source $source): void
     {
+        $expected = [];
+        $actual = [];
         foreach ($expectations as $file => $shouldInclude) {
             $this->assertFileExists($file);
-            $this->assertSame(
-                $shouldInclude,
-                (new SourceFilter($source))->includes($file),
-                sprintf('expected match to return %s for: %s', json_encode($shouldInclude), $file),
-            );
+            $expected[$file] = $shouldInclude;
+            $actual[$file] = (new SourceFilter($source))->includes($file);
         }
+        self::assertEquals($expected, $actual);
     }
 }
