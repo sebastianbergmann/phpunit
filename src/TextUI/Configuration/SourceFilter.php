@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Configuration;
 
 use Webmozart\Glob\Glob;
 use function array_map;
-use PHPUnit\Util\FileMatcherRegex;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -24,12 +23,12 @@ final class SourceFilter
     private Source $source;
 
     /**
-     * @var list<FileMatcherRegex>
+     * @var list<string>
      */
     private array $includeDirectoryRegexes;
 
     /**
-     * @var list<FileMatcherRegex>
+     * @var list<string>
      */
     private array $excludeDirectoryRegexes;
 
@@ -93,15 +92,21 @@ final class SourceFilter
         return $included;
     }
 
+    /**
+     * Convert the directory filter to a glob.
+     *
+     * To ensure that `foo/**` will match `foo/bar.php` we match both the
+     * globstar and the wildcard.
+     */
     public static function toGlob(FilterDirectory $directory): string
     {
         $path = $directory->path();
 
-        if (Glob::isDynamic($path)) {
-            return Glob::toRegEx($path);
-        }
-
-        return Glob::toRegEx(sprintf('%s/**/*', $directory->path()));
+        return sprintf(
+            '{(%s)|(%s)}',
+            Glob::toRegEx(sprintf('%s/**/*', $directory->path()), 0, ''),
+            Glob::toRegEx(sprintf('%s/*', $directory->path()), 0, ''),
+        );
     }
 
     private static function filenameMatches(FilterDirectory $directory, string $filename): bool
