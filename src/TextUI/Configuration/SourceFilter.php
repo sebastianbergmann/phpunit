@@ -30,12 +30,12 @@ final class SourceFilter
     private Source $source;
 
     /**
-     * @var list<string>
+     * @var list<array{FilterDirectory,string}>
      */
     private array $includeDirectoryRegexes;
 
     /**
-     * @var list<string>
+     * @var list<array{FilterDirectory,string}>
      */
     private array $excludeDirectoryRegexes;
 
