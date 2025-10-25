@@ -321,25 +321,6 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     ),
                 ),
             ],
-            // this seems rather more like a bug
-            // 'globstar with any single char prefix includes sibling files' => [
-            //    [
-            //        self::fixturePath('a/PrefixSuffix.php')     => false,
-            //        self::fixturePath('a/c/PrefixSuffix.php')   => true,
-            //        self::fixturePath('a/c/d/PrefixSuffix.php') => true,
-            //    ],
-            //    self::createSource(
-            //        includeDirectories: FilterDirectoryCollection::fromArray(
-            //            [
-            //                new FilterDirectory(
-            //                    self::fixturePath('a/c/Z**'),
-            //                    '',
-            //                    '.php',
-            //                ),
-            //            ],
-            //        ),
-            //    ),
-            // ],
             'globstar with any more than a single char prefix does not include sibling files' => [
                 [
                     self::fixturePath('a/PrefixSuffix.php')     => false,
