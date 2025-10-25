@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Configuration;
 
 use Webmozart\Glob\Glob;
 use function array_map;
+use PHPUnit\Util\FileMatcherRegex;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -23,12 +24,12 @@ final class SourceFilter
     private Source $source;
 
     /**
-     * @var list<string>
+     * @var list<FileMatcherRegex>
      */
     private array $includeDirectoryRegexes;
 
     /**
-     * @var list<string>
+     * @var list<FileMatcherRegex>
      */
     private array $excludeDirectoryRegexes;
 
@@ -49,11 +50,11 @@ final class SourceFilter
         $this->source                  = $source;
         $this->includeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
         {
-            return Glob::toRegEx(self::toGlob($directory));
+            return [$directory, Glob::toRegEx(self::toGlob($directory))];
         }, $source->includeDirectories()->asArray());
         $this->excludeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
         {
-            return Glob::toRegEx(self::toGlob($directory));
+            return [$directory, Glob::toRegEx(self::toGlob($directory))];
         }, $source->excludeDirectories()->asArray());
     }
 
@@ -63,14 +64,16 @@ final class SourceFilter
     public function includes(string $path): bool
     {
         $included = false;
+        $dirPath = dirname($path) . '/';
+        $filename = basename($path);
         foreach ($this->source->includeFiles() as $file) {
             if ($file->path() === $path) {
                 $included = true;
             }
         }
 
-        foreach ($this->includeDirectoryRegexes as $directoryRegex) {
-            if (preg_match($directoryRegex, $path)) {
+        foreach ($this->includeDirectoryRegexes as [$directory, $directoryRegex]) {
+            if (preg_match($directoryRegex, $dirPath) && self::filenameMatches($directory, $filename)) {
                 $included = true;
             }
         }
@@ -81,8 +84,8 @@ final class SourceFilter
             }
         }
 
-        foreach ($this->excludeDirectoryRegexes as $directoryRegex) {
-            if (preg_match($directoryRegex, $path)) {
+        foreach ($this->excludeDirectoryRegexes as [$directory, $directoryRegex]) {
+            if (preg_match($directoryRegex, $dirPath) && self::filenameMatches($directory, $filename)) {
                 $included = false;
             }
         }
@@ -92,7 +95,12 @@ final class SourceFilter
 
     public static function toGlob(FilterDirectory $directory): string
     {
-        $glob =  sprintf('%s/**/%s*%s', $directory->path(), $directory->prefix(),$directory->suffix());
+        $glob = sprintf('%s/**/*', $directory->path());
         return $glob;
+    }
+
+    private static function filenameMatches(FilterDirectory $directory, string $filename): bool
+    {
+        return str_starts_with($filename, $directory->prefix()) && str_ends_with($filename, $directory->suffix());
     }
 }
