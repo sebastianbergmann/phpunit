@@ -6,9 +6,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--repeat';
 $_SERVER['argv'][] = '2';
-$_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'test1';
-$_SERVER['argv'][] = __DIR__ . '/_files/RepeatTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/RepeatInIsolationTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -18,8 +16,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-..                                                                  2 / 2 (100%)
+....                                                                4 / 4 (100%)
 
 Time: %s, Memory: %s MB
 
-OK (2 tests, 4 assertions)
+OK (4 tests, 8 assertions)

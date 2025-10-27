@@ -21,4 +21,4 @@ Configuration: %s/tests/end-to-end/repeat/_files/phpunit.xml
 
 Time: %s, Memory: %s MB
 
-OK (4 tests, 4 assertions)
+OK (4 tests, 8 assertions)

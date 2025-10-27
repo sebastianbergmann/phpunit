@@ -36,7 +36,7 @@ final readonly class RepeatTestSuite implements Reorderable, Test
         $tests = [];
 
         for ($i = 0; $i < $times; $i++) {
-            $tests[] = $test;
+            $tests[] = clone $test;
         }
 
         $this->tests = $tests;
