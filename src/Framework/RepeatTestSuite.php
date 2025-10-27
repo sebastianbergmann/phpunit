@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function count;
+use LogicException;
 use PHPUnit\Event;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -35,7 +36,7 @@ final readonly class RepeatTestSuite implements Reorderable, Test
         $tests = [];
 
         for ($i = 0; $i < $times; $i++) {
-            $tests[] = clone $test;
+            $tests[] = $test;
         }
 
         $this->tests = $tests;
@@ -70,14 +71,26 @@ final readonly class RepeatTestSuite implements Reorderable, Test
         return $this->tests[0]->requires();
     }
 
-    public function nameWithDataSet(): string
+    public function name(): string
     {
-        return $this->tests[0]->nameWithDataSet();
+        if ($this->isPhptTestCase()) {
+            throw new LogicException('Cannot call RepeatTestSuite::nameWithDataSet() on a PhptTestCase.');
+        }
+
+        return $this->tests[0]::class . '::' . $this->tests[0]->nameWithDataSet();
     }
 
     public function valueObjectForEvents(): Event\Code\Phpt|Event\Code\TestMethod
     {
         return $this->tests[0]->valueObjectForEvents();
+    }
+
+    /**
+     * @phpstan-assert-if-true non-empty-list<PhptTestCase> $this->tests
+     */
+    public function isPhptTestCase(): bool
+    {
+        return $this->tests[0] instanceof PhptTestCase;
     }
 
     private function runTestCase(): void
@@ -121,13 +134,5 @@ final readonly class RepeatTestSuite implements Reorderable, Test
                 $defectOccurred = true;
             }
         }
-    }
-
-    /**
-     * @phpstan-assert-if-true non-empty-list<PhptTestCase> $this->tests
-     */
-    private function isPhptTestCase(): bool
-    {
-        return $this->tests[0] instanceof PhptTestCase;
     }
 }

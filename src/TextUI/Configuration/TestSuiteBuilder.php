@@ -79,6 +79,7 @@ final readonly class TestSuiteBuilder
                 $configuration->testSuite(),
                 $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->includeTestSuites(),
                 $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->excludeTestSuites(),
+                $configuration->repeatTimes(),
             );
         }
 
