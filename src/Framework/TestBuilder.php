@@ -69,7 +69,7 @@ final readonly class TestBuilder
             );
         }
 
-        $test = new $className($methodName);
+        $test = new $className($methodName, $repeatTimes);
 
         $this->configureTestCase(
             $test,
@@ -101,7 +101,7 @@ final readonly class TestBuilder
         );
 
         foreach ($data as $_dataName => $_data) {
-            $_test = new $className($methodName);
+            $_test = new $className($methodName, $repeatTimes);
 
             $_test->setData($_dataName, $_data->value());
 

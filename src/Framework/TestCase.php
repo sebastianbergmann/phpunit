@@ -226,16 +226,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private mixed $errorLogCapture               = false;
     private false|string $previousErrorLogTarget = false;
+    private readonly int $repeatTimes;
+    private int $currentRepeat = 1;
 
     /**
      * @param non-empty-string $name
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function __construct(string $name)
+    final public function __construct(string $name, int $repeatTimes = 1)
     {
-        $this->methodName = $name;
-        $this->status     = TestStatus::unknown();
+        $this->methodName  = $name;
+        $this->status      = TestStatus::unknown();
+        $this->repeatTimes = $repeatTimes;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -298,6 +301,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function tearDown(): void
     {
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function newRepeatInstance(): static
+    {
+        $clone = clone $this;
+        $clone->currentRepeat++;
+
+        return $clone;
     }
 
     /**
@@ -643,7 +657,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        if (!isset($e) && !isset($_e)) {
+        if (!isset($e) && !isset($_e) && $this->currentRepeat === $this->repeatTimes) {
             $emitter->testPassed(
                 $this->valueObjectForEvents(),
             );

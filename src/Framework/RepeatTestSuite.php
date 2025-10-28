@@ -14,7 +14,6 @@ use LogicException;
 use PHPUnit\Event;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
-use PHPUnit\TestRunner\TestResult\PassedTests;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -33,10 +32,15 @@ final readonly class RepeatTestSuite implements Reorderable, Test
      */
     public function __construct(PhptTestCase|TestCase $test, int $times)
     {
-        $tests = [];
+        $tests   = [];
+        $tests[] = $test;
 
-        for ($i = 0; $i < $times; $i++) {
-            $tests[] = clone $test;
+        for ($i = 1; $i < $times; $i++) {
+            if ($test instanceof PhptTestCase) {
+                $tests[] = clone $test;
+            } else {
+                $tests[] = $test->newRepeatInstance();
+            }
         }
 
         $this->tests = $tests;
@@ -87,6 +91,8 @@ final readonly class RepeatTestSuite implements Reorderable, Test
 
     /**
      * @phpstan-assert-if-true non-empty-list<PhptTestCase> $this->tests
+     *
+     * @phpstan-assert-if-false non-empty-list<TestCase> $this->tests
      */
     public function isPhptTestCase(): bool
     {
@@ -108,8 +114,6 @@ final readonly class RepeatTestSuite implements Reorderable, Test
 
             if ($test->status()->isFailure() || $test->status()->isError()) {
                 $defectOccurred = true;
-
-                PassedTests::instance()->testMethodDidNotPass($test::class . '::' . $test->name());
             }
         }
     }
