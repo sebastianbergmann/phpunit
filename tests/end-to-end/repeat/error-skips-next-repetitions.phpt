@@ -6,7 +6,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--repeat';
 $_SERVER['argv'][] = '3';
-$_SERVER['argv'][] = __DIR__ . '/_files/RepeatWithErrorsTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/RepeatWithFailuresTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -22,20 +22,20 @@ Time: %s, Memory: %s MB
 
 There were 3 failures:
 
-1) RepeatWithErrorsTest::test1
+1) RepeatWithFailuresTest::test1
 Failed asserting that true is false.
 
-%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:%d
+%s/tests/end-to-end/repeat/_files/RepeatWithFailuresTest.php:%d
 
-2) RepeatWithErrorsTest::test2
+2) RepeatWithFailuresTest::test2 (repeat attempt #2)
 Failed asserting that true is false.
 
-%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:%d
+%s/tests/end-to-end/repeat/_files/RepeatWithFailuresTest.php:%d
 
-3) RepeatWithErrorsTest::test3
+3) RepeatWithFailuresTest::test3 (repeat attempt #3)
 Failed asserting that true is false.
 
-%s/tests/end-to-end/repeat/_files/RepeatWithErrorsTest.php:%d
+%s/tests/end-to-end/repeat/_files/RepeatWithFailuresTest.php:%d
 
 FAILURES!
 Tests: 12, Assertions: 9, Failures: 3, Skipped: 3.

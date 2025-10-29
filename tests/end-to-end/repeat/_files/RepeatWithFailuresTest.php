@@ -9,7 +9,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-final class RepeatWithErrorsTest extends TestCase
+final class RepeatWithFailuresTest extends TestCase
 {
     public function test1(): void
     {

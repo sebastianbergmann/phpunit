@@ -79,11 +79,18 @@ final class TestCase implements Reorderable, SelfDescribing, Test
     private bool $passed = false;
 
     /**
-     * @param non-empty-string $filename
+     * @var positive-int
      */
-    public function __construct(string $filename)
+    private int $repeatAttemptNumber;
+
+    /**
+     * @param non-empty-string $filename
+     * @param positive-int     $repeatAttemptNumber
+     */
+    public function __construct(string $filename, int $repeatAttemptNumber = 1)
     {
-        $this->filename = $filename;
+        $this->filename            = $filename;
+        $this->repeatAttemptNumber = $repeatAttemptNumber;
     }
 
     public function count(): int
@@ -297,7 +304,7 @@ final class TestCase implements Reorderable, SelfDescribing, Test
      */
     public function valueObjectForEvents(): Phpt
     {
-        return new Phpt($this->filename);
+        return new Phpt($this->filename, $this->repeatAttemptNumber);
     }
 
     /**
