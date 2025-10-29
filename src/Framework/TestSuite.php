@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_map;
 use function array_merge;
 use function array_pop;
 use function array_reverse;
@@ -21,6 +22,7 @@ use function implode;
 use function is_callable;
 use function is_file;
 use function is_subclass_of;
+use function range;
 use function sprintf;
 use function str_ends_with;
 use function str_starts_with;
@@ -146,9 +148,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * Adds a test to the suite.
      *
      * @param list<non-empty-string> $groups
-     * @param positive-int           $repeatTimes
      */
-    public function addTest(Test $test, array $groups = [], int $repeatTimes = 1): void
+    public function addTest(Test $test, array $groups = []): void
     {
         if ($test instanceof self) {
             $this->tests[] = $test;
@@ -160,11 +161,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         assert($test instanceof TestCase || $test instanceof PhptTestCase);
 
-        if ($repeatTimes === 1) {
-            $this->tests[] = $test;
-        } else {
-            $this->tests[] = new RepeatTestSuite($test, $repeatTimes);
-        }
+        $this->tests[] = $test;
 
         $this->clearCaches();
 
@@ -219,7 +216,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass, $groups, $repeatTimes), $groups, $repeatTimes);
+        $this->addTest(self::fromClassReflector($testClass, $groups, $repeatTimes), $groups);
     }
 
     /**
@@ -239,7 +236,18 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     {
         try {
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
-                $this->addTest(new PhptTestCase($filename), [], $repeatTimes);
+                if ($repeatTimes === 1) {
+                    $test = new PhptTestCase($filename);
+                } else {
+                    $test = new RepeatTestSuite(
+                        array_map(
+                            static fn () => new PhptTestCase($filename),
+                            range(1, $repeatTimes),
+                        ),
+                    );
+                }
+
+                $this->addTest($test);
             } else {
                 $this->addTestSuite(
                     (new TestSuiteLoader)->load($filename),
@@ -561,7 +569,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite && !$test->isPhptTestCase()) {
             $test->setDependencies(
                 Dependencies::dependencies($class->getName(), $methodName),
             );
@@ -573,7 +581,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $groups,
                 (new Groups)->groups($class->getName(), $methodName),
             ),
-            $repeatTimes,
         );
     }
 

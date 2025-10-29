@@ -135,7 +135,7 @@ final readonly class TestSuiteMapper
                 }
 
                 if (!$empty) {
-                    $result->addTest($testSuite, [], $repeatTimes);
+                    $result->addTest($testSuite);
                 }
             }
 

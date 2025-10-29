@@ -227,18 +227,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private mixed $errorLogCapture               = false;
     private false|string $previousErrorLogTarget = false;
     private readonly int $repeatTimes;
-    private int $currentRepeat = 1;
+    private int $currentRepeat;
 
     /**
      * @param non-empty-string $name
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function __construct(string $name, int $repeatTimes = 1)
+    final public function __construct(string $name, int $repeatTimes = 1, int $currentRepeat = 1)
     {
-        $this->methodName  = $name;
-        $this->status      = TestStatus::unknown();
-        $this->repeatTimes = $repeatTimes;
+        $this->methodName    = $name;
+        $this->status        = TestStatus::unknown();
+        $this->repeatTimes   = $repeatTimes;
+        $this->currentRepeat = $currentRepeat;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];

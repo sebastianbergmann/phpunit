@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Metadata\Api\ProvidedData;
 use function count;
 use LogicException;
 use PHPUnit\Event;
@@ -28,21 +29,10 @@ final readonly class RepeatTestSuite implements Reorderable, Test
     private array $tests;
 
     /**
-     * @param positive-int $times
+     * @param non-empty-list<PhptTestCase>|non-empty-list<TestCase> $tests
      */
-    public function __construct(PhptTestCase|TestCase $test, int $times)
+    public function __construct(array $tests)
     {
-        $tests   = [];
-        $tests[] = $test;
-
-        for ($i = 1; $i < $times; $i++) {
-            if ($test instanceof PhptTestCase) {
-                $tests[] = clone $test;
-            } else {
-                $tests[] = $test->newRepeatInstance();
-            }
-        }
-
         $this->tests = $tests;
     }
 
@@ -87,6 +77,34 @@ final readonly class RepeatTestSuite implements Reorderable, Test
     public function valueObjectForEvents(): Event\Code\Phpt|Event\Code\TestMethod
     {
         return $this->tests[0]->valueObjectForEvents();
+    }
+
+    /**
+     * @param array<ProvidedData> $data
+     */
+    public function setData(int|string $dataName, array $data): void
+    {
+        if ($this->isPhptTestCase()) {
+            throw new LogicException('Cannot call RepeatTestSuite::setData() on a PhptTestCase.');
+        }
+
+        foreach ($this->tests as $test) {
+            $test->setData($dataName, $data);
+        }
+    }
+
+    /**
+     * @param list<ExecutionOrderDependency> $dependencies
+     */
+    public function setDependencies(array $dependencies): void
+    {
+        if ($this->isPhptTestCase()) {
+            throw new LogicException('Cannot call RepeatTestSuite::setDependencies() on a PhptTestCase.');
+        }
+
+        foreach ($this->tests as $test) {
+            $test->setDependencies($dependencies);
+        }
     }
 
     /**
