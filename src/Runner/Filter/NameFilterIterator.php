@@ -16,6 +16,7 @@ use function substr;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\Phpt\RepeatTestSuite as PhptRepeatTestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use RecursiveFilterIterator;
 use RecursiveIterator;
@@ -57,7 +58,7 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        if ($test instanceof PhptTestCase || ($test instanceof RepeatTestSuite && $test->isPhptTestCase())) {
+        if ($test instanceof PhptTestCase || $test instanceof PhptRepeatTestSuite) {
             return false;
         }
 

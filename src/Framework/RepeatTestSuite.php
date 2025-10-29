@@ -10,114 +10,17 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Metadata\Api\ProvidedData;
-use function count;
-use LogicException;
-use PHPUnit\Event;
-use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @extends AbstractRepeatTestSuite<TestCase>
  */
-final readonly class RepeatTestSuite implements Reorderable, Test
+final readonly class RepeatTestSuite extends AbstractRepeatTestSuite
 {
-    /**
-     * @var non-empty-list<PhptTestCase>|non-empty-list<TestCase>
-     */
-    private array $tests;
-
-    /**
-     * @param non-empty-list<PhptTestCase>|non-empty-list<TestCase> $tests
-     */
-    public function __construct(array $tests)
-    {
-        $this->tests = $tests;
-    }
-
-    public function count(): int
-    {
-        return count($this->tests);
-    }
-
     public function run(): void
-    {
-        if ($this->isPhptTestCase()) {
-            $this->runPhptTestCase();
-        } else {
-            $this->runTestCase();
-        }
-    }
-
-    public function sortId(): string
-    {
-        return $this->tests[0]->sortId();
-    }
-
-    public function provides(): array
-    {
-        return $this->tests[0]->provides();
-    }
-
-    public function requires(): array
-    {
-        return $this->tests[0]->requires();
-    }
-
-    public function name(): string
-    {
-        if ($this->isPhptTestCase()) {
-            throw new LogicException('Cannot call RepeatTestSuite::nameWithDataSet() on a PhptTestCase.');
-        }
-
-        return $this->tests[0]::class . '::' . $this->tests[0]->nameWithDataSet();
-    }
-
-    public function valueObjectForEvents(): Event\Code\Phpt|Event\Code\TestMethod
-    {
-        return $this->tests[0]->valueObjectForEvents();
-    }
-
-    /**
-     * @param array<ProvidedData> $data
-     */
-    public function setData(int|string $dataName, array $data): void
-    {
-        if ($this->isPhptTestCase()) {
-            throw new LogicException('Cannot call RepeatTestSuite::setData() on a PhptTestCase.');
-        }
-
-        foreach ($this->tests as $test) {
-            $test->setData($dataName, $data);
-        }
-    }
-
-    /**
-     * @param list<ExecutionOrderDependency> $dependencies
-     */
-    public function setDependencies(array $dependencies): void
-    {
-        if ($this->isPhptTestCase()) {
-            throw new LogicException('Cannot call RepeatTestSuite::setDependencies() on a PhptTestCase.');
-        }
-
-        foreach ($this->tests as $test) {
-            $test->setDependencies($dependencies);
-        }
-    }
-
-    /**
-     * @phpstan-assert-if-true non-empty-list<PhptTestCase> $this->tests
-     *
-     * @phpstan-assert-if-false non-empty-list<TestCase> $this->tests
-     */
-    public function isPhptTestCase(): bool
-    {
-        return $this->tests[0] instanceof PhptTestCase;
-    }
-
-    private function runTestCase(): void
     {
         $defectOccurred = false;
 
@@ -136,25 +39,28 @@ final readonly class RepeatTestSuite implements Reorderable, Test
         }
     }
 
-    private function runPhptTestCase(): void
+    public function name(): string
     {
-        $defectOccurred = false;
+        return $this->tests[0]::class . '::' . $this->tests[0]->nameWithDataSet();
+    }
 
+    /**
+     * @param array<ProvidedData> $data
+     */
+    public function setData(int|string $dataName, array $data): void
+    {
         foreach ($this->tests as $test) {
-            if ($defectOccurred) {
-                EventFacade::emitter()->testSkipped(
-                    $this->valueObjectForEvents(),
-                    'Test repetition failure',
-                );
+            $test->setData($dataName, $data);
+        }
+    }
 
-                continue;
-            }
-
-            $test->run();
-
-            if (!$test->passed()) {
-                $defectOccurred = true;
-            }
+    /**
+     * @param list<ExecutionOrderDependency> $dependencies
+     */
+    public function setDependencies(array $dependencies): void
+    {
+        foreach ($this->tests as $test) {
+            $test->setDependencies($dependencies);
         }
     }
 }

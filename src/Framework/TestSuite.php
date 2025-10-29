@@ -39,6 +39,7 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
+use PHPUnit\Runner\Phpt\RepeatTestSuite as PhptRepeatTestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
@@ -239,7 +240,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 if ($repeatTimes === 1) {
                     $test = new PhptTestCase($filename);
                 } else {
-                    $test = new RepeatTestSuite(
+                    $test = new PhptRepeatTestSuite(
                         array_map(
                             static fn () => new PhptTestCase($filename),
                             range(1, $repeatTimes),
@@ -569,7 +570,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite && !$test->isPhptTestCase()) {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite) {
             $test->setDependencies(
                 Dependencies::dependencies($class->getName(), $methodName),
             );
