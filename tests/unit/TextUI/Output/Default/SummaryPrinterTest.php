@@ -38,7 +38,7 @@ final class SummaryPrinterTest extends TestCase
     }
 
     #[DataProviderExternal(ResultPrinterTest::class, 'provider', false)]
-    public function testPrintsExpectedColorizedOutputForTestResultObject(string $expectationFile, TestResult $result): void
+    public function testPrintsExpectedColouredOutputForTestResultObject(string $expectationFile, TestResult $result): void
     {
         $printer = $this->printer();
 
