@@ -59,6 +59,7 @@ use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
@@ -228,14 +229,33 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private false|string $previousErrorLogTarget = false;
 
     /**
+     * @var positive-int
+     */
+    private readonly int $repeatTimes;
+
+    /**
+     * @var positive-int
+     */
+    private readonly int $repeatAttemptNumber;
+
+    /**
      * @param non-empty-string $name
+     * @param positive-int     $repeatTimes
+     * @param positive-int     $repeatAttemptNumber
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function __construct(string $name)
+    final public function __construct(string $name, int $repeatTimes = 1, int $repeatAttemptNumber = 1)
     {
         $this->methodName = $name;
         $this->status     = TestStatus::unknown();
+
+        if ($repeatTimes < $repeatAttemptNumber) {
+            throw new InvalidArgumentException("Given repeat attempt number \"{$repeatAttemptNumber}\" must be inferior or equal to repeat times \"{$repeatTimes}\"");
+        }
+
+        $this->repeatTimes         = $repeatTimes;
+        $this->repeatAttemptNumber = $repeatAttemptNumber;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -643,7 +663,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        if (!isset($e) && !isset($_e)) {
+        if (!isset($e) && !isset($_e) && $this->repeatAttemptNumber === $this->repeatTimes) {
             $emitter->testPassed(
                 $this->valueObjectForEvents(),
             );
@@ -963,6 +983,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    /**
+     * @return positive-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function repeatAttemptNumber(): int
+    {
+        return $this->repeatAttemptNumber;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function markSkippedForErrorInPreviousRepetition(): void
+    {
+        $message = "Test repetition #{$this->repeatAttemptNumber} failure";
+
+        Event\Facade::emitter()->testSkipped(
+            $this->valueObjectForEvents(),
+            $message,
+        );
+
+        $this->status = TestStatus::skipped($message);
     }
 
     /**
