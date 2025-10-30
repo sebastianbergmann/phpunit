@@ -1,9 +1,0 @@
-There was 1 incomplete test:
-
-1) FooTest::testBar
-message
-
-%A
-
-OK, but there were issues!
-Tests: 1, Assertions: 1, Incomplete: 1.

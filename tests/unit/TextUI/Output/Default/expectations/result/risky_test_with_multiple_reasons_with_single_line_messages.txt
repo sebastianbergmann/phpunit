@@ -1,0 +1,8 @@
+There was 1 risky test:
+
+1) FooTest::testBar
+* message
+
+* message
+
+%s:%i

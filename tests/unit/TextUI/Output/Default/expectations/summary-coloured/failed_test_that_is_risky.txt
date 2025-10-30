@@ -1,0 +1,2 @@
+[37;41mFAILURES![0m
+[37;41mTests: 1[0m[37;41m, Assertions: 1[0m[37;41m, Failures: 1[0m[37;41m, Risky: 1[0m[37;41m.[0m

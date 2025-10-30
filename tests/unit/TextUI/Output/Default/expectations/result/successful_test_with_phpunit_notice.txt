@@ -1,0 +1,6 @@
+1 test triggered 1 PHPUnit notice:
+
+1) FooTest::testBar
+message
+
+FooTest.php:1
