@@ -1,0 +1,9 @@
+1 test triggered 1 warning:
+
+1) Foo.php:1
+message
+
+Triggered by:
+
+* FooTest::testBar
+  FooTest.php:1

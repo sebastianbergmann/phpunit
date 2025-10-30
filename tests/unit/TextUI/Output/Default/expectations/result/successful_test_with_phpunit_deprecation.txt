@@ -1,0 +1,12 @@
+There was 1 PHPUnit test runner deprecation:
+
+1) message
+
+--
+
+1 test triggered 1 PHPUnit deprecation:
+
+1) FooTest::testBar
+message
+
+%s:%i

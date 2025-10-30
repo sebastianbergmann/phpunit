@@ -1,0 +1,6 @@
+There was 1 incomplete test:
+
+1) FooTest::testBar
+message
+
+%A
