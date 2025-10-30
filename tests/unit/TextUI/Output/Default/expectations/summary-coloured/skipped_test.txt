@@ -1,0 +1,2 @@
+[30;42mOK, but some tests were skipped![0m
+[30;42mTests: 1[0m[30;42m, Assertions: 1[0m[30;42m, Skipped: 1[0m[30;42m.[0m

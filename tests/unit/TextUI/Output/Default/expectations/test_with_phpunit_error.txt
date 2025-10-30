@@ -1,8 +1,0 @@
-There was 1 PHPUnit error:
-
-1) FooTest::testBar
-message
-
-FooTest.php:1
-
-No tests executed!

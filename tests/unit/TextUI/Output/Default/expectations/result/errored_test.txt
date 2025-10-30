@@ -1,0 +1,6 @@
+There was 1 error:
+
+1) FooTest::testBar
+Exception: message
+
+%A

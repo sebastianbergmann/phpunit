@@ -1,9 +1,0 @@
-There was 1 error:
-
-1) FooTest::testBar
-Exception: message
-
-%A
-
-ERRORS!
-Tests: 1, Assertions: 1, Errors: 1.

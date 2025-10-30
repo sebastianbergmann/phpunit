@@ -1,9 +1,0 @@
-1 test triggered 1 PHPUnit warning:
-
-1) FooTest::testBar
-message
-
-%s:%i
-
-OK, but there were issues!
-Tests: 1, Assertions: 1, PHPUnit Warnings: 1.

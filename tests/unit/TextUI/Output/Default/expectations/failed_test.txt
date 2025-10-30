@@ -1,9 +1,0 @@
-There was 1 failure:
-
-1) FooTest::testBar
-Failed asserting that false is true.
-
-%A
-
-FAILURES!
-Tests: 1, Assertions: 1, Failures: 1.
