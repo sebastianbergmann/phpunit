@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Output\Default;
 
+use const PHP_OS_FAMILY;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Medium;
@@ -38,8 +39,12 @@ final class SummaryPrinterTest extends TestCase
     }
 
     #[DataProviderExternal(ResultPrinterTest::class, 'provider', false)]
-    public function testPrintsExpectedColorizedOutputForTestResultObject(string $expectationFile, TestResult $result): void
+    public function testPrintsExpectedColouredOutputForTestResultObject(string $expectationFile, TestResult $result): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
         $printer = $this->printer();
 
         $summaryPrinter = new SummaryPrinter($printer, true);
