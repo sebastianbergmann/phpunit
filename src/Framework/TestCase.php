@@ -1531,6 +1531,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $returnValue = $passedTests->returnValue($dependencyTarget);
 
+            if ($this->repeatTimes > 1 && $returnValue !== null) {
+                $this->markSkippedForRepeatAndReturningDependency($dependency);
+
+                return false;
+            }
+
             if ($dependency->deepClone()) {
                 $deepCopy = new DeepCopy;
                 $deepCopy->skipUncloneable(false);
@@ -1578,6 +1584,30 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $message = sprintf(
             'This test depends on "%s" to pass',
             $dependency->getTarget(),
+        );
+
+        Event\Facade::emitter()->testSkipped(
+            $this->valueObjectForEvents(),
+            $message,
+        );
+
+        $this->status = TestStatus::skipped($message);
+    }
+
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     */
+    private function markSkippedForRepeatAndReturningDependency(ExecutionOrderDependency $dependency): void
+    {
+        $message = sprintf(
+            'This test depends on "%s" which returns a value. Such test cannot be run in repeat mode',
+            $dependency->targetIsClass() ? $dependency->getTargetClassName() : $dependency->getTarget(),
+        );
+
+        Event\Facade::emitter()->testTriggeredPhpunitWarning(
+            $this->valueObjectForEvents(),
+            $message,
         );
 
         Event\Facade::emitter()->testSkipped(

@@ -33,7 +33,7 @@ final readonly class RepeatTestSuite extends AbstractRepeatTestSuite
 
             $test->run();
 
-            if ($test->status()->isFailure() || $test->status()->isError()) {
+            if ($test->status()->isFailure() || $test->status()->isError() || $test->status()->isSkipped()) {
                 $defectOccurred = true;
             }
         }
