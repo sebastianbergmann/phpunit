@@ -143,6 +143,11 @@ abstract readonly class Metadata
         return new DataProvider(self::METHOD_LEVEL, $className, $methodName, $validateArgumentCount);
     }
 
+    public static function dataProviderCallable(\Closure $callable, bool $validateArgumentCount): DataProviderCallable
+    {
+        return new DataProviderCallable(self::METHOD_LEVEL, $callable, $validateArgumentCount);
+    }
+
     /**
      * @param class-string $className
      */

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Parser;
 
+use PHPUnit\Framework\Attributes\DataProviderClosure;
 use const JSON_THROW_ON_ERROR;
 use function assert;
 use function class_exists;
@@ -600,6 +601,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof DataProviderExternal);
 
                     $result[] = Metadata::dataProvider($attributeInstance->className(), $attributeInstance->methodName(), $attributeInstance->validateArgumentCount());
+
+                    break;
+
+                case DataProviderClosure::class:
+                    assert($attributeInstance instanceof DataProviderClosure);
+
+                    $result[] = Metadata::dataProviderCallable($attributeInstance->closure(), $attributeInstance->validateArgumentCount());
 
                     break;
 

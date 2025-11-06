@@ -23,6 +23,7 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
+use PHPUnit\Metadata\DataProviderCallable as DataProviderCallableMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
@@ -88,7 +89,97 @@ final readonly class DataProvider
         $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
         foreach ($dataProvider as $_dataProvider) {
-            assert($_dataProvider instanceof DataProviderMetadata);
+            assert($_dataProvider instanceof DataProviderMetadata || $_dataProvider instanceof DataProviderCallableMetadata);
+
+            if ($_dataProvider instanceof DataProviderCallableMetadata) {
+                $providerLabel         = sprintf('callable provided to %s::%s()', $testClassName, $testMethod->getName());
+                $validateArgumentCount = $testMethodIsNonVariadic && $_dataProvider->validateArgumentCount();
+
+                try {
+                    $callable = $_dataProvider->callable();
+                    $data     = $callable();
+
+                    if (!is_iterable($data)) {
+                        throw new InvalidDataProviderException(
+                            'Data Provider callable does not return an iterable',
+                        );
+                    }
+                } catch (Throwable $e) {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethodValueObject,
+                        ...$methodsCalled,
+                    );
+
+                    throw InvalidDataProviderException::forException($e, $providerLabel);
+                }
+
+                foreach ($data as $key => $value) {
+                    if (!is_int($key) && !is_string($key)) {
+                        Event\Facade::emitter()->dataProviderMethodFinished(
+                            $testMethodValueObject,
+                            ...$methodsCalled,
+                        );
+
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'The key must be an integer or a string, %s given',
+                                get_debug_type($key),
+                            ),
+                        );
+                    }
+
+                    if (!is_array($value)) {
+                        Event\Facade::emitter()->dataProviderMethodFinished(
+                            $testMethodValueObject,
+                            ...$methodsCalled,
+                        );
+
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'Data set %s provided by %s is invalid, expected array but got %s',
+                                $this->formatKey($key),
+                                $providerLabel,
+                                get_debug_type($value),
+                            ),
+                        );
+                    }
+
+                    if ($validateArgumentCount && $testMethodNumberOfParameters < count($value)) {
+                        $this->triggerWarningForArgumentCount(
+                            $testMethod,
+                            $this->formatKey($key),
+                            $providerLabel,
+                            count($value),
+                            $testMethodNumberOfParameters,
+                        );
+                    }
+
+                    if (is_int($key)) {
+                        $result[] = new ProvidedData($providerLabel, $value);
+
+                        continue;
+                    }
+
+                    if (array_key_exists($key, $result)) {
+                        Event\Facade::emitter()->dataProviderMethodFinished(
+                            $testMethodValueObject,
+                            ...$methodsCalled,
+                        );
+
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'The key "%s" has already been defined by provider %s',
+                                $key,
+                                $result[$key]->label(),
+                            ),
+                        );
+                    }
+
+                    $result[$key] = new ProvidedData($providerLabel, $value);
+                }
+
+                continue;
+            }
 
             $providerLabel         = $_dataProvider->className() . '::' . $_dataProvider->methodName();
             $dataProviderMethod    = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
