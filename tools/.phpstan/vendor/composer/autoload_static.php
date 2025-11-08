@@ -11,43 +11,43 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' => 
+        'T' =>
         array (
             'TomasVotruba\\TypeCoverage\\' => 26,
         ),
-        'P' => 
+        'P' =>
         array (
             'PHPStan\\ExtensionInstaller\\' => 27,
             'PHPStan\\' => 8,
         ),
-        'N' => 
+        'N' =>
         array (
             'Nette\\' => 6,
         ),
-        'E' => 
+        'E' =>
         array (
             'Ergebnis\\PHPStan\\Rules\\' => 23,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'TomasVotruba\\TypeCoverage\\' => 
+        'TomasVotruba\\TypeCoverage\\' =>
         array (
             0 => __DIR__ . '/..' . '/tomasvotruba/type-coverage/src',
         ),
-        'PHPStan\\ExtensionInstaller\\' => 
+        'PHPStan\\ExtensionInstaller\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/extension-installer/src',
         ),
-        'PHPStan\\' => 
+        'PHPStan\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpstan-strict-rules/src',
         ),
-        'Nette\\' => 
+        'Nette\\' =>
         array (
             0 => __DIR__ . '/..' . '/nette/utils/src',
         ),
-        'Ergebnis\\PHPStan\\Rules\\' => 
+        'Ergebnis\\PHPStan\\Rules\\' =>
         array (
             0 => __DIR__ . '/..' . '/ergebnis/phpstan-rules/src',
         ),
