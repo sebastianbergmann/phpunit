@@ -48,6 +48,9 @@
         "sebastian/version": "^6.0.0",
         "staabm/side-effects-detector": "^1.0.5"
     },
+    "require-dev": {
+        "ext-pcntl": "*"
+    },
     "config": {
         "platform": {
             "php": "8.3.0"
