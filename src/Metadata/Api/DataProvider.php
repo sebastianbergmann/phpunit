@@ -167,6 +167,40 @@ final readonly class DataProvider
                 $className  = $_dataProvider->className();
                 $methodName = $_dataProvider->methodName();
                 $data       = $className::$methodName();
+
+                foreach ($data as $key => $value) {
+                    if (is_int($key)) {
+                        $result[] = $value;
+                    } elseif (is_string($key)) {
+                        if (array_key_exists($key, $result)) {
+                            Event\Facade::emitter()->dataProviderMethodFinished(
+                                $testMethod,
+                                ...$methodsCalled,
+                            );
+
+                            throw new InvalidDataProviderException(
+                                sprintf(
+                                    'The key "%s" has already been defined by a previous data provider',
+                                    $key,
+                                ),
+                            );
+                        }
+
+                        $result[$key] = $value;
+                    } else {
+                        Event\Facade::emitter()->dataProviderMethodFinished(
+                            $testMethod,
+                            ...$methodsCalled,
+                        );
+
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'The key must be an integer or a string, %s given',
+                                get_debug_type($key),
+                            ),
+                        );
+                    }
+                }
             } catch (Throwable $e) {
                 Event\Facade::emitter()->dataProviderMethodFinished(
                     $testMethod,
@@ -178,40 +212,6 @@ final readonly class DataProvider
                     $e->getCode(),
                     $e,
                 );
-            }
-
-            foreach ($data as $key => $value) {
-                if (is_int($key)) {
-                    $result[] = $value;
-                } elseif (is_string($key)) {
-                    if (array_key_exists($key, $result)) {
-                        Event\Facade::emitter()->dataProviderMethodFinished(
-                            $testMethod,
-                            ...$methodsCalled,
-                        );
-
-                        throw new InvalidDataProviderException(
-                            sprintf(
-                                'The key "%s" has already been defined by a previous data provider',
-                                $key,
-                            ),
-                        );
-                    }
-
-                    $result[$key] = $value;
-                } else {
-                    Event\Facade::emitter()->dataProviderMethodFinished(
-                        $testMethod,
-                        ...$methodsCalled,
-                    );
-
-                    throw new InvalidDataProviderException(
-                        sprintf(
-                            'The key must be an integer or a string, %s given',
-                            get_debug_type($key),
-                        ),
-                    );
-                }
             }
         }
 
