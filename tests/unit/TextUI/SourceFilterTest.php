@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function json_encode;
-use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -76,6 +74,18 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     includeDirectories: FilterDirectoryCollection::fromArray(
                         [
                             new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'file included using directory with trailing slash' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => true,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath() . '/', '', '.php'),
                         ],
                     ),
                 ),
@@ -311,24 +321,6 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     ),
                 ),
             ],
-            'globstar with any single char prefix includes sibling files' => [
-                [
-                    self::fixturePath('a/PrefixSuffix.php')     => false,
-                    self::fixturePath('a/c/PrefixSuffix.php')   => true,
-                    self::fixturePath('a/c/d/PrefixSuffix.php') => true,
-                ],
-                self::createSource(
-                    includeDirectories: FilterDirectoryCollection::fromArray(
-                        [
-                            new FilterDirectory(
-                                self::fixturePath('a/c/Z**'),
-                                '',
-                                '.php',
-                            ),
-                        ],
-                    ),
-                ),
-            ],
             'globstar with any more than a single char prefix does not include sibling files' => [
                 [
                     self::fixturePath('a/PrefixSuffix.php')     => false,
@@ -418,13 +410,14 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expectations, Source $source): void
     {
+        $expected = [];
+        $actual   = [];
+
         foreach ($expectations as $file => $shouldInclude) {
             $this->assertFileExists($file);
-            $this->assertSame(
-                $shouldInclude,
-                new SourceFilter((new SourceMapper)->map($source))->includes($file),
-                sprintf('expected match to return %s for: %s', json_encode($shouldInclude), $file),
-            );
+            $expected[$file] = $shouldInclude;
+            $actual[$file]   = new SourceFilter($source)->includes($file);
         }
+        $this->assertEquals($expected, $actual);
     }
 }

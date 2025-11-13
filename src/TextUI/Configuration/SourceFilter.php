@@ -9,6 +9,16 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function array_map;
+use function basename;
+use function dirname;
+use function preg_match;
+use function rtrim;
+use function sprintf;
+use function str_ends_with;
+use function str_starts_with;
+use Webmozart\Glob\Glob;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -17,35 +27,98 @@ namespace PHPUnit\TextUI\Configuration;
 final class SourceFilter
 {
     private static ?self $instance = null;
+    private Source $source;
 
     /**
-     * @var array<non-empty-string, true>
+     * @var list<array{FilterDirectory,string}>
      */
-    private readonly array $map;
+    private array $includeDirectoryRegexes;
+
+    /**
+     * @var list<array{FilterDirectory,string}>
+     */
+    private array $excludeDirectoryRegexes;
 
     public static function instance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new self(
-                (new SourceMapper)->map(
-                    Registry::get()->source(),
-                ),
-            );
+            $source         = Registry::get()->source();
+            self::$instance = new self($source);
+
+            return self::$instance;
         }
 
         return self::$instance;
     }
 
     /**
-     * @param array<non-empty-string, true> $map
+     * Convert the directory filter to a glob.
+     *
+     * To ensure that `foo/**` will match `foo/bar.php` we match both the
+     * globstar and the wildcard.
      */
-    public function __construct(array $map)
+    public static function toGlob(FilterDirectory $directory): string
     {
-        $this->map = $map;
+        $path = rtrim($directory->path(), '/');
+
+        return sprintf(
+            '{(%s)|(%s)}',
+            Glob::toRegEx(sprintf('%s/**/*', $path), 0, ''),
+            Glob::toRegEx(sprintf('%s/*', $path), 0, ''),
+        );
     }
 
+    public function __construct(Source $source)
+    {
+        $this->source                  = $source;
+        $this->includeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
+        {
+            return [$directory, self::toGlob($directory)];
+        }, $source->includeDirectories()->asArray());
+        $this->excludeDirectoryRegexes = array_map(static function (FilterDirectory $directory)
+        {
+            return [$directory, self::toGlob($directory)];
+        }, $source->excludeDirectories()->asArray());
+    }
+
+    /**
+     * @see https://docs.phpunit.de/en/12.4/configuration.html#the-include-element
+     */
     public function includes(string $path): bool
     {
-        return isset($this->map[$path]);
+        $included = false;
+        $dirPath  = rtrim(dirname($path), '/') . '/';
+        $filename = basename($path);
+
+        foreach ($this->source->includeFiles() as $file) {
+            if ($file->path() === $path) {
+                $included = true;
+            }
+        }
+
+        foreach ($this->includeDirectoryRegexes as [$directory, $directoryRegex]) {
+            if (preg_match($directoryRegex, $dirPath) && self::filenameMatches($directory, $filename)) {
+                $included = true;
+            }
+        }
+
+        foreach ($this->source->excludeFiles() as $file) {
+            if ($file->path() === $path) {
+                $included = false;
+            }
+        }
+
+        foreach ($this->excludeDirectoryRegexes as [$directory, $directoryRegex]) {
+            if (preg_match($directoryRegex, $dirPath) && self::filenameMatches($directory, $filename)) {
+                $included = false;
+            }
+        }
+
+        return $included;
+    }
+
+    private static function filenameMatches(FilterDirectory $directory, string $filename): bool
+    {
+        return str_starts_with($filename, $directory->prefix()) && str_ends_with($filename, $directory->suffix());
     }
 }
