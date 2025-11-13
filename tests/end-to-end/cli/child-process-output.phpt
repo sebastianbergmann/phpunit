@@ -9,8 +9,6 @@ if (!extension_loaded('pcntl')) {
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'testChildProcessOutput';
 $_SERVER['argv'][] = __DIR__ . '/../_files/ChildProcessTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
