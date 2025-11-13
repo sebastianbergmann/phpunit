@@ -39,7 +39,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
+          extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter, pcntl
           coverage: none
           tools: none
 
@@ -154,7 +154,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -226,7 +226,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -317,7 +317,7 @@ jobs:
         with:
           php-version: ${{ env.PHP_VERSION }}
           coverage: xdebug
-          extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter
+          extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter, pcntl
           ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -365,7 +365,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     steps:
@@ -422,7 +422,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     strategy:
