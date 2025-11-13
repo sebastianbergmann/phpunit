@@ -1,5 +1,10 @@
 --TEST--
 ShutdownHandler does not output when child process exits
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pcntl')) {
+    print 'skip: Extension pcntl must be loaded.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
