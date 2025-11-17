@@ -13,6 +13,7 @@ use function array_shift;
 use function count;
 use function is_array;
 use function sprintf;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
@@ -35,6 +36,9 @@ final class ConsecutiveParameterSets implements ParametersRule
     private array $applied                       = [];
     private int $numberOfConfiguredParameterSets = 0;
 
+    /**
+     * @throws Exception
+     */
     public function __construct(array $stack)
     {
         foreach ($stack as $parameters) {
