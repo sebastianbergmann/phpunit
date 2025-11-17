@@ -318,6 +318,127 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsSucceedsWhenMethodIsCalledConsecutiveWithExpectedParameters(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2);
+
+        $double->doSomethingElse(1);
+        $double->doSomethingElse(2);
+    }
+
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailedWhenMethodIsCalledConsecutiveWithOneWrongParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2);
+
+        $double->doSomethingElse(1);
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomethingElse" when invoked 2 times
+Parameter 0 for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(3): int does not match expected value.
+Failed asserting that 3 matches expected 2.
+EOT,
+            $double,
+            'doSomethingElse',
+            [3],
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailedWhenMethodIsCalledConsecutiveWithNotEnoughParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(3))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2);
+
+        $this->expectException(NoMoreParameterSetsConfiguredException::class);
+        $this->expectExceptionMessage('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
+
+        $double->doSomethingElse(1);
+        $double->doSomethingElse(2);
+        $double->doSomethingElse(3);
+    }
+
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailedWhenTooMuchParameterSetsAreGiven(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2, 3);
+
+        $double->doSomethingElse(1);
+        $double->doSomethingElse(2);
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomethingElse" when invoked 2 times.
+Too much parameter sets given, 2 from 3 expected parameter sets have been called.
+
+EOT,
+            $double,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderSucceedsWhenMethodIsCalledWithExpectedParameters(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInAnyOrder(1, 2);
+
+        $double->doSomethingElse(2);
+        $double->doSomethingElse(1);
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailedWhenMethodIsCalledWithOneWrongParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInAnyOrder(1, 2);
+
+        $double->doSomethingElse(3);
+        $double->doSomethingElse(1);
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomethingElse" when invoked 2 times.
+1 from 2 expected parameter sets were called, indexes [1] were not called.
+
+EOT,
+            $double,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailedWhenTooMuchParameterSetsAreGiven(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInAnyOrder(1, 2, 3);
+
+        $double->doSomethingElse(3);
+        $double->doSomethingElse(2);
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation failed for method name is "doSomethingElse" when invoked 2 times.
+2 from 3 expected parameter sets were called, indexes [0] were not called.
+
+EOT,
+            $double,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailedWhenMethodIsCalledConsecutiveWithNotEnoughParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->exactly(3))->method('doSomethingElse')->withParameterSetsInAnyOrder(1, 2);
+
+        $this->expectException(NoMoreParameterSetsConfiguredException::class);
+        $this->expectExceptionMessage('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
+
+        $double->doSomethingElse(1);
+        $double->doSomethingElse(2);
+        $double->doSomethingElse(3);
+    }
+
     /**
      * With <code>$double->expects($this->once())->method('one')->id($id);</code>,
      * we configure an expectation that one() is called once. This expectation is given the ID $id.
