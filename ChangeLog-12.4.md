@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.4 release series are documented in this fi
 ### Fixed
 
 * [#6408](https://github.com/sebastianbergmann/phpunit/issues/6408): Exception in a data provider method leads to internal PHPUnit error
+* [#6410](https://github.com/sebastianbergmann/phpunit/issues/6410): Test runner's shutdown handler is called in system-under-test's child process
 
 ## [12.4.3] - 2025-11-13
 
