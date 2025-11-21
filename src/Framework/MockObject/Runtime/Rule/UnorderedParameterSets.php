@@ -15,7 +15,6 @@ use function count;
 use function implode;
 use function is_array;
 use function sprintf;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
@@ -39,9 +38,7 @@ final class UnorderedParameterSets implements ParametersRule
     private int $numberOfConfiguredParameterSets = 0;
 
     /**
-     * @param array<mixed> $parameters
-     *
-     * @throws Exception
+     * @param list<Parameters> $stack
      */
     public function __construct(array $stack)
     {
