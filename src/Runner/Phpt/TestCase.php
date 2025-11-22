@@ -70,19 +70,27 @@ use Throwable;
  *
  * @see https://qa.php.net/phpt_details.php
  */
-final readonly class TestCase implements Reorderable, SelfDescribing, Test
+final class TestCase implements Reorderable, SelfDescribing, Test
 {
     /**
      * @var non-empty-string
      */
-    private string $filename;
+    private readonly string $filename;
+    private bool $passed = false;
+
+    /**
+     * @var positive-int
+     */
+    private int $repeatAttemptNumber;
 
     /**
      * @param non-empty-string $filename
+     * @param positive-int     $repeatAttemptNumber
      */
-    public function __construct(string $filename)
+    public function __construct(string $filename, int $repeatAttemptNumber = 1)
     {
-        $this->filename = $filename;
+        $this->filename            = $filename;
+        $this->repeatAttemptNumber = $repeatAttemptNumber;
     }
 
     public function count(): int
@@ -242,6 +250,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $emitter->testPassed($this->valueObjectForEvents());
         }
 
+        $this->passed = $passed;
+
         $this->runClean($sections, CodeCoverage::instance()->isActive());
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
@@ -253,6 +263,11 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     public function getName(): string
     {
         return $this->toString();
+    }
+
+    public function passed(): bool
+    {
+        return $this->passed;
     }
 
     /**
@@ -289,7 +304,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      */
     public function valueObjectForEvents(): Phpt
     {
-        return new Phpt($this->filename);
+        return new Phpt($this->filename, $this->repeatAttemptNumber);
     }
 
     /**

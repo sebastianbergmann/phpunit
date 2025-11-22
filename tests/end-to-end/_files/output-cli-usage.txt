@@ -117,6 +117,7 @@ Reporting:
   --testdox-summary                    Repeat TestDox output for tests with errors, failures, or issues
 
   --debug                              Replace default progress and result output with debugging information
+  --repeat <times>                     Runs the test(s) repeatedly
   --with-telemetry                     Include telemetry information in debugging information output
 
 Logging:

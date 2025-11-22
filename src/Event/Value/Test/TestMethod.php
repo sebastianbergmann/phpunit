@@ -40,21 +40,28 @@ final readonly class TestMethod extends Test
     private TestDataCollection $testData;
 
     /**
+     * @var positive-int
+     */
+    private int $repeatAttemptNumber;
+
+    /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      * @param non-empty-string $file
      * @param non-negative-int $line
+     * @param positive-int     $repeatAttemptNumber
      */
-    public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData)
+    public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData, int $repeatAttemptNumber = 1)
     {
         parent::__construct($file);
 
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->line       = $line;
-        $this->testDox    = $testDox;
-        $this->metadata   = $metadata;
-        $this->testData   = $testData;
+        $this->className           = $className;
+        $this->methodName          = $methodName;
+        $this->line                = $line;
+        $this->testDox             = $testDox;
+        $this->metadata            = $metadata;
+        $this->testData            = $testData;
+        $this->repeatAttemptNumber = $repeatAttemptNumber;
     }
 
     /**
@@ -129,7 +136,13 @@ final readonly class TestMethod extends Test
     public function name(): string
     {
         if (!$this->testData->hasDataFromDataProvider()) {
-            return $this->methodName;
+            $name = $this->methodName;
+
+            if ($this->repeatAttemptNumber !== 1) {
+                $name .= " (repeat attempt #{$this->repeatAttemptNumber})";
+            }
+
+            return $name;
         }
 
         $dataSetName = $this->testData->dataFromDataProvider()->dataSetName();
@@ -146,6 +159,12 @@ final readonly class TestMethod extends Test
             );
         }
 
-        return $this->methodName . $dataSetName;
+        $name = $this->methodName . $dataSetName;
+
+        if ($this->repeatAttemptNumber !== 1) {
+            $name .= " (repeat attempt #{$this->repeatAttemptNumber})";
+        }
+
+        return $name;
     }
 }

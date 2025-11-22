@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_map;
 use function array_merge;
 use function array_pop;
 use function array_reverse;
@@ -21,6 +22,7 @@ use function implode;
 use function is_callable;
 use function is_file;
 use function is_subclass_of;
+use function range;
 use function sprintf;
 use function str_ends_with;
 use function str_starts_with;
@@ -37,6 +39,7 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
+use PHPUnit\Runner\Phpt\RepeatTestSuite as PhptRepeatTestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
@@ -96,8 +99,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
+     * @param positive-int              $repeatTimes
      */
-    public static function fromClassReflector(ReflectionClass $class, array $groups = []): static
+    public static function fromClassReflector(ReflectionClass $class, array $groups = [], int $repeatTimes = 1): static
     {
         $testSuite = new static($class->getName());
 
@@ -118,7 +122,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 continue;
             }
 
-            $testSuite->addTestMethod($class, $method, $groups);
+            $testSuite->addTestMethod($class, $method, $groups, $repeatTimes);
         }
 
         if ($testSuite->isEmpty()) {
@@ -188,10 +192,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @param ReflectionClass<TestCase> $testClass
      * @param list<non-empty-string>    $groups
+     * @param positive-int              $repeatTimes
      *
      * @throws Exception
      */
-    public function addTestSuite(ReflectionClass $testClass, array $groups = []): void
+    public function addTestSuite(ReflectionClass $testClass, array $groups = [], int $repeatTimes = 1): void
     {
         if ($testClass->isAbstract()) {
             throw new Exception(
@@ -212,7 +217,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass, $groups), $groups);
+        $this->addTest(self::fromClassReflector($testClass, $groups, $repeatTimes), $groups);
     }
 
     /**
@@ -224,18 +229,31 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * leaving the current test run untouched.
      *
      * @param list<non-empty-string> $groups
+     * @param positive-int           $repeatTimes
      *
      * @throws Exception
      */
-    public function addTestFile(string $filename, array $groups = []): void
+    public function addTestFile(string $filename, array $groups = [], int $repeatTimes = 1): void
     {
         try {
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
-                $this->addTest(new PhptTestCase($filename));
+                if ($repeatTimes === 1) {
+                    $test = new PhptTestCase($filename);
+                } else {
+                    $test = new PhptRepeatTestSuite(
+                        array_map(
+                            static fn () => new PhptTestCase($filename),
+                            range(1, $repeatTimes),
+                        ),
+                    );
+                }
+
+                $this->addTest($test);
             } else {
                 $this->addTestSuite(
                     (new TestSuiteLoader)->load($filename),
                     $groups,
+                    $repeatTimes,
                 );
             }
         } catch (RunnerException $e) {
@@ -249,13 +267,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * Wrapper for addTestFile() that adds multiple test files.
      *
      * @param iterable<string> $fileNames
+     * @param positive-int     $repeatTimes
      *
      * @throws Exception
      */
-    public function addTestFiles(iterable $fileNames): void
+    public function addTestFiles(iterable $fileNames, int $repeatTimes = 1): void
     {
         foreach ($fileNames as $filename) {
-            $this->addTestFile((string) $filename);
+            $this->addTestFile((string) $filename, [], $repeatTimes);
         }
     }
 
@@ -503,16 +522,17 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
+     * @param positive-int              $repeatTimes
      *
      * @throws Exception
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups): void
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups, int $repeatTimes): void
     {
         $className  = $class->getName();
         $methodName = $method->getName();
 
         try {
-            $test = (new TestBuilder)->build($class, $methodName, $groups);
+            $test = (new TestBuilder)->build($class, $methodName, $groups, $repeatTimes);
         } catch (InvalidDataProviderException $e) {
             if ($e->getProviderLabel() === null) {
                 $message = sprintf(
@@ -550,7 +570,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite) {
             $test->setDependencies(
                 Dependencies::dependencies($class->getName(), $methodName),
             );

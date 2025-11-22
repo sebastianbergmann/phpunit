@@ -16,6 +16,22 @@ namespace PHPUnit\Event\Code;
  */
 final readonly class Phpt extends Test
 {
+    /**
+     * @var positive-int
+     */
+    private int $repeatAttemptNumber;
+
+    /**
+     * @param non-empty-string $file
+     * @param positive-int     $repeatAttemptNumber
+     */
+    public function __construct(string $file, int $repeatAttemptNumber = 1)
+    {
+        parent::__construct($file);
+
+        $this->repeatAttemptNumber = $repeatAttemptNumber;
+    }
+
     public function isPhpt(): true
     {
         return true;
@@ -26,7 +42,7 @@ final readonly class Phpt extends Test
      */
     public function id(): string
     {
-        return $this->file();
+        return $this->name();
     }
 
     /**
@@ -34,6 +50,10 @@ final readonly class Phpt extends Test
      */
     public function name(): string
     {
-        return $this->file();
+        if ($this->repeatAttemptNumber === 1) {
+            return $this->file();
+        }
+
+        return $this->file() . " (repeat attempt #{$this->repeatAttemptNumber})";
     }
 }

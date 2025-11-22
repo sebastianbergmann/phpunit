@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function array_merge;
 use function assert;
+use function range;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -36,10 +37,11 @@ final readonly class TestBuilder
      * @param ReflectionClass<TestCase> $theClass
      * @param non-empty-string          $methodName
      * @param list<non-empty-string>    $groups
+     * @param positive-int              $repeatTimes
      *
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = []): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $repeatTimes = 1): Test
     {
         $className = $theClass->getName();
 
@@ -56,37 +58,20 @@ final readonly class TestBuilder
         }
 
         if ($data !== null) {
-            return $this->buildDataProviderTestSuite(
-                $methodName,
-                $className,
-                $data,
-                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-                $this->shouldGlobalStateBePreserved($className, $methodName),
-                $this->backupSettings($className, $methodName),
-                $groups,
-            );
+            return $this->buildDataProviderTestSuite($methodName, $className, $data, $groups, $repeatTimes);
         }
 
-        $test = new $className($methodName);
-
-        $this->configureTestCase(
-            $test,
-            $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-            $this->shouldGlobalStateBePreserved($className, $methodName),
-            $this->backupSettings($className, $methodName),
-        );
-
-        return $test;
+        return $this->createTest($className, $methodName, $repeatTimes);
     }
 
     /**
-     * @param non-empty-string                                                                                                                                                  $methodName
-     * @param class-string<TestCase>                                                                                                                                            $className
-     * @param array<ProvidedData>                                                                                                                                               $data
-     * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
-     * @param list<non-empty-string>                                                                                                                                            $groups
+     * @param non-empty-string       $methodName
+     * @param class-string<TestCase> $className
+     * @param array<ProvidedData>    $data
+     * @param list<non-empty-string> $groups
+     * @param positive-int           $repeatTimes
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, array $groups, int $repeatTimes = 1): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
@@ -98,21 +83,52 @@ final readonly class TestBuilder
         );
 
         foreach ($data as $_dataName => $_data) {
-            $_test = new $className($methodName);
+            $_test = $this->createTest($className, $methodName, $repeatTimes);
 
             $_test->setData($_dataName, $_data->value());
-
-            $this->configureTestCase(
-                $_test,
-                $runTestInSeparateProcess,
-                $preserveGlobalState,
-                $backupSettings,
-            );
 
             $dataProviderTestSuite->addTest($_test, $groups);
         }
 
         return $dataProviderTestSuite;
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param positive-int           $repeatTimes
+     */
+    private function createTest(string $className, string $methodName, int $repeatTimes): RepeatTestSuite|TestCase
+    {
+        if ($repeatTimes === 1) {
+            $test = new $className($methodName);
+
+            $this->configureTestCase(
+                $test,
+                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+                $this->shouldGlobalStateBePreserved($className, $methodName),
+                $this->backupSettings($className, $methodName),
+            );
+        } else {
+            $tests = [];
+
+            foreach (range(1, $repeatTimes) as $i) {
+                $_test = new $className($methodName, $repeatTimes, $i);
+
+                $this->configureTestCase(
+                    $_test,
+                    $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+                    $this->shouldGlobalStateBePreserved($className, $methodName),
+                    $this->backupSettings($className, $methodName),
+                );
+
+                $tests[] = $_test;
+            }
+
+            $test = new RepeatTestSuite($tests);
+        }
+
+        return $test;
     }
 
     /**

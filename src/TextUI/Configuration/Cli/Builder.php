@@ -158,6 +158,7 @@ final class Builder
         'log-events-verbose-text=',
         'version',
         'debug',
+        'repeat=',
         'with-telemetry',
         'extension=',
     ];
@@ -312,6 +313,7 @@ final class Builder
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
         $debug                             = false;
+        $repeatTimes                       = 1;
         $withTelemetry                     = false;
         $extensions                        = [];
 
@@ -1211,6 +1213,17 @@ final class Builder
 
                     break;
 
+                case '--repeat':
+                    $repeatTimes = (int) $option[1];
+
+                    if ($repeatTimes < 1) {
+                        throw new Exception(
+                            'The value for the --repeat option must be a positive integer',
+                        );
+                    }
+
+                    break;
+
                 case '--with-telemetry':
                     $withTelemetry = true;
 
@@ -1363,6 +1376,7 @@ final class Builder
             $debug,
             $withTelemetry,
             $extensions,
+            $repeatTimes,
         );
     }
 
