@@ -14,6 +14,9 @@ use function file_put_contents;
 use function sprintf;
 use function sys_get_temp_dir;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Telemetry\MemoryMeter;
+use PHPUnit\Event\Telemetry\MemoryUsage;
+use PHPUnit\Event\Telemetry\SystemMemoryMeter;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -52,16 +55,25 @@ use SebastianBergmann\Timer\Timer;
  */
 final class CodeCoverage
 {
+    /**
+     * @var array<string,int>
+     */
+    private const array SIZES = [
+        'GB' => 1073741824,
+        'MB' => 1048576,
+        'KB' => 1024,
+    ];
     private static ?self $instance                                      = null;
     private ?\SebastianBergmann\CodeCoverage\CodeCoverage $codeCoverage = null;
 
     /**
      * @phpstan-ignore property.internalClass
      */
-    private ?Driver $driver  = null;
-    private bool $collecting = false;
-    private ?TestCase $test  = null;
-    private ?Timer $timer    = null;
+    private ?Driver $driver                = null;
+    private bool $collecting               = false;
+    private ?TestCase $test                = null;
+    private ?Timer $timer                  = null;
+    private ?MemoryUsage $memoryStartUsage = null;
 
     public static function instance(): self
     {
@@ -448,6 +460,7 @@ final class CodeCoverage
         );
 
         $this->timer()->start();
+        $this->memoryStartUsage = $this->memoryMeter()->memoryUsage();
     }
 
     /**
@@ -457,8 +470,9 @@ final class CodeCoverage
     {
         $printer->print(
             sprintf(
-                "done [%s]\n",
+                "done [Time: %s, Memory: %s]\n",
                 $this->timer()->stop()->asString(),
+                $this->bytesToString($this->memoryMeter()->memoryUsage()->diff($this->memoryStartUsage)->bytes()),
             ),
         );
     }
@@ -470,8 +484,9 @@ final class CodeCoverage
     {
         $printer->print(
             sprintf(
-                "failed [%s]\n%s\n",
+                "failed [Time: %s, Memory: %s]\n%s\n",
                 $this->timer()->stop()->asString(),
+                $this->bytesToString($this->memoryMeter()->memoryUsage()->diff($this->memoryStartUsage)->bytes()),
                 $e->getMessage(),
             ),
         );
@@ -484,5 +499,23 @@ final class CodeCoverage
         }
 
         return $this->timer;
+    }
+
+    private function memoryMeter(): MemoryMeter
+    {
+        return new SystemMemoryMeter;
+    }
+
+    private function bytesToString(int $bytes): string
+    {
+        foreach (self::SIZES as $unit => $value) {
+            if ($bytes >= $value) {
+                return sprintf('%.2f %s', $bytes / $value, $unit);
+            }
+        }
+
+        // @codeCoverageIgnoreStart
+        return $bytes . ' byte' . ($bytes !== 1 ? 's' : '');
+        // @codeCoverageIgnoreEnd
     }
 }
