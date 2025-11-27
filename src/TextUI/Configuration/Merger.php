@@ -371,6 +371,7 @@ final readonly class Merger
         $coverageTextShowUncoveredFiles = false;
         $coverageTextShowOnlySummary    = false;
         $coverageXml                    = null;
+        $coverageXmlIncludeSource       = true;
         $coverageFromXmlConfiguration   = true;
 
         if ($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage()) {
@@ -460,6 +461,12 @@ final readonly class Merger
             $coverageXml = $cliConfiguration->coverageXml();
         } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasXml()) {
             $coverageXml = $xmlConfiguration->codeCoverage()->xml()->target()->path();
+        }
+
+        if ($cliConfiguration->hasExcludeSourceFromXmlCoverage()) {
+            $coverageXmlIncludeSource = !$cliConfiguration->excludeSourceFromXmlCoverage();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasXml()) {
+            $coverageXmlIncludeSource = $xmlConfiguration->codeCoverage()->xml()->includeSource();
         }
 
         if ($cliConfiguration->hasBackupGlobals()) {
@@ -952,6 +959,7 @@ final readonly class Merger
             $coverageTextShowUncoveredFiles,
             $coverageTextShowOnlySummary,
             $coverageXml,
+            $coverageXmlIncludeSource,
             $pathCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,

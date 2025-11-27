@@ -542,6 +542,7 @@ final readonly class Loader
                         (string) $this->parseStringAttribute($element, 'outputDirectory'),
                     ),
                 ),
+                $this->parseBooleanAttribute($element, 'includeSource', true),
             );
         }
 

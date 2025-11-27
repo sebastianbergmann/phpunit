@@ -447,6 +447,26 @@ final class BuilderTest extends TestCase
         $configuration->coverageXml();
     }
 
+    #[TestDox('--exclude-source-from-xml-coverage=')]
+    public function testExcludeSourceFromXmlCoverage(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--exclude-source-from-xml-coverage']);
+
+        $this->assertTrue($configuration->hasExcludeSourceFromXmlCoverage());
+        $this->assertTrue($configuration->excludeSourceFromXmlCoverage());
+    }
+
+    public function testExcludeSourceFromXmlCoverageMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasExcludeSourceFromXmlCoverage());
+
+        $this->expectException(Exception::class);
+
+        $configuration->excludeSourceFromXmlCoverage();
+    }
+
     #[TestDox('--path-coverage')]
     public function testPathCoverage(): void
     {

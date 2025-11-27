@@ -58,6 +58,7 @@ final class Builder
         'only-summary-for-coverage-text',
         'show-uncovered-for-coverage-text',
         'coverage-xml=',
+        'exclude-source-from-xml-coverage',
         'path-coverage',
         'disallow-test-output',
         'display-all-issues',
@@ -216,6 +217,7 @@ final class Builder
         $coverageTextShowUncoveredFiles    = null;
         $coverageTextShowOnlySummary       = null;
         $coverageXml                       = null;
+        $excludeSourceFromXmlCoverage      = null;
         $pathCoverage                      = null;
         $defaultTimeLimit                  = null;
         $disableCodeCoverageIgnore         = null;
@@ -425,6 +427,11 @@ final class Builder
 
                 case '--coverage-xml':
                     $coverageXml = $option[1];
+
+                    break;
+
+                case '--exclude-source-from-xml-coverage':
+                    $excludeSourceFromXmlCoverage = true;
 
                     break;
 
@@ -1272,6 +1279,7 @@ final class Builder
             $coverageTextShowUncoveredFiles,
             $coverageTextShowOnlySummary,
             $coverageXml,
+            $excludeSourceFromXmlCoverage,
             $pathCoverage,
             $warmCoverageCache,
             $defaultTimeLimit,
