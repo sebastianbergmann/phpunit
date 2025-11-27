@@ -406,7 +406,7 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'PHPUnit XML');
 
             try {
-                $writer = new XmlReport(Version::id());
+                $writer = new XmlReport(Version::id(), $configuration->coverageXmlIncludeSource());
                 $writer->process($this->codeCoverage(), $configuration->coverageXml());
 
                 $this->codeCoverageGenerationSucceeded($printer);
