@@ -203,6 +203,8 @@ final class CodeCoverage
         );
 
         $this->collecting = true;
+
+        $this->timer()->start();
     }
 
     public function stop(bool $append, null|false|TargetCollection $covers = null, ?TargetCollection $uses = null): void
@@ -210,6 +212,8 @@ final class CodeCoverage
         if (!$this->collecting) {
             return;
         }
+
+        $time = $this->timer()->stop()->asSeconds();
 
         $status = TestStatus::unknown();
 
@@ -251,7 +255,7 @@ final class CodeCoverage
             }
         }
 
-        $this->codeCoverage->stop($append, $status, $covers, $uses);
+        $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
 
         $this->test       = null;
         $this->collecting = false;
