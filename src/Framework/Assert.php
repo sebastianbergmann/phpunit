@@ -23,6 +23,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
+use PHPUnit\Framework\Constraint\Dictionary\IsIdenticalKeysValues;
 use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
@@ -1619,6 +1620,21 @@ abstract class Assert
             new LogicalNot(
                 new IsIdentical($expected),
             ),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays have the same keys and values for those keys.
+     * The order of the keys is ignored.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertSameDictionaryKeysValues(mixed $expected, mixed $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new IsIdenticalKeysValues($expected),
             $message,
         );
     }
