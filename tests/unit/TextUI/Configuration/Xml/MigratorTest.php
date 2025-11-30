@@ -30,6 +30,10 @@ final class MigratorTest extends TestCase
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-relative-schema-path.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-relative-schema-path.xml',
             ],
+            'No Schema Location' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-no-schema-location.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-no-schema-location.xml',
+            ],
             'Issue 5859' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-issue-5859.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-issue-5859.xml',
