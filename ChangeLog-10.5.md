@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 ### Changed
 
 * [#6338](https://github.com/sebastianbergmann/phpunit/pull/6338): Removed code from `PHPUnit\Runner\TestSuiteSorter` that was only used in the tests for this class
+* Updated list of deprecated PHP configuration settings for PHP 8.4, PHP 8.5, and PHP 8.6
 
 ## [10.5.58] - 2025-09-28
 
