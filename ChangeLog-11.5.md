@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Fixed
 
 * [#6408](https://github.com/sebastianbergmann/phpunit/issues/6408): Exception in a data provider method leads to internal PHPUnit error
+* [#6426](https://github.com/sebastianbergmann/phpunit/pull/6426): Fix migration of configuration without schema location
 
 ## [11.5.44] - 2025-11-13
 
