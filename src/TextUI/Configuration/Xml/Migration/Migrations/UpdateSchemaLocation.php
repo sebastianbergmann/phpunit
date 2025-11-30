@@ -31,7 +31,7 @@ final readonly class UpdateSchemaLocation implements Migration
 
         assert($root instanceof DOMElement);
 
-        $existingSchemaLocation = $root->getAttributeNodeNS(self::NAMESPACE_URI, self::LOCAL_NAME_SCHEMA_LOCATION)->value;
+        $existingSchemaLocation = $root->getAttributeNS(self::NAMESPACE_URI, self::LOCAL_NAME_SCHEMA_LOCATION);
 
         if (str_contains($existingSchemaLocation, '://') === false) { // If the current schema location is a relative path, don't update it
             return;
