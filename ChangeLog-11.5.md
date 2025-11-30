@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ## [11.5.45] - 2025-MM-DD
 
+### Changed
+
+* Updated list of deprecated PHP configuration settings for PHP 8.6
+
 ### Fixed
 
 * [#6408](https://github.com/sebastianbergmann/phpunit/issues/6408): Exception in a data provider method leads to internal PHPUnit error
@@ -20,6 +24,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 ### Changed
 
 * Skipped tests alone no longer lead to a yellow background for the test result summary
+* Updated list of deprecated PHP configuration settings for PHP 8.4 and PHP 8.5
 
 ### Fixed
 
