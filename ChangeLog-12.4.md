@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.4 release series are documented in this fi
 
 ## [12.4.5] - 2025-MM-DD
 
+### Changed
+
+* Updated list of deprecated PHP configuration settings for PHP 8.4, PHP 8.5, and PHP 8.6
+
 ### Fixed
 
 * [#6426](https://github.com/sebastianbergmann/phpunit/pull/6426): Fix migration of configuration without schema location
