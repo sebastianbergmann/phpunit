@@ -291,6 +291,9 @@
             </fileset>
         </copy>
 
+        <!-- @see https://github.com/nikic/PHP-Parser/pull/1133 -->
+        <replace file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/PrettyPrinter/Standard.php" token="!== (double)" value="!== (float)"/>
+
         <copy file="${basedir}/vendor/phar-io/manifest/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-manifest/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/phar-io-manifest">
             <fileset dir="${basedir}/vendor/phar-io/manifest/src">
