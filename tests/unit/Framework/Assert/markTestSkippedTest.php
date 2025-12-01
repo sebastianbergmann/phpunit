@@ -27,4 +27,14 @@ final class markTestSkippedTest extends TestCase
 
         $this->markTestSkipped($message);
     }
+
+    public function testStaticMarksTestAsSkipped(): void
+    {
+        $message = 'static message';
+
+        $this->expectException(SkippedWithMessageException::class);
+        $this->expectExceptionMessage($message);
+
+        Assert::markTestSkipped($message);
+    }
 }
