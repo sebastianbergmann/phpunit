@@ -337,6 +337,7 @@
             <arg value="add-prefix" />
             <arg value="--no-ansi" />
             <arg value="--force" />
+            <arg value="--stop-on-failure" />
             <arg value="--config" />
             <arg path="${basedir}/build/config/php-scoper.php" />
             <arg value="--no-interaction" />
