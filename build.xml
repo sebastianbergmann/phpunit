@@ -412,6 +412,10 @@
             <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
         </exec>
 
+        <exec executable="${basedir}/build/scripts/check-scoped-phar.php" taskname="check-scoped-phar" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
+        </exec>
+
         <copy file="${basedir}/build/templates/binary-phar-autoload.php.in" tofile="${basedir}/build/tmp/binary-phar-autoload.php"/>
         <replace file="${basedir}/build/tmp/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
 
@@ -433,6 +437,10 @@
         </exec>
 
         <chmod file="${basedir}/build/artifacts/phpunit-${_version}.phar" perm="ugo+rx"/>
+
+        <exec executable="${basedir}/build/scripts/check-scoped-phar.php" taskname="check-scoped-phar" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
+        </exec>
 
         <delete dir="${basedir}/build/tmp"/>
     </target>
