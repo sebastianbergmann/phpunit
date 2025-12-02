@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture\MockObject;
 class ExtendableClassWithPropertyWithSetHook
 {
     public string $property {
-        set (string $value) {
+        set(string $value) {
             $this->property = $value;
         }
     }
