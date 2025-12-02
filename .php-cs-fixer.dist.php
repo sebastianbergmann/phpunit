@@ -27,7 +27,6 @@ $finder = PhpCsFixer\Finder::create()
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
-    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->setRules([
         'align_multiline_comment' => true,
