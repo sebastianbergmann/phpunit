@@ -91,12 +91,11 @@ These businesses support Sebastian Bergmann's work on PHPUnit:
             <td style="width: 30%; vertical-align: middle;"><a href="https://www.lambdatest.com/"><img alt="LambdaTest" src=".github/img/lambdatest.svg" style="width: 200px;"/></a></td>
         </tr>
         <tr>
-            <td style="width: 30%; vertical-align: middle;"><a href="https://roave.com/"><img alt="Roave" src=".github/img/roave.svg" style="width: 200px;"/></a></td>
             <td style="width: 30%; vertical-align: middle;"><a href="https://testmo.com/"><img alt="Testmo GmbH" src=".github/img/testmo.svg" style="width: 200px;"/></a></td>
             <td style="width: 30%; vertical-align: middle;"><a href="https://tideways.com/"><img alt="Tideways GmbH" src=".github/img/tideways.svg" style="width: 200px;"/></a></td>
+            <td style="width: 30%; vertical-align: middle;"><a href="https://typo3.com/"><img alt="TYPO3 GmbH" src=".github/img/typo3.svg" style="width: 200px;"/></a></td>
         </tr>
         <tr>
-            <td style="width: 30%; vertical-align: middle;"><a href="https://typo3.com/"><img alt="TYPO3 GmbH" src=".github/img/typo3.svg" style="width: 200px;"/></a></td>
             <td style="width: 30%; vertical-align: middle;"><a href="https://vema-eg.de/"><img alt="VEMA Versicherungsmakler Genossenschaft eG" src=".github/img/vema.svg" style="width: 200px;"/></a></td>
         </tr>
     </tbody>
