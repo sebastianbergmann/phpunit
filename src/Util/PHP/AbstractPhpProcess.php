@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\PHP;
 
 use const PHP_BINARY;
-use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
 use function assert;
@@ -182,14 +181,6 @@ abstract class AbstractPhpProcess
         }
 
         $command = array_merge($command, $this->settingsToParameters($settings));
-
-        if (PHP_SAPI === 'phpdbg') {
-            $command[] = '-qrr';
-
-            if (!$file) {
-                $command[] = 's=';
-            }
-        }
 
         if ($file) {
             $command[] = '-f';
