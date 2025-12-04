@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\PHP;
 
 use const PHP_BINARY;
-use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
 use function array_values;
@@ -205,14 +204,6 @@ final readonly class DefaultJobRunner extends JobRunner
         }
 
         $command = array_merge($command, $this->settingsToParameters(array_values($phpSettings)));
-
-        if (PHP_SAPI === 'phpdbg') {
-            $command[] = '-qrr';
-
-            if ($file === null) {
-                $command[] = 's=';
-            }
-        }
 
         if ($file !== null) {
             $command[] = '-f';

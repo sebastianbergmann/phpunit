@@ -175,7 +175,7 @@ interface Emitter
     /**
      * @param non-empty-string $message
      */
-    public function testTriggeredPhpunitNotice(?Code\Test $test, string $message): void;
+    public function testTriggeredPhpunitNotice(Code\Test $test, string $message): void;
 
     /**
      * @param non-empty-string $message
