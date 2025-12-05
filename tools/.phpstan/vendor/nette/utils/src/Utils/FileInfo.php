@@ -19,7 +19,7 @@ use const DIRECTORY_SEPARATOR;
  */
 final class FileInfo extends \SplFileInfo
 {
-	private string $relativePath;
+	private readonly string $relativePath;
 
 
 	public function __construct(string $file, string $relativePath = '')

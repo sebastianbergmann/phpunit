@@ -179,6 +179,31 @@ final class Iterables
 
 
 	/**
+	 * Creates a repeatable iterator from a factory function.
+	 * The factory is called every time the iterator is iterated.
+	 * @template K
+	 * @template V
+	 * @param  callable(): iterable<K, V>  $factory
+	 * @return \IteratorAggregate<K, V>
+	 */
+	public static function repeatable(callable $factory): \IteratorAggregate
+	{
+		return new class ($factory) implements \IteratorAggregate {
+			public function __construct(
+				private $factory,
+			) {
+			}
+
+
+			public function getIterator(): \Iterator
+			{
+				return Iterables::toIterator(($this->factory)());
+			}
+		};
+	}
+
+
+	/**
 	 * Wraps around iterator and caches its keys and values during iteration.
 	 * This allows the data to be re-iterated multiple times.
 	 * @template K
@@ -186,7 +211,7 @@ final class Iterables
 	 * @param  iterable<K, V>  $iterable
 	 * @return \IteratorAggregate<K, V>
 	 */
-	public static function memoize(iterable $iterable): iterable
+	public static function memoize(iterable $iterable): \IteratorAggregate
 	{
 		return new class (self::toIterator($iterable)) implements \IteratorAggregate {
 			public function __construct(

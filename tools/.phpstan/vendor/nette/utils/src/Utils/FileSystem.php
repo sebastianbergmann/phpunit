@@ -23,7 +23,7 @@ final class FileSystem
 	 * Creates a directory if it does not exist, including parent directories.
 	 * @throws Nette\IOException  on error occurred
 	 */
-	public static function createDir(string $dir, int $mode = 0777): void
+	public static function createDir(string $dir, int $mode = 0o777): void
 	{
 		if (!is_dir($dir) && !@mkdir($dir, $mode, recursive: true) && !is_dir($dir)) { // @ - dir may already exist
 			throw new Nette\IOException(sprintf(
@@ -211,7 +211,7 @@ final class FileSystem
 	 * Writes the string to a file.
 	 * @throws Nette\IOException  on error occurred
 	 */
-	public static function write(string $file, string $content, ?int $mode = 0666): void
+	public static function write(string $file, string $content, ?int $mode = 0o666): void
 	{
 		static::createDir(dirname($file));
 		if (@file_put_contents($file, $content) === false) { // @ is escalated to exception
@@ -238,7 +238,7 @@ final class FileSystem
 	 * Recursively traverses and sets permissions on the entire contents of the directory as well.
 	 * @throws Nette\IOException  on error occurred
 	 */
-	public static function makeWritable(string $path, int $dirMode = 0777, int $fileMode = 0666): void
+	public static function makeWritable(string $path, int $dirMode = 0o777, int $fileMode = 0o666): void
 	{
 		if (is_file($path)) {
 			if (!@chmod($path, $fileMode)) { // @ is escalated to exception

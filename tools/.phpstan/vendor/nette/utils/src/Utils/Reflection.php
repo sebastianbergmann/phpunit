@@ -11,7 +11,7 @@ namespace Nette\Utils;
 
 use Nette;
 use function constant, current, defined, end, explode, file_get_contents, implode, ltrim, next, ord, strrchr, strtolower, substr;
-use const PHP_VERSION_ID, T_AS, T_CLASS, T_COMMENT, T_CURLY_OPEN, T_DOC_COMMENT, T_DOLLAR_OPEN_CURLY_BRACES, T_ENUM, T_INTERFACE, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAMESPACE, T_NS_SEPARATOR, T_STRING, T_TRAIT, T_USE, T_WHITESPACE, TOKEN_PARSE;
+use const T_AS, T_CLASS, T_COMMENT, T_CURLY_OPEN, T_DOC_COMMENT, T_DOLLAR_OPEN_CURLY_BRACES, T_ENUM, T_INTERFACE, T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_NAMESPACE, T_NS_SEPARATOR, T_STRING, T_TRAIT, T_USE, T_WHITESPACE, TOKEN_PARSE;
 
 
 /**
@@ -28,7 +28,7 @@ final class Reflection
 	}
 
 
-	/** @deprecated use Nette\Utils\Validators::isClassKeyword() */
+	#[\Deprecated('use Nette\Utils\Validators::isClassKeyword()')]
 	public static function isClassKeyword(string $name): bool
 	{
 		return Validators::isClassKeyword($name);
@@ -137,9 +137,7 @@ final class Reflection
 		} elseif ($ref instanceof \ReflectionMethod) {
 			return $ref->getDeclaringClass()->name . '::' . $ref->name . '()';
 		} elseif ($ref instanceof \ReflectionFunction) {
-			return PHP_VERSION_ID >= 80200 && $ref->isAnonymous()
-				? '{closure}()'
-				: $ref->name . '()';
+			return $ref->isAnonymous() ? '{closure}()' : $ref->name . '()';
 		} elseif ($ref instanceof \ReflectionProperty) {
 			return self::getPropertyDeclaringClass($ref)->name . '::$' . $ref->name;
 		} elseif ($ref instanceof \ReflectionParameter) {
@@ -241,7 +239,7 @@ final class Reflection
 				case T_CLASS:
 				case T_INTERFACE:
 				case T_TRAIT:
-				case PHP_VERSION_ID < 80100 ? T_CLASS : T_ENUM:
+				case T_ENUM:
 					if ($name = self::fetch($tokens, T_STRING)) {
 						$class = $namespace . $name;
 						$classLevel = $level + 1;

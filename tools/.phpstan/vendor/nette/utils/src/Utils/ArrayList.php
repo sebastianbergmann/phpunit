@@ -21,8 +21,6 @@ use function array_slice, array_splice, count, is_int;
  */
 class ArrayList implements \ArrayAccess, \Countable, \IteratorAggregate
 {
-	use Nette\SmartObject;
-
 	private array $list = [];
 
 
