@@ -1217,6 +1217,7 @@
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[!$file]]></code>
+      <code><![CDATA[!$file]]></code>
       <code><![CDATA[$file]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
