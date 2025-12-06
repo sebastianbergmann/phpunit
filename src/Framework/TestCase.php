@@ -1248,6 +1248,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $partialMock = $mockBuilder->getMock();
 
+        foreach (array_keys($this->mockObjects) as $key) {
+            if ($this->mockObjects[$key]['mockObject'] === $partialMock) {
+                $this->mockObjects[$key]['createdByMockBuilder'] = false;
+
+                break;
+            }
+        }
+
         Event\Facade::emitter()->testCreatedPartialMockObject(
             $type,
             ...$methods,
