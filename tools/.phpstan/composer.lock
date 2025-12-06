@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec2d23116b4c88a8f99c9aec165208ae",
+    "content-hash": "4409cdc49212f7e878b14b7ae9285bb2",
     "packages": [],
     "packages-dev": [
         {
@@ -320,16 +320,16 @@
         },
         {
             "name": "tomasvotruba/type-coverage",
-            "version": "2.0.2",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/type-coverage.git",
-                "reference": "d033429580f2c18bda538fa44f2939236a990e0c"
+                "reference": "468354b3964120806a69890cbeb3fcf005876391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/d033429580f2c18bda538fa44f2939236a990e0c",
-                "reference": "d033429580f2c18bda538fa44f2939236a990e0c",
+                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/468354b3964120806a69890cbeb3fcf005876391",
+                "reference": "468354b3964120806a69890cbeb3fcf005876391",
                 "shasum": ""
             },
             "require": {
@@ -361,7 +361,7 @@
             ],
             "support": {
                 "issues": "https://github.com/TomasVotruba/type-coverage/issues",
-                "source": "https://github.com/TomasVotruba/type-coverage/tree/2.0.2"
+                "source": "https://github.com/TomasVotruba/type-coverage/tree/2.1.0"
             },
             "funding": [
                 {
@@ -373,7 +373,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-07T00:10:26+00:00"
+            "time": "2025-12-05T16:38:02+00:00"
         }
     ],
     "aliases": [],

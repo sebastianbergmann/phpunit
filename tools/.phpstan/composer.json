@@ -3,7 +3,7 @@
         "phpstan/phpstan": "^2.1.33",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-strict-rules": "^2.0.7",
-        "tomasvotruba/type-coverage": "^2.0.2",
+        "tomasvotruba/type-coverage": "^2.1.0",
         "ergebnis/phpstan-rules": "^2.12.0"
     },
     "config": {
