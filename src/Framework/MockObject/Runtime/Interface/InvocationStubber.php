@@ -49,6 +49,16 @@ interface InvocationStubber
     public function with(mixed ...$arguments): self;
 
     /**
+     * @return $this
+     */
+    public function withConsecutiveParameterSets(mixed ...$arguments): self;
+
+    /**
+     * @return $this
+     */
+    public function withParameterSetsInAnyOrder(mixed ...$arguments): self;
+
+    /**
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @return $this
