@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.50] - 2025-12-06
+
+* No changes; `phpunit.phar` rebuilt with PHP 8.4 to work around PHP-Scoper issue [#1139](https://github.com/humbug/php-scoper/issues/1139)
+
 ## [8.5.49] - 2025-12-01
 
 * No changes; `phpunit.phar` rebuilt with updated dependencies
@@ -364,6 +368,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.50]: https://github.com/sebastianbergmann/phpunit/compare/8.5.49...8.5.50
 [8.5.49]: https://github.com/sebastianbergmann/phpunit/compare/8.5.48...8.5.49
 [8.5.48]: https://github.com/sebastianbergmann/phpunit/compare/8.5.47...8.5.48
 [8.5.47]: https://github.com/sebastianbergmann/phpunit/compare/8.5.46...8.5.47
