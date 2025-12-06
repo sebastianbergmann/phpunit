@@ -76,6 +76,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
+use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
@@ -2447,6 +2448,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         ini_set('error_log', $this->previousErrorLogTarget);
 
         $this->previousErrorLogTarget = false;
+    }
+
+    /**
+     * Returns a builder object to create test stubs using a fluent interface.
+     *
+     * @template RealInstanceType of object
+     *
+     * @param class-string<RealInstanceType> $className
+     *
+     * @return TestStubBuilder<RealInstanceType>
+     */
+    final protected static function getStubBuilder(string $className): TestStubBuilder
+    {
+        return new TestStubBuilder($className);
     }
 
     /**
