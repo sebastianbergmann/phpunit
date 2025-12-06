@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
   <phar name="phpab" version="^1.29" installed="1.29.3" location="./tools/phpab" copy="true"/>
-  <phar name="php-cs-fixer" version="^3.80" installed="3.91.2" location="./tools/php-cs-fixer" copy="true"/>
+  <phar name="php-cs-fixer" version="^3.80" installed="3.91.3" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.18" installed="0.18.18" location="./tools/php-scoper" copy="true"/>
   <phar name="composer" version="^2.8" installed="2.9.2" location="./tools/composer" copy="true"/>
-  <phar name="phpstan" version="^2.1" installed="2.1.32" location="./tools/phpstan" copy="true"/>
+  <phar name="phpstan" version="^2.1" installed="2.1.33" location="./tools/phpstan" copy="true"/>
 </phive>
