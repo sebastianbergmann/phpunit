@@ -2,11 +2,15 @@
 
 <br>
 
-<div align="center">
-    <img src="/docs/required_type_level.jpg" style="width: 25em" alt="AI abilities sea level rising... as way to rise type coverage for class elements">
-</div>
+A PHPStan extension, to check and require minimal type coverage of PHP code.
 
 <br>
+
+The type coverage rate = total count of **defined** type declarations / total count of **possible** type declarations.
+
+E.g. we have 10 methods, but only 7 have defined return type = 70 % return type coverage.
+
+---
 
 PHPStan uses type declarations to determine the type of variables, properties and other expression. Sometimes it's hard to see what PHPStan errors are the important ones among thousands of others.
 
@@ -14,13 +18,18 @@ Instead of fixing all PHPStan errors at once, we can start with minimal require 
 
 <br>
 
-What is the type coverage you ask? We have 4 type possible declarations in total here:
+
+## How to increase type coverage?
+
+Here we have 3 possible type declarations:
+
+* property,
+* param
+* and return type
 
 ```php
 final class ConferenceFactory
 {
-    const SPEAKER_TAG = 'speaker';
-
     private $talkFactory;
 
     public function createConference(array $data)
@@ -32,20 +41,17 @@ final class ConferenceFactory
 }
 ```
 
-*Note: Class constant types require PHP 8.3 to run.*
+The param type is defined as `array`.
 
-The param type is defined. But the property, return and constant types are missing.
+1 defined / 3 possible = **33.3 % type coverage**
 
-* 1 out of 4 = 25 % coverage
+<br>
 
-Our code quality is only at one-quarter of its potential. Let's get to 100 %!
+Our code quality is only at one-third of its potential. Let's get to 100 %!
 
 ```diff
  final class ConferenceFactory
  {
--    public const SPEAKER_TAG = 'speaker';
-+    public const string SPEAKER_TAG = 'speaker';
-
 -    private $talkFactory;
 +    private TalkFactory $talkFactory;
 
@@ -69,7 +75,7 @@ This technique is very simple to start even on legacy project. Also, you're now 
 composer require tomasvotruba/type-coverage --dev
 ```
 
-The package is available on PHP 7.2+ version in tagged releases.
+The package is available on PHP 7.2+.
 
 <br>
 
@@ -86,6 +92,8 @@ parameters:
         return: 50
         param: 35.5
         property: 70
+
+        # since PHP 8.3
         constant: 85
 ```
 

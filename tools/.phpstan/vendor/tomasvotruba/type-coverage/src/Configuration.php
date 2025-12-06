@@ -30,6 +30,7 @@ final class Configuration
 
     public function isConstantTypeCoverageEnabled(): bool
     {
+        // constant types are available only on PHP 8.3+
         if (PHP_VERSION_ID < 80300) {
             return false;
         }
