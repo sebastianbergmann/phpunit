@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use function md5;
 use function mt_rand;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
@@ -26,6 +27,7 @@ use PHPUnit\TestFixture\MockObject\ExtendableClassWithConstructorArguments;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
 #[CoversClass(MockBuilder::class)]
+#[CoversMethod(TestCase::class, 'getMockBuilder')]
 #[CoversClass(DuplicateMethodException::class)]
 #[CoversClass(InvalidMethodNameException::class)]
 #[CoversClass(NameAlreadyInUseException::class)]

@@ -77,6 +77,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
+use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
@@ -180,7 +181,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private array $dependencyInput = [];
 
     /**
-     * @var list<array{type: non-empty-string, mockObject: MockObjectInternal, createdByMockBuilder: bool}>
+     * @var list<array{type: non-empty-string, mockObject: MockObjectInternal}>
      */
     private array $mockObjects = [];
     private TestStatus $status;
@@ -808,14 +809,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function registerMockObject(string $type, MockObject $mockObject, bool $createdByMockBuilder): void
+    final public function registerMockObject(string $type, MockObject $mockObject): void
     {
         assert($mockObject instanceof MockObjectInternal);
 
         $this->mockObjects[] = [
-            'type'                 => $type,
-            'mockObject'           => $mockObject,
-            'createdByMockBuilder' => $createdByMockBuilder,
+            'type'       => $type,
+            'mockObject' => $mockObject,
         ];
     }
 
@@ -1168,7 +1168,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         assert($mock instanceof $type);
         assert($mock instanceof MockObject);
 
-        $this->registerMockObject($type, $mock, false);
+        $this->registerMockObject($type, $mock);
 
         Event\Facade::emitter()->testCreatedMockObject($type);
 
@@ -1190,7 +1190,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         assert($mock instanceof MockObject);
 
-        $this->registerMockObject(implode('|', $interfaces), $mock, false);
+        $this->registerMockObject(implode('|', $interfaces), $mock);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
 
@@ -1247,14 +1247,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $partialMock = $mockBuilder->getMock();
-
-        foreach (array_keys($this->mockObjects) as $key) {
-            if ($this->mockObjects[$key]['mockObject'] === $partialMock) {
-                $this->mockObjects[$key]['createdByMockBuilder'] = false;
-
-                break;
-            }
-        }
 
         Event\Facade::emitter()->testCreatedPartialMockObject(
             $type,
@@ -1394,8 +1386,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         foreach ($this->mockObjects as $mockObject) {
             if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
-                if (!$mockObject['createdByMockBuilder'] &&
-                    !str_starts_with($this::class, 'PHPUnit\\')) {
+                if (!str_starts_with($this::class, 'PHPUnit\\')) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(
                         $this->testValueObjectForEvents,
                         sprintf(
@@ -2436,6 +2427,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         ini_set('error_log', $this->previousErrorLogTarget);
 
         $this->previousErrorLogTarget = false;
+    }
+
+    /**
+     * Returns a builder object to create test stubs using a fluent interface.
+     *
+     * @template RealInstanceType of object
+     *
+     * @param class-string<RealInstanceType> $className
+     *
+     * @return TestStubBuilder<RealInstanceType>
+     */
+    final protected static function getStubBuilder(string $className): TestStubBuilder
+    {
+        return new TestStubBuilder($className);
     }
 
     /**

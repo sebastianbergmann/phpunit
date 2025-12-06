@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function assert;
-use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
@@ -19,55 +18,40 @@ use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\MockObject\Generator\ReflectionException;
 use PHPUnit\Framework\MockObject\Generator\RuntimeException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
-use PHPUnit\Framework\TestCase;
 
 /**
- * @template MockedType
+ * @template StubbedType
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MockBuilder extends TestDoubleBuilder
+final class TestStubBuilder extends TestDoubleBuilder
 {
-    private readonly TestCase $testCase;
-
     /**
      * @var ?class-string
      */
-    private ?string $mockClassName = null;
+    private ?string $stubClassName = null;
 
     /**
-     * @param class-string|trait-string $type
-     */
-    public function __construct(TestCase $testCase, string $type)
-    {
-        parent::__construct($type);
-
-        $this->testCase = $testCase;
-    }
-
-    /**
-     * Creates a mock object using a fluent interface.
+     * Creates a test stub using a fluent interface.
      *
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
-     * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
      * @throws NameAlreadyInUseException
      * @throws ReflectionException
      * @throws RuntimeException
      * @throws UnknownTypeException
      *
-     * @return MockedType&MockObject
+     * @return Stub&StubbedType
      */
-    public function getMock(): MockObject
+    public function getStub(): Stub
     {
-        $object = $this->getTestDouble($this->mockClassName, true);
+        $object = $this->getTestDouble($this->stubClassName, false);
 
         assert($object instanceof $this->type);
-        assert($object instanceof MockObject);
-
-        $this->testCase->registerMockObject($this->type, $object);
+        assert($object instanceof Stub);
+        assert(!$object instanceof MockObject);
 
         return $object;
     }
@@ -79,9 +63,9 @@ final class MockBuilder extends TestDoubleBuilder
      *
      * @return $this
      */
-    public function setMockClassName(string $name): self
+    public function setStubClassName(string $name): self
     {
-        $this->mockClassName = $name;
+        $this->stubClassName = $name;
 
         return $this;
     }
