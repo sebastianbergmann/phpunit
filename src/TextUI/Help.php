@@ -33,6 +33,7 @@ final class Help
     private int $lengthOfLongestOptionName = 0;
     private readonly int $columnsAvailableForDescription;
     private bool $hasColor;
+    private readonly array $elements;
 
     public function __construct(?int $width = null, ?bool $withColor = null)
     {
@@ -46,7 +47,9 @@ final class Help
             $this->hasColor = $withColor;
         }
 
-        foreach ($this->elements() as $options) {
+        $this->elements = $this->elements();
+
+        foreach ($this->elements as $options) {
             foreach ($options as $option) {
                 if (isset($option['arg'])) {
                     $this->lengthOfLongestOptionName = max($this->lengthOfLongestOptionName, strlen($option['arg']));
@@ -70,7 +73,7 @@ final class Help
     {
         $buffer = '';
 
-        foreach ($this->elements() as $section => $options) {
+        foreach ($this->elements as $section => $options) {
             $buffer .= "{$section}:" . PHP_EOL;
 
             if ($section !== 'Usage') {
@@ -103,7 +106,7 @@ final class Help
     {
         $buffer = '';
 
-        foreach ($this->elements() as $section => $options) {
+        foreach ($this->elements as $section => $options) {
             $buffer .= Color::colorize('fg-yellow', "{$section}:") . PHP_EOL;
 
             if ($section !== 'Usage') {
