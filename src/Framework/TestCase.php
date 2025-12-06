@@ -180,7 +180,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private array $dependencyInput = [];
 
     /**
-     * @var list<array{type: non-empty-string, mockObject: MockObjectInternal}>
+     * @var list<array{type: non-empty-string, mockObject: MockObjectInternal, createdByMockBuilder: bool}>
      */
     private array $mockObjects = [];
     private TestStatus $status;
@@ -808,13 +808,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function registerMockObject(string $type, MockObject $mockObject): void
+    final public function registerMockObject(string $type, MockObject $mockObject, bool $createdByMockBuilder): void
     {
         assert($mockObject instanceof MockObjectInternal);
 
         $this->mockObjects[] = [
-            'type'       => $type,
-            'mockObject' => $mockObject,
+            'type'                 => $type,
+            'mockObject'           => $mockObject,
+            'createdByMockBuilder' => $createdByMockBuilder,
         ];
     }
 
@@ -1167,7 +1168,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         assert($mock instanceof $type);
         assert($mock instanceof MockObject);
 
-        $this->registerMockObject($type, $mock);
+        $this->registerMockObject($type, $mock, false);
 
         Event\Facade::emitter()->testCreatedMockObject($type);
 
@@ -1189,7 +1190,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         assert($mock instanceof MockObject);
 
-        $this->registerMockObject(implode('|', $interfaces), $mock);
+        $this->registerMockObject(implode('|', $interfaces), $mock, false);
 
         Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
 
@@ -1385,7 +1386,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         foreach ($this->mockObjects as $mockObject) {
             if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
-                if (!str_starts_with($this::class, 'PHPUnit\\')) {
+                if (!$mockObject['createdByMockBuilder'] &&
+                    !str_starts_with($this::class, 'PHPUnit\\')) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(
                         $this->testValueObjectForEvents,
                         sprintf(
