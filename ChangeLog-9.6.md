@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.31] - 2025-12-06
+
+* No changes; `phpunit.phar` rebuilt with PHP 8.4 to work around PHP-Scoper issue [#1139](https://github.com/humbug/php-scoper/issues/1139)
+
 ## [9.6.30] - 2025-12-01
 
 ### Changed
@@ -208,6 +212,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.31]: https://github.com/sebastianbergmann/phpunit/compare/9.6.30...9.6.31
 [9.6.30]: https://github.com/sebastianbergmann/phpunit/compare/9.6.29...9.6.30
 [9.6.29]: https://github.com/sebastianbergmann/phpunit/compare/9.6.28...9.6.29
 [9.6.28]: https://github.com/sebastianbergmann/phpunit/compare/9.6.27...9.6.28
