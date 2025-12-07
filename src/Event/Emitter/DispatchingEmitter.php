@@ -61,12 +61,7 @@ final class DispatchingEmitter implements Emitter
      */
     public function applicationStarted(): void
     {
-        $this->dispatcher->dispatch(
-            new Application\Started(
-                $this->telemetryInfo(),
-                new Runtime\Runtime,
-            ),
-        );
+        $this->dispatchWithTelemetry(Application\Started::class, new Runtime\Runtime);
     }
 
     /**
@@ -75,11 +70,7 @@ final class DispatchingEmitter implements Emitter
      */
     public function testRunnerStarted(): void
     {
-        $this->dispatcher->dispatch(
-            new TestRunner\Started(
-                $this->telemetryInfo(),
-            ),
-        );
+        $this->dispatchWithTelemetry(TestRunner\Started::class);
     }
 
     /**
@@ -88,12 +79,7 @@ final class DispatchingEmitter implements Emitter
      */
     public function testRunnerConfigured(Configuration $configuration): void
     {
-        $this->dispatcher->dispatch(
-            new TestRunner\Configured(
-                $this->telemetryInfo(),
-                $configuration,
-            ),
-        );
+        $this->dispatchWithTelemetry(TestRunner\Configured::class, $configuration);
     }
 
     /**
@@ -1455,5 +1441,17 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $current;
 
         return $info;
+    }
+
+    /**
+     * Construct an event whose first constructor argument is Telemetry\Info
+     *
+     * @param class-string $eventClass
+     */
+    private function dispatchWithTelemetry(string $eventClass, mixed ...$args): void
+    {
+        $event = new $eventClass($this->telemetryInfo(), ...$args);
+
+        $this->dispatcher->dispatch($event);
     }
 }
