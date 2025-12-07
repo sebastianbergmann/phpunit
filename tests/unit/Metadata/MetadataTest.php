@@ -1937,7 +1937,9 @@ final class MetadataTest extends TestCase
 
     public function testCanBeIgnoreDeprecationsOnClass(): void
     {
-        $metadata = Metadata::ignoreDeprecationsOnClass();
+        $messagePattern = 'the-message-pattern';
+
+        $metadata = Metadata::ignoreDeprecationsOnClass($messagePattern);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1997,6 +1999,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
+        $this->assertSame($messagePattern, $metadata->messagePattern());
     }
 
     public function testCanBeIgnoreDeprecationsOnMethod(): void
@@ -2193,7 +2196,9 @@ final class MetadataTest extends TestCase
 
     public function testCanBeIgnorePHPUnitWarnings(): void
     {
-        $metadata = Metadata::ignorePHPUnitWarnings(null);
+        $messagePattern = 'the-message-pattern';
+
+        $metadata = Metadata::ignorePHPUnitWarnings($messagePattern);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2253,6 +2258,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($messagePattern, $metadata->messagePattern());
     }
 
     public function testCanBeGroupOnMethod(): void
