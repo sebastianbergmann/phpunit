@@ -1384,9 +1384,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function verifyMockObjects(): void
     {
+        $allowsMockObjectsWithoutExpectations = $this->allowsMockObjectsWithoutExpectations();
+        $isPhpunitTestSuite                   = str_starts_with($this::class, 'PHPUnit\\');
+
         foreach ($this->mockObjects as $mockObject) {
             if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
-                if (!str_starts_with($this::class, 'PHPUnit\\')) {
+                if (!$allowsMockObjectsWithoutExpectations && !$isPhpunitTestSuite) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(
                         $this->testValueObjectForEvents,
                         sprintf(
@@ -2515,6 +2518,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return $o;
+    }
+
+    private static function allowsMockObjectsWithoutExpectations(): bool
+    {
+        return MetadataRegistry::parser()->forClass(static::class)->isAllowMockObjectsWithoutExpectations()->isNotEmpty();
     }
 
     private static function generateReturnValuesForTestDoubles(): bool

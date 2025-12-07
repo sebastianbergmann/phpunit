@@ -24,6 +24,7 @@ use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
+use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
@@ -67,6 +68,15 @@ use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
 
 abstract class AttributeParserTestCase extends TestCase
 {
+    #[TestDox('Parses #[AllowMockObjectsWithoutExpectations] attribute on class')]
+    public function test_parses_AllowMockObjectsWithoutExpectations_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(AllowMockObjectsWithoutExpectationsTest::class)->isAllowMockObjectsWithoutExpectations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isAllowMockObjectsWithoutExpectations());
+    }
+
     #[TestDox('Parses #[BackupGlobals] attribute on class')]
     public function test_parses_BackupGlobals_attribute_on_class(): void
     {

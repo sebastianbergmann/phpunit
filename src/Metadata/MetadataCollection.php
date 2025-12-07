@@ -128,6 +128,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isAllowMockObjectsWithoutExpectations(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isAllowMockObjectsWithoutExpectations(),
+            ),
+        );
+    }
+
     public function isBackupGlobals(): self
     {
         return new self(
