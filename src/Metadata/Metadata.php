@@ -37,6 +37,11 @@ abstract readonly class Metadata
         return new AfterClass(self::METHOD_LEVEL, $priority);
     }
 
+    public static function allowMockObjectsWithoutExpectations(): AllowMockObjectsWithoutExpectations
+    {
+        return new AllowMockObjectsWithoutExpectations(self::CLASS_LEVEL);
+    }
+
     public static function backupGlobalsOnClass(bool $enabled): BackupGlobals
     {
         return new BackupGlobals(self::CLASS_LEVEL, $enabled);
@@ -586,6 +591,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true AfterClass $this
      */
     public function isAfterClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true AllowMockObjectsWithoutExpectations $this
+     */
+    public function isAllowMockObjectsWithoutExpectations(): bool
     {
         return false;
     }

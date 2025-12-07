@@ -146,6 +146,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isAfter());
     }
 
+    public function test_Can_be_filtered_for_AllowMockObjectsWithoutExpectations(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isAllowMockObjectsWithoutExpectations();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isAllowMockObjectsWithoutExpectations());
+    }
+
     public function test_Can_be_filtered_for_BackupGlobals(): void
     {
         $collection = $this->collectionWithOneOfEach()->isBackupGlobals();
@@ -577,6 +585,7 @@ final class MetadataCollectionTest extends TestCase
             [
                 Metadata::afterClass(0),
                 Metadata::after(0),
+                Metadata::AllowMockObjectsWithoutExpectations(),
                 Metadata::backupGlobalsOnClass(true),
                 Metadata::backupStaticPropertiesOnClass(true),
                 Metadata::beforeClass(0),

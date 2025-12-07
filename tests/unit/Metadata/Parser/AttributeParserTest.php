@@ -11,6 +11,7 @@ namespace PHPUnit\Metadata\Parser;
 
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
@@ -78,6 +79,7 @@ use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Metadata\InvalidAttributeException;
 
 #[CoversClass(AttributeParser::class)]
+#[CoversClass(AllowMockObjectsWithoutExpectations::class)]
 #[CoversClass(AfterClass::class)]
 #[CoversClass(After::class)]
 #[CoversClass(BackupGlobals::class)]

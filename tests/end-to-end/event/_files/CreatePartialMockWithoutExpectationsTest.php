@@ -12,11 +12,11 @@ namespace TestFixture\PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Event\Example;
 
-final class MockWithoutExpectationTest extends TestCase
+final class CreatePartialMockWithoutExpectationsTest extends TestCase
 {
-    public function testSuccess(): void
+    public function testOne(): void
     {
-        $this->createMock(Example::class);
+        $this->createPartialMock(Example::class, []);
 
         $this->assertTrue(true);
     }
