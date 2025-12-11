@@ -25,7 +25,7 @@ Test Suite Started (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest
 Test Preparation Started (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest::testOne)
 Test Prepared (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest::testOne)
 Test Triggered PHPUnit Notice (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest::testOne)
-No expectations were configured for the mock object for PHPUnit\TestFixture\Event\Example. You should refactor your test code and use a test stub instead.
+No expectations were configured for the mock object for PHPUnit\TestFixture\Event\Example. Consider refactoring your test code to use a test stub instead. The #[AllowMockObjectsWithoutExpectations] attribute can be used to opt out of this check.
 Test Passed (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest::testOne)
 Test Finished (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest::testOne)
 Test Suite Finished (TestFixture\PHPUnit\Event\MockBuilderWithoutExpectationsTest, 1 test)
