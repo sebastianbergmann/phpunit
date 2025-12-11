@@ -1408,7 +1408,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         $this->testValueObjectForEvents,
                         sprintf(
                             'No expectations were configured for the mock object for %s. ' .
-                            'You should refactor your test code and use a test stub instead.',
+                            'Consider refactoring your test code to use a test stub instead. ' .
+                            'The #[AllowMockObjectsWithoutExpectations] attribute can be used to opt out of this check.',
                             $mockObject['type'],
                         ),
                     );
