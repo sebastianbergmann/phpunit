@@ -163,8 +163,10 @@ abstract class Assert
 
     /**
      * Asserts that an array has a specified key.
-     *
+     * 
+     * @param mixed $key
      * @param array<mixed>|ArrayAccess<array-key, mixed> $array
+     * @param string $message
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -179,7 +181,9 @@ abstract class Assert
     /**
      * Asserts that an array does not have a specified key.
      *
+     * @param mixed $key
      * @param array<mixed>|ArrayAccess<array-key, mixed> $array
+     * @param string $message
      *
      * @throws Exception
      * @throws ExpectationFailedException
