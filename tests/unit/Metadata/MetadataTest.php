@@ -158,7 +158,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeAllowMockObjectsWithoutExpectations(): void
     {
-        $metadata = Metadata::allowMockObjectsWithoutExpectations();
+        $metadata = Metadata::allowMockObjectsWithoutExpectationsOnClass();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());

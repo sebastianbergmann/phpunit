@@ -12,9 +12,9 @@ namespace PHPUnit\TestFixture\Metadata\Attribute;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
-#[AllowMockObjectsWithoutExpectations]
-final class AllowMockObjectsWithoutExpectationsTest extends TestCase
+final class AllowMockObjectsWithoutExpectationsOnMethodTest extends TestCase
 {
+    #[AllowMockObjectsWithoutExpectations]
     public function testOne(): void
     {
     }

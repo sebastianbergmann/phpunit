@@ -142,7 +142,7 @@ final readonly class AttributeParser implements Parser
                 case AllowMockObjectsWithoutExpectations::class:
                     assert($attributeInstance instanceof AllowMockObjectsWithoutExpectations);
 
-                    $result[] = Metadata::allowMockObjectsWithoutExpectations();
+                    $result[] = Metadata::allowMockObjectsWithoutExpectationsOnClass();
 
                     break;
 
@@ -561,6 +561,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof AfterClass);
 
                     $result[] = Metadata::afterClass($attributeInstance->priority());
+
+                    break;
+
+                case AllowMockObjectsWithoutExpectations::class:
+                    assert($attributeInstance instanceof AllowMockObjectsWithoutExpectations);
+
+                    $result[] = Metadata::allowMockObjectsWithoutExpectationsOnMethod();
 
                     break;
 

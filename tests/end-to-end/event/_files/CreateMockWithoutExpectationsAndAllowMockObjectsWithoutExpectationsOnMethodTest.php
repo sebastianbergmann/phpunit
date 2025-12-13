@@ -13,9 +13,9 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Event\Example;
 
-#[AllowMockObjectsWithoutExpectations]
-final class CreateMockWithoutExpectationsAndAllowMockObjectsWithoutExpectationsTest extends TestCase
+final class CreateMockWithoutExpectationsAndAllowMockObjectsWithoutExpectationsOnMethodTest extends TestCase
 {
+    #[AllowMockObjectsWithoutExpectations]
     public function testOne(): void
     {
         $this->createMock(Example::class);

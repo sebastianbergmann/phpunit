@@ -37,9 +37,14 @@ abstract readonly class Metadata
         return new AfterClass(self::METHOD_LEVEL, $priority);
     }
 
-    public static function allowMockObjectsWithoutExpectations(): AllowMockObjectsWithoutExpectations
+    public static function allowMockObjectsWithoutExpectationsOnClass(): AllowMockObjectsWithoutExpectations
     {
         return new AllowMockObjectsWithoutExpectations(self::CLASS_LEVEL);
+    }
+
+    public static function allowMockObjectsWithoutExpectationsOnMethod(): AllowMockObjectsWithoutExpectations
+    {
+        return new AllowMockObjectsWithoutExpectations(self::METHOD_LEVEL);
     }
 
     public static function backupGlobalsOnClass(bool $enabled): BackupGlobals

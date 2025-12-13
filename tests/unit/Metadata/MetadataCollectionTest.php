@@ -576,7 +576,7 @@ final class MetadataCollectionTest extends TestCase
             [
                 Metadata::afterClass(0),
                 Metadata::after(0),
-                Metadata::AllowMockObjectsWithoutExpectations(),
+                Metadata::allowMockObjectsWithoutExpectationsOnClass(),
                 Metadata::backupGlobalsOnClass(true),
                 Metadata::backupStaticPropertiesOnClass(true),
                 Metadata::beforeClass(0),
