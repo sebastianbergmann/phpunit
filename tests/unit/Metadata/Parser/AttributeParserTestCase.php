@@ -24,7 +24,8 @@ use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
-use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsTest;
+use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOnClassTest;
+use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOnMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
@@ -71,7 +72,7 @@ abstract class AttributeParserTestCase extends TestCase
     #[TestDox('Parses #[AllowMockObjectsWithoutExpectations] attribute on class')]
     public function test_parses_AllowMockObjectsWithoutExpectations_attribute_on_class(): void
     {
-        $metadata = $this->parser()->forClass(AllowMockObjectsWithoutExpectationsTest::class)->isAllowMockObjectsWithoutExpectations();
+        $metadata = $this->parser()->forClass(AllowMockObjectsWithoutExpectationsOnClassTest::class)->isAllowMockObjectsWithoutExpectations();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isAllowMockObjectsWithoutExpectations());
@@ -566,6 +567,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isAfterClass());
+    }
+
+    #[TestDox('Parses #[AllowMockObjectsWithoutExpectations] attribute on method')]
+    public function test_parses_AllowMockObjectsWithoutExpectations_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(AllowMockObjectsWithoutExpectationsOnMethodTest::class, 'testOne')->isAllowMockObjectsWithoutExpectations();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isAllowMockObjectsWithoutExpectations());
     }
 
     #[TestDox('Parses #[BackupGlobals] attribute on method')]

@@ -2454,6 +2454,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->previousErrorLogTarget = false;
     }
 
+    private function allowsMockObjectsWithoutExpectations(): bool
+    {
+        return MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isAllowMockObjectsWithoutExpectations()->isNotEmpty();
+    }
+
     /**
      * Returns a builder object to create test stubs using a fluent interface.
      *
@@ -2540,11 +2545,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return $o;
-    }
-
-    private static function allowsMockObjectsWithoutExpectations(): bool
-    {
-        return MetadataRegistry::parser()->forClass(static::class)->isAllowMockObjectsWithoutExpectations()->isNotEmpty();
     }
 
     private static function generateReturnValuesForTestDoubles(): bool

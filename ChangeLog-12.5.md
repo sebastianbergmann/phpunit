@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ## [12.5.4] - 2025-MM-DD
 
+### Changed
+
+* The `#[AllowMockObjectsWithoutExpectations]` attribute can now be used on the method level
+
 ### Fixed
 
 * [#6446](https://github.com/sebastianbergmann/phpunit/issues/6446): Test runner crashes with `Timer::start() has to be called before Timer::stop()`
