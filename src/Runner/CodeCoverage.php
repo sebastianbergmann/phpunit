@@ -213,9 +213,9 @@ final class CodeCoverage
             return;
         }
 
-        $time = $this->timer()->stop()->asSeconds();
-
-        $status = TestStatus::unknown();
+        $time             = $this->timer()->stop()->asSeconds();
+        $status           = TestStatus::unknown();
+        $this->collecting = false;
 
         if ($this->test !== null) {
             if ($this->test->status()->isSuccess()) {
@@ -257,8 +257,7 @@ final class CodeCoverage
 
         $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
 
-        $this->test       = null;
-        $this->collecting = false;
+        $this->test = null;
     }
 
     public function deactivate(): void
