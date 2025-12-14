@@ -1527,16 +1527,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "d1dd771235a40694cb5cb7239e531cf9b9702682"
+                "reference": "7989e43bf381af0eac72e4f0ca5bcbfa81658be4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/d1dd771235a40694cb5cb7239e531cf9b9702682",
-                "reference": "d1dd771235a40694cb5cb7239e531cf9b9702682",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/7989e43bf381af0eac72e4f0ca5bcbfa81658be4",
+                "reference": "7989e43bf381af0eac72e4f0ca5bcbfa81658be4",
                 "shasum": ""
             },
             "require": {
@@ -1565,7 +1565,7 @@
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "support": {
                 "issues": "https://github.com/theseer/tokenizer/issues",
-                "source": "https://github.com/theseer/tokenizer/tree/2.0.0"
+                "source": "https://github.com/theseer/tokenizer/tree/2.0.1"
             },
             "funding": [
                 {
@@ -1573,7 +1573,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-06T10:20:26+00:00"
+            "time": "2025-12-08T11:19:18+00:00"
         }
     ],
     "packages-dev": [],
