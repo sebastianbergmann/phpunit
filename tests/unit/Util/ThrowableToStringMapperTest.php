@@ -11,6 +11,7 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\PhptAssertionFailedError;
 use PHPUnit\Framework\TestCase;
@@ -20,24 +21,11 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 
 #[CoversClass(ThrowableToStringMapper::class)]
 #[Small]
+#[TestDox('ThrowableToStringMapper')]
 final class ThrowableToStringMapperTest extends TestCase
 {
-    public function testMapsErrorExceptionReturnsMessage(): void
-    {
-        $e = new ErrorException('boom');
-
-        $this->assertSame('boom', ThrowableToStringMapper::map($e));
-    }
-
-    public function testMapsGenericThrowableReturnsClassMessageWithNewline(): void
-    {
-        $t        = new RuntimeException('oops');
-        $expected = RuntimeException::class . ': oops' . "\n";
-
-        $this->assertSame($expected, ThrowableToStringMapper::map($t));
-    }
-
-    public function testMapsExpectationFailedExceptionWithComparisonAppendsDiffAndNewline(): void
+    #[TestDox('Maps ExpectationFailedException with ComparisonFailure')]
+    public function testMapsExpectationFailedExceptionWithComparisonFailure(): void
     {
         $comparisonFailure = new ComparisonFailure('expected', 'actual', 'expected', 'actual');
         $e                 = new ExpectationFailedException('msg', $comparisonFailure);
@@ -49,7 +37,8 @@ final class ThrowableToStringMapperTest extends TestCase
         $this->assertStringEndsWith("\n", $mapped);
     }
 
-    public function testMapsPhptAssertionFailedErrorAppendsDiffAndNewline(): void
+    #[TestDox('Maps PhptAssertionFailedError')]
+    public function testMapsPhptAssertionFailedError(): void
     {
         $error  = new PhptAssertionFailedError('phpt-message', 0, 'file', 1, [], 'my-diff-string');
         $mapped = ThrowableToStringMapper::map($error);
@@ -57,5 +46,22 @@ final class ThrowableToStringMapperTest extends TestCase
         $this->assertStringContainsString('phpt-message', $mapped);
         $this->assertStringContainsString('my-diff-string', $mapped);
         $this->assertStringEndsWith("\n", $mapped);
+    }
+
+    #[TestDox('Maps \ErrorException')]
+    public function testMapsErrorException(): void
+    {
+        $e = new ErrorException('boom');
+
+        $this->assertSame('boom', ThrowableToStringMapper::map($e));
+    }
+
+    #[TestDox('Maps \Throwable')]
+    public function testMapsThrowable(): void
+    {
+        $t        = new RuntimeException('oops');
+        $expected = RuntimeException::class . ': oops' . "\n";
+
+        $this->assertSame($expected, ThrowableToStringMapper::map($t));
     }
 }
