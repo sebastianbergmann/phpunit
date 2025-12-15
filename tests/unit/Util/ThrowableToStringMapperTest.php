@@ -9,13 +9,14 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Runner\ErrorException;
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
 use PHPUnit\Framework\PhptAssertionFailedError;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\ErrorException;
+use RuntimeException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 #[CoversClass(ThrowableToStringMapper::class)]
 #[Small]
@@ -30,8 +31,8 @@ final class ThrowableToStringMapperTest extends TestCase
 
     public function testMapsGenericThrowableReturnsClassMessageWithNewline(): void
     {
-        $t = new \RuntimeException('oops');
-        $expected = \RuntimeException::class . ': oops' . "\n";
+        $t        = new RuntimeException('oops');
+        $expected = RuntimeException::class . ': oops' . "\n";
 
         $this->assertSame($expected, ThrowableToStringMapper::map($t));
     }
@@ -39,7 +40,7 @@ final class ThrowableToStringMapperTest extends TestCase
     public function testMapsExpectationFailedExceptionWithComparisonAppendsDiffAndNewline(): void
     {
         $comparisonFailure = new ComparisonFailure('expected', 'actual', 'expected', 'actual');
-        $e = new ExpectationFailedException('msg', $comparisonFailure);
+        $e                 = new ExpectationFailedException('msg', $comparisonFailure);
 
         $mapped = ThrowableToStringMapper::map($e);
 
@@ -50,7 +51,7 @@ final class ThrowableToStringMapperTest extends TestCase
 
     public function testMapsPhptAssertionFailedErrorAppendsDiffAndNewline(): void
     {
-        $error = new PhptAssertionFailedError('phpt-message', 0, 'file', 1, [], 'my-diff-string');
+        $error  = new PhptAssertionFailedError('phpt-message', 0, 'file', 1, [], 'my-diff-string');
         $mapped = ThrowableToStringMapper::map($error);
 
         $this->assertStringContainsString('phpt-message', $mapped);
