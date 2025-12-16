@@ -1541,6 +1541,48 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
+    #[TestDox('testUsedCustomMethodInvocation() emits Test\CustomTestMethodInvocationUsed event')]
+    public function testUsedCustomMethodInvocationEmitsCustomTestMethodInvocationUsed(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\CustomTestMethodInvocationUsedSubscriber
+        {
+            public function notify(Test\CustomTestMethodInvocationUsed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\CustomTestMethodInvocationUsedSubscriber::class,
+            Test\CustomTestMethodInvocationUsed::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test                       = $this->testMethod();
+        $customTestMethodInvocation = new ClassMethod('ExampleTest', 'invokeTestMethod');
+
+        $emitter->testUsedCustomMethodInvocation(
+            $test,
+            $customTestMethodInvocation,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\CustomTestMethodInvocationUsed::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($customTestMethodInvocation, $event->customTestMethodInvocation());
+    }
+
     #[TestDox('testCreatedMockObject() emits Test\MockObjectCreated event')]
     public function testTestCreatedMockObjectEmitsTestMockObjectCreatedEvent(): void
     {

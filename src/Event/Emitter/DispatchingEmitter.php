@@ -597,6 +597,17 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testUsedCustomMethodInvocation(TestMethod $test, ClassMethod $customTestMethodInvocation): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\CustomTestMethodInvocationUsed(
+                $this->telemetryInfo(),
+                $test,
+                $customTestMethodInvocation,
+            ),
+        );
+    }
+
     /**
      * @param class-string $className
      *

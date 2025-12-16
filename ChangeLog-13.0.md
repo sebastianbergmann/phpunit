@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 ## [13.0.0] - 2026-02-06
 
+### Added
+
+* [#6450](https://github.com/sebastianbergmann/phpunit/issues/6450): `TestCase::invokeTestMethod()` method for customizing test method invocation
+
 ### Removed
 
 * [#6054](https://github.com/sebastianbergmann/phpunit/issues/6054): `Assert::isType()`
