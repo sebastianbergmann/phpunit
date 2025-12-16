@@ -350,16 +350,19 @@ jobs:
 
       - name: Upload test results to Codecov.io
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          report_type: test_results
           disable_search: true
           files: ./test-results.xml
 
       - name: Upload code coverage data to Codecov.io
-        uses: codecov/codecov-action@v4
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          report_type: coverage
           disable_search: true
           files: ./code-coverage.xml
 
