@@ -412,7 +412,7 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: 11
@@ -478,7 +478,7 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: 11
@@ -545,7 +545,7 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: 11
