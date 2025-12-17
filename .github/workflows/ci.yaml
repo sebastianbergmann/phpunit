@@ -421,7 +421,7 @@ jobs:
         run: ant phar-snapshot
 
       - name: Upload PHAR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: phpunit-snapshot-phar
           overwrite: true
