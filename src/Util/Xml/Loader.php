@@ -114,7 +114,9 @@ final class Loader
             }
 
             if ($message === '') {
+                // @codeCoverageIgnoreStart
                 $message = 'Could not load XML for unknown reason';
+                // @codeCoverageIgnoreEnd
             }
 
             throw new XmlException($message);
