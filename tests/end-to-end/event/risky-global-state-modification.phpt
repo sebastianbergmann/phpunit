@@ -3,6 +3,7 @@ The right events are emitted in the right order for a test that is considered ri
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--globals-backup';
+$_SERVER['argv'][] = '--static-backup';
 $_SERVER['argv'][] = '--strict-global-state';
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
