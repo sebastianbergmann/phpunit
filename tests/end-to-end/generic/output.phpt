@@ -1,10 +1,9 @@
 --TEST--
-phpunit --process-isolation ../../_files/OutputTest.php
+phpunit ../../_files/OutputTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/OutputTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
