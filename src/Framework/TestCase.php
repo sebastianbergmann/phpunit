@@ -2166,20 +2166,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
-        if ($before != $after) {
-            $differ = new Differ(new UnifiedDiffOutputBuilder($header));
-
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                'This test modified global state but was not expected to do so' . PHP_EOL .
-                trim(
-                    $differ->diff(
-                        Exporter::export($before),
-                        Exporter::export($after),
-                    ),
-                ),
-            );
+        if ($before == $after) {
+            return;
         }
+
+        $differ = new Differ(new UnifiedDiffOutputBuilder($header));
+
+        Event\Facade::emitter()->testConsideredRisky(
+            $this->valueObjectForEvents(),
+            'This test modified global state but was not expected to do so' . PHP_EOL .
+            trim(
+                $differ->diff(
+                    Exporter::export($before),
+                    Exporter::export($after),
+                ),
+            ),
+        );
     }
 
     private function shouldInvocationMockerBeReset(MockObject $mock): bool
