@@ -38,7 +38,6 @@ Test Passed (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomething)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomething)
 This test executed code that is not listed as code to be covered or used:
 - PHPUnit\TestFixture\Event\RiskyCodeCoverage\Bar
-
 Test Finished (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomething)
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest, 1 test)
 Test Suite Finished (default, 1 test)
