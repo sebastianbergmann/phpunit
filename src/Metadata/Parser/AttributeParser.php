@@ -65,6 +65,7 @@ use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily;
+use PHPUnit\Framework\Attributes\RequiresPackageVersion;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
@@ -398,6 +399,16 @@ final readonly class AttributeParser implements Parser
                     if ($requirement !== null) {
                         $result[] = Metadata::requiresPhpunitOnClass($requirement);
                     }
+
+                    break;
+
+                case RequiresPackageVersion::class:
+                    assert($attributeInstance instanceof RequiresPackageVersion);
+
+                    $result[] = Metadata::requiresPackageVersionOnClass(
+                        $attributeInstance->packageName(),
+                        $attributeInstance->versionConstraint(),
+                    );
 
                     break;
 
@@ -828,6 +839,16 @@ final readonly class AttributeParser implements Parser
                     if ($requirement !== null) {
                         $result[] = Metadata::requiresPhpunitOnMethod($requirement);
                     }
+
+                    break;
+
+                case RequiresPackageVersion::class:
+                    assert($attributeInstance instanceof RequiresPackageVersion);
+
+                    $result[] = Metadata::requiresPackageVersionOnMethod(
+                        $attributeInstance->packageName(),
+                        $attributeInstance->versionConstraint(),
+                    );
 
                     break;
 

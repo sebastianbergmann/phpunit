@@ -47,6 +47,7 @@ use stdClass;
 #[UsesClass(RequiresPhp::class)]
 #[UsesClass(RequiresPhpExtension::class)]
 #[UsesClass(RequiresPhpunit::class)]
+#[UsesClass(RequiresPackageVersion::class)]
 #[UsesClass(RequiresPhpunitExtension::class)]
 #[UsesClass(RequiresEnvironmentVariable::class)]
 #[UsesClass(RequiresSetting::class)]
@@ -426,6 +427,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresPhpunit());
     }
 
+    public function test_Can_be_filtered_for_RequiresPackageVersion(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresPackageVersion();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresPackageVersion());
+    }
+
     public function test_Can_be_filtered_for_RequiresPhpunitExtension(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresPhpunitExtension();
@@ -619,6 +628,10 @@ final class MetadataCollectionTest extends TestCase
                         '10.0.0',
                         new VersionComparisonOperator('>='),
                     ),
+                ),
+                Metadata::requiresPackageVersionOnClass(
+                    'phpunit/php-invoker',
+                    '^6.0',
                 ),
                 Metadata::requiresPhpunitExtensionOnClass(stdClass::class),
                 Metadata::requiresEnvironmentVariableOnClass('foo', 'bar'),

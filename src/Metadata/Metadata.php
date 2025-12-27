@@ -390,6 +390,24 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string $packageName
+     * @param non-empty-string $versionConstraint
+     */
+    public static function requiresPackageVersionOnClass(string $packageName, string $versionConstraint): RequiresPackageVersion
+    {
+        return new RequiresPackageVersion(self::CLASS_LEVEL, $packageName, $versionConstraint);
+    }
+
+    /**
+     * @param non-empty-string $packageName
+     * @param non-empty-string $versionConstraint
+     */
+    public static function requiresPackageVersionOnMethod(string $packageName, string $versionConstraint): RequiresPackageVersion
+    {
+        return new RequiresPackageVersion(self::METHOD_LEVEL, $packageName, $versionConstraint);
+    }
+
+    /**
      * @param class-string<Extension> $extensionClass
      */
     public static function requiresPhpunitExtensionOnClass(string $extensionClass): RequiresPhpunitExtension
@@ -881,6 +899,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true RequiresPhpunit $this
      */
     public function isRequiresPhpunit(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true RequiresPackageVersion $this
+     */
+    public function isRequiresPackageVersion(): bool
     {
         return false;
     }
