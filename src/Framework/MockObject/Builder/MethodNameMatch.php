@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject\Builder;
 use PHPUnit\Framework\Constraint\Constraint;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface MethodNameMatch extends ParametersMatch
 {
