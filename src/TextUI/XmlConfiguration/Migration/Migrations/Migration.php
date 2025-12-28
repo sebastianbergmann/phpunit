@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use DOMDocument;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface Migration
 {

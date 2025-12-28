@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 use Throwable;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
 interface IncompleteTest extends Throwable
 {
