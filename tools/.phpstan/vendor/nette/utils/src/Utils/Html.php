@@ -582,7 +582,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 	/**
 	 * Appends plain-text string to element content.
 	 */
-	public function addText(\Stringable|string $text): static
+	public function addText(\Stringable|string|int|null $text): static
 	{
 		if (!$text instanceof HtmlStringable) {
 			$text = htmlspecialchars((string) $text, ENT_NOQUOTES, 'UTF-8');

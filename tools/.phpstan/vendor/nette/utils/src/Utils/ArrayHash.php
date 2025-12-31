@@ -79,8 +79,7 @@ class ArrayHash extends \stdClass implements \ArrayAccess, \Countable, \Iterator
 	 * @param  array-key  $key
 	 * @return T
 	 */
-	#[\ReturnTypeWillChange]
-	public function offsetGet($key)
+	public function offsetGet($key): mixed
 	{
 		return $this->$key;
 	}
