@@ -9,24 +9,35 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
-#[CoversMethod(Assert::class, 'assertLessThan')]
 #[TestDox('assertLessThan()')]
 #[Small]
 final class assertLessThanTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{0: int, 1: int}>
+     */
+    public static function failureProvider(): array
+    {
+        return [
+            [1, 2],
+            [1, 1],
+        ];
+    }
+
     public function testSucceedsWhenConstraintEvaluatesToTrue(): void
     {
         $this->assertLessThan(2, 1);
     }
 
-    public function testFailsWhenConstraintEvaluatesToFalse(): void
+    #[DataProvider('failureProvider')]
+    public function testFailsWhenConstraintEvaluatesToFalse(mixed $maximum, mixed $actual): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertLessThan(1, 2);
+        $this->assertLessThan($maximum, $actual);
     }
 }
