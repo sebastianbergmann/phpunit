@@ -16,7 +16,7 @@ use Iterator;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
- * @template-implements Iterator<int, Variable>
+ * @template-implements Iterator<non-negative-int, Variable>
  */
 final class VariableCollectionIterator implements Iterator
 {
@@ -24,6 +24,10 @@ final class VariableCollectionIterator implements Iterator
      * @var list<Variable>
      */
     private readonly array $variables;
+
+    /**
+     * @var non-negative-int
+     */
     private int $position = 0;
 
     public function __construct(VariableCollection $variables)
@@ -41,6 +45,9 @@ final class VariableCollectionIterator implements Iterator
         return $this->position < count($this->variables);
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function key(): int
     {
         return $this->position;
