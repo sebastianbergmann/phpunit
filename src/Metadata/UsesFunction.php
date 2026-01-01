@@ -25,7 +25,7 @@ final readonly class UsesFunction extends Metadata
      * @param int<0, 1>        $level
      * @param non-empty-string $functionName
      */
-    public function __construct(int $level, string $functionName)
+    protected function __construct(int $level, string $functionName)
     {
         parent::__construct($level);
 
