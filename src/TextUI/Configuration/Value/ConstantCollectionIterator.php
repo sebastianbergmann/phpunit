@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use function iterator_count;
 use Countable;
@@ -54,6 +55,8 @@ final class ConstantCollectionIterator implements Countable, Iterator
 
     public function current(): Constant
     {
+        assert(isset($this->constants[$this->position]));
+
         return $this->constants[$this->position];
     }
 

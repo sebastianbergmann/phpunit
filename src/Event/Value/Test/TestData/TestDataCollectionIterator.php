@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestData;
 
+use function assert;
 use function count;
 use Iterator;
 
@@ -47,6 +48,8 @@ final class TestDataCollectionIterator implements Iterator
 
     public function current(): TestData
     {
+        assert(isset($this->data[$this->position]));
+
         return $this->data[$this->position];
     }
 

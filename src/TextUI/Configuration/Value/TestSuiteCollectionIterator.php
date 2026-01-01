@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use function iterator_count;
 use Countable;
@@ -54,6 +55,8 @@ final class TestSuiteCollectionIterator implements Countable, Iterator
 
     public function current(): TestSuite
     {
+        assert(isset($this->testSuites[$this->position]));
+
         return $this->testSuites[$this->position];
     }
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use function iterator_count;
 use Countable;
@@ -54,6 +55,8 @@ final class VariableCollectionIterator implements Countable, Iterator
 
     public function current(): Variable
     {
+        assert(isset($this->variables[$this->position]));
+
         return $this->variables[$this->position];
     }
 
