@@ -9,13 +9,14 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use Iterator;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
- * @template-implements Iterator<int, FilterDirectory>
+ * @template-implements Iterator<non-negative-int, FilterDirectory>
  */
 final class FilterDirectoryCollectionIterator implements Iterator
 {
@@ -23,6 +24,10 @@ final class FilterDirectoryCollectionIterator implements Iterator
      * @var list<FilterDirectory>
      */
     private readonly array $directories;
+
+    /**
+     * @var non-negative-int
+     */
     private int $position = 0;
 
     public function __construct(FilterDirectoryCollection $directories)
@@ -40,6 +45,9 @@ final class FilterDirectoryCollectionIterator implements Iterator
         return $this->position < count($this->directories);
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function key(): int
     {
         return $this->position;
@@ -47,6 +55,8 @@ final class FilterDirectoryCollectionIterator implements Iterator
 
     public function current(): FilterDirectory
     {
+        assert(isset($this->directories[$this->position]));
+
         return $this->directories[$this->position];
     }
 

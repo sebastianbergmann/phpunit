@@ -9,13 +9,14 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use Iterator;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
- * @template-implements Iterator<int, Group>
+ * @template-implements Iterator<non-negative-int, Group>
  */
 final class GroupCollectionIterator implements Iterator
 {
@@ -23,6 +24,10 @@ final class GroupCollectionIterator implements Iterator
      * @var list<Group>
      */
     private readonly array $groups;
+
+    /**
+     * @var non-negative-int
+     */
     private int $position = 0;
 
     public function __construct(GroupCollection $groups)
@@ -40,6 +45,9 @@ final class GroupCollectionIterator implements Iterator
         return $this->position < count($this->groups);
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function key(): int
     {
         return $this->position;
@@ -47,6 +55,8 @@ final class GroupCollectionIterator implements Iterator
 
     public function current(): Group
     {
+        assert(isset($this->groups[$this->position]));
+
         return $this->groups[$this->position];
     }
 
