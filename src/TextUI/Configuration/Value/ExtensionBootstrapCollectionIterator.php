@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use Iterator;
 
@@ -47,6 +48,8 @@ final class ExtensionBootstrapCollectionIterator implements Iterator
 
     public function current(): ExtensionBootstrap
     {
+        assert(isset($this->extensionBootstraps[$this->position]));
+
         return $this->extensionBootstraps[$this->position];
     }
 

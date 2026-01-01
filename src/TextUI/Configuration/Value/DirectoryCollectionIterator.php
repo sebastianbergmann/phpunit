@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use function count;
 use Iterator;
 
@@ -47,6 +48,8 @@ final class DirectoryCollectionIterator implements Iterator
 
     public function current(): Directory
     {
+        assert(isset($this->directories[$this->position]));
+
         return $this->directories[$this->position];
     }
 
