@@ -187,7 +187,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private TestStatus $status;
 
     /**
-     * @var 0|positive-int
+     * @var non-negative-int
      */
     private int $numberOfAssertionsPerformed = 0;
     private mixed $testResult                = null;
@@ -829,17 +829,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @param non-negative-int $count
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function addToAssertionCount(int $count): void
     {
+        assert($count >= 0);
+
         $this->numberOfAssertionsPerformed += $count;
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     * @return non-negative-int
      *
-     * @return 0|positive-int
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function numberOfAssertionsPerformed(): int
     {
