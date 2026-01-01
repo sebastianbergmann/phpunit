@@ -25,7 +25,7 @@ final class RequiresOperatingSystem extends Metadata
      * @psalm-param 0|1 $level
      * @psalm-param non-empty-string $operatingSystem
      */
-    public function __construct(int $level, string $operatingSystem)
+    protected function __construct(int $level, string $operatingSystem)
     {
         parent::__construct($level);
 

@@ -25,7 +25,7 @@ final class UsesFunction extends Metadata
      * @psalm-param 0|1 $level
      * @psalm-param non-empty-string $functionName
      */
-    public function __construct(int $level, string $functionName)
+    protected function __construct(int $level, string $functionName)
     {
         parent::__construct($level);
 
