@@ -18,10 +18,7 @@ final readonly class BackupGlobals extends Metadata
 {
     private bool $enabled;
 
-    /**
-     * @param int<0, 1> $level
-     */
-    protected function __construct(int $level, bool $enabled)
+    protected function __construct(Level $level, bool $enabled)
     {
         parent::__construct($level);
 

@@ -22,10 +22,9 @@ final readonly class CoversNamespace extends Metadata
     private string $namespace;
 
     /**
-     * @param int<0, 1>        $level
      * @param non-empty-string $namespace
      */
-    protected function __construct(int $level, string $namespace)
+    protected function __construct(Level $level, string $namespace)
     {
         parent::__construct($level);
 

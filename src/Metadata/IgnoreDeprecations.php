@@ -20,10 +20,9 @@ final readonly class IgnoreDeprecations extends Metadata
     private ?string $messagePattern;
 
     /**
-     * @param int<0, 1>             $level
      * @param null|non-empty-string $messagePattern
      */
-    protected function __construct(int $level, null|string $messagePattern)
+    protected function __construct(Level $level, null|string $messagePattern)
     {
         parent::__construct($level);
 
