@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_all;
 use function array_merge;
 use function array_pop;
 use function array_reverse;
@@ -576,13 +577,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     private function containsOnlyVirtualGroups(array $groups): bool
     {
-        foreach ($groups as $group) {
-            if (!str_starts_with($group, '__phpunit_')) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($groups, static fn (string $group) => str_starts_with($group, '__phpunit_'));
     }
 
     private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool

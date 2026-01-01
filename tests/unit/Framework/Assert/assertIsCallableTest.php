@@ -34,7 +34,7 @@ final class assertIsCallableTest extends TestCase
                 },
             ],
             ['PHPUnit\Framework\assertIsCallable'],
-            [[Assert::class, 'assertIsCallable']],
+            [Assert::assertIsCallable(...)],
         ];
     }
 

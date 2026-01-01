@@ -56,11 +56,9 @@ final class TestSuiteSorter
      * @var array<string, int> Associative array of (string => DEFECT_SORT_WEIGHT) elements
      */
     private array $defectSortOrder = [];
-    private readonly ResultCache $cache;
 
-    public function __construct(?ResultCache $cache = null)
+    public function __construct(private readonly ?ResultCache $cache = new NullResultCache)
     {
-        $this->cache = $cache ?? new NullResultCache;
     }
 
     /**

@@ -11,6 +11,7 @@ namespace PHPUnit\Util\PHP;
 
 use const PHP_BINARY;
 use const PHP_SAPI;
+use function array_any;
 use function array_keys;
 use function array_merge;
 use function array_values;
@@ -166,19 +167,10 @@ final readonly class DefaultJobRunner extends JobRunner
      */
     private function buildCommand(Job $job, ?string $file): array
     {
-        $runtime     = new Runtime;
-        $command     = [PHP_BINARY];
-        $phpSettings = $job->phpSettings();
-
-        $xdebugModeConfiguredExplicitly = false;
-
-        foreach ($phpSettings as $phpSetting) {
-            if (str_starts_with($phpSetting, 'xdebug.mode')) {
-                $xdebugModeConfiguredExplicitly = true;
-
-                break;
-            }
-        }
+        $runtime                        = new Runtime;
+        $command                        = [PHP_BINARY];
+        $phpSettings                    = $job->phpSettings();
+        $xdebugModeConfiguredExplicitly = array_any($phpSettings, static fn (string $phpSetting) => str_starts_with($phpSetting, 'xdebug.mode'));
 
         if ($runtime->hasPCOV()) {
             $pcovSettings = ini_get_all('pcov');

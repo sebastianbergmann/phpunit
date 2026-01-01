@@ -86,7 +86,7 @@ final class Color
             return $buffer;
         }
 
-        $codes  = array_map('\trim', explode(',', $color));
+        $codes  = array_map(\trim(...), explode(',', $color));
         $styles = [];
 
         foreach ($codes as $code) {
@@ -105,7 +105,7 @@ final class Color
     public static function colorizeTextBox(string $color, string $buffer, ?int $columns = null): string
     {
         $lines       = preg_split('/\r\n|\r|\n/', $buffer);
-        $maxBoxWidth = max(array_map('\strlen', $lines));
+        $maxBoxWidth = max(array_map(\strlen(...), $lines));
 
         if ($columns !== null) {
             $maxBoxWidth = min($maxBoxWidth, $columns);

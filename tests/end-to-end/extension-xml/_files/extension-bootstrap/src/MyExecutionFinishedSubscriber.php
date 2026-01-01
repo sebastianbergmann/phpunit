@@ -13,9 +13,9 @@ use const PHP_EOL;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber;
 
-final class MyExecutionFinishedSubscriber implements ExecutionFinishedSubscriber
+final readonly class MyExecutionFinishedSubscriber implements ExecutionFinishedSubscriber
 {
-    private readonly string $message;
+    private string $message;
 
     public function __construct(string $message)
     {

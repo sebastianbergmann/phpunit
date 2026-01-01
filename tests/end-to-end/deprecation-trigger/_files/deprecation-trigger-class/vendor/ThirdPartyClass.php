@@ -5,5 +5,5 @@ namespace PHPUnit\TestFixture\SelfDirectIndirect;
 
 final class ThirdPartyClass
 {
-    const A = true;
+    const bool A = true;
 }
