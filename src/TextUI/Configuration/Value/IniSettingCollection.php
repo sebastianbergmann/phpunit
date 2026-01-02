@@ -18,7 +18,7 @@ use IteratorAggregate;
  *
  * @immutable
  *
- * @template-implements IteratorAggregate<int, IniSetting>
+ * @template-implements IteratorAggregate<non-negative-int, IniSetting>
  */
 final readonly class IniSettingCollection implements Countable, IteratorAggregate
 {

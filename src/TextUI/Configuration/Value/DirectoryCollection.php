@@ -18,7 +18,7 @@ use IteratorAggregate;
  *
  * @immutable
  *
- * @template-implements IteratorAggregate<int, Directory>
+ * @template-implements IteratorAggregate<non-negative-int, Directory>
  */
 final readonly class DirectoryCollection implements Countable, IteratorAggregate
 {
