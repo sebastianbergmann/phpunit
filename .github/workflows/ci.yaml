@@ -91,8 +91,16 @@ jobs:
           coverage: none
           tools: none
 
+      - name: Cache PHP-CS-Fixer cache directory
+        uses: actions/cache@v5
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.os }}-php-cs-fixer-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-php-cs-fixer-${{ github.ref }}-
+
       - name: Run PHP-CS-Fixer
-        run: ./tools/php-cs-fixer check --show-progress=dots --using-cache=no --verbose
+        run: ./tools/php-cs-fixer check --cache-file=.php-cs-fixer.cache --show-progress=dots --verbose
 
   static-analysis:
     name: Static Analysis
@@ -334,6 +342,17 @@ jobs:
 
       - name: Install dependencies with Composer
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
+
+      - name: Cache PHPUnit's static analysis cache
+        uses: actions/cache@v5
+        with:
+          path: .phpunit.cache/code-coverage
+          key: ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+
+      - name: Warm PHPUnit's static analysis cache
+        run: ./phpunit --warm-coverage-cache
 
       - name: Collect code coverage with PHPUnit
         run: ./phpunit --log-junit test-results.xml --coverage-openclover=code-coverage.xml
