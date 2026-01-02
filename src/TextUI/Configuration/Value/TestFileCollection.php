@@ -18,7 +18,7 @@ use IteratorAggregate;
  *
  * @immutable
  *
- * @template-implements IteratorAggregate<int, TestFile>
+ * @template-implements IteratorAggregate<non-negative-int, TestFile>
  */
 final readonly class TestFileCollection implements Countable, IteratorAggregate
 {

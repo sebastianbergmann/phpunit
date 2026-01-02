@@ -16,7 +16,7 @@ use IteratorAggregate;
  *
  * @immutable
  *
- * @template-implements IteratorAggregate<int, Group>
+ * @template-implements IteratorAggregate<non-negative-int, Group>
  */
 final readonly class GroupCollection implements IteratorAggregate
 {

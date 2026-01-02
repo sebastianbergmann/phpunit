@@ -50,7 +50,7 @@ use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
 
 /**
- * @template-implements IteratorAggregate<int, Test>
+ * @template-implements IteratorAggregate<non-negative-int, Test>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
