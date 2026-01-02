@@ -353,6 +353,14 @@ jobs:
       - name: Install dependencies with Composer
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
+      - name: Cache PHPUnit's static analysis cache
+        uses: actions/cache@v5
+        with:
+          path: .phpunit.cache/code-coverage
+          key: ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+
       - name: Collect code coverage with PHPUnit
         run: ./phpunit --log-junit test-results.xml --coverage-clover=code-coverage.xml
 
