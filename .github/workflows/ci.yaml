@@ -91,8 +91,16 @@ jobs:
           coverage: none
           tools: none
 
+      - name: Cache PHP-CS-Fixer cache directory
+        uses: actions/cache@v5
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.os }}-php-cs-fixer-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-php-cs-fixer-${{ github.ref }}-
+
       - name: Run PHP-CS-Fixer
-        run: ./tools/php-cs-fixer check --show-progress=dots --using-cache=no --verbose
+        run: ./tools/php-cs-fixer check --cache-file=.php-cs-fixer.cache --show-progress=dots --verbose
 
   type-checker:
     name: Type Checker
