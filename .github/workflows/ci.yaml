@@ -361,6 +361,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
 
+      - name: Warm PHPUnit's static analysis cache
+        run: ./phpunit --warm-coverage-cache
+
       - name: Collect code coverage with PHPUnit
         run: ./phpunit --log-junit test-results.xml --coverage-clover=code-coverage.xml
 
