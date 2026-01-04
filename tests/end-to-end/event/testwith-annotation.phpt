@@ -16,7 +16,7 @@ Test Runner Configured
 Event Facade Sealed
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsInvalidJson)
 The data provider specified for PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetIsInvalidJson is invalid
-The data set for the @testWith annotation cannot be parsed: State mismatch (invalid or malformed JSON)
+The data set for the @testWith annotation cannot be parsed: State mismatch (invalid or malformed JSON)%A
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetCannotBeParsed)
 The data provider specified for PHPUnit\TestFixture\Metadata\Annotation\TestWithTest::testDataSetCannotBeParsed is invalid
 The data set for the @testWith annotation cannot be parsed.
