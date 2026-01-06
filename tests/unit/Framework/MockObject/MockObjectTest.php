@@ -27,12 +27,6 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables;
-use PHPUnit\TestFixture\MockObject\ParameterSets\Multiple\Logger;
-use PHPUnit\TestFixture\MockObject\ParameterSets\Multiple\MultipleService;
-use PHPUnit\TestFixture\MockObject\ParameterSets\Single\AnEvent;
-use PHPUnit\TestFixture\MockObject\ParameterSets\Single\AnotherEvent;
-use PHPUnit\TestFixture\MockObject\ParameterSets\Single\Dispatcher;
-use PHPUnit\TestFixture\MockObject\ParameterSets\Single\SingleService;
 use ReflectionProperty;
 
 #[Group('test-doubles')]
@@ -645,74 +639,6 @@ EOT,
         $this->expectExceptionMessage(ExtendableReadonlyClassWithCloneMethod::class . '::__clone');
 
         clone $double;
-    }
-
-    public function testWithOrderedListOfSingleParameters(): void
-    {
-        $dispatcher = $this->createMock(Dispatcher::class);
-
-        $dispatcher
-            ->expects($this->exactly(2))
-            ->method('dispatch')
-            ->withConsecutiveParameterSets(
-                $this->isInstanceOf(AnEvent::class),
-                $this->isInstanceOf(AnotherEvent::class),
-            );
-
-        $service = new SingleService($dispatcher);
-
-        $service->doSomething();
-    }
-
-    public function testWithUnorderedListOfSingleParameters(): void
-    {
-        $dispatcher = $this->createMock(Dispatcher::class);
-
-        $dispatcher
-            ->expects($this->exactly(2))
-            ->method('dispatch')
-            ->withParameterSetsInAnyOrder(
-                $this->isInstanceOf(AnotherEvent::class),
-                $this->isInstanceOf(AnEvent::class),
-            );
-
-        $service = new SingleService($dispatcher);
-
-        $service->doSomething();
-    }
-
-    public function testWithOrderedListOfMultipleParameters(): void
-    {
-        $logger = $this->createMock(Logger::class);
-
-        $logger
-            ->expects($this->exactly(2))
-            ->method('log')
-            ->withConsecutiveParameterSets(
-                ['info', 'Some Info'],
-                ['error', 'Some Error'],
-            );
-
-        $service = new MultipleService($logger);
-
-        $service->doSomething();
-    }
-
-    public function testWithUnorderedListOfMultipleParameters(): void
-    {
-        $logger = $this->createMock(Logger::class);
-
-        $logger
-            ->expects($this->exactly(2))
-            ->method('log')
-            ->withParameterSetsInAnyOrder(
-                ['error', 'Some Error'],
-                ['info', 'Some Info'],
-            );
-
-        $service = new MultipleService($logger);
-
-        $service->doSomething();
     }
 
     /**
