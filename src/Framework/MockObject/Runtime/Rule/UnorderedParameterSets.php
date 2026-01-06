@@ -39,8 +39,6 @@ final class UnorderedParameterSets implements ParametersRule
     private int $numberOfConfiguredParameterSets = 0;
 
     /**
-     * @param array<mixed> $parameters
-     *
      * @throws Exception
      */
     public function __construct(array $stack)
