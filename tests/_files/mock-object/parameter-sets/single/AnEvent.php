@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Issue6407;
+namespace PHPUnit\TestFixture\MockObject\ParameterSets\Single;
 
-interface Event
+final readonly class AnEvent implements Event
 {
 }

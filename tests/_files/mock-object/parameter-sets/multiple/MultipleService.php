@@ -7,20 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Issue6407;
+namespace PHPUnit\TestFixture\MockObject\ParameterSets\Multiple;
 
-final readonly class Service
+final readonly class MultipleService
 {
-    private Dispatcher $dispatcher;
+    private Logger $logger;
 
-    public function __construct(Dispatcher $dispatcher)
+    public function __construct(Logger $logger)
     {
-        $this->dispatcher = $dispatcher;
+        $this->logger = $logger;
     }
 
     public function doSomething(): void
     {
-        $this->dispatcher->dispatch(new AnEvent);
-        $this->dispatcher->dispatch(new AnotherEvent);
+        $this->logger->log('info', 'Some Info');
+        $this->logger->log('error', 'Some Error');
     }
 }
