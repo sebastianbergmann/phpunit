@@ -13,6 +13,7 @@ use function call_user_func_array;
 use Exception;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -56,6 +57,7 @@ final class MockObjectTest extends TestDoubleTestCase
     }
 
     #[DoesNotPerformAssertions]
+    #[IgnorePhpunitDeprecations]
     public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsNotCalled(): void
     {
         $double = $this->createMock(AnInterface::class);
@@ -64,6 +66,7 @@ final class MockObjectTest extends TestDoubleTestCase
     }
 
     #[DoesNotPerformAssertions]
+    #[IgnorePhpunitDeprecations]
     public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsCalledOnce(): void
     {
         $double = $this->createMock(AnInterface::class);
