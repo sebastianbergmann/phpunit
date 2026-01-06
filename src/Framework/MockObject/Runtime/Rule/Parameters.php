@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
-use AllowDynamicProperties;
 use function count;
 use function sprintf;
 use Exception;
@@ -26,7 +25,7 @@ use PHPUnit\Util\Test;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-#[AllowDynamicProperties] final class Parameters implements ParametersRule
+final class Parameters implements ParametersRule
 {
     /**
      * @var list<Constraint>
@@ -34,7 +33,6 @@ use PHPUnit\Util\Test;
     private array $parameters           = [];
     private ?BaseInvocation $invocation = null;
     private null|bool|ExpectationFailedException $parameterVerificationResult;
-    private bool $useAssertionCount      = true;
 
     /**
      * @param array<mixed> $parameters
@@ -149,13 +147,8 @@ use PHPUnit\Util\Test;
         return (bool) $this->parameterVerificationResult;
     }
 
-    public function useAssertionCount(bool $useAssertionCount): void
-    {
-        $this->useAssertionCount = $useAssertionCount;
-    }
-
     private function incrementAssertionCount(): void
     {
-        $this->useAssertionCount && Test::currentTestCase()->addToAssertionCount(1);
+        Test::currentTestCase()->addToAssertionCount(1);
     }
 }
