@@ -375,7 +375,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation failed for method name is "doSomethingElse" when invoked 2 times.
-Too much parameter sets given, 2 from 3 expected parameter sets have been called.
+Too many parameter sets given, 2 out of 3 expected parameter sets have been called.
 
 EOT,
             $double,
@@ -403,7 +403,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation failed for method name is "doSomethingElse" when invoked 2 times.
-1 from 2 expected parameter sets were called, indexes [1] were not called.
+1 out of 2 expected parameter sets was called, index [1] was not called.
 
 EOT,
             $double,
@@ -421,7 +421,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation failed for method name is "doSomethingElse" when invoked 2 times.
-2 from 3 expected parameter sets were called, indexes [0] were not called.
+2 out of 3 expected parameter sets were called, index [0] was not called.
 
 EOT,
             $double,

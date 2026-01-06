@@ -101,9 +101,13 @@ final class UnorderedParameterSets implements ParametersRule
 
             throw new ExpectationFailedException(
                 sprintf(
-                    '%d from %d expected parameter sets were called, indexes [' . implode(', ', $unappliedIndexes) . '] were not called.',
+                    '%d out of %d expected parameter set%s %s called, index%s [' . implode(', ', $unappliedIndexes) . '] %s not called.',
                     count($this->applied),
                     $this->numberOfConfiguredParameterSets,
+                    $this->numberOfConfiguredParameterSets !== 1 ? 's' : '',
+                    count($this->applied) !== 1 ? 'were' : 'was',
+                    count($unappliedIndexes) !== 1 ? 'es' : '',
+                    count($unappliedIndexes) !== 1 ? 'were' : 'was',
                 ),
             );
         }

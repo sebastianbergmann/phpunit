@@ -75,9 +75,11 @@ final class ConsecutiveParameterSets implements ParametersRule
             count($this->stack) > 0) {
             throw new ExpectationFailedException(
                 sprintf(
-                    'Too much parameter sets given, %d from %d expected parameter sets have been called.',
+                    'Too many parameter sets given, %d out of %d expected parameter set%s %s been called.',
                     count($this->applied),
                     $this->numberOfConfiguredParameterSets,
+                    $this->numberOfConfiguredParameterSets !== 1 ? 's' : '',
+                    count($this->applied) !== 1 ? 'have' : 'has',
                 ),
             );
         }
