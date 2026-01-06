@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.5] - 2026-MM-DD
+
+### Deprecated
+
+* [#6461](https://github.com/sebastianbergmann/phpunit/issues/6461): `any()` matcher (soft deprecation)
+
 ## [12.5.4] - 2025-12-15
 
 ### Changed
@@ -42,6 +48,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.5]: https://github.com/sebastianbergmann/phpunit/compare/12.5.4...12.5
 [12.5.4]: https://github.com/sebastianbergmann/phpunit/compare/12.5.3...12.5.4
 [12.5.3]: https://github.com/sebastianbergmann/phpunit/compare/12.5.2...12.5.3
 [12.5.2]: https://github.com/sebastianbergmann/phpunit/compare/12.5.1...12.5.2
