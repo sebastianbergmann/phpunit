@@ -19,8 +19,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
 
-final class
-    implements ParametersRule
+final class UnorderedParameterSets implements ParametersRule
 {
     /**
      * @var list<Parameters>
@@ -38,11 +37,6 @@ final class
     private array $applied                       = [];
     private int $numberOfConfiguredParameterSets = 0;
 
-    /**
-     * @param array<mixed> $parameters
-     *
-     * @throws \PHPUnit\Framework\Exception
-     */
     public function __construct(array $stack)
     {
         foreach ($stack as $parameters) {

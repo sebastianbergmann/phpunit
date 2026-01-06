@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
+use AllowDynamicProperties;
 use function count;
 use function sprintf;
-use AllowDynamicProperties;
 use Exception;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -34,7 +34,7 @@ use PHPUnit\Util\Test;
     private array $parameters           = [];
     private ?BaseInvocation $invocation = null;
     private null|bool|ExpectationFailedException $parameterVerificationResult;
-    private bool $useAssertionCount = true;
+    private bool $useAssertionCount      = true;
 
     /**
      * @param array<mixed> $parameters
@@ -81,11 +81,6 @@ use PHPUnit\Util\Test;
     public function verify(): void
     {
         $this->doVerify();
-    }
-
-    public function useAssertionCount(bool $useAssertionCount): void
-    {
-        $this->useAssertionCount = $useAssertionCount;
     }
 
     /**
@@ -154,11 +149,13 @@ use PHPUnit\Util\Test;
         return (bool) $this->parameterVerificationResult;
     }
 
+    public function useAssertionCount(bool $useAssertionCount): void
+    {
+        $this->useAssertionCount = $useAssertionCount;
+    }
+
     private function incrementAssertionCount(): void
     {
-        if ($this->useAssertionCount === false) {
-            return;
-        }
-        Test::currentTestCase()->addToAssertionCount(1);
+        $this->useAssertionCount && Test::currentTestCase()->addToAssertionCount(1);
     }
 }
