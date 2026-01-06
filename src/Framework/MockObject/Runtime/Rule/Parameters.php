@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject\Rule;
 
 use function count;
 use function sprintf;
-use AllowDynamicProperties;
 use Exception;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -26,7 +25,7 @@ use PHPUnit\Util\Test;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-#[AllowDynamicProperties] final class Parameters implements ParametersRule
+final class Parameters implements ParametersRule
 {
     /**
      * @var list<Constraint>
@@ -159,6 +158,7 @@ use PHPUnit\Util\Test;
         if ($this->useAssertionCount === false) {
             return;
         }
+
         Test::currentTestCase()->addToAssertionCount(1);
     }
 }

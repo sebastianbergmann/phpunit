@@ -34,8 +34,8 @@ final class UnorderedParameterSets implements ParametersRule
     /**
      * @var list<Parameters>
      */
-    private array $applied                       = [];
-    private int $numberOfConfiguredParameterSets = 0;
+    private array $applied = [];
+    private int $numberOfConfiguredParameterSets;
 
     /**
      * @param list<Parameters> $stack
@@ -45,6 +45,7 @@ final class UnorderedParameterSets implements ParametersRule
         foreach ($stack as $parameters) {
             $this->stack[] = new Parameters(is_array($parameters) ? $parameters : [$parameters]);
         }
+
         $this->unapplied                       = $this->stack;
         $this->numberOfConfiguredParameterSets = count($stack);
     }

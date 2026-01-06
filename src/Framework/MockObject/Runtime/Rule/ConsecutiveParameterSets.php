@@ -32,8 +32,8 @@ final class ConsecutiveParameterSets implements ParametersRule
     /**
      * @var list<Parameters>
      */
-    private array $applied                       = [];
-    private int $numberOfConfiguredParameterSets = 0;
+    private array $applied = [];
+    private int $numberOfConfiguredParameterSets;
 
     /**
      * @param list<Parameters> $stack
@@ -43,6 +43,7 @@ final class ConsecutiveParameterSets implements ParametersRule
         foreach ($stack as $parameters) {
             $this->stack[] = new Parameters(is_array($parameters) ? $parameters : [$parameters]);
         }
+
         $this->numberOfConfiguredParameterSets = count($stack);
     }
 
@@ -57,6 +58,7 @@ final class ConsecutiveParameterSets implements ParametersRule
 
         $parameters      = array_shift($this->stack);
         $this->applied[] = $parameters;
+
         $parameters->apply($invocation);
     }
 
