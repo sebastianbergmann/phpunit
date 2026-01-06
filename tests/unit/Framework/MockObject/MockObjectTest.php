@@ -318,7 +318,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsSucceedsWhenMethodIsCalledConsecutiveWithExpectedParameters(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsSucceedsWhenMethodIsCalledConsecutivelyWithExpectedParameters(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -328,7 +328,7 @@ EOT,
         $double->doSomethingElse(2);
     }
 
-    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailedWhenMethodIsCalledConsecutiveWithOneWrongParameter(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailsWhenMethodIsCalledConsecutivelyWithOneWrongParameter(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -347,7 +347,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailedWhenMethodIsCalledConsecutiveWithNotEnoughParameter(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailsWhenMethodIsCalledConsecutivelyWithNotEnoughParameter(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -361,7 +361,7 @@ EOT,
         $double->doSomethingElse(3);
     }
 
-    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailedWhenTooMuchParameterSetsAreGiven(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailsWhenTooManyParameterSetsAreGiven(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -389,7 +389,7 @@ EOT,
         $double->doSomethingElse(1);
     }
 
-    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailedWhenMethodIsCalledWithOneWrongParameter(): void
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailsWhenMethodIsCalledWithOneWrongParameter(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -407,7 +407,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailedWhenTooMuchParameterSetsAreGiven(): void
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailsWhenTooManyParameterSetsAreGiven(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -425,7 +425,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailedWhenMethodIsCalledConsecutiveWithNotEnoughParameter(): void
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderFailsWhenMethodIsCalledConsecutivelyWithNotEnoughParameters(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
