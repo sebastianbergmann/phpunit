@@ -22,7 +22,7 @@ use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ConsecutiveParameterSets implements ParametersRule
+final class OrderedParameterSets implements ParametersRule
 {
     /**
      * @var list<Parameters>

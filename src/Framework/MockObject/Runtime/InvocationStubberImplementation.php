@@ -139,11 +139,11 @@ final class InvocationStubberImplementation implements InvocationStubber
         return $this;
     }
 
-    public function withConsecutiveParameterSets(mixed ...$arguments): InvocationStubber
+    public function withParameterSetsInOrder(mixed ...$arguments): InvocationStubber
     {
         $this->ensureParametersCanBeConfigured();
 
-        $this->matcher->setParametersRule(new Rule\ConsecutiveParameterSets($arguments));
+        $this->matcher->setParametersRule(new Rule\OrderedParameterSets($arguments));
 
         return $this;
     }

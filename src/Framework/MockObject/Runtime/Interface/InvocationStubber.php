@@ -51,7 +51,7 @@ interface InvocationStubber
     /**
      * @return $this
      */
-    public function withConsecutiveParameterSets(mixed ...$arguments): self;
+    public function withParameterSetsInOrder(mixed ...$arguments): self;
 
     /**
      * @return $this

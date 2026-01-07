@@ -325,7 +325,7 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->expects($this->exactly(2))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2);
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInOrder(1, 2);
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
@@ -335,7 +335,7 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->expects($this->exactly(2))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2);
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInOrder(1, 2);
 
         $double->doSomethingElse(1);
         $this->assertThatMockObjectExpectationFails(
@@ -354,7 +354,7 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->expects($this->exactly(3))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2);
+        $double->expects($this->exactly(3))->method('doSomethingElse')->withParameterSetsInOrder(1, 2);
 
         $this->expectException(NoMoreParameterSetsConfiguredException::class);
         $this->expectExceptionMessage('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
@@ -368,7 +368,7 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->expects($this->exactly(2))->method('doSomethingElse')->withConsecutiveParameterSets(1, 2, 3);
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInOrder(1, 2, 3);
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
