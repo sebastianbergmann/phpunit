@@ -82,12 +82,12 @@ final class InvocationHandler
         $this->matcherMap[$id] = $matcher;
     }
 
-    public function expects(InvocationOrder $rule): InvocationStubber
+    public function expects(InvocationOrder $rule): InvocationMocker
     {
         $matcher = new Matcher($rule);
         $this->addMatcher($matcher);
 
-        return new InvocationStubberImplementation(
+        return new InvocationMockerImplementation(
             $this,
             $matcher,
             ...$this->configurableMethods,

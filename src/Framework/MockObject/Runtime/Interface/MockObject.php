@@ -16,5 +16,5 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
  */
 interface MockObject extends Stub
 {
-    public function expects(InvocationOrder $invocationRule): InvocationStubber;
+    public function expects(InvocationOrder $invocationRule): InvocationMocker;
 }

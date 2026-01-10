@@ -40,7 +40,7 @@ trait MockObjectApi
 
     abstract public function __phpunit_unsetInvocationMocker(): void;
 
-    public function expects(InvocationOrder $matcher): InvocationStubber
+    public function expects(InvocationOrder $matcher): InvocationMocker
     {
         return $this->__phpunit_getInvocationHandler()->expects($matcher);
     }
