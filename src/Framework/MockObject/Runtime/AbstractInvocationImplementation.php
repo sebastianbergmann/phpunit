@@ -216,6 +216,11 @@ abstract class AbstractInvocationImplementation implements InvocationStubber
         return $this->will($stub);
     }
 
+    final public function seal(): void
+    {
+        $this->invocationHandler->seal($this->invocationHandler->isMockObject());
+    }
+
     /**
      * @throws MethodNameNotConfiguredException
      * @throws MethodParametersAlreadyConfiguredException

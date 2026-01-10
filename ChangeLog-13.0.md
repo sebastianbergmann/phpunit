@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 * [#6450](https://github.com/sebastianbergmann/phpunit/issues/6450): `TestCase::invokeTestMethod()` method for customizing test method invocation
 * [#6455](https://github.com/sebastianbergmann/phpunit/issues/6455): `withParameterSetsInOrder()` and `withParameterSetsInAnyOrder()` for expecting calls to the same method of a mock object but with different arguments
+* [#6466](https://github.com/sebastianbergmann/phpunit/issues/6466): Sealed test doubles
 
 ### Deprecated
 

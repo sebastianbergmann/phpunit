@@ -644,6 +644,130 @@ EOT,
         clone $double;
     }
 
+    #[TestDox('Sealed mock object throws exception when expects() is called')]
+    public function testSealedMockObjectThrowsExceptionWhenExpectsIsCalled(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->__phpunit_getInvocationHandler()->seal();
+
+        $this->expectException(TestDoubleSealedException::class);
+
+        $double->expects($this->once())->method('doSomethingElse');
+    }
+
+    #[TestDox('Sealed mock object throws exception when method() is called')]
+    public function testSealedMockObjectThrowsExceptionWhenMethodIsCalled(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->__phpunit_getInvocationHandler()->seal();
+
+        $this->expectException(TestDoubleSealedException::class);
+
+        $double->method('doSomethingElse');
+    }
+
+    #[TestDox('Sealed mock object fails when unconfigured method is called')]
+    public function testSealedMockObjectFailsWhenUnconfiguredMethodIsCalled(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->seal();
+
+        $double->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            InterfaceWithReturnTypeDeclaration::class . '::doSomethingElse(0): int was not expected to be called.',
+            $double,
+            'doSomethingElse',
+            [0],
+        );
+    }
+
+    #[TestDox('Sealed mock object allows configured methods to be called')]
+    public function testSealedMockObjectAllowsConfiguredMethodsToBeCalled(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->willReturn(true)
+            ->seal();
+
+        $this->assertTrue($double->doSomething());
+    }
+
+    #[TestDox('Sealing mock object twice is idempotent')]
+    public function testSealingMockObjectTwiceIsIdempotent(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->willReturn(true)
+            ->seal();
+
+        $double->__phpunit_getInvocationHandler()->seal();
+        $double->__phpunit_getInvocationHandler()->seal();
+
+        $this->assertTrue($double->doSomething());
+    }
+
+    #[TestDox('Sealed mock object does not add never() expectation for methods that were configured')]
+    public function testSealedMockObjectDoesNotAddNeverExpectationForConfiguredMethods(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->willReturn(true)
+            ->seal();
+
+        $this->assertTrue($double->doSomething());
+    }
+
+    #[TestDox('Cloned sealed mock object remains sealed')]
+    public function testClonedSealedMockObjectRemainsSealed(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->__phpunit_getInvocationHandler()->seal();
+
+        $clone = clone $double;
+
+        $this->resetMockObjects();
+
+        $this->expectException(TestDoubleSealedException::class);
+
+        $clone
+            ->expects($this->once())
+            ->method('doSomethingElse');
+    }
+
+    #[TestDox('Sealed partial mock object only affects mocked methods')]
+    public function testSealedPartialMockObjectOnlyAffectsMockedMethods(): void
+    {
+        $double = $this
+            ->getMockBuilder(ExtendableClassWithCloneMethod::class)
+            ->onlyMethods(['doSomething'])
+            ->getMock();
+
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->willReturn(false)
+            ->seal();
+
+        $this->assertFalse($double->doSomething());
+    }
+
     /**
      * @param class-string $type
      */

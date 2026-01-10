@@ -89,4 +89,6 @@ interface InvocationStubber
      * @return $this
      */
     public function willThrowException(Throwable $exception): self;
+
+    public function seal(): void;
 }
