@@ -649,11 +649,19 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->__phpunit_getInvocationHandler()->seal();
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->seal();
 
-        $this->expectException(TestDoubleSealedException::class);
-
-        $double->expects($this->once())->method('doSomethingElse');
+        $this->assertTestDoubleSealedExceptionIsThrown(
+            function () use ($double): void
+            {
+                $double
+                    ->expects($this->once())
+                    ->method('doSomethingElse');
+            },
+        );
     }
 
     #[TestDox('Sealed mock object throws exception when method() is called')]
@@ -661,11 +669,19 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->__phpunit_getInvocationHandler()->seal();
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->seal();
 
-        $this->expectException(TestDoubleSealedException::class);
-
-        $double->method('doSomethingElse');
+        $this->assertTestDoubleSealedExceptionIsThrown(
+            static function () use ($double): void
+            {
+                $double
+                    ->method('doSomethingElse')
+                    ->willReturn(1);
+            },
+        );
     }
 
     #[TestDox('Sealed mock object fails when unconfigured method is called')]
@@ -702,23 +718,6 @@ EOT,
         $this->assertTrue($double->doSomething());
     }
 
-    #[TestDox('Sealing mock object twice is idempotent')]
-    public function testSealingMockObjectTwiceIsIdempotent(): void
-    {
-        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
-
-        $double
-            ->expects($this->once())
-            ->method('doSomething')
-            ->willReturn(true)
-            ->seal();
-
-        $double->__phpunit_getInvocationHandler()->seal();
-        $double->__phpunit_getInvocationHandler()->seal();
-
-        $this->assertTrue($double->doSomething());
-    }
-
     #[TestDox('Sealed mock object does not add never() expectation for methods that were configured')]
     public function testSealedMockObjectDoesNotAddNeverExpectationForConfiguredMethods(): void
     {
@@ -738,17 +737,21 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->__phpunit_getInvocationHandler()->seal();
+        $double
+            ->expects($this->once())
+            ->method('doSomething')
+            ->seal();
 
         $clone = clone $double;
 
-        $this->resetMockObjects();
-
-        $this->expectException(TestDoubleSealedException::class);
-
-        $clone
-            ->expects($this->once())
-            ->method('doSomethingElse');
+        $this->assertTestDoubleSealedExceptionIsThrown(
+            function () use ($clone): void
+            {
+                $clone
+                    ->expects($this->once())
+                    ->method('doSomethingElse');
+            },
+        );
     }
 
     #[TestDox('Sealed partial mock object only affects mocked methods')]
@@ -789,6 +792,21 @@ EOT,
         }
 
         $this->fail();
+    }
+
+    private function assertTestDoubleSealedExceptionIsThrown(callable $action): void
+    {
+        try {
+            $action();
+        } catch (TestDoubleSealedException) {
+            $this->addToAssertionCount(1);
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->fail('Expected TestDoubleSealedException was not thrown');
     }
 
     private function resetMockObjects(): void

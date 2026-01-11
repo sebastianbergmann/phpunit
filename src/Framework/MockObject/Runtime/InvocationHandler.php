@@ -167,7 +167,7 @@ final class InvocationHandler
         }
     }
 
-    public function seal(bool $isMockObject = true): void
+    public function seal(bool $isMockObject): void
     {
         if ($this->sealed) {
             return;
