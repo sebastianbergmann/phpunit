@@ -24,19 +24,25 @@ use function method_exists;
 use function phpversion;
 use function preg_match;
 use function sprintf;
+use Composer\InstalledVersions;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresFunction;
 use PHPUnit\Metadata\RequiresMethod;
 use PHPUnit\Metadata\RequiresOperatingSystem;
 use PHPUnit\Metadata\RequiresOperatingSystemFamily;
+use PHPUnit\Metadata\RequiresPackageVersion;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\Util\InvalidVersionOperatorException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -110,6 +116,56 @@ final readonly class Requirements
                         'PHPUnit extension "%s" is required.',
                         $metadata->extensionClass(),
                     );
+                }
+            }
+
+            if ($metadata->isRequiresPackageVersion()) {
+                assert($metadata instanceof RequiresPackageVersion);
+
+                $packageName       = $metadata->packageName();
+                $versionConstraint = $metadata->versionConstraint();
+
+                try {
+                    $requirement = Requirement::from($versionConstraint);
+                } catch (InvalidVersionOperatorException|InvalidVersionRequirementException) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Test %s::%s() has invalid version constraint "%s" for package "%s" in #[RequiresPackageVersion] attribute',
+                            $className,
+                            $methodName,
+                            $versionConstraint,
+                            $packageName,
+                        ),
+                    );
+
+                    $notSatisfied[] = sprintf(
+                        'Invalid version constraint "%s" for package "%s".',
+                        $versionConstraint,
+                        $packageName,
+                    );
+
+                    continue;
+                }
+
+                if (!InstalledVersions::isInstalled($packageName)) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Test %s::%s() requires package "%s" which is not installed',
+                            $className,
+                            $methodName,
+                            $packageName,
+                        ),
+                    );
+
+                    $notSatisfied[] = sprintf('Package "%s" is not installed.', $packageName);
+
+                    continue;
+                }
+
+                $installedVersion = InstalledVersions::getVersion($packageName);
+
+                if ($installedVersion === null || !$requirement->isSatisfiedBy($installedVersion)) {
+                    $notSatisfied[] = sprintf('Package "%s" %s is required.', $packageName, $requirement->asString());
                 }
             }
 

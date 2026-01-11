@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
+use PHPUnit\TestFixture\RequiresPackageVersionTest;
 
 #[CoversClass(Requirements::class)]
 #[Small]
@@ -157,6 +158,48 @@ final class RequirementsTest extends TestCase
                 'Environment variable "BAZ" is required.',
             ],
             (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
+        );
+    }
+
+    public function testPackageVersionSatisfied(): void
+    {
+        $this->assertEquals(
+            [],
+            (new Requirements)->requirementsNotSatisfiedFor(RequiresPackageVersionTest::class, 'testPackageVersionSatisfied'),
+        );
+    }
+
+    public function testPackageVersionNotSatisfied(): void
+    {
+        $this->assertEquals(
+            [
+                'Package "phpunit/php-invoker" ^5.0 is required.',
+            ],
+            (new Requirements)->requirementsNotSatisfiedFor(RequiresPackageVersionTest::class, 'testPackageVersionNotSatisfied'),
+        );
+    }
+
+    public function testPackageNotInstalled(): void
+    {
+        $result = (new Requirements)->requirementsNotSatisfiedFor(RequiresPackageVersionTest::class, 'testPackageNotInstalled');
+
+        $this->assertEquals(
+            [
+                'Package "some/non-existent-package" is not installed.',
+            ],
+            $result,
+        );
+    }
+
+    public function testVersionNotValid(): void
+    {
+        $result = (new Requirements)->requirementsNotSatisfiedFor(RequiresPackageVersionTest::class, 'testVersionNotValid');
+
+        $this->assertEquals(
+            [
+                'Invalid version constraint "^" for package "phpunit/php-invoker".',
+            ],
+            $result,
         );
     }
 }

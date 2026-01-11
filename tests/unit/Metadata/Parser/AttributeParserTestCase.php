@@ -16,6 +16,7 @@ use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
 use PHPUnit\Metadata\InvalidAttributeException;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
+use PHPUnit\Metadata\RequiresPackageVersion;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
@@ -55,6 +56,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresPackageVersionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitExtensionTest;
@@ -366,6 +368,23 @@ abstract class AttributeParserTestCase extends TestCase
         assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
+    }
+
+    #[TestDox('Parses #[RequiresPackageVersion] attribute on class')]
+    public function test_parses_RequiresPackageVersion_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(RequiresPackageVersionTest::class)->isRequiresPackageVersion();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPackageVersion());
+
+        assert($requirement instanceof RequiresPackageVersion);
+
+        $this->assertSame('phpunit/php-invoker', $requirement->packageName());
+        $this->assertSame('^6.0', $requirement->versionConstraint());
     }
 
     #[TestDox('Parses #[RequiresPhpunitExtension] attribute on class')]
@@ -1004,6 +1023,23 @@ abstract class AttributeParserTestCase extends TestCase
         assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('^10.0', $versionRequirement->asString());
+    }
+
+    #[TestDox('Parses #[RequiresPackageVersion] attribute on method')]
+    public function test_parses_RequiresPackageVersion_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RequiresPackageVersionTest::class, 'testOne')->isRequiresPackageVersion();
+
+        $this->assertCount(1, $metadata);
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPackageVersion());
+
+        assert($requirement instanceof RequiresPackageVersion);
+
+        $this->assertSame('phpunit/php-invoker', $requirement->packageName());
+        $this->assertSame('^5.0', $requirement->versionConstraint());
     }
 
     #[TestDox('Parses #[RequiresPhpunitExtension] attribute on method')]
