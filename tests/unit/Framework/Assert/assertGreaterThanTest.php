@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
@@ -18,15 +19,27 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[Small]
 final class assertGreaterThanTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{0: int, 1: int}>
+     */
+    public static function failureProvider(): array
+    {
+        return [
+            [2, 1],
+            [2, 2],
+        ];
+    }
+
     public function testSucceedsWhenConstraintEvaluatesToTrue(): void
     {
         $this->assertGreaterThan(1, 2);
     }
 
-    public function testFailsWhenConstraintEvaluatesToFalse(): void
+    #[DataProvider('failureProvider')]
+    public function testFailsWhenConstraintEvaluatesToFalse(mixed $minimum, mixed $actual): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertGreaterThan(2, 1);
+        $this->assertGreaterThan($minimum, $actual);
     }
 }
