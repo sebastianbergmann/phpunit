@@ -34,9 +34,4 @@ trait StubApi
     {
         $this->__phpunit_state()->unsetInvocationHandler();
     }
-
-    public function __phpunit_seal(): void
-    {
-        $this->__phpunit_getInvocationHandler()->seal($this instanceof MockObject);
-    }
 }
