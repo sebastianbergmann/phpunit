@@ -178,6 +178,7 @@
         <xs:attribute name="controlGarbageCollector" type="xs:boolean" default="false"/>
         <xs:attribute name="numberOfTestsBeforeGarbageCollection" type="xs:integer" default="100"/>
         <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
+        <xs:attribute name="requireSealedMockObjects" type="xs:boolean" default="false"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>

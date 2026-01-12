@@ -1408,9 +1408,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $allowsMockObjectsWithoutExpectations = $this->allowsMockObjectsWithoutExpectations();
         $isPhpunitTestSuite                   = str_starts_with($this::class, 'PHPUnit\\');
+        $requireSealedMockObjects             = ConfigurationRegistry::get()->requireSealedMockObjects();
 
         foreach ($this->mockObjects as $mockObject) {
-            if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
+            $mockedType = $mockObject['type'];
+            $mockObject = $mockObject['mockObject'];
+
+            if ($requireSealedMockObjects &&
+                !$mockObject->__phpunit_getInvocationHandler()->isSealed()) {
+                Event\Facade::emitter()->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    sprintf(
+                        'Mock object for %s has not been sealed',
+                        $mockedType,
+                    ),
+                );
+            }
+
+            if (!$mockObject->__phpunit_hasMatchers()) {
                 if (!$allowsMockObjectsWithoutExpectations && !$isPhpunitTestSuite) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(
                         $this->testValueObjectForEvents,
@@ -1418,7 +1433,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                             'No expectations were configured for the mock object for %s. ' .
                             'Consider refactoring your test code to use a test stub instead. ' .
                             'The #[AllowMockObjectsWithoutExpectations] attribute can be used to opt out of this check.',
-                            $mockObject['type'],
+                            $mockedType,
                         ),
                     );
                 }
@@ -1428,8 +1443,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $this->numberOfAssertionsPerformed++;
 
-            $mockObject['mockObject']->__phpunit_verify(
-                $this->shouldInvocationMockerBeReset($mockObject['mockObject']),
+            $mockObject->__phpunit_verify(
+                $this->shouldInvocationMockerBeReset($mockObject),
             );
         }
     }

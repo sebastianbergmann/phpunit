@@ -36,6 +36,7 @@
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
             <directory suffix=".phpt">tests/end-to-end/self-direct-indirect</directory>
             <directory suffix=".phpt">tests/end-to-end/test-doubles/generator</directory>
+            <directory suffix=".phpt">tests/end-to-end/test-doubles/runtime</directory>
             <directory suffix=".phpt">tests/end-to-end/testdox</directory>
 
             <exclude>tests/end-to-end/event/_files</exclude>

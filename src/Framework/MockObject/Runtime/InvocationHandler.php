@@ -192,6 +192,11 @@ final class InvocationHandler
         }
     }
 
+    public function isSealed(): bool
+    {
+        return $this->sealed;
+    }
+
     private function addMatcher(Matcher $matcher): void
     {
         $this->matchers[] = $matcher;
