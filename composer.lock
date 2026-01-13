@@ -949,12 +949,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "c95c8b07516cf7a75c51d861c0bd33340c361081"
+                "reference": "7f8cf7619e2e4ad82888aa0ae6cab8d203fe406f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/c95c8b07516cf7a75c51d861c0bd33340c361081",
-                "reference": "c95c8b07516cf7a75c51d861c0bd33340c361081",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/7f8cf7619e2e4ad82888aa0ae6cab8d203fe406f",
+                "reference": "7f8cf7619e2e4ad82888aa0ae6cab8d203fe406f",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1018,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-01T08:51:37+00:00"
+            "time": "2026-01-09T14:41:38+00:00"
         },
         {
             "name": "sebastian/exporter",
