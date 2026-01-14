@@ -23,6 +23,7 @@ use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithCovariantSetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
@@ -488,6 +489,18 @@ EOT,
         $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
 
         $double->property = 'value';
+    }
+
+    #[RequiresMethod(ReflectionProperty::class, 'isFinal')]
+    public function testExpectationCanBeConfiguredForCovariantSetHookForPropertyOfExtendableClass(): void
+    {
+        require_once './tests/_files/mock-object/ExtendableClassWithPropertyWithCovariantSetHook.php';
+
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithCovariantSetHook::class);
+
+        $double->expects($this->once())->method(PropertyHook::set('property'))->with('0');
+
+        $double->property = '0';
     }
 
     #[TestDox('__toString() method returns empty string when return value generation is disabled and no return value is configured')]

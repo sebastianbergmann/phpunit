@@ -70,7 +70,7 @@ EOT,
         }
 
 EOT,
-                    $property->type()->asString(),
+                    $property->setterType()->asString(),
                     $className,
                     $property->name(),
                 );
