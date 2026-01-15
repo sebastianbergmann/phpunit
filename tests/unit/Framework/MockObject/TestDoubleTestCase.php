@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
-use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
@@ -293,7 +292,6 @@ abstract class TestDoubleTestCase extends TestCase
         );
     }
 
-    #[RequiresPhp('^8.4')]
     public function testGetHookForPropertyOfInterfaceCanBeConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithPropertyWithGetHook::class);
@@ -303,7 +301,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame('value', $double->property);
     }
 
-    #[RequiresPhp('^8.4')]
     public function testGetHookForPropertyOfExtendableClassCanBeConfigured(): void
     {
         $double = $this->createTestDouble(ExtendableClassWithPropertyWithGetHook::class);
