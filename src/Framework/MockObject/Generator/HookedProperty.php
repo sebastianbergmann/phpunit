@@ -25,12 +25,12 @@ final readonly class HookedProperty
     private Type $type;
     private bool $getHook;
     private bool $setHook;
-    private Type $setterType;
+    private ?Type $setterType;
 
     /**
      * @param non-empty-string $name
      */
-    public function __construct(string $name, Type $type, bool $getHook, bool $setHook, Type $setterType)
+    public function __construct(string $name, Type $type, bool $getHook, bool $setHook, ?Type $setterType)
     {
         $this->name       = $name;
         $this->type       = $type;
