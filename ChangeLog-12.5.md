@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 * [#6461](https://github.com/sebastianbergmann/phpunit/issues/6461): `any()` matcher (soft deprecation)
 
+### Fixed
+
+* [#6470](https://github.com/sebastianbergmann/phpunit/issues/6470): Mocking a class with a property hook setter accepting more types than the property results in a fatal error
+
 ## [12.5.4] - 2025-12-15
 
 ### Changed
