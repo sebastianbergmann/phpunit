@@ -18,7 +18,7 @@ use SebastianBergmann\Type\Type;
 #[CoversClass(HookedProperty::class)]
 #[Group('test-doubles')]
 #[Small]
-final class PropertyTest extends TestCase
+final class HookedPropertyTest extends TestCase
 {
     public function testHasName(): void
     {
