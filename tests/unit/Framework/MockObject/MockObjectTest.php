@@ -494,8 +494,6 @@ EOT,
     #[RequiresMethod(ReflectionProperty::class, 'isFinal')]
     public function testExpectationCanBeConfiguredForCovariantSetHookForPropertyOfExtendableClass(): void
     {
-        require_once './tests/_files/mock-object/ExtendableClassWithPropertyWithCovariantSetHook.php';
-
         $double = $this->createTestDouble(ExtendableClassWithPropertyWithCovariantSetHook::class);
 
         $double->expects($this->once())->method(PropertyHook::set('property'))->with('0');
