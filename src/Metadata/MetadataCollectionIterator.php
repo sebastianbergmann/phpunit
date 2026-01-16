@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata;
 
-use function assert;
 use function count;
 use Iterator;
 
@@ -55,8 +54,6 @@ final class MetadataCollectionIterator implements Iterator
 
     public function current(): Metadata
     {
-        assert(isset($this->metadata[$this->position]));
-
         return $this->metadata[$this->position];
     }
 
