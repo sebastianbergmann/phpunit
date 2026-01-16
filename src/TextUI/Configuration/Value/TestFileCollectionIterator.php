@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function assert;
 use function count;
 use Iterator;
 
@@ -55,8 +54,6 @@ final class TestFileCollectionIterator implements Iterator
 
     public function current(): TestFile
     {
-        assert(isset($this->files[$this->position]));
-
         return $this->files[$this->position];
     }
 

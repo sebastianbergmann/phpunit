@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function assert;
 use function count;
 use Iterator;
 
@@ -55,8 +54,6 @@ final class GroupCollectionIterator implements Iterator
 
     public function current(): Group
     {
-        assert(isset($this->groups[$this->position]));
-
         return $this->groups[$this->position];
     }
 
