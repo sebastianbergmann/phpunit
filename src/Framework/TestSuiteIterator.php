@@ -51,8 +51,6 @@ final class TestSuiteIterator implements RecursiveIterator
 
     public function current(): Test
     {
-        assert(isset($this->tests[$this->position]));
-
         return $this->tests[$this->position];
     }
 

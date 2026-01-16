@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function assert;
 use function count;
 use function iterator_count;
 use Countable;
@@ -55,8 +54,6 @@ final class IniSettingCollectionIterator implements Countable, Iterator
 
     public function current(): IniSetting
     {
-        assert(isset($this->iniSettings[$this->position]));
-
         return $this->iniSettings[$this->position];
     }
 
