@@ -11,11 +11,14 @@ namespace PHPUnit\Runner\Baseline;
 
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Reader::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/issue-baseline')]
 final class ReaderTest extends TestCase
 {
     public function testReadsBaselineFromFileWithValidXml(): void

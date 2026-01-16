@@ -10,11 +10,15 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Generator::class)]
 #[Small]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/xml')]
 final class GeneratorTest extends TestCase
 {
     public function testGeneratesConfigurationCorrectly(): void

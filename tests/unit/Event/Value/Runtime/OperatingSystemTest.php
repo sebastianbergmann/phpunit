@@ -12,11 +12,14 @@ namespace PHPUnit\Event\Runtime;
 use const PHP_OS;
 use const PHP_OS_FAMILY;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(OperatingSystem::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class OperatingSystemTest extends TestCase
 {
     public function testCanBeRepresentedAsString(): void

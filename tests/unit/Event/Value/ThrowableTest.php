@@ -12,6 +12,7 @@ namespace PHPUnit\Event\Code;
 use Exception;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
@@ -19,6 +20,8 @@ use PHPUnit\Util\Filter;
 #[CoversClass(Throwable::class)]
 #[CoversClass(ThrowableBuilder::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class ThrowableTest extends TestCase
 {
     public function testCanBeCreatedForThrowableWithoutPrevious(): void

@@ -10,11 +10,14 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CollectingDispatcher::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/dispatcher')]
 final class CollectingDispatcherTest extends TestCase
 {
     public function testHasNoCollectedEventsWhenFlushedImmediatelyAfterCreation(): void

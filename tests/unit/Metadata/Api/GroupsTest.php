@@ -23,6 +23,7 @@ use PHPUnit\TestFixture\SmallGroupAttributesTest;
 #[CoversClass(Groups::class)]
 #[Small]
 #[Group('metadata')]
+#[Group('metadata/api')]
 final class GroupsTest extends TestCase
 {
     public static function provider(): array

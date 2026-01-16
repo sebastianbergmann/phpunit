@@ -10,11 +10,14 @@
 namespace PHPUnit\TextUI\Command;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(AtLeastVersionCommand::class)]
 #[Small]
+#[Group('textui')]
+#[Group('textui/commands')]
 final class AtLeastVersionCommandTest extends TestCase
 {
     public function testSucceedsWhenRequirementIsMet(): void

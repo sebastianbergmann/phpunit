@@ -10,12 +10,15 @@
 namespace PHPUnit\Event\Runtime;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
 #[CoversClass(PHPUnit::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class PHPUnitTest extends TestCase
 {
     public function testHasVersionId(): void

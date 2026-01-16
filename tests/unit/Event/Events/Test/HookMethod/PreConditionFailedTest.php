@@ -13,10 +13,13 @@ use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(PreConditionFailed::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/events')]
 final class PreConditionFailedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

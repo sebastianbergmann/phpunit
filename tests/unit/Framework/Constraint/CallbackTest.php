@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Callback::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class CallbackTest extends TestCase
 {
     public function testCanBeEvaluated(): void

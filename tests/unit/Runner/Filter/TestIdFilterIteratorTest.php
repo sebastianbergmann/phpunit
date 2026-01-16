@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Filter;
 use function assert;
 use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -21,6 +22,8 @@ use PHPUnit\TestFixture\BankAccountTest;
 #[CoversClass(TestIdFilterIterator::class)]
 #[CoversClass(TestSuiteIterator::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/filter')]
 final class TestIdFilterIteratorTest extends TestCase
 {
     public function testAcceptsTestsBasedOnTheirId(): void

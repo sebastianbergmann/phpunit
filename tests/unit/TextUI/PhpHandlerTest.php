@@ -18,13 +18,15 @@ use function ini_set;
 use function putenv;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
-use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 
 #[CoversClass(PhpHandler::class)]
 #[Medium]
+#[Group('textui')]
+#[Group('textui/configuration')]
 final class PhpHandlerTest extends TestCase
 {
     #[BackupGlobals(true)]
@@ -53,7 +55,8 @@ final class PhpHandlerTest extends TestCase
     }
 
     #[BackupGlobals(true)]
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/1181')]
+    #[Group('regression')]
+    #[Group('regression/1181')]
     public function testHandlePHPConfigurationDoesNotOverwriteExistingEnvArrayVariables(): void
     {
         $_ENV['foo'] = false;
@@ -65,7 +68,8 @@ final class PhpHandlerTest extends TestCase
     }
 
     #[BackupGlobals(true)]
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/1181')]
+    #[Group('regression')]
+    #[Group('regression/1181')]
     public function testHandlePHPConfigurationDoesNotOverwriteVariablesFromPutEnv(): void
     {
         $backupFoo = getenv('foo');
@@ -85,7 +89,8 @@ final class PhpHandlerTest extends TestCase
     }
 
     #[BackupGlobals(true)]
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/1181')]
+    #[Group('regression')]
+    #[Group('regression/1181')]
     public function testHandlePHPConfigurationDoesOverwriteVariablesFromPutEnvWhenForced(): void
     {
         putenv('foo_force=putenv');
@@ -97,7 +102,8 @@ final class PhpHandlerTest extends TestCase
     }
 
     #[BackupGlobals(true)]
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/2353')]
+    #[Group('regression')]
+    #[Group('regression/2353')]
     public function testHandlePHPConfigurationDoesForceOverwrittenExistingEnvArrayVariables(): void
     {
         $_ENV['foo_force'] = false;

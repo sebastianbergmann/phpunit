@@ -17,11 +17,14 @@ use function str_replace;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Writer::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/issue-baseline')]
 final class WriterTest extends TestCase
 {
     private string $target;

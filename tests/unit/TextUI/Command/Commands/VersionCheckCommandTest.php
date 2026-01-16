@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Command;
 use const PHP_EOL;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,8 @@ use PHPUnit\Util\Http\Downloader;
 
 #[CoversClass(VersionCheckCommand::class)]
 #[Small]
+#[Group('textui')]
+#[Group('textui/commands')]
 final class VersionCheckCommandTest extends TestCase
 {
     /**

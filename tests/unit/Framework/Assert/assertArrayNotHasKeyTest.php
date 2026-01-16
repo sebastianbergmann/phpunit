@@ -12,12 +12,15 @@ namespace PHPUnit\Framework;
 use ArrayAccess;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertArrayNotHasKey')]
 #[TestDox('assertArrayNotHasKey()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertArrayNotHasKeyTest extends TestCase
 {
     #[DataProviderExternal(assertArrayHasKeyTest::class, 'failureProvider')]

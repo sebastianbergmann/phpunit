@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
@@ -117,7 +117,8 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(4, $double->doSomething(3));
     }
 
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/6174')]
+    #[Group('regression')]
+    #[Group('regression/6174')]
     final public function testIssue6174(): void
     {
         $double = $this->createTestDouble(Issue6174::class);
@@ -281,7 +282,8 @@ abstract class TestDoubleTestCase extends TestCase
             ->willReturn(true);
     }
 
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5874')]
+    #[Group('regression')]
+    #[Group('regression/5874')]
     public function testDoubledMethodsCanBeCalledFromDestructorOnTestDoubleCreatedByTheReturnValueGenerator(): void
     {
         $double = $this->createTestDouble(ExtendableClassCallingMethodInDestructor::class);

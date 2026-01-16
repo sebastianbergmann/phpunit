@@ -58,6 +58,7 @@ use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Metadata\MetadataCollection;
@@ -68,6 +69,8 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(DispatchingEmitter::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/emitter')]
 final class DispatchingEmitterTest extends Framework\TestCase
 {
     #[TestDox('applicationStarted() emits Application\Started event')]

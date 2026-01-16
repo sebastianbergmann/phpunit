@@ -20,6 +20,7 @@ use function uniqid;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -29,6 +30,9 @@ use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
 #[CoversNamespace('PHPUnit\TextUI\XmlConfiguration')]
 #[Medium]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/xml')]
 final class LoaderTest extends TestCase
 {
     public static function configurationRootOptionsProvider(): array

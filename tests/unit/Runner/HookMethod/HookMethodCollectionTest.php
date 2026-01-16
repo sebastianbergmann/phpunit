@@ -11,11 +11,14 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(HookMethodCollection::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/hook-methods')]
 final class HookMethodCollectionTest extends TestCase
 {
     public static function provider(): iterable

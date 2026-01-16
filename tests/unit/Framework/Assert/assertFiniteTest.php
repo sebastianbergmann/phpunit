@@ -11,12 +11,15 @@ namespace PHPUnit\Framework;
 
 use const INF;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertFinite')]
 #[TestDox('assertFinite()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertFiniteTest extends TestCase
 {
     public function testSucceedsWhenConstraintEvaluatesToTrue(): void

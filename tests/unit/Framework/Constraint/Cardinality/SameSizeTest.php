@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Count::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class SameSizeTest extends TestCase
 {
     public function testCanBeRepresentedAsString(): void

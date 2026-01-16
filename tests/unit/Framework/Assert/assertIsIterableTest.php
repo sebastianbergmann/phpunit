@@ -14,6 +14,7 @@ use function fopen;
 use ArrayIterator;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use stdClass;
@@ -21,6 +22,8 @@ use stdClass;
 #[CoversMethod(Assert::class, 'assertIsIterable')]
 #[TestDox('assertIsIterable()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertIsIterableTest extends TestCase
 {
     /**

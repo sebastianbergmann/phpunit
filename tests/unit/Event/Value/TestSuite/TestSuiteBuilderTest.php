@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
@@ -21,6 +22,8 @@ use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 
 #[CoversClass(TestSuiteBuilder::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class TestSuiteBuilderTest extends TestCase
 {
     public function test_Builds_TestSuite_value_object_for_test_suite_loaded_from_XML_configuration_file(): void

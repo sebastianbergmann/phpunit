@@ -23,6 +23,7 @@ use PHPUnit\TestFixture\TestWithoutHookMethodsTest;
 #[CoversClass(HookMethods::class)]
 #[Small]
 #[Group('metadata')]
+#[Group('metadata/api')]
 final class HookMethodsTest extends TestCase
 {
     public function testReturnsDefaultHookMethodsForClassThatDoesNotExist(): void

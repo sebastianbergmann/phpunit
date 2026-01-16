@@ -11,12 +11,15 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertContainsNotOnlyFloat')]
 #[TestDox('assertContainsNotOnlyFloat()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertContainsNotOnlyFloatTest extends TestCase
 {
     #[DataProviderExternal(assertContainsOnlyFloatTest::class, 'failureProvider')]

@@ -10,11 +10,14 @@
 namespace PHPUnit\Event\Telemetry;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(GarbageCollectorStatus::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class GarbageCollectorStatusTest extends TestCase
 {
     public function testHasRuns(): void

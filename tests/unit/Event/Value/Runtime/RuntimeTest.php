@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Runtime;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PHP::class)]
 #[UsesClass(PHPUnit::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class RuntimeTest extends TestCase
 {
     public function testHasOperatingSystem(): void

@@ -17,12 +17,15 @@ use function rmdir;
 use function sys_get_temp_dir;
 use function uniqid;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertDirectoryIsWritable')]
 #[TestDox('assertDirectoryIsWritable()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertDirectoryIsWritableTest extends TestCase
 {
     private string $directory;

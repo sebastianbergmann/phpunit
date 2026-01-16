@@ -10,9 +10,13 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/xml')]
 final class MigratorTest extends TestCase
 {
     public static function provider(): array

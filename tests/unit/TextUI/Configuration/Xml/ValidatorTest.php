@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function file_get_contents;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
@@ -19,6 +20,9 @@ use PHPUnit\Util\Xml\Loader;
 #[CoversClass(Validator::class)]
 #[CoversClass(ValidationResult::class)]
 #[Small]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/xml')]
 final class ValidatorTest extends TestCase
 {
     public function testValidatesValidXmlFile(): void

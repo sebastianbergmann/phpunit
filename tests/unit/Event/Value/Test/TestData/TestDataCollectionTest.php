@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestData;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DataFromDataProvider::class)]
 #[UsesClass(DataFromTestDependency::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class TestDataCollectionTest extends TestCase
 {
     public function testMayBeEmpty(): void

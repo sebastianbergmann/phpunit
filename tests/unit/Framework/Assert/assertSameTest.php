@@ -15,6 +15,7 @@ use function fopen;
 use function log;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\SampleClass;
@@ -22,6 +23,8 @@ use PHPUnit\TestFixture\SampleClass;
 #[CoversMethod(Assert::class, 'assertSame')]
 #[TestDox('assertSame()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertSameTest extends TestCase
 {
     /**

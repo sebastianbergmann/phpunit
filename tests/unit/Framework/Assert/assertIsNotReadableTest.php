@@ -17,12 +17,15 @@ use function rmdir;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertIsNotReadable')]
 #[TestDox('assertIsNotReadable()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertIsNotReadableTest extends TestCase
 {
     private ?string $directory = null;

@@ -12,12 +12,15 @@ namespace PHPUnit\Framework\Constraint;
 use function acos;
 use function log;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IsFinite::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class IsFiniteTest extends TestCase
 {
     public function testCanBeEvaluated(): void

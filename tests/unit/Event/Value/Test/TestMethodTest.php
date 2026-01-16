@@ -13,6 +13,7 @@ use function sprintf;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
@@ -20,6 +21,8 @@ use PHPUnit\Metadata\MetadataCollection;
 #[CoversClass(TestMethod::class)]
 #[CoversClass(Test::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void

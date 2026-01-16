@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(StringMatchesFormatDescription::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class StringMatchesFormatDescriptionTest extends TestCase
 {
     public function testConstraintStringMatchesDirectorySeparator(): void

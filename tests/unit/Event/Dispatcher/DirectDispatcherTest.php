@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DummyEvent;
@@ -19,6 +20,8 @@ use RuntimeException;
 
 #[CoversClass(DirectDispatcher::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/dispatcher')]
 final class DirectDispatcherTest extends TestCase
 {
     public function testDispatchesEventToKnownSubscribers(): void

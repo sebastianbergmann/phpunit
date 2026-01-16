@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,9 @@ use PHPUnit\Runner\TestSuiteSorter;
 #[CoversClass(Configuration::class)]
 #[Small]
 #[TestDox('CLI Options Parser')]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/cli')]
 final class BuilderTest extends TestCase
 {
     #[TestDox('argument')]

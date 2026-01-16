@@ -11,14 +11,16 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function uniqid;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
-use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Merger;
 
 #[CoversClass(Merger::class)]
 #[Medium]
+#[Group('textui')]
+#[Group('textui/configuration')]
 final class MergerTest extends TestCase
 {
     public function testNoLoggingShouldOnlyAffectXmlConfiguration(): void
@@ -85,7 +87,8 @@ final class MergerTest extends TestCase
         $this->assertSame($phpCoverage, $mergedConfig->coveragePhp());
     }
 
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/6340')]
+    #[Group('regression')]
+    #[Group('regression/6340')]
     public function testIssue6340(): void
     {
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration-issue-6340.xml');

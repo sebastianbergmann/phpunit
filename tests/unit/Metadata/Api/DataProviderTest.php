@@ -23,6 +23,7 @@ use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 #[CoversClass(DataProvider::class)]
 #[Small]
 #[Group('metadata')]
+#[Group('metadata/api')]
 final class DataProviderTest extends TestCase
 {
     /**

@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\Author;
@@ -31,6 +32,8 @@ use stdClass;
 #[CoversMethod(Assert::class, 'assertEquals')]
 #[TestDox('assertEquals()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertEqualsTest extends TestCase
 {
     /**

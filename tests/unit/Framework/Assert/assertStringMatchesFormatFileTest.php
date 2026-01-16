@@ -10,12 +10,15 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertStringMatchesFormatFile')]
 #[TestDox('assertStringMatchesFormatFile()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertStringMatchesFormatFileTest extends TestCase
 {
     public function testSucceedsWhenConstraintEvaluatesToTrue(): void

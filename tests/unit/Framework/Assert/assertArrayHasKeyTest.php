@@ -13,6 +13,7 @@ use ArrayAccess;
 use ArrayObject;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\SampleArrayAccess;
@@ -20,6 +21,8 @@ use PHPUnit\TestFixture\SampleArrayAccess;
 #[CoversMethod(Assert::class, 'assertArrayHasKey')]
 #[TestDox('assertArrayHasKey()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertArrayHasKeyTest extends TestCase
 {
     /**

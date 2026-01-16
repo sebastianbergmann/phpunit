@@ -11,12 +11,15 @@ namespace PHPUnit\Event\Code\IssueTrigger;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IssueTrigger::class)]
 #[CoversClassesThatExtendClass(IssueTrigger::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class IssueTriggerTest extends TestCase
 {
     public function testCanBeTest(): void
