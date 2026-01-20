@@ -86,10 +86,10 @@ final class Color
             return $buffer;
         }
 
-        $codes  = array_map(\trim(...), explode(',', $color));
         $styles = [];
 
-        foreach ($codes as $code) {
+        foreach (explode(',', $color) as $code) {
+            $code = trim($code);
             if (isset(self::ANSI_CODES[$code])) {
                 $styles[] = self::ANSI_CODES[$code];
             }
