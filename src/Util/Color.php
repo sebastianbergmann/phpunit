@@ -87,7 +87,7 @@ final class Color
         }
 
         if (array_key_exists($color, self::ANSI_CODES)) {
-            return self::optimizeColor(sprintf("\x1b[%sm", self::ANSI_CODES[$color]) . $buffer . "\x1b[0m");
+            return self::optimizeColor(sprintf("\x1b[%sm%s\x1b[0m", self::ANSI_CODES[$color], $buffer));
         }
 
         $styles = [];
@@ -102,7 +102,7 @@ final class Color
             return $buffer;
         }
 
-        return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
+        return self::optimizeColor(sprintf("\x1b[%sm%s\x1b[0m", implode(';', $styles), $buffer));
     }
 
     public static function colorizeTextBox(string $color, string $buffer, ?int $columns = null): string
