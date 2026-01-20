@@ -28,6 +28,7 @@ use function is_scalar;
 use function method_exists;
 use function preg_quote;
 use function preg_replace;
+use function preg_replace_callback_array;
 use function rtrim;
 use function sprintf;
 use function str_contains;
@@ -158,30 +159,13 @@ final class NamePrettifier
             return trim($noUnderscore);
         }
 
-        $wasNumeric = false;
-
-        $buffer = '';
-
-        $len = strlen($name);
-
-        for ($i = 0; $i < $len; $i++) {
-            if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
-                $buffer .= ' ' . strtolower($name[$i]);
-            } else {
-                $isNumeric = $name[$i] >= '0' && $name[$i] <= '9';
-
-                if (!$wasNumeric && $isNumeric) {
-                    $buffer .= ' ';
-                    $wasNumeric = true;
-                }
-
-                if ($wasNumeric && !$isNumeric) {
-                    $wasNumeric = false;
-                }
-
-                $buffer .= $name[$i];
-            }
-        }
+        $buffer = preg_replace_callback_array(
+            [
+                '/(?!^)([A-Z])/' => static fn (array $matches) => ' ' . strtolower($matches[1]),
+                '/(?!^)(\d+)/'   => static fn (array $matches) => ' ' . $matches[1],
+            ],
+            $name,
+        );
 
         return trim($buffer);
     }
