@@ -162,7 +162,7 @@ final class NamePrettifier
         $buffer = preg_replace_callback_array(
             [
                 '/(?!^)([A-Z])/' => static fn (array $matches) => ' ' . strtolower($matches[1]),
-                '/(?!^)(\d+)/'   => static fn (array $matches) => ' ' . $matches[1],
+                '/(\d+)/'        => static fn (array $matches) => ' ' . $matches[1],
             ],
             $name,
         );
