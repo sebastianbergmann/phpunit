@@ -36,9 +36,9 @@ use function str_replace;
 use function str_starts_with;
 use function strlen;
 use function strtolower;
-use function strtoupper;
 use function substr;
 use function trim;
+use function ucfirst;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
@@ -150,7 +150,7 @@ final class NamePrettifier
             return '';
         }
 
-        $name[0] = strtoupper($name[0]);
+        $name = ucfirst($name);
 
         $noUnderscore = str_replace('_', ' ', $name);
 
