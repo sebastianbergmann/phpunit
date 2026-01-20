@@ -86,11 +86,14 @@ final class Color
             return $buffer;
         }
 
-        $styles = [];
+        if (array_key_exists($color, self::ANSI_CODES)) {
+            return self::optimizeColor(sprintf("\x1b[%sm", self::ANSI_CODES[$color]) . $buffer . "\x1b[0m");
+        }
 
+        $styles = [];
         foreach (explode(',', $color) as $code) {
             $code = trim($code);
-            if (isset(self::ANSI_CODES[$code])) {
+            if (array_key_exists($code, self::ANSI_CODES)) {
                 $styles[] = self::ANSI_CODES[$code];
             }
         }
