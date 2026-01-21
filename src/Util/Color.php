@@ -11,6 +11,7 @@ namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
+use function array_key_exists;
 use function array_map;
 use function array_walk;
 use function assert;
@@ -95,8 +96,10 @@ final class Color
         }
 
         $styles = [];
+
         foreach (explode(',', $color) as $code) {
             $code = trim($code);
+
             if (array_key_exists($code, self::ANSI_CODES)) {
                 $styles[] = self::ANSI_CODES[$code];
             }
