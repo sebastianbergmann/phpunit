@@ -14,6 +14,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\TestFixture\ObjectComparison\ChildOfValueObjectA;
+use PHPUnit\TestFixture\ObjectComparison\SameStructAsValueObjectA;
+use PHPUnit\TestFixture\ObjectComparison\ValueObjectA;
 use stdClass;
 
 #[CoversMethod(Assert::class, 'assertArraysAreEqualIgnoringOrder')]
@@ -119,6 +122,21 @@ final class assertArraysAreEqualIgnoringOrderTest extends TestCase
             'different object instances (loose comparison)' => [
                 ['obj' => new stdClass],
                 ['obj' => new stdClass],
+            ],
+
+            'different object instances with strictly equal properties' => [
+                ['obj' => new ValueObjectA('value')],
+                ['obj' => new ValueObjectA('value')],
+            ],
+
+            'different object instances with loosely equal properties' => [
+                ['obj' => new ValueObjectA(false)],
+                ['obj' => new ValueObjectA(0)],
+            ],
+
+            'different object instances with strictly equal properties, different order' => [
+                [new ValueObjectA('v1'), new ValueObjectA('v2')],
+                [new ValueObjectA('v2'), new ValueObjectA('v1')],
             ],
 
             'identical keys, identical values, different order' => [
@@ -300,6 +318,61 @@ EOT,
 EOT,
                 ['a' => [1, 2, 3]],
                 ['a' => [3, 2, 1]],
+            ],
+
+            'object instances with different values' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => stdClass Object #1991 (
+-        'a' => 'a',
++    0 => stdClass Object #1995 (
++        'a' => 'A',
+     ),
+ ]
+
+EOT,
+                [(object) ['a' => 'a']],
+                [(object) ['a' => 'A']],
+            ],
+
+            'object instances with the same structure but of different classes' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #1994 (
++    0 => PHPUnit\TestFixture\ObjectComparison\SameStructAsValueObjectA Object #1993 (
+         'value' => 'a',
+     ),
+ ]
+
+EOT,
+                [new ValueObjectA('a')],
+                [new SameStructAsValueObjectA('a')],
+            ],
+
+            'object instances with the same structure but of different classes but with a common root' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #1992 (
++    0 => PHPUnit\TestFixture\ObjectComparison\ChildOfValueObjectA Object #2026 (
+         'value' => 'a',
+     ),
+ ]
+
+EOT,
+                [new ValueObjectA('a')],
+                [new ChildOfValueObjectA('a')],
             ],
         ];
     }
