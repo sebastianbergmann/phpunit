@@ -56,6 +56,11 @@ final class assertArraysAreIdenticalTest extends TestCase
                 ['1' => 'a', '2' => 'b', '4' => 'c'],
             ],
 
+            'different explicit numeric keys (literal strings, auto-cast to int)' => [
+                [1 => 'a', 2 => 'b', 4 => 'c'],
+                ['1' => 'a', '2' => 'b', '4' => 'c'],
+            ],
+
             'string keys' => [
                 ['a' => 1, 'b' => 2, 'c' => 3],
                 ['a' => 1, 'b' => 2, 'c' => 3],
