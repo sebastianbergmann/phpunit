@@ -45,6 +45,12 @@ final readonly class Merger
      */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
+        $testFilesFile = null;
+
+        if ($cliConfiguration->hasTestFilesFile()) {
+            $testFilesFile = $cliConfiguration->testFilesFile();
+        }
+
         $configurationFile = null;
 
         if ($xmlConfiguration->wasLoadedFromFile()) {
@@ -913,6 +919,7 @@ final readonly class Merger
 
         return new Configuration(
             $cliConfiguration->arguments(),
+            $testFilesFile,
             $configurationFile,
             $bootstrap,
             $xmlConfiguration->phpunit()->bootstrapForTestSuite(),

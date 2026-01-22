@@ -51,6 +51,8 @@
   [32m--test-suffix [36m<suffixes>[0m            [0m Only search for test in files with
                                        specified suffix(es). Default:
                                        Test.php,.phpt
+  [32m--test-files-file [36m<file>[0m            [0m Only run test files listed in file (one
+                                       file by line)
 
 [33mExecution:[0m
 

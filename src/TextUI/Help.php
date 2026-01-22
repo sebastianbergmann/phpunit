@@ -186,6 +186,7 @@ final class Help
                 ['arg' => '--filter <pattern>', 'desc' => 'Filter which tests to run'],
                 ['arg' => '--exclude-filter <pattern>', 'desc' => 'Exclude tests for the specified filter pattern'],
                 ['arg' => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
+                ['arg' => '--test-files-file <file>', 'desc' => 'Only run test files listed in file (one file by line)'],
             ],
 
             'Execution' => [

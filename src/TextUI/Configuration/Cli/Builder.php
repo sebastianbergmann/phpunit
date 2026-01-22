@@ -155,6 +155,7 @@ final class Builder
         'test-suffix=',
         'testsuite=',
         'exclude-testsuite=',
+        'test-files-file=',
         'log-events-text=',
         'log-events-verbose-text=',
         'version',
@@ -306,6 +307,7 @@ final class Builder
         $testSuffixes                      = null;
         $testSuite                         = null;
         $excludeTestSuite                  = null;
+        $testFilesFile                     = null;
         $useDefaultConfiguration           = true;
         $version                           = false;
         $logEventsText                     = null;
@@ -481,6 +483,11 @@ final class Builder
 
                 case '--exclude-testsuite':
                     $excludeTestSuite = $option[1];
+
+                    break;
+
+                case '--test-files-file':
+                    $testFilesFile = $option[1];
 
                     break;
 
@@ -1246,6 +1253,7 @@ final class Builder
 
         return new Configuration(
             $options[1],
+            $testFilesFile,
             $all,
             $atLeastVersion,
             $backupGlobals,

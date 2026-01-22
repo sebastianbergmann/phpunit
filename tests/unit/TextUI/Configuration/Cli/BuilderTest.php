@@ -33,6 +33,26 @@ final class BuilderTest extends TestCase
         $this->assertSame(['argument'], $configuration->arguments());
     }
 
+    #[TestDox('--test-files-file tests.txt')]
+    public function testTestFilesFile(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--test-files-file', 'tests.txt']);
+
+        $this->assertTrue($configuration->hasTestFilesFile());
+        $this->assertSame('tests.txt', $configuration->testFilesFile());
+    }
+
+    public function testTestFilesFileMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTestFilesFile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->testFilesFile();
+    }
+
     #[TestDox('--all')]
     public function testAll(): void
     {
