@@ -322,14 +322,14 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #466 (
-+    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #178 (
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
++    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
 +        'value' => 'v2',
 +    ),
-+    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #468 (
++    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
          'value' => 'v1',
 -    ),
--    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #177 (
+-    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
 -        'value' => 'v2',
      ),
  ]
@@ -346,9 +346,9 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => stdClass Object #467 (
+-    0 => stdClass Object #%d (
 -        'a' => 'a',
-+    0 => stdClass Object #498 (
++    0 => stdClass Object #%d (
 +        'a' => 'A',
      ),
  ]
@@ -365,8 +365,8 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #445 (
-+    0 => PHPUnit\TestFixture\ObjectComparison\SameStructAsValueObjectA Object #446 (
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
++    0 => PHPUnit\TestFixture\ObjectComparison\SameStructAsValueObjectA Object #%d (
          'value' => 'a',
      ),
  ]
@@ -383,8 +383,8 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #447 (
-+    0 => PHPUnit\TestFixture\ObjectComparison\ChildOfValueObjectA Object #448 (
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
++    0 => PHPUnit\TestFixture\ObjectComparison\ChildOfValueObjectA Object #%d (
          'value' => 'a',
      ),
  ]

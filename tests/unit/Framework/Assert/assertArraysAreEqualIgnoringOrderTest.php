@@ -327,9 +327,9 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => stdClass Object #1991 (
+-    0 => stdClass Object #%d (
 -        'a' => 'a',
-+    0 => stdClass Object #1995 (
++    0 => stdClass Object #%d (
 +        'a' => 'A',
      ),
  ]
@@ -346,8 +346,8 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #1994 (
-+    0 => PHPUnit\TestFixture\ObjectComparison\SameStructAsValueObjectA Object #1993 (
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
++    0 => PHPUnit\TestFixture\ObjectComparison\SameStructAsValueObjectA Object #%d (
          'value' => 'a',
      ),
  ]
@@ -364,8 +364,8 @@ EOT,
 +++ Actual
 @@ @@
  Array &0 [
--    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #1992 (
-+    0 => PHPUnit\TestFixture\ObjectComparison\ChildOfValueObjectA Object #2026 (
+-    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
++    0 => PHPUnit\TestFixture\ObjectComparison\ChildOfValueObjectA Object #%d (
          'value' => 'a',
      ),
  ]
