@@ -1361,7 +1361,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function stripDateFromErrorLog(string $log): string
     {
         // https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-        return preg_replace('/\[\d+-\w+-\d+ \d+:\d+:\d+ [^\r\n[\]]+?\] /', '', $log);
+        $result = preg_replace('/\[\d+-\w+-\d+ \d+:\d+:\d+ [^\r\n[\]]+?\] /', '', $log);
+
+        assert($result !== null);
+
+        return $result;
     }
 
     /**

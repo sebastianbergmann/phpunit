@@ -25,6 +25,7 @@ use function is_float;
 use function is_int;
 use function is_object;
 use function is_scalar;
+use function is_string;
 use function method_exists;
 use function preg_quote;
 use function preg_replace;
@@ -117,6 +118,8 @@ final class NamePrettifier
         }
 
         $result = preg_replace('/(?<=[[:lower:]])(?=[[:upper:]])/u', ' ', $className);
+
+        assert($result !== null);
 
         if ($fullyQualifiedName !== $className) {
             return $result . ' (' . $fullyQualifiedName . ')';
@@ -305,9 +308,6 @@ final class NamePrettifier
         return $providedData;
     }
 
-    /**
-     * @return non-empty-string
-     */
     private function objectToString(object $value): string
     {
         $reflector = new ReflectionObject($value);
@@ -319,11 +319,11 @@ final class NamePrettifier
                 return (string) $value->value;
             }
 
-            return $value->name;
+            return (string) $value->name;
         }
 
         if ($reflector->hasMethod('__toString')) {
-            return $value->__toString();
+            return (string) $value;
         }
 
         return $value::class;
@@ -354,6 +354,8 @@ final class NamePrettifier
 
             $placeholdersUsed = true;
         }
+
+        assert($result !== null);
 
         return [$result, $placeholdersUsed];
     }
@@ -419,7 +421,11 @@ final class NamePrettifier
         }
 
         try {
-            return [$reflector->invokeArgs(null, array_values($test->providedData())), true];
+            $result = $reflector->invokeArgs(null, array_values($test->providedData()));
+
+            assert(is_string($result));
+
+            return [$result, true];
         } catch (Throwable $t) {
             EventFacade::emitter()->testTriggeredPhpunitError(
                 TestMethodBuilder::fromTestCase($test, false),

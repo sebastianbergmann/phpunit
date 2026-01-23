@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\Constraint;
 
 use function array_reduce;
 use function array_shift;
+use function assert;
+use function is_bool;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -57,10 +59,14 @@ final class LogicalXor extends BinaryOperator
             return false;
         }
 
-        return array_reduce(
+        $result = array_reduce(
             $constraints,
             static fn (?bool $matches, Constraint $constraint): bool => $matches xor $constraint->evaluate($other, '', true),
             $initial->evaluate($other, '', true),
         );
+
+        assert(is_bool($result));
+
+        return $result;
     }
 }

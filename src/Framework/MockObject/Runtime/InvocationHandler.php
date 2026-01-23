@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_any;
 use function array_unique;
+use function array_values;
 use function in_array;
 use function strtolower;
 use Exception;
@@ -207,7 +208,7 @@ final class InvocationHandler
      * Only considers exact string matches for method names.
      * Methods with any() expectation are considered configured.
      *
-     * @return list<string>
+     * @return list<non-empty-string>
      */
     private function configuredMethodNames(): array
     {
@@ -225,6 +226,6 @@ final class InvocationHandler
             }
         }
 
-        return array_unique($names);
+        return array_values(array_unique($names));
     }
 }

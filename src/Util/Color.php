@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_map;
 use function array_walk;
+use function assert;
 use function count;
 use function explode;
 use function implode;
@@ -80,6 +81,9 @@ final class Color
         'bg-white'   => '47',
     ];
 
+    /**
+     * @param non-empty-string $color
+     */
     public static function colorize(string $color, string $buffer): string
     {
         if (trim($buffer) === '') {
@@ -102,6 +106,10 @@ final class Color
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
+    /**
+     * @param non-empty-string  $color
+     * @param ?non-negative-int $columns
+     */
     public static function colorizeTextBox(string $color, string $buffer, ?int $columns = null): string
     {
         $lines       = preg_split('/\r\n|\r|\n/', $buffer);
@@ -119,6 +127,10 @@ final class Color
         return implode(PHP_EOL, $lines);
     }
 
+    /**
+     * @param non-empty-string  $path
+     * @param ?non-empty-string $previousPath
+     */
     public static function colorizePath(string $path, ?string $previousPath = null, bool $colorizeFilename = false): string
     {
         if ($previousPath === null) {
@@ -159,16 +171,20 @@ final class Color
     {
         $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
 
-        return preg_replace_callback(
+        $result = preg_replace_callback(
             '/\s+/',
             static fn (array $matches) => self::dim(strtr($matches[0], $replaceMap)),
             $buffer,
         );
+
+        assert($result !== null);
+
+        return $result;
     }
 
     private static function optimizeColor(string $buffer): string
     {
-        return preg_replace(
+        $result = preg_replace(
             [
                 "/\e\\[22m\e\\[2m/",
                 "/\e\\[([^m]*)m\e\\[([1-9][0-9;]*)m/",
@@ -181,5 +197,9 @@ final class Color
             ],
             $buffer,
         );
+
+        assert($result !== null);
+
+        return $result;
     }
 }
