@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata;
 
-use function count;
 use Iterator;
 
 /**
@@ -41,7 +40,7 @@ final class MetadataCollectionIterator implements Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->metadata);
+        return isset($this->metadata[$this->position]);
     }
 
     /**

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use function count;
 use Iterator;
 
 final class TestIterator implements Iterator
@@ -29,7 +28,7 @@ final class TestIterator implements Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->array);
+        return isset($this->array[$this->position]);
     }
 
     public function key(): int|string

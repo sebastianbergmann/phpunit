@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function count;
 use Iterator;
 
 /**
@@ -41,7 +40,7 @@ final class GroupCollectionIterator implements Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->groups);
+        return isset($this->groups[$this->position]);
     }
 
     /**

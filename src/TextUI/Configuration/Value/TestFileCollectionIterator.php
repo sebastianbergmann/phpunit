@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function count;
 use Iterator;
 
 /**
@@ -41,7 +40,7 @@ final class TestFileCollectionIterator implements Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->files);
+        return isset($this->files[$this->position]);
     }
 
     /**
