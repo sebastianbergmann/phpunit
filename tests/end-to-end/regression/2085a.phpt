@@ -18,7 +18,7 @@ if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--enforce-time-limit';
-$_SERVER['argv'][] = '--default-time-limit=2';
+$_SERVER['argv'][] = '--default-time-limit=1';
 $_SERVER['argv'][] = __DIR__ . '/2085/Issue2085ATest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -35,7 +35,7 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\Issue2085ATest::testShouldAbortSlowTestByEnforcingTimeLimit
-This test was aborted after 2 seconds
+This test was aborted after 1 second
 
 %s:%d
 
