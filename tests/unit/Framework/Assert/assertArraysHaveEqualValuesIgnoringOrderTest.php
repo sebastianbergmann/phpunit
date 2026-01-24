@@ -259,6 +259,65 @@ EOT,
                 [['b' => 1]],
                 [['b' => 3]],
             ],
+
+            'values in different order, one value differs' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => 3,
+-    1 => 2,
+-    2 => 1,
++    0 => 1,
++    1 => 99,
++    2 => 3,
+ ]
+
+EOT,
+                [3, 2, 1],
+                [1, 99, 3],
+            ],
+
+            'string keyed arrays with values in different order, one value differs' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
++    'x' => 1,
++    'y' => 99,
+     'z' => 3,
+-    'y' => 2,
+-    'x' => 1,
+ ]
+
+EOT,
+                ['z' => 3, 'y' => 2, 'x' => 1],
+                ['x' => 1, 'y' => 99, 'z' => 3],
+            ],
+
+            'different keys with values in different order, one value differs' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    'a' => 3,
+-    'b' => 2,
+-    'c' => 1,
++    'x' => 1,
++    'y' => 99,
++    'z' => 3,
+ ]
+
+EOT,
+                ['a' => 3, 'b' => 2, 'c' => 1],
+                ['x' => 1, 'y' => 99, 'z' => 3],
+            ],
         ];
     }
 

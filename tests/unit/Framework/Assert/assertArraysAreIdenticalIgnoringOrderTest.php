@@ -367,6 +367,62 @@ EOT,
                 ['a' => [1, 2, 3]],
                 ['a' => [3, 2, 1]],
             ],
+
+            'identical keys in different order, one value differs' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
++    'x' => 1,
++    'y' => 99,
+     'z' => 3,
+-    'y' => 2,
+-    'x' => 1,
+ ]
+
+EOT,
+                ['z' => 3, 'y' => 2, 'x' => 1],
+                ['x' => 1, 'y' => 99, 'z' => 3],
+            ],
+
+            'identical integer keys in different order, one value differs' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
++    0 => 'a',
++    1 => 'B',
+     2 => 'c',
+-    1 => 'b',
+-    0 => 'a',
+ ]
+
+EOT,
+                [2 => 'c', 1 => 'b', 0 => 'a'],
+                [0 => 'a', 1 => 'B', 2 => 'c'],
+            ],
+
+            'mixed keys in different order, one value differs' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
++    'baz' => 'QUX',
+     'foo' => 'bar',
+     0 => 1,
+-    'baz' => 'qux',
+ ]
+
+EOT,
+                ['foo' => 'bar', 0 => 1, 'baz' => 'qux'],
+                ['baz' => 'QUX', 'foo' => 'bar', 0 => 1],
+            ],
         ];
     }
 
