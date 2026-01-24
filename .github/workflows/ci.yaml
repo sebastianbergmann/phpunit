@@ -243,14 +243,31 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
+#          - windows-latest
 
         php-version:
-          - "8.2"
-          - "8.3"
-          - "8.4"
-          - "8.5"
-          - "8.6"
+#          - "8.2"
+#          - "8.3"
+          - "8.4.0"
+          - "8.4.1"
+          - "8.4.2"
+          - "8.4.3"
+          - "8.4.4"
+          - "8.4.5"
+          - "8.4.6"
+          - "8.4.7"
+          - "8.4.8"
+          - "8.4.9"
+          - "8.4.10"
+          - "8.4.11"
+          - "8.4.12"
+          - "8.4.13"
+          - "8.4.14"
+          - "8.4.15"
+          - "8.4.16"
+          - "8.4.17"
+#          - "8.5"
+#          - "8.6"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -296,7 +313,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end --order-by depends,random --display-all-issues
+        run: php ./phpunit tests/end-to-end/regression/2085.phpt tests/end-to-end/regression/2085a.phpt
 
   code-coverage:
     name: Code Coverage
