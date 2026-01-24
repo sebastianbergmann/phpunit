@@ -75,6 +75,7 @@ class Count extends Constraint
                 if (isset($traversableSeen[$id])) {
                     throw new Exception('IteratorAggregate::getIterator() returned an object that was already seen');
                 }
+
                 $traversableSeen[$id] = true;
 
                 try {
