@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Changed
 
-* `PHPUnit\Framework\MockObject` exceptions subtypes of `PHPUnit\Exception`
+* `PHPUnit\Framework\MockObject` exceptions are now subtypes of `PHPUnit\Exception`
 
 ## [8.5.50] - 2025-12-06
 
