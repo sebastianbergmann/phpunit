@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da63a2ee22b7f198036f989527e763cb",
+    "content-hash": "26712a768551851672636670a9a939ef",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -749,16 +749,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "6.3.2",
+            "version": "6.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "85c77556683e6eee4323e4c5468641ca0237e2e8"
+                "reference": "2c95e1e86cb8dd41beb8d502057d1081ccc8eca9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/85c77556683e6eee4323e4c5468641ca0237e2e8",
-                "reference": "85c77556683e6eee4323e4c5468641ca0237e2e8",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/2c95e1e86cb8dd41beb8d502057d1081ccc8eca9",
+                "reference": "2c95e1e86cb8dd41beb8d502057d1081ccc8eca9",
                 "shasum": ""
             },
             "require": {
@@ -817,7 +817,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/comparator/issues",
                 "security": "https://github.com/sebastianbergmann/comparator/security/policy",
-                "source": "https://github.com/sebastianbergmann/comparator/tree/6.3.2"
+                "source": "https://github.com/sebastianbergmann/comparator/tree/6.3.3"
             },
             "funding": [
                 {
@@ -837,7 +837,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-10T08:07:46+00:00"
+            "time": "2026-01-24T09:26:40+00:00"
         },
         {
             "name": "sebastian/complexity",

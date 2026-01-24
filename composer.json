@@ -39,7 +39,7 @@
         "phpunit/php-timer": "^7.0.1",
         "sebastian/cli-parser": "^3.0.2",
         "sebastian/code-unit": "^3.0.3",
-        "sebastian/comparator": "^6.3.2",
+        "sebastian/comparator": "^6.3.3",
         "sebastian/diff": "^6.0.2",
         "sebastian/environment": "^7.2.1",
         "sebastian/exporter": "^6.3.2",
