@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -21,9 +22,21 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[Group('framework/assertions')]
 final class assertGreaterThanOrEqualTest extends TestCase
 {
-    public function testSucceedsWhenConstraintEvaluatesToTrue(): void
+    /**
+     * @return non-empty-list<array{0: int, 1: int}>
+     */
+    public static function successProvider(): array
     {
-        $this->assertGreaterThanOrEqual(1, 2);
+        return [
+            [1, 2],
+            [2, 2],
+        ];
+    }
+
+    #[DataProvider('successProvider')]
+    public function testSucceedsWhenConstraintEvaluatesToTrue(mixed $minimum, mixed $actual): void
+    {
+        $this->assertGreaterThanOrEqual($minimum, $actual);
     }
 
     public function testFailsWhenConstraintEvaluatesToFalse(): void
