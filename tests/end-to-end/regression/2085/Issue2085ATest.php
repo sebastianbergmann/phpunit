@@ -9,27 +9,14 @@
  */
 namespace PHPUnit\TestFixture;
 
-use IteratorAggregate;
+use function sleep;
 use PHPUnit\Framework\TestCase;
-use Traversable;
 
 class Issue2085ATest extends TestCase
 {
     public function testShouldAbortSlowTestByEnforcingTimeLimit(): void
     {
-        $this->assertCount(
-            0,
-            new class implements IteratorAggregate
-            {
-                public function __construct()
-                {
-                }
-
-                public function getIterator(): Traversable
-                {
-                    return $this;
-                }
-            },
-        );
+        $this->assertTrue(true);
+        sleep(3);
     }
 }
