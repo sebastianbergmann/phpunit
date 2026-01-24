@@ -313,7 +313,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit tests/end-to-end/regression/2085.phpt tests/end-to-end/regression/2085a.phpt
+        run: php ./phpunit tests/end-to-end/regression/2085a.phpt tests/end-to-end/regression/2085.phpt
 
   code-coverage:
     name: Code Coverage
