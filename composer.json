@@ -38,7 +38,7 @@
         "phpunit/php-text-template": "^5.0.0",
         "phpunit/php-timer": "^8.0.0",
         "sebastian/cli-parser": "^4.2.0",
-        "sebastian/comparator": "^7.1.3",
+        "sebastian/comparator": "^7.1.4",
         "sebastian/diff": "^7.0.0",
         "sebastian/environment": "^8.0.3",
         "sebastian/exporter": "^7.0.2",
