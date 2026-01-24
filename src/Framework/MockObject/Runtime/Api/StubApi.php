@@ -20,7 +20,7 @@ trait StubApi
 
     public function __phpunit_state(): TestDoubleState
     {
-        return $this->__phpunit_state;
+        return $this->__phpunit_state ?? new TestDoubleState([], true, false);
     }
 
     /** @noinspection MagicMethodsValidityInspection */
