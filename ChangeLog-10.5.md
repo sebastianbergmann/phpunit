@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.61] - 2026-01-24
+
+### Changed
+
+* `PHPUnit\Framework\MockObject` exceptions are now subtypes of `PHPUnit\Exception`
+
 ## [10.5.60] - 2025-12-06
 
 * No changes; `phpunit.phar` rebuilt with PHP 8.4 to work around PHP-Scoper issue [#1139](https://github.com/humbug/php-scoper/issues/1139)
@@ -509,6 +515,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.61]: https://github.com/sebastianbergmann/phpunit/compare/10.5.60...10.5.61
 [10.5.60]: https://github.com/sebastianbergmann/phpunit/compare/10.5.59...10.5.60
 [10.5.59]: https://github.com/sebastianbergmann/phpunit/compare/10.5.58...10.5.59
 [10.5.58]: https://github.com/sebastianbergmann/phpunit/compare/10.5.57...10.5.58
