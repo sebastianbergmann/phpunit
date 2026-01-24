@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_keys;
 use function array_values;
 use function is_array;
 use function ksort;
@@ -61,8 +62,18 @@ abstract class ArrayComparison extends Constraint
         $actual   = $other;
 
         if ($this->keysMatter && !$this->orderMatters) {
-            ksort($expected);
-            ksort($actual);
+            $expectedKeys = array_keys($expected);
+            $actualKeys   = array_keys($actual);
+            sort($expectedKeys);
+            sort($actualKeys);
+
+            if ($expectedKeys === $actualKeys) {
+                sort($expected);
+                sort($actual);
+            } else {
+                ksort($expected);
+                ksort($actual);
+            }
         }
 
         if (!$this->keysMatter) {
