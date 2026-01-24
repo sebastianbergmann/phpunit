@@ -705,12 +705,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "43d0470f8413356804f98eac33ba2d07a8a9a503"
+                "reference": "5bc538c911636d376c0d9bcd01f1d47c1a97ea2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/43d0470f8413356804f98eac33ba2d07a8a9a503",
-                "reference": "43d0470f8413356804f98eac33ba2d07a8a9a503",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/5bc538c911636d376c0d9bcd01f1d47c1a97ea2c",
+                "reference": "5bc538c911636d376c0d9bcd01f1d47c1a97ea2c",
                 "shasum": ""
             },
             "require": {
@@ -790,7 +790,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-31T16:36:30+00:00"
+            "time": "2026-01-24T09:34:23+00:00"
         },
         {
             "name": "sebastian/complexity",
