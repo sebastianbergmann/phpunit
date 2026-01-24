@@ -355,6 +355,44 @@ EOT,
                 [[1, 2, 3]],
                 [[3, 2, 1]],
             ],
+
+            'string keyed arrays with values in different order' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
++    'x' => 1,
++    'y' => 2,
+     'z' => 3,
+-    'y' => 2,
+-    'x' => 1,
+ ]
+
+EOT,
+                ['z' => 3, 'y' => 2, 'x' => 1],
+                ['x' => 1, 'y' => 2, 'z' => 3],
+            ],
+
+            'different keys with values in different order' => [
+                <<<'EOT'
+
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    'a' => 3,
++    'x' => 1,
+     'b' => 2,
+-    'c' => 1,
++    'z' => 3,
+ ]
+
+EOT,
+                ['a' => 3, 'b' => 2, 'c' => 1],
+                ['x' => 1, 'b' => 2, 'z' => 3],
+            ],
         ];
     }
 
