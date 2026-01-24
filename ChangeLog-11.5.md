@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Fixed
 
+* [#6362](https://github.com/sebastianbergmann/phpunit/issues/6362): Manually instantiated test doubles are broken since PHPUnit 11.2
 * [#6470](https://github.com/sebastianbergmann/phpunit/issues/6470): Infinite recursion in `Count::getCountOf()` for unusal implementations of `Iterator` or `IteratorAggregate`
 
 ## [11.5.48] - 2026-01-16
