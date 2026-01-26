@@ -605,6 +605,7 @@ final class PhptTestCase implements SelfDescribing, Test
         );
 
         file_put_contents($files['job'], $job);
+
         $job = $template->render();
     }
 
