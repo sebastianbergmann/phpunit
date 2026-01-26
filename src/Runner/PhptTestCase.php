@@ -93,7 +93,10 @@ final class PhptTestCase implements SelfDescribing, Test
         $this->ensureFileExists($filename);
 
         $this->filename = $filename;
-        $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
+
+        $this->ensureCoverageFileDoesNotExist();
+
+        $this->phpUtil = $phpUtil ?: AbstractPhpProcess::factory();
     }
 
     /**
@@ -825,6 +828,24 @@ final class PhptTestCase implements SelfDescribing, Test
                 sprintf(
                     'File "%s" does not exist.',
                     $filename
+                )
+            );
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function ensureCoverageFileDoesNotExist(): void
+    {
+        $files = $this->getCoverageFiles();
+
+        if (file_exists($files['coverage'])) {
+            throw new Exception(
+                sprintf(
+                    'File %s exists, PHPT test %s will not be executed',
+                    $files['coverage'],
+                    $this->filename
                 )
             );
         }
