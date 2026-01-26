@@ -90,14 +90,7 @@ final class PhptTestCase implements SelfDescribing, Test
      */
     public function __construct(string $filename, ?AbstractPhpProcess $phpUtil = null)
     {
-        if (!is_file($filename)) {
-            throw new Exception(
-                sprintf(
-                    'File "%s" does not exist.',
-                    $filename
-                )
-            );
-        }
+        $this->ensureFileExists($filename);
 
         $this->filename = $filename;
         $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
@@ -820,5 +813,20 @@ final class PhptTestCase implements SelfDescribing, Test
         }
 
         return $settings;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function ensureFileExists(string $filename): void
+    {
+        if (!is_file($filename)) {
+            throw new Exception(
+                sprintf(
+                    'File "%s" does not exist.',
+                    $filename
+                )
+            );
+        }
     }
 }
