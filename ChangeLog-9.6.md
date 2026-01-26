@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.33] - 2026-MM-DD
+
+### Changed
+
+* To prevent Poisoned Pipeline Execution (PPE) attacks using prepared `.coverage` files in pull requests, a PHPT test will no longer be run if the temporary file for writing code coverage information already exists before the test runs
+
 ## [9.6.32] - 2026-01-24
 
 ### Changed
@@ -218,6 +224,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.33]: https://github.com/sebastianbergmann/phpunit/compare/9.6.32...9.6
 [9.6.32]: https://github.com/sebastianbergmann/phpunit/compare/9.6.31...9.6.32
 [9.6.31]: https://github.com/sebastianbergmann/phpunit/compare/9.6.30...9.6.31
 [9.6.30]: https://github.com/sebastianbergmann/phpunit/compare/9.6.29...9.6.30
