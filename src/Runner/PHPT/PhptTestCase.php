@@ -788,7 +788,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if ($buffer !== false) {
-            $coverage = @unserialize($buffer, ['allowed_class' => false]);
+            $coverage = @unserialize($buffer, ['allowed_classes' => false]);
 
             if ($coverage === false) {
                 /**
