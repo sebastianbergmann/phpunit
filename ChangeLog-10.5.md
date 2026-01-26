@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 10.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [10.5.62] - 2026-MM-DD
+
+### Changed
+
+* To prevent Poisoned Pipeline Execution (PPE) attacks using prepared `.coverage` files in pull requests, a PHPT test will no longer be run if the temporary file for writing code coverage information already exists before the test runs
+
 ## [10.5.61] - 2026-01-24
 
 ### Changed
@@ -515,6 +521,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 * [#5563](https://github.com/sebastianbergmann/phpunit/issues/5563): `createMockForIntersectionOfInterfaces()` does not automatically register mock object for expectation verification
 
+[10.5.62]: https://github.com/sebastianbergmann/phpunit/compare/10.5.61...10.5
 [10.5.61]: https://github.com/sebastianbergmann/phpunit/compare/10.5.60...10.5.61
 [10.5.60]: https://github.com/sebastianbergmann/phpunit/compare/10.5.59...10.5.60
 [10.5.59]: https://github.com/sebastianbergmann/phpunit/compare/10.5.58...10.5.59
