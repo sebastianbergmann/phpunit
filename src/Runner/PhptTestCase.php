@@ -611,7 +611,7 @@ final class PhptTestCase implements SelfDescribing, Test
             $buffer = @file_get_contents($files['coverage']);
 
             if ($buffer !== false) {
-                $coverage = @unserialize($buffer);
+                $coverage = @unserialize($buffer, ['allowed_classes' => false]);
 
                 if ($coverage === false) {
                     $coverage = [];
