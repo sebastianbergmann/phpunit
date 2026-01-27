@@ -475,6 +475,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $buffer,
                 [
                     'allowed_classes' => [
+                        /** @phpstan-ignore classConstant.internalClass */
                         RawCodeCoverageData::class,
                     ],
                 ],
