@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [9.6.33] - 2026-MM-DD
+## [9.6.33] - 2026-01-27
 
 ### Changed
 
@@ -224,7 +224,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
-[9.6.33]: https://github.com/sebastianbergmann/phpunit/compare/9.6.32...9.6
+[9.6.33]: https://github.com/sebastianbergmann/phpunit/compare/9.6.32...9.6.33
 [9.6.32]: https://github.com/sebastianbergmann/phpunit/compare/9.6.31...9.6.32
 [9.6.31]: https://github.com/sebastianbergmann/phpunit/compare/9.6.30...9.6.31
 [9.6.30]: https://github.com/sebastianbergmann/phpunit/compare/9.6.29...9.6.30
