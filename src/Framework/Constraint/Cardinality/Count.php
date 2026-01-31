@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 use function count;
 use function is_countable;
 use function iterator_count;
-use function spl_object_id;
 use function sprintf;
 use EmptyIterator;
 use Generator;
@@ -20,6 +19,7 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\GeneratorNotSupportedException;
+use SebastianBergmann\RecursionContext\Context;
 use Traversable;
 
 /**
@@ -67,16 +67,14 @@ class Count extends Constraint
         }
 
         if ($other instanceof Traversable) {
-            $traversableSeen = [];
+            $context = new Context;
 
             while ($other instanceof IteratorAggregate) {
-                $id = spl_object_id($other);
-
-                if (isset($traversableSeen[$id])) {
+                if ($context->contains($other) !== false) {
                     throw new Exception('IteratorAggregate::getIterator() returned an object that was already seen');
                 }
 
-                $traversableSeen[$id] = true;
+                $context->add($other);
 
                 try {
                     $other = $other->getIterator();
