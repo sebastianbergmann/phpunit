@@ -44,6 +44,10 @@ class VariablePropertyFetchRule implements Rule
 			return [];
 		}
 
+		if ($scope->getType($node->name)->isLiteralString()->yes()) {
+			return [];
+		}
+
 		$fetchedOnType = $scope->getType($node->var);
 		foreach ($fetchedOnType->getObjectClassNames() as $referencedClass) {
 			if (!$this->reflectionProvider->hasClass($referencedClass)) {

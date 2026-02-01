@@ -21,8 +21,8 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.12.0',
-    'phpstanVersionConstraint' => '>=2.1.8.0-dev, <3.0.0.0-dev',
+    'version' => '2.13.1',
+    'phpstanVersionConstraint' => '>=2.1.35.0-dev, <3.0.0.0-dev',
   ),
   'phpstan/phpstan-strict-rules' => 
   array (
@@ -35,7 +35,7 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.0.7',
+    'version' => '2.0.8',
     'phpstanVersionConstraint' => '>=2.1.29.0-dev, <3.0.0.0-dev',
   ),
   'tomasvotruba/type-coverage' => 
@@ -58,7 +58,7 @@ final class GeneratedConfig
 );
 
 	/** @var string|null */
-	public const PHPSTAN_VERSION_CONSTRAINT = '>=2.1.29.0-dev, <3.0.0.0-dev';
+	public const PHPSTAN_VERSION_CONSTRAINT = '>=2.1.35.0-dev, <3.0.0.0-dev';
 
 	private function __construct()
 	{

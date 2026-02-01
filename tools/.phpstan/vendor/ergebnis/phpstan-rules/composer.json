@@ -23,20 +23,20 @@
   "require": {
     "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
     "ext-mbstring": "*",
-    "phpstan/phpstan": "^2.1.8"
+    "phpstan/phpstan": "^2.1.35"
   },
   "require-dev": {
     "codeception/codeception": "^4.0.0 || ^5.0.0",
     "doctrine/orm": "^2.20.0 || ^3.3.0",
-    "ergebnis/composer-normalize": "^2.47.0",
-    "ergebnis/license": "^2.6.0",
-    "ergebnis/php-cs-fixer-config": "^6.54.0",
+    "ergebnis/composer-normalize": "^2.49.0",
+    "ergebnis/license": "^2.7.0",
+    "ergebnis/php-cs-fixer-config": "^6.59.0",
     "ergebnis/phpunit-slow-test-detector": "^2.20.0",
     "fakerphp/faker": "^1.24.1",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan-deprecation-rules": "^2.0.3",
-    "phpstan/phpstan-phpunit": "^2.0.7",
-    "phpstan/phpstan-strict-rules": "^2.0.6",
+    "phpstan/phpstan-phpunit": "^2.0.12",
+    "phpstan/phpstan-strict-rules": "^2.0.8",
     "phpunit/phpunit": "^9.6.21",
     "psr/container": "^2.0.2",
     "symfony/finder": "^5.4.45",

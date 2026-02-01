@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2018-2025 Andreas Möller
+ * Copyright (c) 2018-2026 Andreas Möller
  *
  * For the full copyright and license information, please view
  * the LICENSE.md file that was distributed with this source code.
@@ -108,6 +108,11 @@ final class ErrorIdentifier
     public static function noNullableReturnTypeDeclaration(): self
     {
         return new self('noNullableReturnTypeDeclaration');
+    }
+
+    public static function noPhpstanIgnore(): self
+    {
+        return new self('noPhpstanIgnore');
     }
 
     public static function noReturnByReference(): self

@@ -58,6 +58,7 @@ This package provides the following rules for use with [`phpstan/phpstan`](https
 - [`Ergebnis\PHPStan\Rules\Expressions\NoEvalRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoevalrule)
 - [`Ergebnis\PHPStan\Rules\Expressions\NoIssetRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoissetrule)
 - [`Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule`](https://github.com/ergebnis/phpstan-rules#filesdeclarestricttypesrule)
+- [`Ergebnis\PHPStan\Rules\Files\NoPhpstanIgnoreRule`](https://github.com/ergebnis/phpstan-rules#filesnophpstanignorerule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#functionsnonullablereturntypedeclarationrule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterpassedbyreferencerule)
 - [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullableTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterwithnullabletypedeclarationrule)
@@ -345,6 +346,21 @@ You can set the `enabled` parameter to `false` to disable this rule.
 parameters:
 	ergebnis:
 		declareStrictTypes:
+			enabled: false
+```
+
+#### `Files\NoPhpstanIgnoreRule`
+
+This rule reports an error when a `@phpstan-ignore`, `@phpstan-ignore-line`, or `@phpstan-ignore-next-line` tag is used to [ignore errors reported by `phpstan/phpstan`](https://phpstan.org/user-guide/ignoring-errors#ignoring-in-code-using-phpdocs).
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noPhpstanIgnore:
 			enabled: false
 ```
 
