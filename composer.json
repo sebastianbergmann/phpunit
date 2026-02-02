@@ -33,7 +33,7 @@
         "phar-io/manifest": "^2.0.4",
         "phar-io/version": "^3.2.1",
         "phpunit/php-code-coverage": "^11.0.12",
-        "phpunit/php-file-iterator": "^5.1.0",
+        "phpunit/php-file-iterator": "^5.1.1",
         "phpunit/php-invoker": "^5.0.1",
         "phpunit/php-text-template": "^4.0.1",
         "phpunit/php-timer": "^7.0.1",
