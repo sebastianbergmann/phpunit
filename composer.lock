@@ -338,12 +338,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "5b6838a55cdd2f383c4cb3e68c72100065986ad9"
+                "reference": "9856f5e94469fafe60bad70f7d198afb2ee1eeb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/5b6838a55cdd2f383c4cb3e68c72100065986ad9",
-                "reference": "5b6838a55cdd2f383c4cb3e68c72100065986ad9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/9856f5e94469fafe60bad70f7d198afb2ee1eeb1",
+                "reference": "9856f5e94469fafe60bad70f7d198afb2ee1eeb1",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-01T08:57:54+00:00"
+            "time": "2026-02-02T14:11:09+00:00"
         },
         {
             "name": "phpunit/php-invoker",
