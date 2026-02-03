@@ -34,7 +34,7 @@ Test Preparation Started (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClass
 Test Prepared (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo)
 Test Triggered Deprecation (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo, issue triggered by first-party code calling into third-party code, suppressed using operator) in %s:%d
 deprecation in third-party code
-Test Triggered Deprecation (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo, issue triggered by third-party code, suppressed using operator) in %s:%d
+Test Triggered Deprecation (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo, issue triggered by third-party code calling into first-party code, suppressed using operator) in %s:%d
 deprecation in first-party code
 Test Passed (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo)
 Test Finished (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo)

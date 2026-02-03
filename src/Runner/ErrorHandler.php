@@ -33,6 +33,7 @@ use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
@@ -295,15 +296,19 @@ final class ErrorHandler
             $triggerCalledFromFirstPartyCode = true;
         }
 
-        if ($triggerCalledFromFirstPartyCode) {
-            if ($triggeredInFirstPartyCode) {
-                return IssueTrigger::self();
-            }
-
-            return IssueTrigger::direct();
+        if ($triggeredInFirstPartyCode) {
+            $callee = Code::FirstParty;
+        } else {
+            $callee = Code::ThirdParty;
         }
 
-        return IssueTrigger::indirect();
+        if ($triggerCalledFromFirstPartyCode) {
+            $caller = Code::FirstParty;
+        } else {
+            $caller = Code::ThirdParty;
+        }
+
+        return IssueTrigger::from($callee, $caller);
     }
 
     /**

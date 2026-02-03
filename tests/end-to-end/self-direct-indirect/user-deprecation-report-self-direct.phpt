@@ -41,5 +41,8 @@ Triggered by:
 * PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne
   %sFirstPartyClassTest.php:16
 
+* PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo
+  %sFirstPartyClassTest.php:21
+
 OK, but there were issues!
 Tests: 2, Assertions: 2, Deprecations: 2.
