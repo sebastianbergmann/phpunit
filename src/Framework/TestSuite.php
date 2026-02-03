@@ -536,7 +536,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 new TestMethod(
                     $className,
                     $methodName,
-                    $class->getFileName(),
+                    $method->getFileName(),
                     $method->getStartLine(),
                     Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                         $className,
