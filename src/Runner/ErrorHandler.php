@@ -38,8 +38,7 @@ use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
-use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 use PHPUnit\Util\ExcludeList;
 
@@ -56,7 +55,7 @@ final class ErrorHandler
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
-    private readonly Source $source;
+    private readonly bool $firstPartyCodeConfigured;
 
     /**
      * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
@@ -65,12 +64,12 @@ final class ErrorHandler
 
     public static function instance(): self
     {
-        return self::$instance ?? self::$instance = new self(Registry::get()->source());
+        return self::$instance ?? self::$instance = new self(ConfigurationRegistry::get()->source()->notEmpty());
     }
 
-    private function __construct(Source $source)
+    private function __construct(bool $firstPartyCodeConfigured)
     {
-        $this->source = $source;
+        $this->firstPartyCodeConfigured = $firstPartyCodeConfigured;
     }
 
     /**
@@ -259,7 +258,7 @@ final class ErrorHandler
 
     private function trigger(TestMethod $test, bool $filterTrigger): IssueTrigger
     {
-        if (!$this->source->notEmpty()) {
+        if (!$this->firstPartyCodeConfigured) {
             return IssueTrigger::unknown();
         }
 
