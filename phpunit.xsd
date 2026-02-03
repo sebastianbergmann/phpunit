@@ -35,6 +35,7 @@
         <xs:attribute name="ignoreSuppressionOfPhpNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreSuppressionOfWarnings" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreSuppressionOfPhpWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="identifyIssueTrigger" type="xs:boolean" default="true"/>
         <xs:attribute name="ignoreSelfDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreDirectDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreIndirectDeprecations" type="xs:boolean" default="false"/>

@@ -312,6 +312,7 @@ final readonly class Loader
         $ignoreSelfDeprecations             = false;
         $ignoreDirectDeprecations           = false;
         $ignoreIndirectDeprecations         = false;
+        $identifyIssueTrigger               = true;
 
         $element = $this->element($xpath, 'source');
 
@@ -334,6 +335,7 @@ final readonly class Loader
             $ignoreSelfDeprecations             = $this->parseBooleanAttribute($element, 'ignoreSelfDeprecations', false);
             $ignoreDirectDeprecations           = $this->parseBooleanAttribute($element, 'ignoreDirectDeprecations', false);
             $ignoreIndirectDeprecations         = $this->parseBooleanAttribute($element, 'ignoreIndirectDeprecations', false);
+            $identifyIssueTrigger               = $this->parseBooleanAttribute($element, 'identifyIssueTrigger', true);
         }
 
         $deprecationTriggers = [
@@ -381,6 +383,7 @@ final readonly class Loader
             $ignoreSelfDeprecations,
             $ignoreDirectDeprecations,
             $ignoreIndirectDeprecations,
+            $identifyIssueTrigger,
         );
     }
 
