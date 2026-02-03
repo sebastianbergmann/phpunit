@@ -56,6 +56,7 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
+                    true,
                 ),
             ],
             'file included using file, but excluded using directory' => [
@@ -97,6 +98,7 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
+                    true,
                 ),
             ],
             'file included using file, but excluded using file' => [
@@ -134,6 +136,7 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
+                    true,
                 ),
             ],
             'file included using directory' => [
@@ -171,6 +174,7 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
+                    true,
                 ),
             ],
             'file included using directory, but excluded using file' => [
@@ -212,6 +216,7 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
+                    true,
                 ),
             ],
             'file included using directory, but excluded using directory' => [
@@ -257,6 +262,7 @@ final class SourceFilterTest extends TestCase
                     false,
                     false,
                     false,
+                    true,
                 ),
             ],
         ];

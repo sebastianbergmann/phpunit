@@ -395,6 +395,7 @@ final class SourceMapperTest extends TestCase
             false,
             false,
             false,
+            true,
         );
     }
 }
