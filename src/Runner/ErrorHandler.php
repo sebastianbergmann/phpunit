@@ -60,7 +60,7 @@ final class ErrorHandler
     private ?Baseline $baseline               = null;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
-    private readonly bool $firstPartyCodeConfigured;
+    private readonly bool $identifyIssueTrigger;
 
     /**
      * @var list<array{int, string, string, int}>
@@ -80,12 +80,24 @@ final class ErrorHandler
 
     public static function instance(): self
     {
-        return self::$instance ?? self::$instance = new self(ConfigurationRegistry::get()->source()->notEmpty());
+        $source = ConfigurationRegistry::get()->source();
+
+        $identifyIssueTrigger = true;
+
+        if (!$source->identifyIssueTrigger()) {
+            $identifyIssueTrigger = false;
+        }
+
+        if (!$source->notEmpty()) {
+            $identifyIssueTrigger = false;
+        }
+
+        return self::$instance ?? self::$instance = new self($identifyIssueTrigger);
     }
 
-    private function __construct(bool $firstPartyCodeConfigured)
+    private function __construct(bool $identifyIssueTrigger)
     {
-        $this->firstPartyCodeConfigured = $firstPartyCodeConfigured;
+        $this->identifyIssueTrigger = $identifyIssueTrigger;
     }
 
     /**
@@ -311,7 +323,7 @@ final class ErrorHandler
 
     private function trigger(TestMethod $test, bool $filterTrigger): IssueTrigger
     {
-        if (!$this->firstPartyCodeConfigured) {
+        if (!$this->identifyIssueTrigger) {
             return IssueTrigger::unknown();
         }
 

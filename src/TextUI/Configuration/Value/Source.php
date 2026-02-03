@@ -37,6 +37,7 @@ final readonly class Source
     private bool $ignoreSelfDeprecations;
     private bool $ignoreDirectDeprecations;
     private bool $ignoreIndirectDeprecations;
+    private bool $identifyIssueTrigger;
 
     /**
      * @var array{functions: list<non-empty-string>, methods: list<non-empty-string>}
@@ -44,10 +45,10 @@ final readonly class Source
     private array $deprecationTriggers;
 
     /**
-     * @param non-empty-string                                                          $baseline
+     * @param ?non-empty-string                                                         $baseline
      * @param array{functions: list<non-empty-string>, methods: list<non-empty-string>} $deprecationTriggers
      */
-    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations)
+    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger)
     {
         $this->baseline                           = $baseline;
         $this->ignoreBaseline                     = $ignoreBaseline;
@@ -68,6 +69,7 @@ final readonly class Source
         $this->ignoreSelfDeprecations             = $ignoreSelfDeprecations;
         $this->ignoreDirectDeprecations           = $ignoreDirectDeprecations;
         $this->ignoreIndirectDeprecations         = $ignoreIndirectDeprecations;
+        $this->identifyIssueTrigger               = $identifyIssueTrigger;
     }
 
     /**
@@ -191,5 +193,10 @@ final readonly class Source
     public function ignoreIndirectDeprecations(): bool
     {
         return $this->ignoreIndirectDeprecations;
+    }
+
+    public function identifyIssueTrigger(): bool
+    {
+        return $this->identifyIssueTrigger;
     }
 }

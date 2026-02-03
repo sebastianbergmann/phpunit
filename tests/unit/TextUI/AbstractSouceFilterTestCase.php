@@ -46,6 +46,7 @@ abstract class AbstractSouceFilterTestCase extends TestCase
             false,
             false,
             false,
+            true,
         );
     }
 

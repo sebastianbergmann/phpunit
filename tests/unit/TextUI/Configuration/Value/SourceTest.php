@@ -55,6 +55,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($includeDirectories, $source->includeDirectories());
@@ -87,6 +88,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($includeFiles, $source->includeFiles());
@@ -119,6 +121,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($excludeDirectories, $source->excludeDirectories());
@@ -151,6 +154,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($excludeFiles, $source->excludeFiles());
@@ -183,6 +187,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($baseline, $source->baseline());
@@ -215,6 +220,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->hasBaseline());
@@ -250,6 +256,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->restrictNotices());
@@ -280,6 +287,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->restrictNotices());
@@ -310,6 +318,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->restrictWarnings());
@@ -340,6 +349,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->restrictWarnings());
@@ -370,6 +380,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfDeprecations());
@@ -400,6 +411,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfDeprecations());
@@ -430,6 +442,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpDeprecations());
@@ -460,6 +473,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpDeprecations());
@@ -490,6 +504,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfErrors());
@@ -520,6 +535,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfErrors());
@@ -550,6 +566,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfNotices());
@@ -580,6 +597,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfNotices());
@@ -610,6 +628,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpNotices());
@@ -640,6 +659,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpNotices());
@@ -670,6 +690,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfWarnings());
@@ -700,6 +721,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfWarnings());
@@ -730,6 +752,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpWarnings());
@@ -760,6 +783,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpWarnings());
@@ -790,6 +814,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->notEmpty());
@@ -828,6 +853,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->notEmpty());
