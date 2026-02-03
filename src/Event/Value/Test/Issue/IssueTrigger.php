@@ -9,89 +9,90 @@
  */
 namespace PHPUnit\Event\Code\IssueTrigger;
 
+use function sprintf;
+
 /**
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class IssueTrigger
+final readonly class IssueTrigger
 {
-    public static function test(): TestTrigger
+    private ?Code $callee;
+    private ?Code $caller;
+
+    public static function unknown(): self
     {
-        return new TestTrigger;
+        return new self(null, null);
     }
 
-    public static function self(): SelfTrigger
+    public static function test(): self
     {
-        return new SelfTrigger;
+        return new self(Code::Test, null);
     }
 
-    public static function direct(): DirectTrigger
+    public static function from(Code $callee, ?Code $caller = null): self
     {
-        return new DirectTrigger;
+        return new self($callee, $caller);
     }
 
-    public static function indirect(): IndirectTrigger
+    private function __construct(?Code $callee, ?Code $caller)
     {
-        return new IndirectTrigger;
-    }
-
-    public static function unknown(): UnknownTrigger
-    {
-        return new UnknownTrigger;
-    }
-
-    final private function __construct()
-    {
+        $this->callee = $callee;
+        $this->caller = $caller;
     }
 
     /**
-     * Your test code triggers an issue.
-     *
-     * @phpstan-assert-if-true TestTrigger $this
+     * An issue is triggered in test code.
      */
     public function isTest(): bool
     {
-        return false;
+        return $this->callee == Code::Test;
     }
 
     /**
-     * Your own code triggers an issue in your own code.
-     *
-     * @phpstan-assert-if-true SelfTrigger $this
+     * An issue is triggered in first-party code or in test code.
      */
     public function isSelf(): bool
     {
-        return false;
+        return $this->callee == Code::FirstParty || $this->callee == Code::Test;
     }
 
     /**
-     * Your own code triggers an issue in third-party code.
-     *
-     * @phpstan-assert-if-true DirectTrigger $this
+     * First-party code triggers an issue in third-party code.
      */
     public function isDirect(): bool
     {
-        return false;
+        return $this->caller == Code::FirstParty && $this->callee == Code::ThirdParty;
     }
 
     /**
-     * Third-party code triggers an issue either in your own code or in third-party code.
-     *
-     * @phpstan-assert-if-true IndirectTrigger $this
+     * Third-party code triggers an issue.
      */
     public function isIndirect(): bool
     {
-        return false;
+        return $this->caller == Code::ThirdParty && $this->callee == Code::ThirdParty;
     }
 
-    /**
-     * @phpstan-assert-if-true UnknownTrigger $this
-     */
     public function isUnknown(): bool
     {
-        return false;
+        return $this->callee === null;
     }
 
-    abstract public function asString(): string;
+    public function asString(): string
+    {
+        if ($this->isUnknown()) {
+            return 'unknown if issue was triggered in first-party code or third-party code';
+        }
+
+        if ($this->isTest()) {
+            return 'issue triggered by test code';
+        }
+
+        return sprintf(
+            'issue triggered by %s calling into %s',
+            $this->caller->value,
+            $this->callee->value,
+        );
+    }
 }

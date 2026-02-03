@@ -1,11 +1,11 @@
 --TEST--
-The correct deprecations are reported when only deprecations in first-party code triggered from first-party code should be reported
+The correct deprecations are reported when deprecations in first-party code should be ignored
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--display-deprecations';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/user-deprecation-report-self';
+$_SERVER['argv'][] = __DIR__ . '/_files/user-deprecation-report-direct-indirect';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -22,8 +22,8 @@ Time: %s, Memory: %s
 
 2 tests triggered 1 deprecation:
 
-1) %sFirstPartyClass.php:21
-deprecation in first-party code
+1) %sThirdPartyClass.php:8
+deprecation in third-party code
 
 Triggered by:
 
@@ -31,7 +31,7 @@ Triggered by:
   %sFirstPartyClassTest.php:16
 
 * PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testTwo
-  %s:21
+  %sFirstPartyClassTest.php:21
 
 OK, but there were issues!
 Tests: 2, Assertions: 2, Deprecations: 1.
