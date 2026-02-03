@@ -11,9 +11,7 @@ namespace PHPUnit\TestFixture\Issue6486;
 
 use PHPUnit\Framework\TestCase;
 
-require __DIR__ . '/TheTrait.php';
-
 final class Issue6486Test extends TestCase
 {
-    use TheTrait;
+    use Issue6486Trait;
 }

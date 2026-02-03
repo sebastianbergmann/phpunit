@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture\Issue6486;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 
-trait TheTrait
+trait Issue6486Trait
 {
     public function testToMoveDataProviderAttributeToTheLineThatDoesNotExistInTheOtherFile(): void
     {
@@ -19,7 +19,7 @@ trait TheTrait
     }
 
     #[DataProvider('Abracadabra')]
-    public function testWithMissingDataProvider(): void
+    public function testWithDataProviderThatDoesNotExist(): void
     {
         $this->assertTrue(false);
     }

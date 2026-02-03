@@ -4,6 +4,8 @@ https://github.com/sebastianbergmann/phpunit/issues/6486
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--bootstrap';
+$_SERVER['argv'][] = __DIR__ . '/6486/Issue6486Trait.php';
 $_SERVER['argv'][] = __DIR__ . '/6486/Issue6486Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -20,11 +22,11 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit error:
 
-1) PHPUnit\TestFixture\Issue6486\Issue6486Test::testWithMissingDataProvider
-The data provider specified for PHPUnit\TestFixture\Issue6486\Issue6486Test::testWithMissingDataProvider is invalid
+1) PHPUnit\TestFixture\Issue6486\Issue6486Test::testWithDataProviderThatDoesNotExist
+The data provider specified for PHPUnit\TestFixture\Issue6486\Issue6486Test::testWithDataProviderThatDoesNotExist is invalid
 Method PHPUnit\TestFixture\Issue6486\Issue6486Test::Abracadabra() does not exist
 
-%sTheTrait.php:22
+%sIssue6486Trait.php:22
 
 ERRORS!
 Tests: 1, Assertions: 1, Errors: 1.
