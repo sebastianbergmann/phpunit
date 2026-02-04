@@ -13,7 +13,7 @@ use function range;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class NotSkippedTest extends TestCase
+final class NotSkippedTest extends TestCase
 {
     public static function provideData(): iterable
     {
