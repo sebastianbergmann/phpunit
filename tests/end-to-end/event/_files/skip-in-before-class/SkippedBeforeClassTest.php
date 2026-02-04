@@ -9,22 +9,27 @@
  */
 namespace PHPUnit\TestFixture\Event\SkipInBeforeClass;
 
+use function range;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SkippedBeforeClassTest extends TestCase
 {
+    public static function provideData(): iterable
+    {
+        foreach (range(1, 100) as $item) {
+            yield [true];
+        }
+    }
+
     public static function setUpBeforeClass(): void
     {
         self::markTestSkipped('Skipped in before class');
     }
 
-    public function test1(): void
+    #[DataProvider('provideData')]
+    public function test1(bool $bool): void
     {
-        self::assertTrue(true);
-    }
-
-    public function test2(): void
-    {
-        self::assertTrue(true);
+        $this->assertTrue($bool);
     }
 }

@@ -9,21 +9,22 @@
  */
 namespace PHPUnit\TestFixture\Event\SkipInBeforeClass;
 
+use function range;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class NotSkippedTest extends TestCase
 {
-    #[DataProvider('provideData')]
-    public function test1(bool $bool): void
-    {
-        self::assertTrue($bool);
-    }
-
     public static function provideData(): iterable
     {
         foreach (range(1, 100) as $item) {
             yield [true];
         }
+    }
+
+    #[DataProvider('provideData')]
+    public function test1(bool $bool): void
+    {
+        $this->assertTrue($bool);
     }
 }
