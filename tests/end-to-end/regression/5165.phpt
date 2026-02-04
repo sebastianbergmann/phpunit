@@ -14,9 +14,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
+SS                                                                  2 / 2 (100%)
+
+Time: %s, Memory: %s MB
+
 There was 1 skipped test suite:
 
 1) Issue5165Test
 message
 
-No tests executed!
+OK, but some tests were skipped!
+Tests: 2, Assertions: 0, Skipped: 2.
