@@ -30,4 +30,4 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 * [#6285](https://github.com/sebastianbergmann/phpunit/issues/6285): `#[RunClassInSeparateProcess]` attribute
 * [#6356](https://github.com/sebastianbergmann/phpunit/issues/6356): Support for version constraint string argument without explicit version comparison operator
 
-[13.0.0]: https://github.com/sebastianbergmann/phpunit/compare/12.5...main
+[13.0.0]: https://github.com/sebastianbergmann/phpunit/compare/12.5...13.0.0
