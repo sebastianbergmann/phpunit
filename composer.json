@@ -45,6 +45,7 @@
         "sebastian/exporter": "^8.0",
         "sebastian/global-state": "^9.0",
         "sebastian/object-enumerator": "^8.0",
+        "sebastian/recursion-context": "^8.0",
         "sebastian/type": "^7.0",
         "sebastian/version": "^7.0",
         "staabm/side-effects-detector": "^1.0.5"
