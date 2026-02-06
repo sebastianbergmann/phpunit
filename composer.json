@@ -114,7 +114,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "13.0-dev"
+            "dev-main": "13.1-dev"
         }
     }
 }
