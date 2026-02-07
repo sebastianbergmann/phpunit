@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function file_get_contents;
+use function file_put_contents;
+use function is_array;
 use function realpath;
+use function serialize;
+use function unserialize;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SplObjectStorage;
 
@@ -24,6 +29,38 @@ final class SourceMapper
      * @var ?SplObjectStorage<Source, array<non-empty-string, true>>
      */
     private static ?SplObjectStorage $files = null;
+
+    public static function saveTo(string $path, Source $source): bool
+    {
+        $map = (new self)->map($source);
+
+        return file_put_contents($path, serialize($map)) !== false;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function loadFrom(string $path, Source $source): void
+    {
+        $content = file_get_contents($path);
+
+        if ($content === false) {
+            return;
+        }
+
+        $map = unserialize($content, ['allowed_classes' => false]);
+
+        if (!is_array($map)) {
+            return;
+        }
+
+        if (self::$files === null) {
+            self::$files = new SplObjectStorage;
+        }
+
+        /** @phpstan-ignore offsetAssign.valueType */
+        self::$files[$source] = $map;
+    }
 
     /**
      * @return array<non-empty-string, true>
