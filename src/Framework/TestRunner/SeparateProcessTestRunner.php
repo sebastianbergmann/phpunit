@@ -165,15 +165,19 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         $path = tempnam(sys_get_temp_dir(), 'phpunit_');
 
         if ($path === false) {
+            // @codeCoverageIgnoreStart
             self::$sourceMapFile = '';
 
             return self::$sourceMapFile;
+            // @codeCoverageIgnoreEnd
         }
 
         if (!SourceMapper::saveTo($path, ConfigurationRegistry::get()->source())) {
+            // @codeCoverageIgnoreStart
             self::$sourceMapFile = '';
 
             return self::$sourceMapFile;
+            // @codeCoverageIgnoreEnd
         }
 
         register_shutdown_function(static function () use ($path): void
@@ -194,11 +198,15 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         $path = tempnam(sys_get_temp_dir(), 'phpunit_');
 
         if ($path === false) {
+            // @codeCoverageIgnoreStart
             throw new ProcessIsolationException;
+            // @codeCoverageIgnoreEnd
         }
 
         if (!ConfigurationRegistry::saveTo($path)) {
+            // @codeCoverageIgnoreStart
             throw new ProcessIsolationException;
+            // @codeCoverageIgnoreEnd
         }
 
         return $path;
