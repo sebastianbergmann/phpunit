@@ -105,7 +105,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         $includePath             = "'." . $includePath . ".'";
         $offset                  = hrtime();
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
-        $processResultFile       = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $processResultFile       = $this->pathForCachedSourceMap();
         $sourceMapFile           = $this->sourceMapFileForChildProcess();
 
         $file = $class->getFileName();
@@ -162,7 +162,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             return self::$sourceMapFile;
         }
 
-        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $path = $this->pathForCachedSourceMap();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -197,7 +197,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
      */
     private function saveConfigurationForChildProcess(): string
     {
-        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $path = $this->pathForCachedSourceMap();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -212,5 +212,10 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         }
 
         return $path;
+    }
+
+    private function pathForCachedSourceMap(): false|string
+    {
+        return tempnam(sys_get_temp_dir(), 'phpunit_');
     }
 }
