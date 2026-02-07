@@ -30,7 +30,7 @@ jobs:
 
         phpunit-branch:
           - main
-          - 13.0
+          - "13.0"
           - 12.5
           - 11.5
           - 10.5
