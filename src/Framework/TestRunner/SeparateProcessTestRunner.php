@@ -13,6 +13,7 @@ use function assert;
 use function defined;
 use function get_include_path;
 use function hrtime;
+use function register_shutdown_function;
 use function serialize;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -22,6 +23,7 @@ use function var_export;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\TextUI\Configuration\SourceMapper;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
@@ -36,6 +38,8 @@ use SebastianBergmann\Template\Template;
  */
 final class SeparateProcessTestRunner implements IsolatedTestRunner
 {
+    private static ?string $sourceMapFile = null;
+
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\Util\Exception
@@ -102,6 +106,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         $offset                  = hrtime();
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
         $processResultFile       = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $sourceMapFile           = $this->sourceMapFileForChildProcess();
 
         $file = $class->getFileName();
 
@@ -127,6 +132,7 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             'offsetNanoseconds'              => (string) $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
             'processResultFile'              => $processResultFile,
+            'sourceMapFile'                  => $sourceMapFile,
         ];
 
         if (!$runEntireClass) {
@@ -142,6 +148,42 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         JobRunnerRegistry::runTestJob(new Job($code, requiresXdebug: $requiresXdebug), $processResultFile, $test);
 
         @unlink($serializedConfiguration);
+    }
+
+    private function sourceMapFileForChildProcess(): string
+    {
+        if (self::$sourceMapFile !== null) {
+            return self::$sourceMapFile;
+        }
+
+        if (!ConfigurationRegistry::get()->source()->notEmpty()) {
+            self::$sourceMapFile = '';
+
+            return self::$sourceMapFile;
+        }
+
+        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        if ($path === false) {
+            self::$sourceMapFile = '';
+
+            return self::$sourceMapFile;
+        }
+
+        if (!SourceMapper::saveTo($path, ConfigurationRegistry::get()->source())) {
+            self::$sourceMapFile = '';
+
+            return self::$sourceMapFile;
+        }
+
+        register_shutdown_function(static function () use ($path): void
+        {
+            @unlink($path);
+        });
+
+        self::$sourceMapFile = $path;
+
+        return self::$sourceMapFile;
     }
 
     /**
