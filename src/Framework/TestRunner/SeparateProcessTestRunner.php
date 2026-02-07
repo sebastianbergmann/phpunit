@@ -182,7 +182,9 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
 
         register_shutdown_function(static function () use ($path): void
         {
+            // @codeCoverageIgnoreStart
             @unlink($path);
+            // @codeCoverageIgnoreEnd
         });
 
         self::$sourceMapFile = $path;

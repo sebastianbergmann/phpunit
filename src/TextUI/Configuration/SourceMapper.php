@@ -37,6 +37,9 @@ final class SourceMapper
         return file_put_contents($path, serialize($map)) !== false;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function loadFrom(string $path, Source $source): void
     {
         $content = file_get_contents($path);
