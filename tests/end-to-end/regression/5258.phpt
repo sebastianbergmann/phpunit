@@ -26,8 +26,8 @@ Runtime: %s
 
 Time: %s, Memory: %s MB
 
-OK, but there were issues!
-Tests: 2, Assertions: 1, PHPUnit Deprecations: 1, Skipped: 1.
+OK, but some tests were skipped!
+Tests: 2, Assertions: 1, Skipped: 1.
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHPUnit\TestFixture\Issue5258\Issue5258Test" file="%sIssue5258Test.php" tests="2" assertions="1" errors="0" failures="0" skipped="1" time="%f">

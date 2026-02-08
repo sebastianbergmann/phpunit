@@ -122,7 +122,7 @@ Reporting:
 
 Logging:
 
-  --log-junit <file>                   Write test results in JUnit XML format to file (deprecated)
+  --log-junit <file>                   Write test results in JUnit XML format to file
   --log-otr <file>                     Write test results in Open Test Reporting XML format to file
   --include-git-information            Include Git information in Open Test Reporting XML logfile
   --log-teamcity <file>                Write test results in TeamCity format to file

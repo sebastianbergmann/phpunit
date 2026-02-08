@@ -12,7 +12,6 @@ $logfile = tempnam(sys_get_temp_dir(), __FILE__);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--do-not-report-useless-tests';
-$_SERVER['argv'][] = '--display-phpunit-deprecations';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = $logfile;
 $_SERVER['argv'][] = __DIR__ . '/../_files/TypeErrorTest.php';
@@ -33,15 +32,6 @@ E                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 PHPUnit test runner deprecation:
-
-1) Support for logging test results in JUnit XML format has been deprecated.
-This feature will be removed in PHPUnit 14.
-Either migrate from consuming JUnit XML to consuming Open Test Reporting (OTR) XML,
-or convert the OTR XML that PHPUnit generates to JUnit XML.
-
---
-
 There was 1 error:
 
 1) PHPUnit\TestFixture\TypeErrorTest::testMe
@@ -50,7 +40,7 @@ TypeError: Cannot assign DateTime to property PHPUnit\TestFixture\TypeErrorTest:
 %sTypeErrorTest.php:%d
 
 ERRORS!
-Tests: 1, Assertions: 0, Errors: 1, PHPUnit Deprecations: 1.
+Tests: 1, Assertions: 0, Errors: 1.
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHPUnit\TestFixture\TypeErrorTest" file="%sTypeErrorTest.php" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="%f">

@@ -607,15 +607,6 @@ final readonly class Application
         }
 
         if ($configuration->hasLogfileJunit()) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                <<<'EOT'
-Support for logging test results in JUnit XML format has been deprecated.
-This feature will be removed in PHPUnit 14.
-Either migrate from consuming JUnit XML to consuming Open Test Reporting (OTR) XML,
-or convert the OTR XML that PHPUnit generates to JUnit XML.
-EOT
-            );
-
             try {
                 new JunitXmlLogger(
                     OutputFacade::printerFor($configuration->logfileJunit()),

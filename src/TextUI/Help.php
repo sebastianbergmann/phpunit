@@ -281,7 +281,7 @@ final class Help
             ],
 
             'Logging' => [
-                ['arg' => '--log-junit <file>', 'desc' => 'Write test results in JUnit XML format to file (deprecated)'],
+                ['arg' => '--log-junit <file>', 'desc' => 'Write test results in JUnit XML format to file'],
                 ['arg' => '--log-otr <file>', 'desc' => 'Write test results in Open Test Reporting XML format to file'],
                 ['arg' => '--include-git-information', 'desc' => 'Include Git information in Open Test Reporting XML logfile'],
                 ['arg' => '--log-teamcity <file>', 'desc' => 'Write test results in TeamCity format to file'],
