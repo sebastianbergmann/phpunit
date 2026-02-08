@@ -98,7 +98,7 @@ final class InvocationHandler
     /**
      * @throws TestDoubleSealedException
      */
-    public function expects(InvocationOrder $rule): InvocationMocker
+    public function expects(InvocationOrder $rule): InvocationMocker|InvocationStubber
     {
         if ($this->sealed) {
             throw new TestDoubleSealedException;
@@ -107,7 +107,15 @@ final class InvocationHandler
         $matcher = new Matcher($rule);
         $this->addMatcher($matcher);
 
-        return new InvocationMockerImplementation(
+        if ($this->isMockObject) {
+            return new InvocationMockerImplementation(
+                $this,
+                $matcher,
+                ...$this->configurableMethods,
+            );
+        }
+
+        return new InvocationStubberImplementation(
             $this,
             $matcher,
             ...$this->configurableMethods,

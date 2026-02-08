@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 ### Fixed
 
 * [#6495](https://github.com/sebastianbergmann/phpunit/pull/6495): Source map for issue trigger identification is regenerated in process isolation child processes
+* [#6497](https://github.com/sebastianbergmann/phpunit/issues/6497): `method()` returns `InvocationMocker` instead of `InvocationStubber` for test stubs
 
 ## [13.0.0] - 2026-02-06
 
