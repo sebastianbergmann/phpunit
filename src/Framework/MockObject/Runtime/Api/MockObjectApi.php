@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
@@ -42,6 +43,10 @@ trait MockObjectApi
 
     public function expects(InvocationOrder $matcher): InvocationMocker
     {
-        return $this->__phpunit_getInvocationHandler()->expects($matcher);
+        $handler = $this->__phpunit_getInvocationHandler();
+
+        assert($handler instanceof MockObjectInvocationHandler);
+
+        return $handler->expects($matcher);
     }
 }
