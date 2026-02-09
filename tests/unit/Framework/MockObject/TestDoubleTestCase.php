@@ -312,10 +312,10 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame('value', $double->property);
     }
 
-    #[TestDox('Sealed stub throws exception when method() is called')]
-    public function testSealedStubThrowsExceptionWhenMethodIsCalled(): void
+    #[TestDox('Sealed test double throws exception when method() is called')]
+    public function testSealedTestDoubleThrowsExceptionWhenMethodIsCalled(): void
     {
-        $stub = $this->createStub(InterfaceWithReturnTypeDeclaration::class);
+        $stub = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
         $stub
             ->method('doSomething')
@@ -327,10 +327,10 @@ abstract class TestDoubleTestCase extends TestCase
         $stub->method('doSomethingElse');
     }
 
-    #[TestDox('Cloned sealed stub remains sealed')]
-    public function testClonedSealedStubRemainsSealed(): void
+    #[TestDox('Cloned sealed test double remains sealed')]
+    public function testClonedSealedTestDoubleRemainsSealed(): void
     {
-        $stub = $this->createStub(InterfaceWithReturnTypeDeclaration::class);
+        $stub = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
         $stub
             ->method('doSomething')
