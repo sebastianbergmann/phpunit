@@ -778,6 +778,40 @@ EOT,
         $this->assertFalse($double->doSomething());
     }
 
+    public function testMethodNameMustBeConfiguredBeforeMethodParametersCanBeConfigured(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        try {
+            $double->expects($this->once())->with(1);
+        } catch (MethodNameNotConfiguredException $e) {
+            $this->assertSame('Method name is not configured', $e->getMessage());
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->fail();
+    }
+
+    public function testMethodParametersCanOnlyBeConfiguredOnce(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        try {
+            $double->expects($this->once())->method('doSomethingElse')->with(1)->with(2);
+        } catch (MethodParametersAlreadyConfiguredException $e) {
+            $this->assertSame('Method parameters already configured', $e->getMessage());
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->fail();
+    }
+
     /**
      * @param class-string $type
      */
