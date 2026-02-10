@@ -1002,6 +1002,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
+        if ($requiredInvocations < 1) {
+            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                $this->valueObjectForEvents(),
+                'Calling atLeast() with an argument that is not positive is deprecated.' . PHP_EOL .
+                'This will become an error in PHPUnit 14.',
+            );
+        }
+
         return new InvokedAtLeastCountMatcher(
             $requiredInvocations,
         );

@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_EOL;
 use function func_get_args;
 use function function_exists;
 use ArrayAccess;
 use Countable;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -3498,6 +3500,14 @@ if (!function_exists('PHPUnit\Framework\atLeast')) {
      */
     function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
+        if ($requiredInvocations < 1) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                'Calling atLeast() with an argument that is not positive is deprecated.' . PHP_EOL .
+                'This will become an error in PHPUnit 14.',
+            );
+        }
+
         return new InvokedAtLeastCountMatcher(
             $requiredInvocations,
         );

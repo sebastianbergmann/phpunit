@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 ### Deprecated
 
+* [#6505](https://github.com/sebastianbergmann/phpunit/issues/6505): Calling `atLeast()` with an argument that is not positive
 * [#6507](https://github.com/sebastianbergmann/phpunit/issues/6507): Support for using `with*()` without `expects()`
 
 ### Fixed
