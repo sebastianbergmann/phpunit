@@ -25,6 +25,8 @@ Test Suite Started (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRu
 Test Preparation Started (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRuleButWithParametersRuleTest::testOne)
 Test Prepared (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRuleButWithParametersRuleTest::testOne)
 Mock Object Created (PHPUnit\TestFixture\Event\Example)
+Test Triggered PHPUnit Deprecation (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRuleButWithParametersRuleTest::testOne)
+Using with*() without expects() is deprecated and will no longer be possible in PHPUnit 14.
 Test Passed (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRuleButWithParametersRuleTest::testOne)
 Test Finished (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRuleButWithParametersRuleTest::testOne)
 Test Suite Finished (TestFixture\PHPUnit\Event\CreateMockWithoutInvocationCountRuleButWithParametersRuleTest, 1 test)

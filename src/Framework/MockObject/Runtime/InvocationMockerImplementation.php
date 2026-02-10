@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Exception;
 
 /**
@@ -28,6 +29,7 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function with(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
+        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\Parameters($arguments));
 
@@ -37,6 +39,7 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withParameterSetsInOrder(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
+        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\OrderedParameterSets($arguments));
 
@@ -46,6 +49,7 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withParameterSetsInAnyOrder(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
+        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\UnorderedParameterSets($arguments));
 
@@ -61,6 +65,7 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withAnyParameters(): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
+        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\AnyParameters);
 
@@ -91,5 +96,17 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
         $this->matcher->setAfterMatchBuilderId($id);
 
         return $this;
+    }
+
+    private function emitDeprecationWhenCreatedWithoutExplicitExpects(): void
+    {
+        if (!$this->createdWithoutExplicitExpects) {
+            return;
+        }
+
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'Using with*() without expects() is deprecated and will no longer be possible in PHPUnit 14.',
+        );
     }
 }
