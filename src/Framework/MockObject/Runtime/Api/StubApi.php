@@ -23,13 +23,11 @@ trait StubApi
         return $this->__phpunit_state ?? new TestDoubleState([], true, false);
     }
 
-    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_getInvocationHandler(): InvocationHandler
     {
         return $this->__phpunit_state()->invocationHandler();
     }
 
-    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_unsetInvocationMocker(): void
     {
         $this->__phpunit_state()->unsetInvocationHandler();
