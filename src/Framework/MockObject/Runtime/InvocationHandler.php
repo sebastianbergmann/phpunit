@@ -64,7 +64,7 @@ final class InvocationHandler
     {
         return array_any(
             $this->matchers,
-            static fn ($matcher) => $matcher->hasInvocationCountRule(),
+            static fn (Matcher $matcher) => $matcher->hasInvocationCountRule(),
         );
     }
 
@@ -72,7 +72,7 @@ final class InvocationHandler
     {
         return array_any(
             $this->matchers,
-            static fn ($matcher) => $matcher->hasParametersRule(),
+            static fn (Matcher $matcher) => $matcher->hasParametersRule(),
         );
     }
 
