@@ -109,6 +109,7 @@ final class Generator
 
         $object = $this->instantiate(
             $mock,
+            $mockObject,
             $callOriginalConstructor,
             $arguments,
             $returnValueGeneration,
@@ -287,7 +288,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function instantiate(DoubledClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function instantiate(DoubledClass $mockClass, bool $mockObject, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 
@@ -310,7 +311,7 @@ final class Generator
          */
         $reflector->getProperty('__phpunit_state')->setValue(
             $object,
-            new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration),
+            new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration, $mockObject),
         );
 
         if ($callOriginalConstructor && $reflector->getConstructor() !== null) {
