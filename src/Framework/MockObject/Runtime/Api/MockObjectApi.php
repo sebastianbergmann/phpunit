@@ -21,19 +21,16 @@ trait MockObjectApi
 {
     private object $__phpunit_originalObject;
 
-    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_hasMatchers(): bool
     {
         return $this->__phpunit_getInvocationHandler()->hasMatchers();
     }
 
-    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_setOriginalObject(object $originalObject): void
     {
         $this->__phpunit_originalObject = $originalObject;
     }
 
-    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void
     {
         $this->__phpunit_getInvocationHandler()->verify();
