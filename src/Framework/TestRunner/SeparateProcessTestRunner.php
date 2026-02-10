@@ -18,7 +18,6 @@ use function serialize;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
-use function unserialize;
 use function var_export;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Runner\CodeCoverage;
