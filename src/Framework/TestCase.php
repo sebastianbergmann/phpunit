@@ -1408,8 +1408,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $isPhpunitTestSuite                   = str_starts_with($this::class, 'PHPUnit\\');
 
         foreach ($this->mockObjects as $mockObject) {
-            if (!$mockObject['mockObject']->__phpunit_hasMatchers()) {
-                if (!$allowsMockObjectsWithoutExpectations && !$isPhpunitTestSuite) {
+            if (!$mockObject['mockObject']->__phpunit_hasInvocationCountRule()) {
+                if (!$mockObject['mockObject']->__phpunit_hasParametersRule() &&
+                    !$allowsMockObjectsWithoutExpectations &&
+                    !$isPhpunitTestSuite) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(
                         $this->testValueObjectForEvents,
                         sprintf(

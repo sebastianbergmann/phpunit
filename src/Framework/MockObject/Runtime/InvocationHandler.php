@@ -46,10 +46,21 @@ final class InvocationHandler
         $this->returnValueGeneration = $returnValueGeneration;
     }
 
-    public function hasMatchers(): bool
+    public function hasInvocationCountRule(): bool
     {
         foreach ($this->matchers as $matcher) {
-            if ($matcher->hasMatchers()) {
+            if ($matcher->hasInvocationCountRule()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasParametersRule(): bool
+    {
+        foreach ($this->matchers as $matcher) {
+            if ($matcher->hasParametersRule()) {
                 return true;
             }
         }

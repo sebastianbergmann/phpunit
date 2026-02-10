@@ -43,7 +43,7 @@ final class Matcher
         $this->invocationRule = $rule;
     }
 
-    public function hasMatchers(): bool
+    public function hasInvocationCountRule(): bool
     {
         return !$this->invocationRule instanceof AnyInvokedCount;
     }
