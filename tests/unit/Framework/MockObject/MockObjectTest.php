@@ -540,6 +540,7 @@ EOT,
         $double->method('doSomethingElse')->with(1)->willReturn(2);
     }
 
+    #[TestDox('with() can be used without expects() and is verified when the method is called')]
     public function testWithCanBeUsedWithoutExpectsAndIsVerifiedWhenTheMethodIsCalled(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
