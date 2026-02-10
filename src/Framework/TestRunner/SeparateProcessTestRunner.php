@@ -13,7 +13,6 @@ use function assert;
 use function defined;
 use function get_include_path;
 use function hrtime;
-use function register_shutdown_function;
 use function serialize;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -167,13 +166,6 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
             return self::$sourceMapFile;
             // @codeCoverageIgnoreEnd
         }
-
-        register_shutdown_function(static function () use ($path): void
-        {
-            // @codeCoverageIgnoreStart
-            @unlink($path);
-            // @codeCoverageIgnoreEnd
-        });
 
         self::$sourceMapFile = $path;
 
