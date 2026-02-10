@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 ## [13.0.2] - 2026-MM-DD
 
+### Deprecated
+
+* [#6507](https://github.com/sebastianbergmann/phpunit/issues/6507): Support for using `with*()` without `expects()`
+
 ### Fixed
 
 * [#6503](https://github.com/sebastianbergmann/phpunit/issues/6503): Temporary file used by `SourceMapper` may be deleted prematurely when multiple PHPUnit processes run in parallel

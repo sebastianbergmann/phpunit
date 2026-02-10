@@ -813,6 +813,7 @@ EOT,
     }
 
     #[DoesNotPerformAssertions]
+    #[IgnorePhpunitDeprecations]
     #[TestDox('with() can be used without expects() and is not verified when the method is not called')]
     public function testWithCanBeUsedWithoutExpectsAndIsNotVerifiedWhenTheMethodIsNotCalled(): void
     {
@@ -821,6 +822,7 @@ EOT,
         $double->method('doSomethingElse')->with(1)->willReturn(2);
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('with() can be used without expects() and is verified when the method is called')]
     public function testWithCanBeUsedWithoutExpectsAndIsVerifiedWhenTheMethodIsCalled(): void
     {
