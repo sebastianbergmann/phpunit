@@ -812,6 +812,27 @@ EOT,
         $this->fail();
     }
 
+    #[DoesNotPerformAssertions]
+    #[TestDox('with() can be used without expects() and is not verified when the method is not called')]
+    public function testWithCanBeUsedWithoutExpectsAndIsNotVerifiedWhenTheMethodIsNotCalled(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomethingElse')->with(1)->willReturn(2);
+    }
+
+    #[TestDox('with() can be used without expects() and is verified when the method is called')]
+    public function testWithCanBeUsedWithoutExpectsAndIsVerifiedWhenTheMethodIsCalled(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method('doSomethingElse')->with(1)->willReturn(2);
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $double->doSomethingElse(0);
+    }
+
     /**
      * @param class-string $type
      */
