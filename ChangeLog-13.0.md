@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 ### Fixed
 
 * [#6503](https://github.com/sebastianbergmann/phpunit/issues/6503): Temporary file used by `SourceMapper` may be deleted prematurely when multiple PHPUnit processes run in parallel
+* [#6509](https://github.com/sebastianbergmann/phpunit/issues/6509): "No expectations were configured for the mock object ..." notice is emitted when `with()` is used without `expects()`
 
 ## [13.0.1] - 2026-02-08
 

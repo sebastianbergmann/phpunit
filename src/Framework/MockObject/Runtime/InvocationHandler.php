@@ -60,11 +60,19 @@ final class InvocationHandler
         return $this->isMockObject;
     }
 
-    public function hasMatchers(): bool
+    public function hasInvocationCountRule(): bool
     {
         return array_any(
             $this->matchers,
-            static fn (Matcher $matcher) => $matcher->hasMatchers(),
+            static fn ($matcher) => $matcher->hasInvocationCountRule(),
+        );
+    }
+
+    public function hasParametersRule(): bool
+    {
+        return array_any(
+            $this->matchers,
+            static fn ($matcher) => $matcher->hasParametersRule(),
         );
     }
 
