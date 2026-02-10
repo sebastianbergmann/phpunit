@@ -40,17 +40,11 @@ final class TestDoubleState
             return $this->invocationHandler;
         }
 
-        if ($this->isMockObject) {
-            $this->invocationHandler = new MockObjectInvocationHandler(
-                $this->configurableMethods,
-                $this->generateReturnValues,
-            );
-        } else {
-            $this->invocationHandler = new TestStubInvocationHandler(
-                $this->configurableMethods,
-                $this->generateReturnValues,
-            );
-        }
+        $this->invocationHandler = new InvocationHandler(
+            $this->configurableMethods,
+            $this->generateReturnValues,
+            $this->isMockObject,
+        );
 
         return $this->invocationHandler;
     }
