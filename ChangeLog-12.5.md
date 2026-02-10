@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ### Deprecated
 
-* [#6510](https://github.com/sebastianbergmann/phpunit/issues/6510): Deprecate using `with()` on test stubs
+* [#6510](https://github.com/sebastianbergmann/phpunit/issues/6510): Deprecate using `with*()` on test stubs
 
 ### Fixed
 

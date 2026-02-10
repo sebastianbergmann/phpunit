@@ -135,14 +135,7 @@ final class InvocationStubberImplementation implements InvocationStubber
     public function with(mixed ...$arguments): InvocationStubber
     {
         $this->ensureParametersCanBeConfigured();
-
-        if (!$this->invocationHandler->isMockObject()) {
-            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-                null,
-                'Using with() on a test stub has no effect and is deprecated.' . PHP_EOL .
-                'With PHPUnit 13, it will not be possible to use with() on a test stub.',
-            );
-        }
+        $this->emitDeprecationForWithMethods();
 
         $this->matcher->setParametersRule(new Rule\Parameters($arguments));
 
@@ -158,6 +151,7 @@ final class InvocationStubberImplementation implements InvocationStubber
     public function withAnyParameters(): InvocationStubber
     {
         $this->ensureParametersCanBeConfigured();
+        $this->emitDeprecationForWithMethods();
 
         $this->matcher->setParametersRule(new Rule\AnyParameters);
 
@@ -336,5 +330,18 @@ final class InvocationStubberImplementation implements InvocationStubber
                 );
             }
         }
+    }
+
+    private function emitDeprecationForWithMethods(): void
+    {
+        if ($this->invocationHandler->isMockObject()) {
+            return;
+        }
+
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'Using with*() on a test stub has no effect and is deprecated.' . PHP_EOL .
+            'With PHPUnit 13, it will not be possible to use with() on a test stub.',
+        );
     }
 }

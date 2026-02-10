@@ -26,7 +26,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\StubWithTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\StubWithTest::testOne)
 Test Stub Created (PHPUnit\TestFixture\Event\Example)
 Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\StubWithTest::testOne)
-Using with() on a test stub has no effect and is deprecated.
+Using with*() on a test stub has no effect and is deprecated.
 With PHPUnit 13, it will not be possible to use with() on a test stub.
 Test Passed (PHPUnit\TestFixture\Event\StubWithTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\StubWithTest::testOne)
