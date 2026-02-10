@@ -18,13 +18,16 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
  */
 trait MockObjectApi
 {
-    /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_hasMatchers(): bool
+    public function __phpunit_hasInvocationCountRule(): bool
     {
-        return $this->__phpunit_getInvocationHandler()->hasMatchers();
+        return $this->__phpunit_getInvocationHandler()->hasInvocationCountRule();
     }
 
-    /** @noinspection MagicMethodsValidityInspection */
+    public function __phpunit_hasParametersRule(): bool
+    {
+        return $this->__phpunit_getInvocationHandler()->hasParametersRule();
+    }
+
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void
     {
         $this->__phpunit_getInvocationHandler()->verify();
