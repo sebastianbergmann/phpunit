@@ -20,7 +20,7 @@
 	"require-dev": {
 		"nette/tester": "^2.5",
 		"tracy/tracy": "^2.9",
-		"phpstan/phpstan-nette": "^2.0@stable",
+		"phpstan/phpstan": "^2.0@stable",
 		"jetbrains/phpstorm-attributes": "^1.2"
 	},
 	"conflict": {

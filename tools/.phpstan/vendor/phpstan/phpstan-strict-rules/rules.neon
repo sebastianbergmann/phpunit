@@ -12,6 +12,7 @@ parameters:
 	reportMaybesInPropertyPhpDocTypes: true
 	reportWrongPhpDocTypeInVarTag: true
 	checkStrictPrintfPlaceholderTypes: true
+	reportNonIntStringArrayKey: %featureToggles.bleedingEdge%
 	strictRules:
 		allRules: true
 		disallowedLooseComparison: %strictRules.allRules%
@@ -164,6 +165,8 @@ services:
 
 	-
 		class: PHPStan\Rules\DisallowedConstructs\DisallowedLooseComparisonRule
+		arguments:
+			includeOperandTypesInErrorMessage: %featureToggles.bleedingEdge%
 
 	-
 		class: PHPStan\Rules\BooleansInConditions\BooleanInBooleanAndRule

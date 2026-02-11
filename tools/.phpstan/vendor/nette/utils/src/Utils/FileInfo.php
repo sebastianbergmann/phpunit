@@ -19,14 +19,12 @@ use const DIRECTORY_SEPARATOR;
  */
 final class FileInfo extends \SplFileInfo
 {
-	private readonly string $relativePath;
-
-
-	public function __construct(string $file, string $relativePath = '')
-	{
+	public function __construct(
+		string $file,
+		private readonly string $relativePath = '',
+	) {
 		parent::__construct($file);
-		$this->setInfoClass(static::class);
-		$this->relativePath = $relativePath;
+		$this->setInfoClass(self::class);
 	}
 
 

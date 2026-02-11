@@ -11,7 +11,7 @@ namespace Nette;
 
 
 /**
- * Static class.
+ * Prevents instantiation.
  */
 trait StaticClass
 {

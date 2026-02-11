@@ -411,7 +411,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
-     * Returns an iterator for this test suite.
+     * @return Iterator<non-negative-int, Test>
      */
     public function getIterator(): Iterator
     {

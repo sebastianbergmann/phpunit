@@ -40,6 +40,7 @@ final readonly class Type
 	}
 
 
+	/** @param  \ReflectionFunctionAbstract|\ReflectionParameter|\ReflectionProperty  $of */
 	private static function fromReflectionType(\ReflectionType $type, $of, bool $asObject): self|string
 	{
 		if ($type instanceof \ReflectionNamedType) {
@@ -107,7 +108,7 @@ final readonly class Type
 	 */
 	public static function resolve(
 		string $type,
-		\ReflectionFunctionAbstract|\ReflectionParameter|\ReflectionProperty $of,
+		\ReflectionFunction|\ReflectionMethod|\ReflectionParameter|\ReflectionProperty $of,
 	): string
 	{
 		$lower = strtolower($type);
@@ -125,6 +126,7 @@ final readonly class Type
 	}
 
 
+	/** @param  array<string|self>  $types */
 	private function __construct(array $types, string $kind = '|')
 	{
 		$o = array_search('null', $types, strict: true);
@@ -173,7 +175,7 @@ final readonly class Type
 
 	/**
 	 * Returns the array of subtypes that make up the compound type as strings.
-	 * @return array<int, string|string[]>
+	 * @return list<string|array<string|array<mixed>>>
 	 */
 	public function getNames(): array
 	{
@@ -279,6 +281,7 @@ final readonly class Type
 	}
 
 
+	/** @param  (string|self)[]  $givenTypes */
 	private function allowsAny(array $givenTypes): bool
 	{
 		return $this->isUnion()
@@ -287,6 +290,10 @@ final readonly class Type
 	}
 
 
+	/**
+	 * @param  (string|self)[]  $ourTypes
+	 * @param  (string|self)[]  $givenTypes
+	 */
 	private function allowsAll(array $ourTypes, array $givenTypes): bool
 	{
 		return Arrays::every(
