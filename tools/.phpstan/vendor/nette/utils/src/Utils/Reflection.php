@@ -68,6 +68,7 @@ final class Reflection
 
 	/**
 	 * Returns a reflection of a class or trait that contains a declaration of given property. Property can also be declared in the trait.
+	 * @return \ReflectionClass<object>
 	 */
 	public static function getPropertyDeclaringClass(\ReflectionProperty $prop): \ReflectionClass
 	{
@@ -151,6 +152,7 @@ final class Reflection
 	/**
 	 * Expands the name of the class to full name in the given context of given class.
 	 * Thus, it returns how the PHP parser would understand $name if it were written in the body of the class $context.
+	 * @param  \ReflectionClass<object>  $context
 	 * @throws Nette\InvalidArgumentException
 	 */
 	public static function expandClassName(string $name, \ReflectionClass $context): string
@@ -189,7 +191,10 @@ final class Reflection
 	}
 
 
-	/** @return array<string, class-string> of [alias => class] */
+	/**
+	 * @param  \ReflectionClass<object>  $class
+	 * @return array<string, class-string> of [alias => class]
+	 */
 	public static function getUseStatements(\ReflectionClass $class): array
 	{
 		if ($class->isAnonymous()) {
@@ -212,6 +217,7 @@ final class Reflection
 
 	/**
 	 * Parses PHP code to [class => [alias => class, ...]]
+	 * @return array<class-string, array<string, class-string>>
 	 */
 	private static function parseUseStatements(string $code, ?string $forClass = null): array
 	{
@@ -301,6 +307,10 @@ final class Reflection
 	}
 
 
+	/**
+	 * @param  \PhpToken[]  $tokens
+	 * @param  string|int|int[]  $take
+	 */
 	private static function fetch(array &$tokens, string|int|array $take): ?string
 	{
 		$res = null;
