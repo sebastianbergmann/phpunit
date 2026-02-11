@@ -25,6 +25,9 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('UseBaselineTest.php')
     // Issue5795Test.php contains required whitespace that would be cleaned up
     ->notName('Issue5795Test.php')
+    // FirstPartyClass.php and PhpDeprecationFromTestTest.php must not use declare(strict_types=1);
+    ->notPath('self-direct-indirect/_files/php-deprecation-from-first-party/src/FirstPartyClass.php')
+    ->notPath('self-direct-indirect/_files/php-deprecation-from-test/tests/PhpDeprecationFromTestTest.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
