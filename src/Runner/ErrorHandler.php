@@ -26,6 +26,7 @@ use const E_USER_WARNING;
 use const E_WARNING;
 use function array_keys;
 use function array_values;
+use function assert;
 use function debug_backtrace;
 use function defined;
 use function error_reporting;
@@ -170,7 +171,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, false),
+                    $this->trigger($test, false, $errorFile),
                 );
 
                 break;
@@ -271,7 +272,10 @@ final class ErrorHandler
         return $this->baseline->has(Issue::from($file, $line, null, $description));
     }
 
-    private function trigger(TestMethod $test, bool $isUserland): IssueTrigger
+    /**
+     * @param null|non-empty-string $errorFile
+     */
+    private function trigger(TestMethod $test, bool $isUserland, ?string $errorFile = null): IssueTrigger
     {
         $class = PhpIssueTrigger::class;
 
@@ -283,8 +287,49 @@ final class ErrorHandler
             return $class::unknown();
         }
 
+        if (!$isUserland) {
+            assert($errorFile !== null);
+
+            return $this->triggerForPhpDeprecation($class, $test, $errorFile);
+        }
+
         $trace = $this->filteredStackTrace($isUserland);
 
+        return $this->triggerForUserlandDeprecation($class, $test, $trace);
+    }
+
+    /**
+     * For E_DEPRECATED, PHP's native code is the callee (always ThirdParty,
+     * not present in the stack trace). The $errorFile parameter identifies the
+     * caller (the code that called the deprecated PHP API).
+     *
+     * @param class-string<PhpIssueTrigger|UserlandIssueTrigger> $class
+     * @param non-empty-string                                   $errorFile
+     */
+    private function triggerForPhpDeprecation(string $class, TestMethod $test, string $errorFile): IssueTrigger
+    {
+        if ($errorFile === $test->file()) {
+            return $class::test();
+        }
+
+        if (SourceFilter::instance()->includes($errorFile)) {
+            $caller = Code::FirstParty;
+        } else {
+            $caller = Code::ThirdParty;
+        }
+
+        return $class::from(Code::ThirdParty, $caller);
+    }
+
+    /**
+     * For E_USER_DEPRECATED, trace[0] is the callee (where trigger_error()
+     * was called), and trace[1] is the caller.
+     *
+     * @param class-string<PhpIssueTrigger|UserlandIssueTrigger>                                    $class
+     * @param list<array{file: string, line: int, class?: string, function?: string, type: string}> $trace
+     */
+    private function triggerForUserlandDeprecation(string $class, TestMethod $test, array $trace): IssueTrigger
+    {
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
