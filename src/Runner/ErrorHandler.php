@@ -35,6 +35,8 @@ use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\IssueTrigger\PhpIssueTrigger;
+use PHPUnit\Event\Code\IssueTrigger\UserlandIssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Runner\Baseline\Baseline;
@@ -269,20 +271,26 @@ final class ErrorHandler
         return $this->baseline->has(Issue::from($file, $line, null, $description));
     }
 
-    private function trigger(TestMethod $test, bool $filterTrigger): IssueTrigger
+    private function trigger(TestMethod $test, bool $isUserland): IssueTrigger
     {
-        if (!$this->identifyIssueTrigger) {
-            return IssueTrigger::unknown();
+        $class = PhpIssueTrigger::class;
+
+        if ($isUserland) {
+            $class = UserlandIssueTrigger::class;
         }
 
-        $trace = $this->filteredStackTrace($filterTrigger);
+        if (!$this->identifyIssueTrigger) {
+            return $class::unknown();
+        }
+
+        $trace = $this->filteredStackTrace($isUserland);
 
         $triggeredInFirstPartyCode       = false;
         $triggerCalledFromFirstPartyCode = false;
 
         if (isset($trace[0]['file'])) {
             if ($trace[0]['file'] === $test->file()) {
-                return IssueTrigger::test();
+                return $class::test();
             }
 
             if (SourceFilter::instance()->includes($trace[0]['file'])) {
@@ -308,7 +316,7 @@ final class ErrorHandler
             $caller = Code::ThirdParty;
         }
 
-        return IssueTrigger::from($callee, $caller);
+        return $class::from($callee, $caller);
     }
 
     /**
