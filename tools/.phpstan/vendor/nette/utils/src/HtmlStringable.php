@@ -10,10 +10,13 @@ declare(strict_types=1);
 namespace Nette;
 
 
+/**
+ * Represents object convertible to HTML string.
+ */
 interface HtmlStringable
 {
 	/**
-	 * Returns string in HTML format
+	 * Returns string in HTML format.
 	 */
 	function __toString(): string;
 }

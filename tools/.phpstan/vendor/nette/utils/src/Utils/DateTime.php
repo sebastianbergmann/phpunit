@@ -142,7 +142,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 
-	private function apply(string $datetime, $timezone = null, bool $ctr = false): void
+	private function apply(string $datetime, \DateTimeZone|string|null $timezone = null, bool $ctr = false): void
 	{
 		$relPart = '';
 		$absPart = preg_replace_callback(

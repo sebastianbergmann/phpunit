@@ -135,7 +135,7 @@ class Strings
 	public static function normalize(string $s): string
 	{
 		// convert to compressed normal form (NFC)
-		if (class_exists('Normalizer', false) && ($n = \Normalizer::normalize($s, \Normalizer::FORM_C)) !== false) {
+		if (class_exists('Normalizer', autoload: false) && ($n = \Normalizer::normalize($s, \Normalizer::FORM_C)) !== false) {
 			$s = $n;
 		}
 
@@ -323,7 +323,7 @@ class Strings
 	 */
 	public static function compare(string $left, string $right, ?int $length = null): bool
 	{
-		if (class_exists('Normalizer', false)) {
+		if (class_exists('Normalizer', autoload: false)) {
 			$left = \Normalizer::normalize($left, \Normalizer::FORM_D); // form NFD is faster
 			$right = \Normalizer::normalize($right, \Normalizer::FORM_D); // form NFD is faster
 		}
@@ -499,6 +499,7 @@ class Strings
 
 	/**
 	 * Divides the string into arrays according to the regular expression. Expressions in parentheses will be captured and returned as well.
+	 * @return ($captureOffset is true ? list<array{string, int}> : list<string>)
 	 */
 	public static function split(
 		string $subject,
@@ -525,6 +526,7 @@ class Strings
 	/**
 	 * Searches the string for the part matching the regular expression and returns
 	 * an array with the found expression and individual subexpressions, or `null`.
+	 * @return ($captureOffset is true ? ?array<?array{string, int}> : ?array<?string>)
 	 */
 	public static function match(
 		string $subject,
@@ -545,6 +547,7 @@ class Strings
 			$pattern .= 'u';
 		}
 
+		$m = [];
 		if ($offset > strlen($subject)) {
 			return null;
 		} elseif (!self::pcre('preg_match', [$pattern, $subject, &$m, $flags, $offset])) {
@@ -560,7 +563,10 @@ class Strings
 	/**
 	 * Searches the string for all occurrences matching the regular expression and
 	 * returns an array of arrays containing the found expression and each subexpression.
-	 * @return ($lazy is true ? \Generator<int, array> : array[])
+	 * @return ($lazy is true
+	 *     ? \Generator<int, ($captureOffset is true ? array<?array{string, int}> : array<?string>)>
+	 *     : ($captureOffset is true ? list<array<?array{string, int}>> : list<array<?string>>)
+	 * )
 	 */
 	public static function matchAll(
 		string $subject,
@@ -583,6 +589,7 @@ class Strings
 			$flags = PREG_OFFSET_CAPTURE | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0);
 			return (function () use ($utf8, $captureOffset, $flags, $subject, $pattern, $offset) {
 				$counter = 0;
+				$m = null;
 				while (
 					$offset <= strlen($subject) - ($counter ? 1 : 0)
 					&& self::pcre('preg_match', [$pattern, $subject, &$m, $flags, $offset])
@@ -606,6 +613,7 @@ class Strings
 			? $captureOffset
 			: ($captureOffset ? PREG_OFFSET_CAPTURE : 0) | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0) | ($patternOrder ? PREG_PATTERN_ORDER : 0);
 
+		$m = [];
 		self::pcre('preg_match_all', [
 			$pattern, $subject, &$m,
 			($flags & PREG_PATTERN_ORDER) ? $flags : ($flags | PREG_SET_ORDER),
@@ -619,6 +627,8 @@ class Strings
 
 	/**
 	 * Replaces all occurrences matching regular expression $pattern which can be string or array in the form `pattern => replacement`.
+	 * @param  string|array<string, string>  $pattern
+	 * @param  string|(callable(array<?string>): string)  $replacement
 	 */
 	public static function replace(
 		string $subject,
@@ -659,6 +669,10 @@ class Strings
 	}
 
 
+	/**
+	 * @param  list<array<array{string, int}>>  $groups
+	 * @return list<array<array{string, int}>>
+	 */
 	private static function bytesToChars(string $s, array $groups): array
 	{
 		$lastBytes = $lastChars = 0;
@@ -679,8 +693,11 @@ class Strings
 	}
 
 
-	/** @internal */
-	public static function pcre(string $func, array $args)
+	/**
+	 * @param  list<mixed>  $args
+	 * @internal
+	 */
+	public static function pcre(string $func, array $args): mixed
 	{
 		$res = Callback::invokeSafe($func, $args, function (string $message) use ($args): void {
 			// compile-time error, not detectable by preg_last_error
@@ -688,7 +705,7 @@ class Strings
 		});
 
 		if (($code = preg_last_error()) // run-time error, but preg_last_error & return code are liars
-			&& ($res === null || !in_array($func, ['preg_filter', 'preg_replace_callback', 'preg_replace'], true))
+			&& ($res === null || !in_array($func, ['preg_filter', 'preg_replace_callback', 'preg_replace'], strict: true))
 		) {
 			throw new RegexpException(preg_last_error_msg()
 				. ' (pattern: ' . implode(' or ', (array) $args[0]) . ')', $code);
