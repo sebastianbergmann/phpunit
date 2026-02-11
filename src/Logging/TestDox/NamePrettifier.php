@@ -240,17 +240,23 @@ final class NamePrettifier
         $reflector = new ReflectionMethod($test::class, $test->name());
 
         $providedData       = [];
-        $providedDataValues = array_values($test->providedData());
+        $providedDataValues = $test->providedData();
         $i                  = 0;
 
         $providedData['$_dataName'] = $test->dataName();
 
         foreach ($reflector->getParameters() as $parameter) {
-            if (!array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
-                $providedDataValues[$i] = $parameter->getDefaultValue();
+            if (array_key_exists($parameter->getName(), $providedDataValues)) {
+                $value = $providedDataValues[$parameter->getName()];
+            } elseif (array_key_exists($i, $providedDataValues)) {
+                $value = $providedDataValues[$i];
+            } elseif ($parameter->isDefaultValueAvailable()) {
+                $value = $parameter->getDefaultValue();
+            } else {
+                $value = null;
             }
 
-            $value = $providedDataValues[$i++] ?? null;
+            $i++;
 
             if (is_object($value)) {
                 $value = $this->objectToString($value);
