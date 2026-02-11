@@ -293,7 +293,7 @@ final class ErrorHandler
             return $this->triggerForPhpDeprecation($class, $test, $errorFile);
         }
 
-        $trace = $this->filteredStackTrace($isUserland);
+        $trace = $this->filteredStackTrace();
 
         return $this->triggerForUserlandDeprecation($class, $test, $trace);
     }
@@ -367,11 +367,11 @@ final class ErrorHandler
     /**
      * @return list<array{file: string, line: int, class?: string, function?: string, type: string}>
      */
-    private function filteredStackTrace(bool $filterDeprecationTriggers): array
+    private function filteredStackTrace(): array
     {
         $trace = $this->errorStackTrace();
 
-        if ($this->deprecationTriggers === null || !$filterDeprecationTriggers) {
+        if ($this->deprecationTriggers === null) {
             return array_values($trace);
         }
 
