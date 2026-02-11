@@ -151,6 +151,9 @@ final class NamePrettifierTest extends TestCase
         $testWithTestDoxFormatter = new TestDoxTest('testFive');
         $testWithTestDoxFormatter->setData(0, [new DateTimeImmutable('2025-07-09')]);
 
+        $testWithFewerDataValuesThanParameters = new TestDoxTest('testSix');
+        $testWithFewerDataValuesThanParameters->setData(0, ['value']);
+
         return [
             [
                 'One',
@@ -180,6 +183,11 @@ final class NamePrettifierTest extends TestCase
             [
                 'This is a custom description: 2025-07-09',
                 $testWithTestDoxFormatter,
+                false,
+            ],
+            [
+                'Value of a is value, value of b is null',
+                $testWithFewerDataValuesThanParameters,
                 false,
             ],
         ];
