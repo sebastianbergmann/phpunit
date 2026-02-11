@@ -9,34 +9,17 @@
  */
 namespace PHPUnit\Event\Code\IssueTrigger;
 
-use function sprintf;
-
 /**
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IssueTrigger
+abstract readonly class IssueTrigger
 {
     private ?Code $callee;
     private ?Code $caller;
 
-    public static function unknown(): self
-    {
-        return new self(null, null);
-    }
-
-    public static function test(): self
-    {
-        return new self(Code::Test, null);
-    }
-
-    public static function from(Code $callee, ?Code $caller = null): self
-    {
-        return new self($callee, $caller);
-    }
-
-    private function __construct(?Code $callee, ?Code $caller)
+    protected function __construct(?Code $callee, ?Code $caller)
     {
         $this->callee = $callee;
         $this->caller = $caller;
@@ -45,54 +28,34 @@ final readonly class IssueTrigger
     /**
      * An issue is triggered in test code.
      */
-    public function isTest(): bool
-    {
-        return $this->callee == Code::Test;
-    }
+    abstract public function isTest(): bool;
 
     /**
      * An issue is triggered in first-party code or in test code.
      */
-    public function isSelf(): bool
-    {
-        return $this->callee == Code::FirstParty || $this->callee == Code::Test;
-    }
+    abstract public function isSelf(): bool;
 
     /**
      * First-party code triggers an issue in third-party code.
      */
-    public function isDirect(): bool
-    {
-        return $this->caller == Code::FirstParty && $this->callee == Code::ThirdParty;
-    }
+    abstract public function isDirect(): bool;
 
     /**
      * Third-party code triggers an issue.
      */
-    public function isIndirect(): bool
+    abstract public function isIndirect(): bool;
+
+    abstract public function isUnknown(): bool;
+
+    abstract public function asString(): string;
+
+    protected function callee(): ?Code
     {
-        return $this->caller == Code::ThirdParty && $this->callee == Code::ThirdParty;
+        return $this->callee;
     }
 
-    public function isUnknown(): bool
+    protected function caller(): ?Code
     {
-        return $this->callee === null;
-    }
-
-    public function asString(): string
-    {
-        if ($this->isUnknown()) {
-            return 'unknown if issue was triggered in first-party code or third-party code';
-        }
-
-        if ($this->isTest()) {
-            return 'issue triggered by test code';
-        }
-
-        return sprintf(
-            'issue triggered by %s calling into %s',
-            $this->caller->value,
-            $this->callee->value,
-        );
+        return $this->caller;
     }
 }

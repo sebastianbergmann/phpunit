@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\IssueTrigger\PhpIssueTrigger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
@@ -29,7 +29,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = PhpIssueTrigger::unknown();
 
         $event = new PhpDeprecationTriggered(
             $telemetryInfo,
@@ -66,7 +66,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             true,
             false,
-            IssueTrigger::unknown(),
+            PhpIssueTrigger::unknown(),
         );
 
         $this->assertTrue($event->ignoredByBaseline());
@@ -84,7 +84,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             false,
             true,
-            IssueTrigger::unknown(),
+            PhpIssueTrigger::unknown(),
         );
 
         $this->assertTrue($event->ignoredByTest());
@@ -102,7 +102,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             true,
             false,
             false,
-            IssueTrigger::unknown(),
+            PhpIssueTrigger::unknown(),
         );
 
         $this->assertTrue($event->wasSuppressed());

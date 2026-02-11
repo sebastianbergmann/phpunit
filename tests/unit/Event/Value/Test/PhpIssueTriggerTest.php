@@ -13,13 +13,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(IssueTrigger::class)]
+#[CoversClass(PhpIssueTrigger::class)]
 #[Small]
-final class IssueTriggerTest extends TestCase
+final class PhpIssueTriggerTest extends TestCase
 {
     public function testCanBeTestCode(): void
     {
-        $trigger = IssueTrigger::test();
+        $trigger = PhpIssueTrigger::test();
 
         $this->assertTrue($trigger->isTest());
         $this->assertTrue($trigger->isSelf());
@@ -31,7 +31,7 @@ final class IssueTriggerTest extends TestCase
 
     public function testCanBeSelf(): void
     {
-        $trigger = IssueTrigger::from(Code::FirstParty, Code::FirstParty);
+        $trigger = PhpIssueTrigger::from(Code::FirstParty, Code::FirstParty);
 
         $this->assertTrue($trigger->isSelf());
         $this->assertFalse($trigger->isTest());
@@ -43,7 +43,7 @@ final class IssueTriggerTest extends TestCase
 
     public function testCanBeSelf2(): void
     {
-        $trigger = IssueTrigger::from(Code::FirstParty, Code::ThirdParty);
+        $trigger = PhpIssueTrigger::from(Code::FirstParty, Code::ThirdParty);
 
         $this->assertTrue($trigger->isSelf());
         $this->assertFalse($trigger->isTest());
@@ -55,7 +55,7 @@ final class IssueTriggerTest extends TestCase
 
     public function testCanBeDirect(): void
     {
-        $trigger = IssueTrigger::from(Code::ThirdParty, Code::FirstParty);
+        $trigger = PhpIssueTrigger::from(Code::ThirdParty, Code::FirstParty);
 
         $this->assertTrue($trigger->isDirect());
         $this->assertFalse($trigger->isTest());
@@ -67,7 +67,7 @@ final class IssueTriggerTest extends TestCase
 
     public function testCanBeIndirect(): void
     {
-        $trigger = IssueTrigger::from(Code::ThirdParty, Code::ThirdParty);
+        $trigger = PhpIssueTrigger::from(Code::ThirdParty, Code::ThirdParty);
 
         $this->assertTrue($trigger->isIndirect());
         $this->assertFalse($trigger->isTest());
@@ -79,7 +79,7 @@ final class IssueTriggerTest extends TestCase
 
     public function testCanBeUnknown(): void
     {
-        $trigger = IssueTrigger::unknown();
+        $trigger = PhpIssueTrigger::unknown();
 
         $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
