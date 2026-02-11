@@ -19,6 +19,6 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Issue6511 (PHPUnit\TestFixture\Issue6511\Issue6511)
- ✔ The a is Charlie, the b is Alfa, the c is Bravo.
+ ✔ The a is Alfa, the b is Bravo, the c is Charlie.
 
 OK (1 test, 3 assertions)
