@@ -43,4 +43,9 @@ final class TestDoxTest extends TestCase
     public function testFive(DateTimeImmutable $date): void
     {
     }
+
+    #[TestDox('Value of a is $a, value of b is $b')]
+    public function testSix(string $a, string $b): void
+    {
+    }
 }
