@@ -11,6 +11,15 @@ namespace PHPUnit\Event\Code\IssueTrigger;
 
 enum Code: string
 {
+    public function isFirstPartyOrTest(): bool
+    {
+        return $this === self::FirstParty || $this === self::Test;
+    }
+
+    public function isThirdPartyOrPhp(): bool
+    {
+        return $this === self::ThirdParty || $this === self::PHP;
+    }
     case FirstParty = 'first-party code';
     case ThirdParty = 'third-party code';
     case Test       = 'test code';

@@ -55,7 +55,7 @@ final readonly class IssueTrigger
      */
     public function isSelf(): bool
     {
-        return $this->callee == Code::FirstParty || $this->callee == Code::Test;
+        return $this->callee !== null && $this->callee->isFirstPartyOrTest();
     }
 
     /**
@@ -63,7 +63,8 @@ final readonly class IssueTrigger
      */
     public function isDirect(): bool
     {
-        return $this->caller == Code::FirstParty && $this->callee == Code::ThirdParty;
+        return $this->caller !== null && $this->caller->isFirstPartyOrTest() &&
+               $this->callee !== null && $this->callee->isThirdPartyOrPhp();
     }
 
     /**
@@ -71,7 +72,8 @@ final readonly class IssueTrigger
      */
     public function isIndirect(): bool
     {
-        return $this->caller == Code::ThirdParty && $this->callee == Code::ThirdParty;
+        return $this->caller !== null && $this->caller == Code::ThirdParty &&
+               $this->callee !== null && $this->callee->isThirdPartyOrPhp();
     }
 
     public function isUnknown(): bool
