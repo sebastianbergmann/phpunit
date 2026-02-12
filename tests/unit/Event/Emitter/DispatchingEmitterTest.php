@@ -13,8 +13,7 @@ use const PHP_VERSION;
 use function version_compare;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
-use PHPUnit\Event\Code\IssueTrigger\PhpIssueTrigger;
-use PHPUnit\Event\Code\IssueTrigger\UserlandIssueTrigger;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -1944,7 +1943,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = PhpIssueTrigger::unknown();
+        $trigger           = IssueTrigger::unknown();
 
         $emitter->testTriggeredPhpDeprecation(
             $test,
@@ -2003,7 +2002,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = UserlandIssueTrigger::unknown();
+        $trigger           = IssueTrigger::unknown();
         $stackTrace        = 'stack-trace';
 
         $emitter->testTriggeredDeprecation(

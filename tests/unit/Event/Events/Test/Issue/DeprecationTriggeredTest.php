@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code\IssueTrigger\UserlandIssueTrigger;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
@@ -29,7 +29,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = UserlandIssueTrigger::unknown();
+        $trigger           = IssueTrigger::unknown();
         $stackTrace        = 'stack trace';
 
         $event = new DeprecationTriggered(
@@ -69,7 +69,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             false,
             true,
             false,
-            UserlandIssueTrigger::unknown(),
+            IssueTrigger::unknown(),
             'stack trace',
         );
 
@@ -88,7 +88,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             false,
             false,
             true,
-            UserlandIssueTrigger::unknown(),
+            IssueTrigger::unknown(),
             'stack trace',
         );
 
@@ -107,7 +107,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             true,
             false,
             false,
-            UserlandIssueTrigger::unknown(),
+            IssueTrigger::unknown(),
             'stack trace',
         );
 
