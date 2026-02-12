@@ -24,7 +24,7 @@ Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne)
 Test Prepared (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne)
-Test Triggered PHP Deprecation (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne, issue triggered by first-party code calling into third-party code, suppressed using operator) in %sFirstPartyClass.php:%d
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne, issue triggered by first-party code calling into PHP runtime, suppressed using operator) in %sFirstPartyClass.php:%d
 strlen(): Passing null to parameter #1 ($string) of type string is deprecated
 Test Passed (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne)
 Test Finished (PHPUnit\TestFixture\SelfDirectIndirect\FirstPartyClassTest::testOne)
