@@ -26,11 +26,6 @@ final readonly class IssueTrigger
         return new self(null, null);
     }
 
-    public static function test(): self
-    {
-        return new self(Code::Test, null);
-    }
-
     public static function from(Code $callee, ?Code $caller = null): self
     {
         return new self($callee, $caller);
