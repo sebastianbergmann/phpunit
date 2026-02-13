@@ -295,14 +295,12 @@ final class ErrorHandler
      */
     private function triggerForPhpDeprecation(TestMethod $test, string $errorFile): IssueTrigger
     {
-        if ($errorFile === $test->file()) {
-            return IssueTrigger::test();
-        }
+        $caller = Code::ThirdParty;
 
-        if (SourceFilter::instance()->includes($errorFile)) {
+        if ($errorFile === $test->file()) {
+            $caller = Code::Test;
+        } elseif (SourceFilter::instance()->includes($errorFile)) {
             $caller = Code::FirstParty;
-        } else {
-            $caller = Code::ThirdParty;
         }
 
         return IssueTrigger::from(Code::PHP, $caller);
@@ -313,35 +311,21 @@ final class ErrorHandler
      */
     private function triggerForUserlandDeprecation(TestMethod $test, array $trace): IssueTrigger
     {
-        $triggeredInFirstPartyCode       = false;
-        $triggerCalledFromFirstPartyCode = false;
+        $callee = Code::ThirdParty;
+        $caller = Code::ThirdParty;
 
         if (isset($trace[0]['file'])) {
             if ($trace[0]['file'] === $test->file()) {
-                return IssueTrigger::test();
-            }
-
-            if (SourceFilter::instance()->includes($trace[0]['file'])) {
-                $triggeredInFirstPartyCode = true;
+                $callee = Code::Test;
+            } elseif (SourceFilter::instance()->includes($trace[0]['file'])) {
+                $callee = Code::FirstParty;
             }
         }
 
         if (isset($trace[1]['file']) &&
             ($trace[1]['file'] === $test->file() ||
             SourceFilter::instance()->includes($trace[1]['file']))) {
-            $triggerCalledFromFirstPartyCode = true;
-        }
-
-        if ($triggeredInFirstPartyCode) {
-            $callee = Code::FirstParty;
-        } else {
-            $callee = Code::ThirdParty;
-        }
-
-        if ($triggerCalledFromFirstPartyCode) {
             $caller = Code::FirstParty;
-        } else {
-            $caller = Code::ThirdParty;
         }
 
         return IssueTrigger::from($callee, $caller);
