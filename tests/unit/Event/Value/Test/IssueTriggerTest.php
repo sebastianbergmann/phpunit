@@ -19,7 +19,7 @@ final class IssueTriggerTest extends TestCase
 {
     public function testCanBeTestCode(): void
     {
-        $trigger = IssueTrigger::test();
+        $trigger = IssueTrigger::from(Code::Test, Code::Test);
 
         $this->assertTrue($trigger->isTest());
         $this->assertTrue($trigger->isSelf());
