@@ -68,7 +68,6 @@
     <php>
         <includePath>.</includePath>
         <includePath>/path/to/lib</includePath>
-        <ini name="foo" value="bar"/>
         <ini name="highlight.keyword" value="#123456"/>
         <const name="FOO" value="false"/>
         <const name="BAR" value="true"/>

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 ### Fixed
 
 * [#6511](https://github.com/sebastianbergmann/phpunit/issues/6511): TestDox variables out of order with named arguments
+* [#6514](https://github.com/sebastianbergmann/phpunit/issues/6514): `<ini />` can silently fail
 
 ## [13.0.2] - 2026-02-10
 
