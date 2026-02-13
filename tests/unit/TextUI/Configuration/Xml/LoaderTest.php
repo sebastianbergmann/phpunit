@@ -290,10 +290,8 @@ final class LoaderTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . '.', $php->includePaths()->asArray()[0]->path());
         $this->assertSame('/path/to/lib', $php->includePaths()->asArray()[1]->path());
 
-        $this->assertSame('foo', $php->iniSettings()->asArray()[0]->name());
-        $this->assertSame('bar', $php->iniSettings()->asArray()[0]->value());
-        $this->assertSame('highlight.keyword', $php->iniSettings()->asArray()[1]->name());
-        $this->assertSame('#123456', $php->iniSettings()->asArray()[1]->value());
+        $this->assertSame('highlight.keyword', $php->iniSettings()->asArray()[0]->name());
+        $this->assertSame('#123456', $php->iniSettings()->asArray()[0]->value());
 
         $this->assertSame('FOO', $php->constants()->asArray()[0]->name());
         $this->assertFalse($php->constants()->asArray()[0]->value());
