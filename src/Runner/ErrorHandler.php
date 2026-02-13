@@ -26,6 +26,7 @@ use const E_USER_WARNING;
 use const E_WARNING;
 use function array_keys;
 use function array_values;
+use function assert;
 use function debug_backtrace;
 use function defined;
 use function error_reporting;
@@ -33,6 +34,7 @@ use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 use PHPUnit\Event\Code\TestMethod;
@@ -167,7 +169,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, false),
+                    $this->trigger($test, false, $errorFile),
                 );
 
                 break;
@@ -268,52 +270,75 @@ final class ErrorHandler
         return $this->baseline->has(Issue::from($file, $line, null, $description));
     }
 
-    private function trigger(TestMethod $test, bool $filterTrigger): IssueTrigger
+    /**
+     * @param null|non-empty-string $errorFile
+     */
+    private function trigger(TestMethod $test, bool $isUserland, ?string $errorFile = null): IssueTrigger
     {
         if (!$this->identifyIssueTrigger) {
             return IssueTrigger::unknown();
         }
 
-        $trace = $this->filteredStackTrace($filterTrigger);
+        if (!$isUserland) {
+            assert($errorFile !== null);
 
-        $triggeredInFirstPartyCode       = false;
-        $triggerCalledFromFirstPartyCode = false;
+            return $this->triggerForPhpDeprecation($test, $errorFile);
+        }
+
+        $trace = $this->filteredStackTrace();
+
+        return $this->triggerForUserlandDeprecation($test, $trace);
+    }
+
+    /**
+     * @param non-empty-string $errorFile
+     */
+    private function triggerForPhpDeprecation(TestMethod $test, string $errorFile): IssueTrigger
+    {
+        $caller = Code::ThirdParty;
+
+        if ($errorFile === $test->file()) {
+            $caller = Code::Test;
+        } elseif (SourceFilter::instance()->includes($errorFile)) {
+            $caller = Code::FirstParty;
+        }
+
+        return IssueTrigger::from(Code::PHP, $caller);
+    }
+
+    /**
+     * @param list<array{file: string, line: int, class?: string, function?: string, type: string}> $trace
+     */
+    private function triggerForUserlandDeprecation(TestMethod $test, array $trace): IssueTrigger
+    {
+        $callee = Code::ThirdParty;
+        $caller = Code::ThirdParty;
 
         if (isset($trace[0]['file'])) {
             if ($trace[0]['file'] === $test->file()) {
-                return IssueTrigger::test();
-            }
-
-            if (SourceFilter::instance()->includes($trace[0]['file'])) {
-                $triggeredInFirstPartyCode = true;
+                $callee = Code::Test;
+            } elseif (SourceFilter::instance()->includes($trace[0]['file'])) {
+                $callee = Code::FirstParty;
             }
         }
 
         if (isset($trace[1]['file']) &&
             ($trace[1]['file'] === $test->file() ||
             SourceFilter::instance()->includes($trace[1]['file']))) {
-            $triggerCalledFromFirstPartyCode = true;
+            $caller = Code::FirstParty;
         }
 
-        if ($triggerCalledFromFirstPartyCode) {
-            if ($triggeredInFirstPartyCode) {
-                return IssueTrigger::self();
-            }
-
-            return IssueTrigger::direct();
-        }
-
-        return IssueTrigger::indirect();
+        return IssueTrigger::from($callee, $caller);
     }
 
     /**
      * @return list<array{file: string, line: int, class?: string, function?: string, type: string}>
      */
-    private function filteredStackTrace(bool $filterDeprecationTriggers): array
+    private function filteredStackTrace(): array
     {
         $trace = $this->errorStackTrace();
 
-        if ($this->deprecationTriggers === null || !$filterDeprecationTriggers) {
+        if ($this->deprecationTriggers === null) {
             return array_values($trace);
         }
 

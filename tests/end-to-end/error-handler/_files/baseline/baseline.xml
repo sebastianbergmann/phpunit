@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<files version="1">
+ <file path="src/Source.php">
+  <line number="19" hash="b54057042526d0919354b4b85eadd4d5006be9e4">
+   <issue><![CDATA[baseline deprecation]]></issue>
+  </line>
+ </file>
+</files>
