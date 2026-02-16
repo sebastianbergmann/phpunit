@@ -24,7 +24,7 @@ Test Suite Started (default, 5 tests)
 Test Suite Started (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest, 5 tests)
 Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode)
 Test Prepared (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode)
-Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode, issue triggered by third-party code calling into test code, suppressed using operator) in %s:%d
+Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode, issue triggered by PHPUnit calling into test code, suppressed using operator) in %s:%d
 deprecation in test code
 Test Passed (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode)
 Test Finished (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode)

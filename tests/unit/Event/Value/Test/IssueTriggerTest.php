@@ -19,14 +19,14 @@ final class IssueTriggerTest extends TestCase
 {
     public function testCanBeTestCode(): void
     {
-        $trigger = IssueTrigger::from(Code::Test, Code::Test);
+        $trigger = IssueTrigger::from(Code::Test, Code::PHPUnit);
 
         $this->assertTrue($trigger->isTest());
         $this->assertTrue($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
-        $this->assertSame('issue triggered by test code calling into test code', $trigger->asString());
+        $this->assertSame('issue triggered by PHPUnit calling into test code', $trigger->asString());
     }
 
     public function testCanBeSelf(): void

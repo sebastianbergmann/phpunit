@@ -51,10 +51,11 @@ use PHPUnit\Util\ExcludeList;
  */
 final class ErrorHandler
 {
-    private const UNHANDLEABLE_LEVELS         = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
-    private const INSUPPRESSIBLE_LEVELS       = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
-    private static ?self $instance            = null;
-    private ?Baseline $baseline               = null;
+    private const UNHANDLEABLE_LEVELS   = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
+    private const INSUPPRESSIBLE_LEVELS = E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
+    private static ?self $instance      = null;
+    private ?Baseline $baseline         = null;
+    private ExcludeList $excludeList;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly bool $identifyIssueTrigger;
@@ -83,6 +84,7 @@ final class ErrorHandler
 
     private function __construct(bool $identifyIssueTrigger)
     {
+        $this->excludeList          = new ExcludeList;
         $this->identifyIssueTrigger = $identifyIssueTrigger;
     }
 
@@ -93,7 +95,7 @@ final class ErrorHandler
     {
         $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
 
-        if ($suppressed && (new ExcludeList)->isExcluded($errorFile)) {
+        if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
             return false;
         }
 
@@ -327,6 +329,8 @@ final class ErrorHandler
                 $caller = Code::Test;
             } elseif (SourceFilter::instance()->includes($trace[1]['file'])) {
                 $caller = Code::FirstParty;
+            } elseif ($this->excludeList->isExcluded($trace[1]['file'])) {
+                $caller = Code::PHPUnit;
             }
         }
 
@@ -435,8 +439,7 @@ final class ErrorHandler
      */
     private function stackTrace(): string
     {
-        $buffer      = '';
-        $excludeList = new ExcludeList(true);
+        $buffer = '';
 
         foreach ($this->errorStackTrace() as $frame) {
             /**
@@ -446,7 +449,7 @@ final class ErrorHandler
                 continue;
             }
 
-            if ($excludeList->isExcluded($frame['file'])) {
+            if ($this->excludeList->isExcluded($frame['file'])) {
                 continue;
             }
 

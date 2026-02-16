@@ -24,4 +24,5 @@ enum Code: string
     case ThirdParty = 'third-party code';
     case Test       = 'test code';
     case PHP        = 'PHP runtime';
+    case PHPUnit    = 'PHPUnit';
 }
