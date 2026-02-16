@@ -39,21 +39,21 @@ final class CodeTest extends TestCase
 
     public function testThirdPartyIsThirdPartyOrPhp(): void
     {
-        $this->assertTrue(Code::ThirdParty->isThirdPartyOrPhp());
+        $this->assertTrue(Code::ThirdParty->isThirdPartyOrPhpunitOrPhp());
     }
 
     public function testPhpIsThirdPartyOrPhp(): void
     {
-        $this->assertTrue(Code::PHP->isThirdPartyOrPhp());
+        $this->assertTrue(Code::PHP->isThirdPartyOrPhpunitOrPhp());
     }
 
     public function testFirstPartyIsNotThirdPartyOrPhp(): void
     {
-        $this->assertFalse(Code::FirstParty->isThirdPartyOrPhp());
+        $this->assertFalse(Code::FirstParty->isThirdPartyOrPhpunitOrPhp());
     }
 
     public function testTestIsNotThirdPartyOrPhp(): void
     {
-        $this->assertFalse(Code::Test->isThirdPartyOrPhp());
+        $this->assertFalse(Code::Test->isThirdPartyOrPhpunitOrPhp());
     }
 }

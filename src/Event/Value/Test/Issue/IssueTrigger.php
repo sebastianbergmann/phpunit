@@ -59,7 +59,7 @@ final readonly class IssueTrigger
     public function isDirect(): bool
     {
         return $this->caller !== null && $this->caller->isFirstPartyOrTest() &&
-               $this->callee !== null && $this->callee->isThirdPartyOrPhp();
+               $this->callee !== null && $this->callee->isThirdPartyOrPhpunitOrPhp();
     }
 
     /**
@@ -67,8 +67,8 @@ final readonly class IssueTrigger
      */
     public function isIndirect(): bool
     {
-        return $this->caller !== null && $this->caller == Code::ThirdParty &&
-               $this->callee !== null && $this->callee->isThirdPartyOrPhp();
+        return $this->caller !== null && $this->caller->isThirdPartyOrPhpunitOrPhp() &&
+               $this->callee !== null && $this->callee->isThirdPartyOrPhpunitOrPhp();
     }
 
     public function isUnknown(): bool

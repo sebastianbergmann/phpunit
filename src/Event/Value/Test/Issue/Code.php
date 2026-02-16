@@ -16,9 +16,9 @@ enum Code: string
         return $this === self::FirstParty || $this === self::Test;
     }
 
-    public function isThirdPartyOrPhp(): bool
+    public function isThirdPartyOrPhpunitOrPhp(): bool
     {
-        return $this === self::ThirdParty || $this === self::PHP;
+        return $this === self::ThirdParty || $this === self::PHPUnit || $this === self::PHP;
     }
     case FirstParty = 'first-party code';
     case ThirdParty = 'third-party code';
