@@ -23,12 +23,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.4.1",
-        "ext-dom": "*",
-        "ext-json": "*",
-        "ext-libxml": "*",
         "ext-mbstring": "*",
-        "ext-xml": "*",
-        "ext-xmlwriter": "*",
         "myclabs/deep-copy": "^1.13.4",
         "phar-io/manifest": "^2.0.4",
         "phar-io/version": "^3.2.1",
