@@ -26,7 +26,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
-        $this->assertSame('issue triggered by test code', $trigger->asString());
+        $this->assertSame('issue triggered by test code calling into test code', $trigger->asString());
     }
 
     public function testCanBeSelf(): void

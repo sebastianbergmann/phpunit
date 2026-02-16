@@ -82,10 +82,6 @@ final readonly class IssueTrigger
             return 'unknown if issue was triggered in first-party code or third-party code';
         }
 
-        if ($this->isTest()) {
-            return 'issue triggered by test code';
-        }
-
         return sprintf(
             'issue triggered by %s calling into %s',
             $this->caller->value,
