@@ -215,9 +215,7 @@ final class ErrorHandler
 
     public function enable(): void
     {
-        if ($this->enabled) {
-            return;
-        }
+        assert(!$this->enabled);
 
         $oldErrorHandler = set_error_handler($this);
 
