@@ -56,6 +56,7 @@ final class ErrorHandler
     private static ?self $instance      = null;
     private ?Baseline $baseline         = null;
     private ExcludeList $excludeList;
+    private SourceFilter $sourceFilter;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly bool $identifyIssueTrigger;
@@ -85,6 +86,7 @@ final class ErrorHandler
     private function __construct(bool $identifyIssueTrigger)
     {
         $this->excludeList          = new ExcludeList;
+        $this->sourceFilter         = SourceFilter::instance();
         $this->identifyIssueTrigger = $identifyIssueTrigger;
     }
 
@@ -286,28 +288,12 @@ final class ErrorHandler
         if (!$isUserland) {
             assert($errorFile !== null);
 
-            return $this->triggerForPhpDeprecation($test, $errorFile);
+            return IssueTrigger::from(Code::PHP, $this->categorizeFile($errorFile, $test));
         }
 
         $trace = $this->filteredStackTrace();
 
         return $this->triggerForUserlandDeprecation($test, $trace);
-    }
-
-    /**
-     * @param non-empty-string $errorFile
-     */
-    private function triggerForPhpDeprecation(TestMethod $test, string $errorFile): IssueTrigger
-    {
-        $caller = Code::ThirdParty;
-
-        if ($errorFile === $test->file()) {
-            $caller = Code::Test;
-        } elseif (SourceFilter::instance()->includes($errorFile)) {
-            $caller = Code::FirstParty;
-        }
-
-        return IssueTrigger::from(Code::PHP, $caller);
     }
 
     /**
@@ -319,24 +305,34 @@ final class ErrorHandler
         $caller = Code::ThirdParty;
 
         if (isset($trace[0]['file'])) {
-            if ($trace[0]['file'] === $test->file()) {
-                $callee = Code::Test;
-            } elseif (SourceFilter::instance()->includes($trace[0]['file'])) {
-                $callee = Code::FirstParty;
-            }
+            $callee = $this->categorizeFile($trace[0]['file'], $test);
         }
 
         if (isset($trace[1]['file'])) {
-            if ($trace[1]['file'] === $test->file()) {
-                $caller = Code::Test;
-            } elseif (SourceFilter::instance()->includes($trace[1]['file'])) {
-                $caller = Code::FirstParty;
-            } elseif ($this->excludeList->isExcluded($trace[1]['file'])) {
-                $caller = Code::PHPUnit;
-            }
+            $caller = $this->categorizeFile($trace[1]['file'], $test);
         }
 
         return IssueTrigger::from($callee, $caller);
+    }
+
+    /**
+     * @param non-empty-string $file
+     */
+    private function categorizeFile(string $file, TestMethod $test): Code
+    {
+        if ($file === $test->file()) {
+            return Code::Test;
+        }
+
+        if ($this->sourceFilter->includes($file)) {
+            return Code::FirstParty;
+        }
+
+        if ($this->excludeList->isExcluded($file)) {
+            return Code::PHPUnit;
+        }
+
+        return Code::ThirdParty;
     }
 
     /**
