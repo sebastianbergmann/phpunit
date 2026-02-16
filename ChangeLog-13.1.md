@@ -8,4 +8,8 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 * [#6501](https://github.com/sebastianbergmann/phpunit/issues/6501): Include unexpected test output in Open Test Reporting (OTR) XML logfile
 
+### Deprecated
+
+* [#6515](https://github.com/sebastianbergmann/phpunit/issues/6515): Deprecate the `--log-events-verbose-text <file>` CLI option
+
 [13.1.0]: https://github.com/sebastianbergmann/phpunit/compare/13.0...main

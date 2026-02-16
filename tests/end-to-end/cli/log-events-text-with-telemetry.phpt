@@ -1,5 +1,5 @@
 --TEST--
-phpunit --no-output --log-events-verbose-text logfile.txt
+phpunit --no-output --log-events-text logfile.txt --with-telemetry
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
@@ -7,8 +7,9 @@ $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
-$_SERVER['argv'][] = '--log-events-verbose-text';
+$_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
+$_SERVER['argv'][] = '--with-telemetry';
 $_SERVER['argv'][] = __DIR__ . '/../_files/log-events-text';
 
 require __DIR__ . '/../../bootstrap.php';
@@ -21,8 +22,6 @@ unlink($traceFile);
 --EXPECTF--
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] PHPUnit Started (%s)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Configured
-[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Triggered Deprecation (The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14.
-                                                          Use "--log-events-text <file> --with-telemetry" instead.)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Event Facade Sealed
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Loaded (7 tests)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Started

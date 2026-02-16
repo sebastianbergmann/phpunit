@@ -588,12 +588,19 @@ final readonly class Application
             EventFacade::instance()->registerTracer(
                 new EventLogger(
                     $configuration->logEventsText(),
-                    false,
+                    $configuration->withTelemetry(),
                 ),
             );
         }
 
         if ($configuration->hasLogEventsVerboseText()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                <<<'EOT'
+The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14.
+Use "--log-events-text <file> --with-telemetry" instead.
+EOT
+            );
+
             if (is_file($configuration->logEventsVerboseText())) {
                 unlink($configuration->logEventsVerboseText());
             }
