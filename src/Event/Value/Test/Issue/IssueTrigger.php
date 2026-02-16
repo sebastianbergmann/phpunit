@@ -38,14 +38,6 @@ final readonly class IssueTrigger
     }
 
     /**
-     * An issue is triggered in test code.
-     */
-    public function isTest(): bool
-    {
-        return $this->callee == Code::Test;
-    }
-
-    /**
      * An issue is triggered in first-party code or in test code.
      */
     public function isSelf(): bool

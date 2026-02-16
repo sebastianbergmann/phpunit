@@ -17,24 +17,11 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class IssueTriggerTest extends TestCase
 {
-    public function testCanBeTestCode(): void
-    {
-        $trigger = IssueTrigger::from(Code::Test, Code::PHPUnit);
-
-        $this->assertTrue($trigger->isTest());
-        $this->assertTrue($trigger->isSelf());
-        $this->assertFalse($trigger->isDirect());
-        $this->assertFalse($trigger->isIndirect());
-        $this->assertFalse($trigger->isUnknown());
-        $this->assertSame('issue triggered by PHPUnit calling into test code', $trigger->asString());
-    }
-
     public function testCanBeSelf(): void
     {
         $trigger = IssueTrigger::from(Code::FirstParty, Code::FirstParty);
 
         $this->assertTrue($trigger->isSelf());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
@@ -46,7 +33,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::FirstParty, Code::ThirdParty);
 
         $this->assertTrue($trigger->isSelf());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
@@ -58,7 +44,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::ThirdParty, Code::FirstParty);
 
         $this->assertTrue($trigger->isDirect());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
@@ -70,7 +55,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::ThirdParty, Code::ThirdParty);
 
         $this->assertTrue($trigger->isIndirect());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isUnknown());
@@ -82,7 +66,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::ThirdParty, Code::Test);
 
         $this->assertTrue($trigger->isDirect());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
@@ -94,7 +77,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::PHP, Code::FirstParty);
 
         $this->assertTrue($trigger->isDirect());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
@@ -106,7 +88,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::PHP, Code::Test);
 
         $this->assertTrue($trigger->isDirect());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isIndirect());
         $this->assertFalse($trigger->isUnknown());
@@ -118,7 +99,6 @@ final class IssueTriggerTest extends TestCase
         $trigger = IssueTrigger::from(Code::PHP, Code::ThirdParty);
 
         $this->assertTrue($trigger->isIndirect());
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isUnknown());
@@ -129,7 +109,6 @@ final class IssueTriggerTest extends TestCase
     {
         $trigger = IssueTrigger::unknown();
 
-        $this->assertFalse($trigger->isTest());
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());
         $this->assertFalse($trigger->isIndirect());
