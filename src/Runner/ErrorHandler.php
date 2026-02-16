@@ -105,7 +105,9 @@ final class ErrorHandler
          * @see https://github.com/sebastianbergmann/phpunit/issues/5956
          */
         if (defined('E_STRICT') && $errorNumber === 2048) {
+            // @codeCoverageIgnoreStart
             $errorNumber = E_NOTICE;
+            // @codeCoverageIgnoreEnd
         }
 
         $test = Event\Code\TestMethodBuilder::fromCallStack();
