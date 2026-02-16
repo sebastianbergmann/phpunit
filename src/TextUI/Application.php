@@ -595,10 +595,7 @@ final readonly class Application
 
         if ($configuration->hasLogEventsVerboseText()) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                <<<'EOT'
-The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14.
-Use "--log-events-text <file> --with-telemetry" instead.
-EOT
+                'The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14. Use "--log-events-text <file> --with-telemetry" instead.',
             );
 
             if (is_file($configuration->logEventsVerboseText())) {
