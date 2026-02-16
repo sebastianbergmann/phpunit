@@ -24,7 +24,7 @@ Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest::testDirectTrigger)
 Test Prepared (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest::testDirectTrigger)
-Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest::testDirectTrigger, issue triggered by first-party code calling into first-party code, suppressed using operator) in %s:%d
+Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest::testDirectTrigger, issue triggered by test code calling into first-party code, suppressed using operator) in %s:%d
 deprecation bypassing trigger
 Test Passed (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest::testDirectTrigger)
 Test Finished (PHPUnit\TestFixture\ErrorHandler\DirectTriggerWithTriggersConfigured\DirectTriggerTest::testDirectTrigger)

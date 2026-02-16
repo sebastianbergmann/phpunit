@@ -30,7 +30,7 @@ Test Passed (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTes
 Test Finished (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testFromTestCode)
 Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testSelf)
 Test Prepared (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testSelf)
-Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testSelf, issue triggered by first-party code calling into first-party code, suppressed using operator) in %s:%d
+Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testSelf, issue triggered by test code calling into first-party code, suppressed using operator) in %s:%d
 deprecation in first-party code
 Test Passed (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testSelf)
 Test Finished (PHPUnit\TestFixture\ErrorHandler\UserDeprecation\UserDeprecationTest::testSelf)

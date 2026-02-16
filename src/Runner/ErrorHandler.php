@@ -322,10 +322,12 @@ final class ErrorHandler
             }
         }
 
-        if (isset($trace[1]['file']) &&
-            ($trace[1]['file'] === $test->file() ||
-            SourceFilter::instance()->includes($trace[1]['file']))) {
-            $caller = Code::FirstParty;
+        if (isset($trace[1]['file'])) {
+            if ($trace[1]['file'] === $test->file()) {
+                $caller = Code::Test;
+            } elseif (SourceFilter::instance()->includes($trace[1]['file'])) {
+                $caller = Code::FirstParty;
+            }
         }
 
         return IssueTrigger::from($callee, $caller);

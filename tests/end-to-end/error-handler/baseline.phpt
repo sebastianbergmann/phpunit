@@ -24,7 +24,7 @@ Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest::testDeprecation)
 Test Prepared (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest::testDeprecation)
-Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest::testDeprecation, issue triggered by first-party code calling into first-party code, ignored by baseline) in %s:%d
+Test Triggered Deprecation (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest::testDeprecation, issue triggered by test code calling into first-party code, ignored by baseline) in %s:%d
 baseline deprecation
 Test Passed (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest::testDeprecation)
 Test Finished (PHPUnit\TestFixture\ErrorHandler\Baseline\SourceTest::testDeprecation)
