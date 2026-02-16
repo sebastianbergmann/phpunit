@@ -11,49 +11,45 @@ namespace PHPUnit\Event\Code\IssueTrigger;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Code::class)]
 #[Small]
 final class CodeTest extends TestCase
 {
+    #[TestDox('Code::FirstParty is first-party code or test code')]
     public function testFirstPartyIsFirstPartyOrTest(): void
     {
         $this->assertTrue(Code::FirstParty->isFirstPartyOrTest());
-    }
-
-    public function testTestIsFirstPartyOrTest(): void
-    {
-        $this->assertTrue(Code::Test->isFirstPartyOrTest());
-    }
-
-    public function testThirdPartyIsNotFirstPartyOrTest(): void
-    {
-        $this->assertFalse(Code::ThirdParty->isFirstPartyOrTest());
-    }
-
-    public function testPhpIsNotFirstPartyOrTest(): void
-    {
-        $this->assertFalse(Code::PHP->isFirstPartyOrTest());
-    }
-
-    public function testThirdPartyIsThirdPartyOrPhp(): void
-    {
-        $this->assertTrue(Code::ThirdParty->isThirdPartyOrPhpunitOrPhp());
-    }
-
-    public function testPhpIsThirdPartyOrPhp(): void
-    {
-        $this->assertTrue(Code::PHP->isThirdPartyOrPhpunitOrPhp());
-    }
-
-    public function testFirstPartyIsNotThirdPartyOrPhp(): void
-    {
         $this->assertFalse(Code::FirstParty->isThirdPartyOrPhpunitOrPhp());
     }
 
-    public function testTestIsNotThirdPartyOrPhp(): void
+    #[TestDox('Code::Test is first-party code or test code')]
+    public function testTestIsFirstPartyOrTest(): void
     {
+        $this->assertTrue(Code::Test->isFirstPartyOrTest());
         $this->assertFalse(Code::Test->isThirdPartyOrPhpunitOrPhp());
+    }
+
+    #[TestDox('Code::ThirdParty is third-party code or PHPUnit or PHP runtime')]
+    public function testThirdPartyIsThirdPartyOrPhpunitOrPhp(): void
+    {
+        $this->assertTrue(Code::ThirdParty->isThirdPartyOrPhpunitOrPhp());
+        $this->assertFalse(Code::ThirdParty->isFirstPartyOrTest());
+    }
+
+    #[TestDox('Code::PHPUnit is third-party code or PHPUnit or PHP runtime')]
+    public function testPhpunitIsThirdPartyOrPhpunitOrPhp(): void
+    {
+        $this->assertTrue(Code::PHPUnit->isThirdPartyOrPhpunitOrPhp());
+        $this->assertFalse(Code::PHPUnit->isFirstPartyOrTest());
+    }
+
+    #[TestDox('Code::PHP is third-party code or PHPUnit or PHP runtime')]
+    public function testPhpIsThirdPartyOrPhpunitOrPhp(): void
+    {
+        $this->assertTrue(Code::PHP->isThirdPartyOrPhpunitOrPhp());
+        $this->assertFalse(Code::PHP->isFirstPartyOrTest());
     }
 }
