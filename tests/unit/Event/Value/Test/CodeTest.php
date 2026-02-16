@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Event\Code\IssueTrigger;
 
+use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -18,6 +20,21 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class CodeTest extends TestCase
 {
+    public static function enumCases(): Generator
+    {
+        foreach (Code::cases() as $code) {
+            yield $code->value => [$code];
+        }
+    }
+
+    #[DataProvider('enumCases')]
+    #[TestDox('$code is categorized')]
+    public function testCodeIsCategorizedAtHighLevel(Code $code): void
+    {
+        $this->assertTrue($code->isFirstPartyOrTest() || $code->isThirdPartyOrPhpunitOrPhp());
+        $this->assertFalse($code->isFirstPartyOrTest() && $code->isThirdPartyOrPhpunitOrPhp());
+    }
+
     #[TestDox('Code::FirstParty is first-party code or test code')]
     public function testFirstPartyIsFirstPartyOrTest(): void
     {
