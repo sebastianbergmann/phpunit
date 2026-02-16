@@ -301,8 +301,8 @@ final class ErrorHandler
      */
     private function triggerForUserlandDeprecation(TestMethod $test, array $trace): IssueTrigger
     {
-        $callee = Code::ThirdParty;
-        $caller = Code::ThirdParty;
+        $callee = null;
+        $caller = null;
 
         if (isset($trace[0]['file'])) {
             $callee = $this->categorizeFile($trace[0]['file'], $test);

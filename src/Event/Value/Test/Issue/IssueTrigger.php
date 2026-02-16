@@ -26,7 +26,7 @@ final readonly class IssueTrigger
         return new self(null, null);
     }
 
-    public static function from(Code $callee, Code $caller): self
+    public static function from(?Code $callee, ?Code $caller): self
     {
         return new self($callee, $caller);
     }
@@ -65,7 +65,7 @@ final readonly class IssueTrigger
 
     public function isUnknown(): bool
     {
-        return $this->callee === null;
+        return $this->callee === null || $this->caller === null;
     }
 
     public function asString(): string
