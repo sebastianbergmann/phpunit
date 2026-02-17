@@ -1943,7 +1943,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
 
         $emitter->testTriggeredPhpDeprecation(
             $test,
@@ -2002,7 +2002,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
         $stackTrace        = 'stack-trace';
 
         $emitter->testTriggeredDeprecation(

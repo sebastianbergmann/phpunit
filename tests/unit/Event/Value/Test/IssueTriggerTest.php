@@ -107,7 +107,7 @@ final class IssueTriggerTest extends TestCase
 
     public function testCanBeUnknown(): void
     {
-        $trigger = IssueTrigger::unknown();
+        $trigger = IssueTrigger::from(null, null);
 
         $this->assertFalse($trigger->isSelf());
         $this->assertFalse($trigger->isDirect());

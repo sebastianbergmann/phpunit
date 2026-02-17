@@ -282,7 +282,7 @@ final class ErrorHandler
     private function trigger(TestMethod $test, bool $isUserland, ?string $errorFile = null): IssueTrigger
     {
         if (!$this->identifyIssueTrigger) {
-            return IssueTrigger::unknown();
+            return IssueTrigger::from(null, null);
         }
 
         if (!$isUserland) {
