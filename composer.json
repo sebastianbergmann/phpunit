@@ -20,6 +20,7 @@
         "issues": "https://github.com/sebastianbergmann/phpunit/issues",
         "security": "https://github.com/sebastianbergmann/phpunit/security/policy"
     },
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.4.1",
@@ -42,6 +43,7 @@
         "sebastian/diff": "^8.0.0",
         "sebastian/environment": "^9.0.0",
         "sebastian/exporter": "^8.0.0",
+        "sebastian/file-filter": "^1.0@dev",
         "sebastian/global-state": "^9.0.0",
         "sebastian/object-enumerator": "^8.0.0",
         "sebastian/recursion-context": "^8.0.0",
