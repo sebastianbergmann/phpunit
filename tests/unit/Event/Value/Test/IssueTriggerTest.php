@@ -91,7 +91,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
-    #[TestDox('(Code::Test, null) is classified as "self" and "unknown"')]
+    #[TestDox('(Code::Test, null) is classified as "self"')]
     public function testCalleeIsTestAndCallerIsUnknown(): void
     {
         $issueTrigger = IssueTrigger::from(Code::Test, null);
@@ -99,7 +99,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isSelf());
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
-        $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertFalse($issueTrigger->isUnknown());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -163,7 +163,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertSame('issue triggered by PHP runtime calling into test code', $issueTrigger->asString());
     }
 
-    #[TestDox('(Code::FirstParty, null) is classified as "self" and "unknown"')]
+    #[TestDox('(Code::FirstParty, null) is classified as "self"')]
     public function testCalleeIsFirstPartyAndCallerIsUnknown(): void
     {
         $issueTrigger = IssueTrigger::from(Code::FirstParty, null);
@@ -171,7 +171,7 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isSelf());
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
-        $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertFalse($issueTrigger->isUnknown());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 

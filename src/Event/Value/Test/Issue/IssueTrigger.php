@@ -60,12 +60,12 @@ final readonly class IssueTrigger
 
     public function isUnknown(): bool
     {
-        return $this->callee === null || $this->caller === null;
+        return !$this->isSelf() && !$this->isDirect() && !$this->isIndirect();
     }
 
     public function asString(): string
     {
-        if ($this->isUnknown()) {
+        if ($this->callee === null || $this->caller === null) {
             return 'unknown if issue was triggered in first-party code or third-party code';
         }
 
