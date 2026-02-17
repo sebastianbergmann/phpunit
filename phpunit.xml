@@ -19,6 +19,7 @@
             <directory suffix=".phpt">tests/end-to-end/check-php-configuration</directory>
             <directory suffix=".phpt">tests/end-to-end/cli</directory>
             <directory suffix=".phpt">tests/end-to-end/data-provider</directory>
+            <directory suffix=".phpt">tests/end-to-end/error-handler</directory>
             <directory suffix=".phpt">tests/end-to-end/event</directory>
             <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
             <directory suffix=".phpt">tests/end-to-end/extension-cli</directory>
