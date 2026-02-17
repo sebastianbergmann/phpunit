@@ -29,7 +29,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
         $stackTrace        = 'stack trace';
 
         $event = new DeprecationTriggered(
@@ -69,7 +69,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             false,
             true,
             false,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
             'stack trace',
         );
 
@@ -88,7 +88,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             false,
             false,
             true,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
             'stack trace',
         );
 
@@ -107,7 +107,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             true,
             false,
             false,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
             'stack trace',
         );
 

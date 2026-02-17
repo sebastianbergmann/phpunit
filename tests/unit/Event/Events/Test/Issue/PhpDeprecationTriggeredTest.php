@@ -29,7 +29,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
 
         $event = new PhpDeprecationTriggered(
             $telemetryInfo,
@@ -66,7 +66,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             true,
             false,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->ignoredByBaseline());
@@ -84,7 +84,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             false,
             true,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->ignoredByTest());
@@ -102,7 +102,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             true,
             false,
             false,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->wasSuppressed());
