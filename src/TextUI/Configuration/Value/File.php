@@ -20,13 +20,15 @@ final readonly class File
      * @var non-empty-string
      */
     private string $path;
+    private bool $includeInCodeCoverage;
 
     /**
      * @param non-empty-string $path
      */
-    public function __construct(string $path)
+    public function __construct(string $path, bool $includeInCodeCoverage = true)
     {
-        $this->path = $path;
+        $this->path                  = $path;
+        $this->includeInCodeCoverage = $includeInCodeCoverage;
     }
 
     /**
@@ -35,5 +37,10 @@ final readonly class File
     public function path(): string
     {
         return $this->path;
+    }
+
+    public function includeInCodeCoverage(): bool
+    {
+        return $this->includeInCodeCoverage;
     }
 }

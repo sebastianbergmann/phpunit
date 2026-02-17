@@ -139,6 +139,46 @@ final class SourceMapper
     }
 
     /**
+     * @return array<non-empty-string, true>
+     */
+    public function mapForCodeCoverage(Source $source): array
+    {
+        $files = $this->map($source);
+
+        foreach ($source->includeDirectories() as $directory) {
+            if ($directory->includeInCodeCoverage()) {
+                continue;
+            }
+
+            foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
+                $file = realpath($file);
+
+                if (!$file) {
+                    continue;
+                }
+
+                unset($files[$file]);
+            }
+        }
+
+        foreach ($source->includeFiles() as $file) {
+            if ($file->includeInCodeCoverage()) {
+                continue;
+            }
+
+            $path = realpath($file->path());
+
+            if (!$path) {
+                continue;
+            }
+
+            unset($files[$path]);
+        }
+
+        return $files;
+    }
+
+    /**
      * @return array<string,array{list<string>,list<string>}>
      */
     private function aggregateDirectories(FilterDirectoryCollection $directories): array
