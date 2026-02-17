@@ -22,15 +22,17 @@ final readonly class FilterDirectory
     private string $path;
     private string $prefix;
     private string $suffix;
+    private bool $includeInCodeCoverage;
 
     /**
      * @param non-empty-string $path
      */
-    public function __construct(string $path, string $prefix, string $suffix)
+    public function __construct(string $path, string $prefix, string $suffix, bool $includeInCodeCoverage = true)
     {
-        $this->path   = $path;
-        $this->prefix = $prefix;
-        $this->suffix = $suffix;
+        $this->path                  = $path;
+        $this->prefix                = $prefix;
+        $this->suffix                = $suffix;
+        $this->includeInCodeCoverage = $includeInCodeCoverage;
     }
 
     /**
@@ -49,5 +51,10 @@ final readonly class FilterDirectory
     public function suffix(): string
     {
         return $this->suffix;
+    }
+
+    public function includeInCodeCoverage(): bool
+    {
+        return $this->includeInCodeCoverage;
     }
 }

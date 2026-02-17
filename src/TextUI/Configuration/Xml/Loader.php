@@ -612,6 +612,7 @@ final readonly class Loader
                 $this->toAbsolutePath($filename, $directoryPath),
                 $directoryNode->hasAttribute('prefix') ? $directoryNode->getAttribute('prefix') : '',
                 $directoryNode->hasAttribute('suffix') ? $directoryNode->getAttribute('suffix') : '.php',
+                !$directoryNode->hasAttribute('includeInCodeCoverage') || $directoryNode->getAttribute('includeInCodeCoverage') !== 'false',
             );
         }
 
@@ -627,12 +628,15 @@ final readonly class Loader
         assert($fileNodes instanceof DOMNodeList);
 
         foreach ($fileNodes as $fileNode) {
-            assert($fileNode instanceof DOMNode);
+            assert($fileNode instanceof DOMElement);
 
             $filePath = $fileNode->textContent;
 
             if ($filePath !== '') {
-                $files[] = new File($this->toAbsolutePath($filename, $filePath));
+                $files[] = new File(
+                    $this->toAbsolutePath($filename, $filePath),
+                    !$fileNode->hasAttribute('includeInCodeCoverage') || $fileNode->getAttribute('includeInCodeCoverage') !== 'false',
+                );
             }
         }
 
