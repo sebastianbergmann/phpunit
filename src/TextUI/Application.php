@@ -831,7 +831,9 @@ final readonly class Application
             ];
         }
 
-        ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+        if ($deprecationTriggers !== ['functions' => [], 'methods' => []]) {
+            ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+        }
     }
 
     private function preload(): void
