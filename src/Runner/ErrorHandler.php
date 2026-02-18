@@ -60,7 +60,6 @@ final class ErrorHandler
     private static ?self $instance          = null;
     private ?Baseline $baseline             = null;
     private ExcludeList $excludeList;
-    private SourceFilter $sourceFilter;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
     private readonly bool $identifyIssueTrigger;
@@ -101,7 +100,6 @@ final class ErrorHandler
     private function __construct(bool $identifyIssueTrigger)
     {
         $this->excludeList          = new ExcludeList;
-        $this->sourceFilter         = SourceFilter::instance();
         $this->identifyIssueTrigger = $identifyIssueTrigger;
     }
 
@@ -376,7 +374,7 @@ final class ErrorHandler
             return Code::Test;
         }
 
-        if ($this->sourceFilter->includes($file)) {
+        if (SourceFilter::instance()->includes($file)) {
             return Code::FirstParty;
         }
 
