@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 13.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [13.0.4] - 2026-MM-DD
+## [13.0.4] - 2026-02-18
 
 ### Fixed
 
@@ -62,7 +62,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 * [#6285](https://github.com/sebastianbergmann/phpunit/issues/6285): `#[RunClassInSeparateProcess]` attribute
 * [#6356](https://github.com/sebastianbergmann/phpunit/issues/6356): Support for version constraint string argument without explicit version comparison operator
 
-[13.0.4]: https://github.com/sebastianbergmann/phpunit/compare/13.0.3...13.0
+[13.0.4]: https://github.com/sebastianbergmann/phpunit/compare/13.0.3...13.0.4
 [13.0.3]: https://github.com/sebastianbergmann/phpunit/compare/13.0.2...13.0.3
 [13.0.2]: https://github.com/sebastianbergmann/phpunit/compare/13.0.1...13.0.2
 [13.0.1]: https://github.com/sebastianbergmann/phpunit/compare/13.0.0...13.0.1
