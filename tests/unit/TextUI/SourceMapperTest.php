@@ -40,11 +40,6 @@ final class SourceMapperTest extends TestCase
             [
             ],
             self::createSource(
-                includeFiles: FileCollection::fromArray(
-                    [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
-                    ],
-                ),
                 excludeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
@@ -52,6 +47,11 @@ final class SourceMapperTest extends TestCase
                             '',
                             '.php',
                         ),
+                    ],
+                ),
+                includeFiles: FileCollection::fromArray(
+                    [
+                        new File(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
             ),
