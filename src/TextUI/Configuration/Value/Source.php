@@ -22,9 +22,9 @@ final readonly class Source
     private ?string $baseline;
     private bool $ignoreBaseline;
     private FilterDirectoryCollection $includeDirectories;
-    private FileCollection $includeFiles;
+    private FilterFileCollection $includeFiles;
     private FilterDirectoryCollection $excludeDirectories;
-    private FileCollection $excludeFiles;
+    private FilterFileCollection $excludeFiles;
     private bool $restrictNotices;
     private bool $restrictWarnings;
     private bool $ignoreSuppressionOfDeprecations;
@@ -48,7 +48,7 @@ final readonly class Source
      * @param ?non-empty-string                                                         $baseline
      * @param array{functions: list<non-empty-string>, methods: list<non-empty-string>} $deprecationTriggers
      */
-    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger)
+    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger)
     {
         $this->baseline                           = $baseline;
         $this->ignoreBaseline                     = $ignoreBaseline;
@@ -107,7 +107,7 @@ final readonly class Source
         return $this->includeDirectories;
     }
 
-    public function includeFiles(): FileCollection
+    public function includeFiles(): FilterFileCollection
     {
         return $this->includeFiles;
     }
@@ -117,7 +117,7 @@ final readonly class Source
         return $this->excludeDirectories;
     }
 
-    public function excludeFiles(): FileCollection
+    public function excludeFiles(): FilterFileCollection
     {
         return $this->excludeFiles;
     }
