@@ -44,6 +44,8 @@ use PHPUnit\TextUI\Configuration\File;
 use PHPUnit\TextUI\Configuration\FileCollection;
 use PHPUnit\TextUI\Configuration\FilterDirectory;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\FilterFile;
+use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Group;
 use PHPUnit\TextUI\Configuration\GroupCollection;
 use PHPUnit\TextUI\Configuration\IniSetting;
@@ -619,7 +621,7 @@ final readonly class Loader
         return FilterDirectoryCollection::fromArray($directories);
     }
 
-    private function readFilterFiles(string $filename, DOMXPath $xpath, string $query): FileCollection
+    private function readFilterFiles(string $filename, DOMXPath $xpath, string $query): FilterFileCollection
     {
         $files = [];
 
@@ -633,14 +635,14 @@ final readonly class Loader
             $filePath = $fileNode->textContent;
 
             if ($filePath !== '') {
-                $files[] = new File(
+                $files[] = new FilterFile(
                     $this->toAbsolutePath($filename, $filePath),
                     !$fileNode->hasAttribute('includeInCodeCoverage') || $fileNode->getAttribute('includeInCodeCoverage') !== 'false',
                 );
             }
         }
 
-        return FileCollection::fromArray($files);
+        return FilterFileCollection::fromArray($files);
     }
 
     private function groups(DOMXPath $xpath): Groups

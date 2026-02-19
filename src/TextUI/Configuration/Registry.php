@@ -79,6 +79,8 @@ final class Registry
                     File::class,
                     FilterDirectoryCollection::class,
                     FilterDirectory::class,
+                    FilterFileCollection::class,
+                    FilterFile::class,
                     TestDirectoryCollection::class,
                     TestDirectory::class,
                     TestFileCollection::class,

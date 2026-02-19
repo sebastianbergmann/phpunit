@@ -29,8 +29,8 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
                 self::fixturePath('a/PrefixSuffix.php') => true,
             ],
             self::createSource(
-                includeFiles: FileCollection::fromArray([
-                    new File(self::fixturePath('a/PrefixSuffix.php')),
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/PrefixSuffix.php')),
                 ]),
             ),
         ];
@@ -48,9 +48,9 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
                         ),
                     ],
                 ),
-                includeFiles: FileCollection::fromArray(
+                includeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
             ),
@@ -60,14 +60,14 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
             [
             ],
             self::createSource(
-                includeFiles: FileCollection::fromArray(
+                includeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
-                excludeFiles: FileCollection::fromArray(
+                excludeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
             ),
@@ -143,9 +143,9 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
                         ),
                     ],
                 ),
-                excludeFiles: FileCollection::fromArray(
+                excludeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
             ),

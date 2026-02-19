@@ -20,16 +20,16 @@ abstract class AbstractSourceFilterTestCase extends TestCase
     protected static function createSource(
         ?FilterDirectoryCollection $includeDirectories = null,
         ?FilterDirectoryCollection $excludeDirectories = null,
-        ?FileCollection $includeFiles = null,
-        ?FileCollection $excludeFiles = null,
+        ?FilterFileCollection $includeFiles = null,
+        ?FilterFileCollection $excludeFiles = null,
     ): Source {
         return new Source(
             null,
             false,
             $includeDirectories ?? FilterDirectoryCollection::fromArray([]),
-            $includeFiles ?? FileCollection::fromArray([]),
+            $includeFiles ?? FilterFileCollection::fromArray([]),
             $excludeDirectories ?? FilterDirectoryCollection::fromArray([]),
-            $excludeFiles ?? FileCollection::fromArray([]),
+            $excludeFiles ?? FilterFileCollection::fromArray([]),
             false,
             false,
             false,
