@@ -24,7 +24,7 @@ PHPUnit is a framework for writing as well as a command-line tool for running te
 
 **If you upload PHPUnit to a webserver then your deployment process is broken. On a more general note, if your `vendor` directory is publicly accessible on your webserver then your deployment process is also broken.**
 
-Please note that if you upload PHPUnit to a webserver "bad things" may happen. [You have been warned.](https://thephp.cc/articles/phpunit-a-security-risk?ref=phpunit)
+Please note that if you upload PHPUnit to a webserver "bad things" may happen. [You have been warned.](https://phpunit.expert/articles/phpunit-a-security-risk.html?ref=github)
 
 PHPUnit is developed with a focus on development environments and the command-line. No specific testing or hardening with regard to using PHPUnit in an HTTP or web context or with untrusted input data is performed. PHPUnit might also contain functionality that intentionally exposes internal application data for debugging purposes.
 
