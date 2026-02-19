@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\Small;
 #[Small]
 #[Group('textui')]
 #[Group('textui/configuration')]
-final class SourceFilterTest extends AbstractSouceFilterTestCase
+final class SourceFilterTest extends AbstractSourceFilterTestCase
 {
     public static function provider(): array
     {

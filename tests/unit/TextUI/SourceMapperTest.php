@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\Small;
 #[Small]
 #[Group('textui')]
 #[Group('textui/configuration')]
-final class SourceMapperTest extends AbstractSouceFilterTestCase
+final class SourceMapperTest extends AbstractSourceFilterTestCase
 {
     public static function provider(): Generator
     {

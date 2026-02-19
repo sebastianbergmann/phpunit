@@ -15,7 +15,7 @@ use function realpath;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
 
-abstract class AbstractSouceFilterTestCase extends TestCase
+abstract class AbstractSourceFilterTestCase extends TestCase
 {
     protected static function createSource(
         ?FilterDirectoryCollection $includeDirectories = null,
