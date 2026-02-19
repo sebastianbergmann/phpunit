@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(SourceFilter::class)]
 #[Small]
-final class SourceFilterTest extends AbstractSouceFilterTestCase
+final class SourceFilterTest extends AbstractSourceFilterTestCase
 {
     public static function provider(): array
     {

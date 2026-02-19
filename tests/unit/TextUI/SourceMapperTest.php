@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(SourceMapper::class)]
 #[Small]
-final class SourceMapperTest extends AbstractSouceFilterTestCase
+final class SourceMapperTest extends AbstractSourceFilterTestCase
 {
     public static function provider(): Generator
     {
