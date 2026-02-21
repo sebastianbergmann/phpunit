@@ -47,10 +47,12 @@ unlink($logfile);
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\UnexpectedOutputTest" methodName="testWithOutput"/>
   </sources>
  </e:started>
- <e:finished id="2" time="%s">
+ <e:reported id="2" time="%s">
   <attachments>
    <output source="stdout" time="%s"><![CDATA[unexpected output]]></output>
   </attachments>
+ </e:reported>
+ <e:finished id="2" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:finished id="1" time="%s"/>
