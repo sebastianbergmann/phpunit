@@ -126,6 +126,11 @@ unlink($logfile);
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRisky"/>
   </sources>
  </e:started>
+ <e:reported id="7" time="%s">
+  <attachments>
+   <phpunit:issue type="risky" message="This test did not perform any assertions"/>
+  </attachments>
+ </e:reported>
  <e:finished id="7" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
@@ -227,6 +232,11 @@ Failed asserting that false is true.
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRiskyWithMessage"/>
   </sources>
  </e:started>
+ <e:reported id="14" time="%s">
+  <attachments>
+   <phpunit:issue type="risky" message="This test did not perform any assertions"/>
+  </attachments>
+ </e:reported>
  <e:finished id="14" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>

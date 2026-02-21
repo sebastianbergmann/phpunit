@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../../phpunit.xsd"
+         cacheResult="false"
+>
+    <testsuites>
+        <testsuite name="default">
+            <file>DeprecationSelfTriggerTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>.</directory>
+        </include>
+    </source>
+</phpunit>
