@@ -63,6 +63,9 @@ final readonly class IssueTrigger
         return !$this->isSelf() && !$this->isDirect() && !$this->isIndirect();
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function callerAsString(): string
     {
         if ($this->caller !== null) {
@@ -72,6 +75,9 @@ final readonly class IssueTrigger
         return 'unknown';
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function calleeAsString(): string
     {
         if ($this->callee !== null) {
@@ -81,6 +87,9 @@ final readonly class IssueTrigger
         return 'unknown';
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         if ($this->callee === null || $this->caller === null) {
