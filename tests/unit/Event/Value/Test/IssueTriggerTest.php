@@ -28,6 +28,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('unknown', $issueTrigger->callerAsString());
+        $this->assertSame('unknown', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -40,6 +42,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('test code', $issueTrigger->callerAsString());
+        $this->assertSame('unknown', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -52,6 +56,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('first-party code', $issueTrigger->callerAsString());
+        $this->assertSame('unknown', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -64,6 +70,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('third-party code', $issueTrigger->callerAsString());
+        $this->assertSame('unknown', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -76,6 +84,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('PHPUnit', $issueTrigger->callerAsString());
+        $this->assertSame('unknown', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -88,6 +98,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('PHP runtime', $issueTrigger->callerAsString());
+        $this->assertSame('unknown', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -100,6 +112,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('unknown', $issueTrigger->callerAsString());
+        $this->assertSame('test code', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -112,6 +126,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('test code', $issueTrigger->callerAsString());
+        $this->assertSame('test code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by test code calling into test code', $issueTrigger->asString());
     }
 
@@ -124,6 +140,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('first-party code', $issueTrigger->callerAsString());
+        $this->assertSame('test code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by first-party code calling into test code', $issueTrigger->asString());
     }
 
@@ -136,6 +154,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('third-party code', $issueTrigger->callerAsString());
+        $this->assertSame('test code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by third-party code calling into test code', $issueTrigger->asString());
     }
 
@@ -148,6 +168,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHPUnit', $issueTrigger->callerAsString());
+        $this->assertSame('test code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHPUnit calling into test code', $issueTrigger->asString());
     }
 
@@ -160,6 +182,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHP runtime', $issueTrigger->callerAsString());
+        $this->assertSame('test code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHP runtime calling into test code', $issueTrigger->asString());
     }
 
@@ -172,6 +196,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('unknown', $issueTrigger->callerAsString());
+        $this->assertSame('first-party code', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -184,6 +210,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('test code', $issueTrigger->callerAsString());
+        $this->assertSame('first-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by test code calling into first-party code', $issueTrigger->asString());
     }
 
@@ -196,6 +224,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('first-party code', $issueTrigger->callerAsString());
+        $this->assertSame('first-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by first-party code calling into first-party code', $issueTrigger->asString());
     }
 
@@ -208,6 +238,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('third-party code', $issueTrigger->callerAsString());
+        $this->assertSame('first-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by third-party code calling into first-party code', $issueTrigger->asString());
     }
 
@@ -220,6 +252,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHPUnit', $issueTrigger->callerAsString());
+        $this->assertSame('first-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHPUnit calling into first-party code', $issueTrigger->asString());
     }
 
@@ -232,6 +266,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHP runtime', $issueTrigger->callerAsString());
+        $this->assertSame('first-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHP runtime calling into first-party code', $issueTrigger->asString());
     }
 
@@ -244,6 +280,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('unknown', $issueTrigger->callerAsString());
+        $this->assertSame('third-party code', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -256,6 +294,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('test code', $issueTrigger->callerAsString());
+        $this->assertSame('third-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by test code calling into third-party code', $issueTrigger->asString());
     }
 
@@ -268,6 +308,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('first-party code', $issueTrigger->callerAsString());
+        $this->assertSame('third-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by first-party code calling into third-party code', $issueTrigger->asString());
     }
 
@@ -280,6 +322,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('third-party code', $issueTrigger->callerAsString());
+        $this->assertSame('third-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by third-party code calling into third-party code', $issueTrigger->asString());
     }
 
@@ -292,6 +336,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHPUnit', $issueTrigger->callerAsString());
+        $this->assertSame('third-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHPUnit calling into third-party code', $issueTrigger->asString());
     }
 
@@ -304,6 +350,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHP runtime', $issueTrigger->callerAsString());
+        $this->assertSame('third-party code', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHP runtime calling into third-party code', $issueTrigger->asString());
     }
 
@@ -316,6 +364,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('unknown', $issueTrigger->callerAsString());
+        $this->assertSame('PHPUnit', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -328,6 +378,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('test code', $issueTrigger->callerAsString());
+        $this->assertSame('PHPUnit', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by test code calling into PHPUnit', $issueTrigger->asString());
     }
 
@@ -340,6 +392,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('first-party code', $issueTrigger->callerAsString());
+        $this->assertSame('PHPUnit', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by first-party code calling into PHPUnit', $issueTrigger->asString());
     }
 
@@ -352,6 +406,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('third-party code', $issueTrigger->callerAsString());
+        $this->assertSame('PHPUnit', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by third-party code calling into PHPUnit', $issueTrigger->asString());
     }
 
@@ -364,6 +420,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHPUnit', $issueTrigger->callerAsString());
+        $this->assertSame('PHPUnit', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHPUnit calling into PHPUnit', $issueTrigger->asString());
     }
 
@@ -376,6 +434,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHP runtime', $issueTrigger->callerAsString());
+        $this->assertSame('PHPUnit', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHP runtime calling into PHPUnit', $issueTrigger->asString());
     }
 
@@ -388,6 +448,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertTrue($issueTrigger->isUnknown());
+        $this->assertSame('unknown', $issueTrigger->callerAsString());
+        $this->assertSame('PHP runtime', $issueTrigger->calleeAsString());
         $this->assertSame('unknown if issue was triggered in first-party code or third-party code', $issueTrigger->asString());
     }
 
@@ -400,6 +462,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('test code', $issueTrigger->callerAsString());
+        $this->assertSame('PHP runtime', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by test code calling into PHP runtime', $issueTrigger->asString());
     }
 
@@ -412,6 +476,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertTrue($issueTrigger->isDirect());
         $this->assertFalse($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('first-party code', $issueTrigger->callerAsString());
+        $this->assertSame('PHP runtime', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by first-party code calling into PHP runtime', $issueTrigger->asString());
     }
 
@@ -424,6 +490,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('third-party code', $issueTrigger->callerAsString());
+        $this->assertSame('PHP runtime', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by third-party code calling into PHP runtime', $issueTrigger->asString());
     }
 
@@ -436,6 +504,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHPUnit', $issueTrigger->callerAsString());
+        $this->assertSame('PHP runtime', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHPUnit calling into PHP runtime', $issueTrigger->asString());
     }
 
@@ -448,6 +518,8 @@ final class IssueTriggerTest extends TestCase
         $this->assertFalse($issueTrigger->isDirect());
         $this->assertTrue($issueTrigger->isIndirect());
         $this->assertFalse($issueTrigger->isUnknown());
+        $this->assertSame('PHP runtime', $issueTrigger->callerAsString());
+        $this->assertSame('PHP runtime', $issueTrigger->calleeAsString());
         $this->assertSame('issue triggered by PHP runtime calling into PHP runtime', $issueTrigger->asString());
     }
 }
