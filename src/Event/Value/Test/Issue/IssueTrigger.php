@@ -68,11 +68,7 @@ final readonly class IssueTrigger
      */
     public function callerAsString(): string
     {
-        if ($this->caller !== null) {
-            return $this->caller->value;
-        }
-
-        return 'unknown';
+        return $this->codeAsString($this->caller);
     }
 
     /**
@@ -80,11 +76,7 @@ final readonly class IssueTrigger
      */
     public function calleeAsString(): string
     {
-        if ($this->callee !== null) {
-            return $this->callee->value;
-        }
-
-        return 'unknown';
+        return $this->codeAsString($this->callee);
     }
 
     /**
@@ -101,5 +93,17 @@ final readonly class IssueTrigger
             $this->caller->value,
             $this->callee->value,
         );
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function codeAsString(?Code $code): string
+    {
+        if ($code === null) {
+            return 'unknown';
+        }
+
+        return $code->value;
     }
 }
