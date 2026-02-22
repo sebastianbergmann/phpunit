@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 ### Added
 
-* [#6501](https://github.com/sebastianbergmann/phpunit/issues/6501): Include unexpected test output in Open Test Reporting (OTR) XML logfile
+* [#6501](https://github.com/sebastianbergmann/phpunit/issues/6501): Include unexpected output in Open Test Reporting (OTR) XML logfile
 * [#6523](https://github.com/sebastianbergmann/phpunit/issues/6523): Include `#[Group]` information in Open Test Reporting (OTR) XML logfile
 * [#6524](https://github.com/sebastianbergmann/phpunit/pull/6524): Report issues in Open Test Reporting (OTR) XML logfile
 
