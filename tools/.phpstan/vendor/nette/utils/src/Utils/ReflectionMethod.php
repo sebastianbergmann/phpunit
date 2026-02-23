@@ -22,6 +22,7 @@ final class ReflectionMethod extends \ReflectionMethod
 	private readonly \ReflectionClass $originalClass;
 
 
+	/** @param  class-string|object  $objectOrMethod */
 	public function __construct(object|string $objectOrMethod, ?string $method = null)
 	{
 		if (is_string($objectOrMethod) && str_contains($objectOrMethod, '::')) {

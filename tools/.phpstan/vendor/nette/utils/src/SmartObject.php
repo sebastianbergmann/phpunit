@@ -22,7 +22,7 @@ use Nette\Utils\ObjectHelpers;
 trait SmartObject
 {
 	/**
-	 * @param  list<mixed>  $args
+	 * @param  mixed[]  $args
 	 * @return mixed
 	 * @throws MemberAccessException
 	 */
@@ -48,7 +48,7 @@ trait SmartObject
 
 
 	/**
-	 * @param  list<mixed>  $args
+	 * @param  mixed[]  $args
 	 * @return never
 	 * @throws MemberAccessException
 	 */

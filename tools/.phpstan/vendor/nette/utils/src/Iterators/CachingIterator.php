@@ -24,8 +24,8 @@ use Nette;
  * @property-read bool $odd
  * @property-read bool $even
  * @property-read int $counter
- * @property-read mixed $nextKey
- * @property-read mixed $nextValue
+ * @property-read TKey $nextKey
+ * @property-read TValue $nextValue
  */
 class CachingIterator extends \CachingIterator implements \Countable
 {
@@ -34,9 +34,7 @@ class CachingIterator extends \CachingIterator implements \Countable
 	private int $counter = 0;
 
 
-	/**
-	 * @param  iterable<TKey, TValue>|\stdClass  $iterable
-	 */
+	/** @param  iterable<TKey, TValue>|\stdClass  $iterable */
 	public function __construct(iterable|\stdClass $iterable)
 	{
 		$iterable = $iterable instanceof \stdClass
@@ -122,12 +120,14 @@ class CachingIterator extends \CachingIterator implements \Countable
 	}
 
 
+	/** @return TKey */
 	public function getNextKey(): mixed
 	{
 		return $this->getInnerIterator()->key();
 	}
 
 
+	/** @return TValue */
 	public function getNextValue(): mixed
 	{
 		return $this->getInnerIterator()->current();
