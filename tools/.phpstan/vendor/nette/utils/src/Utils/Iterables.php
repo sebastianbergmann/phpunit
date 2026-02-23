@@ -54,10 +54,11 @@ final class Iterables
 	 * Returns the first item (matching the specified predicate if given). If there is no such item, it returns result of invoking $else or null.
 	 * @template K
 	 * @template V
+	 * @template E
 	 * @param  iterable<K, V>  $iterable
 	 * @param  ?callable(V, K, iterable<K, V>): bool  $predicate
-	 * @param  ?callable(): V  $else
-	 * @return ?V
+	 * @param  ?callable(): E  $else
+	 * @return ($else is null ? ?V : V|E)
 	 */
 	public static function first(iterable $iterable, ?callable $predicate = null, ?callable $else = null): mixed
 	{
@@ -74,10 +75,11 @@ final class Iterables
 	 * Returns the key of first item (matching the specified predicate if given). If there is no such item, it returns result of invoking $else or null.
 	 * @template K
 	 * @template V
+	 * @template E
 	 * @param  iterable<K, V>  $iterable
 	 * @param  ?callable(V, K, iterable<K, V>): bool  $predicate
-	 * @param  ?callable(): K  $else
-	 * @return ?K
+	 * @param  ?callable(): E  $else
+	 * @return ($else is null ? ?K : K|E)
 	 */
 	public static function firstKey(iterable $iterable, ?callable $predicate = null, ?callable $else = null): mixed
 	{
@@ -165,11 +167,11 @@ final class Iterables
 	 * Iterator that transforms keys and values by calling $transformer. If it returns null, the element is skipped.
 	 * @template K
 	 * @template V
-	 * @template ResV
 	 * @template ResK
+	 * @template ResV
 	 * @param  iterable<K, V>  $iterable
-	 * @param  callable(V, K, iterable<K, V>): ?array{ResV, ResK}  $transformer
-	 * @return \Generator<ResV, ResK>
+	 * @param  callable(V, K, iterable<K, V>): ?array{ResK, ResV}  $transformer
+	 * @return \Generator<ResK, ResV>
 	 */
 	public static function mapWithKeys(iterable $iterable, callable $transformer): \Generator
 	{
@@ -194,6 +196,7 @@ final class Iterables
 	{
 		return new class ($factory(...)) implements \IteratorAggregate {
 			public function __construct(
+				/** @var \Closure(): iterable<mixed, mixed> */
 				private \Closure $factory,
 			) {
 			}

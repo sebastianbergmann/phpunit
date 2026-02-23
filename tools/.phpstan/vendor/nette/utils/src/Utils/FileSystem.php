@@ -52,14 +52,15 @@ final class FileSystem
 		} elseif (is_dir($origin)) {
 			static::createDir($target);
 			foreach (new \FilesystemIterator($target) as $item) {
+				\assert($item instanceof \SplFileInfo);
 				static::delete($item->getPathname());
 			}
 
 			foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($origin, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
 				if ($item->isDir()) {
-					static::createDir($target . '/' . $iterator->getSubPathName());
+					static::createDir($target . '/' . $iterator->getSubPathname());
 				} else {
-					static::copy($item->getPathname(), $target . '/' . $iterator->getSubPathName());
+					static::copy($item->getPathname(), $target . '/' . $iterator->getSubPathname());
 				}
 			}
 		} else {
@@ -112,6 +113,7 @@ final class FileSystem
 			}
 		} elseif (is_dir($path)) {
 			foreach (new \FilesystemIterator($path) as $item) {
+				\assert($item instanceof \SplFileInfo);
 				static::delete($item->getPathname());
 			}
 
@@ -251,6 +253,7 @@ final class FileSystem
 			}
 		} elseif (is_dir($path)) {
 			foreach (new \FilesystemIterator($path) as $item) {
+				\assert($item instanceof \SplFileInfo);
 				static::makeWritable($item->getPathname(), $dirMode, $fileMode);
 			}
 
