@@ -128,10 +128,11 @@ class Arrays
 	 * Returns the first item (matching the specified predicate if given). If there is no such item, it returns result of invoking $else or null.
 	 * @template K of int|string
 	 * @template V
+	 * @template E
 	 * @param  array<K, V>  $array
 	 * @param  ?callable(V, K, array<K, V>): bool  $predicate
-	 * @param  ?callable(): V  $else
-	 * @return ?V
+	 * @param  ?callable(): E  $else
+	 * @return ($else is null ? ?V : V|E)
 	 */
 	public static function first(array $array, ?callable $predicate = null, ?callable $else = null): mixed
 	{
@@ -146,10 +147,11 @@ class Arrays
 	 * Returns the last item (matching the specified predicate if given). If there is no such item, it returns result of invoking $else or null.
 	 * @template K of int|string
 	 * @template V
+	 * @template E
 	 * @param  array<K, V>  $array
 	 * @param  ?callable(V, K, array<K, V>): bool  $predicate
-	 * @param  ?callable(): V  $else
-	 * @return ?V
+	 * @param  ?callable(): E  $else
+	 * @return ($else is null ? ?V : V|E)
 	 */
 	public static function last(array $array, ?callable $predicate = null, ?callable $else = null): mixed
 	{
@@ -300,7 +302,7 @@ class Arrays
 	 * @param  string|list<string>  $path
 	 * @return array<mixed>|\stdClass
 	 */
-	public static function associate(array $array, $path): array|\stdClass
+	public static function associate(array $array, string|array $path): array|\stdClass
 	{
 		$parts = is_array($path)
 			? $path
@@ -326,6 +328,8 @@ class Arrays
 						$x = $row[$parts[$i]];
 						$row = null;
 					}
+					break; // '=' is always the final operation
+
 				} elseif ($part === '->') {
 					if (isset($parts[++$i])) {
 						if ($x === null) {
@@ -353,7 +357,7 @@ class Arrays
 	/**
 	 * Normalizes array to associative array. Replace numeric keys with their values, the new value will be $filling.
 	 * @param  array<mixed>  $array
-	 * @return array<mixed>
+	 * @return array<string, mixed>
 	 */
 	public static function normalize(array $array, mixed $filling = null): array
 	{
@@ -496,8 +500,7 @@ class Arrays
 
 	/**
 	 * Invokes all callbacks and returns array of results.
-	 * @param  iterable<callable(): mixed>  $callbacks
-	 * @param  mixed  ...$args
+	 * @param  callable[]  $callbacks
 	 * @return array<mixed>
 	 */
 	public static function invoke(iterable $callbacks, mixed ...$args): array
@@ -514,7 +517,6 @@ class Arrays
 	/**
 	 * Invokes method on every object in an array and returns array of results.
 	 * @param  object[]  $objects
-	 * @param  mixed  ...$args
 	 * @return array<mixed>
 	 */
 	public static function invokeMethod(iterable $objects, string $method, mixed ...$args): array

@@ -66,7 +66,7 @@ class ImageColor
 
 	/**
 	 * Returns GD-compatible color array [R, G, B, alpha].
-	 * @return array{int, int, int, int}
+	 * @return array{int<0, 255>, int<0, 255>, int<0, 255>, int<0, 127>}
 	 */
 	public function toRGBA(): array
 	{
