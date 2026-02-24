@@ -31,7 +31,7 @@ use stdClass;
 #[UsesClass(CoversMethod::class)]
 #[UsesClass(CoversNothing::class)]
 #[UsesClass(DataProvider::class)]
-#[UsesClass(DataProviderCallable::class)]
+#[UsesClass(DataProviderClosure::class)]
 #[UsesClass(DependsOnClass::class)]
 #[UsesClass(DependsOnMethod::class)]
 #[UsesClass(DisableReturnValueGenerationForTestDoubles::class)]

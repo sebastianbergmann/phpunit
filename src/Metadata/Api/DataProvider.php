@@ -23,7 +23,7 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
-use PHPUnit\Metadata\DataProviderCallable as DataProviderCallableMetadata;
+use PHPUnit\Metadata\DataProviderClosure as DataProviderClosureMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
@@ -89,14 +89,14 @@ final readonly class DataProvider
         $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
         foreach ($dataProvider as $_dataProvider) {
-            assert($_dataProvider instanceof DataProviderMetadata || $_dataProvider instanceof DataProviderCallableMetadata);
+            assert($_dataProvider instanceof DataProviderMetadata || $_dataProvider instanceof DataProviderClosureMetadata);
 
-            if ($_dataProvider instanceof DataProviderCallableMetadata) {
+            if ($_dataProvider instanceof DataProviderClosureMetadata) {
                 $providerLabel         = sprintf('callable provided to %s::%s()', $testClassName, $testMethod->getName());
                 $validateArgumentCount = $testMethodIsNonVariadic && $_dataProvider->validateArgumentCount();
 
                 try {
-                    $callable = $_dataProvider->callable();
+                    $callable = $_dataProvider->closure();
                     $data     = $callable();
 
                     if (!is_iterable($data)) {

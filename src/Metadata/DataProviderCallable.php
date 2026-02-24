@@ -14,20 +14,17 @@ namespace PHPUnit\Metadata;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class DataProviderCallable extends Metadata
+final readonly class DataProviderClosure extends Metadata
 {
-    private \Closure $callable;
+    private \Closure $closure;
 
     private bool $validateArgumentCount;
 
-    /**
-     * @param int<0, 1> $level
-     */
-    protected function __construct(int $level, callable $callable, bool $validateArgumentCount)
+    protected function __construct(Level $level, \Closure $closure, bool $validateArgumentCount)
     {
         parent::__construct($level);
 
-        $this->callable = $callable;
+        $this->closure = $closure;
         $this->validateArgumentCount = $validateArgumentCount;
     }
 
@@ -36,8 +33,8 @@ final readonly class DataProviderCallable extends Metadata
         return true;
     }
 
-    public function callable(): callable {
-        return $this->callable;
+    public function closure(): \Closure {
+        return $this->closure;
     }
 
     public function validateArgumentCount(): bool
