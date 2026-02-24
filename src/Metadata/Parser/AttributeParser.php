@@ -622,7 +622,7 @@ final readonly class AttributeParser implements Parser
                 case DataProviderClosure::class:
                     assert($attributeInstance instanceof DataProviderClosure);
 
-                    $result[] = Metadata::dataProviderCallable($attributeInstance->closure(), $attributeInstance->validateArgumentCount());
+                    $result[] = Metadata::dataProviderClosure($attributeInstance->closure(), $attributeInstance->validateArgumentCount());
 
                     break;
 
