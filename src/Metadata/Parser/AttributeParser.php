@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata\Parser;
 
-use PHPUnit\Framework\Attributes\DataProviderClosure;
 use const JSON_THROW_ON_ERROR;
 use function assert;
 use function class_exists;
@@ -38,6 +37,7 @@ use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderClosure;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\DependsExternal;

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Metadata;
 
+use Closure;
+
 /**
  * @immutable
  *
@@ -16,15 +18,14 @@ namespace PHPUnit\Metadata;
  */
 final readonly class DataProviderClosure extends Metadata
 {
-    private \Closure $closure;
-
+    private Closure $closure;
     private bool $validateArgumentCount;
 
-    protected function __construct(Level $level, \Closure $closure, bool $validateArgumentCount)
+    protected function __construct(Level $level, Closure $closure, bool $validateArgumentCount)
     {
         parent::__construct($level);
 
-        $this->closure = $closure;
+        $this->closure               = $closure;
         $this->validateArgumentCount = $validateArgumentCount;
     }
 
@@ -33,7 +34,8 @@ final readonly class DataProviderClosure extends Metadata
         return true;
     }
 
-    public function closure(): \Closure {
+    public function closure(): Closure
+    {
         return $this->closure;
     }
 
