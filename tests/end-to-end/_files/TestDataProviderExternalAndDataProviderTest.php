@@ -35,7 +35,8 @@ final class TestDataProviderExternalAndDataProviderTest extends TestCase
     #[DataProvider('provider')]
     #[DataProviderExternal(self::class, 'externalProvider')]
     #[DataProviderClosure(self::callableProvider(...))]
-    #[DataProviderClosure(static function (): iterable {
+    #[DataProviderClosure(static function ()
+    {
         yield 'foo4' => ['bar444', 'baz'];
     })]
     public function testWithDifferentProviderTypes($one, $two): void

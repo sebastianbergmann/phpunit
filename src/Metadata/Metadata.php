@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata;
 
+use Closure;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Extension\Extension;
 
@@ -147,7 +148,7 @@ abstract readonly class Metadata
         return new DataProvider(Level::METHOD_LEVEL, $className, $methodName, $validateArgumentCount);
     }
 
-    public static function dataProviderClosure(\Closure $callable, bool $validateArgumentCount): DataProviderClosure
+    public static function dataProviderClosure(Closure $callable, bool $validateArgumentCount): DataProviderClosure
     {
         return new DataProviderClosure(Level::METHOD_LEVEL, $callable, $validateArgumentCount);
     }

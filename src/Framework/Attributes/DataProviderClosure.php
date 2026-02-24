@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Attributes;
 
 use Attribute;
+use Closure;
 
 /**
  * @immutable
@@ -19,17 +20,16 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final readonly class DataProviderClosure
 {
-    private \Closure $closure;
-
+    private Closure $closure;
     private bool $validateArgumentCount;
 
-    public function __construct(\Closure $closure, bool $validateArgumentCount = true)
+    public function __construct(Closure $closure, bool $validateArgumentCount = true)
     {
         $this->closure               = $closure;
         $this->validateArgumentCount = $validateArgumentCount;
     }
 
-    public function closure(): \Closure
+    public function closure(): Closure
     {
         return $this->closure;
     }
