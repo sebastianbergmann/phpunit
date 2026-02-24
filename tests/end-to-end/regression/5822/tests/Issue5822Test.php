@@ -24,7 +24,7 @@ final class Issue5822Test extends TestCase
 
     private function callUserFuncExample(): void
     {
-        call_user_func([$this, 'exampleCallback']);
+        call_user_func($this->exampleCallback(...));
     }
 
     private function exampleCallback(): void

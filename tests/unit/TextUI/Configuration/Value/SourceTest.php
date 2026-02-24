@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(FileCollection::class)]
 #[UsesClass(FileCollectionIterator::class)]
 #[Small]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/value-objects')]
 final class SourceTest extends TestCase
 {
     public function testHasIncludeDirectories(): void
@@ -32,9 +36,9 @@ final class SourceTest extends TestCase
             null,
             false,
             $includeDirectories,
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -51,6 +55,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($includeDirectories, $source->includeDirectories());
@@ -58,7 +63,7 @@ final class SourceTest extends TestCase
 
     public function testHasIncludeFiles(): void
     {
-        $includeFiles = FileCollection::fromArray([]);
+        $includeFiles = FilterFileCollection::fromArray([]);
 
         $source = new Source(
             null,
@@ -66,7 +71,7 @@ final class SourceTest extends TestCase
             FilterDirectoryCollection::fromArray([]),
             $includeFiles,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -83,6 +88,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($includeFiles, $source->includeFiles());
@@ -96,9 +102,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             $excludeDirectories,
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -115,6 +121,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($excludeDirectories, $source->excludeDirectories());
@@ -122,13 +129,13 @@ final class SourceTest extends TestCase
 
     public function testHasExcludeFiles(): void
     {
-        $excludeFiles = FileCollection::fromArray([]);
+        $excludeFiles = FilterFileCollection::fromArray([]);
 
         $source = new Source(
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
             $excludeFiles,
             false,
@@ -147,6 +154,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($excludeFiles, $source->excludeFiles());
@@ -160,9 +168,9 @@ final class SourceTest extends TestCase
             $baseline,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -179,6 +187,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertSame($baseline, $source->baseline());
@@ -192,9 +201,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -211,6 +220,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->hasBaseline());
@@ -227,9 +237,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -246,6 +256,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->restrictNotices());
@@ -257,9 +268,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             true,
             false,
             false,
@@ -276,6 +287,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->restrictNotices());
@@ -287,9 +299,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -306,6 +318,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->restrictWarnings());
@@ -317,9 +330,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             true,
             false,
@@ -336,6 +349,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->restrictWarnings());
@@ -347,9 +361,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -366,6 +380,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfDeprecations());
@@ -377,9 +392,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             true,
@@ -396,6 +411,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfDeprecations());
@@ -407,9 +423,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -426,6 +442,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpDeprecations());
@@ -437,9 +454,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -456,6 +473,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpDeprecations());
@@ -467,9 +485,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -486,6 +504,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfErrors());
@@ -497,9 +516,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -516,6 +535,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfErrors());
@@ -527,9 +547,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -546,6 +566,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfNotices());
@@ -557,9 +578,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -576,6 +597,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfNotices());
@@ -587,9 +609,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -606,6 +628,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpNotices());
@@ -617,9 +640,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -636,6 +659,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpNotices());
@@ -647,9 +671,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -666,6 +690,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfWarnings());
@@ -677,9 +702,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -696,6 +721,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfWarnings());
@@ -707,9 +733,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -726,6 +752,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->ignoreSuppressionOfPhpWarnings());
@@ -737,9 +764,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -756,6 +783,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->ignoreSuppressionOfPhpWarnings());
@@ -767,9 +795,9 @@ final class SourceTest extends TestCase
             null,
             false,
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -786,6 +814,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertFalse($source->notEmpty());
@@ -805,9 +834,9 @@ final class SourceTest extends TestCase
                     ),
                 ],
             ),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             FilterDirectoryCollection::fromArray([]),
-            FileCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
             false,
             false,
             false,
@@ -824,6 +853,7 @@ final class SourceTest extends TestCase
             false,
             false,
             false,
+            true,
         );
 
         $this->assertTrue($source->notEmpty());

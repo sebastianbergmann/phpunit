@@ -81,7 +81,9 @@ final readonly class Loader
 
         if ($loaded === false) {
             if ($message === '') {
+                // @codeCoverageIgnoreStart
                 $message = 'Could not load XML for unknown reason';
+                // @codeCoverageIgnoreEnd
             }
 
             throw new XmlException($message);

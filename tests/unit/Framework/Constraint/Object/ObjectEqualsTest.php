@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ActualValueIsNotAnObjectException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
 use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
@@ -39,6 +40,8 @@ use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithoutEqualsMethod;
 #[CoversClass(ComparisonMethodDoesNotDeclareParameterTypeException::class)]
 #[CoversClass(ComparisonMethodDoesNotAcceptParameterTypeException::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class ObjectEqualsTest extends TestCase
 {
     public function testCanBeRepresentedAsString(): void

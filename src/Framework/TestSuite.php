@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function array_all;
 use function array_merge;
 use function array_pop;
 use function array_reverse;
@@ -50,7 +51,7 @@ use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
 
 /**
- * @template-implements IteratorAggregate<int, Test>
+ * @template-implements IteratorAggregate<non-negative-int, Test>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -410,7 +411,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
-     * Returns an iterator for this test suite.
+     * @return Iterator<non-negative-int, Test>
      */
     public function getIterator(): Iterator
     {
@@ -535,7 +536,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 new TestMethod(
                     $className,
                     $methodName,
-                    $class->getFileName(),
+                    $method->getFileName(),
                     $method->getStartLine(),
                     Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                         $className,
@@ -576,13 +577,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     private function containsOnlyVirtualGroups(array $groups): bool
     {
-        foreach ($groups as $group) {
-            if (!str_starts_with($group, '__phpunit_')) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($groups, static fn (string $group) => str_starts_with($group, '__phpunit_'));
     }
 
     private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool

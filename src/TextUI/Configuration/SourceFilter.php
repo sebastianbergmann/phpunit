@@ -44,6 +44,9 @@ final class SourceFilter
         $this->map = $map;
     }
 
+    /**
+     * @param non-empty-string $path
+     */
     public function includes(string $path): bool
     {
         return isset($this->map[$path]);

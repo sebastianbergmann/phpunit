@@ -11,7 +11,7 @@ namespace Nette\Localization;
 
 
 /**
- * Translator adapter.
+ * Translation provider.
  */
 interface Translator
 {

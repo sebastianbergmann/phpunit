@@ -11,12 +11,15 @@ namespace PHPUnit\Event;
 
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DummySubscriber;
 
 #[CoversClass(DeferringDispatcher::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/dispatcher')]
 final class DeferringDispatcherTest extends TestCase
 {
     public function testCollectsEventsUntilFlush(): void

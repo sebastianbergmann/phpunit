@@ -11,12 +11,15 @@ namespace PHPUnit\Framework;
 
 use function file_get_contents;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertStringNotEqualsFile')]
 #[TestDox('assertStringNotEqualsFile()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertStringNotEqualsFileTest extends TestCase
 {
     public function testSucceedsWhenConstraintEvaluatesToTrue(): void

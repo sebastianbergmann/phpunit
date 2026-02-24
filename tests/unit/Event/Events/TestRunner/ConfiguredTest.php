@@ -11,6 +11,7 @@ namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -19,6 +20,8 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(Configured::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/events')]
 final class ConfiguredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

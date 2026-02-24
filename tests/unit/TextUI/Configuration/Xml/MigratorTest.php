@@ -10,9 +10,13 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/xml')]
 final class MigratorTest extends TestCase
 {
     public static function provider(): array
@@ -29,6 +33,10 @@ final class MigratorTest extends TestCase
             'Relative Path' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-relative-schema-path.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-relative-schema-path.xml',
+            ],
+            'No Schema Location' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-no-schema-location.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-no-schema-location.xml',
             ],
             'Issue 5859' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-issue-5859.xml',

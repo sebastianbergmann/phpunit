@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use const PHP_EOL;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,8 @@ use stdClass;
 #[CoversClass(IsEqualIgnoringCase::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class IsEqualIgnoringCaseTest extends TestCase
 {
     public static function provider(): array

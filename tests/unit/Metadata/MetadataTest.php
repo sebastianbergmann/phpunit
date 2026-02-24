@@ -32,6 +32,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -97,6 +98,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertTrue($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -154,12 +156,76 @@ final class MetadataTest extends TestCase
         $this->assertSame($priority, $metadata->priority());
     }
 
+    public function testCanBeAllowMockObjectsWithoutExpectations(): void
+    {
+        $metadata = Metadata::allowMockObjectsWithoutExpectationsOnClass();
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertTrue($metadata->isAllowMockObjectsWithoutExpectations());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversNamespace());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversClassesThatExtendClass());
+        $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresEnvironmentVariable());
+        $this->assertFalse($metadata->isWithEnvironmentVariable());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestDoxFormatter());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUsesNamespace());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesClassesThatExtendClass());
+        $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
+    }
+
     public function testCanBeBackupGlobalsOnClass(): void
     {
         $metadata = Metadata::backupGlobalsOnClass(false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertTrue($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -223,6 +289,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertTrue($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -286,6 +353,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertTrue($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -349,6 +417,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertTrue($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -414,6 +483,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertTrue($metadata->isBeforeClass());
@@ -479,6 +549,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -541,6 +612,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -607,6 +679,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -671,6 +744,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -735,6 +809,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -799,6 +874,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -863,6 +939,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -928,6 +1005,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -990,6 +1068,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1052,6 +1131,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1116,6 +1196,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1182,6 +1263,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1248,6 +1330,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1315,6 +1398,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1377,6 +1461,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1439,6 +1524,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1501,6 +1587,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1564,6 +1651,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1627,6 +1715,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1692,6 +1781,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1757,6 +1847,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1817,10 +1908,13 @@ final class MetadataTest extends TestCase
 
     public function testCanBeIgnoreDeprecationsOnClass(): void
     {
-        $metadata = Metadata::ignoreDeprecationsOnClass();
+        $messagePattern = 'the-message-pattern';
+
+        $metadata = Metadata::ignoreDeprecationsOnClass($messagePattern);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1875,6 +1969,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
+        $this->assertSame($messagePattern, $metadata->messagePattern());
     }
 
     public function testCanBeIgnoreDeprecationsOnMethod(): void
@@ -1883,6 +1978,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -1945,6 +2041,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2007,6 +2104,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2065,10 +2163,13 @@ final class MetadataTest extends TestCase
 
     public function testCanBeIgnorePHPUnitWarnings(): void
     {
-        $metadata = Metadata::ignorePHPUnitWarnings(null);
+        $messagePattern = 'the-message-pattern';
+
+        $metadata = Metadata::ignorePHPUnitWarnings($messagePattern);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2123,6 +2224,7 @@ final class MetadataTest extends TestCase
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
+        $this->assertSame($messagePattern, $metadata->messagePattern());
     }
 
     public function testCanBeGroupOnMethod(): void
@@ -2131,6 +2233,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2195,6 +2298,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2257,6 +2361,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2319,6 +2424,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2383,6 +2489,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2448,6 +2555,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2511,6 +2619,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2571,6 +2680,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2631,6 +2741,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2696,6 +2807,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2761,6 +2873,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2825,6 +2938,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2889,6 +3003,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -2953,6 +3068,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3017,6 +3133,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3081,6 +3198,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3150,6 +3268,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3219,6 +3338,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3283,6 +3403,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3357,6 +3478,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3423,6 +3545,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3497,6 +3620,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3568,6 +3692,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3632,6 +3757,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3701,6 +3827,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3765,6 +3892,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3829,6 +3957,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3894,6 +4023,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -3959,6 +4089,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4024,6 +4155,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4089,6 +4221,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4154,6 +4287,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4219,6 +4353,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4283,6 +4418,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4347,6 +4483,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4412,6 +4549,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4479,6 +4617,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4543,6 +4682,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4607,6 +4747,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4671,6 +4812,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4735,6 +4877,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4798,6 +4941,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4863,6 +5007,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());
@@ -4927,6 +5072,7 @@ final class MetadataTest extends TestCase
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
         $this->assertFalse($metadata->isBackupGlobals());
         $this->assertFalse($metadata->isBackupStaticProperties());
         $this->assertFalse($metadata->isBeforeClass());

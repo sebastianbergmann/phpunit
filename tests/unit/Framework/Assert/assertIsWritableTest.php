@@ -21,12 +21,15 @@ use function uniqid;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertIsWritable')]
 #[TestDox('assertIsWritable()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertIsWritableTest extends TestCase
 {
     private ?string $directory = null;

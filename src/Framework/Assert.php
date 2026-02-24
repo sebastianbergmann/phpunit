@@ -20,6 +20,8 @@ use ArrayAccess;
 use Countable;
 use Generator;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArraysAreEqual;
+use PHPUnit\Framework\Constraint\ArraysAreIdentical;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
@@ -203,6 +205,154 @@ abstract class Assert
         self::assertThat(
             $array,
             new IsList,
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays are identical.
+     *
+     * The (key, value) relationship matters, the order of the (key, value) pairs in the array matters, and keys as well as values are compared strictly.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArraysAreIdentical(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreIdentical($expected, true, true),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays are identical while ignoring the order of their values.
+     *
+     * The (key, value) relationship matters, the order of the (key, value) pairs in the array does not matter, and keys as well as values are compared strictly.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArraysAreIdenticalIgnoringOrder(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreIdentical($expected, true, false),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays have identical values.
+     *
+     * The (key, value) relationship does not matter, the order of the (key, value) pairs in the array matters, and values are compared strictly.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArraysHaveIdenticalValues(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreIdentical($expected, false, true),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays have identical values while ignoring the order of these values.
+     *
+     * The (key, value) relationship does not matter, the order of the (key, value) pairs in the array does not matter, and values are compared strictly.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArraysHaveIdenticalValuesIgnoringOrder(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreIdentical($expected, false, false),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays are equal.
+     *
+     * The (key, value) relationship matters, the order of the (key, value) pairs in the array matters, and keys as well as values are compared loosely.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     */
+    final public static function assertArraysAreEqual(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreEqual($expected, true, true),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays are equal while ignoring the order of their values.
+     *
+     * The (key, value) relationship matters, the order of the (key, value) pairs in the array does not matter, and keys as well as values are compared loosely.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArraysAreEqualIgnoringOrder(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreEqual($expected, true, false),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays have equal values.
+     *
+     * The (key, value) relationship does not matter, the order of the (key, value) pairs in the array matters, and values are compared loosely.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     */
+    final public static function assertArraysHaveEqualValues(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreEqual($expected, false, true),
+            $message,
+        );
+    }
+
+    /**
+     * Assert that two arrays have equal values while ignoring the order of these values.
+     *
+     * The (key, value) relationship does not matter, the order of the (key, value) pairs in the array does not matter, and values are compared loosely.
+     *
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArraysHaveEqualValuesIgnoringOrder(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new ArraysAreEqual($expected, false, false),
             $message,
         );
     }

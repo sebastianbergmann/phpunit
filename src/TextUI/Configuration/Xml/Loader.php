@@ -44,6 +44,8 @@ use PHPUnit\TextUI\Configuration\File;
 use PHPUnit\TextUI\Configuration\FileCollection;
 use PHPUnit\TextUI\Configuration\FilterDirectory;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\FilterFile;
+use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Group;
 use PHPUnit\TextUI\Configuration\GroupCollection;
 use PHPUnit\TextUI\Configuration\IniSetting;
@@ -312,6 +314,7 @@ final readonly class Loader
         $ignoreSelfDeprecations             = false;
         $ignoreDirectDeprecations           = false;
         $ignoreIndirectDeprecations         = false;
+        $identifyIssueTrigger               = true;
 
         $element = $this->element($xpath, 'source');
 
@@ -334,6 +337,7 @@ final readonly class Loader
             $ignoreSelfDeprecations             = $this->parseBooleanAttribute($element, 'ignoreSelfDeprecations', false);
             $ignoreDirectDeprecations           = $this->parseBooleanAttribute($element, 'ignoreDirectDeprecations', false);
             $ignoreIndirectDeprecations         = $this->parseBooleanAttribute($element, 'ignoreIndirectDeprecations', false);
+            $identifyIssueTrigger               = $this->parseBooleanAttribute($element, 'identifyIssueTrigger', true);
         }
 
         $deprecationTriggers = [
@@ -381,6 +385,7 @@ final readonly class Loader
             $ignoreSelfDeprecations,
             $ignoreDirectDeprecations,
             $ignoreIndirectDeprecations,
+            $identifyIssueTrigger,
         );
     }
 
@@ -542,6 +547,7 @@ final readonly class Loader
                         (string) $this->parseStringAttribute($element, 'outputDirectory'),
                     ),
                 ),
+                $this->parseBooleanAttribute($element, 'includeSource', true),
             );
         }
 
@@ -608,13 +614,14 @@ final readonly class Loader
                 $this->toAbsolutePath($filename, $directoryPath),
                 $directoryNode->hasAttribute('prefix') ? $directoryNode->getAttribute('prefix') : '',
                 $directoryNode->hasAttribute('suffix') ? $directoryNode->getAttribute('suffix') : '.php',
+                !$directoryNode->hasAttribute('includeInCodeCoverage') || $directoryNode->getAttribute('includeInCodeCoverage') !== 'false',
             );
         }
 
         return FilterDirectoryCollection::fromArray($directories);
     }
 
-    private function readFilterFiles(string $filename, DOMXPath $xpath, string $query): FileCollection
+    private function readFilterFiles(string $filename, DOMXPath $xpath, string $query): FilterFileCollection
     {
         $files = [];
 
@@ -623,16 +630,19 @@ final readonly class Loader
         assert($fileNodes instanceof DOMNodeList);
 
         foreach ($fileNodes as $fileNode) {
-            assert($fileNode instanceof DOMNode);
+            assert($fileNode instanceof DOMElement);
 
             $filePath = $fileNode->textContent;
 
             if ($filePath !== '') {
-                $files[] = new File($this->toAbsolutePath($filename, $filePath));
+                $files[] = new FilterFile(
+                    $this->toAbsolutePath($filename, $filePath),
+                    !$fileNode->hasAttribute('includeInCodeCoverage') || $fileNode->getAttribute('includeInCodeCoverage') !== 'false',
+                );
             }
         }
 
-        return FileCollection::fromArray($files);
+        return FilterFileCollection::fromArray($files);
     }
 
     private function groups(DOMXPath $xpath): Groups
@@ -906,6 +916,12 @@ final readonly class Loader
             $requireCoverageMetadata = $this->parseBooleanAttribute($document->documentElement, 'requireCoverageMetadata', false);
         }
 
+        $requireSealedMockObjects = false;
+
+        if ($document->documentElement->hasAttribute('requireSealedMockObjects')) {
+            $requireSealedMockObjects = $this->parseBooleanAttribute($document->documentElement, 'requireSealedMockObjects', false);
+        }
+
         $beStrictAboutCoverageMetadata = false;
 
         if ($document->documentElement->hasAttribute('beStrictAboutCoverageMetadata')) {
@@ -935,6 +951,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($document->documentElement, 'displayDetailsOnTestsThatTriggerWarnings', false),
             $this->parseBooleanAttribute($document->documentElement, 'reverseDefectList', false),
             $requireCoverageMetadata,
+            $requireSealedMockObjects,
             $bootstrap,
             $this->bootstrapForTestSuite($filename, $xpath),
             $this->parseBooleanAttribute($document->documentElement, 'processIsolation', false),

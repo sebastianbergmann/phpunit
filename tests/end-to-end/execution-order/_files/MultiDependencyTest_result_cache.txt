@@ -1,1 +1,0 @@
-{"version":2,"defects":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFive":1},"times":{"PHPUnit\\TestFixture\\MultiDependencyTest::testOne":0,"PHPUnit\\TestFixture\\MultiDependencyTest::testTwo":0,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":0,"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":0,"PHPUnit\\TestFixture\\MultiDependencyTest::testFive":0}}

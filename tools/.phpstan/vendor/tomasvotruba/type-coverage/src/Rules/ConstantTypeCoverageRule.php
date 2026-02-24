@@ -48,8 +48,11 @@ final class ConstantTypeCoverageRule implements Rule
      */
     private CollectorDataNormalizer $collectorDataNormalizer;
 
-    public function __construct(TypeCoverageFormatter $typeCoverageFormatter, Configuration $configuration, CollectorDataNormalizer $collectorDataNormalizer)
-    {
+    public function __construct(
+        TypeCoverageFormatter $typeCoverageFormatter,
+        Configuration $configuration,
+        CollectorDataNormalizer $collectorDataNormalizer
+    ) {
         $this->typeCoverageFormatter = $typeCoverageFormatter;
         $this->configuration = $configuration;
         $this->collectorDataNormalizer = $collectorDataNormalizer;
@@ -69,6 +72,11 @@ final class ConstantTypeCoverageRule implements Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
+        // enable only on PHP 8.3+
+        if (PHP_VERSION_ID < 80300) {
+            return [];
+        }
+
         // if only subpaths are analysed, skip as data will be false positive
         if (! ScopeConfigurationResolver::areFullPathsAnalysed($scope)) {
             return [];

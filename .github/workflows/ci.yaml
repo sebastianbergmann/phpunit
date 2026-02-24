@@ -7,7 +7,7 @@ on:
 name: CI
 
 env:
-  COMPOSER_ROOT_VERSION: "13.0.x-dev"
+  COMPOSER_ROOT_VERSION: "13.1.x-dev"
   PHP_VERSION: 8.4
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -39,7 +39,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
+          extensions: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter, pcntl
           coverage: none
           tools: none
 
@@ -53,7 +53,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -91,8 +91,16 @@ jobs:
           coverage: none
           tools: none
 
+      - name: Cache PHP-CS-Fixer cache directory
+        uses: actions/cache@v5
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.os }}-php-cs-fixer-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-php-cs-fixer-${{ github.ref }}-
+
       - name: Run PHP-CS-Fixer
-        run: ./tools/php-cs-fixer check --show-progress=dots --using-cache=no --verbose
+        run: ./tools/php-cs-fixer check --cache-file=.php-cs-fixer.cache --show-progress=dots --verbose
 
   static-analysis:
     name: Static Analysis
@@ -105,7 +113,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -132,7 +140,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -154,7 +162,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -175,7 +183,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -203,7 +211,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -225,7 +233,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -246,7 +254,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -274,7 +282,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -297,7 +305,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -315,7 +323,7 @@ jobs:
         with:
           php-version: ${{ env.PHP_VERSION }}
           coverage: xdebug
-          extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter
+          extensions: none, ctype, curl, dom, json, libxml, mbstring, pdo, phar, tokenizer, xml, xmlwriter, pcntl
           ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -326,7 +334,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -335,21 +343,35 @@ jobs:
       - name: Install dependencies with Composer
         run: ./tools/composer install --no-ansi --no-interaction --no-progress
 
+      - name: Cache PHPUnit's static analysis cache
+        uses: actions/cache@v5
+        with:
+          path: .phpunit.cache/code-coverage
+          key: ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+          restore-keys: |
+            ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+
+      - name: Warm PHPUnit's static analysis cache
+        run: ./phpunit --warm-coverage-cache
+
       - name: Collect code coverage with PHPUnit
         run: ./phpunit --log-junit test-results.xml --coverage-openclover=code-coverage.xml
 
       - name: Upload test results to Codecov.io
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          report_type: test_results
           disable_search: true
           files: ./test-results.xml
 
       - name: Upload code coverage data to Codecov.io
-        uses: codecov/codecov-action@v4
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          report_type: coverage
           disable_search: true
           files: ./code-coverage.xml
 
@@ -363,12 +385,12 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -391,7 +413,7 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: 11
@@ -399,11 +421,8 @@ jobs:
       - name: Build PHAR
         run: ant phar-snapshot
 
-      - name: Check whether PHAR is scoped
-        run: grep -q PHPUnitPHAR\\\\DeepCopy\\\\Exception\\\\CloneException build/artifacts/phpunit-snapshot.phar || (echo "phpunit-snapshot.phar is not scoped." && false)
-
       - name: Upload PHAR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: phpunit-snapshot-phar
           overwrite: true
@@ -420,7 +439,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xml, xmlwriter, pcntl
       PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
 
     strategy:
@@ -437,7 +456,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -460,13 +479,13 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: 11
 
       - name: Download PHAR
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/

@@ -11,12 +11,15 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertNotEqualsIgnoringCase')]
 #[TestDox('assertNotEqualsIgnoringCase()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertNotEqualsIgnoringCaseTest extends TestCase
 {
     #[DataProviderExternal(assertEqualsIgnoringCaseTest::class, 'failureProvider')]

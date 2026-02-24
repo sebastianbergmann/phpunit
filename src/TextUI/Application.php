@@ -588,12 +588,16 @@ final readonly class Application
             EventFacade::instance()->registerTracer(
                 new EventLogger(
                     $configuration->logEventsText(),
-                    false,
+                    $configuration->withTelemetry(),
                 ),
             );
         }
 
         if ($configuration->hasLogEventsVerboseText()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                'The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14. Use "--log-events-text <file> --with-telemetry" instead.',
+            );
+
             if (is_file($configuration->logEventsVerboseText())) {
                 unlink($configuration->logEventsVerboseText());
             }
@@ -831,7 +835,9 @@ final readonly class Application
             ];
         }
 
-        ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+        if ($deprecationTriggers !== ['functions' => [], 'methods' => []]) {
+            ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+        }
     }
 
     private function preload(): void

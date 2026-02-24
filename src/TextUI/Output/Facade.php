@@ -67,6 +67,8 @@ final class Facade
             );
         }
 
+        assert(self::$printer !== null);
+
         return self::$printer;
     }
 
@@ -106,7 +108,7 @@ final class Facade
     public static function printerFor(string $target): Printer
     {
         if ($target === 'php://stdout') {
-            if (!self::$printer instanceof NullPrinter) {
+            if (self::$printer !== null && !self::$printer instanceof NullPrinter) {
                 return self::$printer;
             }
 

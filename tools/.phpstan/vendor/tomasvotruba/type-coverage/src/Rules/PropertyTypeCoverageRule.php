@@ -48,8 +48,11 @@ final class PropertyTypeCoverageRule implements Rule
      */
     private CollectorDataNormalizer $collectorDataNormalizer;
 
-    public function __construct(TypeCoverageFormatter $typeCoverageFormatter, Configuration $configuration, CollectorDataNormalizer $collectorDataNormalizer)
-    {
+    public function __construct(
+        TypeCoverageFormatter $typeCoverageFormatter,
+        Configuration $configuration,
+        CollectorDataNormalizer $collectorDataNormalizer
+    ) {
         $this->typeCoverageFormatter = $typeCoverageFormatter;
         $this->configuration = $configuration;
         $this->collectorDataNormalizer = $collectorDataNormalizer;

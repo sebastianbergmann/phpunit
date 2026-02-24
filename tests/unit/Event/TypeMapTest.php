@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AnotherDummySubscriber;
@@ -20,6 +21,7 @@ use PHPUnit\TestFixture\MockObject\FinalClass;
 
 #[CoversClass(TypeMap::class)]
 #[Small]
+#[Group('event-system')]
 final class TypeMapTest extends TestCase
 {
     public function testMapsKnownSubscriberInterfaceToEventClass(): void

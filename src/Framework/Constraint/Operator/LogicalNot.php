@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function array_map;
+use function assert;
 use function count;
 use function preg_match;
 use function preg_quote;
@@ -21,6 +22,11 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 final class LogicalNot extends UnaryOperator
 {
+    /**
+     * @param non-empty-string $string
+     *
+     * @return non-empty-string
+     */
     public static function negate(string $string): string
     {
         $positives = [
@@ -79,6 +85,9 @@ final class LogicalNot extends UnaryOperator
                 $string,
             );
         }
+
+        assert($negatedString !== null);
+        assert($negatedString !== '');
 
         return $negatedString;
     }

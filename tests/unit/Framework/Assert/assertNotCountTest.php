@@ -14,6 +14,7 @@ use Countable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
@@ -21,6 +22,8 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[CoversClass(GeneratorNotSupportedException::class)]
 #[TestDox('assertNotCount()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertNotCountTest extends TestCase
 {
     #[DataProviderExternal(assertCountTest::class, 'failureProvider')]

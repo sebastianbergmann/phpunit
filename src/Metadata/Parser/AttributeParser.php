@@ -24,6 +24,7 @@ use Error;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
@@ -139,6 +140,13 @@ final readonly class AttributeParser implements Parser
             }
 
             switch ($attribute->getName()) {
+                case AllowMockObjectsWithoutExpectations::class:
+                    assert($attributeInstance instanceof AllowMockObjectsWithoutExpectations);
+
+                    $result[] = Metadata::allowMockObjectsWithoutExpectationsOnClass();
+
+                    break;
+
                 case BackupGlobals::class:
                     assert($attributeInstance instanceof BackupGlobals);
 
@@ -554,6 +562,13 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof AfterClass);
 
                     $result[] = Metadata::afterClass($attributeInstance->priority());
+
+                    break;
+
+                case AllowMockObjectsWithoutExpectations::class:
+                    assert($attributeInstance instanceof AllowMockObjectsWithoutExpectations);
+
+                    $result[] = Metadata::allowMockObjectsWithoutExpectationsOnMethod();
 
                     break;
 

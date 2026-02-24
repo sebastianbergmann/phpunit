@@ -310,7 +310,7 @@ final class TestRunner
         }
 
         try {
-            (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
+            (new Invoker)->invoke($test->runBare(...), [], $_timeout);
         } catch (TimeoutException) {
             Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),

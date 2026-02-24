@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Baseline;
 
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\FileDoesNotExistException;
@@ -19,6 +20,8 @@ use PHPUnit\Runner\FileDoesNotExistException;
 #[CoversClass(FileDoesNotExistException::class)]
 #[CoversClass(FileDoesNotHaveLineException::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/issue-baseline')]
 final class IssueTest extends TestCase
 {
     public function testHasFile(): void

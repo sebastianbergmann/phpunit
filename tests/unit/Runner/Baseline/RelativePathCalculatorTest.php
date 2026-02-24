@@ -11,12 +11,14 @@ namespace PHPUnit\Runner\Baseline;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RelativePathCalculator::class)]
 #[Small]
-/**
+#[Group('test-runner')]
+#[Group('test-runner/issue-baseline')] /**
  * @see Copied from https://github.com/phpstan/phpstan-src/blob/1.10.33/src/File/ParentDirectoryRelativePathHelper.php
  */
 final class RelativePathCalculatorTest extends TestCase

@@ -62,7 +62,7 @@ final class CodeCoverageFilterRegistry
         $this->filter = new Filter;
 
         if ($configuration->source()->notEmpty()) {
-            $this->filter->includeFiles(array_keys((new SourceMapper)->map($configuration->source())));
+            $this->filter->includeFiles(array_keys((new SourceMapper)->mapForCodeCoverage($configuration->source())));
 
             $this->configured = true;
         }

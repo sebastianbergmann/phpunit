@@ -27,11 +27,10 @@ final readonly class RequiresSetting extends Metadata
     private string $value;
 
     /**
-     * @param int<0, 1>        $level
      * @param non-empty-string $setting
      * @param non-empty-string $value
      */
-    protected function __construct(int $level, string $setting, string $value)
+    protected function __construct(Level $level, string $setting, string $value)
     {
         parent::__construct($level);
 

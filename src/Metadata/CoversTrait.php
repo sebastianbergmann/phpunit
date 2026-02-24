@@ -22,10 +22,9 @@ final readonly class CoversTrait extends Metadata
     private string $traitName;
 
     /**
-     * @param 0|1          $level
      * @param trait-string $traitName
      */
-    protected function __construct(int $level, string $traitName)
+    protected function __construct(Level $level, string $traitName)
     {
         parent::__construct($level);
 

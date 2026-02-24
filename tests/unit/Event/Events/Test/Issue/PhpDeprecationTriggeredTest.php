@@ -13,10 +13,13 @@ use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(PhpDeprecationTriggered::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/events')]
 final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
@@ -29,7 +32,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
 
         $event = new PhpDeprecationTriggered(
             $telemetryInfo,
@@ -66,7 +69,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             true,
             false,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->ignoredByBaseline());
@@ -84,7 +87,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             false,
             true,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->ignoredByTest());
@@ -102,7 +105,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             true,
             false,
             false,
-            IssueTrigger::unknown(),
+            IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->wasSuppressed());

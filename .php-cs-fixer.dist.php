@@ -14,11 +14,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
-    // *WithPropertyWith*Hook.php use PHP 8.4 syntax that currently leads to PHP-CS-Fixer errors
-    ->notName('ExtendableClassWithPropertyWithGetHook.php')
-    ->notName('ExtendableClassWithPropertyWithSetHook.php')
-    ->notName('InterfaceWithPropertyWithGetHook.php')
-    ->notName('InterfaceWithPropertyWithSetHook.php')
     // DeprecatedPhpFeatureTest.php must not use declare(strict_types=1);
     ->notName('DeprecatedPhpFeatureTest.php')
     // UseBaselineTest.php must not use declare(strict_types=1);
@@ -29,11 +24,13 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('TestAttributeOnHookMethodsTest.php')
     // InvokableConstraintAndPipeOperatorTest.php uses PHP 8.5 syntax
     ->notName('InvokableConstraintAndPipeOperatorTest.php')
+    // FirstPartyClass.php and PhpDeprecationTest.php must not use declare(strict_types=1);
+    ->notPath('error-handler/_files/php-deprecation/src/FirstPartyClass.php')
+    ->notPath('error-handler/_files/php-deprecation/tests/PhpDeprecationTest.php')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
-    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->setRules([
         'align_multiline_comment' => true,
@@ -368,7 +365,7 @@ $config->setFinder($finder)
         ],
         'types_spaces' => true,
         'unary_operator_spaces' => true,
-        'visibility_required' => [
+        'modifier_keywords' => [
             'elements' => [
                 'const',
                 'method',

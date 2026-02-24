@@ -13,6 +13,7 @@ use function fclose;
 use function fopen;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\NativeType;
@@ -22,6 +23,8 @@ use stdClass;
 #[CoversClass(IsType::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class IsTypeTest extends TestCase
 {
     public static function provider(): array

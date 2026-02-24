@@ -30,8 +30,8 @@ jobs:
 
         phpunit-branch:
           - main
+          - "13.0"
           - 12.5
-          - 12.4
           - 11.5
           - 10.5
           - 9.6
@@ -76,18 +76,6 @@ jobs:
             php-version: 8.0
           - phpunit-branch: 11.5
             php-version: 8.1
-          - phpunit-branch: 12.4
-            php-version: 7.2
-          - phpunit-branch: 12.4
-            php-version: 7.3
-          - phpunit-branch: 12.4
-            php-version: 7.4
-          - phpunit-branch: 12.4
-            php-version: 8.0
-          - phpunit-branch: 12.4
-            php-version: 8.1
-          - phpunit-branch: 12.4
-            php-version: 8.2
           - phpunit-branch: 12.5
             php-version: 7.2
           - phpunit-branch: 12.5
@@ -100,6 +88,20 @@ jobs:
             php-version: 8.1
           - phpunit-branch: 12.5
             php-version: 8.2
+          - phpunit-branch: 13.0
+            php-version: 7.2
+          - phpunit-branch: 13.0
+            php-version: 7.3
+          - phpunit-branch: 13.0
+            php-version: 7.4
+          - phpunit-branch: 13.0
+            php-version: 8.0
+          - phpunit-branch: 13.0
+            php-version: 8.1
+          - phpunit-branch: 13.0
+            php-version: 8.2
+          - phpunit-branch: 13.0
+            php-version: 8.3
           - phpunit-branch: main
             php-version: 7.2
           - phpunit-branch: main
@@ -121,7 +123,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ matrix.phpunit-branch }}
 
@@ -140,7 +142,7 @@ jobs:
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer cache directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}

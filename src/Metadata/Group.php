@@ -22,10 +22,9 @@ final readonly class Group extends Metadata
     private string $groupName;
 
     /**
-     * @param int<0, 1>        $level
      * @param non-empty-string $groupName
      */
-    protected function __construct(int $level, string $groupName)
+    protected function __construct(Level $level, string $groupName)
     {
         parent::__construct($level);
 

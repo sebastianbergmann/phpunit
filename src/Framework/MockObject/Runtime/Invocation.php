@@ -126,7 +126,7 @@ final readonly class Invocation implements SelfDescribing
             implode(
                 ', ',
                 array_map(
-                    [Exporter::class, 'shortenedExport'],
+                    Exporter::shortenedExport(...),
                     $this->parameters,
                 ),
             ),

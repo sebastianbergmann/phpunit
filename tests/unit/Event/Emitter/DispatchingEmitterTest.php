@@ -58,6 +58,7 @@ use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Metadata\MetadataCollection;
@@ -68,6 +69,8 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(DispatchingEmitter::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/emitter')]
 final class DispatchingEmitterTest extends Framework\TestCase
 {
     #[TestDox('applicationStarted() emits Application\Started event')]
@@ -1541,6 +1544,48 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
+    #[TestDox('testUsedCustomMethodInvocation() emits Test\CustomTestMethodInvocationUsed event')]
+    public function testUsedCustomMethodInvocationEmitsCustomTestMethodInvocationUsed(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\CustomTestMethodInvocationUsedSubscriber
+        {
+            public function notify(Test\CustomTestMethodInvocationUsed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\CustomTestMethodInvocationUsedSubscriber::class,
+            Test\CustomTestMethodInvocationUsed::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test                       = $this->testMethod();
+        $customTestMethodInvocation = new ClassMethod('ExampleTest', 'invokeTestMethod');
+
+        $emitter->testUsedCustomMethodInvocation(
+            $test,
+            $customTestMethodInvocation,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\CustomTestMethodInvocationUsed::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($customTestMethodInvocation, $event->customTestMethodInvocation());
+    }
+
     #[TestDox('testCreatedMockObject() emits Test\MockObjectCreated event')]
     public function testTestCreatedMockObjectEmitsTestMockObjectCreatedEvent(): void
     {
@@ -2092,7 +2137,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
 
         $emitter->testTriggeredPhpDeprecation(
             $test,
@@ -2151,7 +2196,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
-        $trigger           = IssueTrigger::unknown();
+        $trigger           = IssueTrigger::from(null, null);
         $stackTrace        = 'stack-trace';
 
         $emitter->testTriggeredDeprecation(

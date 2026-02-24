@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use stdClass;
@@ -18,6 +19,8 @@ use stdClass;
 #[CoversMethod(Assert::class, 'assertContainsOnlyObject')]
 #[TestDox('assertContainsOnlyObject()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertContainsOnlyObjectTest extends TestCase
 {
     /**

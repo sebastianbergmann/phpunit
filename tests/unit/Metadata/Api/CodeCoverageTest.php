@@ -32,6 +32,7 @@ use SebastianBergmann\CodeCoverage\Test\Target\Trait_;
 #[CoversClass(CodeCoverage::class)]
 #[Small]
 #[Group('metadata')]
+#[Group('metadata/api')]
 final class CodeCoverageTest extends TestCase
 {
     /**

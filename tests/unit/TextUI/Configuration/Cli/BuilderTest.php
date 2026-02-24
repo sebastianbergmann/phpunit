@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,9 @@ use PHPUnit\Runner\TestSuiteSorter;
 #[CoversClass(Configuration::class)]
 #[Small]
 #[TestDox('CLI Options Parser')]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/cli')]
 final class BuilderTest extends TestCase
 {
     #[TestDox('argument')]
@@ -27,6 +31,26 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['command', 'argument']);
 
         $this->assertSame(['argument'], $configuration->arguments());
+    }
+
+    #[TestDox('--test-files-file tests.txt')]
+    public function testTestFilesFile(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--test-files-file', 'tests.txt']);
+
+        $this->assertTrue($configuration->hasTestFilesFile());
+        $this->assertSame('tests.txt', $configuration->testFilesFile());
+    }
+
+    public function testTestFilesFileMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTestFilesFile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->testFilesFile();
     }
 
     #[TestDox('--all')]
@@ -445,6 +469,26 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->coverageXml();
+    }
+
+    #[TestDox('--exclude-source-from-xml-coverage=')]
+    public function testExcludeSourceFromXmlCoverage(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--exclude-source-from-xml-coverage']);
+
+        $this->assertTrue($configuration->hasExcludeSourceFromXmlCoverage());
+        $this->assertTrue($configuration->excludeSourceFromXmlCoverage());
+    }
+
+    public function testExcludeSourceFromXmlCoverageMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasExcludeSourceFromXmlCoverage());
+
+        $this->expectException(Exception::class);
+
+        $configuration->excludeSourceFromXmlCoverage();
     }
 
     #[TestDox('--path-coverage')]

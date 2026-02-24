@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Code;
 
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
@@ -18,6 +19,8 @@ use PHPUnit\Metadata\MetadataCollection;
 #[CoversClass(TestCollection::class)]
 #[CoversClass(TestCollectionIterator::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class TestCollectionTest extends TestCase
 {
     public function testIsCreatedFromArray(): void

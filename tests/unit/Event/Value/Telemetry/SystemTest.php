@@ -11,20 +11,23 @@ namespace PHPUnit\Event\Telemetry;
 
 use function hrtime;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(System::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class SystemTest extends TestCase
 {
     public function testSnapshotReturnsSnapshot(): void
     {
         $time = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
 
-        $clock = new class($time) implements StopWatch
+        $clock = new readonly class($time) implements StopWatch
         {
-            private readonly HRTime $time;
+            private HRTime $time;
 
             public function __construct(HRTime $time)
             {
@@ -40,10 +43,10 @@ final class SystemTest extends TestCase
         $memoryUsage     = MemoryUsage::fromBytes(2000);
         $peakMemoryUsage = MemoryUsage::fromBytes(3000);
 
-        $memoryMeter = new class($memoryUsage, $peakMemoryUsage) implements MemoryMeter
+        $memoryMeter = new readonly class($memoryUsage, $peakMemoryUsage) implements MemoryMeter
         {
-            private readonly MemoryUsage $memoryUsage;
-            private readonly MemoryUsage $peakMemoryUsage;
+            private MemoryUsage $memoryUsage;
+            private MemoryUsage $peakMemoryUsage;
 
             public function __construct(MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
             {
@@ -64,9 +67,9 @@ final class SystemTest extends TestCase
 
         $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
 
-        $garbageCollectorProvider = new class($garbageCollectorStatus) implements GarbageCollectorStatusProvider
+        $garbageCollectorProvider = new readonly class($garbageCollectorStatus) implements GarbageCollectorStatusProvider
         {
-            private readonly GarbageCollectorStatus $status;
+            private GarbageCollectorStatus $status;
 
             public function __construct(GarbageCollectorStatus $status)
             {

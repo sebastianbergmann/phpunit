@@ -10,11 +10,10 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use function count;
 use RecursiveIterator;
 
 /**
- * @template-implements RecursiveIterator<int, Test>
+ * @template-implements RecursiveIterator<non-negative-int, Test>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -22,12 +21,15 @@ use RecursiveIterator;
  */
 final class TestSuiteIterator implements RecursiveIterator
 {
-    private int $position = 0;
-
     /**
      * @var list<Test>
      */
     private readonly array $tests;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $position = 0;
 
     public function __construct(TestSuite $testSuite)
     {
@@ -41,9 +43,12 @@ final class TestSuiteIterator implements RecursiveIterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->tests);
+        return isset($this->tests[$this->position]);
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function key(): int
     {
         return $this->position;

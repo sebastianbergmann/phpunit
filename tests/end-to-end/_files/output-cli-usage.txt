@@ -37,6 +37,7 @@ Selection:
   --filter <pattern>                   Filter which tests to run
   --exclude-filter <pattern>           Exclude tests for the specified filter pattern
   --test-suffix <suffixes>             Only search for test in files with specified suffix(es). Default: Test.php,.phpt
+  --test-files-file <file>             Only run test files listed in file (one file by line)
 
 Execution:
 
@@ -143,6 +144,7 @@ Code Coverage:
   --only-summary-for-coverage-text     Option for code coverage report in text format: only show summary
   --show-uncovered-for-coverage-text   Option for code coverage report in text format: show uncovered files
   --coverage-xml <dir>                 Write code coverage report in XML format to directory
+  --exclude-source-from-xml-coverage   Exclude <source> element from code coverage report in XML format
   --warm-coverage-cache                Warm static analysis cache
   --coverage-filter <dir>              Include <dir> in code coverage reporting
   --path-coverage                      Report path coverage in addition to line coverage

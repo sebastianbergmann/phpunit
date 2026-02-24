@@ -23,7 +23,7 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.0.1" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.0.1">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.1.0">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
@@ -121,6 +121,11 @@ unlink($logfile);
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRisky"/>
   </sources>
  </e:started>
+ <e:reported id="7" time="%s">
+  <attachments>
+   <phpunit:issue type="risky" message="This test did not perform any assertions"/>
+  </attachments>
+ </e:reported>
  <e:finished id="7" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>
@@ -222,6 +227,11 @@ Failed asserting that false is true.
    <phpunit:methodSource className="PHPUnit\TestFixture\Basic\StatusTest" methodName="testRiskyWithMessage"/>
   </sources>
  </e:started>
+ <e:reported id="14" time="%s">
+  <attachments>
+   <phpunit:issue type="risky" message="This test did not perform any assertions"/>
+  </attachments>
+ </e:reported>
  <e:finished id="14" time="%s">
   <result status="SUCCESSFUL"/>
  </e:finished>

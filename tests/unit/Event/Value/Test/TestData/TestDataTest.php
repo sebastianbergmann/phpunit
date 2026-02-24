@@ -11,12 +11,15 @@ namespace PHPUnit\Event\TestData;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TestData::class)]
 #[CoversClassesThatExtendClass(TestData::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class TestDataTest extends TestCase
 {
     public function testDataCanBeFromDataProvider(): void

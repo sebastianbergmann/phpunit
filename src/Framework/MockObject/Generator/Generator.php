@@ -112,6 +112,7 @@ final class Generator
             $callOriginalConstructor,
             $arguments,
             $returnValueGeneration,
+            $mockObject,
         );
 
         assert($object instanceof $type);
@@ -287,7 +288,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function instantiate(DoubledClass $mockClass, bool $callOriginalConstructor = false, array $arguments = [], bool $returnValueGeneration = true): object
+    private function instantiate(DoubledClass $mockClass, bool $callOriginalConstructor, array $arguments, bool $returnValueGeneration, bool $isMockObject): object
     {
         $className = $mockClass->generate();
 
@@ -310,7 +311,7 @@ final class Generator
          */
         $reflector->getProperty('__phpunit_state')->setValue(
             $object,
-            new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration),
+            new TestDoubleState($mockClass->configurableMethods(), $returnValueGeneration, $isMockObject),
         );
 
         if ($callOriginalConstructor && $reflector->getConstructor() !== null) {
@@ -857,8 +858,9 @@ final class Generator
                 continue;
             }
 
-            $hasGetHook = false;
-            $hasSetHook = false;
+            $hasGetHook                 = false;
+            $hasSetHook                 = false;
+            $setHookMethodParameterType = null;
 
             if ($property->hasHook(PropertyHookType::Get) &&
                 !$property->getHook(PropertyHookType::Get)->isFinal()) {
@@ -867,7 +869,8 @@ final class Generator
 
             if ($property->hasHook(PropertyHookType::Set) &&
                 !$property->getHook(PropertyHookType::Set)->isFinal()) {
-                $hasSetHook = true;
+                $hasSetHook                 = true;
+                $setHookMethodParameterType = $mapper->fromParameterTypes($property->getHook(PropertyHookType::Set))[0]->type();
             }
 
             if (!$hasGetHook && !$hasSetHook) {
@@ -879,6 +882,7 @@ final class Generator
                 $mapper->fromPropertyType($property),
                 $hasGetHook,
                 $hasSetHook,
+                $setHookMethodParameterType,
             );
         }
 

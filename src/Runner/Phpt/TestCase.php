@@ -17,6 +17,7 @@ use function debug_backtrace;
 use function dirname;
 use function explode;
 use function extension_loaded;
+use function file_exists;
 use function file_get_contents;
 use function is_array;
 use function is_file;
@@ -49,6 +50,7 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\CodeCoverageFileExistsException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
@@ -83,6 +85,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     public function __construct(string $filename)
     {
         $this->filename = $filename;
+
+        $this->ensureCoverageFileDoesNotExist();
     }
 
     public function count(): int
@@ -467,7 +471,15 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         if ($buffer !== false) {
-            $coverage = @unserialize($buffer);
+            $coverage = @unserialize(
+                $buffer,
+                [
+                    'allowed_classes' => [
+                        /** @phpstan-ignore classConstant.internalClass */
+                        RawCodeCoverageData::class,
+                    ],
+                ],
+            );
 
             if ($coverage === false) {
                 /**
@@ -702,6 +714,24 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                     '%s section triggered a fatal error: %s',
                     $section,
                     $output,
+                ),
+            );
+        }
+    }
+
+    /**
+     * @throws CodeCoverageFileExistsException
+     */
+    private function ensureCoverageFileDoesNotExist(): void
+    {
+        $files = $this->coverageFiles();
+
+        if (file_exists($files['coverage'])) {
+            throw new CodeCoverageFileExistsException(
+                sprintf(
+                    'File %s exists, PHPT test %s will not be executed',
+                    $files['coverage'],
+                    $this->filename,
                 ),
             );
         }

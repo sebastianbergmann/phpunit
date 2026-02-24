@@ -27,11 +27,10 @@ final readonly class RequiresMethod extends Metadata
     private string $methodName;
 
     /**
-     * @param int<0, 1>        $level
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    protected function __construct(int $level, string $className, string $methodName)
+    protected function __construct(Level $level, string $className, string $methodName)
     {
         parent::__construct($level);
 

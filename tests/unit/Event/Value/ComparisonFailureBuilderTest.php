@@ -12,6 +12,7 @@ namespace PHPUnit\Event\Code;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -21,6 +22,8 @@ use stdClass;
 
 #[CoversClass(ComparisonFailureBuilder::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class ComparisonFailureBuilderTest extends TestCase
 {
     public static function provider(): array

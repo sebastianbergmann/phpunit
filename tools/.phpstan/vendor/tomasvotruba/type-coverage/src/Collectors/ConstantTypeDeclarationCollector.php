@@ -26,7 +26,7 @@ final class ConstantTypeDeclarationCollector implements Collector
 
     /**
      * @param ClassConstantsNode $node
-     * @return mixed[]
+     * @return array<int, int|list<(int | int<1, max>)>>
      */
     public function processNode(Node $node, Scope $scope): array
     {

@@ -12,12 +12,15 @@ namespace PHPUnit\Framework;
 use Countable;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertNotSameSize')]
 #[TestDox('assertNotSameSize()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertNotSameSizeTest extends TestCase
 {
     #[DataProviderExternal(assertSameSizeTest::class, 'failureProvider')]

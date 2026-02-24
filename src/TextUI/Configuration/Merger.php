@@ -45,6 +45,12 @@ final readonly class Merger
      */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
+        $testFilesFile = null;
+
+        if ($cliConfiguration->hasTestFilesFile()) {
+            $testFilesFile = $cliConfiguration->testFilesFile();
+        }
+
         $configurationFile = null;
 
         if ($xmlConfiguration->wasLoadedFromFile()) {
@@ -371,6 +377,7 @@ final readonly class Merger
         $coverageTextShowUncoveredFiles = false;
         $coverageTextShowOnlySummary    = false;
         $coverageXml                    = null;
+        $coverageXmlIncludeSource       = true;
         $coverageFromXmlConfiguration   = true;
 
         if ($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage()) {
@@ -460,6 +467,12 @@ final readonly class Merger
             $coverageXml = $cliConfiguration->coverageXml();
         } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasXml()) {
             $coverageXml = $xmlConfiguration->codeCoverage()->xml()->target()->path();
+        }
+
+        if ($cliConfiguration->hasExcludeSourceFromXmlCoverage()) {
+            $coverageXmlIncludeSource = !$cliConfiguration->excludeSourceFromXmlCoverage();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasXml()) {
+            $coverageXmlIncludeSource = $xmlConfiguration->codeCoverage()->xml()->includeSource();
         }
 
         if ($cliConfiguration->hasBackupGlobals()) {
@@ -586,7 +599,8 @@ final readonly class Merger
             $reverseDefectList = $xmlConfiguration->phpunit()->reverseDefectList();
         }
 
-        $requireCoverageMetadata = $xmlConfiguration->phpunit()->requireCoverageMetadata();
+        $requireCoverageMetadata  = $xmlConfiguration->phpunit()->requireCoverageMetadata();
+        $requireSealedMockObjects = $xmlConfiguration->phpunit()->requireSealedMockObjects();
 
         if ($cliConfiguration->hasExecutionOrder()) {
             $executionOrder = $cliConfiguration->executionOrder();
@@ -903,8 +917,17 @@ final readonly class Merger
             $displayDetailsOnSkippedTests = true;
         }
 
+        $issueTriggerIdentificationNeeded = $xmlConfiguration->source()->ignoreSelfDeprecations() || $xmlConfiguration->source()->ignoreDirectDeprecations() || $xmlConfiguration->source()->ignoreIndirectDeprecations();
+
+        if ($issueTriggerIdentificationNeeded && !$xmlConfiguration->source()->identifyIssueTrigger()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'The identification of issue triggers is disabled. However, ignoring self-deprecations, direct deprecations, or indirect deprecations is requested.',
+            );
+        }
+
         return new Configuration(
             $cliConfiguration->arguments(),
+            $testFilesFile,
             $configurationFile,
             $bootstrap,
             $xmlConfiguration->phpunit()->bootstrapForTestSuite(),
@@ -931,6 +954,7 @@ final readonly class Merger
                 $xmlConfiguration->source()->ignoreSelfDeprecations(),
                 $xmlConfiguration->source()->ignoreDirectDeprecations(),
                 $xmlConfiguration->source()->ignoreIndirectDeprecations(),
+                $xmlConfiguration->source()->identifyIssueTrigger(),
             ),
             $testResultCacheFile,
             $coverageClover,
@@ -952,6 +976,7 @@ final readonly class Merger
             $coverageTextShowUncoveredFiles,
             $coverageTextShowOnlySummary,
             $coverageXml,
+            $coverageXmlIncludeSource,
             $pathCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
@@ -1015,6 +1040,7 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerWarnings,
             $reverseDefectList,
             $requireCoverageMetadata,
+            $requireSealedMockObjects,
             $noProgress,
             $noResults,
             $noOutput,

@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation source="https://phpunit.de/documentation.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 13.0 may be structured.
+            This Schema file defines the rules by which the XML configuration file of PHPUnit 13.1 may be structured.
         </xs:documentation>
         <xs:appinfo source="https://phpunit.de/documentation.html"/>
     </xs:annotation>
@@ -35,6 +35,7 @@
         <xs:attribute name="ignoreSuppressionOfPhpNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreSuppressionOfWarnings" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreSuppressionOfPhpWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="identifyIssueTrigger" type="xs:boolean" default="true"/>
         <xs:attribute name="ignoreSelfDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreDirectDeprecations" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreIndirectDeprecations" type="xs:boolean" default="false"/>
@@ -43,7 +44,7 @@
         <xs:sequence>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="directory" type="sourceDirectoryType"/>
-                <xs:element name="file" type="xs:anyURI"/>
+                <xs:element name="file" type="sourceFileType"/>
             </xs:choice>
         </xs:sequence>
     </xs:group>
@@ -52,6 +53,14 @@
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="prefix" default=""/>
                 <xs:attribute type="xs:string" name="suffix" default=".php"/>
+                <xs:attribute type="xs:boolean" name="includeInCodeCoverage" default="true"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="sourceFileType">
+        <xs:simpleContent>
+            <xs:extension base="xs:anyURI">
+                <xs:attribute type="xs:boolean" name="includeInCodeCoverage" default="true"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -178,6 +187,7 @@
         <xs:attribute name="controlGarbageCollector" type="xs:boolean" default="false"/>
         <xs:attribute name="numberOfTestsBeforeGarbageCollection" type="xs:integer" default="100"/>
         <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
+        <xs:attribute name="requireSealedMockObjects" type="xs:boolean" default="false"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
@@ -295,7 +305,7 @@
             <xs:element name="openclover" type="logToFileType" minOccurs="0"/>
             <xs:element name="php" type="logToFileType" minOccurs="0" />
             <xs:element name="text" type="coverageReportTextType" minOccurs="0" />
-            <xs:element name="xml" type="logToDirectoryType" minOccurs="0" />
+            <xs:element name="xml" type="coverageReportXmlType" minOccurs="0" />
         </xs:all>
     </xs:group>
     <xs:group name="loggingGroup">
@@ -336,6 +346,10 @@
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
         <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
         <xs:attribute name="showOnlySummary" type="xs:boolean" default="false"/>
+    </xs:complexType>
+    <xs:complexType name="coverageReportXmlType">
+        <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+        <xs:attribute name="includeSource" type="xs:boolean" default="true"/>
     </xs:complexType>
     <xs:complexType name="deprecationTriggerType">
         <xs:sequence>

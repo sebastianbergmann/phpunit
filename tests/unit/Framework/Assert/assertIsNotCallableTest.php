@@ -11,12 +11,15 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertIsNotCallable')]
 #[TestDox('assertIsNotCallable()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertIsNotCallableTest extends TestCase
 {
     #[DataProviderExternal(assertIsCallableTest::class, 'failureProvider')]

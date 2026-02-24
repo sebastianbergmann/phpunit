@@ -25,9 +25,11 @@ use function is_float;
 use function is_int;
 use function is_object;
 use function is_scalar;
+use function is_string;
 use function method_exists;
 use function preg_quote;
 use function preg_replace;
+use function preg_replace_callback_array;
 use function rtrim;
 use function sprintf;
 use function str_contains;
@@ -36,9 +38,9 @@ use function str_replace;
 use function str_starts_with;
 use function strlen;
 use function strtolower;
-use function strtoupper;
 use function substr;
 use function trim;
+use function ucfirst;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
@@ -118,6 +120,8 @@ final class NamePrettifier
 
         $result = preg_replace('/(?<=[[:lower:]])(?=[[:upper:]])/u', ' ', $className);
 
+        assert($result !== null);
+
         if ($fullyQualifiedName !== $className) {
             return $result . ' (' . $fullyQualifiedName . ')';
         }
@@ -150,7 +154,7 @@ final class NamePrettifier
             return '';
         }
 
-        $name[0] = strtoupper($name[0]);
+        $name = ucfirst($name);
 
         $noUnderscore = str_replace('_', ' ', $name);
 
@@ -158,30 +162,13 @@ final class NamePrettifier
             return trim($noUnderscore);
         }
 
-        $wasNumeric = false;
-
-        $buffer = '';
-
-        $len = strlen($name);
-
-        for ($i = 0; $i < $len; $i++) {
-            if ($i > 0 && $name[$i] >= 'A' && $name[$i] <= 'Z') {
-                $buffer .= ' ' . strtolower($name[$i]);
-            } else {
-                $isNumeric = $name[$i] >= '0' && $name[$i] <= '9';
-
-                if (!$wasNumeric && $isNumeric) {
-                    $buffer .= ' ';
-                    $wasNumeric = true;
-                }
-
-                if ($wasNumeric && !$isNumeric) {
-                    $wasNumeric = false;
-                }
-
-                $buffer .= $name[$i];
-            }
-        }
+        $buffer = preg_replace_callback_array(
+            [
+                '/(?!^)([A-Z])/' => static fn (array $matches) => ' ' . strtolower($matches[1]),
+                '/(\d+)/'        => static fn (array $matches) => ' ' . $matches[1],
+            ],
+            $name,
+        );
 
         return trim($buffer);
     }
@@ -256,17 +243,23 @@ final class NamePrettifier
         $reflector = new ReflectionMethod($test::class, $test->name());
 
         $providedData       = [];
-        $providedDataValues = array_values($test->providedData());
+        $providedDataValues = $test->providedData();
         $i                  = 0;
 
         $providedData['$_dataName'] = $test->dataName();
 
         foreach ($reflector->getParameters() as $parameter) {
-            if (!array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
-                $providedDataValues[$i] = $parameter->getDefaultValue();
+            if (array_key_exists($parameter->getName(), $providedDataValues)) {
+                $value = $providedDataValues[$parameter->getName()];
+            } elseif (array_key_exists($i, $providedDataValues)) {
+                $value = $providedDataValues[$i];
+            } elseif ($parameter->isDefaultValueAvailable()) {
+                $value = $parameter->getDefaultValue();
+            } else {
+                $value = null;
             }
 
-            $value = $providedDataValues[$i++] ?? null;
+            $i++;
 
             if (is_object($value)) {
                 $value = $this->objectToString($value);
@@ -305,9 +298,6 @@ final class NamePrettifier
         return $providedData;
     }
 
-    /**
-     * @return non-empty-string
-     */
     private function objectToString(object $value): string
     {
         $reflector = new ReflectionObject($value);
@@ -319,11 +309,11 @@ final class NamePrettifier
                 return (string) $value->value;
             }
 
-            return $value->name;
+            return (string) $value->name;
         }
 
         if ($reflector->hasMethod('__toString')) {
-            return $value->__toString();
+            return (string) $value;
         }
 
         return $value::class;
@@ -354,6 +344,8 @@ final class NamePrettifier
 
             $placeholdersUsed = true;
         }
+
+        assert($result !== null);
 
         return [$result, $placeholdersUsed];
     }
@@ -419,7 +411,11 @@ final class NamePrettifier
         }
 
         try {
-            return [$reflector->invokeArgs(null, array_values($test->providedData())), true];
+            $result = $reflector->invokeArgs(null, array_values($test->providedData()));
+
+            assert(is_string($result));
+
+            return [$result, true];
         } catch (Throwable $t) {
             EventFacade::emitter()->testTriggeredPhpunitError(
                 TestMethodBuilder::fromTestCase($test, false),

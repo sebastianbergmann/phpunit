@@ -15,6 +15,7 @@ use EmptyIterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
@@ -22,6 +23,8 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[CoversClass(GeneratorNotSupportedException::class)]
 #[TestDox('assertEmpty()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertEmptyTest extends TestCase
 {
     /**

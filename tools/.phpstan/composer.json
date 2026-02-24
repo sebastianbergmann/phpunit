@@ -1,10 +1,10 @@
 {
     "require-dev": {
-        "phpstan/phpstan": "^2.1.31",
+        "phpstan/phpstan": "^2.1.40",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan-strict-rules": "^2.0.7",
-        "tomasvotruba/type-coverage": "^2.0.2",
-        "ergebnis/phpstan-rules": "^2.12.0"
+        "phpstan/phpstan-strict-rules": "^2.0.10",
+        "tomasvotruba/type-coverage": "^2.1.0",
+        "ergebnis/phpstan-rules": "^2.13.1"
     },
     "config": {
         "allow-plugins": {

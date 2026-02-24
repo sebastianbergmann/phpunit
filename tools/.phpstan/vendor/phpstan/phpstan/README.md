@@ -29,7 +29,10 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 ### Gold Sponsors
 
 <a href="https://ma.tt/"><img src="website/src/images/sponsor/matt.png" alt="Matt Mullenweg" width="290" height="64"></a>
+&nbsp;&nbsp;&nbsp;
 <a href="https://mojam.co/"><img src="website/src/images/sponsor/mojam.png" alt="Mojam" width="290" height="64"></a>
+<br>
+<a href="https://www.check24.de/"><img src="website/src/images/sponsor/check24.png" alt="CHECK24" width="283" height="64"></a>
 
 <br><br>
 

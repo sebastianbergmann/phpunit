@@ -11,12 +11,15 @@ namespace PHPUnit\Framework;
 
 use function json_encode;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversMethod(Assert::class, 'assertJsonStringEqualsJsonFile')]
 #[TestDox('assertJsonStringEqualsJsonFile()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertJsonStringEqualsJsonFileTest extends TestCase
 {
     public function testSucceedsWhenConstraintEvaluatesToTrue(): void

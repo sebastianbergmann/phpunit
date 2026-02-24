@@ -21,7 +21,7 @@ class Issue5592Test extends TestCase
 {
     public function testAddedAndRemovedErrorHandler(): void
     {
-        $previous = set_error_handler([$this, 'addedAndRemovedErrorHandler']);
+        $previous = set_error_handler($this->addedAndRemovedErrorHandler(...));
         restore_error_handler();
 
         $this->assertInstanceOf(ErrorHandler::class, $previous);
@@ -30,7 +30,7 @@ class Issue5592Test extends TestCase
 
     public function testAddedErrorHandler(): void
     {
-        $previous = set_error_handler([$this, 'addedErrorHandler']);
+        $previous = set_error_handler($this->addedErrorHandler(...));
 
         $this->assertInstanceOf(ErrorHandler::class, $previous);
         $this->assertTrue(false);
@@ -44,7 +44,7 @@ class Issue5592Test extends TestCase
 
     public function testAddedAndRemovedExceptionHandler(): void
     {
-        $previous = set_exception_handler([$this, 'addedAndRemovedExceptionHandler']);
+        $previous = set_exception_handler($this->addedAndRemovedExceptionHandler(...));
         restore_exception_handler();
 
         $this->assertSame('global5592ExceptionHandler', $previous);
@@ -53,7 +53,7 @@ class Issue5592Test extends TestCase
 
     public function testAddedExceptionHandler(): void
     {
-        $previous = set_exception_handler([$this, 'addedExceptionHandler']);
+        $previous = set_exception_handler($this->addedExceptionHandler(...));
 
         $this->assertSame('global5592ExceptionHandler', $previous);
         $this->assertTrue(false);

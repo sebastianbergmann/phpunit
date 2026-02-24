@@ -203,6 +203,8 @@ final class CodeCoverage
         );
 
         $this->collecting = true;
+
+        $this->timer()->start();
     }
 
     public function stop(bool $append, null|false|TargetCollection $covers = null, ?TargetCollection $uses = null): void
@@ -211,7 +213,9 @@ final class CodeCoverage
             return;
         }
 
-        $status = TestStatus::unknown();
+        $time             = $this->timer()->stop()->asSeconds();
+        $status           = TestStatus::unknown();
+        $this->collecting = false;
 
         if ($this->test !== null) {
             if ($this->test->status()->isSuccess()) {
@@ -251,10 +255,9 @@ final class CodeCoverage
             }
         }
 
-        $this->codeCoverage->stop($append, $status, $covers, $uses);
+        $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
 
-        $this->test       = null;
-        $this->collecting = false;
+        $this->test = null;
     }
 
     public function deactivate(): void
@@ -406,7 +409,7 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'PHPUnit XML');
 
             try {
-                $writer = new XmlReport(Version::id());
+                $writer = new XmlReport(Version::id(), $configuration->coverageXmlIncludeSource());
                 $writer->process($this->codeCoverage(), $configuration->coverageXml());
 
                 $this->codeCoverageGenerationSucceeded($printer);

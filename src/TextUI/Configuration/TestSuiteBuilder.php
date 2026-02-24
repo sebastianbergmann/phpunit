@@ -9,13 +9,17 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function assert;
 use function count;
+use function dirname;
+use function file;
 use function is_dir;
 use function is_file;
 use function realpath;
 use function str_ends_with;
+use function trim;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
@@ -41,17 +45,42 @@ final readonly class TestSuiteBuilder
      */
     public function build(Configuration $configuration): TestSuite
     {
-        if ($configuration->hasCliArguments()) {
+        if ($configuration->hasCliArguments() || $configuration->hasTestFilesFile()) {
             $arguments = [];
 
-            foreach ($configuration->cliArguments() as $cliArgument) {
-                $argument = realpath($cliArgument);
+            if ($configuration->hasCliArguments()) {
+                foreach ($configuration->cliArguments() as $cliArgument) {
+                    $argument = realpath($cliArgument);
 
-                if (!$argument) {
-                    throw new TestFileNotFoundException($cliArgument);
+                    if (!$argument) {
+                        throw new TestFileNotFoundException($cliArgument);
+                    }
+
+                    $arguments[] = $argument;
+                }
+            }
+
+            if ($configuration->hasTestFilesFile()) {
+                if (!is_file($configuration->testFilesFile())) {
+                    throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
                 }
 
-                $arguments[] = $argument;
+                $directory = dirname($configuration->testFilesFile()) . DIRECTORY_SEPARATOR;
+
+                foreach (file($configuration->testFilesFile()) as $file) {
+                    $file     = trim($file);
+                    $argument = realpath($file);
+
+                    if (!$argument) {
+                        $argument = realpath($directory . $file);
+                    }
+
+                    if (!$argument) {
+                        throw new TestFileNotFoundException($file);
+                    }
+
+                    $arguments[] = $argument;
+                }
             }
 
             if (count($arguments) === 1) {

@@ -1,23 +1,16 @@
 --TEST--
-The right events are emitted in the right order for a successful test with extended information
+The right events are emitted in the right order for a successful test with telemetry information
 --FILE--
 <?php declare(strict_types=1);
-$traceFile = tempnam(sys_get_temp_dir(), __FILE__);
-
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--no-output';
-$_SERVER['argv'][] = '--log-events-verbose-text';
-$_SERVER['argv'][] = $traceFile;
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--with-telemetry';
 $_SERVER['argv'][] = __DIR__ . '/_files/SuccessTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
-
-print file_get_contents($traceFile);
-
-unlink($traceFile);
 --EXPECTF--
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] PHPUnit Started (PHPUnit %s using %s)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Configured

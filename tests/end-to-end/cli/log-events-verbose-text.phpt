@@ -21,6 +21,7 @@ unlink($traceFile);
 --EXPECTF--
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] PHPUnit Started (%s)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Configured
+[%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Triggered Deprecation (The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14. Use "--log-events-text <file> --with-telemetry" instead.)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Event Facade Sealed
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Suite Loaded (7 tests)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Runner Started

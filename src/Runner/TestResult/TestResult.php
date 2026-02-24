@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use function array_map;
+use function array_sum;
 use function count;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\AfterLastTestMethodFailed;
@@ -268,14 +270,19 @@ final readonly class TestResult
         return $this->testSuiteSkippedEvents;
     }
 
-    public function numberOfTestSuiteSkippedEvents(): int
+    public function numberOfTestSkippedByTestSuiteSkippedEvents(): int
     {
-        return count($this->testSuiteSkippedEvents);
+        return array_sum(
+            array_map(
+                static fn (TestSuiteSkipped $event): int => $event->testSuite()->count(),
+                $this->testSuiteSkippedEvents,
+            ),
+        );
     }
 
     public function hasTestSuiteSkippedEvents(): bool
     {
-        return $this->numberOfTestSuiteSkippedEvents() > 0;
+        return $this->numberOfTestSkippedByTestSuiteSkippedEvents() > 0;
     }
 
     /**

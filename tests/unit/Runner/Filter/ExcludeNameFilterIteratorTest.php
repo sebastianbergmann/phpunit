@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Filter;
 
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -18,6 +19,8 @@ use PHPUnit\TestFixture\BankAccountTest;
 
 #[CoversClass(ExcludeNameFilterIterator::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/filter')]
 class ExcludeNameFilterIteratorTest extends TestCase
 {
     /**

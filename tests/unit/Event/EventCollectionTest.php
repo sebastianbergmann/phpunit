@@ -10,12 +10,15 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(EventCollection::class)]
 #[CoversClass(EventCollectionIterator::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/events')]
 final class EventCollectionTest extends TestCase
 {
     public function testIsInitiallyEmpty(): void

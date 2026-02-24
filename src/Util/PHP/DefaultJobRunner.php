@@ -11,6 +11,7 @@ namespace PHPUnit\Util\PHP;
 
 use const PHP_BINARY;
 use const PHP_SAPI;
+use function array_any;
 use function array_keys;
 use function array_merge;
 use function array_values;
@@ -24,6 +25,7 @@ use function is_array;
 use function is_resource;
 use function proc_close;
 use function proc_open;
+use function str_starts_with;
 use function stream_get_contents;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -165,9 +167,10 @@ final readonly class DefaultJobRunner extends JobRunner
      */
     private function buildCommand(Job $job, ?string $file): array
     {
-        $runtime     = new Runtime;
-        $command     = [PHP_BINARY];
-        $phpSettings = $job->phpSettings();
+        $runtime                        = new Runtime;
+        $command                        = [PHP_BINARY];
+        $phpSettings                    = $job->phpSettings();
+        $xdebugModeConfiguredExplicitly = array_any($phpSettings, static fn (string $phpSetting) => str_starts_with($phpSetting, 'xdebug.mode'));
 
         if ($runtime->hasPCOV()) {
             $pcovSettings = ini_get_all('pcov');
@@ -195,6 +198,7 @@ final readonly class DefaultJobRunner extends JobRunner
             );
 
             if (
+                !$xdebugModeConfiguredExplicitly &&
                 !CodeCoverage::instance()->isActive() &&
                 xdebug_is_debugger_active() === false &&
                 !$job->requiresXdebug()

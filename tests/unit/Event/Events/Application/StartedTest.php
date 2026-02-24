@@ -12,10 +12,13 @@ namespace PHPUnit\Event\Application;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Runtime\Runtime;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(Started::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/events')]
 final class StartedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

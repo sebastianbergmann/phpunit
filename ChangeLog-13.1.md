@@ -1,0 +1,18 @@
+# Changes in PHPUnit 13.1
+
+All notable changes of the PHPUnit 13.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
+
+## [13.1.0] - 2026-04-03
+
+### Added
+
+* [#6501](https://github.com/sebastianbergmann/phpunit/issues/6501): Include unexpected output in Open Test Reporting (OTR) XML logfile
+* [#6517](https://github.com/sebastianbergmann/phpunit/issues/6517): `includeInCodeCoverage` attribute for `<directory>` and `<file>` children of `<source>`
+* [#6523](https://github.com/sebastianbergmann/phpunit/issues/6523): Include `#[Group]` information in Open Test Reporting (OTR) XML logfile
+* [#6524](https://github.com/sebastianbergmann/phpunit/pull/6524): Report issues in Open Test Reporting (OTR) XML logfile
+
+### Deprecated
+
+* [#6515](https://github.com/sebastianbergmann/phpunit/issues/6515): Deprecate the `--log-events-verbose-text <file>` CLI option
+
+[13.1.0]: https://github.com/sebastianbergmann/phpunit/compare/13.0...main

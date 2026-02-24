@@ -1,0 +1,59 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\TextUI\Configuration;
+
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(FilterFileCollection::class)]
+#[CoversClass(FilterFileCollectionIterator::class)]
+#[UsesClass(FilterFile::class)]
+#[Small]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/value-objects')]
+final class FilterFileCollectionTest extends TestCase
+{
+    public function testIsCreatedFromArray(): void
+    {
+        $element  = $this->element();
+        $elements = FilterFileCollection::fromArray([$element]);
+
+        $this->assertSame([$element], $elements->asArray());
+    }
+
+    public function testIsCountable(): void
+    {
+        $element  = $this->element();
+        $elements = FilterFileCollection::fromArray([$element]);
+
+        $this->assertCount(1, $elements);
+        $this->assertTrue($elements->notEmpty());
+    }
+
+    public function testIsIterable(): void
+    {
+        $element  = $this->element();
+        $elements = FilterFileCollection::fromArray([$element]);
+
+        foreach ($elements as $index => $_constant) {
+            $this->assertSame(0, $index);
+            $this->assertSame($element, $_constant);
+        }
+    }
+
+    private function element(): FilterFile
+    {
+        return new FilterFile('path');
+    }
+}

@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(GroupCollectionIterator::class)]
 #[UsesClass(Group::class)]
 #[Small]
+#[\PHPUnit\Framework\Attributes\Group('textui')]
+#[\PHPUnit\Framework\Attributes\Group('textui/configuration')]
+#[\PHPUnit\Framework\Attributes\Group('textui/configuration/value-objects')]
 final class GroupCollectionTest extends TestCase
 {
     public function testIsCreatedFromArray(): void

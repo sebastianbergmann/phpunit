@@ -24,7 +24,7 @@ class Strings
 
 	public const TrimCharacters = " \t\n\r\0\x0B\u{A0}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200A}\u{200B}\u{2028}\u{3000}";
 
-	/** @deprecated use Strings::TrimCharacters */
+	#[\Deprecated('use Strings::TrimCharacters')]
 	public const TRIM_CHARACTERS = self::TrimCharacters;
 
 
@@ -59,7 +59,8 @@ class Strings
 			throw new Nette\NotSupportedException(__METHOD__ . '() requires ICONV extension that is not loaded.');
 		}
 
-		return iconv('UTF-32BE', 'UTF-8//IGNORE', pack('N', $code));
+		$res = iconv('UTF-32BE', 'UTF-8//IGNORE', pack('N', $code));
+		return $res === false ? throw new Nette\ShouldNotHappenException : $res;
 	}
 
 
@@ -73,11 +74,11 @@ class Strings
 		}
 
 		$tmp = iconv('UTF-8', 'UTF-32BE//IGNORE', $c);
-		if (!$tmp) {
+		if ($tmp === false || $tmp === '') {
 			throw new Nette\InvalidArgumentException('Invalid UTF-8 character "' . ($c === '' ? '' : '\x' . strtoupper(bin2hex($c))) . '".');
 		}
 
-		return unpack('N', $tmp)[1];
+		return unpack('N', $tmp)[1] ?? throw new Nette\ShouldNotHappenException;
 	}
 
 
@@ -124,7 +125,8 @@ class Strings
 			$start += self::length($s); // unifies iconv_substr behavior with mb_substr
 		}
 
-		return iconv_substr($s, $start, $length, 'UTF-8');
+		$res = iconv_substr($s, $start, $length, 'UTF-8');
+		return $res === false ? throw new Nette\InvalidStateException('iconv_substr() failed.') : $res;
 	}
 
 
@@ -135,7 +137,7 @@ class Strings
 	public static function normalize(string $s): string
 	{
 		// convert to compressed normal form (NFC)
-		if (class_exists('Normalizer', false) && ($n = \Normalizer::normalize($s, \Normalizer::FORM_C)) !== false) {
+		if (class_exists('Normalizer', autoload: false) && ($n = \Normalizer::normalize($s, \Normalizer::FORM_C)) !== false) {
 			$s = $n;
 		}
 
@@ -186,16 +188,11 @@ class Strings
 	 */
 	public static function toAscii(string $s): string
 	{
-		$iconv = defined('ICONV_IMPL') ? trim(ICONV_IMPL, '"\'') : null;
-		static $transliterator = null;
-		if ($transliterator === null) {
-			if (class_exists('Transliterator', false)) {
-				$transliterator = \Transliterator::create('Any-Latin; Latin-ASCII');
-			} else {
-				trigger_error(__METHOD__ . "(): it is recommended to enable PHP extensions 'intl'.", E_USER_NOTICE);
-				$transliterator = false;
-			}
+		if (!extension_loaded('intl')) {
+			throw new Nette\NotSupportedException(__METHOD__ . '() requires INTL extension that is not loaded.');
 		}
+
+		$iconv = defined('ICONV_IMPL') ? trim(ICONV_IMPL, '"\'') : null;
 
 		// remove control characters and check UTF-8 validity
 		$s = self::pcre('preg_replace', ['#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{2FF}\x{370}-\x{10FFFF}]#u', '', $s]);
@@ -206,39 +203,24 @@ class Strings
 			$s = strtr($s, ["\u{AE}" => '(R)', "\u{A9}" => '(c)', "\u{2026}" => '...', "\u{AB}" => '<<', "\u{BB}" => '>>', "\u{A3}" => 'lb', "\u{A5}" => 'yen', "\u{B2}" => '^2', "\u{B3}" => '^3', "\u{B5}" => 'u', "\u{B9}" => '^1', "\u{BA}" => 'o', "\u{BF}" => '?', "\u{2CA}" => "'", "\u{2CD}" => '_', "\u{2DD}" => '"', "\u{1FEF}" => '', "\u{20AC}" => 'EUR', "\u{2122}" => 'TM', "\u{212E}" => 'e', "\u{2190}" => '<-', "\u{2191}" => '^', "\u{2192}" => '->', "\u{2193}" => 'V', "\u{2194}" => '<->']); // ® © … « » £ ¥ ² ³ µ ¹ º ¿ ˊ ˍ ˝ ` € ™ ℮ ← ↑ → ↓ ↔
 		}
 
-		if ($transliterator) {
-			$s = $transliterator->transliterate($s);
-			// use iconv because The transliterator leaves some characters out of ASCII, eg → ʾ
-			if ($iconv === 'glibc') {
-				$s = strtr($s, '?', "\x01"); // temporarily hide ? to distinguish them from the garbage that iconv creates
-				$s = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s);
-				$s = str_replace(['?', "\x01"], ['', '?'], $s); // remove garbage and restore ? characters
-			} elseif ($iconv === 'libiconv') {
-				$s = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s);
-			} else { // null or 'unknown' (#216)
-				$s = self::pcre('preg_replace', ['#[^\x00-\x7F]++#', '', $s]); // remove non-ascii chars
-			}
-		} elseif ($iconv === 'glibc' || $iconv === 'libiconv') {
-			// temporarily hide these characters to distinguish them from the garbage that iconv creates
-			$s = strtr($s, '`\'"^~?', "\x01\x02\x03\x04\x05\x06");
-			if ($iconv === 'glibc') {
-				// glibc implementation is very limited. transliterate into Windows-1250 and then into ASCII, so most Eastern European characters are preserved
-				$s = iconv('UTF-8', 'WINDOWS-1250//TRANSLIT//IGNORE', $s);
-				$s = strtr(
-					$s,
-					"\xa5\xa3\xbc\x8c\xa7\x8a\xaa\x8d\x8f\x8e\xaf\xb9\xb3\xbe\x9c\x9a\xba\x9d\x9f\x9e\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf8\xf9\xfa\xfb\xfc\xfd\xfe\x96\xa0\x8b\x97\x9b\xa6\xad\xb7",
-					'ALLSSSSTZZZallssstzzzRAAAALCCCEEEEIIDDNNOOOOxRUUUUYTsraaaalccceeeeiiddnnooooruuuuyt- <->|-.',
-				);
-				$s = self::pcre('preg_replace', ['#[^\x00-\x7F]++#', '', $s]);
-			} else {
-				$s = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s);
+		$s = \Transliterator::create('Any-Latin; Latin-ASCII')?->transliterate($s)
+			?? throw new Nette\InvalidStateException('Transliterator::transliterate() failed.');
+
+		// use iconv because The transliterator leaves some characters out of ASCII, eg → ʾ
+		if ($iconv === 'glibc') {
+			$s = strtr($s, '?', "\x01"); // temporarily hide ? to distinguish them from the garbage that iconv creates
+			$s = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s);
+			if ($s === false) {
+				throw new Nette\InvalidStateException('iconv() failed.');
 			}
 
-			// remove garbage that iconv creates during transliteration (eg Ý -> Y')
-			$s = str_replace(['`', "'", '"', '^', '~', '?'], '', $s);
-			// restore temporarily hidden characters
-			$s = strtr($s, "\x01\x02\x03\x04\x05\x06", '`\'"^~?');
-		} else {
+			$s = str_replace(['?', "\x01"], ['', '?'], $s); // remove garbage and restore ? characters
+		} elseif ($iconv === 'libiconv') {
+			$s = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s);
+			if ($s === false) {
+				throw new Nette\InvalidStateException('iconv() failed.');
+			}
+		} else { // null or 'unknown' (#216)
 			$s = self::pcre('preg_replace', ['#[^\x00-\x7F]++#', '', $s]); // remove non-ascii chars
 		}
 
@@ -352,7 +334,7 @@ class Strings
 	 */
 	public static function compare(string $left, string $right, ?int $length = null): bool
 	{
-		if (class_exists('Normalizer', false)) {
+		if (class_exists('Normalizer', autoload: false)) {
 			$left = \Normalizer::normalize($left, \Normalizer::FORM_D); // form NFD is faster
 			$right = \Normalizer::normalize($right, \Normalizer::FORM_D); // form NFD is faster
 		}
@@ -376,6 +358,10 @@ class Strings
 	public static function findPrefix(array $strings): string
 	{
 		$first = array_shift($strings);
+		if ($first === null) {
+			return '';
+		}
+
 		for ($i = 0; $i < strlen($first); $i++) {
 			foreach ($strings as $s) {
 				if (!isset($s[$i]) || $first[$i] !== $s[$i]) {
@@ -399,8 +385,8 @@ class Strings
 	public static function length(string $s): int
 	{
 		return match (true) {
-			extension_loaded('mbstring') => mb_strlen($s, 'UTF-8'),
-			extension_loaded('iconv') => iconv_strlen($s, 'UTF-8'),
+			extension_loaded('mbstring') => (int) mb_strlen($s, 'UTF-8'),
+			extension_loaded('iconv') => (int) iconv_strlen($s, 'UTF-8'),
 			default => strlen(@utf8_decode($s)), // deprecated
 		};
 	}
@@ -449,7 +435,10 @@ class Strings
 			throw new Nette\NotSupportedException(__METHOD__ . '() requires ICONV extension that is not loaded.');
 		}
 
-		return iconv('UTF-32LE', 'UTF-8', strrev(iconv('UTF-8', 'UTF-32BE', $s)));
+		$tmp = iconv('UTF-8', 'UTF-32BE', $s);
+		return $tmp === false
+			? throw new Nette\InvalidStateException('iconv() failed.')
+			: (string) iconv('UTF-32LE', 'UTF-8', strrev($tmp));
 	}
 
 
@@ -528,6 +517,7 @@ class Strings
 
 	/**
 	 * Divides the string into arrays according to the regular expression. Expressions in parentheses will be captured and returned as well.
+	 * @return list<string>
 	 */
 	public static function split(
 		string $subject,
@@ -554,6 +544,7 @@ class Strings
 	/**
 	 * Searches the string for the part matching the regular expression and returns
 	 * an array with the found expression and individual subexpressions, or `null`.
+	 * @return ?array<string>
 	 */
 	public static function match(
 		string $subject,
@@ -574,6 +565,7 @@ class Strings
 			$pattern .= 'u';
 		}
 
+		$m = [];
 		if ($offset > strlen($subject)) {
 			return null;
 		} elseif (!self::pcre('preg_match', [$pattern, $subject, &$m, $flags, $offset])) {
@@ -589,7 +581,7 @@ class Strings
 	/**
 	 * Searches the string for all occurrences matching the regular expression and
 	 * returns an array of arrays containing the found expression and each subexpression.
-	 * @return ($lazy is true ? \Generator<int, array> : array[])
+	 * @return ($lazy is true ? \Generator<int, array<string>> : list<array<string>>)
 	 */
 	public static function matchAll(
 		string $subject,
@@ -612,10 +604,12 @@ class Strings
 			$flags = PREG_OFFSET_CAPTURE | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0);
 			return (function () use ($utf8, $captureOffset, $flags, $subject, $pattern, $offset) {
 				$counter = 0;
+				$m = [];
 				while (
 					$offset <= strlen($subject) - ($counter ? 1 : 0)
 					&& self::pcre('preg_match', [$pattern, $subject, &$m, $flags, $offset])
 				) {
+					/** @var list<array{string, int}> $m */
 					$offset = $m[0][1] + max(1, strlen($m[0][0]));
 					if (!$captureOffset) {
 						$m = array_map(fn($item) => $item[0], $m);
@@ -635,6 +629,7 @@ class Strings
 			? $captureOffset
 			: ($captureOffset ? PREG_OFFSET_CAPTURE : 0) | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0) | ($patternOrder ? PREG_PATTERN_ORDER : 0);
 
+		$m = [];
 		self::pcre('preg_match_all', [
 			$pattern, $subject, &$m,
 			($flags & PREG_PATTERN_ORDER) ? $flags : ($flags | PREG_SET_ORDER),
@@ -648,6 +643,7 @@ class Strings
 
 	/**
 	 * Replaces all occurrences matching regular expression $pattern which can be string or array in the form `pattern => replacement`.
+	 * @param  string|array<string, string>  $pattern
 	 */
 	public static function replace(
 		string $subject,
@@ -667,7 +663,7 @@ class Strings
 
 			$flags = ($captureOffset ? PREG_OFFSET_CAPTURE : 0) | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0);
 			if ($utf8) {
-				$pattern .= 'u';
+				$pattern = is_array($pattern) ? array_map(fn($item) => $item . 'u', $pattern) : $pattern . 'u';
 				if ($captureOffset) {
 					$replacement = fn($m) => $replacement(self::bytesToChars($subject, [$m])[0]);
 				}
@@ -688,6 +684,10 @@ class Strings
 	}
 
 
+	/**
+	 * @param  list<array<array{string, int}>>  $groups
+	 * @return list<array<array{string, int}>>
+	 */
 	private static function bytesToChars(string $s, array $groups): array
 	{
 		$lastBytes = $lastChars = 0;
@@ -708,8 +708,12 @@ class Strings
 	}
 
 
-	/** @internal */
-	public static function pcre(string $func, array $args)
+	/**
+	 * @param  callable-string  $func
+	 * @param  list<mixed>  $args
+	 * @internal
+	 */
+	public static function pcre(string $func, array $args): mixed
 	{
 		$res = Callback::invokeSafe($func, $args, function (string $message) use ($args): void {
 			// compile-time error, not detectable by preg_last_error
@@ -717,7 +721,7 @@ class Strings
 		});
 
 		if (($code = preg_last_error()) // run-time error, but preg_last_error & return code are liars
-			&& ($res === null || !in_array($func, ['preg_filter', 'preg_replace_callback', 'preg_replace'], true))
+			&& ($res === null || !in_array($func, ['preg_filter', 'preg_replace_callback', 'preg_replace'], strict: true))
 		) {
 			throw new RegexpException(preg_last_error_msg()
 				. ' (pattern: ' . implode(' or ', (array) $args[0]) . ')', $code);

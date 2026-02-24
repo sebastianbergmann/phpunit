@@ -13,11 +13,14 @@ use function json_encode;
 use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(SourceFilter::class)]
 #[Small]
-final class SourceFilterTest extends AbstractSouceFilterTestCase
+#[Group('textui')]
+#[Group('textui/configuration')]
+final class SourceFilterTest extends AbstractSourceFilterTestCase
 {
     public static function provider(): array
     {
@@ -26,9 +29,9 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                 [
                     self::fixturePath('a/PrefixSuffix.php') => true,
                 ],
-                self::createSource(includeFiles: FileCollection::fromArray(
+                self::createSource(includeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 )),
             ],
@@ -37,8 +40,8 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     self::fixturePath('a/PrefixSuffix.php') => false,
                 ],
                 self::createSource(
-                    includeFiles: FileCollection::fromArray([
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                    includeFiles: FilterFileCollection::fromArray([
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ]),
                     excludeDirectories: FilterDirectoryCollection::fromArray(
                         [
@@ -56,14 +59,14 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                     self::fixturePath('a/PrefixSuffix.php') => false,
                 ],
                 self::createSource(
-                    includeFiles: FileCollection::fromArray(
+                    includeFiles: FilterFileCollection::fromArray(
                         [
-                            new File(self::fixturePath('/a/PrefixSuffix.php')),
+                            new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                         ],
                     ),
-                    excludeFiles: FileCollection::fromArray(
+                    excludeFiles: FilterFileCollection::fromArray(
                         [
-                            new File(self::fixturePath('/a/PrefixSuffix.php')),
+                            new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                         ],
                     ),
                 ),
@@ -90,9 +93,9 @@ final class SourceFilterTest extends AbstractSouceFilterTestCase
                             new FilterDirectory(self::fixturePath(), '', '.php'),
                         ],
                     ),
-                    excludeFiles: FileCollection::fromArray(
+                    excludeFiles: FilterFileCollection::fromArray(
                         [
-                            new File(self::fixturePath('/a/PrefixSuffix.php')),
+                            new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                         ],
                     ),
                 ),

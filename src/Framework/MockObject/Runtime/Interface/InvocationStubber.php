@@ -28,36 +28,6 @@ interface InvocationStubber
     /**
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @param non-empty-string $id
-     *
-     * @return $this
-     */
-    public function id(string $id): self;
-
-    /**
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @param non-empty-string $id
-     *
-     * @return $this
-     */
-    public function after(string $id): self;
-
-    /**
-     * @return $this
-     */
-    public function with(mixed ...$arguments): self;
-
-    /**
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @return $this
-     */
-    public function withAnyParameters(): self;
-
-    /**
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
      * @return $this
      */
     public function will(Stub $stub): self;
@@ -119,4 +89,6 @@ interface InvocationStubber
      * @return $this
      */
     public function willThrowException(Throwable $exception): self;
+
+    public function seal(): void;
 }

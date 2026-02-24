@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function count;
 use Iterator;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
- * @template-implements Iterator<int, TestDirectory>
+ * @template-implements Iterator<non-negative-int, TestDirectory>
  */
 final class TestDirectoryCollectionIterator implements Iterator
 {
@@ -23,6 +22,10 @@ final class TestDirectoryCollectionIterator implements Iterator
      * @var list<TestDirectory>
      */
     private readonly array $directories;
+
+    /**
+     * @var non-negative-int
+     */
     private int $position = 0;
 
     public function __construct(TestDirectoryCollection $directories)
@@ -37,9 +40,12 @@ final class TestDirectoryCollectionIterator implements Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->directories);
+        return isset($this->directories[$this->position]);
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function key(): int
     {
         return $this->position;

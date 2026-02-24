@@ -25,16 +25,18 @@ final readonly class HookedProperty
     private Type $type;
     private bool $getHook;
     private bool $setHook;
+    private ?Type $setterType;
 
     /**
      * @param non-empty-string $name
      */
-    public function __construct(string $name, Type $type, bool $getHook, bool $setHook)
+    public function __construct(string $name, Type $type, bool $getHook, bool $setHook, ?Type $setterType)
     {
-        $this->name    = $name;
-        $this->type    = $type;
-        $this->getHook = $getHook;
-        $this->setHook = $setHook;
+        $this->name       = $name;
+        $this->type       = $type;
+        $this->getHook    = $getHook;
+        $this->setHook    = $setHook;
+        $this->setterType = $setterType;
     }
 
     public function name(): string
@@ -55,5 +57,17 @@ final readonly class HookedProperty
     public function hasSetHook(): bool
     {
         return $this->setHook;
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function setterType(): Type
+    {
+        if ($this->setterType === null) {
+            throw new RuntimeException;
+        }
+
+        return $this->setterType;
     }
 }

@@ -10,15 +10,16 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
-use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\MockObject\Generator\MethodNamedMethodException;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodNamedMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
 use PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithGetHook;
@@ -118,7 +119,8 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame(4, $double->doSomething(3));
     }
 
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/6174')]
+    #[Group('regression')]
+    #[Group('regression/6174')]
     final public function testIssue6174(): void
     {
         $double = $this->createTestDouble(Issue6174::class);
@@ -282,7 +284,8 @@ abstract class TestDoubleTestCase extends TestCase
             ->willReturn(true);
     }
 
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5874')]
+    #[Group('regression')]
+    #[Group('regression/5874')]
     public function testDoubledMethodsCanBeCalledFromDestructorOnTestDoubleCreatedByTheReturnValueGenerator(): void
     {
         $double = $this->createTestDouble(ExtendableClassCallingMethodInDestructor::class);
@@ -293,7 +296,6 @@ abstract class TestDoubleTestCase extends TestCase
         );
     }
 
-    #[RequiresPhp('^8.4')]
     public function testGetHookForPropertyOfInterfaceCanBeConfigured(): void
     {
         $double = $this->createTestDouble(InterfaceWithPropertyWithGetHook::class);
@@ -303,7 +305,6 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertSame('value', $double->property);
     }
 
-    #[RequiresPhp('^8.4')]
     public function testGetHookForPropertyOfExtendableClassCanBeConfigured(): void
     {
         $double = $this->createTestDouble(ExtendableClassWithPropertyWithGetHook::class);
@@ -311,6 +312,47 @@ abstract class TestDoubleTestCase extends TestCase
         $double->method(PropertyHook::get('property'))->willReturn('value');
 
         $this->assertSame('value', $double->property);
+    }
+
+    #[TestDox('Sealed test double throws exception when method() is called')]
+    public function testSealedTestDoubleThrowsExceptionWhenMethodIsCalled(): void
+    {
+        $stub = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $stub
+            ->method('doSomething')
+            ->willReturn(true)
+            ->seal();
+
+        $this->expectException(TestDoubleSealedException::class);
+
+        $stub->method('doSomethingElse');
+    }
+
+    #[TestDox('Cloned sealed test double remains sealed')]
+    public function testClonedSealedTestDoubleRemainsSealed(): void
+    {
+        $stub = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $stub
+            ->method('doSomething')
+            ->willReturn(true)
+            ->seal();
+
+        $clone = clone $stub;
+
+        $this->expectException(TestDoubleSealedException::class);
+
+        $clone->method('doSomethingElse');
+    }
+
+    #[TestDox('Cannot create test double for an interface that has a method named "method"')]
+    public function testCannotCreateTestDoubleForInterfaceWithMethodNamedMethod(): void
+    {
+        $this->expectException(MethodNamedMethodException::class);
+        $this->expectExceptionMessage('Doubling interfaces (or classes) that have a method named "method" is not supported.');
+
+        $this->createTestDouble(InterfaceWithMethodNamedMethod::class);
     }
 
     /**

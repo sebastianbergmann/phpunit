@@ -58,6 +58,7 @@ final class Builder
         'only-summary-for-coverage-text',
         'show-uncovered-for-coverage-text',
         'coverage-xml=',
+        'exclude-source-from-xml-coverage',
         'path-coverage',
         'disallow-test-output',
         'display-all-issues',
@@ -154,6 +155,7 @@ final class Builder
         'test-suffix=',
         'testsuite=',
         'exclude-testsuite=',
+        'test-files-file=',
         'log-events-text=',
         'log-events-verbose-text=',
         'version',
@@ -215,6 +217,7 @@ final class Builder
         $coverageTextShowUncoveredFiles    = null;
         $coverageTextShowOnlySummary       = null;
         $coverageXml                       = null;
+        $excludeSourceFromXmlCoverage      = null;
         $pathCoverage                      = null;
         $defaultTimeLimit                  = null;
         $disableCodeCoverageIgnore         = null;
@@ -304,6 +307,7 @@ final class Builder
         $testSuffixes                      = null;
         $testSuite                         = null;
         $excludeTestSuite                  = null;
+        $testFilesFile                     = null;
         $useDefaultConfiguration           = true;
         $version                           = false;
         $logEventsText                     = null;
@@ -427,6 +431,11 @@ final class Builder
 
                     break;
 
+                case '--exclude-source-from-xml-coverage':
+                    $excludeSourceFromXmlCoverage = true;
+
+                    break;
+
                 case '--path-coverage':
                     $pathCoverage = true;
 
@@ -474,6 +483,11 @@ final class Builder
 
                 case '--exclude-testsuite':
                     $excludeTestSuite = $option[1];
+
+                    break;
+
+                case '--test-files-file':
+                    $testFilesFile = $option[1];
 
                     break;
 
@@ -1239,6 +1253,7 @@ final class Builder
 
         return new Configuration(
             $options[1],
+            $testFilesFile,
             $all,
             $atLeastVersion,
             $backupGlobals,
@@ -1262,6 +1277,7 @@ final class Builder
             $coverageTextShowUncoveredFiles,
             $coverageTextShowOnlySummary,
             $coverageXml,
+            $excludeSourceFromXmlCoverage,
             $pathCoverage,
             $warmCoverageCache,
             $defaultTimeLimit,

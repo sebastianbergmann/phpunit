@@ -15,6 +15,7 @@ use function fclose;
 use function fopen;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\TestFixture\Book;
@@ -24,6 +25,8 @@ use stdClass;
 #[CoversClass(Assert::class)]
 #[TestDox('assertThat()')]
 #[Small]
+#[Group('framework')]
+#[Group('framework/assertions')]
 final class assertThatTest extends TestCase
 {
     #[DoesNotPerformAssertions]

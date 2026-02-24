@@ -16,7 +16,9 @@ final class Issue5891Test extends TestCase
     public function testVariadicParam(): void
     {
         $mock = $this->createMock(ArgumentList::class);
+
         $mock
+            ->expects($this->once())
             ->method('foo')
             ->with($this->callback(static function (...$items): bool
             {
@@ -31,7 +33,9 @@ final class Issue5891Test extends TestCase
     public function testTwoParametersAndVariadicParam(): void
     {
         $mock = $this->createMock(TwoParametersAndArgumentList::class);
+
         $mock
+            ->expects($this->once())
             ->method('foo')
             ->with($this->callback(static function (...$items): bool
             {

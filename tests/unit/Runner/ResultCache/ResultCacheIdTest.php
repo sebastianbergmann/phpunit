@@ -15,6 +15,7 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,8 @@ use PHPUnit\Metadata\MetadataCollection;
 
 #[CoversClass(ResultCacheId::class)]
 #[Small]
+#[Group('test-runner')]
+#[Group('test-runner/result-cache')]
 final class ResultCacheIdTest extends TestCase
 {
     public static function provideResultCacheIds(): iterable

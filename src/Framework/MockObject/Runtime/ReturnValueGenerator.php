@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function array_all;
 use function array_map;
 use function explode;
 use function in_array;
@@ -59,7 +60,7 @@ final class ReturnValueGenerator
         }
 
         if (!$intersection) {
-            $lowerTypes = array_map('strtolower', $types);
+            $lowerTypes = array_map(strtolower(...), $types);
 
             if (in_array('', $lowerTypes, true) ||
                 in_array('null', $lowerTypes, true) ||
@@ -163,13 +164,7 @@ final class ReturnValueGenerator
      */
     private function onlyInterfaces(array $types): bool
     {
-        foreach ($types as $type) {
-            if (!interface_exists($type)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($types, static fn (string $type) => interface_exists($type));
     }
 
     /**

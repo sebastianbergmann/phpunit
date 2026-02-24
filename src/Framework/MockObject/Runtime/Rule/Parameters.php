@@ -33,6 +33,7 @@ final class Parameters implements ParametersRule
     private array $parameters           = [];
     private ?BaseInvocation $invocation = null;
     private null|bool|ExpectationFailedException $parameterVerificationResult;
+    private bool $useAssertionCount = true;
 
     /**
      * @param array<mixed> $parameters
@@ -79,6 +80,11 @@ final class Parameters implements ParametersRule
     public function verify(): void
     {
         $this->doVerify();
+    }
+
+    public function useAssertionCount(bool $useAssertionCount): void
+    {
+        $this->useAssertionCount = $useAssertionCount;
     }
 
     /**
@@ -149,6 +155,10 @@ final class Parameters implements ParametersRule
 
     private function incrementAssertionCount(): void
     {
+        if ($this->useAssertionCount === false) {
+            return;
+        }
+
         Test::currentTestCase()->addToAssertionCount(1);
     }
 }

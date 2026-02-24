@@ -12,9 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,6 +23,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Operator::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class LogicalNotTest extends TestCase
 {
     public static function provider(): array
@@ -132,7 +134,8 @@ final class LogicalNotTest extends TestCase
     }
 
     #[TestDox('LogicalNot(IsEqual(\'test contains something\')) is handled correctly')]
-    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5516')]
+    #[Group('regression')]
+    #[Group('regression/5516')]
     public function testForNotEqualsWithStringThatContainsContains(): void
     {
         $constraint = new LogicalNot(new IsEqual('test contains something'));

@@ -10,12 +10,16 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\VersionComparisonOperator;
 
 #[CoversClass(TestFile::class)]
 #[Small]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/value-objects')]
 final class TestFileTest extends TestCase
 {
     public function testHasPath(): void

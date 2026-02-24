@@ -20,6 +20,7 @@ use function uniqid;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -29,6 +30,9 @@ use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
 #[CoversNamespace('PHPUnit\TextUI\XmlConfiguration')]
 #[Medium]
+#[Group('textui')]
+#[Group('textui/configuration')]
+#[Group('textui/configuration/xml')]
 final class LoaderTest extends TestCase
 {
     public static function configurationRootOptionsProvider(): array
@@ -286,10 +290,8 @@ final class LoaderTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . '.', $php->includePaths()->asArray()[0]->path());
         $this->assertSame('/path/to/lib', $php->includePaths()->asArray()[1]->path());
 
-        $this->assertSame('foo', $php->iniSettings()->asArray()[0]->name());
-        $this->assertSame('bar', $php->iniSettings()->asArray()[0]->value());
-        $this->assertSame('highlight.keyword', $php->iniSettings()->asArray()[1]->name());
-        $this->assertSame('#123456', $php->iniSettings()->asArray()[1]->value());
+        $this->assertSame('highlight.keyword', $php->iniSettings()->asArray()[0]->name());
+        $this->assertSame('#123456', $php->iniSettings()->asArray()[0]->value());
 
         $this->assertSame('FOO', $php->constants()->asArray()[0]->name());
         $this->assertFalse($php->constants()->asArray()[0]->value());

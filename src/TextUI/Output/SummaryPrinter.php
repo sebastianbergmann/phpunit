@@ -104,7 +104,7 @@ final class SummaryPrinter
         $this->printCountString($result->numberOfPhpunitDeprecations(), 'PHPUnit Deprecations', $color);
         $this->printCountString($result->numberOfPhpunitNotices(), 'PHPUnit Notices', $color);
         $this->printCountString($result->numberOfNotices(), 'Notices', $color);
-        $this->printCountString($result->numberOfTestSuiteSkippedEvents() + $result->numberOfTestSkippedEvents(), 'Skipped', $color);
+        $this->printCountString($result->numberOfTestSkippedByTestSuiteSkippedEvents() + $result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);
         $this->printWithColor($color, '.');

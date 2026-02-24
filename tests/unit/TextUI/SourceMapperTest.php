@@ -13,11 +13,14 @@ use const PHP_OS_FAMILY;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(SourceMapper::class)]
 #[Small]
-final class SourceMapperTest extends AbstractSouceFilterTestCase
+#[Group('textui')]
+#[Group('textui/configuration')]
+final class SourceMapperTest extends AbstractSourceFilterTestCase
 {
     public static function provider(): Generator
     {
@@ -26,8 +29,8 @@ final class SourceMapperTest extends AbstractSouceFilterTestCase
                 self::fixturePath('a/PrefixSuffix.php') => true,
             ],
             self::createSource(
-                includeFiles: FileCollection::fromArray([
-                    new File(self::fixturePath('a/PrefixSuffix.php')),
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/PrefixSuffix.php')),
                 ]),
             ),
         ];
@@ -36,11 +39,6 @@ final class SourceMapperTest extends AbstractSouceFilterTestCase
             [
             ],
             self::createSource(
-                includeFiles: FileCollection::fromArray(
-                    [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
-                    ],
-                ),
                 excludeDirectories: FilterDirectoryCollection::fromArray(
                     [
                         new FilterDirectory(
@@ -50,6 +48,11 @@ final class SourceMapperTest extends AbstractSouceFilterTestCase
                         ),
                     ],
                 ),
+                includeFiles: FilterFileCollection::fromArray(
+                    [
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
+                    ],
+                ),
             ),
         ];
 
@@ -57,14 +60,14 @@ final class SourceMapperTest extends AbstractSouceFilterTestCase
             [
             ],
             self::createSource(
-                includeFiles: FileCollection::fromArray(
+                includeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
-                excludeFiles: FileCollection::fromArray(
+                excludeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
             ),
@@ -140,9 +143,9 @@ final class SourceMapperTest extends AbstractSouceFilterTestCase
                         ),
                     ],
                 ),
-                excludeFiles: FileCollection::fromArray(
+                excludeFiles: FilterFileCollection::fromArray(
                     [
-                        new File(self::fixturePath('/a/PrefixSuffix.php')),
+                        new FilterFile(self::fixturePath('/a/PrefixSuffix.php')),
                     ],
                 ),
             ),
@@ -342,11 +345,100 @@ final class SourceMapperTest extends AbstractSouceFilterTestCase
                 ),
             ),
         ];
+
+        yield 'include file with non-existent path' => [
+            [],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile('/non/existent/file.php'),
+                ]),
+            ),
+        ];
+
+        yield 'exclude file with non-existent path' => [
+            [
+                self::fixturePath('a/PrefixSuffix.php') => true,
+            ],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/PrefixSuffix.php')),
+                ]),
+                excludeFiles: FilterFileCollection::fromArray([
+                    new FilterFile('/non/existent/file.php'),
+                ]),
+            ),
+        ];
+
+        yield 'exclude file not in include set' => [
+            [
+                self::fixturePath('a/PrefixSuffix.php') => true,
+            ],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/PrefixSuffix.php')),
+                ]),
+                excludeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('b/PrefixSuffix.php')),
+                ]),
+            ),
+        ];
+    }
+
+    public static function providerForCodeCoverage(): Generator
+    {
+        yield 'directory with includeInCodeCoverage=false' => [
+            [],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray([
+                    new FilterDirectory(
+                        self::fixturePath('/a'),
+                        '',
+                        '.php',
+                        false,
+                    ),
+                ]),
+            ),
+        ];
+
+        yield 'file included with includeInCodeCoverage=true' => [
+            [
+                self::fixturePath('a/PrefixSuffix.php') => true,
+            ],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/PrefixSuffix.php'), true),
+                ]),
+            ),
+        ];
+
+        yield 'file included with includeInCodeCoverage=false, path exists' => [
+            [],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/PrefixSuffix.php'), false),
+                ]),
+            ),
+        ];
+
+        yield 'file included with includeInCodeCoverage=false, path non-existent' => [
+            [],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile('/non/existent/file.php', false),
+                ]),
+            ),
+        ];
     }
 
     #[DataProvider('provider')]
     public function testDeterminesWhetherFileIsIncluded(array $expected, Source $source): void
     {
         $this->assertEquals($expected, (new SourceMapper)->map($source));
+    }
+
+    #[DataProvider('providerForCodeCoverage')]
+    public function testMapForCodeCoverage(array $expected, Source $source): void
+    {
+        $this->assertEquals($expected, (new SourceMapper)->mapForCodeCoverage($source));
     }
 }

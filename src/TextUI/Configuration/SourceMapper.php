@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function file_get_contents;
+use function file_put_contents;
+use function is_array;
 use function realpath;
+use function serialize;
+use function unserialize;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SplObjectStorage;
 
@@ -24,6 +29,38 @@ final class SourceMapper
      * @var ?SplObjectStorage<Source, array<non-empty-string, true>>
      */
     private static ?SplObjectStorage $files = null;
+
+    public static function saveTo(string $path, Source $source): bool
+    {
+        $map = (new self)->map($source);
+
+        return file_put_contents($path, serialize($map)) !== false;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function loadFrom(string $path, Source $source): void
+    {
+        $content = file_get_contents($path);
+
+        if ($content === false) {
+            return;
+        }
+
+        $map = unserialize($content, ['allowed_classes' => false]);
+
+        if (!is_array($map)) {
+            return;
+        }
+
+        if (self::$files === null) {
+            self::$files = new SplObjectStorage;
+        }
+
+        /** @phpstan-ignore offsetAssign.valueType */
+        self::$files[$source] = $map;
+    }
 
     /**
      * @return array<non-empty-string, true>
@@ -97,6 +134,46 @@ final class SourceMapper
         }
 
         self::$files[$source] = $files;
+
+        return $files;
+    }
+
+    /**
+     * @return array<non-empty-string, true>
+     */
+    public function mapForCodeCoverage(Source $source): array
+    {
+        $files = $this->map($source);
+
+        foreach ($source->includeDirectories() as $directory) {
+            if ($directory->includeInCodeCoverage()) {
+                continue;
+            }
+
+            foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
+                $file = realpath($file);
+
+                if (!$file) {
+                    continue;
+                }
+
+                unset($files[$file]);
+            }
+        }
+
+        foreach ($source->includeFiles() as $file) {
+            if ($file->includeInCodeCoverage()) {
+                continue;
+            }
+
+            $path = realpath($file->path());
+
+            if (!$path) {
+                continue;
+            }
+
+            unset($files[$path]);
+        }
 
         return $files;
     }

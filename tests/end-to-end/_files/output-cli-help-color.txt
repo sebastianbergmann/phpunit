@@ -51,6 +51,8 @@
   [32m--test-suffix [36m<suffixes>[0m            [0m Only search for test in files with
                                        specified suffix(es). Default:
                                        Test.php,.phpt
+  [32m--test-files-file [36m<file>[0m            [0m Only run test files listed in file (one
+                                       file by line)
 
 [33mExecution:[0m
 
@@ -222,6 +224,8 @@
                                        format: show uncovered files
   [32m--coverage-xml [36m<dir>[0m                [0m Write code coverage report in XML format
                                        to directory
+  [32m--exclude-source-from-xml-coverage  [0m Exclude <source> element from code
+                                       coverage report in XML format
   [32m--warm-coverage-cache               [0m Warm static analysis cache
   [32m--coverage-filter [36m<dir>[0m             [0m Include <dir> in code coverage reporting
   [32m--path-coverage                     [0m Report path coverage in addition to line

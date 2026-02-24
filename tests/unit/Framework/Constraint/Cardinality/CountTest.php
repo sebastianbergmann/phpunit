@@ -15,6 +15,7 @@ use EmptyIterator;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -29,6 +30,8 @@ use PHPUnit\TestFixture\TestIteratorAggregate2;
 #[CoversClass(Count::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
+#[Group('framework')]
+#[Group('framework/constraints')]
 final class CountTest extends TestCase
 {
     public static function provider(): array

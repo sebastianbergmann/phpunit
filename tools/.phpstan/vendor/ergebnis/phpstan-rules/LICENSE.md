@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-Copyright (c) 2018-2025 Andreas Möller
+Copyright (c) 2018-2026 Andreas Möller
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the _Software_), to deal in the Software without restriction, including without limitation the

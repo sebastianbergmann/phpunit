@@ -19,6 +19,7 @@ use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
 #[CoversClass(Requirements::class)]
 #[Small]
 #[Group('metadata')]
+#[Group('metadata/api')]
 final class RequirementsTest extends TestCase
 {
     public static function missingRequirementsProvider(): array

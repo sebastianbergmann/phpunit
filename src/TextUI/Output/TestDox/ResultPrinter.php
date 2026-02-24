@@ -286,7 +286,7 @@ final readonly class ResultPrinter
         $lines = [];
 
         if ($buffer !== '') {
-            $lines = array_map('\rtrim', explode(PHP_EOL, $buffer));
+            $lines = array_map(\rtrim(...), explode(PHP_EOL, $buffer));
         }
 
         $message    = [];

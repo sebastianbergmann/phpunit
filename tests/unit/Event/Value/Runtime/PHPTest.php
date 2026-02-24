@@ -17,11 +17,14 @@ use const PHP_SAPI;
 use const PHP_VERSION;
 use const PHP_VERSION_ID;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(PHP::class)]
 #[Small]
+#[Group('event-system')]
+#[Group('event-system/value-objects')]
 final class PHPTest extends TestCase
 {
     public function testHasVersion(): void

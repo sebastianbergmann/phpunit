@@ -27,7 +27,7 @@ final class PropertyTypeDeclarationCollector implements Collector
 
     /**
      * @param InClassNode $node
-     * @return mixed[]
+     * @return array<int, int|list<(int | int<1, max>)>>
      */
     public function processNode(Node $node, Scope $scope): array
     {
