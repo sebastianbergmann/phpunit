@@ -1,12 +1,13 @@
 --TEST--
-phpunit ../_files/TestProcessIsolationWithDataProvider.php
+DataProvider: variadic test method does not trigger argument count warning
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/../_files/TestProcessIsolationWithDataProvider.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/data-provider/ArgumentCountNoWarningVariadicTest.php';
 
-require_once __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
+
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
