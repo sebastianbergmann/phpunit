@@ -3,6 +3,8 @@ Source files and directories with includeInCodeCoverage="false" are excluded fro
 --SKIPIF--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
+--INI--
+pcov.directory=tests/end-to-end/code-coverage/_files/include-in-code-coverage
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
