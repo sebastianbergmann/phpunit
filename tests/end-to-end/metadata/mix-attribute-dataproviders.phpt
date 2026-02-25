@@ -1,10 +1,10 @@
 --TEST--
-phpunit ../_files/TestDataProviderExternalAndDataProviderTest.php
+phpunit ../_files/DataProviderTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/../_files/TestDataProviderExternalAndDataProviderTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -14,8 +14,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-....                                                                4 / 4 (100%)
+..                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-OK (4 tests, 4 assertions)
+OK (2 tests, 2 assertions)

@@ -258,6 +258,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isDataProvider());
     }
 
+    public function test_Can_be_filtered_for_DataProviderClosure(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isDataProviderClosure();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isDataProviderClosure());
+    }
+
     public function test_Can_be_filtered_for_Depends(): void
     {
         $collection = $this->collectionWithOneOfEach()->isDepends();
@@ -573,6 +581,10 @@ final class MetadataCollectionTest extends TestCase
 
     private function collectionWithOneOfEach(): MetadataCollection
     {
+        $closure = static function (): void
+        {
+        };
+
         return MetadataCollection::fromArray(
             [
                 Metadata::afterClass(0),
@@ -591,6 +603,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
                 Metadata::dataProvider('', '', true),
+                Metadata::dataProviderClosure($closure, true),
                 Metadata::dependsOnClass('', false, false),
                 Metadata::dependsOnMethod('', '', false, false),
                 Metadata::disableReturnValueGenerationForTestDoubles(),

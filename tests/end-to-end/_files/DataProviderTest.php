@@ -11,11 +11,10 @@
 namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DataProviderClosure;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
-final class TestDataProviderExternalAndDataProviderTest extends TestCase
+final class DataProviderTest extends TestCase
 {
     public static function externalProvider(): iterable
     {
@@ -27,18 +26,8 @@ final class TestDataProviderExternalAndDataProviderTest extends TestCase
         yield 'foo2' => ['bar', 'baz'];
     }
 
-    public static function callableProvider(): iterable
-    {
-        yield 'foo3' => ['bar', 'baz'];
-    }
-
     #[DataProvider('provider')]
     #[DataProviderExternal(self::class, 'externalProvider')]
-    #[DataProviderClosure(self::callableProvider(...))]
-    #[DataProviderClosure(static function ()
-    {
-        yield 'foo4' => ['bar444', 'baz'];
-    })]
     public function testWithDifferentProviderTypes($one, $two): void
     {
         $this->assertTrue(true);

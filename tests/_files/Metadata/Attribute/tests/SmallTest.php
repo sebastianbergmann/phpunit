@@ -13,8 +13,6 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\Small;
@@ -41,16 +39,6 @@ final class SmallTest extends TestCase
 
     #[Test]
     public function one(): void
-    {
-    }
-
-    #[DataProvider('provider')]
-    public function testWithDataProvider(): void
-    {
-    }
-
-    #[DataProviderExternal(self::class, 'provider')]
-    public function testWithDataProviderExternal(): void
     {
     }
 

@@ -29,7 +29,7 @@ final readonly class DataProviderClosure extends Metadata
         $this->validateArgumentCount = $validateArgumentCount;
     }
 
-    public function isDataProvider(): true
+    public function isDataProviderClosure(): true
     {
         return true;
     }

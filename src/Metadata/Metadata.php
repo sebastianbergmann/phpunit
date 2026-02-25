@@ -705,6 +705,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @phpstan-assert-if-true DataProviderClosure $this
+     */
+    public function isDataProviderClosure(): bool
+    {
+        return false;
+    }
+
+    /**
      * @phpstan-assert-if-true DependsOnClass $this
      */
     public function isDependsOnClass(): bool

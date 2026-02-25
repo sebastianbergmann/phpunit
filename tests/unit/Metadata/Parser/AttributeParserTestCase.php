@@ -31,6 +31,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversNothingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DataProviderClosureTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DataProviderTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DisableReturnValueGenerationForTestDoublesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
@@ -619,23 +621,34 @@ abstract class AttributeParserTestCase extends TestCase
     #[TestDox('Parses #[DataProvider] attribute on method')]
     public function test_parses_DataProvider_attribute_on_method(): void
     {
-        $metadata = $this->parser()->forMethod(SmallTest::class, 'testWithDataProvider')->isDataProvider();
+        $metadata = $this->parser()->forMethod(DataProviderTest::class, 'testWithDataProvider')->isDataProvider();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDataProvider());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
+        $this->assertSame(DataProviderTest::class, $metadata->asArray()[0]->className());
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
     #[TestDox('Parses #[DataProviderExternal] attribute on method')]
     public function test_parses_DataProviderExternal_attribute_on_method(): void
     {
-        $metadata = $this->parser()->forMethod(SmallTest::class, 'testWithDataProviderExternal')->isDataProvider();
+        $metadata = $this->parser()->forMethod(DataProviderTest::class, 'testWithDataProviderExternal')->isDataProvider();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDataProvider());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
+        $this->assertSame(DataProviderTest::class, $metadata->asArray()[0]->className());
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[DataProviderClosure] attribute on method')]
+    #[\PHPUnit\Framework\Attributes\RequiresPhp('^8.5')]
+    public function test_parses_DataProviderClosure_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(DataProviderClosureTest::class, 'testOne')->isDataProviderClosure();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isDataProviderClosure());
+        $this->assertFalse($metadata->asArray()[0]->validateArgumentCount());
     }
 
     #[TestDox('Parses #[Depends] attribute on method')]
