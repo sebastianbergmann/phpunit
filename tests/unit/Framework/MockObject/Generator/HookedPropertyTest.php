@@ -75,4 +75,13 @@ final class HookedPropertyTest extends TestCase
 
         $this->assertSame($setterType, $property->setterType());
     }
+
+    public function testThrowsExceptionWhenSetterTypeIsNull(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, null);
+
+        $this->expectException(RuntimeException::class);
+
+        $property->setterType();
+    }
 }

@@ -835,6 +835,14 @@ EOT,
         $double->doSomethingElse(0);
     }
 
+    #[DoesNotPerformAssertions]
+    public function testWillReturnSkipsTypeCheckWhenMethodNameIsConstraintMatchingMultipleMethods(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->method($this->stringContains('do'))->willReturn(null);
+    }
+
     /**
      * @param class-string $type
      */
