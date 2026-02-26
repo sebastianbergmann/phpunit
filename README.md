@@ -106,4 +106,4 @@ Would you like to see your logo here as well as on the [PHPUnit website](https:/
 Contact Sebastian Bergmann at [sponsoring@phpunit.de](mailto:sponsoring@phpunit.de) to learn more about how you can support his work on PHPUnit.
 
 Whether you are a CEO, CFO, CTO, or a developer: your company surely depends on Open Source software.
-[It is time to pay your share](https://opensourcepledge.com/) and support maintainers like [Sebastian Bergmann](https://sebastian-bergmann.de/open-source.html?ref=github).
+[It is time to pay your share](https://opensourcepledge.com/) and support maintainers like [Sebastian Bergmann](https://phpunit.de/sponsoring.html).
