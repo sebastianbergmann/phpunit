@@ -832,16 +832,12 @@ final class Generator
     }
 
     /**
-     * @param ?ReflectionClass<object> $class
+     * @param ReflectionClass<object> $class
      *
      * @return list<HookedProperty>
      */
-    private function properties(?ReflectionClass $class): array
+    private function properties(ReflectionClass $class): array
     {
-        if ($class === null) {
-            return [];
-        }
-
         $mapper     = new ReflectionMapper;
         $properties = [];
 
