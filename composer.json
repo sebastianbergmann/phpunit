@@ -16,6 +16,12 @@
             "role": "lead"
         }
     ],
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://phpunit.de/sponsoring.html"
+        }
+    ],
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues",
         "security": "https://github.com/sebastianbergmann/phpunit/security/policy"
