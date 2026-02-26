@@ -274,9 +274,11 @@ EOT;
             /* Note: PHP extensions may use empty names for reference arguments
              * or "..." for methods taking a variable number of arguments.
              */
+            // @codeCoverageIgnoreStart
             if ($name === '$' || $name === '$...') {
                 $name = '$arg' . $i;
             }
+            // @codeCoverageIgnoreEnd
 
             $default         = '';
             $reference       = '';
@@ -321,9 +323,11 @@ EOT;
             /* Note: PHP extensions may use empty names for reference arguments
              * or "..." for methods taking a variable number of arguments.
              */
+            // @codeCoverageIgnoreStart
             if ($name === '$' || $name === '$...') {
                 $name = '$arg' . $i;
             }
+            // @codeCoverageIgnoreEnd
 
             if ($parameter->isVariadic()) {
                 continue;
