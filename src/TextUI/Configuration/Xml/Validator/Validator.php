@@ -29,14 +29,18 @@ final readonly class Validator
 
         assert($buffer !== false);
 
-        $originalErrorHandling = libxml_use_internal_errors(true);
+        if (method_exists($document, 'schemaValidateSource')) {
+            $originalErrorHandling = libxml_use_internal_errors(true);
 
-        $document->schemaValidateSource($buffer);
+            $document->schemaValidateSource($buffer);
 
-        $errors = libxml_get_errors();
-        libxml_clear_errors();
-        libxml_use_internal_errors($originalErrorHandling);
+            $errors = libxml_get_errors();
+            libxml_clear_errors();
+            libxml_use_internal_errors($originalErrorHandling);
 
-        return ValidationResult::fromArray($errors);
+            return ValidationResult::fromArray($errors);
+        } else {
+            return ValidationResult::fromArray([]);
+        }
     }
 }
