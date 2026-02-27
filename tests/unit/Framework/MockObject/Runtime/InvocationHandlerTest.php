@@ -30,7 +30,6 @@ final class InvocationHandlerTest extends TestCase
 
         $this->assertTrue($handler->isSealed());
 
-        // Second call hits the early return (line 190)
         $handler->seal(false);
 
         $this->assertTrue($handler->isSealed());
@@ -54,8 +53,6 @@ final class InvocationHandlerTest extends TestCase
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$matcher]);
 
-        // seal(true) calls configuredMethodNames(), which iterates matchers;
-        // the injected matcher has no method name rule → hits the `continue` branch
         $handler->seal(true);
 
         $this->assertTrue($handler->isSealed());
