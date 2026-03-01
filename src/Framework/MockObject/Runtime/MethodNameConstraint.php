@@ -27,6 +27,11 @@ final class MethodNameConstraint extends Constraint
         $this->methodName = $methodName;
     }
 
+    public function methodName(): string
+    {
+        return $this->methodName;
+    }
+
     public function toString(): string
     {
         return sprintf(

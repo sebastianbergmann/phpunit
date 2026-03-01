@@ -19,6 +19,8 @@ use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Util\Test;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -119,6 +121,15 @@ final class Parameters implements ParametersRule
             );
         }
 
+        try {
+            $reflectionParameters = new ReflectionMethod(
+                $this->invocation->className(),
+                $this->invocation->methodName(),
+            )->getParameters();
+        } catch (ReflectionException) {
+            $reflectionParameters = [];
+        }
+
         foreach ($this->parameters as $i => $parameter) {
             if ($parameter instanceof Callback && $parameter->isVariadic()) {
                 $other = $this->invocation->parameters();
@@ -128,11 +139,15 @@ final class Parameters implements ParametersRule
 
             $this->incrementAssertionCount();
 
+            $parameterName = isset($reflectionParameters[$i])
+                ? '$' . $reflectionParameters[$i]->getName()
+                : (string) $i;
+
             $parameter->evaluate(
                 $other,
                 sprintf(
                     'Parameter %s for invocation %s does not match expected value.',
-                    $i,
+                    $parameterName,
                     $this->invocation->toString(),
                 ),
             );

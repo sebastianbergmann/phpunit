@@ -23,8 +23,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\FailedExpectationTest::testO
 Test Prepared (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)
 Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)
 Test Failed (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)
-Expectation failed for method name is "doSomething" when invoked 1 time.
-Method was expected to be called 1 time, actually called 0 times.
+"doSomething()" was expected to be invoked once but was never invoked.
 Test Finished (PHPUnit\TestFixture\Event\FailedExpectationTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\FailedExpectationTest, 1 test)
 Test Runner Execution Finished

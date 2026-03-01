@@ -12,6 +12,10 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 * [#6524](https://github.com/sebastianbergmann/phpunit/pull/6524): Report issues in Open Test Reporting (OTR) XML logfile
 * [#6526](https://github.com/sebastianbergmann/phpunit/pull/6526): Introduce `#[DataProviderClosure]` for static closures
 
+### Changed
+
+* Improved failure message for mock object expectations
+
 ### Deprecated
 
 * [#6515](https://github.com/sebastianbergmann/phpunit/issues/6515): Deprecate the `--log-events-verbose-text <file>` CLI option

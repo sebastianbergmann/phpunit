@@ -21,8 +21,8 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) PHPUnit\TestFixture\Issue6138\Issue6138Test::testOne
-Expectation failed for method name is "m" when invoked 1 time
-Parameter 0 for invocation PHPUnit\TestFixture\Issue6138\I::m(PHPUnit\TestFixture\Issue6138\C Object (...)): void does not match expected value.
+Expectation for "m()" failed.
+Parameter $c for invocation PHPUnit\TestFixture\Issue6138\I::m(PHPUnit\TestFixture\Issue6138\C Object (...)): void does not match expected value.
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual

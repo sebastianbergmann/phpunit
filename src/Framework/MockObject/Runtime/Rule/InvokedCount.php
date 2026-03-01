@@ -34,10 +34,13 @@ final class InvokedCount extends InvocationOrder
 
     public function toString(): string
     {
+        if ($this->expectedCount === 1) {
+            return 'invoked once';
+        }
+
         return sprintf(
-            'invoked %d time%s',
+            'invoked %d times',
             $this->expectedCount,
-            $this->expectedCount !== 1 ? 's' : '',
         );
     }
 

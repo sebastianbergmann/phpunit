@@ -29,10 +29,13 @@ final class InvokedAtMostCount extends InvocationOrder
 
     public function toString(): string
     {
+        if ($this->allowedInvocations === 1) {
+            return 'invoked at most once';
+        }
+
         return sprintf(
-            'invoked at most %d time%s',
+            'invoked at most %d times',
             $this->allowedInvocations,
-            $this->allowedInvocations !== 1 ? 's' : '',
         );
     }
 

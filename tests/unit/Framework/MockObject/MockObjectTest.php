@@ -92,11 +92,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->expects($this->once())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked 1 time.
-Method was expected to be called 1 time, actually called 0 times.
-
-EOT,
+            '"doSomething()" was expected to be invoked once but was never invoked.',
             $double,
         );
     }
@@ -163,11 +159,7 @@ EOT,
         $double->expects($this->atLeastOnce())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked at least once.
-Expected invocation at least once but it never occurred.
-
-EOT,
+            '"doSomething()" was expected to be invoked at least once but was never invoked.',
             $double,
         );
     }
@@ -181,11 +173,7 @@ EOT,
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked at least 2 times.
-Expected invocation at least 2 times but it occurred 1 time.
-
-EOT,
+            '"doSomething()" was expected to be invoked at least 2 times but was invoked once.',
             $double,
         );
     }
@@ -207,11 +195,7 @@ EOT,
         $double->expects($this->exactly(2))->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked 2 times.
-Method was expected to be called 2 times, actually called 0 times.
-
-EOT,
+            '"doSomething()" was expected to be invoked 2 times but was never invoked.',
             $double,
         );
     }
@@ -225,11 +209,7 @@ EOT,
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked 2 times.
-Method was expected to be called 2 times, actually called 1 time.
-
-EOT,
+            '"doSomething()" was expected to be invoked 2 times but was invoked once.',
             $double,
         );
     }
@@ -276,11 +256,23 @@ EOT,
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "doSomething" when invoked at most 1 time.
-Expected invocation at most 1 time but it occurred 2 times.
+            '"doSomething()" was expected to be invoked at most once but was invoked 2 times.',
+            $double,
+        );
+    }
 
-EOT,
+    public function testExpectationThatMethodIsCalledAtMostTwoTimesFailsWhenMethodIsCalledThreeTimes(): void
+    {
+        $double = $this->createMock(AnInterface::class);
+
+        $double->expects($this->atMost(2))->method('doSomething');
+
+        $double->doSomething();
+        $double->doSomething();
+        $double->doSomething();
+
+        $this->assertThatMockObjectExpectationFails(
+            '"doSomething()" was expected to be invoked at most 2 times but was invoked 3 times.',
             $double,
         );
     }
@@ -311,8 +303,8 @@ EOT,
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation failed for method name is "doSomethingElse" when invoked 1 time
-Parameter 0 for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(0): int does not match expected value.
+Expectation for "doSomethingElse()" failed.
+Parameter $x for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(0): int does not match expected value.
 Failed asserting that 0 matches expected 1.
 EOT,
             $double,
@@ -340,8 +332,8 @@ EOT,
         $double->doSomethingElse(1);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation failed for method name is "doSomethingElse" when invoked 2 times
-Parameter 0 for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(3): int does not match expected value.
+Expectation for "doSomethingElse()" failed.
+Parameter $x for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(3): int does not match expected value.
 Failed asserting that 3 matches expected 2.
 EOT,
             $double,
@@ -374,7 +366,7 @@ EOT,
         $double->doSomethingElse(2);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation failed for method name is "doSomethingElse" when invoked 2 times.
+Expectation for "doSomethingElse()" failed.
 Too many parameter sets given, 2 out of 3 expected parameter sets have been called.
 
 EOT,
@@ -402,7 +394,7 @@ EOT,
         $double->doSomethingElse(1);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation failed for method name is "doSomethingElse" when invoked 2 times.
+Expectation for "doSomethingElse()" failed.
 1 out of 2 expected parameter sets was called, index [1] was not called.
 
 EOT,
@@ -420,7 +412,7 @@ EOT,
         $double->doSomethingElse(2);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation failed for method name is "doSomethingElse" when invoked 2 times.
+Expectation for "doSomethingElse()" failed.
 2 out of 3 expected parameter sets were called, index [0] was not called.
 
 EOT,
@@ -502,11 +494,7 @@ EOT,
         $double->one();
 
         $this->assertThatMockObjectExpectationFails(
-            <<<'EOT'
-Expectation failed for method name is "two" when invoked 1 time.
-Method was expected to be called 1 time, actually called 0 times.
-
-EOT,
+            '"two()" was expected to be invoked once but was never invoked.',
             $double,
         );
     }

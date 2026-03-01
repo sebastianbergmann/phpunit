@@ -42,6 +42,15 @@ final readonly class MethodName
         return 'method name ' . $this->constraint->toString();
     }
 
+    public function failureDescription(): string
+    {
+        if ($this->constraint instanceof MethodNameConstraint) {
+            return '"' . $this->constraint->methodName() . '()"';
+        }
+
+        return $this->toString();
+    }
+
     /**
      * @throws ExpectationFailedException
      */
