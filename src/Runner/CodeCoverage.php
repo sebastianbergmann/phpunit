@@ -131,7 +131,7 @@ final class CodeCoverage
                 );
             } else {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    'Incorrect filter configuration, code coverage will not be processed',
+                    'Configured filter does not match any files, code coverage will not be processed',
                 );
             }
 
