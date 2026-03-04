@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
+use function assert;
 use function count;
 use function sprintf;
 use Exception;
@@ -121,14 +122,7 @@ final class Parameters implements ParametersRule
             );
         }
 
-        try {
-            $reflectionParameters = new ReflectionMethod(
-                $this->invocation->className(),
-                $this->invocation->methodName(),
-            )->getParameters();
-        } catch (ReflectionException) {
-            $reflectionParameters = [];
-        }
+        $parameters = $this->parameters($this->invocation);
 
         foreach ($this->parameters as $i => $parameter) {
             if ($parameter instanceof Callback && $parameter->isVariadic()) {
@@ -139,15 +133,11 @@ final class Parameters implements ParametersRule
 
             $this->incrementAssertionCount();
 
-            $parameterName = isset($reflectionParameters[$i])
-                ? '$' . $reflectionParameters[$i]->getName()
-                : (string) $i;
-
             $parameter->evaluate(
                 $other,
                 sprintf(
                     'Parameter %s for invocation %s does not match expected value.',
-                    $parameterName,
+                    $parameters[$i] ?? (string) $i,
                     $this->invocation->toString(),
                 ),
             );
@@ -175,5 +165,29 @@ final class Parameters implements ParametersRule
         }
 
         Test::currentTestCase()->addToAssertionCount(1);
+    }
+
+    /**
+     * @return array<non-negative-int, non-empty-string>
+     */
+    private function parameters(BaseInvocation $invocation): array
+    {
+        $parameters = [];
+
+        try {
+            $reflector = new ReflectionMethod(
+                $invocation->className(),
+                $invocation->methodName(),
+            );
+
+            foreach ($reflector->getParameters() as $parameter) {
+                assert($parameter->getPosition() >= 0);
+
+                $parameters[$parameter->getPosition()] = '$' . $parameter->getName();
+            }
+        } catch (ReflectionException) {
+        }
+
+        return $parameters;
     }
 }
