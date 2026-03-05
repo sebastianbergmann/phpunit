@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "c1aba18534cd371e5fccd9e190cb20e954248578"
+                "reference": "60f9af8c01b6c621c89a86be1d1889317152316a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c1aba18534cd371e5fccd9e190cb20e954248578",
-                "reference": "c1aba18534cd371e5fccd9e190cb20e954248578",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/60f9af8c01b6c621c89a86be1d1889317152316a",
+                "reference": "60f9af8c01b6c621c89a86be1d1889317152316a",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,8 @@
                 "php": ">=8.4",
                 "phpunit/php-text-template": "^6.0",
                 "sebastian/complexity": "^6.0",
-                "sebastian/environment": "^9.0",
+                "sebastian/environment": "^9.1",
+                "sebastian/git-state": "^1.0",
                 "sebastian/lines-of-code": "^5.0",
                 "sebastian/version": "^7.0",
                 "theseer/tokenizer": "^2.0.1"
@@ -329,7 +330,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-05T10:49:33+00:00"
+            "time": "2026-03-05T16:27:50+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

@@ -34,7 +34,7 @@ use SebastianBergmann\CodeCoverage\Report\OpenClover as OpenCloverReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
-use SebastianBergmann\CodeCoverage\Serializer;
+use SebastianBergmann\CodeCoverage\Serialization\Serializer;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
