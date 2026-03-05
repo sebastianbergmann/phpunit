@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77f083fa3a184aa4bb4be371a26689f8",
+    "content-hash": "4cd25facb3c439e4b4fbe198497b4525",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "7e9de131c7583ad8c6099ace2382311d5f887835"
+                "reference": "c1aba18534cd371e5fccd9e190cb20e954248578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7e9de131c7583ad8c6099ace2382311d5f887835",
-                "reference": "7e9de131c7583ad8c6099ace2382311d5f887835",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c1aba18534cd371e5fccd9e190cb20e954248578",
+                "reference": "c1aba18534cd371e5fccd9e190cb20e954248578",
                 "shasum": ""
             },
             "require": {
@@ -329,7 +329,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-05T10:01:48+00:00"
+            "time": "2026-03-05T10:49:33+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -936,16 +936,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "9.0.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "bb64d08145b021b67d5f253308a498b73ab0461e"
+                "reference": "884365e36787be289d26025db41c9f28f526c6b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/bb64d08145b021b67d5f253308a498b73ab0461e",
-                "reference": "bb64d08145b021b67d5f253308a498b73ab0461e",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/884365e36787be289d26025db41c9f28f526c6b6",
+                "reference": "884365e36787be289d26025db41c9f28f526c6b6",
                 "shasum": ""
             },
             "require": {
@@ -957,10 +957,11 @@
             "suggest": {
                 "ext-posix": "*"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "9.0-dev"
+                    "dev-main": "9.1-dev"
                 }
             },
             "autoload": {
@@ -988,7 +989,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/environment/issues",
                 "security": "https://github.com/sebastianbergmann/environment/security/policy",
-                "source": "https://github.com/sebastianbergmann/environment/tree/9.0.0"
+                "source": "https://github.com/sebastianbergmann/environment/tree/main"
             },
             "funding": [
                 {
@@ -1008,7 +1009,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T04:43:29+00:00"
+            "time": "2026-03-05T11:19:01+00:00"
         },
         {
             "name": "sebastian/exporter",
