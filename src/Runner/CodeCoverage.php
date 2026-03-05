@@ -292,12 +292,13 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'Clover XML');
 
             try {
-                $serializer = new CloverReport;
-                $serializer->process($this->codeCoverage()->getReport(), $configuration->coverageClover(), 'Clover Coverage');
+                $writer = new CloverReport;
+
+                $writer->process($this->codeCoverage()->getReport(), $configuration->coverageClover(), 'Clover Coverage');
 
                 $this->codeCoverageGenerationSucceeded($printer);
 
-                unset($serializer);
+                unset($writer);
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
@@ -307,12 +308,13 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'OpenClover XML');
 
             try {
-                $serializer = new OpenCloverReport;
-                $serializer->process($this->codeCoverage()->getReport(), $configuration->coverageOpenClover(), 'OpenClover Coverage');
+                $writer = new OpenCloverReport;
+
+                $writer->process($this->codeCoverage()->getReport(), $configuration->coverageOpenClover(), 'OpenClover Coverage');
 
                 $this->codeCoverageGenerationSucceeded($printer);
 
-                unset($serializer);
+                unset($writer);
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
@@ -322,12 +324,13 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'Cobertura XML');
 
             try {
-                $serializer = new CoberturaReport;
-                $serializer->process($this->codeCoverage()->getReport(), $configuration->coverageCobertura());
+                $writer = new CoberturaReport;
+
+                $writer->process($this->codeCoverage()->getReport(), $configuration->coverageCobertura());
 
                 $this->codeCoverageGenerationSucceeded($printer);
 
-                unset($serializer);
+                unset($writer);
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
@@ -337,12 +340,13 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'Crap4J XML');
 
             try {
-                $serializer = new Crap4jReport($configuration->coverageCrap4jThreshold());
-                $serializer->process($this->codeCoverage()->getReport(), $configuration->coverageCrap4j());
+                $writer = new Crap4jReport($configuration->coverageCrap4jThreshold());
+
+                $writer->process($this->codeCoverage()->getReport(), $configuration->coverageCrap4j());
 
                 $this->codeCoverageGenerationSucceeded($printer);
 
-                unset($serializer);
+                unset($writer);
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
@@ -358,7 +362,7 @@ final class CodeCoverage
                     $customCssFile = CustomCssFile::from($configuration->coverageHtmlCustomCssFile());
                 }
 
-                $serializer = new HtmlReport(
+                $writer = new HtmlReport(
                     sprintf(
                         ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
                         Version::id(),
@@ -377,11 +381,11 @@ final class CodeCoverage
                     $customCssFile,
                 );
 
-                $serializer->process($this->codeCoverage()->getReport(), $configuration->coverageHtml());
+                $writer->process($this->codeCoverage()->getReport(), $configuration->coverageHtml());
 
                 $this->codeCoverageGenerationSucceeded($printer);
 
-                unset($serializer);
+                unset($writer);
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
@@ -411,9 +415,9 @@ final class CodeCoverage
             try {
                 $driverInformation = $this->codeCoverage->driverInformation();
 
-                $serializer = new XmlReport($configuration->coverageXmlIncludeSource());
+                $writer = new XmlReport($configuration->coverageXmlIncludeSource());
 
-                $serializer->process(
+                $writer->process(
                     $configuration->coverageXml(),
                     $this->codeCoverage()->getReport(),
                     $this->codeCoverage()->getTests(),
@@ -427,7 +431,7 @@ final class CodeCoverage
 
                 $this->codeCoverageGenerationSucceeded($printer);
 
-                unset($serializer);
+                unset($writer);
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
