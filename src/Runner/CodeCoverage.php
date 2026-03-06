@@ -281,7 +281,7 @@ final class CodeCoverage
 
             $serializer = new Serializer;
 
-            $serializer->serialize($configuration->coveragePhp(), $this->codeCoverage());
+            $serializer->serialize($configuration->coveragePhp(), $this->codeCoverage(), $configuration->includeGitInformation());
 
             $this->codeCoverageGenerationSucceeded($printer);
 
