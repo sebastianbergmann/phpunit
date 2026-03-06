@@ -132,7 +132,7 @@ final readonly class Configuration
     private ?array $iniSettings;
     private ?string $junitLogfile;
     private ?string $otrLogfile;
-    private ?bool $includeGitInformationInOtrLogfile;
+    private ?bool $includeGitInformation;
     private bool $listGroups;
     private bool $listSuites;
     private bool $listTestFiles;
@@ -282,7 +282,7 @@ final readonly class Configuration
         $this->iniSettings                                  = $iniSettings;
         $this->junitLogfile                                 = $junitLogfile;
         $this->otrLogfile                                   = $otrLogfile;
-        $this->includeGitInformationInOtrLogfile            = $includeGitInformation;
+        $this->includeGitInformation                        = $includeGitInformation;
         $this->listGroups                                   = $listGroups;
         $this->listSuites                                   = $listSuites;
         $this->listTestFiles                                = $listTestFiles;
@@ -1886,23 +1886,23 @@ final readonly class Configuration
     }
 
     /**
-     * @phpstan-assert-if-true !null $this->includeGitInformationInOtrLogfile
+     * @phpstan-assert-if-true !null $this->includeGitInformation
      */
-    public function hasIncludeGitInformationInOtrLogfile(): bool
+    public function hasIncludeGitInformation(): bool
     {
-        return $this->includeGitInformationInOtrLogfile !== null;
+        return $this->includeGitInformation !== null;
     }
 
     /**
      * @throws Exception
      */
-    public function includeGitInformationInOtrLogfile(): bool
+    public function includeGitInformation(): bool
     {
-        if (!$this->hasIncludeGitInformationInOtrLogfile()) {
+        if (!$this->hasIncludeGitInformation()) {
             throw new Exception;
         }
 
-        return $this->includeGitInformationInOtrLogfile;
+        return $this->includeGitInformation;
     }
 
     public function listGroups(): bool

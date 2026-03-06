@@ -124,12 +124,12 @@ Logging:
 
   --log-junit <file>                   Write test results in JUnit XML format to file
   --log-otr <file>                     Write test results in Open Test Reporting XML format to file
-  --include-git-information            Include Git information in Open Test Reporting XML logfile
   --log-teamcity <file>                Write test results in TeamCity format to file
   --testdox-html <file>                Write test results in TestDox format (HTML) to file
   --testdox-text <file>                Write test results in TestDox format (plain text) to file
   --log-events-text <file>             Stream events as plain text to file
   --log-events-verbose-text <file>     Stream events as plain text with extended information to file
+  --include-git-information            Include Git information in supported formats
   --no-logging                         Ignore logging configured in the XML configuration file
 
 Code Coverage:
