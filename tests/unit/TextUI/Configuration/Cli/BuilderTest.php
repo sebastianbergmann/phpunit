@@ -1042,6 +1042,26 @@ final class BuilderTest extends TestCase
         $configuration->otrLogfile();
     }
 
+    #[TestDox('--include-git-information')]
+    public function testIncludeGitInformation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--include-git-information']);
+
+        $this->assertTrue($configuration->hasIncludeGitInformationInOtrLogfile());
+        $this->assertTrue($configuration->includeGitInformationInOtrLogfile());
+    }
+
+    public function testIncludeGitInformationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasIncludeGitInformationInOtrLogfile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->includeGitInformationInOtrLogfile();
+    }
+
     #[TestDox('--log-teamcity file')]
     public function testLogTeamcity(): void
     {
