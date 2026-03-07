@@ -19,6 +19,11 @@
             <function>PHPUnit\TestFixture\DeprecationTrigger\trigger_deprecation</function>
             <method>PHPUnit\TestFixture\DeprecationTrigger\DeprecationTrigger::triggerDeprecation</method>
         </deprecationTrigger>
+
+        <issueTriggerResolvers>
+            <issueTriggerResolver className="PHPUnit\TestFixture\IssueTriggerResolver\FirstResolver"/>
+            <issueTriggerResolver className="PHPUnit\TestFixture\IssueTriggerResolver\SecondResolver"/>
+        </issueTriggerResolvers>
     </source>
 
     <coverage pathCoverage="true"

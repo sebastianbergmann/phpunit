@@ -820,6 +820,71 @@ final class SourceTest extends TestCase
         $this->assertFalse($source->notEmpty());
     }
 
+    public function testIssueTriggerResolversDefaultsToEmpty(): void
+    {
+        $source = new Source(
+            null,
+            false,
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            [
+                'functions' => [],
+                'methods'   => [],
+            ],
+            false,
+            false,
+            false,
+            true,
+        );
+
+        $this->assertSame([], $source->issueTriggerResolvers());
+    }
+
+    public function testHasIssueTriggerResolvers(): void
+    {
+        $resolvers = ['FirstResolver', 'SecondResolver'];
+
+        $source = new Source(
+            null,
+            false,
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            [
+                'functions' => [],
+                'methods'   => [],
+            ],
+            false,
+            false,
+            false,
+            true,
+            $resolvers,
+        );
+
+        $this->assertSame($resolvers, $source->issueTriggerResolvers());
+    }
+
     public function testMayNotBeEmpty(): void
     {
         $source = new Source(

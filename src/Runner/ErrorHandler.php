@@ -25,8 +25,10 @@ use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
 use function array_keys;
+use function array_unshift;
 use function array_values;
 use function assert;
+use function count;
 use function debug_backtrace;
 use function defined;
 use function error_reporting;
@@ -44,6 +46,8 @@ use PHPUnit\Metadata\IgnoreDeprecations;
 use PHPUnit\Metadata\Parser\Registry as MetadataParserRegistry;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
+use PHPUnit\Runner\IssueTriggerResolver\DefaultResolver as DefaultIssueTriggerResolver;
+use PHPUnit\Runner\IssueTriggerResolver\Resolver as IssueTriggerResolver;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 use PHPUnit\Util\ExcludeList;
@@ -80,6 +84,11 @@ final class ErrorHandler
      */
     private ?array $deprecationTriggers = null;
 
+    /**
+     * @var non-empty-list<IssueTriggerResolver>
+     */
+    private array $issueTriggerResolvers;
+
     public static function instance(): self
     {
         $source = ConfigurationRegistry::get()->source();
@@ -99,8 +108,9 @@ final class ErrorHandler
 
     private function __construct(bool $identifyIssueTrigger)
     {
-        $this->excludeList          = new ExcludeList;
-        $this->identifyIssueTrigger = $identifyIssueTrigger;
+        $this->excludeList           = new ExcludeList;
+        $this->identifyIssueTrigger  = $identifyIssueTrigger;
+        $this->issueTriggerResolvers = [new DefaultIssueTriggerResolver];
     }
 
     /**
@@ -196,7 +206,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, false, $errorFile),
+                    $this->trigger($test, false, $errorString, $errorFile),
                 );
 
                 break;
@@ -210,7 +220,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, true),
+                    $this->trigger($test, true, $errorString),
                     $this->stackTrace(),
                 );
 
@@ -302,6 +312,11 @@ final class ErrorHandler
         $this->deprecationTriggers = $deprecationTriggers;
     }
 
+    public function addIssueTriggerResolver(IssueTriggerResolver $resolver): void
+    {
+        array_unshift($this->issueTriggerResolvers, $resolver);
+    }
+
     public function enterTestCaseContext(string $className, string $methodName): void
     {
         $this->testCaseContext = $this->testCaseContext($className, $methodName);
@@ -329,7 +344,7 @@ final class ErrorHandler
     /**
      * @param null|non-empty-string $errorFile
      */
-    private function trigger(TestMethod $test, bool $isUserland, ?string $errorFile = null): IssueTrigger
+    private function trigger(TestMethod $test, bool $isUserland, string $errorString, ?string $errorFile = null): IssueTrigger
     {
         if (!$this->identifyIssueTrigger) {
             return IssueTrigger::from(null, null);
@@ -343,26 +358,39 @@ final class ErrorHandler
 
         $trace = $this->filteredStackTrace();
 
-        return $this->triggerForUserlandDeprecation($test, $trace);
+        return $this->triggerForUserlandDeprecation($test, $errorString, $trace);
     }
 
     /**
-     * @param list<array{file: string, line: int, class?: string, function?: string, type: string}> $trace
+     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>}> $trace
      */
-    private function triggerForUserlandDeprecation(TestMethod $test, array $trace): IssueTrigger
+    private function triggerForUserlandDeprecation(TestMethod $test, string $message, array $trace): IssueTrigger
     {
-        $callee = null;
-        $caller = null;
+        foreach ($this->issueTriggerResolvers as $resolver) {
+            $result = $resolver->resolve($trace, $message);
 
-        if (isset($trace[0]['file'])) {
-            $callee = $this->categorizeFile($trace[0]['file'], $test);
+            if ($result === null) {
+                continue;
+            }
+
+            $callee = null;
+
+            if ($result->hasCallee()) {
+                $callee = $this->categorizeFile($result->callee(), $test);
+            }
+
+            $caller = null;
+
+            if ($result->hasCaller()) {
+                $caller = $this->categorizeFile($result->caller(), $test);
+            }
+
+            return IssueTrigger::from($callee, $caller);
         }
 
-        if (isset($trace[1]['file'])) {
-            $caller = $this->categorizeFile($trace[1]['file'], $test);
-        }
-
-        return IssueTrigger::from($callee, $caller);
+        // @codeCoverageIgnoreStart
+        return IssueTrigger::from(null, null);
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -386,11 +414,13 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class?: string, function?: string, type: string}>
+     * @return list<array{file: string, line: int, class?: string, function?: string, type: string, args?: list<mixed>}>
      */
     private function filteredStackTrace(): array
     {
-        $trace = $this->errorStackTrace();
+        $ignoreArguments = count($this->issueTriggerResolvers) === 1;
+
+        $trace = $this->errorStackTrace($ignoreArguments);
 
         if ($this->deprecationTriggers === null) {
             return array_values($trace);
@@ -446,11 +476,15 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string}>
+     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string, args?: list<mixed>}>
      */
-    private function errorStackTrace(): array
+    private function errorStackTrace(bool $ignoreArgs = true): array
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        if ($ignoreArgs) {
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        } else {
+            $trace = debug_backtrace();
+        }
 
         $i = 0;
 
