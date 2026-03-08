@@ -514,6 +514,62 @@ final class SourceFilterTest extends AbstractSourceFilterTestCase
                     ),
                 ),
             ],
+            'file included using directory with non-canonical path' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => true,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath('/b/../a'), '', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'file included using file with non-canonical path' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => true,
+                ],
+                self::createSource(includeFiles: FilterFileCollection::fromArray(
+                    [
+                        new FilterFile(self::fixturePath('/b/../a/PrefixSuffix.php')),
+                    ],
+                )),
+            ],
+            'file excluded using directory with non-canonical path' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                    excludeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath('/b/../a'), '', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'file excluded using file with non-canonical path' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php') => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                    excludeFiles: FilterFileCollection::fromArray(
+                        [
+                            new FilterFile(self::fixturePath('/b/../a/PrefixSuffix.php')),
+                        ],
+                    ),
+                ),
+            ],
             'files included using same directory and different prefixes' => [
                 [
                     self::fixturePath('a/c/Suffix.php')              => true,
