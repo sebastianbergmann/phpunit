@@ -415,6 +415,142 @@ final class SourceFilterTest extends AbstractSourceFilterTestCase
                     ),
                 ),
             ],
+            'file in hidden directory is not included' => [
+                [
+                    self::fixturePath('a/c/.hidden/PrefixSuffix.php') => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files included using directory and prefix' => [
+                [
+                    self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                    self::fixturePath('a/PrefixSuffix.php')          => false,
+                    self::fixturePath('a/c/PrefixSuffix.php')        => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), 'PrefixExample', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files included using directory and suffix' => [
+                [
+                    self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                    self::fixturePath('a/PrefixSuffix.php')          => false,
+                    self::fixturePath('a/c/Prefix.php')              => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', 'ExampleSuffix.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files excluded using directory and prefix' => [
+                [
+                    self::fixturePath('a/c/Suffix.php')         => true,
+                    self::fixturePath('a/c/d/Suffix.php')       => true,
+                    self::fixturePath('a/c/PrefixSuffix.php')   => false,
+                    self::fixturePath('a/c/d/PrefixSuffix.php') => false,
+                    self::fixturePath('a/PrefixSuffix.php')     => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                    excludeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), 'Prefix', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files excluded using directory and suffix' => [
+                [
+                    self::fixturePath('a/c/Prefix.php')         => true,
+                    self::fixturePath('a/c/d/Prefix.php')       => true,
+                    self::fixturePath('a/c/PrefixSuffix.php')   => false,
+                    self::fixturePath('a/c/d/PrefixSuffix.php') => false,
+                    self::fixturePath('a/PrefixSuffix.php')     => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                    excludeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', 'Suffix.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files included using same directory and different suffixes' => [
+                [
+                    self::fixturePath('a/c/Prefix.php')              => true,
+                    self::fixturePath('a/c/d/Prefix.php')            => true,
+                    self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                    self::fixturePath('a/PrefixSuffix.php')          => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', 'ExampleSuffix.php'),
+                            new FilterDirectory(self::fixturePath(), '', 'Prefix.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files included using same directory and different prefixes' => [
+                [
+                    self::fixturePath('a/c/Suffix.php')              => true,
+                    self::fixturePath('a/c/d/Suffix.php')            => true,
+                    self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                    self::fixturePath('a/PrefixSuffix.php')          => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), 'Suffix', '.php'),
+                            new FilterDirectory(self::fixturePath(), 'PrefixExample', '.php'),
+                        ],
+                    ),
+                ),
+            ],
+            'files excluded using same directory and different prefixes' => [
+                [
+                    self::fixturePath('a/PrefixSuffix.php')     => false,
+                    self::fixturePath('a/c/PrefixSuffix.php')   => false,
+                    self::fixturePath('a/c/Suffix.php')         => false,
+                    self::fixturePath('a/c/d/PrefixSuffix.php') => false,
+                    self::fixturePath('a/c/d/Suffix.php')       => false,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), '', '.php'),
+                        ],
+                    ),
+                    excludeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath(), 'Prefix', '.php'),
+                            new FilterDirectory(self::fixturePath(), 'Suffix', '.php'),
+                        ],
+                    ),
+                ),
+            ],
         ];
     }
 
