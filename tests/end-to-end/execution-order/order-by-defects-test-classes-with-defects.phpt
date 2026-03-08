@@ -1,8 +1,5 @@
 --TEST--
 Order by defects (with result cache): Test classes with defects
---XFAIL--
-After merging https://github.com/sebastianbergmann/phpunit/pull/6338 into PHPUnit 10.5 and merging it from there to PHPUnit 12.4 via PHPUnit 11.5, this test now fails.
-This test failure needs to be investigated. Hopefully, it fails for the obvious reason: that the result cache file needs to be updated.
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';
@@ -46,14 +43,14 @@ Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testTwo)
 Test Failed (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testTwo)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testTwo)
-Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
-Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
-Test Passed (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
-Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
 Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testOne)
 Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testOne)
 Test Passed (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testOne)
 Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testOne)
+Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
+Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
+Test Passed (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
+Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest::testFour)
 Test Suite Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\BarTest, 4 tests)
 Test Suite Started (PHPUnit\TestFixture\ExecutionOrder\Defects\BazTest, 4 tests)
 Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\BazTest::testThree)
