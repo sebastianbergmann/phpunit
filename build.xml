@@ -233,6 +233,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/file-filter/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-file-filter/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-file-filter">
+            <fileset dir="${basedir}/vendor/sebastian/file-filter/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/git-state/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-git-state/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-git-state">
             <fileset dir="${basedir}/vendor/sebastian/git-state/src">
