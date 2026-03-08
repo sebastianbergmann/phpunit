@@ -26,7 +26,6 @@ final class FileFilterMapper
             $this->files($source->includeFiles()),
             $this->directories($source->excludeDirectories()),
             $this->files($source->excludeFiles()),
-            false,
         );
     }
 
