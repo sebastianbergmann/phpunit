@@ -1108,12 +1108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/file-filter.git",
-                "reference": "04e4370d9877b33459fe8923df797520d63b451c"
+                "reference": "cc3543bef801fb6e039ce3d2c31c7d8499f43da4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/file-filter/zipball/04e4370d9877b33459fe8923df797520d63b451c",
-                "reference": "04e4370d9877b33459fe8923df797520d63b451c",
+                "url": "https://api.github.com/repos/sebastianbergmann/file-filter/zipball/cc3543bef801fb6e039ce3d2c31c7d8499f43da4",
+                "reference": "cc3543bef801fb6e039ce3d2c31c7d8499f43da4",
                 "shasum": ""
             },
             "require": {
@@ -1170,7 +1170,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T13:25:28+00:00"
+            "time": "2026-03-08T06:39:52+00:00"
         },
         {
             "name": "sebastian/git-state",
