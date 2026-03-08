@@ -351,9 +351,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .phpunit.cache/code-coverage
-          key: ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+          key: php-code-coverage-static-analysis-cache-${{ hashFiles('src/**/*.php') }}
           restore-keys: |
-            ${{ runner.os }}-phpunit-code-coverage-${{ github.ref }}-
+            php-code-coverage-static-analysis-cache-
 
       - name: Warm PHPUnit's static analysis cache
         run: ./phpunit --warm-coverage-cache
