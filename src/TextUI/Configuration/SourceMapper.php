@@ -9,11 +9,14 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const DIRECTORY_SEPARATOR;
 use function file_get_contents;
 use function file_put_contents;
 use function is_array;
+use function preg_match;
 use function realpath;
 use function serialize;
+use function str_replace;
 use function unserialize;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SplObjectStorage;
@@ -80,10 +83,16 @@ final class SourceMapper
         $directories = $this->aggregateDirectories($source->includeDirectories());
 
         foreach ($directories as $path => [$prefixes, $suffixes]) {
+            $basePath = realpath($path);
+
             foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
                 if (!$file) {
+                    continue;
+                }
+
+                if ($this->isInHiddenDirectory($file, $basePath)) {
                     continue;
                 }
 
@@ -176,6 +185,15 @@ final class SourceMapper
         }
 
         return $files;
+    }
+
+    private function isInHiddenDirectory(string $path, false|string $basePath): bool
+    {
+        $relativePath = str_replace((string) $basePath, '', $path);
+
+        $separator = DIRECTORY_SEPARATOR === '\\' ? '\\\\' : '/';
+
+        return preg_match('=' . $separator . '\.[^' . $separator . ']*' . $separator . '=', $relativePath) === 1;
     }
 
     /**

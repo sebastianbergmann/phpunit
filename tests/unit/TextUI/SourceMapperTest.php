@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use const PHP_OS_FAMILY;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -73,10 +72,7 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
             ),
         ];
 
-        $fileHiddenOnUnix = self::fixturePath('a/c/.hidden/PrefixSuffix.php');
-
         $expectedFiles = [
-            $fileHiddenOnUnix                                => true,
             self::fixturePath('a/PrefixSuffix.php')          => true,
             self::fixturePath('a/c/Prefix.php')              => true,
             self::fixturePath('a/c/PrefixSuffix.php')        => true,
@@ -91,10 +87,6 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
             self::fixturePath('b/f/PrefixSuffix.php')        => true,
             self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
         ];
-
-        if (PHP_OS_FAMILY !== 'Windows') {
-            unset($expectedFiles[$fileHiddenOnUnix]);
-        }
 
         yield 'file included using directory' => [
             $expectedFiles,
@@ -112,7 +104,6 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
         ];
 
         $expectedFiles = [
-            $fileHiddenOnUnix                                => true,
             self::fixturePath('a/c/Prefix.php')              => true,
             self::fixturePath('a/c/PrefixSuffix.php')        => true,
             self::fixturePath('a/c/Suffix.php')              => true,
@@ -126,10 +117,6 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
             self::fixturePath('b/f/PrefixSuffix.php')        => true,
             self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
         ];
-
-        if (PHP_OS_FAMILY !== 'Windows') {
-            unset($expectedFiles[$fileHiddenOnUnix]);
-        }
 
         yield 'file included using directory, but excluded using file' => [
             $expectedFiles,
