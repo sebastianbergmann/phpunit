@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function realpath;
 use SebastianBergmann\FileFilter\Builder as FilterBuilder;
 use SebastianBergmann\FileFilter\Filter as FileFilter;
 
@@ -37,8 +38,10 @@ final class FileFilterMapper
         $result = [];
 
         foreach ($directories as $directory) {
+            $path = realpath($directory->path());
+
             $result[] = [
-                'path'   => $directory->path(),
+                'path'   => $path !== false ? $path : $directory->path(),
                 'prefix' => $directory->prefix(),
                 'suffix' => $directory->suffix(),
             ];
@@ -55,7 +58,9 @@ final class FileFilterMapper
         $result = [];
 
         foreach ($files as $file) {
-            $result[] = $file->path();
+            $path = realpath($file->path());
+
+            $result[] = $path !== false ? $path : $file->path();
         }
 
         return $result;
