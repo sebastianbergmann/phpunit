@@ -11,8 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
+use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -343,5 +345,19 @@ EOD
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new StringMatchesFormatDescription('string')));
+    }
+
+    public function testThrowsExceptionWhenRegularExpressionMatchingFails(): void
+    {
+        $line       = 'text with %s placeholders on a line that is moderately long to increase regex size %s more stuff %s end';
+        $actualLine = 'text with FOO placeholders on a line that is moderately long to increase regex size BAR more stuff BAZ end';
+        $format     = str_repeat($line . "\n", 220);
+
+        $constraint = new StringMatchesFormatDescription($format);
+
+        $this->expectException(FrameworkException::class);
+        $this->expectExceptionMessage('Format description cannot be matched:');
+
+        $constraint->evaluate(str_repeat($actualLine . "\n", 220));
     }
 }
