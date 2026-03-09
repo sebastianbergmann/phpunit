@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -67,5 +69,15 @@ final class RegularExpressionTest extends TestCase
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new RegularExpression('/.*/')));
+    }
+
+    public function testThrowsExceptionWhenRegularExpressionMatchingFails(): void
+    {
+        $constraint = new RegularExpression('/(?:\D+|<\d+>)*[!?]/');
+
+        $this->expectException(FrameworkException::class);
+        $this->expectExceptionMessage('Regular expression cannot be matched:');
+
+        $constraint->evaluate(str_repeat('foobar', 1024));
     }
 }
