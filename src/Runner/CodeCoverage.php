@@ -31,8 +31,8 @@ use SebastianBergmann\CodeCoverage\Serialization\Serializer;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
-use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
-use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
+use SebastianBergmann\CodeCoverage\Test\TestSize;
+use SebastianBergmann\CodeCoverage\Test\TestStatus;
 use SebastianBergmann\CodeCoverage\Version as CodeCoverageVersion;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
@@ -181,14 +181,14 @@ final class CodeCoverage
             return;
         }
 
-        $size = TestSize::unknown();
+        $size = TestSize::Unknown;
 
         if ($test->size()->isSmall()) {
-            $size = TestSize::small();
+            $size = TestSize::Small;
         } elseif ($test->size()->isMedium()) {
-            $size = TestSize::medium();
+            $size = TestSize::Medium;
         } elseif ($test->size()->isLarge()) {
-            $size = TestSize::large();
+            $size = TestSize::Large;
         }
 
         $this->test = $test;
@@ -210,14 +210,14 @@ final class CodeCoverage
         }
 
         $time             = $this->timer()->stop()->asSeconds();
-        $status           = TestStatus::unknown();
+        $status           = TestStatus::Unknown;
         $this->collecting = false;
 
         if ($this->test !== null) {
             if ($this->test->status()->isSuccess()) {
-                $status = TestStatus::success();
+                $status = TestStatus::Success;
             } else {
-                $status = TestStatus::failure();
+                $status = TestStatus::Failure;
             }
         }
 

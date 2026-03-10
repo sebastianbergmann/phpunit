@@ -57,8 +57,8 @@ use PHPUnit\Util\PHP\JobRunnerRegistry;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\ReflectionException;
-use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
-use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
+use SebastianBergmann\CodeCoverage\Test\TestSize;
+use SebastianBergmann\CodeCoverage\Test\TestStatus;
 use SebastianBergmann\CodeCoverage\TestIdMissingException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use staabm\SideEffectsDetector\SideEffect;
@@ -189,13 +189,13 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         if (CodeCoverage::instance()->isActive()) {
             $coverage = $this->cleanupForCoverage();
 
-            CodeCoverage::instance()->codeCoverage()->start($this->filename, TestSize::large());
+            CodeCoverage::instance()->codeCoverage()->start($this->filename, TestSize::Large);
 
             CodeCoverage::instance()->codeCoverage()->append(
                 $coverage,
                 $this->filename,
                 true,
-                TestStatus::unknown(),
+                TestStatus::Unknown,
             );
         }
 
