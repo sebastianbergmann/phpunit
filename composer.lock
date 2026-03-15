@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "0479d14a38402c973f203e85642c7ca741d3f974"
+                "reference": "19a9bf4115710b489544fefc4cf3090a389f21d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/0479d14a38402c973f203e85642c7ca741d3f974",
-                "reference": "0479d14a38402c973f203e85642c7ca741d3f974",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/19a9bf4115710b489544fefc4cf3090a389f21d9",
+                "reference": "19a9bf4115710b489544fefc4cf3090a389f21d9",
                 "shasum": ""
             },
             "require": {
@@ -330,7 +330,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-10T07:37:19+00:00"
+            "time": "2026-03-13T18:01:32+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -941,12 +941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "884365e36787be289d26025db41c9f28f526c6b6"
+                "reference": "c2ec04870aae4be635f01bc5f2a9b1307ccdd684"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/884365e36787be289d26025db41c9f28f526c6b6",
-                "reference": "884365e36787be289d26025db41c9f28f526c6b6",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/c2ec04870aae4be635f01bc5f2a9b1307ccdd684",
+                "reference": "c2ec04870aae4be635f01bc5f2a9b1307ccdd684",
                 "shasum": ""
             },
             "require": {
@@ -1010,7 +1010,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-05T11:19:01+00:00"
+            "time": "2026-03-15T07:15:11+00:00"
         },
         {
             "name": "sebastian/exporter",
