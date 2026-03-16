@@ -78,6 +78,8 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
      * @throws MatcherAlreadyRegisteredException
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6537
      */
     public function id(string $id): InvocationMocker
     {
@@ -90,6 +92,8 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
      * @param non-empty-string $id
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6537
      */
     public function after(string $id): InvocationMocker
     {

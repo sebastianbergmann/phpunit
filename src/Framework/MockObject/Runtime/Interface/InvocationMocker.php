@@ -39,6 +39,8 @@ interface InvocationMocker extends InvocationStubber
      * @param non-empty-string $id
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6537
      */
     public function id(string $id): self;
 
@@ -48,6 +50,8 @@ interface InvocationMocker extends InvocationStubber
      * @param non-empty-string $id
      *
      * @return $this
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6537
      */
     public function after(string $id): self;
 }

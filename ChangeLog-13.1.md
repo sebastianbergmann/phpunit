@@ -19,5 +19,6 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 ### Deprecated
 
 * [#6515](https://github.com/sebastianbergmann/phpunit/issues/6515): Deprecate the `--log-events-verbose-text <file>` CLI option
+* [#6537](https://github.com/sebastianbergmann/phpunit/issues/6537): Soft-deprecate `id()` and `after()` for mock object expectations
 
 [13.1.0]: https://github.com/sebastianbergmann/phpunit/compare/13.0...main
