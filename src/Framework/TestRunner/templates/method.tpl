@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
+use PHPUnit\Runner\IssueTriggerResolver;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -68,6 +69,10 @@ function __phpunit_run_isolated_test()
     }
 
     ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+
+    foreach (array_reverse($configuration->source()->issueTriggerResolvers()) as $className) {
+        ErrorHandler::instance()->addIssueTriggerResolver(new $className);
+    }
 
     $test = new {className}('{methodName}');
 

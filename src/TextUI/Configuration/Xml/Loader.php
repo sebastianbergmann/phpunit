@@ -365,6 +365,17 @@ final readonly class Loader
             $deprecationTriggers['methods'][] = $methodNode->textContent;
         }
 
+        $issueTriggerResolvers     = [];
+        $issueTriggerResolverNodes = $xpath->query('source/issueTriggerResolvers/issueTriggerResolver');
+
+        assert($issueTriggerResolverNodes instanceof DOMNodeList);
+
+        foreach ($issueTriggerResolverNodes as $node) {
+            assert($node instanceof DOMElement);
+
+            $issueTriggerResolvers[] = $node->getAttribute('className');
+        }
+
         return new Source(
             $baseline,
             false,
@@ -386,6 +397,7 @@ final readonly class Loader
             $ignoreDirectDeprecations,
             $ignoreIndirectDeprecations,
             $identifyIssueTrigger,
+            $issueTriggerResolvers,
         );
     }
 

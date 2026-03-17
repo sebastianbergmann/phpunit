@@ -183,6 +183,14 @@ final class LoaderTest extends TestCase
         $this->assertTrue($source->ignoreSelfDeprecations());
         $this->assertTrue($source->ignoreDirectDeprecations());
         $this->assertTrue($source->ignoreIndirectDeprecations());
+
+        $this->assertSame(
+            [
+                'PHPUnit\TestFixture\IssueTriggerResolver\FirstResolver',
+                'PHPUnit\TestFixture\IssueTriggerResolver\SecondResolver',
+            ],
+            $source->issueTriggerResolvers(),
+        );
     }
 
     public function testCodeCoverageConfigurationIsReadCorrectly(): void
