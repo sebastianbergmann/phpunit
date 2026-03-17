@@ -453,6 +453,7 @@ final readonly class Loader
 
     private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage
     {
+        $driver                    = null;
         $pathCoverage              = false;
         $branchCoverage            = false;
         $includeUncoveredFiles     = true;
@@ -462,6 +463,8 @@ final readonly class Loader
         $element = $this->element($xpath, 'coverage');
 
         if ($element !== null) {
+            $driver = $this->parseStringAttribute($element, 'driver');
+
             $pathCoverage = $this->parseBooleanAttribute(
                 $element,
                 'pathCoverage',
@@ -639,6 +642,7 @@ final readonly class Loader
         }
 
         return new CodeCoverage(
+            $driver,
             $pathCoverage,
             $branchCoverage,
             $includeUncoveredFiles,
