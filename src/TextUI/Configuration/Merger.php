@@ -358,27 +358,40 @@ final readonly class Merger
         $defaultColors     = Colors::default();
         $defaultThresholds = Thresholds::default();
 
-        $coverageClover                 = null;
-        $coverageCobertura              = null;
-        $coverageCrap4j                 = null;
-        $coverageCrap4jThreshold        = 30;
-        $coverageHtml                   = null;
-        $coverageHtmlLowUpperBound      = $defaultThresholds->lowUpperBound();
-        $coverageHtmlHighLowerBound     = $defaultThresholds->highLowerBound();
-        $coverageHtmlColorSuccessLow    = $defaultColors->successLow();
-        $coverageHtmlColorSuccessMedium = $defaultColors->successMedium();
-        $coverageHtmlColorSuccessHigh   = $defaultColors->successHigh();
-        $coverageHtmlColorWarning       = $defaultColors->warning();
-        $coverageHtmlColorDanger        = $defaultColors->danger();
-        $coverageHtmlCustomCssFile      = null;
-        $coverageOpenClover             = null;
-        $coveragePhp                    = null;
-        $coverageText                   = null;
-        $coverageTextShowUncoveredFiles = false;
-        $coverageTextShowOnlySummary    = false;
-        $coverageXml                    = null;
-        $coverageXmlIncludeSource       = true;
-        $coverageFromXmlConfiguration   = true;
+        $coverageClover                     = null;
+        $coverageCobertura                  = null;
+        $coverageCrap4j                     = null;
+        $coverageCrap4jThreshold            = 30;
+        $coverageHtml                       = null;
+        $coverageHtmlLowUpperBound          = $defaultThresholds->lowUpperBound();
+        $coverageHtmlHighLowerBound         = $defaultThresholds->highLowerBound();
+        $coverageHtmlColorSuccessLow        = $defaultColors->successLow();
+        $coverageHtmlColorSuccessLowDark    = $defaultColors->successLowDark();
+        $coverageHtmlColorSuccessMedium     = $defaultColors->successMedium();
+        $coverageHtmlColorSuccessMediumDark = $defaultColors->successMediumDark();
+        $coverageHtmlColorSuccessHigh       = $defaultColors->successHigh();
+        $coverageHtmlColorSuccessHighDark   = $defaultColors->successHighDark();
+        $coverageHtmlColorSuccessBar        = $defaultColors->successBar();
+        $coverageHtmlColorSuccessBarDark    = $defaultColors->successBarDark();
+        $coverageHtmlColorWarning           = $defaultColors->warning();
+        $coverageHtmlColorWarningDark       = $defaultColors->warningDark();
+        $coverageHtmlColorWarningBar        = $defaultColors->warningBar();
+        $coverageHtmlColorWarningBarDark    = $defaultColors->warningBarDark();
+        $coverageHtmlColorDanger            = $defaultColors->danger();
+        $coverageHtmlColorDangerDark        = $defaultColors->dangerDark();
+        $coverageHtmlColorDangerBar         = $defaultColors->dangerBar();
+        $coverageHtmlColorDangerBarDark     = $defaultColors->dangerBarDark();
+        $coverageHtmlColorBreadcrumbs       = $defaultColors->breadcrumbs();
+        $coverageHtmlColorBreadcrumbsDark   = $defaultColors->breadcrumbsDark();
+        $coverageHtmlCustomCssFile          = null;
+        $coverageOpenClover                 = null;
+        $coveragePhp                        = null;
+        $coverageText                       = null;
+        $coverageTextShowUncoveredFiles     = false;
+        $coverageTextShowOnlySummary        = false;
+        $coverageXml                        = null;
+        $coverageXmlIncludeSource           = true;
+        $coverageFromXmlConfiguration       = true;
 
         if ($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage()) {
             $coverageFromXmlConfiguration = false;
@@ -415,11 +428,24 @@ final readonly class Merger
                 $coverageHtmlHighLowerBound = $defaultThresholds->highLowerBound();
             }
 
-            $coverageHtmlColorSuccessLow    = $xmlConfiguration->codeCoverage()->html()->colorSuccessLow();
-            $coverageHtmlColorSuccessMedium = $xmlConfiguration->codeCoverage()->html()->colorSuccessMedium();
-            $coverageHtmlColorSuccessHigh   = $xmlConfiguration->codeCoverage()->html()->colorSuccessHigh();
-            $coverageHtmlColorWarning       = $xmlConfiguration->codeCoverage()->html()->colorWarning();
-            $coverageHtmlColorDanger        = $xmlConfiguration->codeCoverage()->html()->colorDanger();
+            $coverageHtmlColorSuccessLow        = $xmlConfiguration->codeCoverage()->html()->colorSuccessLow();
+            $coverageHtmlColorSuccessLowDark    = $xmlConfiguration->codeCoverage()->html()->colorSuccessLowDark();
+            $coverageHtmlColorSuccessMedium     = $xmlConfiguration->codeCoverage()->html()->colorSuccessMedium();
+            $coverageHtmlColorSuccessMediumDark = $xmlConfiguration->codeCoverage()->html()->colorSuccessMediumDark();
+            $coverageHtmlColorSuccessHigh       = $xmlConfiguration->codeCoverage()->html()->colorSuccessHigh();
+            $coverageHtmlColorSuccessHighDark   = $xmlConfiguration->codeCoverage()->html()->colorSuccessHighDark();
+            $coverageHtmlColorSuccessBar        = $xmlConfiguration->codeCoverage()->html()->colorSuccessBar();
+            $coverageHtmlColorSuccessBarDark    = $xmlConfiguration->codeCoverage()->html()->colorSuccessBarDark();
+            $coverageHtmlColorWarning           = $xmlConfiguration->codeCoverage()->html()->colorWarning();
+            $coverageHtmlColorWarningDark       = $xmlConfiguration->codeCoverage()->html()->colorWarningDark();
+            $coverageHtmlColorWarningBar        = $xmlConfiguration->codeCoverage()->html()->colorWarningBar();
+            $coverageHtmlColorWarningBarDark    = $xmlConfiguration->codeCoverage()->html()->colorWarningBarDark();
+            $coverageHtmlColorDanger            = $xmlConfiguration->codeCoverage()->html()->colorDanger();
+            $coverageHtmlColorDangerDark        = $xmlConfiguration->codeCoverage()->html()->colorDangerDark();
+            $coverageHtmlColorDangerBar         = $xmlConfiguration->codeCoverage()->html()->colorDangerBar();
+            $coverageHtmlColorDangerBarDark     = $xmlConfiguration->codeCoverage()->html()->colorDangerBarDark();
+            $coverageHtmlColorBreadcrumbs       = $xmlConfiguration->codeCoverage()->html()->colorBreadcrumbs();
+            $coverageHtmlColorBreadcrumbsDark   = $xmlConfiguration->codeCoverage()->html()->colorBreadcrumbsDark();
 
             if ($xmlConfiguration->codeCoverage()->html()->hasCustomCssFile()) {
                 $coverageHtmlCustomCssFile = $xmlConfiguration->codeCoverage()->html()->customCssFile();
@@ -967,10 +993,23 @@ final readonly class Merger
             $coverageHtmlLowUpperBound,
             $coverageHtmlHighLowerBound,
             $coverageHtmlColorSuccessLow,
+            $coverageHtmlColorSuccessLowDark,
             $coverageHtmlColorSuccessMedium,
+            $coverageHtmlColorSuccessMediumDark,
             $coverageHtmlColorSuccessHigh,
+            $coverageHtmlColorSuccessHighDark,
+            $coverageHtmlColorSuccessBar,
+            $coverageHtmlColorSuccessBarDark,
             $coverageHtmlColorWarning,
+            $coverageHtmlColorWarningDark,
+            $coverageHtmlColorWarningBar,
+            $coverageHtmlColorWarningBarDark,
             $coverageHtmlColorDanger,
+            $coverageHtmlColorDangerDark,
+            $coverageHtmlColorDangerBar,
+            $coverageHtmlColorDangerBarDark,
+            $coverageHtmlColorBreadcrumbs,
+            $coverageHtmlColorBreadcrumbsDark,
             $coverageHtmlCustomCssFile,
             $coverageOpenClover,
             $coveragePhp,

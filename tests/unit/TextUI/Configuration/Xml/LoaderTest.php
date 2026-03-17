@@ -214,10 +214,23 @@ final class LoaderTest extends TestCase
         $this->assertSame($defaultThresholds->lowUpperBound(), $codeCoverage->html()->lowUpperBound());
         $this->assertSame($defaultThresholds->highLowerBound(), $codeCoverage->html()->highLowerBound());
         $this->assertSame($defaultColors->successLow(), $codeCoverage->html()->colorSuccessLow());
+        $this->assertSame($defaultColors->successLowDark(), $codeCoverage->html()->colorSuccessLowDark());
         $this->assertSame($defaultColors->successMedium(), $codeCoverage->html()->colorSuccessMedium());
+        $this->assertSame($defaultColors->successMediumDark(), $codeCoverage->html()->colorSuccessMediumDark());
         $this->assertSame($defaultColors->successHigh(), $codeCoverage->html()->colorSuccessHigh());
+        $this->assertSame($defaultColors->successHighDark(), $codeCoverage->html()->colorSuccessHighDark());
+        $this->assertSame($defaultColors->successBar(), $codeCoverage->html()->colorSuccessBar());
+        $this->assertSame($defaultColors->successBarDark(), $codeCoverage->html()->colorSuccessBarDark());
         $this->assertSame($defaultColors->warning(), $codeCoverage->html()->colorWarning());
+        $this->assertSame($defaultColors->warningDark(), $codeCoverage->html()->colorWarningDark());
+        $this->assertSame($defaultColors->warningBar(), $codeCoverage->html()->colorWarningBar());
+        $this->assertSame($defaultColors->warningBarDark(), $codeCoverage->html()->colorWarningBarDark());
         $this->assertSame($defaultColors->danger(), $codeCoverage->html()->colorDanger());
+        $this->assertSame($defaultColors->dangerDark(), $codeCoverage->html()->colorDangerDark());
+        $this->assertSame($defaultColors->dangerBar(), $codeCoverage->html()->colorDangerBar());
+        $this->assertSame($defaultColors->dangerBarDark(), $codeCoverage->html()->colorDangerBarDark());
+        $this->assertSame($defaultColors->breadcrumbs(), $codeCoverage->html()->colorBreadcrumbs());
+        $this->assertSame($defaultColors->breadcrumbsDark(), $codeCoverage->html()->colorBreadcrumbsDark());
         $this->assertFalse($codeCoverage->html()->hasCustomCssFile());
 
         $this->assertTrue($codeCoverage->hasPhp());

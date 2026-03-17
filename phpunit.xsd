@@ -338,8 +338,21 @@
         <xs:attribute name="colorSuccessLow" type="xs:string" default="#dff0d8"/>
         <xs:attribute name="colorSuccessMedium" type="xs:string" default="#c3e3b5"/>
         <xs:attribute name="colorSuccessHigh" type="xs:string" default="#99cb84"/>
+        <xs:attribute name="colorSuccessBar" type="xs:string" default="#28a745"/>
         <xs:attribute name="colorWarning" type="xs:string" default="#fcf8e3"/>
+        <xs:attribute name="colorWarningBar" type="xs:string" default="#ffc107"/>
         <xs:attribute name="colorDanger" type="xs:string" default="#f2dede"/>
+        <xs:attribute name="colorDangerBar" type="xs:string" default="#dc3545"/>
+        <xs:attribute name="colorBreadcrumbs" type="xs:string" default="var(--bs-gray-200)"/>
+        <xs:attribute name="colorSuccessLowDark" type="xs:string" default="#2d4431"/>
+        <xs:attribute name="colorSuccessMediumDark" type="xs:string" default="#3c6051"/>
+        <xs:attribute name="colorSuccessHighDark" type="xs:string" default="#3d5c4e"/>
+        <xs:attribute name="colorSuccessBarDark" type="xs:string" default="#1f8135"/>
+        <xs:attribute name="colorWarningDark" type="xs:string" default="#3e3408"/>
+        <xs:attribute name="colorWarningBarDark" type="xs:string" default="#c19406"/>
+        <xs:attribute name="colorDangerDark" type="xs:string" default="#42221e"/>
+        <xs:attribute name="colorDangerBarDark" type="xs:string" default="#a62633"/>
+        <xs:attribute name="colorBreadcrumbsDark" type="xs:string" default="var(--bs-gray-800)"/>
         <xs:attribute name="customCssFile" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="coverageReportTextType">
