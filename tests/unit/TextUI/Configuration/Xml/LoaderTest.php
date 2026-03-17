@@ -253,6 +253,7 @@ final class LoaderTest extends TestCase
     {
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
+        $this->assertFalse($codeCoverage->hasDriver());
         $this->assertTrue($codeCoverage->pathCoverage());
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
@@ -307,6 +308,26 @@ final class LoaderTest extends TestCase
 
         $this->assertTrue($codeCoverage->hasXml());
         $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->xml()->target()->path());
+    }
+
+    public function testCodeCoverageDriverConfigurationIsReadCorrectly(): void
+    {
+        $codeCoverage = $this->configuration('configuration_codecoverage_driver.xml')->codeCoverage();
+
+        $this->assertTrue($codeCoverage->hasDriver());
+        $this->assertSame('My\Custom\Driver', $codeCoverage->driver());
+    }
+
+    public function testCodeCoverageDriverAccessorThrowsWhenNotConfigured(): void
+    {
+        $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
+
+        $this->assertFalse($codeCoverage->hasDriver());
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Code Coverage driver has not been configured');
+
+        $codeCoverage->driver();
     }
 
     public function testGroupConfigurationIsReadCorrectly(): void
