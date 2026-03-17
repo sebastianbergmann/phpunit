@@ -380,6 +380,12 @@ final readonly class Merger
             $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
         }
 
+        $coverageDriver = null;
+
+        if ($xmlConfiguration->codeCoverage()->hasDriver()) {
+            $coverageDriver = $xmlConfiguration->codeCoverage()->driver();
+        }
+
         $defaultColors     = Colors::default();
         $defaultThresholds = Thresholds::default();
 
@@ -1069,6 +1075,7 @@ final readonly class Merger
             $coverageXml,
             $coverageXmlIncludeSource,
             $pathCoverage,
+            $coverageDriver,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
             $failOnAllIssues,
