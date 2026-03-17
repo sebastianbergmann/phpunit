@@ -28,6 +28,7 @@ use PHPUnit\TextUI\XmlConfiguration\Exception;
  */
 final readonly class CodeCoverage
 {
+    private ?string $driver;
     private bool $pathCoverage;
     private bool $includeUncoveredFiles;
     private bool $ignoreDeprecatedCodeUnits;
@@ -41,8 +42,9 @@ final readonly class CodeCoverage
     private ?Text $text;
     private ?Xml $xml;
 
-    public function __construct(bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?OpenClover $openClover, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(?string $driver, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?OpenClover $openClover, ?Php $php, ?Text $text, ?Xml $xml)
     {
+        $this->driver                    = $driver;
         $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
         $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
@@ -55,6 +57,28 @@ final readonly class CodeCoverage
         $this->php                       = $php;
         $this->text                      = $text;
         $this->xml                       = $xml;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->driver
+     */
+    public function hasDriver(): bool
+    {
+        return $this->driver !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function driver(): string
+    {
+        if (!$this->hasDriver()) {
+            throw new Exception(
+                'Code Coverage driver has not been configured',
+            );
+        }
+
+        return $this->driver;
     }
 
     public function pathCoverage(): bool
