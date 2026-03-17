@@ -332,7 +332,7 @@
         <xs:attribute name="threshold" type="xs:integer"/>
     </xs:complexType>
     <xs:complexType name="coverageReportHtmlType">
-        <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+        <xs:attribute name="outputDirectory" type="xs:anyURI"/>
         <xs:attribute name="lowUpperBound" type="xs:integer" default="50"/>
         <xs:attribute name="highLowerBound" type="xs:integer" default="90"/>
         <xs:attribute name="colorSuccessLow" type="xs:string" default="#dff0d8"/>

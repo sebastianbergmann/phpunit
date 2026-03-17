@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report;
 
 use PHPUnit\TextUI\Configuration\Directory;
 use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
+use PHPUnit\TextUI\Configuration\NoHtmlCoverageTargetException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -21,7 +22,7 @@ use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
  */
 final readonly class Html
 {
-    private Directory $target;
+    private ?Directory $target;
     private int $lowUpperBound;
     private int $highLowerBound;
     private string $colorSuccessLow;
@@ -31,7 +32,7 @@ final readonly class Html
     private string $colorDanger;
     private ?string $customCssFile;
 
-    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile)
+    public function __construct(?Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile)
     {
         $this->target             = $target;
         $this->lowUpperBound      = $lowUpperBound;
@@ -44,8 +45,23 @@ final readonly class Html
         $this->customCssFile      = $customCssFile;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->target
+     */
+    public function hasTarget(): bool
+    {
+        return $this->target !== null;
+    }
+
+    /**
+     * @throws NoHtmlCoverageTargetException
+     */
     public function target(): Directory
     {
+        if (!$this->hasTarget()) {
+            throw new NoHtmlCoverageTargetException;
+        }
+
         return $this->target;
     }
 

@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 * [#6523](https://github.com/sebastianbergmann/phpunit/issues/6523): Include `#[Group]` information in Open Test Reporting (OTR) XML logfile
 * [#6524](https://github.com/sebastianbergmann/phpunit/pull/6524): Report issues in Open Test Reporting (OTR) XML logfile
 * [#6526](https://github.com/sebastianbergmann/phpunit/pull/6526): Introduce `#[DataProviderClosure]` for static closures
+* Support for configuring HTML code coverage report options (colors, thresholds, custom CSS) in XML configuration file without requiring an `outputDirectory` attribute, allowing the output directory to be specified later with the `--coverage-html` CLI option
 
 ### Changed
 

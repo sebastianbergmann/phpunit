@@ -428,7 +428,7 @@ final readonly class Merger
 
         if ($cliConfiguration->hasCoverageHtml()) {
             $coverageHtml = $cliConfiguration->coverageHtml();
-        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasHtml()) {
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasHtml() && $xmlConfiguration->codeCoverage()->html()->hasTarget()) {
             $coverageHtml = $xmlConfiguration->codeCoverage()->html()->target()->path();
         }
 

@@ -473,14 +473,19 @@ final readonly class Loader
         if ($element !== null) {
             $defaultColors     = Colors::default();
             $defaultThresholds = Thresholds::default();
+            $outputDirectory   = $this->parseStringAttribute($element, 'outputDirectory');
 
-            $html = new CodeCoverageHtml(
-                new Directory(
+            if ($outputDirectory !== null) {
+                $outputDirectory = new Directory(
                     $this->toAbsolutePath(
                         $filename,
-                        (string) $this->parseStringAttribute($element, 'outputDirectory'),
+                        $outputDirectory,
                     ),
-                ),
+                );
+            }
+
+            $html = new CodeCoverageHtml(
+                $outputDirectory,
                 $this->parseIntegerAttribute($element, 'lowUpperBound', $defaultThresholds->lowUpperBound()),
                 $this->parseIntegerAttribute($element, 'highLowerBound', $defaultThresholds->highLowerBound()),
                 $this->parseStringAttributeWithDefault($element, 'colorSuccessLow', $defaultColors->successLow()),
