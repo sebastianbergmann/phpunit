@@ -18,6 +18,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 ### Changed
 
 * Improved failure message for mock object expectations
+* The HTML code coverage report now uses a more colorblind-friendly blue/amber/orange palette by default
 
 ### Deprecated
 
