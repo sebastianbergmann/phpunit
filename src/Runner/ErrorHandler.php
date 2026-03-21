@@ -414,7 +414,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class?: string, function?: string, type: string, args?: list<mixed>}>
+     * @return list<array{file: string, line: int, class?: string, function?: string, type: string, args?: list<mixed>, object?: object}>
      */
     private function filteredStackTrace(): array
     {
@@ -476,7 +476,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string, args?: list<mixed>}>
+     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string, args?: list<mixed>, object?: object}>
      */
     private function errorStackTrace(bool $ignoreArgs = true): array
     {
