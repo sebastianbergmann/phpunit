@@ -1104,16 +1104,16 @@
         },
         {
             "name": "sebastian/git-state",
-            "version": "dev-main",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/git-state.git",
-                "reference": "454256c81c69dee8734d52bda30ea66e4915208c"
+                "reference": "792a952e0eba55b6960a48aeceb9f371aad1f76b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/git-state/zipball/454256c81c69dee8734d52bda30ea66e4915208c",
-                "reference": "454256c81c69dee8734d52bda30ea66e4915208c",
+                "url": "https://api.github.com/repos/sebastianbergmann/git-state/zipball/792a952e0eba55b6960a48aeceb9f371aad1f76b",
+                "reference": "792a952e0eba55b6960a48aeceb9f371aad1f76b",
                 "shasum": ""
             },
             "require": {
@@ -1122,7 +1122,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^13.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1150,7 +1149,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/git-state/issues",
                 "security": "https://github.com/sebastianbergmann/git-state/security/policy",
-                "source": "https://github.com/sebastianbergmann/git-state/tree/main"
+                "source": "https://github.com/sebastianbergmann/git-state/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1170,7 +1169,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-05T13:30:18+00:00"
+            "time": "2026-03-21T12:54:28+00:00"
         },
         {
             "name": "sebastian/global-state",
