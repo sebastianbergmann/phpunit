@@ -19,6 +19,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 * Improved failure message for mock object expectations
 * The HTML code coverage report now uses a more colorblind-friendly blue/amber/orange palette by default
+* Extracted `PHPUnit\Runner\Extension\Facade` from a concrete class to an interface and introduced an internal `ExtensionFacade` implementation, so that extensions only depend on the `Facade` interface while PHPUnit internally uses the `ExtensionFacade` class that also provides query methods
 
 ### Deprecated
 
