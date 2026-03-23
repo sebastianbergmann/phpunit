@@ -14,6 +14,9 @@ use PHPUnit\Event\Subscriber;
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface Facade
 {
     /**
@@ -35,17 +38,9 @@ interface Facade
 
     public function replaceOutput(): void;
 
-    public function replacesOutput(): bool;
-
     public function replaceProgressOutput(): void;
-
-    public function replacesProgressOutput(): bool;
 
     public function replaceResultOutput(): void;
 
-    public function replacesResultOutput(): bool;
-
     public function requireCodeCoverageCollection(): void;
-
-    public function requiresCodeCoverageCollection(): bool;
 }
