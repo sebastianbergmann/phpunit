@@ -61,9 +61,14 @@ final readonly class HookedProperty
         return $this->setHook;
     }
 
-    public function isVirtual(): bool
+    public function shouldGenerateGetHook(): bool
     {
-        return $this->virtual;
+        return $this->getHook || !$this->virtual && $this->setHook;
+    }
+
+    public function shouldGenerateSetHook(): bool
+    {
+        return $this->setHook || !$this->virtual && $this->getHook;
     }
 
     public function setterType(): ?Type
