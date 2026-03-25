@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class ExtendableClassWithPropertyWithGetHook
+class ExtendableClassWithVirtualPropertyWithSetHook
 {
     public string $property {
-        get {
-            return $this->property;
+        set(string $value) {
+            // discard value
         }
     }
 }

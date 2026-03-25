@@ -11,11 +11,11 @@ class Foo
 {
     public string $bar {
         get {
-            return $this->bar;
+            return 'value';
         }
 
         set (string $value) {
-            $this->bar = $value;
+            // Discard value
         }
     }
 }

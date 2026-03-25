@@ -803,7 +803,7 @@ final class Generator
         }
 
         foreach ($propertiesWithHooks as $property) {
-            if ($property->hasGetHook()) {
+            if ($property->hasGetHook() || !$property->isVirtual() && $property->hasSetHook()) {
                 $configurable[] = new ConfigurableMethod(
                     sprintf(
                         '$%s::get',
@@ -815,7 +815,7 @@ final class Generator
                 );
             }
 
-            if ($property->hasSetHook()) {
+            if ($property->hasSetHook() || !$property->isVirtual() && $property->hasGetHook()) {
                 $configurable[] = new ConfigurableMethod(
                     sprintf(
                         '$%s::set',
@@ -878,6 +878,7 @@ final class Generator
                 $mapper->fromPropertyType($property),
                 $hasGetHook,
                 $hasSetHook,
+                $property->isVirtual(),
                 $setHookMethodParameterType,
             );
         }

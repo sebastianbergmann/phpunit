@@ -1,5 +1,5 @@
 --TEST--
-Extendable class with property with non-final get and set property hooks
+Extendable class with property with non-final set property hook
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!method_exists(ReflectionProperty::class, 'isFinal')) {
@@ -10,12 +10,8 @@ if (!method_exists(ReflectionProperty::class, 'isFinal')) {
 class Foo
 {
     public string $bar {
-        get {
-            return $this->bar;
-        }
-
         set (string $value) {
-            $this->bar = $value;
+            // Discard value
         }
     }
 }
@@ -42,14 +38,6 @@ class TestStubFoo extends Foo implements PHPUnit\Framework\MockObject\StubIntern
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public string $bar {
-        get {
-            return $this->__phpunit_getInvocationHandler()->invoke(
-                new \PHPUnit\Framework\MockObject\Invocation(
-                    'TestStubFoo', '$bar::get', [], 'string', $this
-                )
-            );
-        }
-
         set (string $value) {
             $this->__phpunit_getInvocationHandler()->invoke(
                 new \PHPUnit\Framework\MockObject\Invocation(
