@@ -38,6 +38,14 @@ class TestStubFoo extends Foo implements PHPUnit\Framework\MockObject\StubIntern
     use PHPUnit\Framework\MockObject\DoubledCloneMethod;
 
     public string $bar {
+        get {
+            return $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    'TestStubFoo', '$bar::get', [], 'string', $this
+                )
+            );
+        }
+
         set (string $value) {
             $this->__phpunit_getInvocationHandler()->invoke(
                 new \PHPUnit\Framework\MockObject\Invocation(
