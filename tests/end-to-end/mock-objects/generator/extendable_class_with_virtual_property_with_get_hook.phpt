@@ -1,5 +1,5 @@
 --TEST--
-Extendable class with property with non-final get and set property hooks
+Extendable class with property with non-final get property hook
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!method_exists(ReflectionProperty::class, 'isFinal')) {
@@ -11,11 +11,7 @@ class Foo
 {
     public string $bar {
         get {
-            return $this->bar;
-        }
-
-        set (string $value) {
-            $this->bar = $value;
+            return 'value';
         }
     }
 }
@@ -46,14 +42,6 @@ class TestStubFoo extends Foo implements PHPUnit\Framework\MockObject\StubIntern
             return $this->__phpunit_getInvocationHandler()->invoke(
                 new \PHPUnit\Framework\MockObject\Invocation(
                     'TestStubFoo', '$bar::get', [], 'string', $this
-                )
-            );
-        }
-
-        set (string $value) {
-            $this->__phpunit_getInvocationHandler()->invoke(
-                new \PHPUnit\Framework\MockObject\Invocation(
-                    'TestStubFoo', '$bar::set', [$value], 'void', $this
                 )
             );
         }

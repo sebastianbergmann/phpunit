@@ -24,7 +24,7 @@ final class HookedPropertyTest extends TestCase
     {
         $name = 'property-name';
 
-        $property = new HookedProperty($name, Type::fromName('string', false), false, false, Type::fromName('string', false));
+        $property = new HookedProperty($name, Type::fromName('string', false), false, false, false, Type::fromName('string', false));
 
         $this->assertSame($name, $property->name());
     }
@@ -33,35 +33,35 @@ final class HookedPropertyTest extends TestCase
     {
         $type = Type::fromName('string', false);
 
-        $property = new HookedProperty('property-name', $type, false, false, $type);
+        $property = new HookedProperty('property-name', $type, false, false, false, $type);
 
         $this->assertSame($type, $property->type());
     }
 
     public function testMayHaveGetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, Type::fromName('string', false));
 
         $this->assertTrue($property->hasGetHook());
     }
 
     public function testMayNotHaveGetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, Type::fromName('string', false));
 
         $this->assertFalse($property->hasGetHook());
     }
 
     public function testMayHaveSetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, false, Type::fromName('string', false));
 
         $this->assertTrue($property->hasSetHook());
     }
 
     public function testMayNotHaveSetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, Type::fromName('string', false));
 
         $this->assertFalse($property->hasSetHook());
     }
@@ -71,7 +71,7 @@ final class HookedPropertyTest extends TestCase
         $type       = Type::fromName('string', false);
         $setterType = Type::fromName('string', true);
 
-        $property = new HookedProperty('property-name', $type, false, false, $setterType);
+        $property = new HookedProperty('property-name', $type, false, false, false, $setterType);
 
         $this->assertSame($setterType, $property->setterType());
     }
