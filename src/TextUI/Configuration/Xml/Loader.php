@@ -898,6 +898,11 @@ final readonly class Loader
 
                         break;
 
+                    case 'newest':
+                        $executionOrder = TestSuiteSorter::ORDER_NEWEST;
+
+                        break;
+
                     case 'random':
                         $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
 
