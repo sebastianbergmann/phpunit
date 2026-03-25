@@ -36,7 +36,7 @@ EOT,
                 $property->name(),
             );
 
-            if ($property->hasGetHook() || !$property->isVirtual() && $property->hasSetHook()) {
+            if ($property->shouldGenerateGetHook()) {
                 $code .= sprintf(
                     <<<'EOT'
 
@@ -55,7 +55,7 @@ EOT,
                 );
             }
 
-            if ($property->hasSetHook() || !$property->isVirtual() && $property->hasGetHook()) {
+            if ($property->shouldGenerateSetHook()) {
                 $code .= sprintf(
                     <<<'EOT'
 
