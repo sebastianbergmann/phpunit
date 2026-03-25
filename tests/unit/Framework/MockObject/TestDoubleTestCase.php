@@ -18,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithGetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithSetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithVirtualPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodNamedMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
@@ -353,6 +355,24 @@ abstract class TestDoubleTestCase extends TestCase
         $this->expectExceptionMessage('Doubling interfaces (or classes) that have a method named "method" is not supported.');
 
         $this->createTestDouble(InterfaceWithMethodNamedMethod::class);
+    }
+
+    public function testGetHookForVirtualPropertyOfExtendableClassCanBeConfigured(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithVirtualPropertyWithGetHook::class);
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
+    }
+
+    public function testGetHookForNonVirtualPropertyWithSetHookOfExtendableClassClassCanBeConfigured(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithSetHook::class);
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
     }
 
     /**

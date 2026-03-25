@@ -4,9 +4,14 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 ## [13.0.6] - 2026-MM-DD
 
+### Changed
+
+* [#6549](https://github.com/sebastianbergmann/phpunit/pull/6549): Allow to stub both hooks of non-virtual properties
+
 ### Fixed
 
 * [#6529](https://github.com/sebastianbergmann/phpunit/pull/6529): Git "detached HEAD state" in Open Test Reporting (OTR) XML logger not handled properly
+* [#6545](https://github.com/sebastianbergmann/phpunit/issues/6545): Stubbing a class with set property hook leaves property uninitialized by default
 * The `RegularExpression` and `StringMatchesFormatDescription` did not handle `preg_match()` errors such as `Compilation failed: regular expression is too large`
 
 ## [13.0.5] - 2026-02-18

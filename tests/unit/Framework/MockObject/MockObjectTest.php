@@ -22,7 +22,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithCovariantSetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithGetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithSetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithVirtualPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithSetHook;
@@ -592,6 +594,24 @@ EOT,
     public function testExpectationCanBeConfiguredForSetHookForPropertyOfExtendableClass(): void
     {
         $double = $this->createTestDouble(ExtendableClassWithPropertyWithSetHook::class);
+
+        $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
+
+        $double->property = 'value';
+    }
+
+    public function testExpectationCanBeConfiguredForSetHookForVirtualPropertyOfExtendableClass(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithVirtualPropertyWithSetHook::class);
+
+        $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
+
+        $double->property = 'value';
+    }
+
+    public function testExpectationCanBeConfiguredForSetHookForNonVirtualPropertyWithGetHookOfExtendableClass(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithGetHook::class);
 
         $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
 
