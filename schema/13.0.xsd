@@ -123,13 +123,16 @@
             <xs:enumeration value="depends"/>
             <xs:enumeration value="depends,defects"/>
             <xs:enumeration value="depends,duration"/>
+            <xs:enumeration value="depends,newest"/>
             <xs:enumeration value="depends,random"/>
             <xs:enumeration value="depends,reverse"/>
             <xs:enumeration value="depends,size"/>
             <xs:enumeration value="duration"/>
+            <xs:enumeration value="newest"/>
             <xs:enumeration value="no-depends"/>
             <xs:enumeration value="no-depends,defects"/>
             <xs:enumeration value="no-depends,duration"/>
+            <xs:enumeration value="no-depends,newest"/>
             <xs:enumeration value="no-depends,random"/>
             <xs:enumeration value="no-depends,reverse"/>
             <xs:enumeration value="no-depends,size"/>

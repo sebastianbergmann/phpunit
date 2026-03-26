@@ -287,17 +287,18 @@ final class TestSuiteSorter
      */
     private function cmpNewest(Test $a, Test $b): int
     {
-        $fileA = $this->getTestFile($a);
-        $fileB = $this->getTestFile($b);
+        $result = 0;
+        $fileA  = $this->getTestFile($a);
+        $fileB  = $this->getTestFile($b);
 
-        if ($fileA === null || $fileB === null) {
-            return 0;
+        if ($fileA !== null && $fileB !== null) {
+            $mtimeA = (int) @filemtime($fileA);
+            $mtimeB = (int) @filemtime($fileB);
+
+            $result = $mtimeB <=> $mtimeA;
         }
 
-        $mtimeA = (int) @filemtime($fileA);
-        $mtimeB = (int) @filemtime($fileB);
-
-        return $mtimeB <=> $mtimeA;
+        return $result;
     }
 
     /**
@@ -321,18 +322,19 @@ final class TestSuiteSorter
      */
     private function getTestFile(Test $test): ?string
     {
+        $result = null;
+
         if ($test instanceof TestCase) {
             $reflection = new ReflectionClass($test);
             $filename   = $reflection->getFileName();
-
-            return $filename !== false ? $filename : null;
+            $result     = $filename !== false ? $filename : null;
         }
 
         if ($test instanceof TestSuite && count($test->tests()) > 0) {
-            return $this->getTestFile($test->tests()[0]);
+            $result = $this->getTestFile($test->tests()[0]);
         }
 
-        return null;
+        return $result;
     }
 
     /**
