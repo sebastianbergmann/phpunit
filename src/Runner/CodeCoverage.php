@@ -442,9 +442,15 @@ final class CodeCoverage
                 $filter,
             );
         } catch (CodeCoverageException $e) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                $e->getMessage(),
-            );
+            if ($filter->isEmpty()) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    'Configured filter does not match any files, code coverage will not be processed',
+                );
+            } else {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $e->getMessage(),
+                );
+            }
         }
     }
 
