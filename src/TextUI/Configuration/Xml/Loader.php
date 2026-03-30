@@ -340,9 +340,13 @@ final readonly class Loader
             $identifyIssueTrigger               = $this->parseBooleanAttribute($element, 'identifyIssueTrigger', true);
         }
 
+        $deprecationTriggerElement = $this->element($xpath, 'source/deprecationTrigger');
+
         $deprecationTriggers = [
-            'functions' => [],
-            'methods'   => [],
+            'functions'               => [],
+            'methods'                 => [],
+            'ignoreUndefinedTriggers' => $deprecationTriggerElement !== null &&
+                $this->parseBooleanAttribute($deprecationTriggerElement, 'ignoreUndefinedTriggers', false),
         ];
 
         $functionNodes = $xpath->query('source/deprecationTrigger/function');

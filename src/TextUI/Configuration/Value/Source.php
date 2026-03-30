@@ -40,7 +40,7 @@ final readonly class Source
     private bool $identifyIssueTrigger;
 
     /**
-     * @var array{functions: list<non-empty-string>, methods: list<non-empty-string>}
+     * @var array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool}
      */
     private array $deprecationTriggers;
 
@@ -50,9 +50,9 @@ final readonly class Source
     private array $issueTriggerResolvers;
 
     /**
-     * @param ?non-empty-string                                                         $baseline
-     * @param array{functions: list<non-empty-string>, methods: list<non-empty-string>} $deprecationTriggers
-     * @param list<class-string>                                                        $issueTriggerResolvers
+     * @param ?non-empty-string                                                                                        $baseline
+     * @param array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool} $deprecationTriggers
+     * @param list<class-string>                                                                                       $issueTriggerResolvers
      */
     public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger, array $issueTriggerResolvers = [])
     {
@@ -180,7 +180,7 @@ final readonly class Source
     }
 
     /**
-     * @return array{functions: list<non-empty-string>, methods: list<non-empty-string>}
+     * @return array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool}
      */
     public function deprecationTriggers(): array
     {
