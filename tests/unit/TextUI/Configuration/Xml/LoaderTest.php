@@ -176,6 +176,7 @@ final class LoaderTest extends TestCase
                 'methods' => [
                     'PHPUnit\TestFixture\DeprecationTrigger\DeprecationTrigger::triggerDeprecation',
                 ],
+                'ignoreUndefinedTriggers' => false,
             ],
             $source->deprecationTriggers(),
         );

@@ -372,6 +372,7 @@
                 <xs:element name="method" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             </xs:choice>
         </xs:sequence>
+        <xs:attribute name="ignoreUndefinedTriggers" type="xs:boolean" default="false"/>
     </xs:complexType>
     <xs:complexType name="issueTriggerResolversType">
         <xs:sequence>

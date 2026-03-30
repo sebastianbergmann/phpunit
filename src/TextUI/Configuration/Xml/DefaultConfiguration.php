@@ -54,8 +54,9 @@ final readonly class DefaultConfiguration extends Configuration
                 false,
                 false,
                 [
-                    'functions' => [],
-                    'methods'   => [],
+                    'functions'               => [],
+                    'methods'                 => [],
+                    'ignoreUndefinedTriggers' => false,
                 ],
                 false,
                 false,

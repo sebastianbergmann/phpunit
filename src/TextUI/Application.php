@@ -793,14 +793,18 @@ final readonly class Application
             'methods'   => [],
         ];
 
+        $ignoreUndefinedTriggers = $configuration->source()->deprecationTriggers()['ignoreUndefinedTriggers'] ?? false;
+
         foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
             if (!function_exists($function)) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Function %s cannot be configured as a deprecation trigger because it is not declared',
-                        $function,
-                    ),
-                );
+                if (!$ignoreUndefinedTriggers) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Function %s cannot be configured as a deprecation trigger because it is not declared',
+                            $function,
+                        ),
+                    );
+                }
 
                 continue;
             }
@@ -823,13 +827,15 @@ final readonly class Application
             [$className, $methodName] = explode('::', $method);
 
             if (!class_exists($className) || !method_exists($className, $methodName)) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Method %s::%s cannot be configured as a deprecation trigger because it is not declared',
-                        $className,
-                        $methodName,
-                    ),
-                );
+                if (!$ignoreUndefinedTriggers) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Method %s::%s cannot be configured as a deprecation trigger because it is not declared',
+                            $className,
+                            $methodName,
+                        ),
+                    );
+                }
 
                 continue;
             }
