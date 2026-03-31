@@ -125,13 +125,7 @@ final class StringMatchesFormatDescription extends Constraint
                             $synced[] = $actual[$i];
                         }
 
-                        if ($expected[$anchorExpectedIndex] === $actual[$anchorActualIndex]) {
-                            $synced[] = $actual[$anchorActualIndex];
-                        } elseif (@preg_match($this->regularExpressionForFormatDescription($expected[$anchorExpectedIndex]), $actual[$anchorActualIndex]) > 0) {
-                            $synced[] = $actual[$anchorActualIndex];
-                        } else {
-                            $synced[] = $expected[$anchorExpectedIndex];
-                        }
+                        $synced[] = $actual[$anchorActualIndex];
 
                         $expectedIndex = $anchorExpectedIndex + 1;
                         $actualIndex   = $anchorActualIndex + 1;
