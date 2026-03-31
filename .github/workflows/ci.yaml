@@ -369,7 +369,7 @@ jobs:
 
       - name: Upload test results to Codecov.io
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           report_type: test_results
@@ -378,7 +378,7 @@ jobs:
 
       - name: Upload code coverage data to Codecov.io
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           report_type: coverage
