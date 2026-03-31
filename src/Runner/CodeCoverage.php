@@ -419,32 +419,38 @@ final class CodeCoverage
 
     public function warnIfFilterIsNotConfigured(CodeCoverageFilterRegistry $codeCoverageFilterRegistry, Configuration $configuration): void
     {
-        if ($codeCoverageFilterRegistry->get()->isEmpty()) {
-            if (!$codeCoverageFilterRegistry->configured()) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    'No filter is configured, code coverage will not be processed',
-                );
-            } else {
-                $paths = [];
+        if (!$codeCoverageFilterRegistry->get()->isEmpty()) {
+            return;
+        }
 
-                foreach ($configuration->source()->includeDirectories() as $directory) {
-                    $paths[] = $directory->path();
-                }
-
-                foreach ($configuration->source()->includeFiles() as $file) {
-                    $paths[] = $file->path();
-                }
-
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
-                        implode(', ', $paths),
-                    ),
-                );
-            }
+        if (!$codeCoverageFilterRegistry->configured()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'No filter is configured, code coverage will not be processed',
+            );
 
             $this->deactivate();
+
+            return;
         }
+
+        $paths = [];
+
+        foreach ($configuration->source()->includeDirectories() as $directory) {
+            $paths[] = $directory->path();
+        }
+
+        foreach ($configuration->source()->includeFiles() as $file) {
+            $paths[] = $file->path();
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
+                implode(', ', $paths),
+            ),
+        );
+
+        $this->deactivate();
     }
 
     private function activate(Filter $filter, bool $pathCoverage): void
