@@ -11,6 +11,7 @@ namespace PHPUnit\Runner;
 
 use function assert;
 use function file_put_contents;
+use function implode;
 use function sprintf;
 use function sys_get_temp_dir;
 use PHPUnit\Event\Facade as EventFacade;
@@ -124,19 +125,7 @@ final class CodeCoverage
             $this->codeCoverage()->excludeUncoveredFiles();
         }
 
-        if ($codeCoverageFilterRegistry->get()->isEmpty()) {
-            if (!$codeCoverageFilterRegistry->configured()) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    'No filter is configured, code coverage will not be processed',
-                );
-            } else {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    'Configured filter does not match any files, code coverage will not be processed',
-                );
-            }
-
-            $this->deactivate();
-        }
+        $this->warnIfFilterIsNotConfigured($codeCoverageFilterRegistry, $configuration);
 
         if (isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
             EventFacade::emitter()->testRunnerStartedStaticAnalysisForCodeCoverage();
@@ -418,6 +407,36 @@ final class CodeCoverage
             } catch (CodeCoverageException $e) {
                 $this->codeCoverageGenerationFailed($printer, $e);
             }
+        }
+    }
+
+    public function warnIfFilterIsNotConfigured(CodeCoverageFilterRegistry $codeCoverageFilterRegistry, Configuration $configuration): void
+    {
+        if ($codeCoverageFilterRegistry->get()->isEmpty()) {
+            if (!$codeCoverageFilterRegistry->configured()) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    'No filter is configured, code coverage will not be processed',
+                );
+            } else {
+                $paths = [];
+
+                foreach ($configuration->source()->includeDirectories() as $directory) {
+                    $paths[] = $directory->path();
+                }
+
+                foreach ($configuration->source()->includeFiles() as $file) {
+                    $paths[] = $file->path();
+                }
+
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
+                        implode(', ', $paths),
+                    ),
+                );
+            }
+
+            $this->deactivate();
         }
     }
 
