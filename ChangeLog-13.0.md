@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 13.0 release series are documented in this fi
 
 ### Changed
 
+* [#4440](https://github.com/sebastianbergmann/phpunit/issues/4440): Improve error when configured code coverage file list is empty
 * [#6549](https://github.com/sebastianbergmann/phpunit/pull/6549): Allow to stub both hooks of non-virtual properties
 
 ### Fixed
