@@ -294,21 +294,10 @@ Failed asserting that string matches format description.
 --- Expected
 +++ Actual
 @@ @@
- ## before first A
- some multiline
-+text for
-+A to match
- ## after first A
+ ## after second A
  *
- ## before second A
-+more multiline text
-+for A to match
-+## after second A
- *
--## after second A
-+Foo: s match
- *
--Foo: %s
+ Foo: s match
++*
 +Additional Text that is not matched
 
 EOD
@@ -332,6 +321,72 @@ Foo: s match
 Additional Text that is not matched
 EOD
         );
+    }
+
+    public function testFailureMessageWithMultilineMatchAndAnchorContainingPlaceholder(): void
+    {
+        $constraint = new StringMatchesFormatDescription("header\n%A\nFoo: %s\nfooter");
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            <<<'EOD'
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+ header
+ stuff
+ Foo: bar
+-footer
++wrong
+EOD
+        );
+
+        $constraint->evaluate("header\nstuff\nFoo: bar\nwrong");
+    }
+
+    public function testFailureMessageWithMultilineMatchAtEndOfExpected(): void
+    {
+        $constraint = new StringMatchesFormatDescription("header\nfoo\n%A");
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            <<<'EOD'
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+ header
+-foo
++bar
+ extra
+ lines
+EOD
+        );
+
+        $constraint->evaluate("header\nbar\nextra\nlines");
+    }
+
+    public function testFailureMessageWithMultilineMatchAndAnchorNotFoundInActual(): void
+    {
+        $constraint = new StringMatchesFormatDescription("start\n%A\nunique_anchor\nend");
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            <<<'EOD'
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+ start
+ foo
+-unique_anchor
++bar
+ end
+EOD
+        );
+
+        $constraint->evaluate("start\nfoo\nbar\nend");
     }
 
     public function testCanBeRepresentedAsString(): void
