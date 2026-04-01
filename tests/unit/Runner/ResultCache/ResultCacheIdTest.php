@@ -48,6 +48,14 @@ final class ResultCacheIdTest extends TestCase
         $this->assertSame('PHPUnit\Runner\ResultCache\ResultCacheIdTest::testReorderableResultCacheId', ResultCacheId::fromReorderable($reorderable)->asString());
     }
 
+    public function testFromTestClassAndMethodName(): void
+    {
+        $this->assertSame(
+            'PHPUnit\Runner\ResultCache\ResultCacheIdTest::someMethod',
+            ResultCacheId::fromTestClassAndMethodName(self::class, 'someMethod')->asString(),
+        );
+    }
+
     public function testPhptResultCacheId(): void
     {
         $file     = 'test.phpt';
