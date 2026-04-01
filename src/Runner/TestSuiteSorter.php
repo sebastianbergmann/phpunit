@@ -140,6 +140,8 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
+            assert($test instanceof Reorderable);
+
             $sortId = $test->sortId();
 
             if (!isset($this->defectSortOrder[$sortId])) {
