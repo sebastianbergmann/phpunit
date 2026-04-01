@@ -138,10 +138,6 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            if (!$test instanceof Reorderable) {
-                continue;
-            }
-
             $sortId = $test->sortId();
 
             if (!isset($this->defectSortOrder[$sortId])) {
