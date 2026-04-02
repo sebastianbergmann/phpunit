@@ -30,6 +30,7 @@ use function str_starts_with;
 use function strtr;
 use function var_export;
 use Closure;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -262,23 +263,32 @@ final readonly class GlobalState
         return $result;
     }
 
-    public static function getGlobalsAsString(): string
+    public static function exportGlobals(): GlobalStateResult
     {
-        $result = '';
+        $result         = '';
+        $skippedGlobals = [];
 
         foreach (self::SUPER_GLOBAL_ARRAYS as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray]) && is_array($GLOBALS[$superGlobalArray])) {
                 foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                    $name = sprintf('$GLOBALS[\'%s\'][\'%s\']', $superGlobalArray, $key);
+
                     if ($value instanceof Closure) {
+                        $skippedGlobals[] = ['name' => $name, 'reason' => 'is a Closure'];
+
                         continue;
                     }
 
-                    $result .= sprintf(
-                        '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
-                        $superGlobalArray,
-                        $key,
-                        self::exportVariable($GLOBALS[$superGlobalArray][$key]),
-                    );
+                    try {
+                        $result .= sprintf(
+                            '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
+                            $superGlobalArray,
+                            $key,
+                            self::exportVariable($GLOBALS[$superGlobalArray][$key]),
+                        );
+                    } catch (Throwable) {
+                        $skippedGlobals[] = ['name' => $name, 'reason' => 'is not serializable'];
+                    }
                 }
             }
         }
@@ -287,16 +297,30 @@ final readonly class GlobalState
         $excludeList[] = 'GLOBALS';
 
         foreach ($GLOBALS as $key => $value) {
-            if (!$value instanceof Closure && !in_array($key, $excludeList, true)) {
+            if (in_array($key, $excludeList, true)) {
+                continue;
+            }
+
+            $name = sprintf('$GLOBALS[\'%s\']', $key);
+
+            if ($value instanceof Closure) {
+                $skippedGlobals[] = ['name' => $name, 'reason' => 'is a Closure'];
+
+                continue;
+            }
+
+            try {
                 $result .= sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,
                     self::exportVariable($value),
                 );
+            } catch (Throwable) {
+                $skippedGlobals[] = ['name' => $name, 'reason' => 'is not serializable'];
             }
         }
 
-        return $result;
+        return new GlobalStateResult($result, $skippedGlobals);
     }
 
     private static function exportVariable(mixed $variable): string
