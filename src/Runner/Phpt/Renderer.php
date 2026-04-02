@@ -15,7 +15,6 @@ use function dirname;
 use function file_put_contents;
 use function str_replace;
 use function var_export;
-use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\Template\InvalidArgumentException;
 use SebastianBergmann\Template\Template;
 
@@ -57,7 +56,7 @@ final readonly class Renderer
      *
      * @throws InvalidArgumentException
      */
-    public function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory, array $files): void
+    public function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory, string $bootstrap, array $files): void
     {
         $template = new Template(
             __DIR__ . '/templates/phpt.tpl',
@@ -81,12 +80,6 @@ final readonly class Renderer
             $codeCoverageCacheDirectory = 'null';
         } else {
             $codeCoverageCacheDirectory = "'" . $codeCoverageCacheDirectory . "'";
-        }
-
-        $bootstrap = '';
-
-        if (ConfigurationRegistry::get()->hasBootstrap()) {
-            $bootstrap = ConfigurationRegistry::get()->bootstrap();
         }
 
         $template->setVar(

@@ -52,6 +52,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\CodeCoverageFileExistsException;
 use PHPUnit\Runner\Exception;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
@@ -164,10 +165,17 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $codeCoverageCacheDirectory = CodeCoverage::instance()->codeCoverage()->cacheDirectory();
             }
 
+            $bootstrap = '';
+
+            if (ConfigurationRegistry::get()->hasBootstrap()) {
+                $bootstrap = ConfigurationRegistry::get()->bootstrap();
+            }
+
             (new Renderer)->renderForCoverage(
                 $code,
                 CodeCoverage::instance()->codeCoverage()->collectsBranchAndPathCoverage(),
                 $codeCoverageCacheDirectory,
+                $bootstrap,
                 $this->coverageFiles(),
             );
             // @codeCoverageIgnoreEnd
