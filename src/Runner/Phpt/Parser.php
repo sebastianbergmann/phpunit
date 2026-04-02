@@ -19,6 +19,7 @@ use function is_file;
 use function is_readable;
 use function is_string;
 use function preg_match;
+use function realpath;
 use function rtrim;
 use function str_contains;
 use function trim;
@@ -184,11 +185,20 @@ final readonly class Parser
                     );
                 }
 
-                $contents = file_get_contents($testDirectory . $externalFilename);
+                $externalPath = $testDirectory . $externalFilename;
+                $contents     = file_get_contents($externalPath);
 
                 assert($contents !== false && $contents !== '');
 
                 $sections[$section] = $contents;
+
+                if ($section === 'FILE') {
+                    $resolvedPath = realpath($externalPath);
+
+                    assert(is_string($resolvedPath) && $resolvedPath !== '');
+
+                    $sections['FILE_EXTERNAL_PATH'] = $resolvedPath;
+                }
             }
         }
     }

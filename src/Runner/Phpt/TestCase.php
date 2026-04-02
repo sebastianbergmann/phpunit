@@ -123,7 +123,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             return;
         }
 
-        $code                 = (new Renderer)->render($this->filename, $sections['FILE']);
+        $code                 = (new Renderer)->render($sections['FILE_EXTERNAL_PATH'] ?? $this->filename, $sections['FILE']);
         $xfail                = false;
         $environmentVariables = [];
         $phpSettings          = $parser->parseIniSection($this->settings(CodeCoverage::instance()->isActive()));
