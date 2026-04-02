@@ -64,7 +64,6 @@ use SebastianBergmann\CodeCoverage\TestIdMissingException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use staabm\SideEffectsDetector\SideEffect;
 use staabm\SideEffectsDetector\SideEffectsDetector;
-use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -248,10 +247,6 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             }
 
             $passed = false;
-        } catch (Throwable $t) {
-            $emitter->testErrored($this->valueObjectForEvents(), ThrowableBuilder::from($t));
-
-            $passed = false;
         }
 
         if ($passed) {
@@ -311,7 +306,6 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     /**
      * @param array<non-empty-string, non-empty-string> $sections
      *
-     * @throws Exception
      * @throws ExpectationFailedException
      */
     private function assertPhptExpectation(array $sections, string $output): void
@@ -335,8 +329,6 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 return;
             }
         }
-
-        throw new InvalidPhptFileException;
     }
 
     /**
