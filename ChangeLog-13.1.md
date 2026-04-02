@@ -17,7 +17,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 ### Changed
 
-* Improved failure message for mock object expectations
+* [#6557](https://github.com/sebastianbergmann/phpunit/pull/6557): Improve failure description for `StringMatchesFormatDescription` constraint which is used by `assertFileMatchesFormat()`, `assertFileMatchesFormatFile()`, `assertStringMatchesFormat()`, `assertStringMatchesFormatFile()`, and `EXPECTF` sections of PHPT test files
 * The HTML code coverage report now uses a more colorblind-friendly blue/amber/orange palette by default
 * Extracted `PHPUnit\Runner\Extension\Facade` from a concrete class to an interface and introduced an internal `ExtensionFacade` implementation, so that extensions only depend on the `Facade` interface while PHPUnit internally uses the `ExtensionFacade` class that also provides query methods
 
