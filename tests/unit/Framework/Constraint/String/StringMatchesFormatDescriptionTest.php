@@ -173,6 +173,59 @@ final class StringMatchesFormatDescriptionTest extends TestCase
         $this->assertTrue($constraint->evaluate("*\n*", '', true));
     }
 
+    public function testConstraintStringMatchesRegularExpression(): void
+    {
+        $constraint = new StringMatchesFormatDescription('Value: %r[0-9]{3}%r end');
+
+        $this->assertFalse($constraint->evaluate('Value: 12 end', '', true));
+        $this->assertFalse($constraint->evaluate('Value: 1234 end', '', true));
+        $this->assertFalse($constraint->evaluate('Value: abc end', '', true));
+
+        $this->assertTrue($constraint->evaluate('Value: 123 end', '', true));
+        $this->assertTrue($constraint->evaluate('Value: 000 end', '', true));
+    }
+
+    public function testConstraintStringMatchesRegularExpressionMultiple(): void
+    {
+        $constraint = new StringMatchesFormatDescription('%r\d+%r and %r[a-z]+%r');
+
+        $this->assertFalse($constraint->evaluate('abc and 123', '', true));
+        $this->assertFalse($constraint->evaluate('123 or abc', '', true));
+
+        $this->assertTrue($constraint->evaluate('123 and abc', '', true));
+        $this->assertTrue($constraint->evaluate('42 and hello', '', true));
+    }
+
+    public function testConstraintStringMatchesRegularExpressionWithSpecialCharacters(): void
+    {
+        $constraint = new StringMatchesFormatDescription('foo.bar %r\d+\.\d+%r baz');
+
+        $this->assertFalse($constraint->evaluate('fooxbar 1.0 baz', '', true));
+        $this->assertFalse($constraint->evaluate('foo.bar 123 baz', '', true));
+
+        $this->assertTrue($constraint->evaluate('foo.bar 1.0 baz', '', true));
+        $this->assertTrue($constraint->evaluate('foo.bar 123.456 baz', '', true));
+    }
+
+    public function testConstraintStringMatchesRegularExpressionWithUnbalancedDelimiter(): void
+    {
+        $constraint = new StringMatchesFormatDescription('foo %r bar');
+
+        $this->assertFalse($constraint->evaluate('foo bar', '', true));
+
+        $this->assertTrue($constraint->evaluate('foo %r bar', '', true));
+    }
+
+    public function testConstraintStringMatchesRegularExpressionMixedWithPlaceholders(): void
+    {
+        $constraint = new StringMatchesFormatDescription('%s: %r\d{2}:\d{2}:\d{2}%r');
+
+        $this->assertFalse($constraint->evaluate('Time: 1:2:3', '', true));
+
+        $this->assertTrue($constraint->evaluate('Time: 12:34:56', '', true));
+        $this->assertTrue($constraint->evaluate('Timestamp: 00:00:00', '', true));
+    }
+
     public function testConstraintStringMatchesEscapedPercent(): void
     {
         $constraint = new StringMatchesFormatDescription('%%,%%e,%%s,%%S,%%a,%%A,%%w,%%i,%%d,%%x,%%f,%%c,%%Z,%%%%,%%');
