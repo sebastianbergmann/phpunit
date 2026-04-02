@@ -12,11 +12,14 @@ namespace PHPUnit\TextUI\Configuration;
 use const DIRECTORY_SEPARATOR;
 use const PATH_SEPARATOR;
 use function array_diff;
+use function array_key_exists;
+use function array_values;
 use function assert;
 use function dirname;
 use function explode;
 use function is_int;
 use function realpath;
+use function sprintf;
 use function time;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -329,7 +332,16 @@ final readonly class Merger
 
         if ($cliConfiguration->hasExtensions()) {
             foreach ($cliConfiguration->extensions() as $extension) {
-                $extensionBootstrappers[] = [
+                if (array_key_exists($extension, $extensionBootstrappers)) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Extension "%s" is configured more than once on the command line',
+                            $extension,
+                        ),
+                    );
+                }
+
+                $extensionBootstrappers[$extension] = [
                     'className'  => $extension,
                     'parameters' => [],
                 ];
@@ -337,7 +349,16 @@ final readonly class Merger
         }
 
         foreach ($xmlConfiguration->extensions() as $extension) {
-            $extensionBootstrappers[] = [
+            if (array_key_exists($extension->className(), $extensionBootstrappers)) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Extension "%s" is configured more than once',
+                        $extension->className(),
+                    ),
+                );
+            }
+
+            $extensionBootstrappers[$extension->className()] = [
                 'className'  => $extension->className(),
                 'parameters' => $extension->parameters(),
             ];
@@ -1007,7 +1028,7 @@ final readonly class Merger
             $columns,
             $noExtensions,
             $pharExtensionDirectory,
-            $extensionBootstrappers,
+            array_values($extensionBootstrappers),
             $backupGlobals,
             $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,
