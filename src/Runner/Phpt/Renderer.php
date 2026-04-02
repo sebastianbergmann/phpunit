@@ -72,7 +72,9 @@ final readonly class Renderer
         $phar = '\'\'';
 
         if (defined('__PHPUNIT_PHAR__')) {
+            // @codeCoverageIgnoreStart
             $phar = var_export(__PHPUNIT_PHAR__, true);
+            // @codeCoverageIgnoreEnd
         }
 
         if ($codeCoverageCacheDirectory === null) {

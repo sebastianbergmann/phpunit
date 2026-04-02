@@ -157,6 +157,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (CodeCoverage::instance()->isActive()) {
+            // @codeCoverageIgnoreStart
             $codeCoverageCacheDirectory = null;
 
             if (CodeCoverage::instance()->codeCoverage()->cachesStaticAnalysis()) {
@@ -169,6 +170,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $codeCoverageCacheDirectory,
                 $this->coverageFiles(),
             );
+            // @codeCoverageIgnoreEnd
         }
 
         $jobResult = JobRunnerRegistry::run(
@@ -187,6 +189,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $output = $jobResult->stdout();
 
         if (CodeCoverage::instance()->isActive()) {
+            // @codeCoverageIgnoreStart
             $coverage = $this->cleanupForCoverage();
 
             CodeCoverage::instance()->codeCoverage()->start($this->filename, TestSize::Large);
@@ -197,6 +200,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 true,
                 TestStatus::Unknown,
             );
+            // @codeCoverageIgnoreEnd
         }
 
         $passed = true;
@@ -455,6 +459,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * @phpstan-ignore return.internalClass
+     *
+     * @codeCoverageIgnore
      */
     private function cleanupForCoverage(): RawCodeCoverageData
     {
@@ -679,6 +685,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             'report_zend_debug=0',
         ];
 
+        // @codeCoverageIgnoreStart
         if (extension_loaded('pcov')) {
             if ($collectCoverage) {
                 $settings[] = 'pcov.enabled=1';
@@ -692,6 +699,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $settings[] = 'xdebug.mode=coverage';
             }
         }
+        // @codeCoverageIgnoreEnd
 
         return $settings;
     }
