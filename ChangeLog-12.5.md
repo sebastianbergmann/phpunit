@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 * [#6547](https://github.com/sebastianbergmann/phpunit/pull/6547): Support for `%r...%r` in `EXPECTF` section
 
+### Fixed
+
+* [#6025](https://github.com/sebastianbergmann/phpunit/issues/6025): `FILE_EXTERNAL` breaks `__DIR__`
+
 ## [12.5.15] - 2026-03-31
 
 ### Changed
