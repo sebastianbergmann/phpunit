@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Phpt;
 
 use function glob;
+use function realpath;
 use function str_replace;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -126,5 +127,19 @@ final class ParserTest extends TestCase
         $result = $parser->parseIniSection("zend_extension=opcache.so\nzend_extension=xdebug.so");
 
         $this->assertSame(['opcache.so', 'xdebug.so'], $result['zend_extension']);
+    }
+
+    #[TestDox('FILE_EXTERNAL sets FILE_EXTERNAL_PATH to resolved path of external file')]
+    public function testFileExternalPathIsSet(): void
+    {
+        $parser   = new Parser;
+        $file     = __DIR__ . '/../../../_files/phpt/file-external/test.phpt';
+        $sections = $parser->parse($file);
+
+        $this->assertArrayHasKey('FILE_EXTERNAL_PATH', $sections);
+        $this->assertSame(
+            realpath(__DIR__ . '/../../../_files/phpt/file-external/external-code.php'),
+            $sections['FILE_EXTERNAL_PATH'],
+        );
     }
 }
