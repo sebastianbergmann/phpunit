@@ -31,5 +31,6 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 * [#6025](https://github.com/sebastianbergmann/phpunit/issues/6025): `FILE_EXTERNAL` breaks `__DIR__`
 * [#6351](https://github.com/sebastianbergmann/phpunit/issues/6351): No warning when the same test runner extension is configured more than once
+* [#6433](https://github.com/sebastianbergmann/phpunit/issues/6433): Logic in `TestSuiteLoader` is brittle and causes "Class FooTest not found" even for valid tests in valid filenames
 
 [13.1.0]: https://github.com/sebastianbergmann/phpunit/compare/13.0...main
