@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Parser::class)]
+#[CoversClass(PhptExternalFileCannotBeLoadedException::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/phpt')]
@@ -77,5 +78,53 @@ final class ParserTest extends TestCase
         $this->expectException(InvalidPhptFileException::class);
 
         $parser->parse($file);
+    }
+
+    public function testParsesFileeofSection(): void
+    {
+        $parser   = new Parser;
+        $sections = $parser->parse(__DIR__ . '/../../../_files/phpt/fileeof.phpt');
+
+        $this->assertArrayHasKey('FILE', $sections);
+        $this->assertArrayNotHasKey('FILEEOF', $sections);
+        $this->assertStringContainsString('echo "hello"', $sections['FILE']);
+    }
+
+    public function testRejectsExternalFileThatDoesNotExist(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(PhptExternalFileCannotBeLoadedException::class);
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/external-missing-file.phpt');
+    }
+
+    #[TestDox('parseIniSection() skips settings without equals sign')]
+    public function testParseIniSectionSkipsSettingsWithoutEqualsSign(): void
+    {
+        $parser = new Parser;
+        $result = $parser->parseIniSection("foo=bar\nno_equals_here\nbaz=qux");
+
+        $this->assertSame('bar', $result['foo']);
+        $this->assertSame('qux', $result['baz']);
+        $this->assertArrayNotHasKey('no_equals_here', $result);
+    }
+
+    #[TestDox('parseIniSection() accumulates extension values as array')]
+    public function testParseIniSectionHandlesExtensionAsArray(): void
+    {
+        $parser = new Parser;
+        $result = $parser->parseIniSection("extension=one.so\nextension=two.so");
+
+        $this->assertSame(['one.so', 'two.so'], $result['extension']);
+    }
+
+    #[TestDox('parseIniSection() accumulates zend_extension values as array')]
+    public function testParseIniSectionHandlesZendExtensionAsArray(): void
+    {
+        $parser = new Parser;
+        $result = $parser->parseIniSection("zend_extension=opcache.so\nzend_extension=xdebug.so");
+
+        $this->assertSame(['opcache.so', 'xdebug.so'], $result['zend_extension']);
     }
 }
