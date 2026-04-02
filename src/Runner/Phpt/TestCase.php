@@ -458,9 +458,9 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @phpstan-ignore return.internalClass
-     *
      * @codeCoverageIgnore
+     *
+     * @phpstan-ignore return.internalClass
      */
     private function cleanupForCoverage(): RawCodeCoverageData
     {
