@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function strtolower;
 use Exception;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Throwable;
 
@@ -37,6 +38,7 @@ final class InvocationHandler
     private readonly array $configurableMethods;
     private readonly bool $returnValueGeneration;
     private readonly bool $isMockObject;
+    private ?AssertionFailedError $assertionFailure = null;
 
     /**
      * @param list<ConfigurableMethod> $configurableMethods
@@ -136,6 +138,10 @@ final class InvocationHandler
                 }
             } catch (Exception $e) {
                 $exception = $e;
+
+                if ($this->assertionFailure === null && $e instanceof AssertionFailedError) {
+                    $this->assertionFailure = $e;
+                }
             }
         }
 
@@ -165,6 +171,10 @@ final class InvocationHandler
     {
         foreach ($this->matchers as $matcher) {
             $matcher->verify();
+        }
+
+        if ($this->assertionFailure !== null) {
+            throw $this->assertionFailure;
         }
     }
 
