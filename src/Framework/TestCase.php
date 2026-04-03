@@ -886,9 +886,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return '';
         }
 
+        if (is_int($this->dataName)) {
+            $dataName = sprintf('#%d', $this->dataName);
+        } else {
+            $dataName = sprintf('@%s', $this->dataName);
+        }
+
         return sprintf(
             '%s with data (%s)',
-            $this->dataSetAsFilterString(),
+            $dataName,
             Exporter::shortenedRecursiveExport($this->data),
         );
     }
@@ -1331,24 +1337,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns the data set as a string compatible with the --filter CLI option.
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    private function dataSetAsFilterString(): string
-    {
-        if ($this->data !== []) {
-            if (is_int($this->dataName)) {
-                return sprintf('#%d', $this->dataName);
-            }
-
-            return sprintf('@%s', $this->dataName);
-        }
-
-        return '';
-    }
-
-    /**
      * @throws AssertionFailedError
      * @throws Exception
      * @throws ExpectationFailedException
@@ -1486,10 +1474,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function checkRequirements(): void
     {
-        if ($this->methodName === '' || !method_exists($this, $this->methodName)) {
-            return;
-        }
-
         $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor(
             static::class,
             $this->methodName,
@@ -1509,12 +1493,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $passedTests = PassedTests::instance();
 
         foreach ($this->dependencies as $dependency) {
-            if (!$dependency->isValid()) {
-                $this->markErrorForInvalidDependency();
-
-                return false;
-            }
-
             if ($dependency->targetIsClass()) {
                 $dependencyClassName = $dependency->getTargetClassName();
 
