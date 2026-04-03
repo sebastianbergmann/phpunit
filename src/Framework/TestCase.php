@@ -60,8 +60,10 @@ use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
+use PHPUnit\Framework\Constraint\ExceptionMessageIs;
 use PHPUnit\Framework\Constraint\ExceptionMessageIsOrContains;
 use PHPUnit\Framework\Constraint\ExceptionMessageMatchesRegularExpression;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
@@ -136,14 +138,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var list<callable>
      */
-    private ?array $backupGlobalExceptionHandlers   = null;
-    private ?bool $runTestInSeparateProcess         = null;
-    private bool $preserveGlobalState               = false;
-    private bool $inIsolation                       = false;
-    private ?string $expectedException              = null;
-    private ?string $expectedExceptionMessage       = null;
-    private ?string $expectedExceptionMessageRegExp = null;
-    private null|int|string $expectedExceptionCode  = null;
+    private ?array $backupGlobalExceptionHandlers           = null;
+    private ?bool $runTestInSeparateProcess                 = null;
+    private bool $preserveGlobalState                       = false;
+    private bool $inIsolation                               = false;
+    private ?string $expectedException                      = null;
+    private ?string $expectedExceptionMessage               = null;
+    private ?Constraint $expectedExceptionMessageConstraint = null;
+    private ?string $expectedExceptionMessageRegExp         = null;
+    private null|int|string $expectedExceptionCode          = null;
 
     /**
      * @var list<BackedUpEnvironmentVariable>
@@ -1089,9 +1092,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedExceptionCode = $code;
     }
 
+    /**
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6560
+     */
     final protected function expectExceptionMessage(string $message): void
     {
-        $this->expectedExceptionMessage = $message;
+        $this->expectExceptionMessageIsOrContains($message);
+    }
+
+    final protected function expectExceptionMessageIs(string $message): void
+    {
+        $this->expectedExceptionMessage           = $message;
+        $this->expectedExceptionMessageConstraint = new ExceptionMessageIs($message);
+    }
+
+    final protected function expectExceptionMessageIsOrContains(string $message): void
+    {
+        $this->expectedExceptionMessage           = $message;
+        $this->expectedExceptionMessageConstraint = new ExceptionMessageIsOrContains($message);
     }
 
     final protected function expectExceptionMessageMatches(string $regularExpression): void
@@ -1107,7 +1125,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function expectExceptionObject(Throwable $exception): void
     {
         $this->expectException($exception::class);
-        $this->expectExceptionMessage($exception->getMessage());
+        $this->expectExceptionMessageIsOrContains($exception->getMessage());
         $this->expectExceptionCode($exception->getCode());
     }
 
@@ -2286,12 +2304,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        if ($this->expectedExceptionMessage !== null) {
+        if ($this->expectedExceptionMessageConstraint !== null) {
             $this->assertThat(
                 $exception->getMessage(),
-                new ExceptionMessageIsOrContains(
-                    $this->expectedExceptionMessage,
-                ),
+                $this->expectedExceptionMessageConstraint,
             );
         }
 
@@ -2324,12 +2340,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 null,
                 new ExceptionConstraint($this->expectedException),
             );
-        } elseif ($this->expectedExceptionMessage !== null) {
+        } elseif ($this->expectedExceptionMessageConstraint !== null) {
             $this->numberOfAssertionsPerformed++;
 
             throw new AssertionFailedError(
                 sprintf(
-                    'Failed asserting that exception with message "%s" is thrown',
+                    'Failed asserting that exception with message %s "%s" is thrown',
+                    $this->expectedExceptionMessageConstraint instanceof ExceptionMessageIs ? 'is' : 'containing',
                     $this->expectedExceptionMessage,
                 ),
             );

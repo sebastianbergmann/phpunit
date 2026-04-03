@@ -36,7 +36,7 @@ final class CreatePartialMockTest extends TestCase
     public function testCannotCreatePartialMockObjectForExtendableClassWithDuplicateMethods(): void
     {
         $this->expectException(DuplicateMethodException::class);
-        $this->expectExceptionMessage('Cannot double using a method list that contains duplicates: "doSomethingElse, doSomethingElse" (duplicate: "doSomethingElse")');
+        $this->expectExceptionMessageIs('Cannot double using a method list that contains duplicates: "doSomethingElse, doSomethingElse" (duplicate: "doSomethingElse")');
 
         $this->createPartialMock(ExtendableClass::class, ['doSomethingElse', 'doSomethingElse']);
     }
@@ -61,7 +61,7 @@ final class CreatePartialMockTest extends TestCase
     public function testMethodOfPartialMockThatDoesNotExistCannotBeConfigured(): void
     {
         $this->expectException(CannotUseOnlyMethodsException::class);
-        $this->expectExceptionMessage('Trying to configure method "doesNotExist" with onlyMethods(), but it does not exist in class "PHPUnit\TestFixture\MockObject\ExtendableClass"');
+        $this->expectExceptionMessageIs('Trying to configure method "doesNotExist" with onlyMethods(), but it does not exist in class "PHPUnit\TestFixture\MockObject\ExtendableClass"');
 
         $this->createPartialMock(ExtendableClass::class, ['doesNotExist']);
     }

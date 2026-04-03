@@ -56,7 +56,7 @@ final class RegularExpressionTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }
@@ -76,7 +76,7 @@ final class RegularExpressionTest extends TestCase
         $constraint = new RegularExpression('/(?:\D+|<\d+>)*[!?]/');
 
         $this->expectException(FrameworkException::class);
-        $this->expectExceptionMessage('Regular expression cannot be matched:');
+        $this->expectExceptionMessageIs('Regular expression cannot be matched: Backtrack limit exhausted');
 
         $constraint->evaluate(str_repeat('foobar', 1024));
     }

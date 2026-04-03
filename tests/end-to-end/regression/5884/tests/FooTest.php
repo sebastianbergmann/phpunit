@@ -99,7 +99,7 @@ final class FooTest extends TestCase
 
         $this->expectException(Exception::class);
         // First character (F) can be upper or lowercase depending on PHP version.
-        $this->expectExceptionMessage('ailed to open stream');
+        $this->expectExceptionMessageIsOrContains('ailed to open stream');
 
         Foo::openFile($filename);
     }

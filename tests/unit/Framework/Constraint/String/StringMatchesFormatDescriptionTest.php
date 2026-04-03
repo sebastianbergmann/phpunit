@@ -286,7 +286,7 @@ final class StringMatchesFormatDescriptionTest extends TestCase
         $constraint = new StringMatchesFormatDescription("%c\nfoo\n%c");
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIsOrContains(
             <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
@@ -308,7 +308,7 @@ EOD
         $constraint = new StringMatchesFormatDescription("%a\nfoo\n%s\nbar");
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIsOrContains(
             <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
@@ -344,7 +344,7 @@ EOD
         );
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIsOrContains(
             <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
@@ -384,7 +384,7 @@ EOD
         $constraint = new StringMatchesFormatDescription("header\n%A\nFoo: %s\nfooter");
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIsOrContains(
             <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
@@ -406,7 +406,7 @@ EOD
         $constraint = new StringMatchesFormatDescription("header\nfoo\n%A");
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIsOrContains(
             <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
@@ -428,7 +428,7 @@ EOD
         $constraint = new StringMatchesFormatDescription("start\n%A\nunique_anchor\nend");
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIsOrContains(
             <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
@@ -467,7 +467,7 @@ EOD
         $constraint = new StringMatchesFormatDescription($format);
 
         $this->expectException(FrameworkException::class);
-        $this->expectExceptionMessage('Format description cannot be matched:');
+        $this->expectExceptionMessageIsOrContains('Format description cannot be matched:');
 
         $constraint->evaluate(str_repeat($actualLine . "\n", 220));
     }

@@ -63,7 +63,7 @@ final class DurationTest extends TestCase
     public function testSecondsMustNotBeNegative(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for seconds must not be negative');
+        $this->expectExceptionMessageIs('Value for seconds must not be negative.');
 
         Duration::fromSecondsAndNanoseconds(-1, 0);
     }
@@ -71,7 +71,7 @@ final class DurationTest extends TestCase
     public function testNanosecondsMustNotBeNegative(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanoseconds must not be negative');
+        $this->expectExceptionMessageIs('Value for nanoseconds must not be negative.');
 
         Duration::fromSecondsAndNanoseconds(0, -1);
     }
@@ -79,7 +79,7 @@ final class DurationTest extends TestCase
     public function testNanosecondsMustNotBeGreaterThan999999999(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
+        $this->expectExceptionMessageIs('Value for nanoseconds must not be greater than 999999999.');
 
         Duration::fromSecondsAndNanoseconds(0, 1000000000);
     }

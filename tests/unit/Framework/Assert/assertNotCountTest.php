@@ -43,7 +43,7 @@ final class assertNotCountTest extends TestCase
     public function testDoesNotSupportGenerators(): void
     {
         $this->expectException(GeneratorNotSupportedException::class);
-        $this->expectExceptionMessage('Passing an argument of type Generator for the $haystack parameter is not supported');
+        $this->expectExceptionMessageIs('Passing an argument of type Generator for the $haystack parameter is not supported');
 
         $this->assertNotCount(0, f());
     }

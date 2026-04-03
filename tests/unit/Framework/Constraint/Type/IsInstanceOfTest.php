@@ -74,7 +74,7 @@ final class IsInstanceOfTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIsOrContains($failureDescription);
 
         $constraint->evaluate($actual);
     }

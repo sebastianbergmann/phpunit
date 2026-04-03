@@ -241,7 +241,7 @@ final class ReturnValueGeneratorTest extends TestCase
     public function test_Does_not_handle_union_of_extendable_class_and_interface(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is a union, please configure a return value for this method');
+        $this->expectExceptionMessageIs('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is a union, please configure a return value for this method');
 
         $this->generate(ExtendableClass::class . '|' . AnInterface::class);
     }
@@ -249,7 +249,7 @@ final class ReturnValueGeneratorTest extends TestCase
     public function test_Does_not_handle_intersection_of_extendable_class_and_interface(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is an intersection, please configure a return value for this method');
+        $this->expectExceptionMessageIs('Return value for OriginalClassName::methodName() cannot be generated because the declared return type is an intersection, please configure a return value for this method');
 
         $this->generate(ExtendableClass::class . '&' . AnInterface::class);
     }

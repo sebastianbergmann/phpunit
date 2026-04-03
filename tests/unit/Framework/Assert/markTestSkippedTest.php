@@ -26,7 +26,7 @@ final class markTestSkippedTest extends TestCase
         $message = 'message';
 
         $this->expectException(SkippedWithMessageException::class);
-        $this->expectExceptionMessage($message);
+        $this->expectExceptionMessageIs($message);
 
         $this->markTestSkipped($message);
     }

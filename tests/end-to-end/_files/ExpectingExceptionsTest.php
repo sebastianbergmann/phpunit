@@ -29,14 +29,14 @@ final class ExpectingExceptionsTest extends TestCase
     public function test_expectException_and_expectExceptionMessage_and_expected_exception_is_thrown_and_has_expected_message(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('message');
+        $this->expectExceptionMessageIsOrContains('message');
 
         throw new Exception('message');
     }
 
     public function test_expectExceptionMessage_and_exception_is_thrown_and_has_expected_message(): void
     {
-        $this->expectExceptionMessage('message');
+        $this->expectExceptionMessageIsOrContains('message');
 
         throw new Exception('message');
     }
@@ -44,21 +44,63 @@ final class ExpectingExceptionsTest extends TestCase
     public function test_expectException_and_expectExceptionMessage_and_expected_exception_is_thrown_but_does_not_have_expected_message(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('message');
+        $this->expectExceptionMessageIsOrContains('message');
 
         throw new Exception;
     }
 
     public function test_expectExceptionMessage_and_exception_is_thrown_but_does_not_have_expected_message(): void
     {
-        $this->expectExceptionMessage('message');
+        $this->expectExceptionMessageIsOrContains('message');
 
         throw new Exception;
     }
 
     public function test_expectExceptionMessage_and_no_exception_is_thrown(): void
     {
-        $this->expectExceptionMessage('message');
+        $this->expectExceptionMessageIsOrContains('message');
+    }
+
+    public function test_expectException_and_expectExceptionMessageIs_and_expected_exception_is_thrown_and_has_expected_message(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('message');
+
+        throw new Exception('message');
+    }
+
+    public function test_expectExceptionMessageIs_and_exception_is_thrown_and_has_expected_message(): void
+    {
+        $this->expectExceptionMessageIs('message');
+
+        throw new Exception('message');
+    }
+
+    public function test_expectException_and_expectExceptionMessageIs_and_expected_exception_is_thrown_but_does_not_have_expected_message(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('message');
+
+        throw new Exception;
+    }
+
+    public function test_expectExceptionMessageIs_and_exception_is_thrown_but_does_not_have_expected_message(): void
+    {
+        $this->expectExceptionMessageIs('message');
+
+        throw new Exception;
+    }
+
+    public function test_expectExceptionMessageIs_and_exception_is_thrown_but_message_only_contains_expected_message(): void
+    {
+        $this->expectExceptionMessageIs('message');
+
+        throw new Exception('the message is here');
+    }
+
+    public function test_expectExceptionMessageIs_and_no_exception_is_thrown(): void
+    {
+        $this->expectExceptionMessageIs('message');
     }
 
     public function test_expectException_and_expectExceptionMessageMatches_and_expected_exception_is_thrown_and_has_expected_message(): void

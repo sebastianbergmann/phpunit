@@ -8,9 +8,10 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 
 #### Assertions, Constraints, and Expectations
 
-| Issue                                                             | Description                                       | Since  | Replacement |
-|-------------------------------------------------------------------|---------------------------------------------------|--------|-------------|
-| [#6537](https://github.com/sebastianbergmann/phpunit/issues/6537) | `id()` and `after()` for mock object expectations | 13.1.0 |             |
+| Issue                                                             | Description                                       | Since  | Replacement                            |
+|-------------------------------------------------------------------|---------------------------------------------------|--------|----------------------------------------|
+| [#6537](https://github.com/sebastianbergmann/phpunit/issues/6537) | `id()` and `after()` for mock object expectations | 13.1.0 |                                        |
+| [#6560](https://github.com/sebastianbergmann/phpunit/issues/6560) | `expectExceptionMessage()`                        | 13.2.0 | `expectExceptionMessageIsOrContains()` |
 
 ## Hard Deprecations
 

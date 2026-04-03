@@ -65,7 +65,7 @@ final class IsJsonTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }

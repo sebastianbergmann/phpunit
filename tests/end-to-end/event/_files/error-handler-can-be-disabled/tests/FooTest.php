@@ -25,7 +25,7 @@ final class FooTest extends TestCase
         $fileName = tempnam(sys_get_temp_dir(), 'RLT') . '/missing/directory';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Failed to open stream');
+        $this->expectExceptionMessageIsOrContains('Failed to open stream');
 
         (new Foo)->methodA($fileName);
     }

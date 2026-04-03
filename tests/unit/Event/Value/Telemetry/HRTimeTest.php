@@ -82,7 +82,7 @@ final class HRTimeTest extends TestCase
     public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for seconds must not be negative');
+        $this->expectExceptionMessageIs('Value for seconds must not be negative.');
 
         HRTime::fromSecondsAndNanoseconds(
             -1,
@@ -93,7 +93,7 @@ final class HRTimeTest extends TestCase
     public function testFromSecondsAndNanosecondsRejectsNegativeNanoseconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanoseconds must not be negative');
+        $this->expectExceptionMessageIs('Value for nanoseconds must not be negative.');
 
         HRTime::fromSecondsAndNanoseconds(
             0,
@@ -104,7 +104,7 @@ final class HRTimeTest extends TestCase
     public function testFromSecondsAndNanosecondsRejectsNanosecondsGreaterThan999999999(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
+        $this->expectExceptionMessageIs('Value for nanoseconds must not be greater than 999999999.');
 
         HRTime::fromSecondsAndNanoseconds(
             0,

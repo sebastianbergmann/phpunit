@@ -34,7 +34,7 @@ final class ObjectHasPropertyTest extends TestCase
         $this->assertFalse($constraint->evaluate(null, returnResult: true));
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that object of class "stdClass" has property "theProperty".');
+        $this->expectExceptionMessageIs('Failed asserting that object of class "stdClass" has property "theProperty".');
 
         $constraint->evaluate(new stdClass);
     }
@@ -44,7 +44,7 @@ final class ObjectHasPropertyTest extends TestCase
         $constraint = new ObjectHasProperty('theProperty');
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that "non-object" (string) has property "theProperty".');
+        $this->expectExceptionMessageIs('Failed asserting that "non-object" (string) has property "theProperty".');
 
         $constraint->evaluate('non-object');
     }

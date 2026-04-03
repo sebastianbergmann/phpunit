@@ -90,7 +90,7 @@ final class assertEmptyTest extends TestCase
     public function testDoesNotSupportGenerators(): void
     {
         $this->expectException(GeneratorNotSupportedException::class);
-        $this->expectExceptionMessage('Passing an argument of type Generator for the $actual parameter is not supported');
+        $this->expectExceptionMessageIs('Passing an argument of type Generator for the $actual parameter is not supported');
 
         $this->assertEmpty(f());
     }

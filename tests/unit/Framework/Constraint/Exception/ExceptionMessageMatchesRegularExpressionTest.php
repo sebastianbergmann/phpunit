@@ -55,7 +55,7 @@ final class ExceptionMessageMatchesRegularExpressionTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }
@@ -65,7 +65,7 @@ final class ExceptionMessageMatchesRegularExpressionTest extends TestCase
         $constraint = new ExceptionMessageMatchesRegularExpression('invalid regular expression');
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Invalid expected exception message regular expression given: invalid regular expression');
+        $this->expectExceptionMessageIs('Invalid expected exception message regular expression given: invalid regular expression');
 
         $constraint->evaluate('abcd');
     }

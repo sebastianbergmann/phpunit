@@ -26,7 +26,7 @@ final class failTest extends TestCase
         $message = 'message';
 
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage($message);
+        $this->expectExceptionMessageIs($message);
 
         $this->fail($message);
     }

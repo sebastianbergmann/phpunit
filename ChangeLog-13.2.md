@@ -4,4 +4,12 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 
 ## [13.2.0] - 2026-06-05
 
+### Added
+
+* [#6559](https://github.com/sebastianbergmann/phpunit/issues/6559): Improved API for exception message expectations
+
+### Deprecated
+
+* [#6560](https://github.com/sebastianbergmann/phpunit/issues/6560): Soft-deprecate `expectExceptionMessage()`, use `expectExceptionMessageIsOrContains()` instead
+
 [13.2.0]: https://github.com/sebastianbergmann/phpunit/compare/13.1...main

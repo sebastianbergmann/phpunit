@@ -16,7 +16,7 @@ class Issue2811Test extends TestCase
 {
     public function testOne(): void
     {
-        $this->expectExceptionMessage('hello');
+        $this->expectExceptionMessageIs('hello');
 
         throw new Exception('hello');
     }

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use ArrayObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -17,12 +16,12 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ArrayHasKey::class)]
+#[CoversClass(ExceptionMessageIs::class)]
 #[CoversClass(Constraint::class)]
 #[Small]
 #[Group('framework')]
 #[Group('framework/constraints')]
-final class ArrayHasKeyTest extends TestCase
+final class ExceptionMessageIsTest extends TestCase
 {
     public static function provider(): array
     {
@@ -30,58 +29,44 @@ final class ArrayHasKeyTest extends TestCase
             [
                 true,
                 '',
-                0,
-                [0 => 'value'],
+                'expected-message',
+                'expected-message',
             ],
 
             [
                 true,
                 '',
-                'key',
-                ['key' => 'value'],
-            ],
-
-            [
-                true,
                 '',
-                'key',
-                new ArrayObject(['key' => 'value']),
+                '',
             ],
 
             [
                 false,
-                'Failed asserting that an array has the key 1.',
-                1,
-                [0 => 'value'],
+                "Failed asserting that exception message is empty but is 'actual-message'.",
+                '',
+                'actual-message',
             ],
 
             [
                 false,
-                'Failed asserting that an array has the key \'another-key\'.',
-                'another-key',
-                ['key' => 'value'],
+                "Failed asserting that exception message 'actual-message' is 'expected-message'.",
+                'expected-message',
+                'actual-message',
             ],
 
             [
                 false,
-                'Failed asserting that an array has the key \'another-key\'.',
-                'another-key',
-                new ArrayObject(['key' => 'value']),
-            ],
-
-            [
-                false,
-                'Failed asserting that an array has the key \'key\'.',
-                'key',
-                null,
+                "Failed asserting that exception message 'expected-message and more' is 'expected-message'.",
+                'expected-message',
+                'expected-message and more',
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    public function testCanBeEvaluated(bool $result, string $failureDescription, int|string $expected, mixed $actual): void
+    public function testCanBeEvaluated(bool $result, string $failureDescription, string $expected, mixed $actual): void
     {
-        $constraint = new ArrayHasKey($expected);
+        $constraint = new ExceptionMessageIs($expected);
 
         $this->assertSame($result, $constraint->evaluate($actual, returnResult: true));
 
@@ -97,12 +82,12 @@ final class ArrayHasKeyTest extends TestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $this->assertSame('has the key 0', new ArrayHasKey(0)->toString());
-        $this->assertSame('has the key \'key\'', new ArrayHasKey('key')->toString());
+        $this->assertSame("exception message is 'message'", new ExceptionMessageIs('message')->toString());
+        $this->assertSame('exception message is empty', new ExceptionMessageIs('')->toString());
     }
 
     public function testIsCountable(): void
     {
-        $this->assertCount(1, (new ArrayHasKey(0)));
+        $this->assertCount(1, (new ExceptionMessageIs('message')));
     }
 }

@@ -91,7 +91,7 @@ final class CreateMockTest extends TestCase
     public function testCannotCreateMockObjectWithInvalidMethodName(): void
     {
         $this->expectException(InvalidMethodNameException::class);
-        $this->expectExceptionMessage('Cannot double method with invalid name "0"');
+        $this->expectExceptionMessageIs('Cannot double method with invalid name "0"');
 
         (new Generator)->testDouble(
             AnInterface::class,
@@ -103,7 +103,7 @@ final class CreateMockTest extends TestCase
     public function testCannotCreateMockObjectForInterfaceWithMethodNamedMethod(): void
     {
         $this->expectException(MethodNamedMethodException::class);
-        $this->expectExceptionMessage('Doubling interfaces (or classes) that have a method named "method" is not supported.');
+        $this->expectExceptionMessageIs('Doubling interfaces (or classes) that have a method named "method" is not supported.');
 
         $this->createMock(InterfaceWithMethodNamedMethod::class);
     }

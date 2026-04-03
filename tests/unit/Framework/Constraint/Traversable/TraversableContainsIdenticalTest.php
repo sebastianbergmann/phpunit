@@ -104,7 +104,7 @@ final class TraversableContainsIdenticalTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIsOrContains($failureDescription);
 
         $constraint->evaluate($actual);
     }

@@ -62,7 +62,7 @@ final class assertInstanceOfTest extends TestCase
     public function testDoesNotSupportUnknownTypes(): void
     {
         $this->expectException(UnknownClassOrInterfaceException::class);
-        $this->expectExceptionMessage('Class or interface "does-not-exist" does not exist');
+        $this->expectExceptionMessageIs('Class or interface "does-not-exist" does not exist');
 
         $this->assertInstanceOf('does-not-exist', new stdClass);
     }

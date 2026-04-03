@@ -48,7 +48,7 @@ final class ParameterCollectionTest extends TestCase
         $parameters = ParameterCollection::fromArray([]);
 
         $this->expectException(ParameterDoesNotExistException::class);
-        $this->expectExceptionMessage('Parameter "does-not-exist" does not exist');
+        $this->expectExceptionMessageIs('Parameter "does-not-exist" does not exist');
 
         $parameters->get('does-not-exist');
     }

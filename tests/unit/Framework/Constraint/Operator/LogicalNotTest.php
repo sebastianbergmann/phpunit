@@ -98,7 +98,7 @@ final class LogicalNotTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }
@@ -141,7 +141,7 @@ final class LogicalNotTest extends TestCase
         $constraint = new LogicalNot(new IsEqual('test contains something'));
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("Failed asserting that 'test contains something' is not equal to 'test contains something'.");
+        $this->expectExceptionMessageIs("Failed asserting that 'test contains something' is not equal to 'test contains something'.");
 
         Assert::assertThat('test contains something', $constraint);
     }

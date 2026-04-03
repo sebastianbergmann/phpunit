@@ -85,7 +85,7 @@ EOT,
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIsOrContains($failureDescription);
 
         $constraint->evaluate($actual);
     }
@@ -105,7 +105,7 @@ EOT,
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIsOrContains($failureDescription);
 
         $constraint->evaluate($actual);
     }

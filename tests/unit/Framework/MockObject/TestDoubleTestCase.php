@@ -206,7 +206,7 @@ abstract class TestDoubleTestCase extends TestCase
         $this->assertTrue($double->doSomething());
 
         $this->expectException(NoMoreReturnValuesConfiguredException::class);
-        $this->expectExceptionMessage('Only 2 return values have been configured for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomething()');
+        $this->expectExceptionMessageIs('Only 2 return values have been configured for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomething()');
 
         $double->doSomething();
     }
@@ -253,7 +253,7 @@ abstract class TestDoubleTestCase extends TestCase
         $double = $this->createTestDouble(InterfaceWithNeverReturningMethod::class);
 
         $this->expectException(NeverReturningMethodException::class);
-        $this->expectExceptionMessage('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
+        $this->expectExceptionMessageIs('Method PHPUnit\TestFixture\MockObject\InterfaceWithNeverReturningMethod::m() is declared to never return');
 
         $double->m();
     }
@@ -352,7 +352,7 @@ abstract class TestDoubleTestCase extends TestCase
     public function testCannotCreateTestDoubleForInterfaceWithMethodNamedMethod(): void
     {
         $this->expectException(MethodNamedMethodException::class);
-        $this->expectExceptionMessage('Doubling interfaces (or classes) that have a method named "method" is not supported.');
+        $this->expectExceptionMessageIs('Doubling interfaces (or classes) that have a method named "method" is not supported.');
 
         $this->createTestDouble(InterfaceWithMethodNamedMethod::class);
     }

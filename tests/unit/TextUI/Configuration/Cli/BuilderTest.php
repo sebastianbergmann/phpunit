@@ -957,7 +957,7 @@ final class BuilderTest extends TestCase
     public function testEventsTextInvalidPath(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The path "/invalid/path" specified for the --log-events-text option could not be resolved');
+        $this->expectExceptionMessageIs('The path "/invalid/path" specified for the --log-events-text option could not be resolved');
 
         (new Builder)->fromParameters(['--log-events-text', '/invalid/path']);
     }
@@ -986,7 +986,7 @@ final class BuilderTest extends TestCase
     public function testEventsVerboseTextInvalidPath(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The path "/invalid/path" specified for the --log-events-verbose-text option could not be resolved');
+        $this->expectExceptionMessageIs('The path "/invalid/path" specified for the --log-events-verbose-text option could not be resolved');
 
         (new Builder)->fromParameters(['--log-events-verbose-text', '/invalid/path']);
     }
@@ -1289,7 +1289,7 @@ final class BuilderTest extends TestCase
     public function testOrderByInvalid(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('unrecognized --order-by option: invalid');
+        $this->expectExceptionMessageIs('unrecognized --order-by option: invalid');
 
         (new Builder)->fromParameters(['--order-by', 'invalid']);
     }
@@ -2750,7 +2750,7 @@ final class BuilderTest extends TestCase
     public function testInvalidOption(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Unknown option "--invalid-option"');
+        $this->expectExceptionMessageIs('Unknown option "--invalid-option". Most similar options are --include-path, --configuration, --log-otr, --no-logging, --no-output');
 
         (new Builder)->fromParameters(['--invalid-option']);
     }

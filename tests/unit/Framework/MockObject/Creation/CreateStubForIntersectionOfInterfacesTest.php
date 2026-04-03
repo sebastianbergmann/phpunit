@@ -53,7 +53,7 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
     public function testCannotCreateTestStubForIntersectionOfInterfacesWhenLessThanTwoInterfacesAreSpecified(): void
     {
         $this->expectException(GeneratorRuntimeException::class);
-        $this->expectExceptionMessage('At least two interfaces must be specified');
+        $this->expectExceptionMessageIs('At least two interfaces must be specified');
 
         $this->createStubForIntersectionOfInterfaces([AnInterface::class]);
     }
@@ -68,7 +68,7 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
     public function testCannotCreateTestStubForIntersectionOfInterfacesThatDeclareTheSameMethod(): void
     {
         $this->expectException(GeneratorRuntimeException::class);
-        $this->expectExceptionMessage('Interfaces must not declare the same method');
+        $this->expectExceptionMessageIs('Interfaces must not declare the same method');
 
         $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterfaceThatDoesSomething::class]);
     }
@@ -76,7 +76,7 @@ final class CreateStubForIntersectionOfInterfacesTest extends TestCase
     public function testCannotCreateTestStubForIntersectionOfInterfacesWhenClassIsUsed(): void
     {
         $this->expectException(UnknownInterfaceException::class);
-        $this->expectExceptionMessage('Interface "PHPUnit\TestFixture\MockObject\ExtendableClass" does not exist');
+        $this->expectExceptionMessageIs('Interface "PHPUnit\TestFixture\MockObject\ExtendableClass" does not exist');
 
         $this->createStubForIntersectionOfInterfaces([AnInterface::class, ExtendableClass::class]);
     }

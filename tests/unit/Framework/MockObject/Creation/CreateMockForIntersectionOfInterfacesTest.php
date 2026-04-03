@@ -52,7 +52,7 @@ final class CreateMockForIntersectionOfInterfacesTest extends TestCase
     public function testCannotCreateMockObjectForIntersectionOfInterfacesWhenLessThanTwoInterfacesAreSpecified(): void
     {
         $this->expectException(GeneratorRuntimeException::class);
-        $this->expectExceptionMessage('At least two interfaces must be specified');
+        $this->expectExceptionMessageIs('At least two interfaces must be specified');
 
         $this->createMockForIntersectionOfInterfaces([AnInterface::class]);
     }
@@ -67,7 +67,7 @@ final class CreateMockForIntersectionOfInterfacesTest extends TestCase
     public function testCannotCreateMockObjectForIntersectionOfInterfacesThatDeclareTheSameMethod(): void
     {
         $this->expectException(GeneratorRuntimeException::class);
-        $this->expectExceptionMessage('Interfaces must not declare the same method');
+        $this->expectExceptionMessageIs('Interfaces must not declare the same method');
 
         $this->createMockForIntersectionOfInterfaces([AnInterface::class, AnotherInterfaceThatDoesSomething::class]);
     }

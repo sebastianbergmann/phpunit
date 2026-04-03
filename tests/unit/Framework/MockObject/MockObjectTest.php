@@ -351,7 +351,7 @@ EOT,
         $double->expects($this->exactly(3))->method('doSomethingElse')->withParameterSetsInOrder(1, 2);
 
         $this->expectException(NoMoreParameterSetsConfiguredException::class);
-        $this->expectExceptionMessage('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
+        $this->expectExceptionMessageIs('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
@@ -429,7 +429,7 @@ EOT,
         $double->expects($this->exactly(3))->method('doSomethingElse')->withParameterSetsInAnyOrder(1, 2);
 
         $this->expectException(NoMoreParameterSetsConfiguredException::class);
-        $this->expectExceptionMessage('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
+        $this->expectExceptionMessageIs('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
@@ -656,7 +656,7 @@ EOT,
             ->getMock();
 
         $this->expectException(ReturnValueNotConfiguredException::class);
-        $this->expectExceptionMessage('No return value is configured for ' . InterfaceWithReturnTypeDeclaration::class . '::doSomething() and return value generation is disabled');
+        $this->expectExceptionMessageIs('No return value is configured for ' . InterfaceWithReturnTypeDeclaration::class . '::doSomething() and return value generation is disabled');
 
         $double->doSomething();
     }
@@ -667,7 +667,7 @@ EOT,
         $double = $this->getMockBuilder(ExtendableClassWithCloneMethod::class)->enableOriginalClone()->getMock();
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage(ExtendableClassWithCloneMethod::class . '::__clone');
+        $this->expectExceptionMessageIs(ExtendableClassWithCloneMethod::class . '::__clone');
 
         clone $double;
     }
@@ -678,7 +678,7 @@ EOT,
         $double = $this->getMockBuilder(ExtendableReadonlyClassWithCloneMethod::class)->enableOriginalClone()->getMock();
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage(ExtendableReadonlyClassWithCloneMethod::class . '::__clone');
+        $this->expectExceptionMessageIs(ExtendableReadonlyClassWithCloneMethod::class . '::__clone');
 
         clone $double;
     }

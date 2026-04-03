@@ -173,7 +173,7 @@ final class DataProviderTest extends TestCase
     public function testWithDuplicateKeyDataProvider(): void
     {
         $this->expectException(InvalidDataProviderException::class);
-        $this->expectExceptionMessage('The key "foo" has already been defined by provider PHPUnit\TestFixture\DuplicateKeyDataProviderTest::dataProvider');
+        $this->expectExceptionMessageIs('The key "foo" has already been defined by provider PHPUnit\TestFixture\DuplicateKeyDataProviderTest::dataProvider');
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(DuplicateKeyDataProviderTest::class, 'test');
@@ -196,7 +196,7 @@ final class DataProviderTest extends TestCase
     public function testTestWithAttributeWithDuplicateKey(): void
     {
         $this->expectException(InvalidDataProviderException::class);
-        $this->expectExceptionMessage('The key "foo" has already been defined by TestWith#0 attribute');
+        $this->expectExceptionMessageIs('The key "foo" has already been defined by TestWith#0 attribute');
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithDuplicateName');
@@ -205,7 +205,7 @@ final class DataProviderTest extends TestCase
     public function testWithDuplicateKeyDataProviders(): void
     {
         $this->expectException(InvalidDataProviderException::class);
-        $this->expectExceptionMessage('The key "bar" has already been defined by provider PHPUnit\TestFixture\DuplicateKeyDataProvidersTest::dataProvider1');
+        $this->expectExceptionMessageIs('The key "bar" has already been defined by provider PHPUnit\TestFixture\DuplicateKeyDataProvidersTest::dataProvider1');
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(DuplicateKeyDataProvidersTest::class, 'test');

@@ -101,7 +101,7 @@ final class LogicalAndTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }

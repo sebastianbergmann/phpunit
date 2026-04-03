@@ -28,7 +28,7 @@ final class LoaderTest extends TestCase
     public function testCannotParseFileThatDoesNotExist(): void
     {
         $this->expectException(XmlException::class);
-        $this->expectExceptionMessage('Could not read XML from file "/does/not/exist.xml"');
+        $this->expectExceptionMessageIs('Could not read XML from file "/does/not/exist.xml"');
 
         (new Loader)->loadFile('/does/not/exist.xml');
     }
@@ -58,7 +58,7 @@ final class LoaderTest extends TestCase
     public function testCannotParseEmptyString(): void
     {
         $this->expectException(XmlException::class);
-        $this->expectExceptionMessage('Could not parse XML from empty string');
+        $this->expectExceptionMessageIs('Could not parse XML from empty string');
 
         (new Loader)->load('');
     }

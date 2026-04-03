@@ -108,7 +108,7 @@ final class ArraysAreEqualTest extends TestCase
             ],
             'different values, keys and order matter' => [
                 false,
-                'Failed asserting that two arrays are equal',
+                'Failed asserting that two arrays are equal.',
                 ['a' => 1, 'b' => 2],
                 ['a' => 1, 'b' => 3],
                 true,
@@ -116,7 +116,7 @@ final class ArraysAreEqualTest extends TestCase
             ],
             'different number of elements' => [
                 false,
-                'Failed asserting that two arrays are equal',
+                'Failed asserting that two arrays are equal.',
                 [1, 2, 3],
                 [1, 2],
                 true,
@@ -124,7 +124,7 @@ final class ArraysAreEqualTest extends TestCase
             ],
             'different order when order matters' => [
                 false,
-                'Failed asserting that two arrays are equal',
+                'Failed asserting that two arrays are equal.',
                 [1, 2, 3],
                 [3, 2, 1],
                 true,
@@ -132,7 +132,7 @@ final class ArraysAreEqualTest extends TestCase
             ],
             'different keys when keys matter' => [
                 false,
-                'Failed asserting that two arrays are equal while ignoring order',
+                'Failed asserting that two arrays are equal while ignoring order.',
                 ['a' => 1, 'b' => 2],
                 ['x' => 1, 'y' => 2],
                 true,
@@ -140,7 +140,7 @@ final class ArraysAreEqualTest extends TestCase
             ],
             'different order when only order matters' => [
                 false,
-                'Failed asserting that two arrays are equal while ignoring keys',
+                'Failed asserting that two arrays are equal while ignoring keys.',
                 [1, 2, 3],
                 [3, 2, 1],
                 false,
@@ -161,7 +161,7 @@ final class ArraysAreEqualTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }

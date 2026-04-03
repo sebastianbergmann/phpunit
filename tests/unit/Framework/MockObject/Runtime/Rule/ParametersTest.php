@@ -29,7 +29,7 @@ final class ParametersTest extends TestCase
         $rule = new Parameters([new IsEqual(1)]);
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Doubled method does not exist.');
+        $this->expectExceptionMessageIs('Doubled method does not exist.');
 
         $rule->verify();
     }
@@ -42,7 +42,7 @@ final class ParametersTest extends TestCase
         $double->method('doSomething')->with(1);
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('is too low');
+        $this->expectExceptionMessageIsOrContains('is too low');
 
         $double->doSomething();
     }
@@ -55,7 +55,7 @@ final class ParametersTest extends TestCase
         $double->method('doSomething')->with($this->anything());
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('withAnyParameters');
+        $this->expectExceptionMessageIsOrContains('withAnyParameters');
 
         $double->doSomething();
     }

@@ -26,7 +26,7 @@ final class markTestIncompleteTest extends TestCase
         $message = 'message';
 
         $this->expectException(IncompleteTestError::class);
-        $this->expectExceptionMessage($message);
+        $this->expectExceptionMessageIs($message);
 
         $this->markTestIncomplete($message);
     }

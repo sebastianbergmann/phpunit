@@ -111,7 +111,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'different values, keys and order matter' => [
                 false,
-                'Failed asserting that two arrays are identical',
+                'Failed asserting that two arrays are identical.',
                 ['a' => 1, 'b' => 2],
                 ['a' => 1, 'b' => 3],
                 true,
@@ -119,7 +119,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'different number of elements' => [
                 false,
-                'Failed asserting that two arrays are identical',
+                'Failed asserting that two arrays are identical.',
                 [1, 2, 3],
                 [1, 2],
                 true,
@@ -127,7 +127,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'type difference integer vs string, keys and order matter' => [
                 false,
-                'Failed asserting that two arrays are identical',
+                'Failed asserting that two arrays are identical.',
                 ['a' => 1, 'b' => 2],
                 ['a' => '1', 'b' => '2'],
                 true,
@@ -135,7 +135,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'type difference boolean vs integer, keys and order matter' => [
                 false,
-                'Failed asserting that two arrays are identical',
+                'Failed asserting that two arrays are identical.',
                 ['a' => true],
                 ['a' => 1],
                 true,
@@ -143,7 +143,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'different object instances, keys and order matter' => [
                 false,
-                'Failed asserting that two arrays are identical',
+                'Failed asserting that two arrays are identical.',
                 ['obj' => new stdClass],
                 ['obj' => new stdClass],
                 true,
@@ -151,7 +151,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'different order when order matters' => [
                 false,
-                'Failed asserting that two arrays are identical',
+                'Failed asserting that two arrays are identical.',
                 [1, 2, 3],
                 [3, 2, 1],
                 true,
@@ -159,7 +159,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'different keys when keys matter' => [
                 false,
-                'Failed asserting that two arrays are identical while ignoring order',
+                'Failed asserting that two arrays are identical while ignoring order.',
                 ['a' => 1, 'b' => 2],
                 ['x' => 1, 'y' => 2],
                 true,
@@ -167,7 +167,7 @@ final class ArraysAreIdenticalTest extends TestCase
             ],
             'different order when only order matters' => [
                 false,
-                'Failed asserting that two arrays are identical while ignoring keys',
+                'Failed asserting that two arrays are identical while ignoring keys.',
                 [1, 2, 3],
                 [3, 2, 1],
                 false,
@@ -188,7 +188,7 @@ final class ArraysAreIdenticalTest extends TestCase
         }
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($failureDescription);
+        $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
     }
