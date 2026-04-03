@@ -553,6 +553,30 @@ EOT,
         $this->assertSame($testData, $actual);
     }
 
+    public function testAssertionFailureInCallbackIsReportedDuringVerification(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->once())
+            ->method('doSomethingElse')
+            ->willReturnCallback(function (int $x): int
+            {
+                $this->assertSame(1, $x);
+
+                return $x;
+            });
+
+        try {
+            $double->doSomethingElse(2);
+        } catch (Exception) {
+        }
+
+        $this->assertThatMockObjectExpectationFails(
+            'Failed asserting that 2 is identical to 1.',
+            $double,
+        );
+    }
+
     public function testExpectationsAreClonedWhenTestDoubleIsCloned(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
