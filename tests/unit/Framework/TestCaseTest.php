@@ -102,4 +102,26 @@ class TestCaseTest extends TestCase
 
         $this->assertSame($expectedData, $testCase->dataSetAsStringWithData());
     }
+
+    public function testSortIdWithDataProvider(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+        $testCase->setData(0, ['foo']);
+
+        $this->assertSame(
+            TestWithDifferentNames::class . '::testWithName with data set #0',
+            $testCase->sortId(),
+        );
+    }
+
+    public function testSortIdWithNamedDataSet(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+        $testCase->setData('myDataSet', ['foo']);
+
+        $this->assertSame(
+            TestWithDifferentNames::class . '::testWithName with data set "myDataSet"',
+            $testCase->sortId(),
+        );
+    }
 }
