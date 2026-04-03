@@ -1025,6 +1025,8 @@ if (!function_exists('PHPUnit\Framework\assertEquals')) {
     /**
      * Asserts that two variables are equal.
      *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1040,6 +1042,8 @@ if (!function_exists('PHPUnit\Framework\assertEquals')) {
 if (!function_exists('PHPUnit\Framework\assertEqualsCanonicalizing')) {
     /**
      * Asserts that two variables are equal (canonicalizing).
+     *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
      *
      * @throws ExpectationFailedException
      *
@@ -1057,6 +1061,8 @@ if (!function_exists('PHPUnit\Framework\assertEqualsIgnoringCase')) {
     /**
      * Asserts that two variables are equal (ignoring case).
      *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1072,6 +1078,8 @@ if (!function_exists('PHPUnit\Framework\assertEqualsIgnoringCase')) {
 if (!function_exists('PHPUnit\Framework\assertEqualsWithDelta')) {
     /**
      * Asserts that two variables are equal (with delta).
+     *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
      *
      * @throws ExpectationFailedException
      *
@@ -1089,6 +1097,8 @@ if (!function_exists('PHPUnit\Framework\assertNotEquals')) {
     /**
      * Asserts that two variables are not equal.
      *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1104,6 +1114,8 @@ if (!function_exists('PHPUnit\Framework\assertNotEquals')) {
 if (!function_exists('PHPUnit\Framework\assertNotEqualsCanonicalizing')) {
     /**
      * Asserts that two variables are not equal (canonicalizing).
+     *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
      *
      * @throws ExpectationFailedException
      *
@@ -1121,6 +1133,8 @@ if (!function_exists('PHPUnit\Framework\assertNotEqualsIgnoringCase')) {
     /**
      * Asserts that two variables are not equal (ignoring case).
      *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
+     *
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1136,6 +1150,8 @@ if (!function_exists('PHPUnit\Framework\assertNotEqualsIgnoringCase')) {
 if (!function_exists('PHPUnit\Framework\assertNotEqualsWithDelta')) {
     /**
      * Asserts that two variables are not equal (with delta).
+     *
+     * Comparison is performed using the == operator (loose comparison) and may be performed by a type-specific comparator which may apply type coercion.
      *
      * @throws ExpectationFailedException
      *
@@ -1929,6 +1945,8 @@ if (!function_exists('PHPUnit\Framework\assertSame')) {
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
+     * Comparison is performed using the === operator.
+     *
      * @template ExpectedType
      *
      * @param ExpectedType $expected
@@ -1952,6 +1970,8 @@ if (!function_exists('PHPUnit\Framework\assertNotSame')) {
      * Asserts that two variables do not have the same type and value.
      * Used on objects, it asserts that two variables do not reference
      * the same object.
+     *
+     * Comparison is performed using the === operator.
      *
      * @throws ExpectationFailedException
      *
