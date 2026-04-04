@@ -18,7 +18,9 @@ if (!defined('STDOUT')) {
 
 {iniSettings}
 ini_set('display_errors', 'stderr');
-set_include_path('{include_path}');
+if (get_include_path() !== '{include_path}') {
+    set_include_path('{include_path}');
+}
 
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
