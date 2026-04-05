@@ -55,6 +55,8 @@ final class ShutdownHandler
                 }
 
                 print $message . PHP_EOL;
+
+                exit(2);
             },
         );
     }

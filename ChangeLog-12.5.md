@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ## [12.5.17] - 2026-MM-DD
 
+### Changed
+ 
+* [#4793](https://github.com/sebastianbergmann/phpunit/issues/4793): Exit with non-zero exit code when `exit` was called from some test
+
 ### Fixed
 
 * [#6019](https://github.com/sebastianbergmann/phpunit/issues/6019): `--migrate-configuration` does not update schema location when XML content already validates against current schema
