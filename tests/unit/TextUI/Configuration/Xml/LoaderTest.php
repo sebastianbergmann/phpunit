@@ -67,7 +67,7 @@ final class LoaderTest extends TestCase
     {
         $phpunit = $this->configuration('configuration.colors.true.xml')->phpunit();
 
-        $this->assertEquals(Configuration::COLOR_AUTO, $phpunit->colors());
+        $this->assertEquals(Configuration::COLOR_ALWAYS, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
