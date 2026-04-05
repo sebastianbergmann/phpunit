@@ -1038,10 +1038,8 @@ final readonly class Loader
         $colors = Configuration::COLOR_DEFAULT;
 
         if ($document->documentElement->hasAttribute('colors')) {
-            /* only allow boolean for compatibility with previous versions
-              'always' only allowed from command line */
             if ($this->booleanFromString($document->documentElement->getAttribute('colors'), false)) {
-                $colors = Configuration::COLOR_AUTO;
+                $colors = Configuration::COLOR_ALWAYS;
             } else {
                 $colors = Configuration::COLOR_NEVER;
             }
