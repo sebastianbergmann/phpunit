@@ -42,6 +42,11 @@ final class InvocationHandler
      * @var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
+
+    /**
+     * @var class-string
+     */
+    private readonly string $className;
     private readonly bool $returnValueGeneration;
     private readonly bool $isMockObject;
     private bool $sealed                            = false;
@@ -49,10 +54,12 @@ final class InvocationHandler
 
     /**
      * @param list<ConfigurableMethod> $configurableMethods
+     * @param class-string             $className
      */
-    public function __construct(array $configurableMethods, bool $returnValueGeneration, bool $isMockObject = false)
+    public function __construct(array $configurableMethods, string $className, bool $returnValueGeneration, bool $isMockObject = false)
     {
         $this->configurableMethods   = $configurableMethods;
+        $this->className             = $className;
         $this->returnValueGeneration = $returnValueGeneration;
         $this->isMockObject          = $isMockObject;
     }
@@ -114,7 +121,7 @@ final class InvocationHandler
             throw new TestDoubleSealedException;
         }
 
-        $matcher = new Matcher($rule);
+        $matcher = new Matcher($rule, $this->className);
         $this->addMatcher($matcher);
 
         if ($this->isMockObject) {
@@ -210,7 +217,7 @@ final class InvocationHandler
 
         foreach ($this->configurableMethods as $method) {
             if (!in_array($method->name(), $configuredMethods, true)) {
-                $matcher = new Matcher(new InvokedCount(0));
+                $matcher = new Matcher(new InvokedCount(0), $this->className);
 
                 $matcher->setMethodNameRule(new MethodName($method->name()));
 

@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 ## [13.1.1] - 2026-MM-DD
 
+### Changed
+
+* [#3676](https://github.com/sebastianbergmann/phpunit/issues/3676): Include class/interface name in mock object expectation failure messages
+
 ### Fixed
 
 * [#6019](https://github.com/sebastianbergmann/phpunit/issues/6019): `--migrate-configuration` does not update schema location when XML content already validates against current schema

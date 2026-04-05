@@ -24,7 +24,7 @@ final class InvocationHandlerTest extends TestCase
 {
     public function testSealingAlreadySealedHandlerReturnsEarly(): void
     {
-        $handler = new InvocationHandler([], false, false);
+        $handler = new InvocationHandler([], 'stdClass', false, false);
 
         $handler->seal(false);
 
@@ -46,9 +46,9 @@ final class InvocationHandlerTest extends TestCase
 
     public function testConfiguredMethodNamesSkipsMatcherWithoutMethodNameRule(): void
     {
-        $handler = new InvocationHandler([], false, true);
+        $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $matcher = new Matcher(new AnyInvokedCount);
+        $matcher = new Matcher(new AnyInvokedCount, 'stdClass');
 
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$matcher]);
