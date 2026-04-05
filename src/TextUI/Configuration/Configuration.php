@@ -954,6 +954,11 @@ final readonly class Configuration
         return $this->doNotFailOnWarning;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnDefect(): bool
     {
         return $this->stopOnDefect > 0;
@@ -967,6 +972,11 @@ final readonly class Configuration
         return $this->stopOnDefect;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnDeprecation(): bool
     {
         return $this->stopOnDeprecation > 0;
@@ -1000,6 +1010,11 @@ final readonly class Configuration
         return $this->specificDeprecationToStopOn;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnError(): bool
     {
         return $this->stopOnError > 0;
@@ -1013,6 +1028,11 @@ final readonly class Configuration
         return $this->stopOnError;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnFailure(): bool
     {
         return $this->stopOnFailure > 0;
@@ -1026,6 +1046,11 @@ final readonly class Configuration
         return $this->stopOnFailure;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnIncomplete(): bool
     {
         return $this->stopOnIncomplete > 0;
@@ -1039,6 +1064,11 @@ final readonly class Configuration
         return $this->stopOnIncomplete;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnNotice(): bool
     {
         return $this->stopOnNotice > 0;
@@ -1052,6 +1082,11 @@ final readonly class Configuration
         return $this->stopOnNotice;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnRisky(): bool
     {
         return $this->stopOnRisky > 0;
@@ -1065,6 +1100,11 @@ final readonly class Configuration
         return $this->stopOnRisky;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnSkipped(): bool
     {
         return $this->stopOnSkipped > 0;
@@ -1078,6 +1118,11 @@ final readonly class Configuration
         return $this->stopOnSkipped;
     }
 
+    /**
+     * @deprecated
+     *
+     * @codeCoverageIgnore
+     */
     public function stopOnWarning(): bool
     {
         return $this->stopOnWarning > 0;
