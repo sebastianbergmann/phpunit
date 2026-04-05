@@ -8,6 +8,7 @@ if (extension_loaded('xdebug') || extension_loaded('pcov')) {
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-html';
 $_SERVER['argv'][] = 'my_coverage_folder';
 
