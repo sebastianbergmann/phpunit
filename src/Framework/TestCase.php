@@ -229,8 +229,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var false|resource
      */
-    private mixed $errorLogCapture               = false;
-    private false|string $previousErrorLogTarget = false;
+    private mixed $errorLogCapture                = false;
+    private false|string $previousErrorLogTarget  = false;
+    private ?string $emptyDataProviderSkipMessage = null;
 
     /**
      * @param non-empty-string $name
@@ -499,6 +500,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             $this->checkRequirements();
             $hasMetRequirements = true;
+
+            if ($this->emptyDataProviderSkipMessage !== null) {
+                $this->markTestSkipped($this->emptyDataProviderSkipMessage);
+            }
 
             if ($this->inIsolation) {
                 // @codeCoverageIgnoreStart
@@ -786,6 +791,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function setInIsolation(bool $inIsolation): void
     {
         $this->inIsolation = $inIsolation;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setEmptyDataProviderSkipMessage(string $message): void
+    {
+        $this->emptyDataProviderSkipMessage = $message;
     }
 
     /**
