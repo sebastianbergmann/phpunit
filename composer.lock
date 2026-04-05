@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cc3b398b2a05c08ecbd433ca91802ba",
+    "content-hash": "38c7cb3f0482e10a8eb299a3ced20d3a",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -936,16 +936,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "9.1.0",
+            "version": "9.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "c4a2dc54b1a24e13ef1839cbb5947b967cbae853"
+                "reference": "c0964f624fcac84e318fc9ef0193cbb9809a331a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/c4a2dc54b1a24e13ef1839cbb5947b967cbae853",
-                "reference": "c4a2dc54b1a24e13ef1839cbb5947b967cbae853",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/c0964f624fcac84e318fc9ef0193cbb9809a331a",
+                "reference": "c0964f624fcac84e318fc9ef0193cbb9809a331a",
                 "shasum": ""
             },
             "require": {
@@ -960,7 +960,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "9.1-dev"
+                    "dev-main": "9.2-dev"
                 }
             },
             "autoload": {
@@ -988,7 +988,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/environment/issues",
                 "security": "https://github.com/sebastianbergmann/environment/security/policy",
-                "source": "https://github.com/sebastianbergmann/environment/tree/9.1.0"
+                "source": "https://github.com/sebastianbergmann/environment/tree/9.2.0"
             },
             "funding": [
                 {
@@ -1008,7 +1008,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-22T06:31:50+00:00"
+            "time": "2026-04-05T07:07:20+00:00"
         },
         {
             "name": "sebastian/exporter",
