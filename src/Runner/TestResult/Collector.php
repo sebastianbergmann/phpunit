@@ -631,9 +631,19 @@ final class Collector
         return $this->testErroredEvents !== [];
     }
 
+    public function numberOfErroredTests(): int
+    {
+        return count($this->testErroredEvents);
+    }
+
     public function hasFailedTests(): bool
     {
         return $this->testFailedEvents !== [];
+    }
+
+    public function numberOfFailedTests(): int
+    {
+        return count($this->testFailedEvents);
     }
 
     public function hasRiskyTests(): bool
@@ -641,14 +651,29 @@ final class Collector
         return $this->testConsideredRiskyEvents !== [];
     }
 
+    public function numberOfRiskyTests(): int
+    {
+        return count($this->testConsideredRiskyEvents);
+    }
+
     public function hasSkippedTests(): bool
     {
         return $this->testSkippedEvents !== [];
     }
 
+    public function numberOfSkippedTests(): int
+    {
+        return count($this->testSkippedEvents);
+    }
+
     public function hasIncompleteTests(): bool
     {
         return $this->testMarkedIncompleteEvents !== [];
+    }
+
+    public function numberOfIncompleteTests(): int
+    {
+        return count($this->testMarkedIncompleteEvents);
     }
 
     public function hasDeprecations(): bool
@@ -665,12 +690,26 @@ final class Collector
                $this->phpNotices !== [];
     }
 
+    public function numberOfNotices(): int
+    {
+        return count($this->notices) +
+               count($this->phpNotices);
+    }
+
     public function hasWarnings(): bool
     {
         return $this->warnings !== [] ||
                $this->phpWarnings !== [] ||
                $this->testTriggeredPhpunitWarningEvents !== [] ||
                $this->testRunnerTriggeredWarningEvents !== [];
+    }
+
+    public function numberOfWarnings(): int
+    {
+        return count($this->warnings) +
+               count($this->phpWarnings) +
+               count($this->testTriggeredPhpunitWarningEvents) +
+               count($this->testRunnerTriggeredWarningEvents);
     }
 
     /**

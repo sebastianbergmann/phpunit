@@ -1793,7 +1793,16 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-defect']);
 
         $this->assertTrue($configuration->hasStopOnDefect());
-        $this->assertTrue($configuration->stopOnDefect());
+        $this->assertSame(1, $configuration->stopOnDefect());
+    }
+
+    #[TestDox('--stop-on-defect=<n>')]
+    public function testStopOnDefectWithThreshold(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--stop-on-defect=5']);
+
+        $this->assertTrue($configuration->hasStopOnDefect());
+        $this->assertSame(5, $configuration->stopOnDefect());
     }
 
     public function testStopOnDefectMayNotBeConfigured(): void
@@ -1813,7 +1822,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-deprecation']);
 
         $this->assertTrue($configuration->hasStopOnDeprecation());
-        $this->assertTrue($configuration->stopOnDeprecation());
+        $this->assertSame(1, $configuration->stopOnDeprecation());
 
         $this->expectException(Exception::class);
 
@@ -1826,9 +1835,19 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-deprecation=message']);
 
         $this->assertTrue($configuration->hasStopOnDeprecation());
-        $this->assertTrue($configuration->stopOnDeprecation());
+        $this->assertSame(1, $configuration->stopOnDeprecation());
         $this->assertTrue($configuration->hasSpecificDeprecationToStopOn());
         $this->assertSame('message', $configuration->specificDeprecationToStopOn());
+    }
+
+    #[TestDox('--stop-on-deprecation=<n>')]
+    public function testStopOnDeprecationWithThreshold(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--stop-on-deprecation=3']);
+
+        $this->assertTrue($configuration->hasStopOnDeprecation());
+        $this->assertSame(3, $configuration->stopOnDeprecation());
+        $this->assertFalse($configuration->hasSpecificDeprecationToStopOn());
     }
 
     public function testStopOnDeprecationMayNotBeConfigured(): void
@@ -1848,7 +1867,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-error']);
 
         $this->assertTrue($configuration->hasStopOnError());
-        $this->assertTrue($configuration->stopOnError());
+        $this->assertSame(1, $configuration->stopOnError());
     }
 
     public function testStopOnErrorMayNotBeConfigured(): void
@@ -1868,7 +1887,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-failure']);
 
         $this->assertTrue($configuration->hasStopOnFailure());
-        $this->assertTrue($configuration->stopOnFailure());
+        $this->assertSame(1, $configuration->stopOnFailure());
     }
 
     public function testStopOnFailureMayNotBeConfigured(): void
@@ -1888,7 +1907,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-incomplete']);
 
         $this->assertTrue($configuration->hasStopOnIncomplete());
-        $this->assertTrue($configuration->stopOnIncomplete());
+        $this->assertSame(1, $configuration->stopOnIncomplete());
     }
 
     public function testStopOnIncompleteMayNotBeConfigured(): void
@@ -1908,7 +1927,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-notice']);
 
         $this->assertTrue($configuration->hasStopOnNotice());
-        $this->assertTrue($configuration->stopOnNotice());
+        $this->assertSame(1, $configuration->stopOnNotice());
     }
 
     public function testStopOnNoticeMayNotBeConfigured(): void
@@ -1928,7 +1947,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-risky']);
 
         $this->assertTrue($configuration->hasStopOnRisky());
-        $this->assertTrue($configuration->stopOnRisky());
+        $this->assertSame(1, $configuration->stopOnRisky());
     }
 
     public function testStopOnRiskyMayNotBeConfigured(): void
@@ -1948,7 +1967,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-skipped']);
 
         $this->assertTrue($configuration->hasStopOnSkipped());
-        $this->assertTrue($configuration->stopOnSkipped());
+        $this->assertSame(1, $configuration->stopOnSkipped());
     }
 
     public function testStopOnSkippedMayNotBeConfigured(): void
@@ -1968,7 +1987,7 @@ final class BuilderTest extends TestCase
         $configuration = (new Builder)->fromParameters(['--stop-on-warning']);
 
         $this->assertTrue($configuration->hasStopOnWarning());
-        $this->assertTrue($configuration->stopOnWarning());
+        $this->assertSame(1, $configuration->stopOnWarning());
     }
 
     public function testStopOnWarningMayNotBeConfigured(): void

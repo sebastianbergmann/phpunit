@@ -71,18 +71,19 @@
   [32m--do-not-report-useless-tests       [0m Do not report tests that do not test
                                        anything
 
-  [32m--stop-on-defect                    [0m Stop after first error, failure,
-                                       warning, or risky test
-  [32m--stop-on-error                     [0m Stop after first error
-  [32m--stop-on-failure                   [0m Stop after first failure
-  [32m--stop-on-warning                   [0m Stop after first warning
-  [32m--stop-on-risky                     [0m Stop after first risky test
-  [32m--stop-on-deprecation               [0m Stop after first test that triggered a
-                                       deprecation
-  [32m--stop-on-notice                    [0m Stop after first test that triggered a
-                                       notice
-  [32m--stop-on-skipped                   [0m Stop after first skipped test
-  [32m--stop-on-incomplete                [0m Stop after first incomplete test
+  [32m--stop-on-defect[=[36m<n>[0m]              [0m Stop after first (or n-th) error,
+                                       failure, warning, or risky test
+  [32m--stop-on-error[=[36m<n>[0m]               [0m Stop after first (or n-th) error
+  [32m--stop-on-failure[=[36m<n>[0m]             [0m Stop after first (or n-th) failure
+  [32m--stop-on-warning[=[36m<n>[0m]             [0m Stop after first (or n-th) warning
+  [32m--stop-on-risky[=[36m<n>[0m]               [0m Stop after first (or n-th) risky test
+  [32m--stop-on-deprecation[=[36m<n>[0m]         [0m Stop after first (or n-th) test that
+                                       triggered a deprecation
+  [32m--stop-on-notice[=[36m<n>[0m]              [0m Stop after first (or n-th) test that
+                                       triggered a notice
+  [32m--stop-on-skipped[=[36m<n>[0m]             [0m Stop after first (or n-th) skipped test
+  [32m--stop-on-incomplete[=[36m<n>[0m]          [0m Stop after first (or n-th) incomplete
+                                       test
 
   [32m--fail-on-empty-test-suite          [0m Signal failure using shell exit code
                                        when no tests were run

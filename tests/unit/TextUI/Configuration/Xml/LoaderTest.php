@@ -366,8 +366,8 @@ final class LoaderTest extends TestCase
         $this->assertSame('never', $phpunit->colors());
         $this->assertFalse($phpunit->stderr());
         $this->assertFalse($phpunit->requireCoverageMetadata());
-        $this->assertFalse($phpunit->stopOnFailure());
-        $this->assertFalse($phpunit->stopOnWarning());
+        $this->assertSame(0, $phpunit->stopOnFailure());
+        $this->assertSame(0, $phpunit->stopOnWarning());
         $this->assertFalse($phpunit->beStrictAboutTestsThatDoNotTestAnything());
         $this->assertFalse($phpunit->beStrictAboutCoverageMetadata());
         $this->assertFalse($phpunit->beStrictAboutOutputDuringTests());

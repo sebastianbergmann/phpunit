@@ -52,15 +52,15 @@ Execution:
   --default-time-limit <sec>           Timeout in seconds for tests that have no declared size
   --do-not-report-useless-tests        Do not report tests that do not test anything
 
-  --stop-on-defect                     Stop after first error, failure, warning, or risky test
-  --stop-on-error                      Stop after first error
-  --stop-on-failure                    Stop after first failure
-  --stop-on-warning                    Stop after first warning
-  --stop-on-risky                      Stop after first risky test
-  --stop-on-deprecation                Stop after first test that triggered a deprecation
-  --stop-on-notice                     Stop after first test that triggered a notice
-  --stop-on-skipped                    Stop after first skipped test
-  --stop-on-incomplete                 Stop after first incomplete test
+  --stop-on-defect[=<n>]               Stop after first (or n-th) error, failure, warning, or risky test
+  --stop-on-error[=<n>]                Stop after first (or n-th) error
+  --stop-on-failure[=<n>]              Stop after first (or n-th) failure
+  --stop-on-warning[=<n>]              Stop after first (or n-th) warning
+  --stop-on-risky[=<n>]                Stop after first (or n-th) risky test
+  --stop-on-deprecation[=<n>]          Stop after first (or n-th) test that triggered a deprecation
+  --stop-on-notice[=<n>]               Stop after first (or n-th) test that triggered a notice
+  --stop-on-skipped[=<n>]              Stop after first (or n-th) skipped test
+  --stop-on-incomplete[=<n>]           Stop after first (or n-th) incomplete test
 
   --fail-on-empty-test-suite           Signal failure using shell exit code when no tests were run
   --fail-on-warning                    Signal failure using shell exit code when a warning was triggered
