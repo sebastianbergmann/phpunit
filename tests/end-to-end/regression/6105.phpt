@@ -24,6 +24,7 @@ if (ini_get('xdebug.start_with_request') === '1') {
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = __DIR__ . '/6105/IssueTest6105.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
