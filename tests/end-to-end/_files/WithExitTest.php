@@ -26,4 +26,11 @@ final class WithExitTest extends TestCase
 
         exit(1);
     }
+
+    public function testWithExitZero(): void
+    {
+        $this->assertTrue(true);
+
+        exit(0);
+    }
 }

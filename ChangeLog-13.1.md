@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 ### Changed
 
 * [#3676](https://github.com/sebastianbergmann/phpunit/issues/3676): Include class/interface name in mock object expectation failure messages
+* [#4793](https://github.com/sebastianbergmann/phpunit/issues/4793): Exit with non-zero exit code when `exit` was called from some test
 
 ### Fixed
 
