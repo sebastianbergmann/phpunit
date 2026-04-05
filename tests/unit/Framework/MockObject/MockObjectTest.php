@@ -94,7 +94,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->expects($this->once())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked once but was never invoked.',
+            AnInterface::class . '::doSomething() was expected to be invoked once but was never invoked.',
             $double,
         );
     }
@@ -161,7 +161,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->expects($this->atLeastOnce())->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked at least once but was never invoked.',
+            AnInterface::class . '::doSomething() was expected to be invoked at least once but was never invoked.',
             $double,
         );
     }
@@ -175,7 +175,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked at least 2 times but was invoked once.',
+            AnInterface::class . '::doSomething() was expected to be invoked at least 2 times but was invoked once.',
             $double,
         );
     }
@@ -197,7 +197,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->expects($this->exactly(2))->method('doSomething');
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked 2 times but was never invoked.',
+            AnInterface::class . '::doSomething() was expected to be invoked 2 times but was never invoked.',
             $double,
         );
     }
@@ -211,7 +211,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked 2 times but was invoked once.',
+            AnInterface::class . '::doSomething() was expected to be invoked 2 times but was invoked once.',
             $double,
         );
     }
@@ -258,7 +258,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked at most once but was invoked 2 times.',
+            AnInterface::class . '::doSomething() was expected to be invoked at most once but was invoked 2 times.',
             $double,
         );
     }
@@ -274,7 +274,7 @@ final class MockObjectTest extends TestDoubleTestCase
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            '"doSomething()" was expected to be invoked at most 2 times but was invoked 3 times.',
+            AnInterface::class . '::doSomething() was expected to be invoked at most 2 times but was invoked 3 times.',
             $double,
         );
     }
@@ -305,7 +305,7 @@ final class MockObjectTest extends TestDoubleTestCase
 
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation for "doSomethingElse()" failed.
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
 Parameter $x for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(0): int does not match expected value.
 Failed asserting that 0 matches expected 1.
 EOT,
@@ -334,7 +334,7 @@ EOT,
         $double->doSomethingElse(1);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation for "doSomethingElse()" failed.
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
 Parameter $x for invocation PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse(3): int does not match expected value.
 Failed asserting that 3 matches expected 2.
 EOT,
@@ -368,7 +368,7 @@ EOT,
         $double->doSomethingElse(2);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation for "doSomethingElse()" failed.
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
 Too many parameter sets given, 2 out of 3 expected parameter sets have been called.
 
 EOT,
@@ -396,7 +396,7 @@ EOT,
         $double->doSomethingElse(1);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation for "doSomethingElse()" failed.
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
 1 out of 2 expected parameter sets was called, index [1] was not called.
 
 EOT,
@@ -414,7 +414,7 @@ EOT,
         $double->doSomethingElse(2);
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
-Expectation for "doSomethingElse()" failed.
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
 2 out of 3 expected parameter sets were called, index [0] was not called.
 
 EOT,
@@ -496,7 +496,7 @@ EOT,
         $double->one();
 
         $this->assertThatMockObjectExpectationFails(
-            '"two()" was expected to be invoked once but was never invoked.',
+            InterfaceWithImplicitProtocol::class . '::two() was expected to be invoked once but was never invoked.',
             $double,
         );
     }

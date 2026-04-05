@@ -20,16 +20,23 @@ final class TestDoubleState
      * @var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
+
+    /**
+     * @var class-string
+     */
+    private readonly string $className;
     private readonly bool $generateReturnValues;
     private readonly bool $isMockObject;
     private ?InvocationHandler $invocationHandler = null;
 
     /**
      * @param list<ConfigurableMethod> $configurableMethods
+     * @param class-string             $className
      */
-    public function __construct(array $configurableMethods, bool $generateReturnValues, bool $isMockObject = false)
+    public function __construct(array $configurableMethods, string $className, bool $generateReturnValues, bool $isMockObject = false)
     {
         $this->configurableMethods  = $configurableMethods;
+        $this->className            = $className;
         $this->generateReturnValues = $generateReturnValues;
         $this->isMockObject         = $isMockObject;
     }
@@ -42,6 +49,7 @@ final class TestDoubleState
 
         $this->invocationHandler = new InvocationHandler(
             $this->configurableMethods,
+            $this->className,
             $this->generateReturnValues,
             $this->isMockObject,
         );

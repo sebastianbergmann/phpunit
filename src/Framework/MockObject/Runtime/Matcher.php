@@ -31,6 +31,11 @@ final class Matcher
     private readonly InvocationOrder $invocationRule;
 
     /**
+     * @var class-string
+     */
+    private readonly string $className;
+
+    /**
      * @var ?non-empty-string
      */
     private ?string $afterMatchBuilderId    = null;
@@ -38,9 +43,13 @@ final class Matcher
     private ?ParametersRule $parametersRule = null;
     private ?Stub $stub                     = null;
 
-    public function __construct(InvocationOrder $rule)
+    /**
+     * @param class-string $className
+     */
+    public function __construct(InvocationOrder $rule, string $className)
     {
         $this->invocationRule = $rule;
+        $this->className      = $className;
     }
 
     public function hasInvocationCountRule(): bool
@@ -130,7 +139,7 @@ final class Matcher
             throw new ExpectationFailedException(
                 sprintf(
                     "Expectation for %s failed.\n%s",
-                    $this->methodNameRule->failureDescription(),
+                    $this->methodNameRule->failureDescription($this->className),
                     $e->getMessage(),
                 ),
                 $e->getComparisonFailure(),
@@ -182,7 +191,7 @@ final class Matcher
             throw new ExpectationFailedException(
                 sprintf(
                     "Expectation for %s failed.\n%s",
-                    $this->methodNameRule->failureDescription(),
+                    $this->methodNameRule->failureDescription($this->className),
                     $e->getMessage(),
                 ),
                 $e->getComparisonFailure(),
@@ -221,7 +230,7 @@ final class Matcher
             throw new ExpectationFailedException(
                 sprintf(
                     '%s was expected to be %s but was %s.',
-                    $this->methodNameRule->failureDescription(),
+                    $this->methodNameRule->failureDescription($this->className),
                     $this->invocationRule->toString(),
                     $invoked,
                 ),
@@ -243,7 +252,7 @@ final class Matcher
                 throw new ExpectationFailedException(
                     sprintf(
                         "Expectation for %s failed.\n%s",
-                        $this->methodNameRule->failureDescription(),
+                        $this->methodNameRule->failureDescription($this->className),
                         ThrowableToStringMapper::map($e),
                     ),
                 );

@@ -20,7 +20,7 @@ trait StubApi
 
     public function __phpunit_state(): TestDoubleState
     {
-        return $this->__phpunit_state ?? new TestDoubleState([], true, false);
+        return $this->__phpunit_state ?? new TestDoubleState([], static::class, true, false);
     }
 
     public function __phpunit_getInvocationHandler(): InvocationHandler

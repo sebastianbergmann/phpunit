@@ -183,6 +183,7 @@ final class ReturnValueGenerator
                 $object,
                 new TestDoubleState(
                     $testStub->__phpunit_state()->configurableMethods(),
+                    $className,
                     $testStub->__phpunit_state()->generateReturnValues(),
                 ),
             );
