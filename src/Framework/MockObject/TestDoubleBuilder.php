@@ -56,7 +56,7 @@ abstract class TestDoubleBuilder
      *
      * @return $this
      */
-    public function onlyMethods(array $methods): self
+    public function onlyMethods(array $methods): static
     {
         if ($methods === []) {
             $this->emptyMethodsArray = true;
@@ -96,7 +96,7 @@ abstract class TestDoubleBuilder
      *
      * @return $this
      */
-    public function setConstructorArgs(array $arguments): self
+    public function setConstructorArgs(array $arguments): static
     {
         $this->constructorArgs = $arguments;
 
@@ -108,7 +108,7 @@ abstract class TestDoubleBuilder
      *
      * @return $this
      */
-    public function disableOriginalConstructor(): self
+    public function disableOriginalConstructor(): static
     {
         $this->originalConstructor = false;
 
@@ -120,7 +120,7 @@ abstract class TestDoubleBuilder
      *
      * @return $this
      */
-    public function enableOriginalConstructor(): self
+    public function enableOriginalConstructor(): static
     {
         $this->originalConstructor = true;
 
@@ -132,7 +132,7 @@ abstract class TestDoubleBuilder
      *
      * @return $this
      */
-    public function disableOriginalClone(): self
+    public function disableOriginalClone(): static
     {
         $this->originalClone = false;
 
@@ -144,7 +144,7 @@ abstract class TestDoubleBuilder
      *
      * @return $this
      */
-    public function enableOriginalClone(): self
+    public function enableOriginalClone(): static
     {
         $this->originalClone = true;
 
@@ -154,7 +154,7 @@ abstract class TestDoubleBuilder
     /**
      * @return $this
      */
-    public function enableAutoReturnValueGeneration(): self
+    public function enableAutoReturnValueGeneration(): static
     {
         $this->returnValueGeneration = true;
 
@@ -164,7 +164,7 @@ abstract class TestDoubleBuilder
     /**
      * @return $this
      */
-    public function disableAutoReturnValueGeneration(): self
+    public function disableAutoReturnValueGeneration(): static
     {
         $this->returnValueGeneration = false;
 
