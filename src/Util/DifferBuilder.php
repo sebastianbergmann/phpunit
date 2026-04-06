@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
@@ -31,6 +32,13 @@ final readonly class DifferBuilder
                 false,
                 ConfigurationRegistry::get()->diffContext(),
             ),
+        );
+    }
+
+    public static function configureComparatorFactory(): void
+    {
+        ComparatorFactory::getInstance()->setContextLines(
+            ConfigurationRegistry::get()->diffContext(),
         );
     }
 }
