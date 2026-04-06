@@ -626,51 +626,43 @@ final class Collector
         $this->childProcessErrored = true;
     }
 
-    public function hasErroredTests(): bool
+    public function numberOfErroredTests(): int
     {
-        return $this->testErroredEvents !== [];
+        return count($this->testErroredEvents);
     }
 
-    public function hasFailedTests(): bool
+    public function numberOfFailedTests(): int
     {
-        return $this->testFailedEvents !== [];
+        return count($this->testFailedEvents);
     }
 
-    public function hasRiskyTests(): bool
+    public function numberOfRiskyTests(): int
     {
-        return $this->testConsideredRiskyEvents !== [];
+        return count($this->testConsideredRiskyEvents);
     }
 
-    public function hasSkippedTests(): bool
+    public function numberOfSkippedTests(): int
     {
-        return $this->testSkippedEvents !== [];
+        return count($this->testSkippedEvents);
     }
 
-    public function hasIncompleteTests(): bool
+    public function numberOfIncompleteTests(): int
     {
-        return $this->testMarkedIncompleteEvents !== [];
+        return count($this->testMarkedIncompleteEvents);
     }
 
-    public function hasDeprecations(): bool
+    public function numberOfNotices(): int
     {
-        return $this->deprecations !== [] ||
-               $this->phpDeprecations !== [] ||
-               $this->testTriggeredPhpunitDeprecationEvents !== [] ||
-               $this->testRunnerTriggeredDeprecationEvents !== [];
+        return count($this->notices) +
+               count($this->phpNotices);
     }
 
-    public function hasNotices(): bool
+    public function numberOfWarnings(): int
     {
-        return $this->notices !== [] ||
-               $this->phpNotices !== [];
-    }
-
-    public function hasWarnings(): bool
-    {
-        return $this->warnings !== [] ||
-               $this->phpWarnings !== [] ||
-               $this->testTriggeredPhpunitWarningEvents !== [] ||
-               $this->testRunnerTriggeredWarningEvents !== [];
+        return count($this->warnings) +
+               count($this->phpWarnings) +
+               count($this->testTriggeredPhpunitWarningEvents) +
+               count($this->testRunnerTriggeredWarningEvents);
     }
 
     /**

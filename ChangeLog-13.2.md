@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 ### Added
 
 * [#6559](https://github.com/sebastianbergmann/phpunit/issues/6559): Improved API for exception message expectations
+* [#6566](https://github.com/sebastianbergmann/phpunit/pull/6566): Allow `--stop-on-defect`, `--stop-on-error`, etc. to accept an optional threshold
 * [#6567](https://github.com/sebastianbergmann/phpunit/issues/6567): Make diff context lines configurable
 
 ### Deprecated

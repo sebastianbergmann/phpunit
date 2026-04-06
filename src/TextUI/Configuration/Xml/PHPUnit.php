@@ -53,15 +53,15 @@ final readonly class PHPUnit
     private bool $failOnRisky;
     private bool $failOnSkipped;
     private bool $failOnWarning;
-    private bool $stopOnDefect;
-    private bool $stopOnDeprecation;
-    private bool $stopOnError;
-    private bool $stopOnFailure;
-    private bool $stopOnIncomplete;
-    private bool $stopOnNotice;
-    private bool $stopOnRisky;
-    private bool $stopOnSkipped;
-    private bool $stopOnWarning;
+    private int $stopOnDefect;
+    private int $stopOnDeprecation;
+    private int $stopOnError;
+    private int $stopOnFailure;
+    private int $stopOnIncomplete;
+    private int $stopOnNotice;
+    private int $stopOnRisky;
+    private int $stopOnSkipped;
+    private int $stopOnWarning;
 
     /**
      * @var ?non-empty-string
@@ -98,7 +98,7 @@ final readonly class PHPUnit
      * @param ?non-empty-string                         $extensionsDirectory
      * @param non-negative-int                          $shortenArraysForExportThreshold
      */
-    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $failOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnDeprecation, bool $stopOnError, bool $stopOnFailure, bool $stopOnIncomplete, bool $stopOnNotice, bool $stopOnRisky, bool $stopOnSkipped, bool $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $failOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $failOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnNotice, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->cacheResult                                  = $cacheResult;
@@ -352,47 +352,47 @@ final readonly class PHPUnit
         return $this->failOnWarning;
     }
 
-    public function stopOnDefect(): bool
+    public function stopOnDefect(): int
     {
         return $this->stopOnDefect;
     }
 
-    public function stopOnDeprecation(): bool
+    public function stopOnDeprecation(): int
     {
         return $this->stopOnDeprecation;
     }
 
-    public function stopOnError(): bool
+    public function stopOnError(): int
     {
         return $this->stopOnError;
     }
 
-    public function stopOnFailure(): bool
+    public function stopOnFailure(): int
     {
         return $this->stopOnFailure;
     }
 
-    public function stopOnIncomplete(): bool
+    public function stopOnIncomplete(): int
     {
         return $this->stopOnIncomplete;
     }
 
-    public function stopOnNotice(): bool
+    public function stopOnNotice(): int
     {
         return $this->stopOnNotice;
     }
 
-    public function stopOnRisky(): bool
+    public function stopOnRisky(): int
     {
         return $this->stopOnRisky;
     }
 
-    public function stopOnSkipped(): bool
+    public function stopOnSkipped(): int
     {
         return $this->stopOnSkipped;
     }
 
-    public function stopOnWarning(): bool
+    public function stopOnWarning(): int
     {
         return $this->stopOnWarning;
     }

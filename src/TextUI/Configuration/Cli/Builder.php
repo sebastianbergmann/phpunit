@@ -16,6 +16,7 @@ use function explode;
 use function getcwd;
 use function is_file;
 use function is_numeric;
+use function max;
 use function sprintf;
 use function strtolower;
 use PHPUnit\Event\Facade as EventFacade;
@@ -136,15 +137,15 @@ final class Builder
         'do-not-fail-on-risky',
         'do-not-fail-on-skipped',
         'do-not-fail-on-warning',
-        'stop-on-defect',
+        'stop-on-defect==',
         'stop-on-deprecation==',
-        'stop-on-error',
-        'stop-on-failure',
-        'stop-on-incomplete',
-        'stop-on-notice',
-        'stop-on-risky',
-        'stop-on-skipped',
-        'stop-on-warning',
+        'stop-on-error==',
+        'stop-on-failure==',
+        'stop-on-incomplete==',
+        'stop-on-notice==',
+        'stop-on-risky==',
+        'stop-on-skipped==',
+        'stop-on-warning==',
         'strict-coverage',
         'disable-coverage-ignore',
         'strict-global-state',
@@ -935,51 +936,51 @@ final class Builder
                     break;
 
                 case '--stop-on-defect':
-                    $stopOnDefect = true;
+                    $stopOnDefect = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-deprecation':
-                    $stopOnDeprecation = true;
+                    $stopOnDeprecation = $this->parseStopOnValue($option[1]);
 
-                    if ($option[1] !== null) {
+                    if ($option[1] !== null && !is_numeric($option[1])) {
                         $specificDeprecationToStopOn = $option[1];
                     }
 
                     break;
 
                 case '--stop-on-error':
-                    $stopOnError = true;
+                    $stopOnError = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-failure':
-                    $stopOnFailure = true;
+                    $stopOnFailure = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-incomplete':
-                    $stopOnIncomplete = true;
+                    $stopOnIncomplete = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-notice':
-                    $stopOnNotice = true;
+                    $stopOnNotice = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-risky':
-                    $stopOnRisky = true;
+                    $stopOnRisky = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-skipped':
-                    $stopOnSkipped = true;
+                    $stopOnSkipped = $this->parseStopOnValue($option[1]);
 
                     break;
 
                 case '--stop-on-warning':
-                    $stopOnWarning = true;
+                    $stopOnWarning = $this->parseStopOnValue($option[1]);
 
                     break;
 
@@ -1429,5 +1430,17 @@ final class Builder
                 $opposite,
             ),
         );
+    }
+
+    /**
+     * @return positive-int
+     */
+    private function parseStopOnValue(?string $value): int
+    {
+        if ($value !== null && is_numeric($value)) {
+            return max(1, (int) $value);
+        }
+
+        return 1;
     }
 }
