@@ -71,6 +71,7 @@ final class Builder
         'display-notices',
         'display-warnings',
         'default-time-limit=',
+        'diff-context=',
         'enforce-time-limit',
         'exclude-group=',
         'filter=',
@@ -220,6 +221,7 @@ final class Builder
         $excludeSourceFromXmlCoverage      = null;
         $pathCoverage                      = null;
         $defaultTimeLimit                  = null;
+        $diffContext                       = null;
         $disableCodeCoverageIgnore         = null;
         $disallowTestOutput                = null;
         $displayAllIssues                  = null;
@@ -1136,6 +1138,11 @@ final class Builder
 
                     break;
 
+                case '--diff-context':
+                    $diffContext = (int) $option[1];
+
+                    break;
+
                 case '--enforce-time-limit':
                     $enforceTimeLimit = true;
 
@@ -1281,6 +1288,7 @@ final class Builder
             $pathCoverage,
             $warmCoverageCache,
             $defaultTimeLimit,
+            $diffContext,
             $disableCodeCoverageIgnore,
             $disallowTestOutput,
             $enforceTimeLimit,

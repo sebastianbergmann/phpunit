@@ -8,6 +8,7 @@ use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\SourceMapper;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 // php://stdout does not obey output buffering. Any output would break
 // unserialization of child process results in the parent process.
@@ -136,6 +137,8 @@ set_error_handler('__phpunit_error_handler');
 restore_error_handler();
 
 ConfigurationRegistry::loadFrom('{serializedConfiguration}');
+
+ComparatorFactory::getInstance()->setContextLines(ConfigurationRegistry::get()->diffContext());
 
 if ('{sourceMapFile}' !== '') {
     SourceMapper::loadFrom('{sourceMapFile}', ConfigurationRegistry::get()->source());

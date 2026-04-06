@@ -56,6 +56,7 @@ final class LoaderTest extends TestCase
             'failOnRisky'                  => ['failOnRisky', 'true', true],
             'processIsolation'             => ['processIsolation', 'true', true],
             'reverseDefectList'            => ['reverseDefectList', 'true', true],
+            'diffContext'                  => ['diffContext', '5', 5],
         ];
     }
 
@@ -372,6 +373,7 @@ final class LoaderTest extends TestCase
         $this->assertFalse($phpunit->beStrictAboutCoverageMetadata());
         $this->assertFalse($phpunit->beStrictAboutOutputDuringTests());
         $this->assertSame(123, $phpunit->defaultTimeLimit());
+        $this->assertSame(7, $phpunit->diffContext());
         $this->assertFalse($phpunit->enforceTimeLimit());
         $this->assertSame('/tmp', $phpunit->extensionsDirectory());
         $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());

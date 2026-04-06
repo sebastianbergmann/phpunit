@@ -98,6 +98,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\Util\Http\PhpDownloader;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -129,6 +130,8 @@ final readonly class Application
                 $cliConfiguration,
                 $xmlConfiguration,
             );
+
+            ComparatorFactory::getInstance()->setContextLines($configuration->diffContext());
 
             (new PhpHandler)->handle($configuration->php());
 

@@ -96,6 +96,7 @@ Reporting:
   --colors=<flag>                      Use colors in output ("never", "auto" or "always")
   --columns <n>                        Number of columns to use for progress output
   --columns max                        Use maximum number of columns for progress output
+  --diff-context <n>                   Number of context lines shown around changes in diffs (default: 3)
   --stderr                             Write to STDERR instead of STDOUT
 
   --no-progress                        Disable output of test execution progress

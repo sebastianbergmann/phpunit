@@ -251,6 +251,7 @@ final class Help
                 ['arg' => '--colors=<flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
                 ['arg'    => '--columns <n>', 'desc' => 'Number of columns to use for progress output'],
                 ['arg'    => '--columns max', 'desc' => 'Use maximum number of columns for progress output'],
+                ['arg'    => '--diff-context <n>', 'desc' => 'Number of context lines shown around changes in diffs (default: 3)'],
                 ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
                 ['spacer' => ''],
 

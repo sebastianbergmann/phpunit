@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 ### Added
 
 * [#6559](https://github.com/sebastianbergmann/phpunit/issues/6559): Improved API for exception message expectations
+* [#6567](https://github.com/sebastianbergmann/phpunit/issues/6567): Make diff context lines configurable
 
 ### Deprecated
 

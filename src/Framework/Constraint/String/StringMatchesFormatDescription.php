@@ -26,8 +26,8 @@ use function strpos;
 use function strtr;
 use function substr;
 use PHPUnit\Framework\Exception as FrameworkException;
+use PHPUnit\Util\DifferBuilder;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -262,6 +262,6 @@ final class StringMatchesFormatDescription extends Constraint
 
     private function differ(): Differ
     {
-        return new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"));
+        return DifferBuilder::build();
     }
 }

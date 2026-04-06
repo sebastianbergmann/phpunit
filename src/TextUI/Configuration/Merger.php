@@ -564,6 +564,12 @@ final readonly class Merger
             $defaultTimeLimit = $xmlConfiguration->phpunit()->defaultTimeLimit();
         }
 
+        if ($cliConfiguration->hasDiffContext()) {
+            $diffContext = $cliConfiguration->diffContext();
+        } else {
+            $diffContext = $xmlConfiguration->phpunit()->diffContext();
+        }
+
         $timeoutForSmallTests  = $xmlConfiguration->phpunit()->timeoutForSmallTests();
         $timeoutForMediumTests = $xmlConfiguration->phpunit()->timeoutForMediumTests();
         $timeoutForLargeTests  = $xmlConfiguration->phpunit()->timeoutForLargeTests();
@@ -1086,6 +1092,7 @@ final readonly class Merger
             $processIsolation,
             $enforceTimeLimit,
             $defaultTimeLimit,
+            $diffContext,
             $timeoutForSmallTests,
             $timeoutForMediumTests,
             $timeoutForLargeTests,

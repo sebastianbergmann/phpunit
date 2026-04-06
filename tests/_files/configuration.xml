@@ -24,6 +24,7 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutCoversAnnotation="false"
          defaultTimeLimit="123"
+         diffContext="7"
          enforceTimeLimit="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"

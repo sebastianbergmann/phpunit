@@ -2578,6 +2578,26 @@ final class BuilderTest extends TestCase
         $configuration->defaultTimeLimit();
     }
 
+    #[TestDox('--diff-context <n>')]
+    public function testDiffContext(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--diff-context', '5']);
+
+        $this->assertTrue($configuration->hasDiffContext());
+        $this->assertSame(5, $configuration->diffContext());
+    }
+
+    public function testDiffContextMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDiffContext());
+
+        $this->expectException(Exception::class);
+
+        $configuration->diffContext();
+    }
+
     #[TestDox('--enforce-time-limit')]
     public function testEnforceTimeLimit(): void
     {

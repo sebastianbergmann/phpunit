@@ -1030,6 +1030,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($document->documentElement, 'controlGarbageCollector', false),
             $this->parseIntegerAttribute($document->documentElement, 'numberOfTestsBeforeGarbageCollection', 100),
             $shortenArraysForExportThreshold,
+            $this->parseIntegerAttribute($document->documentElement, 'diffContext', 3),
         );
     }
 
