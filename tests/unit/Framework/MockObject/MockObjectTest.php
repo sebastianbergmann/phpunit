@@ -844,6 +844,50 @@ EOT,
         $this->fail();
     }
 
+    public function testMethodParametersCanOnlyBeConfiguredByOneMatcherForWith(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->once())->method('doSomethingElse')->with(1)->willReturn(1);
+
+        try {
+            $double->expects($this->once())->method('doSomethingElse')->with(2)->willReturn(2);
+        } catch (MethodParametersAlreadyConfiguredForAnotherMatcherException $e) {
+            $this->assertSame(
+                'Parameters for method "doSomethingElse" are already configured for another matcher. ' .
+                'with() configures an expectation (the method must be called with the specified arguments), ' .
+                'it does not select a return value based on arguments. ' .
+                'Use willReturnMap() to return different values based on arguments.',
+                $e->getMessage(),
+            );
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->fail();
+    }
+
+    public function testMethodParametersCanOnlyBeConfiguredByOneMatcherForWithAnyParameters(): void
+    {
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->once())->method('doSomethingElse')->with(1)->willReturn(1);
+
+        try {
+            $double->expects($this->once())->method('doSomethingElse')->withAnyParameters()->willReturn(2);
+        } catch (MethodParametersAlreadyConfiguredForAnotherMatcherException $e) {
+            $this->assertStringContainsString('doSomethingElse', $e->getMessage());
+
+            return;
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->fail();
+    }
+
     #[DoesNotPerformAssertions]
     #[IgnorePhpunitDeprecations]
     #[TestDox('with() can be used without expects() and is not verified when the method is not called')]

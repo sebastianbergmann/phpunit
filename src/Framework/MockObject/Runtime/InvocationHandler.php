@@ -231,6 +231,29 @@ final class InvocationHandler
         return $this->sealed;
     }
 
+    public function hasMatcherWithParametersRuleForMethodName(Matcher $excludeMatcher, string $methodName): bool
+    {
+        foreach ($this->matchers as $matcher) {
+            if ($matcher === $excludeMatcher) {
+                continue;
+            }
+
+            if (!$matcher->hasMethodNameRule()) {
+                continue;
+            }
+
+            if (!$matcher->hasParametersRule()) {
+                continue;
+            }
+
+            if ($matcher->methodNameRule()->matchesName($methodName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function addMatcher(Matcher $matcher): void
     {
         $this->matchers[] = $matcher;
