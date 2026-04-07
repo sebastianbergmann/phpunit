@@ -48,6 +48,7 @@ Here is a list of all components that are primarily developed and maintained by 
 * [sebastian/diff](https://github.com/sebastianbergmann/diff)
 * [sebastian/environment](https://github.com/sebastianbergmann/environment)
 * [sebastian/exporter](https://github.com/sebastianbergmann/exporter)
+* [sebastian/git-state](https://github.com/sebastianbergmann/git-state)
 * [sebastian/global-state](https://github.com/sebastianbergmann/global-state)
 * [sebastian/lines-of-code](https://github.com/sebastianbergmann/lines-of-code)
 * [sebastian/object-enumerator](https://github.com/sebastianbergmann/object-enumerator)
