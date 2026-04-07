@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
 use const PHP_VERSION;
+use const SIGINT;
 use function array_reverse;
 use function assert;
 use function class_exists;
@@ -19,9 +20,12 @@ use function defined;
 use function dirname;
 use function explode;
 use function function_exists;
+use function getmypid;
 use function in_array;
 use function is_file;
 use function method_exists;
+use function pcntl_async_signals;
+use function pcntl_signal;
 use function printf;
 use function realpath;
 use function sprintf;
@@ -235,6 +239,7 @@ final readonly class Application
 
             $this->configureDeprecationTriggers($configuration);
             $this->configureIssueTriggerResolvers($configuration);
+            $this->registerInterruptHandler();
 
             $timer = new Timer;
             $timer->start();
@@ -293,6 +298,18 @@ final readonly class Application
             }
 
             $result = TestResultFacade::result();
+
+            if (TestResultFacade::wasInterrupted()) {
+                if (!$extensionReplacesResultOutput && !$configuration->debug()) {
+                    $printer->print(PHP_EOL . PHP_EOL);
+                }
+
+                $printer->print('Test execution was interrupted by a signal.');
+
+                if ($extensionReplacesResultOutput || $configuration->debug()) {
+                    $printer->print(PHP_EOL);
+                }
+            }
 
             if (!$extensionReplacesResultOutput && !$configuration->debug()) {
                 OutputFacade::printResult(
@@ -739,6 +756,30 @@ final readonly class Application
     /**
      * @codeCoverageIgnore
      */
+    private function registerInterruptHandler(): void
+    {
+        if (!function_exists('pcntl_async_signals')) {
+            return;
+        }
+
+        $pid = getmypid();
+
+        pcntl_async_signals(true);
+
+        pcntl_signal(SIGINT, static function () use ($pid): void
+        {
+            if (getmypid() !== $pid) {
+                return;
+            }
+
+            if (TestResultFacade::wasInterrupted()) {
+                exit(2);
+            }
+
+            TestResultFacade::interrupt();
+        });
+    }
+
     private function exitWithCrashMessage(Throwable $t): never
     {
         $message = $t->getMessage();

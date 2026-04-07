@@ -26,10 +26,21 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 final class Facade
 {
     private static ?Collector $collector = null;
+    private static bool $interrupted     = false;
 
     public static function init(): void
     {
         self::collector();
+    }
+
+    public static function interrupt(): void
+    {
+        self::$interrupted = true;
+    }
+
+    public static function wasInterrupted(): bool
+    {
+        return self::$interrupted;
     }
 
     public static function result(): TestResult
@@ -39,6 +50,10 @@ final class Facade
 
     public static function shouldStop(): bool
     {
+        if (self::$interrupted) {
+            return true;
+        }
+
         $configuration = ConfigurationRegistry::get();
         $collector     = self::collector();
 
