@@ -88,7 +88,7 @@ final class SourceMapper
             foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
-                if (!$file) {
+                if ($file === false) {
                     continue;
                 }
 
@@ -103,7 +103,7 @@ final class SourceMapper
         foreach ($source->includeFiles() as $file) {
             $file = realpath($file->path());
 
-            if (!$file) {
+            if ($file === false) {
                 continue;
             }
 
@@ -116,7 +116,7 @@ final class SourceMapper
             foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
-                if (!$file) {
+                if ($file === false) {
                     continue;
                 }
 
@@ -131,7 +131,7 @@ final class SourceMapper
         foreach ($source->excludeFiles() as $file) {
             $file = realpath($file->path());
 
-            if (!$file) {
+            if ($file === false) {
                 continue;
             }
 
@@ -162,7 +162,7 @@ final class SourceMapper
             foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
                 $file = realpath($file);
 
-                if (!$file) {
+                if ($file === false) {
                     continue;
                 }
 
@@ -177,7 +177,7 @@ final class SourceMapper
 
             $path = realpath($file->path());
 
-            if (!$path) {
+            if ($path === false) {
                 continue;
             }
 

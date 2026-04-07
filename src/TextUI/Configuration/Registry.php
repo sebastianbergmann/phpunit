@@ -39,7 +39,7 @@ final class Registry
             serialize(self::get()),
         );
 
-        if ($result) {
+        if ($result !== false) {
             return true;
         }
 

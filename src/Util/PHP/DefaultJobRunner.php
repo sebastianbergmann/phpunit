@@ -122,7 +122,7 @@ final readonly class DefaultJobRunner extends JobRunner
             $environmentVariables,
         );
 
-        if (!is_resource($process)) {
+        if (!is_resource($process) || !isset($pipes[0])) {
             // @codeCoverageIgnoreStart
             throw new PhpProcessException(
                 'Unable to spawn worker process',

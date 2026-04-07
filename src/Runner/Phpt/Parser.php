@@ -68,7 +68,7 @@ final readonly class Parser
         foreach (file($phptFile) as $line) {
             $lineNr++;
 
-            if (preg_match('/^--([_A-Z]+)--/', $line, $result)) {
+            if (preg_match('/^--([_A-Z]+)--/', $line, $result) === 1) {
                 $section                        = $result[1];
                 $sections[$section]             = '';
                 $sections[$section . '_offset'] = $lineNr;

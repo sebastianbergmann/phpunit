@@ -73,6 +73,7 @@ use PHPUnit\Util\Xml\XmlException;
  */
 abstract class Assert
 {
+    /** @var non-negative-int */
     private static int $count = 0;
 
     /**
@@ -3156,6 +3157,8 @@ abstract class Assert
 
     /**
      * Return the current assertion count.
+     *
+     * @return non-negative-int
      */
     final public static function getCount(): int
     {

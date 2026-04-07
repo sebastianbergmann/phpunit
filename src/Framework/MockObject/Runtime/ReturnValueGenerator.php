@@ -121,6 +121,7 @@ final class ReturnValueGenerator
             }
 
             if (!$union) {
+                /** @var class-string $returnType */
                 return $this->testDoubleFor($returnType, $className, $methodName);
             }
         }
@@ -238,6 +239,7 @@ final class ReturnValueGenerator
     private function testDoubleForIntersectionOfInterfaces(array $types, string $className, string $methodName): Stub
     {
         try {
+            /** @var list<class-string> $types */
             return (new Generator)->testDoubleForInterfaceIntersection($types, false);
             // @codeCoverageIgnoreStart
         } catch (Throwable $t) {

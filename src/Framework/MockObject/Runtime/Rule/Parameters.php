@@ -103,7 +103,9 @@ final class Parameters implements ParametersRule
             throw new ExpectationFailedException('Doubled method does not exist.');
         }
 
-        if (count($this->invocation->parameters()) < count($this->parameters)) {
+        $invocationParameters = $this->invocation->parameters();
+
+        if (count($invocationParameters) < count($this->parameters)) {
             $message = 'Parameter count for invocation %s is too low.';
 
             // The user called `->with($this->anything())`, but may have meant
@@ -125,10 +127,12 @@ final class Parameters implements ParametersRule
         $parameters = $this->parameters($this->invocation);
 
         foreach ($this->parameters as $i => $parameter) {
+            $other = null;
+
             if ($parameter instanceof Callback && $parameter->isVariadic()) {
-                $other = $this->invocation->parameters();
-            } else {
-                $other = $this->invocation->parameters()[$i];
+                $other = $invocationParameters;
+            } elseif (isset($invocationParameters[$i])) {
+                $other = $invocationParameters[$i];
             }
 
             $this->incrementAssertionCount();

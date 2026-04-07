@@ -108,7 +108,14 @@ final class SeparateProcessTestRunner implements IsolatedTestRunner
         $offset                  = hrtime();
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
         $processResultFile       = $this->pathForCachedSourceMap();
-        $sourceMapFile           = $this->sourceMapFileForChildProcess();
+
+        if ($processResultFile === false || $processResultFile === '') {
+            // @codeCoverageIgnoreStart
+            throw new ProcessIsolationException;
+            // @codeCoverageIgnoreEnd
+        }
+
+        $sourceMapFile = $this->sourceMapFileForChildProcess();
 
         $file = $class->getFileName();
 

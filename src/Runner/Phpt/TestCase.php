@@ -363,7 +363,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
 
-            if (preg_match('/^\s*skip\s*(.+)\s*/i', $output, $skipMatch)) {
+            if (preg_match('/^\s*skip\s*(.+)\s*/i', $output, $skipMatch) === 1) {
                 $message = substr($skipMatch[1], 2);
             }
 
@@ -586,7 +586,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
     private function cleanDiffLine(string $line): string
     {
-        if (preg_match('/^[\-+]([\'\"]?)(.*)\1$/', $line, $matches)) {
+        if (preg_match('/^[\-+]([\'\"]?)(.*)\1$/', $line, $matches) === 1) {
             $line = $matches[2];
         }
 

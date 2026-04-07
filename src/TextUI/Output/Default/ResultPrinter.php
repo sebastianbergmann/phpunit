@@ -599,6 +599,8 @@ final class ResultPrinter
         $issues   = 0;
 
         foreach ($events as $reasons) {
+            assert(isset($reasons[0]));
+
             $test         = $reasons[0]->test();
             $testLocation = $this->testLocation($test);
             $title        = $this->name($test);
@@ -666,6 +668,8 @@ final class ResultPrinter
 
         if (count($lines) > 1) {
             foreach (range(1, count($lines) - 1) as $line) {
+                assert(isset($lines[$line]));
+
                 $buffer .= '  ' . $lines[$line] . PHP_EOL;
             }
         }

@@ -55,7 +55,13 @@ final readonly class CheckPhpConfigurationCommand implements Command
             if (in_array($actualValue, $setting['expectedValues'], true)) {
                 $check = $this->ok();
             } else {
-                $check         = $this->notOk($actualValue);
+                $actualValueAsString = '';
+
+                if ($actualValue !== false) {
+                    $actualValueAsString = $actualValue;
+                }
+
+                $check         = $this->notOk($actualValueAsString);
                 $shellExitCode = 1;
             }
 

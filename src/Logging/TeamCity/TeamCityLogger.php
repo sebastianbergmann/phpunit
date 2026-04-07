@@ -327,8 +327,14 @@ final class TeamCityLogger
 
     private function setFlowId(): void
     {
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
+        $disabledFunctions = ini_get('disable_functions');
+
+        if ($disabledFunctions === false || stripos($disabledFunctions, 'getmypid') === false) {
+            $pid = getmypid();
+
+            if ($pid !== false) {
+                $this->flowId = $pid;
+            }
         }
     }
 

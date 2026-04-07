@@ -415,11 +415,17 @@ abstract readonly class Metadata
         return new RequiresEnvironmentVariable(Level::METHOD_LEVEL, $environmentVariableName, $value);
     }
 
+    /**
+     * @param non-empty-string $environmentVariableName
+     */
     public static function withEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): WithEnvironmentVariable
     {
         return new WithEnvironmentVariable(Level::CLASS_LEVEL, $environmentVariableName, $value);
     }
 
+    /**
+     * @param non-empty-string $environmentVariableName
+     */
     public static function withEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): WithEnvironmentVariable
     {
         return new WithEnvironmentVariable(Level::METHOD_LEVEL, $environmentVariableName, $value);

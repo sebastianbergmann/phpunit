@@ -52,6 +52,10 @@ final readonly class Writer
             $writer->writeAttribute('path', $pathCalculator->calculate($file));
 
             foreach ($lines as $line => $issues) {
+                if (!isset($issues[0])) {
+                    continue;
+                }
+
                 $writer->startElement('line');
                 $writer->writeAttribute('number', (string) $line);
                 $writer->writeAttribute('hash', $issues[0]->hash());

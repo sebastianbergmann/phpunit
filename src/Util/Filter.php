@@ -63,7 +63,7 @@ final readonly class Filter
     }
 
     /**
-     * @param list<array{file: string, line: ?int, class?: class-string, function?: string, type: string}> $frames
+     * @param list<array{file?: string, line?: ?int, class?: class-string, function?: string, type?: string}> $frames
      */
     private static function stackTraceAsString(array $frames): string
     {
@@ -72,7 +72,7 @@ final readonly class Filter
         $excludeList = new ExcludeList;
 
         foreach ($frames as $frame) {
-            if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
+            if (isset($frame['file']) && self::shouldPrintFrame($frame, $prefix, $excludeList)) {
                 $buffer .= sprintf(
                     "%s:%s\n",
                     $frame['file'],
@@ -85,7 +85,7 @@ final readonly class Filter
     }
 
     /**
-     * @param array{file?: non-empty-string} $frame
+     * @param array{file?: string, line?: ?int, class?: class-string, function?: string, type?: string} $frame
      */
     private static function shouldPrintFrame(array $frame, false|string $prefix, ExcludeList $excludeList): bool
     {
@@ -121,7 +121,7 @@ final readonly class Filter
     }
 
     /**
-     * @param list<array{file?: non-empty-string, line?: int}> $trace
+     * @param list<array{file?: string, line?: ?int, class?: class-string, function?: string, type?: string}> $trace
      */
     private static function frameExists(array $trace, string $file, int $line): bool
     {

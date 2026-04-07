@@ -190,7 +190,7 @@ final readonly class GlobalState
         array_shift($files);
 
         // If bootstrap script was a Composer bin proxy, skip the second entry as well
-        if (str_ends_with(strtr($files[0], '\\', '/'), '/phpunit/phpunit/phpunit')) {
+        if (isset($files[0]) && str_ends_with(strtr($files[0], '\\', '/'), '/phpunit/phpunit/phpunit')) {
             // @codeCoverageIgnoreStart
             array_shift($files);
             // @codeCoverageIgnoreEnd

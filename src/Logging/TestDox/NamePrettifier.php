@@ -41,6 +41,7 @@ use function strtolower;
 use function substr;
 use function trim;
 use function ucfirst;
+use BackedEnum;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
@@ -50,10 +51,10 @@ use PHPUnit\Metadata\TestDoxFormatter;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Filter;
-use ReflectionEnum;
 use ReflectionMethod;
-use ReflectionObject;
+use Stringable;
 use Throwable;
+use UnitEnum;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -68,7 +69,7 @@ final class NamePrettifier
     private array $strings = [];
 
     /**
-     * @var array<non-empty-string, non-empty-string>
+     * @var array<non-empty-string, string>
      */
     private array $prettifiedTestCases = [];
 
@@ -164,13 +165,13 @@ final class NamePrettifier
 
         $buffer = preg_replace_callback_array(
             [
-                '/(?!^)([A-Z])/' => static fn (array $matches) => ' ' . strtolower($matches[1]),
-                '/(\d+)/'        => static fn (array $matches) => ' ' . $matches[1],
+                '/(?!^)([A-Z])/' => static fn (array $matches) => ' ' . strtolower((string) ($matches[1] ?? '')),
+                '/(\d+)/'        => static fn (array $matches) => ' ' . (string) ($matches[1] ?? ''),
             ],
             $name,
         );
 
-        return trim($buffer);
+        return trim((string) $buffer);
     }
 
     public function prettifyTestCase(TestCase $test, bool $colorize): string
@@ -233,7 +234,7 @@ final class NamePrettifier
     }
 
     /**
-     * @return array<non-empty-string, non-empty-string>
+     * @return array<non-empty-string, string>
      */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test, bool $colorize): array
     {
@@ -246,7 +247,7 @@ final class NamePrettifier
         $providedDataValues = $test->providedData();
         $i                  = 0;
 
-        $providedData['$_dataName'] = $test->dataName();
+        $providedData['$_dataName'] = (string) $test->dataName();
 
         foreach ($reflector->getParameters() as $parameter) {
             if (array_key_exists($parameter->getName(), $providedDataValues)) {
@@ -290,7 +291,7 @@ final class NamePrettifier
 
         if ($colorize) {
             $providedData = array_map(
-                static fn (mixed $value) => Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true)),
+                static fn (string $value) => Color::colorize('fg-cyan', Color::visualizeWhitespace($value, true)),
                 $providedData,
             );
         }
@@ -300,19 +301,15 @@ final class NamePrettifier
 
     private function objectToString(object $value): string
     {
-        $reflector = new ReflectionObject($value);
-
-        if ($reflector->isEnum()) {
-            $enumReflector = new ReflectionEnum($value);
-
-            if ($enumReflector->isBacked()) {
+        if ($value instanceof UnitEnum) {
+            if ($value instanceof BackedEnum) {
                 return (string) $value->value;
             }
 
-            return (string) $value->name;
+            return $value->name;
         }
 
-        if ($reflector->hasMethod('__toString')) {
+        if ($value instanceof Stringable || method_exists($value, '__toString')) {
             return (string) $value;
         }
 

@@ -110,7 +110,11 @@ final class TestRunner
             $test->addToAssertionCount(1);
 
             $failure = true;
-            $frame   = $e->getTrace()[0];
+            $trace   = $e->getTrace();
+
+            assert(isset($trace[0]));
+
+            $frame = $trace[0];
 
             assert(isset($frame['file']));
             assert(isset($frame['line']));

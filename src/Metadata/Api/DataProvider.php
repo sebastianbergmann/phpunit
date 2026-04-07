@@ -182,6 +182,12 @@ final readonly class DataProvider
                         );
                     }
 
+                    if ($key === '') {
+                        throw new InvalidDataProviderException(
+                            'The key must not be an empty string',
+                        );
+                    }
+
                     if (!is_array($value)) {
                         throw new InvalidDataProviderException(
                             sprintf(
@@ -271,6 +277,17 @@ final readonly class DataProvider
                             'The key must be an integer or a string, %s given',
                             get_debug_type($key),
                         ),
+                    );
+                }
+
+                if ($key === '') {
+                    Event\Facade::emitter()->dataProviderMethodFinished(
+                        $testMethodValueObject,
+                        ...$methodsCalled,
+                    );
+
+                    throw new InvalidDataProviderException(
+                        'The key must not be an empty string',
                     );
                 }
 
@@ -374,6 +391,10 @@ final readonly class DataProvider
         $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
         foreach ($result as $key => $providedData) {
+            if ($key === '') {
+                continue;
+            }
+
             $value = $providedData->value();
 
             if (!is_array($value)) {
@@ -435,11 +456,17 @@ final readonly class DataProvider
 
     private function testValueObject(ReflectionMethod $method): TestMethod
     {
+        $file = $method->getFileName();
+        $line = $method->getStartLine();
+
+        assert($file !== false && $file !== '');
+        assert($line !== false);
+
         return new TestMethod(
             $method->getDeclaringClass()->getName(),
             $method->getName(),
-            $method->getFileName(),
-            $method->getStartLine(),
+            $file,
+            $line,
             Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
                 $method->getDeclaringClass()->getName(),
                 $method->getName(),

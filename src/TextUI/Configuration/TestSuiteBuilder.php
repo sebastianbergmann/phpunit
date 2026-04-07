@@ -52,7 +52,7 @@ final readonly class TestSuiteBuilder
                 foreach ($configuration->cliArguments() as $cliArgument) {
                     $argument = realpath($cliArgument);
 
-                    if (!$argument) {
+                    if ($argument === false) {
                         throw new TestFileNotFoundException($cliArgument);
                     }
 
@@ -67,15 +67,21 @@ final readonly class TestSuiteBuilder
 
                 $directory = dirname($configuration->testFilesFile()) . DIRECTORY_SEPARATOR;
 
-                foreach (file($configuration->testFilesFile()) as $file) {
+                $fileLines = file($configuration->testFilesFile());
+
+                if ($fileLines === false) {
+                    throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
+                }
+
+                foreach ($fileLines as $file) {
                     $file     = trim($file);
                     $argument = realpath($file);
 
-                    if (!$argument) {
+                    if ($argument === false) {
                         $argument = realpath($directory . $file);
                     }
 
-                    if (!$argument) {
+                    if ($argument === false) {
                         throw new TestFileNotFoundException($file);
                     }
 

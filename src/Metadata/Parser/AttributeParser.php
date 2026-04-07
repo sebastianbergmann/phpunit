@@ -130,12 +130,20 @@ final readonly class AttributeParser implements Parser
             try {
                 $attributeInstance = $attribute->newInstance();
             } catch (Error $e) {
+                $file    = $reflector->getFileName();
+                $line    = $reflector->getStartLine();
+                $message = $e->getMessage();
+
+                assert($file !== false && $file !== '');
+                assert($line !== false);
+                assert($message !== '');
+
                 throw new InvalidAttributeException(
                     $attribute->getName(),
                     'class ' . $className,
-                    $reflector->getFileName(),
-                    $reflector->getStartLine(),
-                    $e->getMessage(),
+                    $file,
+                    $line,
+                    $message,
                 );
             }
 
@@ -541,12 +549,20 @@ final readonly class AttributeParser implements Parser
             try {
                 $attributeInstance = $attribute->newInstance();
             } catch (Error $e) {
+                $file    = $reflector->getFileName();
+                $line    = $reflector->getStartLine();
+                $message = $e->getMessage();
+
+                assert($file !== false && $file !== '');
+                assert($line !== false);
+                assert($message !== '');
+
                 throw new InvalidAttributeException(
                     $attribute->getName(),
                     'method ' . $className . '::' . $methodName . '()',
-                    $reflector->getFileName(),
-                    $reflector->getStartLine(),
-                    $e->getMessage(),
+                    $file,
+                    $line,
+                    $message,
                 );
             }
 

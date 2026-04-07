@@ -26,19 +26,24 @@ final readonly class DifferBuilder
      */
     public static function build(string $header = "--- Expected\n+++ Actual\n"): Differ
     {
+        $contextLines = ConfigurationRegistry::get()->diffContext();
+
         return new Differ(
             new UnifiedDiffOutputBuilder(
                 $header,
                 false,
-                ConfigurationRegistry::get()->diffContext(),
+                $contextLines,
             ),
         );
     }
 
     public static function configureComparatorFactory(): void
     {
+        /** @var int<1, max> $contextLines */
+        $contextLines = ConfigurationRegistry::get()->diffContext();
+
         ComparatorFactory::getInstance()->setContextLines(
-            ConfigurationRegistry::get()->diffContext(),
+            $contextLines,
         );
     }
 }

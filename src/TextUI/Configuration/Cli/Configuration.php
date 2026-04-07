@@ -55,6 +55,10 @@ final readonly class Configuration
     private ?bool $pathCoverage;
     private bool $warmCoverageCache;
     private ?int $defaultTimeLimit;
+
+    /**
+     * @var ?positive-int
+     */
     private ?int $diffContext;
     private ?bool $disableCodeCoverageIgnore;
     private ?bool $disallowTestOutput;
@@ -188,6 +192,7 @@ final readonly class Configuration
 
     /**
      * @param list<non-empty-string>                               $arguments
+     * @param ?positive-int                                        $diffContext
      * @param ?non-empty-list<non-empty-string>                    $excludeGroups
      * @param ?non-empty-list<non-empty-string>                    $groups
      * @param ?non-empty-list<non-empty-string>                    $testsCovering
@@ -885,6 +890,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return positive-int
      */
     public function diffContext(): int
     {

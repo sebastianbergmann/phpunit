@@ -142,7 +142,10 @@ final readonly class TestBuilder
             $test->setBackupStaticProperties(ConfigurationRegistry::get()->backupStaticProperties());
         }
 
-        $test->setBackupStaticPropertiesExcludeList($backupSettings['backupStaticPropertiesExcludeList']);
+        /** @var array<string, list<class-string>> $backupStaticPropertiesExcludeList */
+        $backupStaticPropertiesExcludeList = $backupSettings['backupStaticPropertiesExcludeList'];
+
+        $test->setBackupStaticPropertiesExcludeList($backupStaticPropertiesExcludeList);
     }
 
     /**

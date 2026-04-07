@@ -85,6 +85,10 @@ final readonly class Merger
             $cacheDirectory = realpath($xmlConfiguration->phpunit()->cacheDirectory());
         }
 
+        if ($cacheDirectory === false) {
+            $cacheDirectory = null;
+        }
+
         if ($cacheDirectory !== null) {
             $coverageCacheDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . 'code-coverage';
             $testResultCacheFile    = $cacheDirectory . DIRECTORY_SEPARATOR . 'test-results';
@@ -96,7 +100,7 @@ final readonly class Merger
             } else {
                 $candidate = realpath($_SERVER['PHP_SELF']);
 
-                if ($candidate) {
+                if ($candidate !== false) {
                     $testResultCacheFile = dirname($candidate) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
                 } else {
                     $testResultCacheFile = '.phpunit.result.cache';

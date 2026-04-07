@@ -390,6 +390,10 @@ final class ProgressPrinter
         $this->printProgressWithColor('fg-red, bold', 'E');
     }
 
+    /**
+     * @param non-empty-string $color
+     * @param non-empty-string $progress
+     */
     private function printProgressWithColor(string $color, string $progress): void
     {
         if ($this->colors) {
@@ -399,6 +403,9 @@ final class ProgressPrinter
         $this->printProgress($progress);
     }
 
+    /**
+     * @param non-empty-string $progress
+     */
     private function printProgress(string $progress): void
     {
         $this->printer->print($progress);

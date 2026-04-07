@@ -357,17 +357,29 @@ EOT;
 
             $parameterAsString = $parameter->__toString();
 
-            return explode(
+            $pos = strpos($parameterAsString, '<optional> ');
+
+            if ($pos === false) {
+                return 'null';
+            }
+
+            $parts = explode(
                 ' = ',
                 substr(
                     substr(
                         $parameterAsString,
-                        strpos($parameterAsString, '<optional> ') + strlen('<optional> '),
+                        $pos + strlen('<optional> '),
                     ),
                     0,
                     -2,
                 ),
-            )[1];
+            );
+
+            if (isset($parts[1])) {
+                return $parts[1];
+            }
+
+            return 'null';
             // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new ReflectionException(

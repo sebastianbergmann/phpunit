@@ -127,6 +127,10 @@ final readonly class Configuration
     private bool $processIsolation;
     private bool $enforceTimeLimit;
     private int $defaultTimeLimit;
+
+    /**
+     * @var positive-int
+     */
     private int $diffContext;
     private int $timeoutForSmallTests;
     private int $timeoutForMediumTests;
@@ -224,6 +228,7 @@ final readonly class Configuration
      * @param array<non-empty-string, non-empty-string>                                   $bootstrapForTestSuite
      * @param ?non-empty-string                                                           $pharExtensionDirectory
      * @param list<array{className: non-empty-string, parameters: array<string, string>}> $extensionBootstrappers
+     * @param positive-int                                                                $diffContext
      * @param ?non-empty-list<non-empty-string>                                           $testsCovering
      * @param ?non-empty-list<non-empty-string>                                           $testsUsing
      * @param ?non-empty-list<non-empty-string>                                           $testsRequiringPhpExtension
@@ -1218,6 +1223,9 @@ final readonly class Configuration
         return $this->defaultTimeLimit;
     }
 
+    /**
+     * @return positive-int
+     */
     public function diffContext(): int
     {
         return $this->diffContext;
