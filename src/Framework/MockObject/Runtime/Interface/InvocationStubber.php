@@ -58,6 +58,15 @@ interface InvocationStubber
     /**
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
+     * @param array<int, array<int, mixed>> $valueMap
+     *
+     * @return $this
+     */
+    public function willReturnStrictMap(array $valueMap): self;
+
+    /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @return $this
      */
     public function willReturnArgument(int $argumentIndex): self;

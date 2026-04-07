@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use Exception;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Generator\MethodNamedMethodException;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
@@ -164,6 +165,77 @@ abstract class TestDoubleTestCase extends TestCase
         );
 
         $this->assertSame('result', $double->methodStringDefault(null));
+    }
+
+    final public function testMethodCanBeConfiguredToReturnValuesBasedOnArgumentMappingUsingConstraints(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->method('doSomethingElse')
+            ->willReturnMap(
+                [
+                    [$this->greaterThan(5), 100],
+                    [$this->lessThanOrEqual(5), 200],
+                ],
+            );
+
+        $this->assertSame(100, $double->doSomethingElse(10));
+        $this->assertSame(200, $double->doSomethingElse(3));
+    }
+
+    final public function testMethodCanBeConfiguredToReturnValuesBasedOnStrictArgumentMapping(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->method('doSomethingElse')
+            ->willReturnStrictMap(
+                [
+                    [1, 2],
+                    [3, 4],
+                ],
+            );
+
+        $this->assertSame(2, $double->doSomethingElse(1));
+        $this->assertSame(4, $double->doSomethingElse(3));
+    }
+
+    final public function testStrictArgumentMappingThrowsWhenNoEntryMatches(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->method('doSomethingElse')
+            ->willReturnStrictMap(
+                [
+                    [1, 2],
+                ],
+            );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIsOrContains('No entry in the value map matched the invocation of');
+
+        $double->doSomethingElse(99);
+    }
+
+    final public function testStrictArgumentMappingSupportsConstraints(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        $double
+            ->method('doSomethingElse')
+            ->willReturnStrictMap(
+                [
+                    [$this->greaterThan(5), 100],
+                ],
+            );
+
+        $this->assertSame(100, $double->doSomethingElse(10));
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $double->doSomethingElse(3);
     }
 
     final public function testMethodCanBeConfiguredToReturnValuesUsingCallback(): void
