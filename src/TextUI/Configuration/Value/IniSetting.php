@@ -16,15 +16,24 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final readonly class IniSetting
 {
+    /**
+     * @var non-empty-string
+     */
     private string $name;
     private string $value;
 
+    /**
+     * @param non-empty-string $name
+     */
     public function __construct(string $name, string $value)
     {
         $this->name  = $name;
         $this->value = $value;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;

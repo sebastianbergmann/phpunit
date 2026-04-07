@@ -16,13 +16,22 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final readonly class Group
 {
+    /**
+     * @var non-empty-string
+     */
     private string $name;
 
+    /**
+     * @param non-empty-string $name
+     */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;

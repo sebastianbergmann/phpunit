@@ -23,6 +23,10 @@ final readonly class TestDirectory
      */
     private string $path;
     private string $prefix;
+
+    /**
+     * @var non-empty-string
+     */
     private string $suffix;
     private string $phpVersion;
     private VersionComparisonOperator $phpVersionOperator;
@@ -34,6 +38,7 @@ final readonly class TestDirectory
 
     /**
      * @param non-empty-string       $path
+     * @param non-empty-string       $suffix
      * @param list<non-empty-string> $groups
      */
     public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator, array $groups)
@@ -59,6 +64,9 @@ final readonly class TestDirectory
         return $this->prefix;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function suffix(): string
     {
         return $this->suffix;

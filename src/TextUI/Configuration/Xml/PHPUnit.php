@@ -18,9 +18,16 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final readonly class PHPUnit
 {
+    /**
+     * @var ?non-empty-string
+     */
     private ?string $cacheDirectory;
     private bool $cacheResult;
     private int|string $columns;
+
+    /**
+     * @var non-empty-string
+     */
     private string $colors;
     private bool $stderr;
     private bool $displayDetailsOnAllIssues;
@@ -35,6 +42,10 @@ final readonly class PHPUnit
     private bool $reverseDefectList;
     private bool $requireCoverageMetadata;
     private bool $requireSealedMockObjects;
+
+    /**
+     * @var ?non-empty-string
+     */
     private ?string $bootstrap;
 
     /**
@@ -53,14 +64,50 @@ final readonly class PHPUnit
     private bool $failOnRisky;
     private bool $failOnSkipped;
     private bool $failOnWarning;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnDefect;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnDeprecation;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnError;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnFailure;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnIncomplete;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnNotice;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnRisky;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnSkipped;
+
+    /**
+     * @var non-negative-int
+     */
     private int $stopOnWarning;
 
     /**
@@ -72,10 +119,30 @@ final readonly class PHPUnit
     private bool $beStrictAboutTestsThatDoNotTestAnything;
     private bool $beStrictAboutCoverageMetadata;
     private bool $enforceTimeLimit;
+
+    /**
+     * @var non-negative-int
+     */
     private int $defaultTimeLimit;
+
+    /**
+     * @var positive-int
+     */
     private int $timeoutForSmallTests;
+
+    /**
+     * @var positive-int
+     */
     private int $timeoutForMediumTests;
+
+    /**
+     * @var positive-int
+     */
     private int $timeoutForLargeTests;
+
+    /**
+     * @var ?non-empty-string
+     */
     private ?string $defaultTestSuite;
     private int $executionOrder;
     private bool $resolveDependencies;
@@ -85,6 +152,10 @@ final readonly class PHPUnit
     private bool $testdoxPrinter;
     private bool $testdoxPrinterSummary;
     private bool $controlGarbageCollector;
+
+    /**
+     * @var positive-int
+     */
     private int $numberOfTestsBeforeGarbageCollection;
 
     /**
@@ -98,8 +169,23 @@ final readonly class PHPUnit
     private int $shortenArraysForExportThreshold;
 
     /**
+     * @param non-empty-string                          $colors
      * @param array<non-empty-string, non-empty-string> $bootstrapForTestSuite
+     * @param non-negative-int                          $stopOnDefect
+     * @param non-negative-int                          $stopOnDeprecation
+     * @param non-negative-int                          $stopOnError
+     * @param non-negative-int                          $stopOnFailure
+     * @param non-negative-int                          $stopOnIncomplete
+     * @param non-negative-int                          $stopOnNotice
+     * @param non-negative-int                          $stopOnRisky
+     * @param non-negative-int                          $stopOnSkipped
+     * @param non-negative-int                          $stopOnWarning
      * @param ?non-empty-string                         $extensionsDirectory
+     * @param non-negative-int                          $defaultTimeLimit
+     * @param positive-int                              $timeoutForSmallTests
+     * @param positive-int                              $timeoutForMediumTests
+     * @param positive-int                              $timeoutForLargeTests
+     * @param positive-int                              $numberOfTestsBeforeGarbageCollection
      * @param non-negative-int                          $shortenArraysForExportThreshold
      * @param positive-int                              $diffContext
      */
@@ -179,6 +265,8 @@ final readonly class PHPUnit
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-string
      */
     public function cacheDirectory(): string
     {
@@ -199,6 +287,9 @@ final readonly class PHPUnit
         return $this->columns;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function colors(): string
     {
         return $this->colors;
@@ -279,6 +370,8 @@ final readonly class PHPUnit
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-string
      */
     public function bootstrap(): string
     {
@@ -357,46 +450,73 @@ final readonly class PHPUnit
         return $this->failOnWarning;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnDefect(): int
     {
         return $this->stopOnDefect;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnDeprecation(): int
     {
         return $this->stopOnDeprecation;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnError(): int
     {
         return $this->stopOnError;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnFailure(): int
     {
         return $this->stopOnFailure;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnIncomplete(): int
     {
         return $this->stopOnIncomplete;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnNotice(): int
     {
         return $this->stopOnNotice;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnRisky(): int
     {
         return $this->stopOnRisky;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnSkipped(): int
     {
         return $this->stopOnSkipped;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function stopOnWarning(): int
     {
         return $this->stopOnWarning;
@@ -449,21 +569,33 @@ final readonly class PHPUnit
         return $this->enforceTimeLimit;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function defaultTimeLimit(): int
     {
         return $this->defaultTimeLimit;
     }
 
+    /**
+     * @return positive-int
+     */
     public function timeoutForSmallTests(): int
     {
         return $this->timeoutForSmallTests;
     }
 
+    /**
+     * @return positive-int
+     */
     public function timeoutForMediumTests(): int
     {
         return $this->timeoutForMediumTests;
     }
 
+    /**
+     * @return positive-int
+     */
     public function timeoutForLargeTests(): int
     {
         return $this->timeoutForLargeTests;
@@ -479,6 +611,8 @@ final readonly class PHPUnit
 
     /**
      * @throws Exception
+     *
+     * @return non-empty-string
      */
     public function defaultTestSuite(): string
     {
@@ -529,6 +663,9 @@ final readonly class PHPUnit
         return $this->controlGarbageCollector;
     }
 
+    /**
+     * @return positive-int
+     */
     public function numberOfTestsBeforeGarbageCollection(): int
     {
         return $this->numberOfTestsBeforeGarbageCollection;

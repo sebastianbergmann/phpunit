@@ -16,15 +16,24 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final readonly class Constant
 {
+    /**
+     * @var non-empty-string
+     */
     private string $name;
     private bool|string $value;
 
+    /**
+     * @param non-empty-string $name
+     */
     public function __construct(string $name, bool|string $value)
     {
         $this->name  = $name;
         $this->value = $value;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function name(): string
     {
         return $this->name;
