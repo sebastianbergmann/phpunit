@@ -105,6 +105,14 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
                     );
                 }
             } // Handles:
+            //  * testAssertEqualsSucceeds#named data set
+            elseif (preg_match('/^(.*?)#(.+)$/', $filter, $matches) === 1) {
+                $filter = sprintf(
+                    '%s.*with data set "%s"$',
+                    $matches[1],
+                    $matches[2],
+                );
+            } // Handles:
             //  * testDetermineJsonError@JSON_ERROR_NONE
             //  * testDetermineJsonError@JSON.*
             elseif (preg_match('/^(.*?)@(.+)$/', $filter, $matches) === 1) {

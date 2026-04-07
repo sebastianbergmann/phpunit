@@ -78,6 +78,7 @@ use PHPUnit\TextUI\Command\CheckPhpConfigurationCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
 use PHPUnit\TextUI\Command\ListTestFilesCommand;
+use PHPUnit\TextUI\Command\ListTestIdsCommand;
 use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
 use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
@@ -504,6 +505,18 @@ final readonly class Application
         if ($cliConfiguration->listGroups()) {
             $this->execute(
                 new ListGroupsCommand(
+                    $this->filteredTests(
+                        $configuration,
+                        $testSuite,
+                    ),
+                ),
+                true,
+            );
+        }
+
+        if ($cliConfiguration->listTestIds()) {
+            $this->execute(
+                new ListTestIdsCommand(
                     $this->filteredTests(
                         $configuration,
                         $testSuite,

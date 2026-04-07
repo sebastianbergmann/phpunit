@@ -43,6 +43,7 @@
   [32m--requires-php-extension [36m<name>[0m     [0m Only run tests that require PHP
                                        extension <name>
   [32m--list-test-files                   [0m List available test files
+  [32m--list-test-ids                     [0m List available tests as test IDs
   [32m--list-tests                        [0m List available tests
   [32m--list-tests-xml [36m<file>[0m             [0m List available tests in XML format
   [32m--filter [36m<pattern>[0m                  [0m Filter which tests to run

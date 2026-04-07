@@ -181,6 +181,7 @@ final class Help
                 ['arg' => '--uses <name>', 'desc' => 'Only run tests that intend to use <name>'],
                 ['arg' => '--requires-php-extension <name>', 'desc' => 'Only run tests that require PHP extension <name>'],
                 ['arg' => '--list-test-files', 'desc' => 'List available test files'],
+                ['arg' => '--list-test-ids', 'desc' => 'List available tests as test IDs'],
                 ['arg' => '--list-tests', 'desc' => 'List available tests'],
                 ['arg' => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],
                 ['arg' => '--filter <pattern>', 'desc' => 'Filter which tests to run'],

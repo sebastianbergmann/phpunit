@@ -936,6 +936,21 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->listTestFiles());
     }
 
+    #[TestDox('--list-test-ids')]
+    public function testListTestIds(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--list-test-ids']);
+
+        $this->assertTrue($configuration->listTestIds());
+    }
+
+    public function testListTestIdsMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->listTestIds());
+    }
+
     #[TestDox('--list-tests')]
     public function testListTests(): void
     {

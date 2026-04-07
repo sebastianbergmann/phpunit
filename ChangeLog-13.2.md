@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6566](https://github.com/sebastianbergmann/phpunit/pull/6566): Allow `--stop-on-defect`, `--stop-on-error`, etc. to accept an optional threshold
 * [#6567](https://github.com/sebastianbergmann/phpunit/issues/6567): Make diff context lines configurable
 * [#6574](https://github.com/sebastianbergmann/phpunit/issues/6574): Improve `willReturnMap()` with constraint support and strict matching
+* [#6575](https://github.com/sebastianbergmann/phpunit/issues/6575): Add `--list-test-ids` CLI option and enhance `--filter` CLI option to support test ID syntax
 
 ### Deprecated
 

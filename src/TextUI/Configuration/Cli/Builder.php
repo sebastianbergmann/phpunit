@@ -93,6 +93,7 @@ final class Builder
         'list-groups',
         'list-suites',
         'list-test-files',
+        'list-test-ids',
         'list-tests',
         'list-tests-xml=',
         'log-junit=',
@@ -290,6 +291,7 @@ final class Builder
         $listGroups                        = false;
         $listSuites                        = false;
         $listTestFiles                     = false;
+        $listTestIds                       = false;
         $listTests                         = false;
         $listTestsXml                      = null;
         $noCoverage                        = null;
@@ -617,6 +619,11 @@ final class Builder
 
                 case '--list-test-files':
                     $listTestFiles = true;
+
+                    break;
+
+                case '--list-test-ids':
+                    $listTestIds = true;
 
                     break;
 
@@ -1355,6 +1362,7 @@ final class Builder
             $listGroups,
             $listSuites,
             $listTestFiles,
+            $listTestIds,
             $listTests,
             $listTestsXml,
             $noCoverage,
