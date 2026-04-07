@@ -47,13 +47,13 @@ final class DefaultResultCache implements ResultCache
      */
     private array $times = [];
 
-    public function __construct(?string $filepath = null)
+    public function __construct(string $filepath)
     {
-        if ($filepath !== null && is_dir($filepath)) {
+        if (is_dir($filepath)) {
             $filepath .= DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
         }
 
-        $this->cacheFilename = $filepath ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
+        $this->cacheFilename = $filepath;
     }
 
     public function setStatus(ResultCacheId $id, TestStatus $status): void
