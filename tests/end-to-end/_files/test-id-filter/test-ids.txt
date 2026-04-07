@@ -1,0 +1,2 @@
+PHPUnit\TestFixture\TestIdFilter\FooTest::testOne
+PHPUnit\TestFixture\TestIdFilter\FooTest::testThree

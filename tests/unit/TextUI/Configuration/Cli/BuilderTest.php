@@ -53,6 +53,26 @@ final class BuilderTest extends TestCase
         $configuration->testFilesFile();
     }
 
+    #[TestDox('--test-id-filter-file test-ids.txt')]
+    public function testTestIdFile(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--test-id-filter-file', 'test-ids.txt']);
+
+        $this->assertTrue($configuration->hasTestIdFile());
+        $this->assertSame('test-ids.txt', $configuration->testIdFile());
+    }
+
+    public function testTestIdFileMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTestIdFile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->testIdFile();
+    }
+
     #[TestDox('--all')]
     public function testAll(): void
     {

@@ -158,6 +158,7 @@ final class Builder
         'testsuite=',
         'exclude-testsuite=',
         'test-files-file=',
+        'test-id-filter-file=',
         'log-events-text=',
         'log-events-verbose-text=',
         'version',
@@ -311,6 +312,7 @@ final class Builder
         $testSuite                         = null;
         $excludeTestSuite                  = null;
         $testFilesFile                     = null;
+        $testIdFile                        = null;
         $useDefaultConfiguration           = true;
         $version                           = false;
         $logEventsText                     = null;
@@ -491,6 +493,11 @@ final class Builder
 
                 case '--test-files-file':
                     $testFilesFile = $option[1];
+
+                    break;
+
+                case '--test-id-filter-file':
+                    $testIdFile = $option[1];
 
                     break;
 
@@ -1262,6 +1269,7 @@ final class Builder
         return new Configuration(
             $options[1],
             $testFilesFile,
+            $testIdFile,
             $all,
             $atLeastVersion,
             $backupGlobals,

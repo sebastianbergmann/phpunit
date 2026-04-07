@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\TextUI;
 
+use const FILE_IGNORE_NEW_LINES;
+use const FILE_SKIP_EMPTY_LINES;
 use function array_map;
+use function file;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Filter\Factory;
@@ -26,15 +29,17 @@ final readonly class TestSuiteFilterProcessor
     /**
      * @throws Event\RuntimeException
      * @throws FilterNotConfiguredException
+     * @throws RuntimeException
      */
     public function process(Configuration $configuration, TestSuite $suite): void
     {
         $factory = new Factory;
 
         if (!$configuration->hasFilter() &&
+            !$configuration->hasExcludeFilter() &&
+            !$configuration->hasTestIdFilterFile() &&
             !$configuration->hasGroups() &&
             !$configuration->hasExcludeGroups() &&
-            !$configuration->hasExcludeFilter() &&
             !$configuration->hasTestsCovering() &&
             !$configuration->hasTestsUsing() &&
             !$configuration->hasTestsRequiringPhpExtension()) {
@@ -78,6 +83,18 @@ final readonly class TestSuiteFilterProcessor
                     $configuration->testsRequiringPhpExtension(),
                 ),
             );
+        }
+
+        if ($configuration->hasTestIdFilterFile()) {
+            $lines = @file($configuration->testIdFilterFile(), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+            if ($lines === false) {
+                throw new RuntimeException('Cannot read from ' . $configuration->testIdFilterFile());
+            }
+
+            if ($lines !== []) {
+                $factory->addTestIdFilter($lines);
+            }
         }
 
         if ($configuration->hasExcludeFilter()) {

@@ -823,6 +823,12 @@ final readonly class Merger
             $excludeFilter = $cliConfiguration->excludeFilter();
         }
 
+        $testIdFilterFile = null;
+
+        if ($cliConfiguration->hasTestIdFile()) {
+            $testIdFilterFile = $cliConfiguration->testIdFile();
+        }
+
         $ignoreTestSelectionInXmlConfiguration = false;
 
         if ($cliConfiguration->hasAll()) {
@@ -1138,6 +1144,7 @@ final readonly class Merger
             $testsRequiringPhpExtension,
             $filter,
             $excludeFilter,
+            $testIdFilterFile,
             $groups,
             $excludeGroups,
             $randomOrderSeed,

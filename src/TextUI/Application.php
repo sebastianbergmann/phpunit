@@ -202,6 +202,15 @@ final readonly class Application
 
             $testSuite = $this->buildTestSuite($configuration);
 
+            if ($configuration->hasTestIdFilterFile() && !is_file($configuration->testIdFilterFile())) {
+                $this->exitWithErrorMessage(
+                    sprintf(
+                        'Test ID filter file "%s" not found',
+                        $configuration->testIdFilterFile(),
+                    ),
+                );
+            }
+
             ErrorHandler::instance()->restoreDeprecationHandler();
 
             $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);

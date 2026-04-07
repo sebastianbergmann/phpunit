@@ -53,6 +53,8 @@
                                        Test.php,.phpt
   [32m--test-files-file [36m<file>[0m            [0m Only run test files listed in file (one
                                        file by line)
+  [32m--test-id-filter-file [36m<file>[0m        [0m Only run tests listed by test ID in file
+                                       (one test ID per line)
 
 [33mExecution:[0m
 
