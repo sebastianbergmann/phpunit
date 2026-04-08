@@ -51,6 +51,7 @@ use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringEqualsStringIgnoringLineEndings;
+use PHPUnit\Framework\Constraint\StringEqualsStringIgnoringWhitespace;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
@@ -1342,6 +1343,23 @@ if (!function_exists('PHPUnit\Framework\assertFileEqualsIgnoringCase')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertFileEqualsFileIgnoringWhitespace')) {
+    /**
+     * Asserts that the contents of one file is equal to the contents of another
+     * file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertFileEqualsFileIgnoringWhitespace
+     */
+    function assertFileEqualsFileIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        Assert::assertFileEqualsFileIgnoringWhitespace(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertFileNotEquals')) {
     /**
      * Asserts that the contents of one file is not equal to the contents of
@@ -1390,6 +1408,23 @@ if (!function_exists('PHPUnit\Framework\assertFileNotEqualsIgnoringCase')) {
     function assertFileNotEqualsIgnoringCase(string $expected, string $actual, string $message = ''): void
     {
         Assert::assertFileNotEqualsIgnoringCase(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertFileNotEqualsFileIgnoringWhitespace')) {
+    /**
+     * Asserts that the contents of one file is not equal to the contents of another
+     * file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertFileNotEqualsFileIgnoringWhitespace
+     */
+    function assertFileNotEqualsFileIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        Assert::assertFileNotEqualsFileIgnoringWhitespace(...func_get_args());
     }
 }
 
@@ -1492,6 +1527,40 @@ if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringCase'))
     function assertStringNotEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
     {
         Assert::assertStringNotEqualsFileIgnoringCase(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertStringEqualsFileIgnoringWhitespace')) {
+    /**
+     * Asserts that the contents of a string is equal
+     * to the contents of a file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertStringEqualsFileIgnoringWhitespace
+     */
+    function assertStringEqualsFileIgnoringWhitespace(string $expectedFile, string $actualString, string $message = ''): void
+    {
+        Assert::assertStringEqualsFileIgnoringWhitespace(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringWhitespace')) {
+    /**
+     * Asserts that the contents of a string is not equal
+     * to the contents of a file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertStringNotEqualsFileIgnoringWhitespace
+     */
+    function assertStringNotEqualsFileIgnoringWhitespace(string $expectedFile, string $actualString, string $message = ''): void
+    {
+        Assert::assertStringNotEqualsFileIgnoringWhitespace(...func_get_args());
     }
 }
 
@@ -2594,6 +2663,38 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndi
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringWhitespace')) {
+    /**
+     * Asserts that two strings are equal ignoring whitespace.
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertStringEqualsStringIgnoringWhitespace
+     */
+    function assertStringEqualsStringIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        Assert::assertStringEqualsStringIgnoringWhitespace(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertStringNotEqualsStringIgnoringWhitespace')) {
+    /**
+     * Asserts that two strings are not equal ignoring whitespace.
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertStringNotEqualsStringIgnoringWhitespace
+     */
+    function assertStringNotEqualsStringIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        Assert::assertStringNotEqualsStringIgnoringWhitespace(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertFileMatchesFormat')) {
     /**
      * Asserts that a string matches a given format string.
@@ -3459,6 +3560,13 @@ if (!function_exists('PHPUnit\Framework\stringEqualsStringIgnoringLineEndings'))
     function stringEqualsStringIgnoringLineEndings(string $string): StringEqualsStringIgnoringLineEndings
     {
         return Assert::stringEqualsStringIgnoringLineEndings(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\stringEqualsStringIgnoringWhitespace')) {
+    function stringEqualsStringIgnoringWhitespace(string $string): StringEqualsStringIgnoringWhitespace
+    {
+        return Assert::stringEqualsStringIgnoringWhitespace(...func_get_args());
     }
 }
 

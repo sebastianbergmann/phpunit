@@ -60,6 +60,7 @@ use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringEqualsStringIgnoringLineEndings;
+use PHPUnit\Framework\Constraint\StringEqualsStringIgnoringWhitespace;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
@@ -1297,6 +1298,24 @@ abstract class Assert
     }
 
     /**
+     * Asserts that the contents of one file is equal to the contents of another
+     * file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertFileEqualsFileIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        self::assertFileExists($expected, $message);
+        self::assertFileExists($actual, $message);
+
+        self::assertThat(
+            file_get_contents($actual),
+            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expected)),
+            $message,
+        );
+    }
+
+    /**
      * Asserts that the contents of one file is not equal to the contents of
      * another file.
      *
@@ -1345,6 +1364,24 @@ abstract class Assert
 
         $constraint = new LogicalNot(
             new IsEqualIgnoringCase(file_get_contents($expected)),
+        );
+
+        self::assertThat(file_get_contents($actual), $constraint, $message);
+    }
+
+    /**
+     * Asserts that the contents of one file is not equal to the contents of another
+     * file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertFileNotEqualsFileIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        self::assertFileExists($expected, $message);
+        self::assertFileExists($actual, $message);
+
+        $constraint = new LogicalNot(
+            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expected)),
         );
 
         self::assertThat(file_get_contents($actual), $constraint, $message);
@@ -1441,6 +1478,40 @@ abstract class Assert
 
         $constraint = new LogicalNot(
             new IsEqualIgnoringCase(file_get_contents($expectedFile)),
+        );
+
+        self::assertThat($actualString, $constraint, $message);
+    }
+
+    /**
+     * Asserts that the contents of a string is equal
+     * to the contents of a file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertStringEqualsFileIgnoringWhitespace(string $expectedFile, string $actualString, string $message = ''): void
+    {
+        self::assertFileExists($expectedFile, $message);
+
+        self::assertThat(
+            $actualString,
+            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expectedFile)),
+            $message,
+        );
+    }
+
+    /**
+     * Asserts that the contents of a string is not equal
+     * to the contents of a file (ignoring whitespace).
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertStringNotEqualsFileIgnoringWhitespace(string $expectedFile, string $actualString, string $message = ''): void
+    {
+        self::assertFileExists($expectedFile, $message);
+
+        $constraint = new LogicalNot(
+            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expectedFile)),
         );
 
         self::assertThat($actualString, $constraint, $message);
@@ -2358,6 +2429,32 @@ abstract class Assert
     }
 
     /**
+     * Asserts that two strings are equal ignoring whitespace.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertStringEqualsStringIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        self::assertThat($actual, self::stringEqualsStringIgnoringWhitespace($expected), $message);
+    }
+
+    /**
+     * Asserts that two strings are not equal ignoring whitespace.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertStringNotEqualsStringIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new LogicalNot(
+                self::stringEqualsStringIgnoringWhitespace($expected),
+            ),
+            $message,
+        );
+    }
+
+    /**
      * Asserts that a string matches a given format string.
      *
      * @throws ExpectationFailedException
@@ -3111,6 +3208,11 @@ abstract class Assert
     final public static function stringEqualsStringIgnoringLineEndings(string $string): StringEqualsStringIgnoringLineEndings
     {
         return new StringEqualsStringIgnoringLineEndings($string);
+    }
+
+    final public static function stringEqualsStringIgnoringWhitespace(string $string): StringEqualsStringIgnoringWhitespace
+    {
+        return new StringEqualsStringIgnoringWhitespace($string);
     }
 
     final public static function countOf(int $count): Count
