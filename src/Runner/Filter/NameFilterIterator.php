@@ -97,7 +97,7 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
 
                     $dataSetMinimum = (int) $matches[2];
                     $dataSetMaximum = (int) $matches[3];
-                } else {
+                } elseif ($matches[1] !== '') {
                     $filter = sprintf(
                         '%s.*with data set #%s$',
                         $matches[1],
