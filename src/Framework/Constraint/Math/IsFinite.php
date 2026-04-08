@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_array;
 use function is_finite;
+use function is_object;
+use PHPUnit\Util\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -31,5 +34,14 @@ final class IsFinite extends Constraint
     protected function matches(mixed $other): bool
     {
         return is_finite($other);
+    }
+
+    protected function failureDescription(mixed $other): string
+    {
+        if (is_array($other) || is_object($other)) {
+            return $this->valueToTypeStringFragment($other) . $this->toString();
+        }
+
+        return Exporter::export($other) . ' ' . $this->toString();
     }
 }

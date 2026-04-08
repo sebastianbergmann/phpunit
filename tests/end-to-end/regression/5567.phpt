@@ -20,11 +20,7 @@ Time: %s, Memory: %s MB
 There was 1 failure:
 
 1) PHPUnit\TestFixture\Issue5567\Issue5567Test::testAnythingThatFailsWithRecursiveArray
-Failed asserting that Array &0 [
-    'self' => Array &1 [
-        'self' => Array &1,
-    ],
-] is false.
+Failed asserting that an array is false.
 
 %sIssue5567Test.php:%d
 
