@@ -29,11 +29,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -77,11 +85,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -120,11 +136,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -200,11 +224,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -277,11 +309,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -328,11 +368,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -402,11 +450,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -474,11 +530,19 @@ jobs:
 
       - name: Use local branch
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          BRANCH=$([ "${{ github.event_name }}" == "pull_request" ] && echo "${{ github.head_ref }}" || echo "${{ github.ref_name }}")
-          git branch -D $BRANCH 2>/dev/null || true
-          git branch $BRANCH HEAD
-          git checkout $BRANCH
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BRANCH="$HEAD_REF"
+          else
+            BRANCH="$REF_NAME"
+          fi
+          git branch -D "$BRANCH" 2>/dev/null || true
+          git branch "$BRANCH" HEAD
+          git checkout "$BRANCH"
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
