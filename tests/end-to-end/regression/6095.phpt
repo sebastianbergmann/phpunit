@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) PHPUnit\TestFixture\Issue6095\Issue6095Test::testOne
-PHPUnit\TestFixture\MockObject\AnInterface::doSomething(): bool was not expected to be called more than once.
+PHPUnit\TestFixture\MockObject\AnInterface::doSomething(): bool was not expected to be called more than once, actually called 2 times.
 
 %sIssue6095Test.php:26
 
