@@ -1,0 +1,32 @@
+--TEST--
+phpunit --run-test-id 'PHPUnit\TestFixture\TestIdFilter\FooTest::testOne'
+--FILE--
+<?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--run-test-id';
+$_SERVER['argv'][] = 'PHPUnit\TestFixture\TestIdFilter\FooTest::testOne';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/test-id-filter/tests/FooTest.php';
+
+require_once __DIR__ . '/../../../bootstrap.php';
+
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+--EXPECTF--
+PHPUnit Started (PHPUnit %s using %s)
+Test Runner Configured
+Event Facade Sealed
+Test Suite Loaded (3 tests)
+Test Runner Started
+Test Suite Sorted
+Test Suite Filtered (1 test)
+Test Runner Execution Started (1 test)
+Test Suite Started (PHPUnit\TestFixture\TestIdFilter\FooTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\TestIdFilter\FooTest::testOne)
+Test Prepared (PHPUnit\TestFixture\TestIdFilter\FooTest::testOne)
+Test Passed (PHPUnit\TestFixture\TestIdFilter\FooTest::testOne)
+Test Finished (PHPUnit\TestFixture\TestIdFilter\FooTest::testOne)
+Test Suite Finished (PHPUnit\TestFixture\TestIdFilter\FooTest, 1 test)
+Test Runner Execution Finished
+Test Runner Finished
+PHPUnit Finished (Shell Exit Code: 0)

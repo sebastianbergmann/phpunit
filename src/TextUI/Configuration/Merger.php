@@ -829,6 +829,12 @@ final readonly class Merger
             $testIdFilterFile = $cliConfiguration->testIdFile();
         }
 
+        $testIdFilter = null;
+
+        if ($cliConfiguration->hasTestIdFilter()) {
+            $testIdFilter = $cliConfiguration->testIdFilter();
+        }
+
         $ignoreTestSelectionInXmlConfiguration = false;
 
         if ($cliConfiguration->hasAll()) {
@@ -1145,6 +1151,7 @@ final readonly class Merger
             $filter,
             $excludeFilter,
             $testIdFilterFile,
+            $testIdFilter,
             $groups,
             $excludeGroups,
             $randomOrderSeed,

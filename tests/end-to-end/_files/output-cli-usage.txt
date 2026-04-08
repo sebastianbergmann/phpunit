@@ -39,6 +39,7 @@ Selection:
   --exclude-filter <pattern>           Exclude tests for the specified filter pattern
   --test-suffix <suffixes>             Only search for test in files with specified suffix(es). Default: Test.php,.phpt
   --test-files-file <file>             Only run test files listed in file (one file by line)
+  --run-test-id <test-id>              Only run the test identified by the specified test ID
   --test-id-filter-file <file>         Only run tests listed by test ID in file (one test ID per line)
 
 Execution:

@@ -73,6 +73,26 @@ final class BuilderTest extends TestCase
         $configuration->testIdFile();
     }
 
+    #[TestDox('--run-test-id Foo::testBar')]
+    public function testTestIdFilter(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--run-test-id', 'Foo::testBar']);
+
+        $this->assertTrue($configuration->hasTestIdFilter());
+        $this->assertSame('Foo::testBar', $configuration->testIdFilter());
+    }
+
+    public function testTestIdFilterMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTestIdFilter());
+
+        $this->expectException(Exception::class);
+
+        $configuration->testIdFilter();
+    }
+
     #[TestDox('--all')]
     public function testAll(): void
     {

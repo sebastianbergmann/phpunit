@@ -160,6 +160,7 @@ final class Builder
         'exclude-testsuite=',
         'test-files-file=',
         'test-id-filter-file=',
+        'run-test-id=',
         'log-events-text=',
         'log-events-verbose-text=',
         'version',
@@ -315,6 +316,7 @@ final class Builder
         $excludeTestSuite                  = null;
         $testFilesFile                     = null;
         $testIdFile                        = null;
+        $testIdFilter                      = null;
         $useDefaultConfiguration           = true;
         $version                           = false;
         $logEventsText                     = null;
@@ -500,6 +502,11 @@ final class Builder
 
                 case '--test-id-filter-file':
                     $testIdFile = $option[1];
+
+                    break;
+
+                case '--run-test-id':
+                    $testIdFilter = $option[1];
 
                     break;
 
@@ -1277,6 +1284,7 @@ final class Builder
             $options[1],
             $testFilesFile,
             $testIdFile,
+            $testIdFilter,
             $all,
             $atLeastVersion,
             $backupGlobals,

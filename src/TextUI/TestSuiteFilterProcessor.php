@@ -38,6 +38,7 @@ final readonly class TestSuiteFilterProcessor
         if (!$configuration->hasFilter() &&
             !$configuration->hasExcludeFilter() &&
             !$configuration->hasTestIdFilterFile() &&
+            !$configuration->hasTestIdFilter() &&
             !$configuration->hasGroups() &&
             !$configuration->hasExcludeGroups() &&
             !$configuration->hasTestsCovering() &&
@@ -95,6 +96,10 @@ final readonly class TestSuiteFilterProcessor
             if ($lines !== []) {
                 $factory->addTestIdFilter($lines);
             }
+        }
+
+        if ($configuration->hasTestIdFilter()) {
+            $factory->addTestIdFilter([$configuration->testIdFilter()]);
         }
 
         if ($configuration->hasExcludeFilter()) {
