@@ -32,6 +32,7 @@ use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Xml;
@@ -131,6 +132,17 @@ final class JunitXmlLogger
         $this->testSuiteFailures[$this->testSuiteLevel]   = 0;
         $this->testSuiteSkipped[$this->testSuiteLevel]    = 0;
         $this->testSuiteTimes[$this->testSuiteLevel]      = 0.0;
+    }
+
+    public function testSuiteSkipped(TestSuiteSkipped $event): void
+    {
+        assert(isset($this->testSuiteSkipped[$this->testSuiteLevel]));
+        assert(isset($this->testSuiteTests[$this->testSuiteLevel]));
+
+        $this->testSuiteSkipped[$this->testSuiteLevel] += $event->testSuite()->count();
+        $this->testSuiteTests[$this->testSuiteLevel]   += $event->testSuite()->count();
+
+        $this->testSuiteFinished();
     }
 
     public function testSuiteFinished(): void
@@ -304,6 +316,7 @@ final class JunitXmlLogger
     {
         $facade->registerSubscribers(
             new TestSuiteStartedSubscriber($this),
+            new TestSuiteSkippedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparationStartedSubscriber($this),
             new TestPreparationErroredSubscriber($this),
