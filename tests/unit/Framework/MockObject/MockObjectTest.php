@@ -736,7 +736,7 @@ EOT,
         $double->doSomething();
 
         $this->assertThatMockObjectExpectationFails(
-            InterfaceWithReturnTypeDeclaration::class . '::doSomethingElse(0): int was not expected to be called.',
+            InterfaceWithReturnTypeDeclaration::class . '::doSomethingElse(0): int was not expected to be called, actually called 1 time.',
             $double,
             'doSomethingElse',
             [0],
