@@ -1251,6 +1251,12 @@ final class Builder
             $extensions = null;
         }
 
+        if ($randomOrderSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                '--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order)',
+            );
+        }
+
         return new Configuration(
             $options[1],
             $testFilesFile,

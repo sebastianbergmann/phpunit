@@ -135,8 +135,12 @@
 
   [32m--order-by [36m<order>[0m                  [0m Run tests in order:
                                        default|defects|depends|duration|no-depends|random|reverse|size
+  [32m--resolve-dependencies              [0m Alias for "--order-by depends"
+  [32m--ignore-dependencies               [0m Alias for "--order-by no-depends"
+  [32m--random-order                      [0m Alias for "--order-by random"
   [32m--random-order-seed [36m<N>[0m             [0m Use the specified random seed when
                                        running tests in random order
+  [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m
 
