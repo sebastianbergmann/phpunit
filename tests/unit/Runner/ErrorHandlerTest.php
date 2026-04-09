@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use const E_USER_DEPRECATED;
+use function count;
 use function trigger_error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -24,15 +25,20 @@ final class ErrorHandlerTest extends TestCase
 {
     public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
     {
-        $errorHandler = ErrorHandler::instance();
+        $errorHandler       = ErrorHandler::instance();
+        $refl               = new ReflectionClass($errorHandler);
+        $globalDeprecations = $refl->getProperty('globalDeprecations');
+        $countBefore        = count($globalDeprecations->getValue($errorHandler));
+
         $errorHandler->registerDeprecationHandler();
         trigger_error('deprecation', E_USER_DEPRECATED);
         $errorHandler->restoreDeprecationHandler();
-        $refl                   = new ReflectionClass($errorHandler);
-        $globalDeprecations     = $refl->getProperty('globalDeprecations');
+
         $registeredDeprecations = $globalDeprecations->getValue($errorHandler);
-        $this->assertCount(1, $registeredDeprecations);
-        $this->assertSame('deprecation', $registeredDeprecations[0][1]);
+
+        $this->assertCount($countBefore + 1, $registeredDeprecations);
+        $this->assertSame('deprecation', $registeredDeprecations[$countBefore][1]);
+
         $globalDeprecations->setValue($errorHandler, []);
     }
 }

@@ -246,6 +246,12 @@ final class ErrorHandler
 
     public function deprecationHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): true
     {
+        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
+
+        if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
+            return true;
+        }
+
         if ($this->testCaseContext !== null) {
             $this->testCaseContextDeprecations[$this->testCaseContext][] = [$errorNumber, $errorString, $errorFile, $errorLine];
         } else {
@@ -257,7 +263,10 @@ final class ErrorHandler
 
     public function registerDeprecationHandler(): void
     {
-        set_error_handler([self::$instance, 'deprecationHandler'], E_USER_DEPRECATED | E_DEPRECATED);
+        set_error_handler(
+            [self::$instance, 'deprecationHandler'],
+            E_DEPRECATED | E_USER_DEPRECATED | E_NOTICE | E_USER_NOTICE | E_WARNING | E_USER_WARNING,
+        );
     }
 
     public function restoreDeprecationHandler(): void
