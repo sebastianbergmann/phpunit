@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function array_merge;
 use function assert;
+use function get_parent_class;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -261,9 +262,13 @@ final readonly class TestBuilder
      */
     private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
     {
-        if (MetadataRegistry::parser()->forClass($className)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
-            return true;
-        }
+        $class = $className;
+
+        do {
+            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+                return true;
+            }
+        } while (($class = get_parent_class($class)) !== false);
 
         if (MetadataRegistry::parser()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
             return true;

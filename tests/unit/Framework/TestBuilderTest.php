@@ -14,9 +14,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\TestBuilder\TestWithClassLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithDataProvider;
+use PHPUnit\TestFixture\TestBuilder\TestWithInheritedClassLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithMethodLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithoutIsolationAttributes;
 use ReflectionClass;
+use ReflectionProperty;
 
 #[CoversClass(TestBuilder::class)]
 #[Small]
@@ -74,6 +76,17 @@ final class TestBuilderTest extends TestCase
         $this->assertTrue($test->metadata()->isBackupGlobals()->asArray()[0]->enabled());
         $this->assertTrue($test->metadata()->isBackupStaticProperties()->asArray()[0]->enabled());
         $this->assertTrue($test->metadata()->isRunInSeparateProcess()->isNotEmpty());
+    }
+
+    public function testBuildsTestWithInheritedClassLevelMetadataForIsolation(): void
+    {
+        $test = (new TestBuilder)->build(
+            new ReflectionClass(TestWithInheritedClassLevelIsolationAttributes::class),
+            'testOne',
+        );
+
+        $this->assertInstanceOf(TestWithInheritedClassLevelIsolationAttributes::class, $test);
+        $this->assertTrue(new ReflectionProperty(TestCase::class, 'runTestInSeparateProcess')->getValue($test));
     }
 
     public function testBuildsTestWithDataProvider(): void
