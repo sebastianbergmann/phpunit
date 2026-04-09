@@ -1181,6 +1181,17 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasResolveDependencies());
     }
 
+    #[TestDox('--order-by newest')]
+    public function testOrderByNewest(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'newest']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_NEWEST, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
     #[TestDox('--order-by random')]
     public function testOrderByRandom(): void
     {

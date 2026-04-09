@@ -140,7 +140,7 @@
   [32m--do-not-cache-result               [0m Do not write test results to cache file
 
   [32m--order-by [36m<order>[0m                  [0m Run tests in order:
-                                       default|defects|depends|duration|no-depends|random|reverse|size
+                                       default|defects|depends|duration|newest|no-depends|random|reverse|size
   [32m--random-order-seed [36m<N>[0m             [0m Use the specified random seed when
                                        running tests in random order
 

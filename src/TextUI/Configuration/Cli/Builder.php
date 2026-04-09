@@ -689,6 +689,11 @@ final class Builder
 
                                 break;
 
+                            case 'newest':
+                                $executionOrder = TestSuiteSorter::ORDER_NEWEST;
+
+                                break;
+
                             case 'no-depends':
                                 $resolveDependencies = false;
 

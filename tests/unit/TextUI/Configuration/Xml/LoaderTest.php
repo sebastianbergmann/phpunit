@@ -39,6 +39,7 @@ final class LoaderTest extends TestCase
     {
         return [
             'executionOrder default'       => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            'executionOrder newest'        => ['executionOrder', 'newest', TestSuiteSorter::ORDER_NEWEST],
             'executionOrder random'        => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
             'executionOrder reverse'       => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
             'executionOrder size'          => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],

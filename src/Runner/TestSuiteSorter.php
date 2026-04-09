@@ -15,6 +15,7 @@ use function array_reverse;
 use function array_splice;
 use function assert;
 use function count;
+use function filemtime;
 use function in_array;
 use function max;
 use function shuffle;
@@ -27,6 +28,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheId;
+use ReflectionClass;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -41,6 +43,7 @@ final class TestSuiteSorter
     public const int ORDER_DEFECTS_FIRST = 3;
     public const int ORDER_DURATION      = 4;
     public const int ORDER_SIZE          = 5;
+    public const int ORDER_NEWEST        = 6;
 
     /**
      * @var non-empty-array<non-empty-string, positive-int>
@@ -70,6 +73,7 @@ final class TestSuiteSorter
             self::ORDER_DEFAULT,
             self::ORDER_REVERSED,
             self::ORDER_RANDOMIZED,
+            self::ORDER_NEWEST,
             self::ORDER_DURATION,
             self::ORDER_SIZE,
         ];
@@ -118,6 +122,8 @@ final class TestSuiteSorter
             $suite->setTests($this->sortByDuration($suite->tests()));
         } elseif ($order === self::ORDER_SIZE) {
             $suite->setTests($this->sortBySize($suite->tests()));
+        } elseif ($order === self::ORDER_NEWEST) {
+            $suite->setTests($this->sortByNewest($suite->tests()));
         }
 
         if ($orderDefects === self::ORDER_DEFECTS_FIRST) {
@@ -208,6 +214,21 @@ final class TestSuiteSorter
      *
      * @return list<Test>
      */
+    private function sortByNewest(array $tests): array
+    {
+        usort(
+            $tests,
+            fn (Test $left, Test $right) => $this->cmpNewest($left, $right),
+        );
+
+        return $tests;
+    }
+
+    /**
+     * @param list<Test> $tests
+     *
+     * @return list<Test>
+     */
     private function sortBySize(array $tests): array
     {
         usort(
@@ -259,6 +280,26 @@ final class TestSuiteSorter
     }
 
     /**
+     *  Compares test modified for sorting by how recent the test is
+     *  Descending order: Newest first.
+     */
+    private function cmpNewest(Test $a, Test $b): int
+    {
+        $result = 0;
+        $fileA  = $this->getTestFile($a);
+        $fileB  = $this->getTestFile($b);
+
+        if ($fileA !== null && $fileB !== null) {
+            $mtimeA = (int) @filemtime($fileA);
+            $mtimeB = (int) @filemtime($fileB);
+
+            $result = $mtimeB <=> $mtimeA;
+        }
+
+        return $result;
+    }
+
+    /**
      * Compares test size for sorting tests small->medium->large->unknown.
      */
     private function cmpSize(Test $a, Test $b): int
@@ -271,6 +312,27 @@ final class TestSuiteSorter
             : 'unknown';
 
         return self::SIZE_SORT_WEIGHT[$sizeA] <=> self::SIZE_SORT_WEIGHT[$sizeB];
+    }
+
+    /**
+     * Helper function for retrieving the test's file.
+     * Returns the first file if the argument is a TestSuite.
+     */
+    private function getTestFile(Test $test): ?string
+    {
+        $result = null;
+
+        if ($test instanceof TestCase) {
+            $reflection = new ReflectionClass($test);
+            $filename   = $reflection->getFileName();
+            $result     = $filename !== false ? $filename : null;
+        }
+
+        if ($test instanceof TestSuite && count($test->tests()) > 0) {
+            $result = $this->getTestFile($test->tests()[0]);
+        }
+
+        return $result;
     }
 
     /**
