@@ -2788,7 +2788,7 @@ final class BuilderTest extends TestCase
     #[TestDox('--random-order-seed')]
     public function testRandomOrderSeed(): void
     {
-        $configuration = (new Builder)->fromParameters(['--random-order-seed', '1234']);
+        $configuration = (new Builder)->fromParameters(['--random-order', '--random-order-seed', '1234']);
 
         $this->assertTrue($configuration->hasRandomOrderSeed());
         $this->assertSame(1234, $configuration->randomOrderSeed());
