@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.D.DW....DD.                                                      12 / 12 (100%)
+.D.DD....DD.                                                      12 / 12 (100%)
 
 Time: %s, Memory: %s
 
@@ -44,4 +44,4 @@ some deprecation 2
 some deprecation 3
 
 OK, but there were issues!
-Tests: 12, Assertions: 12, Warnings: 1, Deprecations: 5.
+Tests: 12, Assertions: 12, Deprecations: 5.

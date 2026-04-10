@@ -9,7 +9,6 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#3387](https://github.com/sebastianbergmann/phpunit/issues/3387): Specify a list of tests to run
 * [#4201](https://github.com/sebastianbergmann/phpunit/issues/4201): Handle interrupts and display current test results
 * [#5757](https://github.com/sebastianbergmann/phpunit/issues/5757): Add assertions for ignoring whitespace differences in strings
-* [#5775](https://github.com/sebastianbergmann/phpunit/issues/5775): Handle notices and warnings triggered in data provider methods
 * [#5810](https://github.com/sebastianbergmann/phpunit/issues/5810): Do not dump arrays and objects in failure messages of `IsTrue`, `IsFalse`, `IsNull`, `IsFinite`, `IsInfinite`, and `IsNan` constraints
 * [#5838](https://github.com/sebastianbergmann/phpunit/issues/5838): Inherit `#[RunTestsInSeparateProcesses]` from parent test classes
 * [#6559](https://github.com/sebastianbergmann/phpunit/issues/6559): Improved API for exception message expectations
