@@ -20,7 +20,7 @@ Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderDuplicat
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething)
 The data provider specified for PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::testSomething is invalid
 The key "key" has already been defined by provider PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest::provider
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\Event\DataProviderDuplicateKeyTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted

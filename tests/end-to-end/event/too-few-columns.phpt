@@ -14,7 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered Warning (Less than 16 columns requested, number of columns set to 16)
+Test Runner Triggered PHPUnit Warning (Less than 16 columns requested, number of columns set to 16)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (1 test)

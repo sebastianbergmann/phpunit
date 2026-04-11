@@ -20,7 +20,7 @@ Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderNotItera
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\DataProviderNotIterableTest::testSomething)
 The data provider PHPUnit\TestFixture\Event\DataProviderNotIterableTest::provider specified for PHPUnit\TestFixture\Event\DataProviderNotIterableTest::testSomething is invalid
 Data Provider method PHPUnit\TestFixture\Event\DataProviderNotIterableTest::provider() does not return an iterable
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\DataProviderNotIterableTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\Event\DataProviderNotIterableTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted

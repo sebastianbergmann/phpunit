@@ -13,6 +13,8 @@ use PHPUnit\Event\Subscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @todo This class will be renamed to PhpunitNoticeTriggeredSubscriber in PHPUnit 14
  */
 interface NoticeTriggeredSubscriber extends Subscriber
 {

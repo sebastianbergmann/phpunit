@@ -1,0 +1,4 @@
+There was 1 error triggered outside of tests:
+
+1) Foo.php:1
+message

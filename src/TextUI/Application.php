@@ -203,7 +203,7 @@ final readonly class Application
 
             EventFacade::instance()->seal();
 
-            ErrorHandler::instance()->registerDeprecationHandler();
+            ErrorHandler::instance()->registerForNonTestCaseContext();
 
             $testSuite = $this->buildTestSuite($configuration);
 
@@ -216,7 +216,7 @@ final readonly class Application
                 );
             }
 
-            ErrorHandler::instance()->restoreDeprecationHandler();
+            ErrorHandler::instance()->restoreForNonTestCaseContext();
 
             $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
 

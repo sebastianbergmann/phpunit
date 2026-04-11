@@ -23,7 +23,7 @@ Test Suite Started (default, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue6368\Issue6368Test, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Issue6368\Issue6368Test::testOne)
 Test Prepared (PHPUnit\TestFixture\Issue6368\Issue6368Test::testOne)
-Test Runner Triggered Warning (message)
+Test Runner Triggered PHPUnit Warning (message)
 Test Triggered PHPUnit Warning (PHPUnit\TestFixture\Issue6368\Issue6368Test::testOne)
 message
 Test Passed (PHPUnit\TestFixture\Issue6368\Issue6368Test::testOne)

@@ -41,6 +41,6 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             'message',
         );
 
-        $this->assertSame('Test Runner Triggered Deprecation (message)', $event->asString());
+        $this->assertSame('Test Runner Triggered PHPUnit Deprecation (message)', $event->asString());
     }
 }

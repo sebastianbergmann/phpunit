@@ -20,7 +20,7 @@ Data Provider Method Finished for PHPUnit\TestFixture\Event\ExceptionInDataProvi
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne)
 The data provider PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::provider specified for PHPUnit\TestFixture\Event\ExceptionInDataProviderTest::testOne is invalid
 message
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\ExceptionInDataProviderTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\Event\ExceptionInDataProviderTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted

@@ -14,7 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (%s)
-Test Runner Triggered Warning (--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order))
+Test Runner Triggered PHPUnit Warning (--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order))
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (6 tests)

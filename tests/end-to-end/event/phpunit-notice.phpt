@@ -23,7 +23,7 @@ Test Preparation Started (PHPUnit\TestFixture\Event\PhpunitNoticeTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\PhpunitNoticeTest::testOne)
 Test Triggered PHPUnit Notice (PHPUnit\TestFixture\Event\PhpunitNoticeTest::testOne)
 message
-Test Runner Triggered Notice (message)
+Test Runner Triggered PHPUnit Notice (message)
 Test Passed (PHPUnit\TestFixture\Event\PhpunitNoticeTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\PhpunitNoticeTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\PhpunitNoticeTest, 1 test)

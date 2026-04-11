@@ -20,7 +20,7 @@ Data Provider Method Finished for PHPUnit\TestFixture\Event\InvalidDataProviderT
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne is invalid
 Data set #0 provided by PHPUnit\TestFixture\Event\InvalidDataProviderTest::provider is invalid, expected array but got int
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\InvalidDataProviderTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\Event\InvalidDataProviderTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted
