@@ -14,5 +14,5 @@ require __DIR__ . '/../../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 %A
-Test Runner Triggered Warning (Options --do-not-fail-on-notice and --fail-on-notice cannot be used together)
+Test Runner Triggered PHPUnit Warning (Options --do-not-fail-on-notice and --fail-on-notice cannot be used together)
 %A

@@ -41,6 +41,6 @@ final class WarningTriggeredTest extends AbstractEventTestCase
             'message',
         );
 
-        $this->assertSame('Test Runner Triggered Warning (message)', $event->asString());
+        $this->assertSame('Test Runner Triggered PHPUnit Warning (message)', $event->asString());
     }
 }

@@ -14,5 +14,5 @@ require __DIR__ . '/../../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 %A
-Test Runner Triggered Warning (Options --fail-on-skipped and --do-not-fail-on-skipped cannot be used together)
+Test Runner Triggered PHPUnit Warning (Options --fail-on-skipped and --do-not-fail-on-skipped cannot be used together)
 %A

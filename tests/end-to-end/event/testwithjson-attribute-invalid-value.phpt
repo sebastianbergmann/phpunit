@@ -17,7 +17,7 @@ Event Facade Sealed
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Metadata\Attribute\TestWithInvalidValueTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Metadata\Attribute\TestWithInvalidValueTest::testOne is invalid
 Data set #0 provided by TestWith#0 attribute is invalid, expected array but got bool
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Metadata\Attribute\TestWithInvalidValueTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\Metadata\Attribute\TestWithInvalidValueTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted

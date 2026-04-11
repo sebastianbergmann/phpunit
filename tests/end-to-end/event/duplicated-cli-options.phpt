@@ -18,7 +18,7 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered Warning (Option --filter cannot be used more than once)
+Test Runner Triggered PHPUnit Warning (Option --filter cannot be used more than once)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (1 test)

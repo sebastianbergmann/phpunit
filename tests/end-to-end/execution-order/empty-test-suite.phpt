@@ -14,7 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\ExecutionOrder\EmptyTestSuite\FooTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\ExecutionOrder\EmptyTestSuite\FooTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted

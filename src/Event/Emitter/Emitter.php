@@ -321,6 +321,56 @@ interface Emitter
      */
     public function testRunnerTriggeredPhpunitWarning(string $message): void;
 
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     */
+    public function testRunnerTriggeredPhpNotice(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     */
+    public function testRunnerTriggeredNotice(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     */
+    public function testRunnerTriggeredPhpWarning(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     */
+    public function testRunnerTriggeredWarning(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void;
+
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     */
+    public function testRunnerTriggeredPhpDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger): void;
+
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     * @param non-empty-string $stackTrace
+     */
+    public function testRunnerTriggeredDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger, string $stackTrace): void;
+
+    /**
+     * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     */
+    public function testRunnerTriggeredError(string $message, string $file, int $line, bool $suppressed): void;
+
     public function testRunnerEnabledGarbageCollection(): void;
 
     public function testRunnerExecutionAborted(): void;

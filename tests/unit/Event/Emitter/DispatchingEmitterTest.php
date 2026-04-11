@@ -3358,6 +3358,278 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($message, $event->message());
     }
 
+    #[TestDox('testRunnerTriggeredPhpNotice() emits TestRunner\Issue\PhpNoticeTriggered event')]
+    public function testTestRunnerTriggeredPhpNoticeEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\PhpNoticeTriggeredSubscriber
+        {
+            public function notify(TestRunner\PhpNoticeTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\PhpNoticeTriggeredSubscriber::class,
+            TestRunner\PhpNoticeTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerTriggeredPhpNotice('message', 'file', 1, false, false);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\PhpNoticeTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+    }
+
+    #[TestDox('testRunnerTriggeredNotice() emits TestRunner\Issue\NoticeTriggered event')]
+    public function testTestRunnerTriggeredNoticeEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\Issue\NoticeTriggeredSubscriber
+        {
+            public function notify(TestRunner\Issue\NoticeTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\Issue\NoticeTriggeredSubscriber::class,
+            TestRunner\Issue\NoticeTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerTriggeredNotice('message', 'file', 1, false, false);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\Issue\NoticeTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+    }
+
+    #[TestDox('testRunnerTriggeredPhpWarning() emits TestRunner\Issue\PhpWarningTriggered event')]
+    public function testTestRunnerTriggeredPhpWarningEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\PhpWarningTriggeredSubscriber
+        {
+            public function notify(TestRunner\PhpWarningTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\PhpWarningTriggeredSubscriber::class,
+            TestRunner\PhpWarningTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerTriggeredPhpWarning('message', 'file', 1, false, false);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\PhpWarningTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+    }
+
+    #[TestDox('testRunnerTriggeredWarning() emits TestRunner\Issue\WarningTriggered event')]
+    public function testTestRunnerTriggeredWarningEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\Issue\WarningTriggeredSubscriber
+        {
+            public function notify(TestRunner\Issue\WarningTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\Issue\WarningTriggeredSubscriber::class,
+            TestRunner\Issue\WarningTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerTriggeredWarning('message', 'file', 1, false, false);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\Issue\WarningTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+    }
+
+    #[TestDox('testRunnerTriggeredPhpDeprecation() emits TestRunner\Issue\PhpDeprecationTriggered event')]
+    public function testTestRunnerTriggeredPhpDeprecationEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\PhpDeprecationTriggeredSubscriber
+        {
+            public function notify(TestRunner\PhpDeprecationTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\PhpDeprecationTriggeredSubscriber::class,
+            TestRunner\PhpDeprecationTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $trigger = IssueTrigger::from(null, null);
+
+        $emitter->testRunnerTriggeredPhpDeprecation('message', 'file', 1, false, false, $trigger);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\PhpDeprecationTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+        $this->assertSame($trigger, $event->trigger());
+    }
+
+    #[TestDox('testRunnerTriggeredDeprecation() emits TestRunner\Issue\DeprecationTriggered event')]
+    public function testTestRunnerTriggeredDeprecationEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\Issue\DeprecationTriggeredSubscriber
+        {
+            public function notify(TestRunner\Issue\DeprecationTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\Issue\DeprecationTriggeredSubscriber::class,
+            TestRunner\Issue\DeprecationTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $trigger = IssueTrigger::from(null, null);
+
+        $emitter->testRunnerTriggeredDeprecation('message', 'file', 1, false, false, $trigger, 'stack trace');
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\Issue\DeprecationTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+        $this->assertSame($trigger, $event->trigger());
+        $this->assertSame('stack trace', $event->stackTrace());
+    }
+
+    #[TestDox('testRunnerTriggeredError() emits TestRunner\Issue\ErrorTriggered event')]
+    public function testTestRunnerTriggeredErrorEmitsEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\ErrorTriggeredSubscriber
+        {
+            public function notify(TestRunner\ErrorTriggered $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TestRunner\ErrorTriggeredSubscriber::class,
+            TestRunner\ErrorTriggered::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerTriggeredError('message', 'file', 1, false);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestRunner\ErrorTriggered::class, $event);
+        $this->assertSame('message', $event->message());
+        $this->assertSame('file', $event->file());
+        $this->assertSame(1, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+    }
+
     #[TestDox('testRunnerEnabledGarbageCollection() emits TestRunner\GarbageCollectionEnabled event')]
     public function testTestRunnerEnabledGarbageCollectionEmitsTestRunnerGarbageCollectionEnabledEvent(): void
     {

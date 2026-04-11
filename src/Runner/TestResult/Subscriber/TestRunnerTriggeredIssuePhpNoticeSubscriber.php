@@ -9,18 +9,18 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\TestRunner\DeprecationTriggered;
-use PHPUnit\Event\TestRunner\DeprecationTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\PhpNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpNoticeTriggeredSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestRunnerTriggeredDeprecationSubscriber extends Subscriber implements DeprecationTriggeredSubscriber
+final readonly class TestRunnerTriggeredIssuePhpNoticeSubscriber extends Subscriber implements PhpNoticeTriggeredSubscriber
 {
-    public function notify(DeprecationTriggered $event): void
+    public function notify(PhpNoticeTriggered $event): void
     {
-        $this->collector()->testRunnerTriggeredDeprecation($event);
+        $this->collector()->testRunnerTriggeredIssuePhpNotice($event);
     }
 }

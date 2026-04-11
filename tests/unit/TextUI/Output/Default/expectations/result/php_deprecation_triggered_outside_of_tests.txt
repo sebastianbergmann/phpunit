@@ -1,0 +1,4 @@
+There was 1 PHP deprecation triggered outside of tests:
+
+1) Foo.php:1
+message

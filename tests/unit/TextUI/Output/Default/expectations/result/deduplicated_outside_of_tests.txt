@@ -1,0 +1,46 @@
+There was 1 error triggered outside of tests:
+
+1) Foo.php:1
+message
+
+--
+
+There was 1 PHP warning triggered outside of tests:
+
+1) Foo.php:1
+message
+
+--
+
+There was 1 warning triggered outside of tests:
+
+1) Foo.php:1
+message
+
+--
+
+There was 1 PHP notice triggered outside of tests:
+
+1) Foo.php:1
+message
+
+--
+
+There was 1 notice triggered outside of tests:
+
+1) Foo.php:1
+message
+
+--
+
+There was 1 PHP deprecation triggered outside of tests:
+
+1) Foo.php:1
+message
+
+--
+
+There was 1 deprecation triggered outside of tests:
+
+1) Foo.php:1
+message

@@ -41,6 +41,6 @@ final class NoticeTriggeredTest extends AbstractEventTestCase
             'message',
         );
 
-        $this->assertSame('Test Runner Triggered Notice (message)', $event->asString());
+        $this->assertSame('Test Runner Triggered PHPUnit Notice (message)', $event->asString());
     }
 }

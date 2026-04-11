@@ -20,7 +20,7 @@ Data Provider Method Finished for PHPUnit\TestFixture\Event\DataProviderInvalidK
 Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest::testOne is invalid
 The key must be an integer or a string, float given
-Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest".)
+Test Runner Triggered PHPUnit Warning (No tests found in class "PHPUnit\TestFixture\Event\DataProviderInvalidKeyTest".)
 Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted
