@@ -34,4 +34,8 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075): `executionOrder="size"` XML configuration attribute value, use `executionOrder="size-ascending"` instead
 * [#6560](https://github.com/sebastianbergmann/phpunit/issues/6560): Soft-deprecate `expectExceptionMessage()`, use `expectExceptionMessageIsOrContains()` instead
 
+### Fixed
+
+* [#6582](https://github.com/sebastianbergmann/phpunit/issues/6582): `TestSuiteSorter::cmpSize()` does not handle `TestSuite` objects for `TestCase` classes
+
 [13.2.0]: https://github.com/sebastianbergmann/phpunit/compare/13.1...main

@@ -1,7 +1,5 @@
 --TEST--
 Order by test size ascending: Suite with test classes that have different sizes
---XFAIL--
-TestSuiteSorter::cmpSize() does not handle TestSuite objects for TestCase classes
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';

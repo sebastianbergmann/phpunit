@@ -301,14 +301,35 @@ final class TestSuiteSorter
      */
     private function cmpSize(Test $a, Test $b): int
     {
-        $sizeA = ($a instanceof TestCase || $a instanceof DataProviderTestSuite)
-            ? $a->size()->asString()
-            : 'unknown';
-        $sizeB = ($b instanceof TestCase || $b instanceof DataProviderTestSuite)
-            ? $b->size()->asString()
-            : 'unknown';
+        return $this->sizeWeight($a) <=> $this->sizeWeight($b);
+    }
 
-        return self::SIZE_SORT_WEIGHT[$sizeA] <=> self::SIZE_SORT_WEIGHT[$sizeB];
+    /**
+     * @return positive-int
+     */
+    private function sizeWeight(Test $test): int
+    {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
+            return self::SIZE_SORT_WEIGHT[$test->size()->asString()];
+        }
+
+        if ($test instanceof TestSuite) {
+            $max = 0;
+
+            foreach ($test->tests() as $inner) {
+                $weight = $this->sizeWeight($inner);
+
+                if ($weight > $max) {
+                    $max = $weight;
+                }
+            }
+
+            if ($max > 0) {
+                return $max;
+            }
+        }
+
+        return self::SIZE_SORT_WEIGHT['unknown'];
     }
 
     /**
