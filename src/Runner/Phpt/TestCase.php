@@ -20,6 +20,7 @@ use function explode;
 use function extension_loaded;
 use function file_exists;
 use function file_get_contents;
+use function in_array;
 use function is_array;
 use function is_file;
 use function ltrim;
@@ -443,6 +444,18 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
 
             return true;
+        }
+
+        $sideEffects = (new SideEffectsDetector)->getSideEffects($skipIfCode);
+
+        if (!str_contains($output, 'Parse error:') &&
+            !str_contains($output, 'Fatal error:') &&
+            !in_array(SideEffect::STANDARD_OUTPUT, $sideEffects, true) &&
+            !in_array(SideEffect::SCOPE_POLLUTION, $sideEffects, true)) {
+            EventFacade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                'SKIPIF section does not produce output that could result in the test being skipped',
+            );
         }
 
         return false;
