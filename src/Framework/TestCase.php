@@ -45,9 +45,7 @@ use function ob_start;
 use function preg_match;
 use function preg_replace;
 use function putenv;
-use function restore_error_handler;
 use function restore_exception_handler;
-use function set_error_handler;
 use function set_exception_handler;
 use function sprintf;
 use function str_contains;
@@ -89,6 +87,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
+use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -127,11 +126,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private array $backupStaticPropertiesExcludeList = [];
     private ?Snapshot $snapshot                      = null;
-
-    /**
-     * @var list<callable>
-     */
-    private ?array $backupGlobalErrorHandlers = null;
 
     /**
      * @var list<callable>
@@ -1641,41 +1635,26 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function snapshotGlobalErrorExceptionHandlers(): void
     {
-        $this->backupGlobalErrorHandlers     = $this->activeErrorHandlers();
-        $this->backupGlobalExceptionHandlers = $this->activeExceptionHandlers();
-    }
-
-    private function restoreGlobalErrorExceptionHandlers(): void
-    {
-        $activeErrorHandlers     = $this->activeErrorHandlers();
-        $activeExceptionHandlers = $this->activeExceptionHandlers();
-
-        $message = null;
-
-        if ($activeErrorHandlers !== $this->backupGlobalErrorHandlers) {
-            if (count($activeErrorHandlers) > count($this->backupGlobalErrorHandlers)) {
-                if (!$this->inIsolation) {
-                    $message = 'Test code or tested code did not remove its own error handlers';
-                }
-            } else {
-                $message = 'Test code or tested code removed error handlers other than its own';
-            }
-
-            foreach ($activeErrorHandlers as $handler) {
-                restore_error_handler();
-            }
-
-            foreach ($this->backupGlobalErrorHandlers as $handler) {
-                set_error_handler($handler);
-            }
-        }
-
-        if ($message !== null) {
+        foreach (ErrorHandler::instance()->snapshotErrorHandlers() as $message) {
             Event\Facade::emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
                 $message,
             );
         }
+
+        $this->backupGlobalExceptionHandlers = $this->activeExceptionHandlers();
+    }
+
+    private function restoreGlobalErrorExceptionHandlers(): void
+    {
+        foreach (ErrorHandler::instance()->restoreErrorHandlers($this->inIsolation) as $message) {
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                $message,
+            );
+        }
+
+        $activeExceptionHandlers = $this->activeExceptionHandlers();
 
         $message = null;
 
@@ -1697,7 +1676,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        $this->backupGlobalErrorHandlers     = null;
         $this->backupGlobalExceptionHandlers = null;
 
         if ($message !== null) {
@@ -1706,52 +1684,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $message,
             );
         }
-    }
-
-    /**
-     * @return list<callable>
-     */
-    private function activeErrorHandlers(): array
-    {
-        $activeErrorHandlers = [];
-
-        while (true) {
-            $previousHandler = set_error_handler(static fn () => false);
-
-            restore_error_handler();
-
-            if ($previousHandler === null) {
-                break;
-            }
-
-            $activeErrorHandlers[] = $previousHandler;
-
-            restore_error_handler();
-        }
-
-        $activeErrorHandlers      = array_reverse($activeErrorHandlers);
-        $invalidErrorHandlerStack = false;
-
-        foreach ($activeErrorHandlers as $handler) {
-            if (!is_callable($handler)) {
-                $invalidErrorHandlerStack = true;
-
-                continue;
-            }
-
-            set_error_handler($handler);
-        }
-
-        if ($invalidErrorHandlerStack) {
-            $message = 'At least one error handler is not callable outside the scope it was registered in';
-
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $message,
-            );
-        }
-
-        return $activeErrorHandlers;
     }
 
     /**

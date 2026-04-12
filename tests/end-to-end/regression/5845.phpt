@@ -1,0 +1,76 @@
+--TEST--
+https://github.com/sebastianbergmann/phpunit/issues/5845
+--FILE--
+<?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = __DIR__ . '/5845/Issue5845Test.php';
+
+function global5845ExceptionHandler(Throwable $exception): void
+{
+}
+
+set_exception_handler('global5845ExceptionHandler');
+
+// Simulate an error handler registered via auto_prepend_file
+set_error_handler(static fn () => false);
+
+require_once __DIR__ . '/../../bootstrap.php';
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+--EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime: %s
+
+.FF.FF                                                              6 / 6 (100%)
+
+Time: %s, Memory: %s
+
+There were 4 failures:
+
+1) PHPUnit\TestFixture\Issue5845Test::testAddedErrorHandler
+Failed asserting that false is true.
+
+%sIssue5845Test.php:%i
+
+2) PHPUnit\TestFixture\Issue5845Test::testRemovedErrorHandler
+Failed asserting that false is true.
+
+%sIssue5845Test.php:%i
+
+3) PHPUnit\TestFixture\Issue5845Test::testAddedExceptionHandler
+Failed asserting that false is true.
+
+%sIssue5845Test.php:%i
+
+4) PHPUnit\TestFixture\Issue5845Test::testRemovedExceptionHandler
+Failed asserting that false is true.
+
+%sIssue5845Test.php:%i
+
+--
+
+There were 4 risky tests:
+
+1) PHPUnit\TestFixture\Issue5845Test::testAddedErrorHandler
+Test code or tested code did not remove its own error handlers
+
+%sIssue5845Test.php:%i
+
+2) PHPUnit\TestFixture\Issue5845Test::testRemovedErrorHandler
+Test code or tested code removed error handlers other than its own
+
+%sIssue5845Test.php:%i
+
+3) PHPUnit\TestFixture\Issue5845Test::testAddedExceptionHandler
+Test code or tested code did not remove its own exception handlers
+
+%sIssue5845Test.php:%i
+
+4) PHPUnit\TestFixture\Issue5845Test::testRemovedExceptionHandler
+Test code or tested code removed exception handlers other than its own
+
+%sIssue5845Test.php:%i
+
+FAILURES!
+Tests: 6, Assertions: 8, Failures: 4, Risky: 4.

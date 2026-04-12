@@ -36,6 +36,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 
 ### Fixed
 
+* [#5845](https://github.com/sebastianbergmann/phpunit/issues/5845): Error handlers registered before PHPUnit (e.g. via `auto_prepend_file`) cause false "risky test" warnings
 * [#6582](https://github.com/sebastianbergmann/phpunit/issues/6582): `TestSuiteSorter::cmpSize()` does not handle `TestSuite` objects for `TestCase` classes
 
 [13.2.0]: https://github.com/sebastianbergmann/phpunit/compare/13.1...main

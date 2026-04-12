@@ -25,6 +25,8 @@ use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
 use function array_keys;
+use function array_reverse;
+use function array_slice;
 use function array_unshift;
 use function array_values;
 use function assert;
@@ -32,6 +34,7 @@ use function count;
 use function debug_backtrace;
 use function defined;
 use function error_reporting;
+use function is_callable;
 use function preg_match;
 use function restore_error_handler;
 use function set_error_handler;
@@ -75,6 +78,11 @@ final class ErrorHandler
      */
     private array $testCaseContextIssues = [];
     private ?string $testCaseContext     = null;
+
+    /**
+     * @var ?list<callable>
+     */
+    private ?array $backupErrorHandlers = null;
 
     /**
      * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
@@ -414,6 +422,57 @@ final class ErrorHandler
         $this->previousErrorHandler        = null;
     }
 
+    /**
+     * @return list<string>
+     */
+    public function snapshotErrorHandlers(): array
+    {
+        $messages = [];
+
+        $this->backupErrorHandlers = $this->activeErrorHandlers($messages);
+
+        return $messages;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function restoreErrorHandlers(bool $inIsolation): array
+    {
+        $messages            = [];
+        $activeErrorHandlers = $this->activeErrorHandlers($messages);
+
+        $activeAbove = $this->handlersAboveSelf($activeErrorHandlers);
+        $backupAbove = $this->handlersAboveSelf($this->backupErrorHandlers);
+
+        if ($this->isOnStack($this->backupErrorHandlers) &&
+            !$this->isOnStack($activeErrorHandlers)) {
+            $messages[] = 'Test code or tested code removed error handlers other than its own';
+        } elseif ($activeAbove !== $backupAbove) {
+            if (count($activeAbove) > count($backupAbove)) {
+                if (!$inIsolation) {
+                    $messages[] = 'Test code or tested code did not remove its own error handlers';
+                }
+            } else {
+                $messages[] = 'Test code or tested code removed error handlers other than its own';
+            }
+        }
+
+        if ($activeErrorHandlers !== $this->backupErrorHandlers) {
+            foreach ($activeErrorHandlers as $handler) {
+                restore_error_handler();
+            }
+
+            foreach ($this->backupErrorHandlers as $handler) {
+                set_error_handler($handler);
+            }
+        }
+
+        $this->backupErrorHandlers = null;
+
+        return $messages;
+    }
+
     public function useBaseline(Baseline $baseline): void
     {
         $this->baseline = $baseline;
@@ -740,6 +799,87 @@ final class ErrorHandler
     private function testCaseContext(string $className, string $methodName): string
     {
         return "{$className}::{$methodName}";
+    }
+
+    /**
+     * @param list<string> $messages
+     *
+     * @return list<callable>
+     */
+    private function activeErrorHandlers(array &$messages = []): array
+    {
+        $activeErrorHandlers = [];
+
+        while (true) {
+            $previousHandler = set_error_handler(static fn () => false);
+
+            restore_error_handler();
+
+            if ($previousHandler === null) {
+                break;
+            }
+
+            $activeErrorHandlers[] = $previousHandler;
+
+            restore_error_handler();
+        }
+
+        $activeErrorHandlers      = array_reverse($activeErrorHandlers);
+        $invalidErrorHandlerStack = false;
+
+        foreach ($activeErrorHandlers as $handler) {
+            if (!is_callable($handler)) {
+                $invalidErrorHandlerStack = true;
+
+                continue;
+            }
+
+            set_error_handler($handler);
+        }
+
+        if ($invalidErrorHandlerStack) {
+            $messages[] = 'At least one error handler is not callable outside the scope it was registered in';
+        }
+
+        return $activeErrorHandlers;
+    }
+
+    /**
+     * @param list<callable> $handlers
+     *
+     * @return list<callable>
+     */
+    private function handlersAboveSelf(array $handlers): array
+    {
+        $position = null;
+
+        foreach ($handlers as $i => $handler) {
+            if ($handler instanceof self) {
+                $position = $i;
+
+                break;
+            }
+        }
+
+        if ($position === null) {
+            return $handlers;
+        }
+
+        return array_slice($handlers, $position + 1);
+    }
+
+    /**
+     * @param list<callable> $handlers
+     */
+    private function isOnStack(array $handlers): bool
+    {
+        foreach ($handlers as $handler) {
+            if ($handler instanceof self) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function deprecationIgnoredByTest(TestMethod $test, string $message): bool
