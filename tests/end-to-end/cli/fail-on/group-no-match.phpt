@@ -1,15 +1,15 @@
 --TEST--
-phpunit --filter testFoo tests/FooTest.php
+Test Runner exits with shell exit code indicating failure when --group does not match any tests
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
-$_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'testFoo';
+$_SERVER['argv'][] = '--group';
+$_SERVER['argv'][] = 'doesNotExist';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/groups/tests/FooTest.php';
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
