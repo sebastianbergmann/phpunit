@@ -1,8 +1,5 @@
 --TEST--
 Order by defects (with result cache): Test methods with defects
---XFAIL--
-After merging https://github.com/sebastianbergmann/phpunit/pull/6338 into PHPUnit 10.5 and merging it from there to PHPUnit 12.4 via PHPUnit 11.5, this test now fails.
-This test failure needs to be investigated. Hopefully, it fails for the obvious reason: that the result cache file needs to be updated.
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';
