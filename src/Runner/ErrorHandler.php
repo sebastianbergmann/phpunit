@@ -64,8 +64,10 @@ final class ErrorHandler
     private static ?self $instance          = null;
     private ?Baseline $baseline             = null;
     private ExcludeList $excludeList;
-    private bool $enabled                     = false;
-    private ?int $originalErrorReportingLevel = null;
+    private bool $enabled                          = false;
+    private ?int $originalErrorReportingLevel      = null;
+    private mixed $previousErrorHandler            = null;
+    private mixed $previousNonTestCaseErrorHandler = null;
     private readonly bool $identifyIssueTrigger;
 
     /**
@@ -111,13 +113,13 @@ final class ErrorHandler
     /**
      * @throws NoTestCaseObjectOnCallStackException
      */
-    public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): false
+    public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
         $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
 
         if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
             // @codeCoverageIgnoreStart
-            return false;
+            return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
             // @codeCoverageIgnoreEnd
         }
 
@@ -233,10 +235,10 @@ final class ErrorHandler
                 throw new ErrorException('E_USER_ERROR was triggered');
 
             default:
-                return false;
+                return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
         }
 
-        return false;
+        return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
     }
 
     public function handleNonTestCaseIssue(int $errorNumber, string $errorString, string $errorFile, int $errorLine): true
@@ -353,32 +355,40 @@ final class ErrorHandler
                 break;
         }
 
+        if ($this->previousNonTestCaseErrorHandler !== null) {
+            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+        }
+
         return true;
     }
 
     public function registerForNonTestCaseContext(): void
     {
-        set_error_handler(
+        $previousHandler = set_error_handler(
             [self::$instance, 'handleNonTestCaseIssue'],
             E_DEPRECATED | E_USER_DEPRECATED | E_NOTICE | E_USER_NOTICE | E_WARNING | E_USER_WARNING,
         );
+
+        if ($previousHandler !== null) {
+            $this->previousNonTestCaseErrorHandler = $previousHandler;
+        }
     }
 
     public function restoreForNonTestCaseContext(): void
     {
         restore_error_handler();
+
+        $this->previousNonTestCaseErrorHandler = null;
     }
 
     public function enable(TestCase $test): void
     {
         assert(!$this->enabled);
 
-        $oldErrorHandler = set_error_handler($this);
+        $previousErrorHandler = set_error_handler($this);
 
-        if ($oldErrorHandler !== null) {
-            restore_error_handler();
-
-            return;
+        if ($previousErrorHandler !== null) {
+            $this->previousErrorHandler = $previousErrorHandler;
         }
 
         $this->enabled                     = true;
@@ -401,6 +411,7 @@ final class ErrorHandler
 
         $this->enabled                     = false;
         $this->originalErrorReportingLevel = null;
+        $this->previousErrorHandler        = null;
     }
 
     public function useBaseline(Baseline $baseline): void
@@ -747,5 +758,14 @@ final class ErrorHandler
         }
 
         return false;
+    }
+
+    private function forwardToPreviousErrorHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
+    {
+        if ($this->previousErrorHandler === null) {
+            return false;
+        }
+
+        return (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
     }
 }

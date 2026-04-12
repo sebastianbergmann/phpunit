@@ -20,6 +20,10 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6577](https://github.com/sebastianbergmann/phpunit/issues/6577): `--run-test-id <test-id>` CLI option that accepts a single test ID for exact matching
 * [#6579](https://github.com/sebastianbergmann/phpunit/pull/6579): Properly handle issues triggered outside of tests
 
+### Changed
+
+* [#5873](https://github.com/sebastianbergmann/phpunit/issues/5873): Chain previously registered error handler instead of silently disabling PHPUnit's error handling
+
 ### Deprecated
 
 * [#6560](https://github.com/sebastianbergmann/phpunit/issues/6560): Soft-deprecate `expectExceptionMessage()`, use `expectExceptionMessageIsOrContains()` instead
