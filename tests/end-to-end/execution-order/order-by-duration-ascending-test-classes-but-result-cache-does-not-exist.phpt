@@ -1,5 +1,5 @@
 --TEST--
-Order by duration (without result cache)
+Order by duration ascending (without result cache, test classes)
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';
@@ -12,7 +12,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--cache-directory';
 $_SERVER['argv'][] = sys_get_temp_dir();
 $_SERVER['argv'][] = '--order-by';
-$_SERVER['argv'][] = 'duration';
+$_SERVER['argv'][] = 'duration-ascending';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/fixture/test-classes-with-duration';
 
@@ -21,7 +21,6 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "duration" for --order-by is deprecated and will be removed in PHPUnit 14. Use "duration-ascending" instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (6 tests)

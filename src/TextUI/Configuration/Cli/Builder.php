@@ -687,7 +687,21 @@ final class Builder
                                 break;
 
                             case 'duration':
-                                $executionOrder = TestSuiteSorter::ORDER_DURATION;
+                                $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
+
+                                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                                    'Using "duration" for --order-by is deprecated and will be removed in PHPUnit 14. Use "duration-ascending" instead.',
+                                );
+
+                                break;
+
+                            case 'duration-ascending':
+                                $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
+
+                                break;
+
+                            case 'duration-descending':
+                                $executionOrder = TestSuiteSorter::ORDER_DURATION_DESCENDING;
 
                                 break;
 
@@ -707,7 +721,21 @@ final class Builder
                                 break;
 
                             case 'size':
-                                $executionOrder = TestSuiteSorter::ORDER_SIZE;
+                                $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
+
+                                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                                    'Using "size" for --order-by is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.',
+                                );
+
+                                break;
+
+                            case 'size-ascending':
+                                $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
+
+                                break;
+
+                            case 'size-descending':
+                                $executionOrder = TestSuiteSorter::ORDER_SIZE_DESCENDING;
 
                                 break;
 

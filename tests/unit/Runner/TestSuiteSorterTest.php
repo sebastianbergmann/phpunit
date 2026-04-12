@@ -36,13 +36,32 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$large, $small, $medium]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
 
         $tests = $suite->tests();
 
         $this->assertSame($small, $tests[0]);
         $this->assertSame($medium, $tests[1]);
         $this->assertSame($large, $tests[2]);
+    }
+
+    public function testSortsBySizeDescending(): void
+    {
+        $large  = new LargeGroupAttributesTest('testOne');
+        $small  = new SmallGroupAttributesTest('testOne');
+        $medium = new MediumGroupAttributesTest('testOne');
+
+        $suite = TestSuite::empty('test');
+        $suite->setTests([$large, $small, $medium]);
+
+        $sorter = new TestSuiteSorter;
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE_DESCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+
+        $tests = $suite->tests();
+
+        $this->assertSame($large, $tests[0]);
+        $this->assertSame($medium, $tests[1]);
+        $this->assertSame($small, $tests[2]);
     }
 
     public function testSortsBySizeWithDataProviderTestSuite(): void
@@ -68,7 +87,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$large, $dataProviderTestSuite]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
 
         $tests = $suite->tests();
 
@@ -85,7 +104,25 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$nonReorderable, $testCase]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+
+        $tests = $suite->tests();
+
+        $this->assertCount(2, $tests);
+        $this->assertSame($nonReorderable, $tests[0]);
+        $this->assertSame($testCase, $tests[1]);
+    }
+
+    public function testSortByDurationDescendingWithNonReorderableTest(): void
+    {
+        $nonReorderable = new NonReorderableTest;
+        $testCase       = new SmallGroupAttributesTest('testOne');
+
+        $suite = TestSuite::empty('test');
+        $suite->setTests([$nonReorderable, $testCase]);
+
+        $sorter = new TestSuiteSorter;
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION_DESCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
 
         $tests = $suite->tests();
 
@@ -103,7 +140,7 @@ final class TestSuiteSorterTest extends TestCase
         $parent->setTests([$suiteA, $suiteB]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_SIZE, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_SIZE_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
 
         $tests = $parent->tests();
 

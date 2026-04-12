@@ -25,6 +25,7 @@ require __DIR__ . '/../../bootstrap.php';
 unlink($testResultsFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
+Test Runner Triggered PHPUnit Deprecation (Using "duration" for --order-by is deprecated and will be removed in PHPUnit 14. Use "duration-ascending" instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (6 tests)

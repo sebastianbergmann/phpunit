@@ -266,7 +266,7 @@ final class Help
                 ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
                 ['spacer' => ''],
 
-                ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size'],
+                ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending'],
                 ['arg' => '--resolve-dependencies', 'desc' => 'Alias for "--order-by depends"'],
                 ['arg' => '--ignore-dependencies', 'desc' => 'Alias for "--order-by no-depends"'],
                 ['arg' => '--random-order', 'desc' => 'Alias for "--order-by random"'],

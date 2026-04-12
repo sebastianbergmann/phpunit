@@ -1,5 +1,5 @@
 --TEST--
-Order by test size: Suite with test classes that have different sizes
+Order by test size ascending: Suite with test classes that have different sizes
 --XFAIL--
 TestSuiteSorter::cmpSize() does not handle TestSuite objects for TestCase classes
 --FILE--
@@ -7,7 +7,7 @@ TestSuiteSorter::cmpSize() does not handle TestSuite objects for TestCase classe
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--order-by';
-$_SERVER['argv'][] = 'size';
+$_SERVER['argv'][] = 'size-ascending';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/fixture/test-classes-with-different-sizes';
 
@@ -16,7 +16,6 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "size" for --order-by is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (3 tests)

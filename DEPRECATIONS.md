@@ -29,6 +29,10 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 ### Running Tests
 
-| Issue                                                             | Description                                    | Since  | Replacement                                                     |
-|-------------------------------------------------------------------|------------------------------------------------|--------|-----------------------------------------------------------------|
-| [#6515](https://github.com/sebastianbergmann/phpunit/issues/6515) | `--log-events-verbose-text <file>` CLI option  | 13.1.0 | Use `--log-events-verbose-text <file> --with-telemetry` instead |
+| Issue                                                             | Description                                                   | Since  | Replacement                                                     |
+|-------------------------------------------------------------------|---------------------------------------------------------------|--------|-----------------------------------------------------------------|
+| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `--order-by duration` CLI option                              | 13.2.0 | Use `--order-by duration-ascending` instead                     |
+| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `--order-by size` CLI option                                  | 13.2.0 | Use `--order-by size-ascending` instead                         |
+| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `executionOrder="duration"` XML configuration attribute value | 13.2.0 | Use `executionOrder="duration-ascending"` instead               |
+| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `executionOrder="size"` XML configuration attribute value     | 13.2.0 | Use `executionOrder="size-ascending"` instead                   |
+| [#6515](https://github.com/sebastianbergmann/phpunit/issues/6515) | `--log-events-verbose-text <file>` CLI option                 | 13.1.0 | Use `--log-events-verbose-text <file> --with-telemetry` instead |

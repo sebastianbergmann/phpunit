@@ -131,20 +131,26 @@
             <xs:enumeration value="defects,random"/>
             <xs:enumeration value="depends"/>
             <xs:enumeration value="depends,defects"/>
-            <xs:enumeration value="depends,duration"/>
+            <xs:enumeration value="depends,duration-ascending"/>
+            <xs:enumeration value="depends,duration-descending"/>
             <xs:enumeration value="depends,random"/>
             <xs:enumeration value="depends,reverse"/>
-            <xs:enumeration value="depends,size"/>
-            <xs:enumeration value="duration"/>
+            <xs:enumeration value="depends,size-ascending"/>
+            <xs:enumeration value="depends,size-descending"/>
+            <xs:enumeration value="duration-ascending"/>
+            <xs:enumeration value="duration-descending"/>
             <xs:enumeration value="no-depends"/>
             <xs:enumeration value="no-depends,defects"/>
-            <xs:enumeration value="no-depends,duration"/>
+            <xs:enumeration value="no-depends,duration-ascending"/>
+            <xs:enumeration value="no-depends,duration-descending"/>
             <xs:enumeration value="no-depends,random"/>
             <xs:enumeration value="no-depends,reverse"/>
-            <xs:enumeration value="no-depends,size"/>
+            <xs:enumeration value="no-depends,size-ascending"/>
+            <xs:enumeration value="no-depends,size-descending"/>
             <xs:enumeration value="random"/>
             <xs:enumeration value="reverse"/>
-            <xs:enumeration value="size"/>
+            <xs:enumeration value="size-ascending"/>
+            <xs:enumeration value="size-descending"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="phpType">

@@ -1,11 +1,11 @@
 --TEST--
-Order by test size: Test methods within a single class
+Order by test size ascending: Test methods within a single class
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--order-by';
-$_SERVER['argv'][] = 'size';
+$_SERVER['argv'][] = 'size-ascending';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/fixture/test-methods-with-sizes';
 
@@ -14,7 +14,6 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "size" for --order-by is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (3 tests)

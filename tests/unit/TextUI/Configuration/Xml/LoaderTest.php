@@ -21,6 +21,7 @@ use function unlink;
 use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -38,25 +39,28 @@ final class LoaderTest extends TestCase
     public static function configurationRootOptionsProvider(): array
     {
         return [
-            'executionOrder default'       => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
-            'executionOrder random'        => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
-            'executionOrder reverse'       => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
-            'executionOrder size'          => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
-            'cacheDirectory absolute path' => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
-            'cacheResult=false'            => ['cacheResult', 'false', false],
-            'cacheResult=true'             => ['cacheResult', 'true', true],
-            'columns'                      => ['columns', 'max', 'max'],
-            'stopOnFailure'                => ['stopOnFailure', 'true', true],
-            'stopOnWarning'                => ['stopOnWarning', 'true', true],
-            'stopOnIncomplete'             => ['stopOnIncomplete', 'true', true],
-            'stopOnRisky'                  => ['stopOnRisky', 'true', true],
-            'stopOnSkipped'                => ['stopOnSkipped', 'true', true],
-            'failOnEmptyTestSuite'         => ['failOnEmptyTestSuite', 'true', true],
-            'failOnWarning'                => ['failOnWarning', 'true', true],
-            'failOnRisky'                  => ['failOnRisky', 'true', true],
-            'processIsolation'             => ['processIsolation', 'true', true],
-            'reverseDefectList'            => ['reverseDefectList', 'true', true],
-            'diffContext'                  => ['diffContext', '5', 5],
+            'executionOrder default'             => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            'executionOrder random'              => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
+            'executionOrder reverse'             => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            'executionOrder duration-ascending'  => ['executionOrder', 'duration-ascending', TestSuiteSorter::ORDER_DURATION_ASCENDING],
+            'executionOrder duration-descending' => ['executionOrder', 'duration-descending', TestSuiteSorter::ORDER_DURATION_DESCENDING],
+            'executionOrder size-ascending'      => ['executionOrder', 'size-ascending', TestSuiteSorter::ORDER_SIZE_ASCENDING],
+            'executionOrder size-descending'     => ['executionOrder', 'size-descending', TestSuiteSorter::ORDER_SIZE_DESCENDING],
+            'cacheDirectory absolute path'       => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
+            'cacheResult=false'                  => ['cacheResult', 'false', false],
+            'cacheResult=true'                   => ['cacheResult', 'true', true],
+            'columns'                            => ['columns', 'max', 'max'],
+            'stopOnFailure'                      => ['stopOnFailure', 'true', true],
+            'stopOnWarning'                      => ['stopOnWarning', 'true', true],
+            'stopOnIncomplete'                   => ['stopOnIncomplete', 'true', true],
+            'stopOnRisky'                        => ['stopOnRisky', 'true', true],
+            'stopOnSkipped'                      => ['stopOnSkipped', 'true', true],
+            'failOnEmptyTestSuite'               => ['failOnEmptyTestSuite', 'true', true],
+            'failOnWarning'                      => ['failOnWarning', 'true', true],
+            'failOnRisky'                        => ['failOnRisky', 'true', true],
+            'processIsolation'                   => ['processIsolation', 'true', true],
+            'reverseDefectList'                  => ['reverseDefectList', 'true', true],
+            'diffContext'                        => ['diffContext', '5', 5],
         ];
     }
 
@@ -111,6 +115,7 @@ final class LoaderTest extends TestCase
     }
 
     #[DataProvider('configurationRootOptionsProvider')]
+    #[IgnorePhpunitDeprecations]
     public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, bool|int|string $expected): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid('', true) . '.xml';
@@ -122,6 +127,36 @@ final class LoaderTest extends TestCase
         $this->assertFalse($configuration->hasValidationErrors());
 
         $this->assertEquals($expected, $configuration->phpunit()->{$optionName}());
+
+        @unlink($tmpFilename);
+    }
+
+    #[IgnorePhpunitDeprecations]
+    public function testShouldParseDeprecatedExecutionOrderDuration(): void
+    {
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
+        $xml         = "<phpunit executionOrder='duration'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
+
+        $configuration = (new Loader)->load($tmpFilename);
+
+        $this->assertTrue($configuration->hasValidationErrors());
+        $this->assertEquals(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->phpunit()->executionOrder());
+
+        @unlink($tmpFilename);
+    }
+
+    #[IgnorePhpunitDeprecations]
+    public function testShouldParseDeprecatedExecutionOrderSize(): void
+    {
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
+        $xml         = "<phpunit executionOrder='size'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
+
+        $configuration = (new Loader)->load($tmpFilename);
+
+        $this->assertTrue($configuration->hasValidationErrors());
+        $this->assertEquals(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->phpunit()->executionOrder());
 
         @unlink($tmpFilename);
     }

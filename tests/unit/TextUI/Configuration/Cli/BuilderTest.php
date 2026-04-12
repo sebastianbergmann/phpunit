@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\CliArguments;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -1170,13 +1171,36 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by duration')]
     public function testOrderByDuration(): void
     {
         $configuration = (new Builder)->fromParameters(['--order-by', 'duration']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION, $configuration->executionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
+    #[TestDox('--order-by duration-ascending')]
+    public function testOrderByDurationAscending(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'duration-ascending']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
+    #[TestDox('--order-by duration-descending')]
+    public function testOrderByDurationDescending(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'duration-descending']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_DURATION_DESCENDING, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
         $this->assertFalse($configuration->hasResolveDependencies());
     }
@@ -1203,13 +1227,36 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by size')]
     public function testOrderBySize(): void
     {
         $configuration = (new Builder)->fromParameters(['--order-by', 'size']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE, $configuration->executionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
+    #[TestDox('--order-by size-ascending')]
+    public function testOrderBySizeAscending(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'size-ascending']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
+    #[TestDox('--order-by size-descending')]
+    public function testOrderBySizeDescending(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'size-descending']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_SIZE_DESCENDING, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
         $this->assertFalse($configuration->hasResolveDependencies());
     }
@@ -1225,13 +1272,14 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by depends,duration')]
     public function testOrderByDependsDuration(): void
     {
         $configuration = (new Builder)->fromParameters(['--order-by', 'depends,duration']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION, $configuration->executionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
         $this->assertTrue($configuration->hasResolveDependencies());
     }
@@ -1258,13 +1306,14 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by depends,size')]
     public function testOrderByDependsSize(): void
     {
         $configuration = (new Builder)->fromParameters(['--order-by', 'depends,size']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE, $configuration->executionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
         $this->assertTrue($configuration->hasResolveDependencies());
     }
@@ -1292,13 +1341,14 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->resolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by no-depends,duration')]
     public function testOrderByNoDependsDuration(): void
     {
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,duration']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION, $configuration->executionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
         $this->assertTrue($configuration->hasResolveDependencies());
         $this->assertFalse($configuration->resolveDependencies());
@@ -1328,13 +1378,14 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->resolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by no-depends,size')]
     public function testOrderByNoDependsSize(): void
     {
         $configuration = (new Builder)->fromParameters(['--order-by', 'no-depends,size']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE, $configuration->executionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
         $this->assertFalse($configuration->hasExecutionOrderDefects());
         $this->assertTrue($configuration->hasResolveDependencies());
         $this->assertFalse($configuration->resolveDependencies());

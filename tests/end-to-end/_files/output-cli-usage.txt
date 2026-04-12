@@ -92,7 +92,7 @@ Execution:
   --cache-result                       Write test results to cache file
   --do-not-cache-result                Do not write test results to cache file
 
-  --order-by <order>                   Run tests in order: default|defects|depends|duration|no-depends|random|reverse|size
+  --order-by <order>                   Run tests in order: default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending
   --resolve-dependencies               Alias for "--order-by depends"
   --ignore-dependencies                Alias for "--order-by no-depends"
   --random-order                       Alias for "--order-by random"

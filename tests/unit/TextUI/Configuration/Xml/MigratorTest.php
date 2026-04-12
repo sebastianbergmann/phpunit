@@ -50,6 +50,14 @@ final class MigratorTest extends TestCase
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-issue-6019.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-issue-6019.xml',
             ],
+            'Execution Order Duration' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-duration.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-duration.xml',
+            ],
+            'Execution Order Size' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-size.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-size.xml',
+            ],
         ];
     }
 

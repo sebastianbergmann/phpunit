@@ -142,7 +142,7 @@
   [32m--do-not-cache-result               [0m Do not write test results to cache file
 
   [32m--order-by [36m<order>[0m                  [0m Run tests in order:
-                                       default|defects|depends|duration|no-depends|random|reverse|size
+                                       default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending
   [32m--resolve-dependencies              [0m Alias for "--order-by depends"
   [32m--ignore-dependencies               [0m Alias for "--order-by no-depends"
   [32m--random-order                      [0m Alias for "--order-by random"
