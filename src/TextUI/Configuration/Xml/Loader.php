@@ -962,6 +962,12 @@ final readonly class Loader
             $beStrictAboutCoverageMetadata = $this->parseBooleanAttribute($document->documentElement, 'beStrictAboutCoverageMetadata', false);
         }
 
+        $requireCoverageContribution = false;
+
+        if ($document->documentElement->hasAttribute('requireCoverageContribution')) {
+            $requireCoverageContribution = $this->parseBooleanAttribute($document->documentElement, 'requireCoverageContribution', false);
+        }
+
         $shortenArraysForExportThreshold = $this->parseIntegerAttribute($document->documentElement, 'shortenArraysForExportThreshold', 10);
 
         if ($shortenArraysForExportThreshold < 0) {
@@ -1014,6 +1020,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($document->documentElement, 'beStrictAboutOutputDuringTests', false),
             $this->parseBooleanAttribute($document->documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
             $beStrictAboutCoverageMetadata,
+            $requireCoverageContribution,
             $this->parseBooleanAttribute($document->documentElement, 'enforceTimeLimit', false),
             $this->parseIntegerAttribute($document->documentElement, 'defaultTimeLimit', 1),
             $this->parseIntegerAttribute($document->documentElement, 'timeoutForSmallTests', 1),

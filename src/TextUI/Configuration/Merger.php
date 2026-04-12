@@ -590,6 +590,12 @@ final readonly class Merger
             $strictCoverage = $xmlConfiguration->phpunit()->beStrictAboutCoverageMetadata();
         }
 
+        if ($cliConfiguration->hasRequireCoverageContribution()) {
+            $requireCoverageContribution = $cliConfiguration->requireCoverageContribution();
+        } else {
+            $requireCoverageContribution = $xmlConfiguration->phpunit()->requireCoverageContribution();
+        }
+
         if ($cliConfiguration->hasDisallowTestOutput()) {
             $disallowTestOutput = $cliConfiguration->disallowTestOutput();
         } else {
@@ -1114,6 +1120,7 @@ final readonly class Merger
             $timeoutForLargeTests,
             $reportUselessTests,
             $strictCoverage,
+            $requireCoverageContribution,
             $disallowTestOutput,
             $displayDetailsOnAllIssues,
             $displayDetailsOnIncompleteTests,

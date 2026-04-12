@@ -151,7 +151,8 @@ final class TestRunner
         }
 
         if ($collectCodeCoverage) {
-            $append = !$risky && !$incomplete && !$skipped;
+            $append                 = !$risky && !$incomplete && !$skipped;
+            $coveredUnintentionally = false;
 
             if (!$append) {
                 $coversTargets = false;
@@ -165,6 +166,8 @@ final class TestRunner
                     $usesTargets,
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
+                $coveredUnintentionally = true;
+
                 Facade::emitter()->testConsideredRisky(
                     $test->valueObjectForEvents(),
                     'This test executed code that is not listed as code to be covered or used:' .
@@ -175,6 +178,17 @@ final class TestRunner
                 $error = true;
 
                 $e = $e ?? $cce;
+            }
+
+            if ($append && !$error && !$failure && !$coveredUnintentionally &&
+                $this->configuration->requireCoverageContribution() &&
+                !CodeCoverage::instance()->lastTestContributedToCoverage()) {
+                Facade::emitter()->testConsideredRisky(
+                    $test->valueObjectForEvents(),
+                    'This test does not contribute to code coverage',
+                );
+
+                $risky = true;
             }
         }
 

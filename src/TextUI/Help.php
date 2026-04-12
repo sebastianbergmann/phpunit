@@ -46,9 +46,11 @@ final class Help
             $this->hasColor = $withColor;
         }
 
+        $maxLength = (int) ($width / 2) - 4;
+
         foreach ($this->elements() as $options) {
             foreach ($options as $option) {
-                if (isset($option['arg'])) {
+                if (isset($option['arg']) && strlen($option['arg']) <= $maxLength) {
                     $this->lengthOfLongestOptionName = max($this->lengthOfLongestOptionName, strlen($option['arg']));
                 }
             }
@@ -87,9 +89,14 @@ final class Help
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = str_pad($option['arg'], $this->lengthOfLongestOptionName);
+                    if (strlen($option['arg']) > $this->lengthOfLongestOptionName) {
+                        $buffer .= self::LEFT_MARGIN . $option['arg'] . PHP_EOL;
+                        $buffer .= str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $option['desc'] . PHP_EOL;
+                    } else {
+                        $arg = str_pad($option['arg'], $this->lengthOfLongestOptionName);
 
-                    $buffer .= self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
+                        $buffer .= self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
+                    }
                 }
             }
 
@@ -120,19 +127,31 @@ final class Help
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->lengthOfLongestOptionName));
-                    $arg = preg_replace_callback(
-                        '/(<[^>]+>)/',
-                        static fn (array $matches) => Color::colorize('fg-cyan', $matches[0]),
-                        $arg,
-                    );
+                    if (strlen($option['arg']) > $this->lengthOfLongestOptionName) {
+                        $buffer .= self::LEFT_MARGIN . Color::colorize('fg-green', $option['arg']) . PHP_EOL;
 
-                    $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->columnsAvailableForDescription, PHP_EOL));
+                        $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->columnsAvailableForDescription, PHP_EOL));
 
-                    $buffer .= self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
+                        $buffer .= str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[0] . PHP_EOL;
 
-                    for ($i = 1; $i < count($desc); $i++) {
-                        $buffer .= str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[$i] . PHP_EOL;
+                        for ($i = 1; $i < count($desc); $i++) {
+                            $buffer .= str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[$i] . PHP_EOL;
+                        }
+                    } else {
+                        $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->lengthOfLongestOptionName));
+                        $arg = preg_replace_callback(
+                            '/(<[^>]+>)/',
+                            static fn (array $matches) => Color::colorize('fg-cyan', $matches[0]),
+                            $arg,
+                        );
+
+                        $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->columnsAvailableForDescription, PHP_EOL));
+
+                        $buffer .= self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
+
+                        for ($i = 1; $i < count($desc); $i++) {
+                            $buffer .= str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[$i] . PHP_EOL;
+                        }
                     }
                 }
             }
@@ -199,6 +218,7 @@ final class Help
                 ['spacer' => ''],
 
                 ['arg'    => '--strict-coverage', 'desc' => 'Be strict about code coverage metadata'],
+                ['arg'    => '--require-coverage-contribution', 'desc' => 'Be strict about tests that do not contribute to code coverage'],
                 ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
                 ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
                 ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],

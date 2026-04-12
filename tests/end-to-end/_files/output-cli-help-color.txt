@@ -68,6 +68,8 @@
                                        each test
 
   [32m--strict-coverage                   [0m Be strict about code coverage metadata
+  [32m--require-coverage-contribution     [0m Be strict about tests that do not
+                                       contribute to code coverage
   [32m--strict-global-state               [0m Be strict about changes to global state
   [32m--disallow-test-output              [0m Be strict about output during tests
   [32m--enforce-time-limit                [0m Enforce time limit based on test size

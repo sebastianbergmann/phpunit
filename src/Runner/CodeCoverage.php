@@ -55,10 +55,12 @@ final class CodeCoverage
     /**
      * @phpstan-ignore property.internalClass
      */
-    private ?Driver $driver  = null;
-    private bool $collecting = false;
-    private ?TestCase $test  = null;
-    private ?Timer $timer    = null;
+    private ?Driver $driver                     = null;
+    private bool $collecting                    = false;
+    private ?TestCase $test                     = null;
+    private ?Timer $timer                       = null;
+    private bool $requireCoverageContribution   = false;
+    private bool $lastTestContributedToCoverage = false;
 
     public static function instance(): self
     {
@@ -120,6 +122,8 @@ final class CodeCoverage
         } else {
             $this->codeCoverage()->excludeUncoveredFiles();
         }
+
+        $this->requireCoverageContribution = $configuration->requireCoverageContribution();
 
         $this->warnIfFilterIsNotConfigured($codeCoverageFilterRegistry, $configuration);
 
@@ -240,9 +244,30 @@ final class CodeCoverage
             }
         }
 
-        $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
+        $rawData = $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
+
+        if ($this->requireCoverageContribution) {
+            $this->lastTestContributedToCoverage = false;
+
+            /** @phpstan-ignore method.internalClass */
+            foreach ($rawData->lineCoverage() as $lines) {
+                foreach ($lines as $lineStatus) {
+                    /** @phpstan-ignore classConstant.internalClass */
+                    if ($lineStatus === Driver::LINE_EXECUTED) {
+                        $this->lastTestContributedToCoverage = true;
+
+                        break 2;
+                    }
+                }
+            }
+        }
 
         $this->test = null;
+    }
+
+    public function lastTestContributedToCoverage(): bool
+    {
+        return $this->lastTestContributedToCoverage;
     }
 
     public function deactivate(): void
