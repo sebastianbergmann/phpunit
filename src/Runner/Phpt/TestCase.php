@@ -54,6 +54,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\CodeCoverageFileExistsException;
 use PHPUnit\Runner\Exception;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
@@ -212,6 +213,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         );
 
         EventFacade::emitter()->childProcessFinished($jobResult->stdout(), $jobResult->stderr());
+
+        if (TestResultFacade::wasInterrupted()) {
+            $this->runClean($sections, CodeCoverage::instance()->isActive());
+
+            $emitter->testFinished($this->valueObjectForEvents(), 0);
+
+            return;
+        }
 
         $output = $jobResult->stdout();
 
