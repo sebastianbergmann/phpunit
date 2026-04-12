@@ -17,6 +17,7 @@ use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
 /**
@@ -39,6 +40,17 @@ final readonly class ChildProcessResultProcessor
 
     public function process(Test $test, string $serializedProcessResult, string $stderr): void
     {
+        if (TestResultFacade::wasInterrupted()) {
+            assert($test instanceof TestCase);
+
+            $this->emitter->testFinished(
+                TestMethodBuilder::fromTestCase($test),
+                0,
+            );
+
+            return;
+        }
+
         if ($stderr !== '') {
             $exception = new Exception(trim($stderr));
 
