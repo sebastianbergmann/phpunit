@@ -10,6 +10,8 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use const PHP_OUTPUT_HANDLER_CLEAN;
+use const PHP_OUTPUT_HANDLER_FINAL;
 use function array_any;
 use function array_keys;
 use function array_merge;
@@ -38,7 +40,6 @@ use function is_writable;
 use function libxml_clear_errors;
 use function method_exists;
 use function ob_end_clean;
-use function ob_get_clean;
 use function ob_get_contents;
 use function ob_get_level;
 use function ob_start;
@@ -192,6 +193,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?string $outputExpectedString    = null;
     private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
+    private string $outputBufferingCaptured   = '';
+    private bool $outputBufferingDestroyed    = false;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
     private bool $expectErrorLog              = false;
@@ -443,7 +446,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return $this->output;
         }
 
-        return (string) ob_get_contents();
+        return $this->outputBufferingCaptured . (string) ob_get_contents();
     }
 
     /**
@@ -1594,7 +1597,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function startOutputBuffering(): void
     {
-        ob_start();
+        $this->outputBufferingCaptured  = '';
+        $this->outputBufferingDestroyed = false;
+
+        ob_start(function (string $buffer, int $phase): string
+        {
+            $isClean = ($phase & PHP_OUTPUT_HANDLER_CLEAN) !== 0;
+            $isFinal = ($phase & PHP_OUTPUT_HANDLER_FINAL) !== 0;
+
+            if ($isFinal) {
+                $this->outputBufferingDestroyed = true;
+            }
+
+            if (!$isClean || $isFinal) {
+                $this->outputBufferingCaptured .= $buffer;
+            }
+
+            if ($isFinal && !$isClean) {
+                return $buffer;
+            }
+
+            return '';
+        });
 
         $this->outputBufferingActive = true;
         $this->outputBufferingLevel  = ob_get_level();
@@ -1612,8 +1636,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             while (ob_get_level() >= $this->outputBufferingLevel) {
-                ob_end_clean();
+                if (!ob_end_clean()) {
+                    break;
+                }
             }
+
+            $this->output                = $this->outputBufferingCaptured;
+            $this->outputBufferingActive = false;
+            $this->outputBufferingLevel  = ob_get_level();
 
             Event\Facade::emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
@@ -1623,12 +1653,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return false;
         }
 
-        $output = ob_get_clean();
+        $bufferWasSubstituted = $this->outputBufferingDestroyed;
 
-        $this->output = $output !== false ? $output : '';
+        ob_end_clean();
 
+        $this->output                = $this->outputBufferingCaptured;
         $this->outputBufferingActive = false;
         $this->outputBufferingLevel  = ob_get_level();
+
+        if ($bufferWasSubstituted) {
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                'Test code or tested code closed output buffers other than its own',
+            );
+
+            return false;
+        }
 
         return true;
     }
