@@ -29,7 +29,7 @@ final readonly class ShellExitCodeCalculator
         $failOnPhpunitDeprecation = false;
         $failOnPhpunitNotice      = false;
         $failOnPhpunitWarning     = false;
-        $failOnEmptyTestSuite     = false;
+        $failOnEmptyTestSuite     = $this->hasExplicitTestSelection($configuration);
         $failOnIncomplete         = false;
         $failOnNotice             = false;
         $failOnRisky              = false;
@@ -180,5 +180,34 @@ final readonly class ShellExitCodeCalculator
         }
 
         return $returnCode;
+    }
+
+    private function hasExplicitTestSelection(Configuration $configuration): bool
+    {
+        if ($configuration->hasFilter()) {
+            return true;
+        }
+
+        if ($configuration->hasExcludeFilter()) {
+            return true;
+        }
+
+        if ($configuration->hasGroups()) {
+            return true;
+        }
+
+        if ($configuration->hasExcludeGroups()) {
+            return true;
+        }
+
+        if ($configuration->includeTestSuites() !== []) {
+            return true;
+        }
+
+        if ($configuration->excludeTestSuites() !== []) {
+            return true;
+        }
+
+        return false;
     }
 }
