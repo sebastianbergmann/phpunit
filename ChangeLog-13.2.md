@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#5757](https://github.com/sebastianbergmann/phpunit/issues/5757): Add assertions for ignoring whitespace differences in strings
 * [#5810](https://github.com/sebastianbergmann/phpunit/issues/5810): Do not dump arrays and objects in failure messages of `IsTrue`, `IsFalse`, `IsNull`, `IsFinite`, `IsInfinite`, and `IsNan` constraints
 * [#5838](https://github.com/sebastianbergmann/phpunit/issues/5838): Inherit `#[RunTestsInSeparateProcesses]` from parent test classes
+* [#5922](https://github.com/sebastianbergmann/phpunit/issues/5922): `assertContainsEquals()` should use `sebastian/comparator` for element comparison
 * [#6000](https://github.com/sebastianbergmann/phpunit/issues/6000): Report PHPT test as risky when `--SKIPIF--` does not have standard-output side-effect
 * [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075): Support test execution order sorted by descending duration
 * [#6559](https://github.com/sebastianbergmann/phpunit/issues/6559): Improved API for exception message expectations

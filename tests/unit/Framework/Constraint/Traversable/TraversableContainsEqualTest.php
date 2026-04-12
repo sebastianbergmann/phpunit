@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use DateInterval;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -74,6 +75,27 @@ final class TraversableContainsEqualTest extends TestCase
                 '',
                 0,
                 ['0'],
+            ],
+
+            [
+                true,
+                '',
+                DateInterval::createFromDateString('1 day'),
+                [DateInterval::createFromDateString('1 day')],
+            ],
+
+            [
+                true,
+                '',
+                DateInterval::createFromDateString('1 day'),
+                [DateInterval::createFromDateString('2 days'), DateInterval::createFromDateString('1 day')],
+            ],
+
+            [
+                false,
+                'Failed asserting that an array contains DateInterval Object',
+                DateInterval::createFromDateString('1 day'),
+                [DateInterval::createFromDateString('2 days')],
             ],
 
             [

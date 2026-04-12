@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use DateInterval;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -41,8 +42,10 @@ final class assertContainsEqualsTest extends TestCase
             [0, [false]],
             [0, [null]],
             ['string', ['string']],
+            ['string', ['another-string', 'string']],
             [['string'], [['string']]],
             [$a, [$b]],
+            [DateInterval::createFromDateString('1 day'), [DateInterval::createFromDateString('1 day')]],
         ];
     }
 
@@ -65,6 +68,7 @@ final class assertContainsEqualsTest extends TestCase
             ['string', ['another-string']],
             [['string'], [['another-string']]],
             [$a, [$b]],
+            [DateInterval::createFromDateString('1 day'), [DateInterval::createFromDateString('2 days')]],
         ];
     }
 

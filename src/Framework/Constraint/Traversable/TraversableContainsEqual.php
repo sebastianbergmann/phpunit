@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SplObjectStorage;
 
 /**
@@ -26,10 +28,23 @@ final class TraversableContainsEqual extends TraversableContains
             return $other->offsetExists($this->value());
         }
 
+        $comparatorFactory = ComparatorFactory::getInstance();
+
         foreach ($other as $element) {
-            /** @phpstan-ignore equal.notAllowed */
-            if ($this->value() == $element) {
+            try {
+                $comparator = $comparatorFactory->getComparatorFor(
+                    $this->value(),
+                    $element,
+                );
+
+                $comparator->assertEquals(
+                    $this->value(),
+                    $element,
+                );
+
                 return true;
+            } catch (ComparisonFailure) {
+                continue;
             }
         }
 
