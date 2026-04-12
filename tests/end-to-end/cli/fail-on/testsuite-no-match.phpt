@@ -1,25 +1,24 @@
 --TEST--
-phpunit --filter testFoo tests/FooTest.php
+Test Runner exits with shell exit code indicating failure when --testsuite does not match any test suite
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
-$_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
-$_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'testFoo';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/groups/tests/FooTest.php';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/multiple-testsuites/phpunit.xml';
+$_SERVER['argv'][] = '--testsuite';
+$_SERVER['argv'][] = 'doesNotExist';
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
-Test Suite Loaded (3 tests)
+Test Suite Loaded (0 tests)
 Test Runner Started
 Test Suite Sorted
-Test Suite Filtered (0 tests)
 Test Runner Execution Started (0 tests)
 Test Runner Execution Finished
 Test Runner Finished

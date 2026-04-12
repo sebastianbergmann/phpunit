@@ -1,26 +1,27 @@
 --TEST--
-phpunit --filter testFoo tests/FooTest.php
+Test Runner exits with shell exit code indicating success when --filter does not match and --do-not-fail-on-empty-test-suite is used
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'testFoo';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/groups/tests/FooTest.php';
+$_SERVER['argv'][] = 'doesNotExist';
+$_SERVER['argv'][] = '--do-not-fail-on-empty-test-suite';
+$_SERVER['argv'][] = __DIR__ . '/../../event/_files/SuccessTest.php';
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
-Test Suite Loaded (3 tests)
+Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted
 Test Suite Filtered (0 tests)
 Test Runner Execution Started (0 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 0)
