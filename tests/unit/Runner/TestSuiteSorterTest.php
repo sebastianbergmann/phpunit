@@ -254,6 +254,72 @@ final class TestSuiteSorterTest extends TestCase
         $this->assertSame($endToEndSuite, $tests[1]);
     }
 
+    public function testDefectsFirstHoistsChildSuiteContainingNestedFailingTest(): void
+    {
+        $failingTest = new LargeGroupAttributesTest('testOne');
+        $passingTest = new SmallGroupAttributesTest('testOne');
+
+        $innerFailing = TestSuite::empty('inner-failing');
+        $innerFailing->setTests([$failingTest]);
+
+        $outerFailing = TestSuite::empty('outer-failing');
+        $outerFailing->setTests([$innerFailing]);
+
+        $outerPassing = TestSuite::empty('outer-passing');
+        $outerPassing->setTests([$passingTest]);
+
+        $parent = TestSuite::empty('parent');
+        $parent->setTests([$outerPassing, $outerFailing]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setStatus(ResultCacheId::fromReorderable($failingTest), TestStatus::failure());
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $parent->tests();
+
+        $this->assertSame($outerFailing, $tests[0]);
+        $this->assertSame($outerPassing, $tests[1]);
+    }
+
+    public function testDefectsFirstHoistsClassSuiteContainingFailingDataProviderTest(): void
+    {
+        $classReflector = new ReflectionClass(SmallTestWithDataProvider::class);
+        $classSuite     = TestSuite::fromClassReflector($classReflector);
+
+        $dataProviderTestSuite = null;
+
+        foreach ($classSuite->tests() as $test) {
+            if ($test instanceof DataProviderTestSuite) {
+                $dataProviderTestSuite = $test;
+
+                break;
+            }
+        }
+
+        $this->assertInstanceOf(DataProviderTestSuite::class, $dataProviderTestSuite);
+
+        $failingDataSet = $dataProviderTestSuite->tests()[0];
+
+        $passingClassSuite = TestSuite::empty('passing');
+        $passingClassSuite->setTests([new SmallGroupAttributesTest('testOne')]);
+
+        $parent = TestSuite::empty('parent');
+        $parent->setTests([$passingClassSuite, $classSuite]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setStatus(ResultCacheId::fromReorderable($failingDataSet), TestStatus::failure());
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $parent->tests();
+
+        $this->assertSame($classSuite, $tests[0]);
+        $this->assertSame($passingClassSuite, $tests[1]);
+    }
+
     public function testSortBySizeAssignsUnknownToPlainTestSuite(): void
     {
         $suiteA = TestSuite::empty('A');
