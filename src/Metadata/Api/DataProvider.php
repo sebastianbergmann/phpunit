@@ -86,6 +86,7 @@ final readonly class DataProvider
 
         $methodsCalled                = [];
         $result                       = [];
+        $skipWhenEmpty                = false;
         $testMethodNumberOfParameters = $testMethod->getNumberOfParameters();
         $testMethodIsNonVariadic      = !$testMethod->isVariadic();
 
@@ -95,6 +96,10 @@ final readonly class DataProvider
             $providerLabel         = $_dataProvider->className() . '::' . $_dataProvider->methodName();
             $dataProviderMethod    = new Event\Code\ClassMethod($_dataProvider->className(), $_dataProvider->methodName());
             $validateArgumentCount = $testMethodIsNonVariadic && $_dataProvider->validateArgumentCount();
+
+            if ($_dataProvider->skipWhenEmpty()) {
+                $skipWhenEmpty = true;
+            }
 
             Event\Facade::emitter()->dataProviderMethodCalled(
                 $testMethodValueObject,
@@ -348,6 +353,10 @@ final readonly class DataProvider
         );
 
         if ($result === []) {
+            if ($skipWhenEmpty) {
+                return [];
+            }
+
             throw new InvalidDataProviderException(
                 'Empty data set provided by data provider',
             );

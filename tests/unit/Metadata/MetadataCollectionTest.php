@@ -602,7 +602,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
-                Metadata::dataProvider('', '', true),
+                Metadata::dataProvider('', '', true, false),
                 Metadata::dataProviderClosure($closure, true),
                 Metadata::dependsOnClass('', false, false),
                 Metadata::dependsOnMethod('', '', false, false),

@@ -1210,7 +1210,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeDataProvider(): void
     {
-        $metadata = Metadata::dataProvider(self::class, 'method', true);
+        $metadata = Metadata::dataProvider(self::class, 'method', true, false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());

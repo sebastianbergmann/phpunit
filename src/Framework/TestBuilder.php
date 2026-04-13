@@ -56,7 +56,7 @@ final readonly class TestBuilder
             }
         }
 
-        if ($data !== null) {
+        if ($data !== null && $data !== []) {
             return $this->buildDataProviderTestSuite(
                 $methodName,
                 $className,
@@ -69,6 +69,12 @@ final readonly class TestBuilder
         }
 
         $test = new $className($methodName);
+
+        if ($data === []) {
+            $test->setEmptyDataProviderSkipMessage(
+                'The data provider for this test provided no data, which is explicitly permitted',
+            );
+        }
 
         $this->configureTestCase(
             $test,

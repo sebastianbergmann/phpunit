@@ -29,16 +29,18 @@ final readonly class DataProviderExternal
      */
     private string $methodName;
     private bool $validateArgumentCount;
+    private bool $skipWhenEmpty;
 
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public function __construct(string $className, string $methodName, bool $validateArgumentCount = true)
+    public function __construct(string $className, string $methodName, bool $validateArgumentCount = true, bool $skipWhenEmpty = false)
     {
         $this->className             = $className;
         $this->methodName            = $methodName;
         $this->validateArgumentCount = $validateArgumentCount;
+        $this->skipWhenEmpty         = $skipWhenEmpty;
     }
 
     /**
@@ -60,5 +62,10 @@ final readonly class DataProviderExternal
     public function validateArgumentCount(): bool
     {
         return $this->validateArgumentCount;
+    }
+
+    public function skipWhenEmpty(): bool
+    {
+        return $this->skipWhenEmpty;
     }
 }
