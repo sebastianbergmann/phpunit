@@ -151,7 +151,7 @@ final class TestSuiteSorter
             $sortId = $test->sortId();
 
             if (!isset($this->defectSortOrder[$sortId])) {
-                $this->defectSortOrder[$sortId] = $this->cache->status(ResultCacheId::fromReorderable($test))->asInt();
+                $this->defectSortOrder[$sortId] = $this->cache->status(ResultCacheId::fromReorderable($test))->sortWeight();
                 $max                            = max($max, $this->defectSortOrder[$sortId]);
             }
         }
@@ -259,9 +259,11 @@ final class TestSuiteSorter
     /**
      * Comparator callback function to sort tests for "reach failure as fast as possible".
      *
-     * 1. sort tests by defect weight defined in self::DEFECT_SORT_WEIGHT
-     * 2. when tests are equally defective, sort the fastest to the front
-     * 3. do not reorder successful tests
+     * Tests are sorted by defect weight descending. Tests with equal weight,
+     * including equally-weighted defective tests, keep their existing
+     * relative order, so that any ordering applied by the preceding main
+     * order phase (duration, size, reverse, random) is preserved by
+     * PHP's stable usort() function.
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
@@ -271,17 +273,7 @@ final class TestSuiteSorter
         $priorityA = $this->defectSortOrder[$a->sortId()] ?? 0;
         $priorityB = $this->defectSortOrder[$b->sortId()] ?? 0;
 
-        if ($priorityA !== $priorityB) {
-            // Sort defect weight descending
-            return $priorityB <=> $priorityA;
-        }
-
-        if ($priorityA > 0 || $priorityB > 0) {
-            return $this->cmpDuration($a, $b);
-        }
-
-        // do not change execution order
-        return 0;
+        return $priorityB <=> $priorityA;
     }
 
     /**
@@ -333,7 +325,7 @@ final class TestSuiteSorter
     }
 
     /**
-     * Reorder Tests within a TestCase in such a way as to resolve as many dependencies as possible.
+     * Reorder tests within a TestCase in such a way as to resolve as many dependencies as possible.
      * The algorithm will leave the tests in original running order when it can.
      * For more details see the documentation for test dependencies.
      *

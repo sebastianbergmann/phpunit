@@ -9,11 +9,15 @@
  */
 namespace PHPUnit\Runner;
 
+use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ResultCache\DefaultResultCache;
+use PHPUnit\Runner\ResultCache\ResultCacheId;
 use PHPUnit\TestFixture\LargeGroupAttributesTest;
 use PHPUnit\TestFixture\MediumGroupAttributesTest;
 use PHPUnit\TestFixture\NonReorderableTest;
@@ -129,6 +133,125 @@ final class TestSuiteSorterTest extends TestCase
         $this->assertCount(2, $tests);
         $this->assertSame($nonReorderable, $tests[0]);
         $this->assertSame($testCase, $tests[1]);
+    }
+
+    public function testDefectsFirstKeepsOrderOfNonDefectiveTests(): void
+    {
+        $small  = new SmallGroupAttributesTest('testOne');
+        $medium = new MediumGroupAttributesTest('testOne');
+        $large  = new LargeGroupAttributesTest('testOne');
+
+        $suite = TestSuite::empty('test');
+        $suite->setTests([$small, $medium, $large]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setTime(ResultCacheId::fromReorderable($small), 0.1);
+        $cache->setTime(ResultCacheId::fromReorderable($medium), 0.2);
+        $cache->setTime(ResultCacheId::fromReorderable($large), 0.3);
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $suite->tests();
+
+        $this->assertSame($small, $tests[0]);
+        $this->assertSame($medium, $tests[1]);
+        $this->assertSame($large, $tests[2]);
+    }
+
+    public function testDefectsFirstDoesNotHoistSkippedTests(): void
+    {
+        $small  = new SmallGroupAttributesTest('testOne');
+        $medium = new MediumGroupAttributesTest('testOne');
+        $large  = new LargeGroupAttributesTest('testOne');
+
+        $suite = TestSuite::empty('test');
+        $suite->setTests([$small, $medium, $large]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setStatus(ResultCacheId::fromReorderable($large), TestStatus::skipped());
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $suite->tests();
+
+        $this->assertSame($small, $tests[0]);
+        $this->assertSame($medium, $tests[1]);
+        $this->assertSame($large, $tests[2]);
+    }
+
+    public function testDefectsFirstDoesNotHoistIncompleteTests(): void
+    {
+        $small  = new SmallGroupAttributesTest('testOne');
+        $medium = new MediumGroupAttributesTest('testOne');
+        $large  = new LargeGroupAttributesTest('testOne');
+
+        $suite = TestSuite::empty('test');
+        $suite->setTests([$small, $medium, $large]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setStatus(ResultCacheId::fromReorderable($large), TestStatus::incomplete());
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $suite->tests();
+
+        $this->assertSame($small, $tests[0]);
+        $this->assertSame($medium, $tests[1]);
+        $this->assertSame($large, $tests[2]);
+    }
+
+    public function testDefectsFirstHoistsFailingTest(): void
+    {
+        $small  = new SmallGroupAttributesTest('testOne');
+        $medium = new MediumGroupAttributesTest('testOne');
+        $large  = new LargeGroupAttributesTest('testOne');
+
+        $suite = TestSuite::empty('test');
+        $suite->setTests([$small, $medium, $large]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setStatus(ResultCacheId::fromReorderable($large), TestStatus::failure());
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $suite->tests();
+
+        $this->assertSame($large, $tests[0]);
+        $this->assertSame($small, $tests[1]);
+        $this->assertSame($medium, $tests[2]);
+    }
+
+    public function testDefectsFirstPreservesChildSuiteOrderWhenBothContainEqualDefects(): void
+    {
+        $unitTest     = new SmallGroupAttributesTest('testOne');
+        $endToEndTest = new LargeGroupAttributesTest('testOne');
+
+        $unitSuite = TestSuite::empty('unit');
+        $unitSuite->setTests([$unitTest]);
+
+        $endToEndSuite = TestSuite::empty('end-to-end');
+        $endToEndSuite->setTests([$endToEndTest]);
+
+        $parent = TestSuite::empty('test');
+        $parent->setTests([$unitSuite, $endToEndSuite]);
+
+        $cache = new DefaultResultCache(sys_get_temp_dir());
+        $cache->setStatus(ResultCacheId::fromReorderable($unitTest), TestStatus::failure());
+        $cache->setStatus(ResultCacheId::fromReorderable($endToEndTest), TestStatus::failure());
+        $cache->setTime(ResultCacheId::fromReorderable($unitTest), 0.01);
+        $cache->setTime(ResultCacheId::fromReorderable($endToEndTest), 10.0);
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $tests = $parent->tests();
+
+        $this->assertSame($unitSuite, $tests[0]);
+        $this->assertSame($endToEndSuite, $tests[1]);
     }
 
     public function testSortBySizeAssignsUnknownToPlainTestSuite(): void

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         executionOrder="defects"
+>
+    <testsuites>
+        <testsuite name="unit">
+            <file>unit/UnitTest.php</file>
+        </testsuite>
+
+        <testsuite name="end-to-end">
+            <file>end-to-end/EndToEndTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

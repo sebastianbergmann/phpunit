@@ -32,4 +32,12 @@ final readonly class Deprecation extends Known
     {
         return 'deprecation';
     }
+
+    /**
+     * @return non-negative-int
+     */
+    public function sortWeight(): int
+    {
+        return 4;
+    }
 }

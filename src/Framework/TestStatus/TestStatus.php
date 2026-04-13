@@ -192,4 +192,15 @@ abstract readonly class TestStatus
     abstract public function asInt(): int;
 
     abstract public function asString(): string;
+
+    /**
+     * The weight used when sorting tests with "defects first". Statuses
+     * that do not represent a defect — success, skipped, incomplete,
+     * unknown — return 0 so that tests in those states are not hoisted
+     * to the front. Only defective statuses (notice and worse) return a
+     * non-zero weight.
+     *
+     * @return non-negative-int
+     */
+    abstract public function sortWeight(): int;
 }

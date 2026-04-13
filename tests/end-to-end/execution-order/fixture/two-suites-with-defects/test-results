@@ -1,0 +1,1 @@
+{"version":2,"defects":{"PHPUnit\\TestFixture\\ExecutionOrder\\TwoSuites\\UnitTest::testOne":7,"PHPUnit\\TestFixture\\ExecutionOrder\\TwoSuites\\EndToEndTest::testOne":7},"times":{"PHPUnit\\TestFixture\\ExecutionOrder\\TwoSuites\\UnitTest::testOne":0.001,"PHPUnit\\TestFixture\\ExecutionOrder\\TwoSuites\\EndToEndTest::testOne":10.0}}

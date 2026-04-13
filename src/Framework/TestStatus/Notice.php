@@ -32,4 +32,12 @@ final readonly class Notice extends Known
     {
         return 'notice';
     }
+
+    /**
+     * @return non-negative-int
+     */
+    public function sortWeight(): int
+    {
+        return 3;
+    }
 }

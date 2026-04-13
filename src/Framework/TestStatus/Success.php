@@ -32,4 +32,12 @@ final readonly class Success extends Known
     {
         return 'success';
     }
+
+    /**
+     * @return non-negative-int
+     */
+    public function sortWeight(): int
+    {
+        return 0;
+    }
 }

@@ -32,4 +32,12 @@ final readonly class Risky extends Known
     {
         return 'risky';
     }
+
+    /**
+     * @return non-negative-int
+     */
+    public function sortWeight(): int
+    {
+        return 5;
+    }
 }
