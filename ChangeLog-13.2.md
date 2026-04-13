@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#5922](https://github.com/sebastianbergmann/phpunit/issues/5922): `assertContainsEquals()` should use `sebastian/comparator` for element comparison
 * [#6000](https://github.com/sebastianbergmann/phpunit/issues/6000): Report PHPT test as risky when `--SKIPIF--` does not have standard-output side-effect
 * [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075): Support test execution order sorted by descending duration
+* [#6534](https://github.com/sebastianbergmann/phpunit/issues/6534): Make `$_dataName` available to `#[TestDoxFormatter]` callbacks
 * [#6559](https://github.com/sebastianbergmann/phpunit/issues/6559): Improved API for exception message expectations
 * [#6565](https://github.com/sebastianbergmann/phpunit/pull/6565): Optional `$skipWhenEmpty` parameter for `#[DataProvider]` and `#[DataProviderExternal]`
 * [#6566](https://github.com/sebastianbergmann/phpunit/pull/6566): Allow `--stop-on-defect`, `--stop-on-error`, etc. to accept an optional threshold

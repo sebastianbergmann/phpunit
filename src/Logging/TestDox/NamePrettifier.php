@@ -14,6 +14,7 @@ use function array_key_exists;
 use function array_keys;
 use function array_map;
 use function array_pop;
+use function array_splice;
 use function array_values;
 use function assert;
 use function class_exists;
@@ -407,8 +408,18 @@ final class NamePrettifier
             return [$this->prettifyTestMethodName($test->name()), false];
         }
 
+        $arguments = array_values($test->providedData());
+
+        foreach ($reflector->getParameters() as $position => $parameter) {
+            if ($parameter->getName() === '_dataName') {
+                array_splice($arguments, $position, 0, [(string) $test->dataName()]);
+
+                break;
+            }
+        }
+
         try {
-            $result = $reflector->invokeArgs(null, array_values($test->providedData()));
+            $result = $reflector->invokeArgs(null, $arguments);
 
             assert(is_string($result));
 
