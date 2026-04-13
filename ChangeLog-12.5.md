@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.20] - 2026-MM-DD
+
+### Fixed
+
+* [#5993](https://github.com/sebastianbergmann/phpunit/issues/5993): `DefaultJobRunner` deadlocks on child processes that write large amounts of stderr output
+
 ## [12.5.19] - 2026-04-13
 
 ### Fixed
@@ -178,6 +184,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.20]: https://github.com/sebastianbergmann/phpunit/compare/12.5.19...12.5
 [12.5.19]: https://github.com/sebastianbergmann/phpunit/compare/12.5.18...12.5.19
 [12.5.18]: https://github.com/sebastianbergmann/phpunit/compare/12.5.17...12.5.18
 [12.5.17]: https://github.com/sebastianbergmann/phpunit/compare/12.5.16...12.5.17

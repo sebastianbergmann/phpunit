@@ -11,12 +11,15 @@ namespace PHPUnit\Util\PHP;
 
 use const PHP_BINARY;
 use const PHP_SAPI;
+use function array_filter;
 use function array_keys;
 use function array_merge;
 use function array_values;
 use function assert;
 use function fclose;
+use function feof;
 use function file_put_contents;
+use function fread;
 use function function_exists;
 use function fwrite;
 use function ini_get_all;
@@ -25,7 +28,8 @@ use function is_resource;
 use function proc_close;
 use function proc_open;
 use function str_starts_with;
-use function stream_get_contents;
+use function stream_select;
+use function stream_set_blocking;
 use function sys_get_temp_dir;
 use function tempnam;
 use function trim;
@@ -137,15 +141,58 @@ final readonly class DefaultJobRunner extends JobRunner
         $stdout = '';
         $stderr = '';
 
-        if (isset($pipes[1])) {
-            $stdout = stream_get_contents($pipes[1]);
-
-            fclose($pipes[1]);
-        }
+        /**
+         * Drain stdout and stderr concurrently to avoid a deadlock
+         * when the child process fills one of the pipe buffers
+         * before the parent gets around to reading from it.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/5993
+         */
+        stream_set_blocking($pipes[1], false);
 
         if (isset($pipes[2])) {
-            $stderr = stream_get_contents($pipes[2]);
+            stream_set_blocking($pipes[2], false);
+        }
 
+        while (true) {
+            $read = array_filter(
+                [$pipes[1], $pipes[2] ?? null],
+                static fn (mixed $pipe): bool => $pipe !== null && !feof($pipe),
+            );
+
+            if ($read === []) {
+                break;
+            }
+
+            $write  = null;
+            $except = null;
+
+            if (@stream_select($read, $write, $except, 1) === false) {
+                // @codeCoverageIgnoreStart
+                break;
+                // @codeCoverageIgnoreEnd
+            }
+
+            foreach ($read as $pipe) {
+                $chunk = fread($pipe, 8192);
+
+                if ($chunk === false) {
+                    // @codeCoverageIgnoreStart
+                    continue;
+                    // @codeCoverageIgnoreEnd
+                }
+
+                if ($pipe === $pipes[1]) {
+                    $stdout .= $chunk;
+                } else {
+                    $stderr .= $chunk;
+                }
+            }
+        }
+
+        fclose($pipes[1]);
+
+        if (isset($pipes[2])) {
             fclose($pipes[2]);
         }
 
@@ -154,9 +201,6 @@ final readonly class DefaultJobRunner extends JobRunner
         if ($temporaryFile !== null) {
             unlink($temporaryFile);
         }
-
-        assert($stdout !== false);
-        assert($stderr !== false);
 
         return new Result($stdout, $stderr);
     }
