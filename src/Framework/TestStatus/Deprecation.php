@@ -38,6 +38,6 @@ final readonly class Deprecation extends Known
      */
     public function sortWeight(): int
     {
-        return 4;
+        return 0;
     }
 }

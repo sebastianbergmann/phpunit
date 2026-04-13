@@ -38,6 +38,6 @@ final readonly class Notice extends Known
      */
     public function sortWeight(): int
     {
-        return 3;
+        return 0;
     }
 }

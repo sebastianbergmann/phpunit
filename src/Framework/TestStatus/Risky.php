@@ -38,6 +38,6 @@ final readonly class Risky extends Known
      */
     public function sortWeight(): int
     {
-        return 5;
+        return 0;
     }
 }

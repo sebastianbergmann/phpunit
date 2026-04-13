@@ -293,10 +293,10 @@ final class TestStatusTest extends TestCase
         $this->assertSame(0, TestStatus::success()->sortWeight());
         $this->assertSame(0, TestStatus::skipped()->sortWeight());
         $this->assertSame(0, TestStatus::incomplete()->sortWeight());
-        $this->assertSame(3, TestStatus::notice()->sortWeight());
-        $this->assertSame(4, TestStatus::deprecation()->sortWeight());
-        $this->assertSame(5, TestStatus::risky()->sortWeight());
-        $this->assertSame(6, TestStatus::warning()->sortWeight());
+        $this->assertSame(0, TestStatus::notice()->sortWeight());
+        $this->assertSame(0, TestStatus::deprecation()->sortWeight());
+        $this->assertSame(0, TestStatus::risky()->sortWeight());
+        $this->assertSame(0, TestStatus::warning()->sortWeight());
         $this->assertSame(7, TestStatus::failure()->sortWeight());
         $this->assertSame(8, TestStatus::error()->sortWeight());
     }
