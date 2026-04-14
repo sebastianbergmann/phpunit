@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 ### Fixed
 
 * [#5993](https://github.com/sebastianbergmann/phpunit/issues/5993): `DefaultJobRunner` deadlocks on child processes that write large amounts of stderr output
+* [#6587](https://github.com/sebastianbergmann/phpunit/issues/6587): `failOnEmptyTestSuite="false"` in `phpunit.xml` is ignored when `--group`/`--filter`/`--testsuite` matches no tests
 
 ## [13.1.3] - 2026-04-13
 
