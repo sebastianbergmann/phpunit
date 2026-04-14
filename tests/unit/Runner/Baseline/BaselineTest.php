@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
+use function array_keys;
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -43,6 +44,27 @@ final class BaselineTest extends TestCase
         $this->assertArrayHasKey(0, $line);
 
         $this->assertTrue($this->issue()->equals($line[0]));
+    }
+
+    public function testCanonicalizesIssuesByFileLineAndDescription(): void
+    {
+        $fileA = realpath(__DIR__ . '/../../../_files/baseline/AnotherFileWithIssues.php');
+        $fileB = realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php');
+
+        $baseline = new Baseline;
+
+        $baseline->add(Issue::from($fileB, 11, null, 'Undefined variable $c'));
+        $baseline->add(Issue::from($fileB, 10, null, 'b: Undefined variable $b'));
+        $baseline->add(Issue::from($fileB, 10, null, 'a: Undefined variable $b'));
+        $baseline->add(Issue::from($fileA, 10, null, 'Undefined variable $y'));
+
+        $issues = $baseline->groupedByFileAndLine();
+
+        $this->assertSame([$fileA, $fileB], array_keys($issues));
+        $this->assertSame([10, 11], array_keys($issues[$fileB]));
+
+        $this->assertSame('a: Undefined variable $b', $issues[$fileB][10][0]->description());
+        $this->assertSame('b: Undefined variable $b', $issues[$fileB][10][1]->description());
     }
 
     public function testCanBeQueried(): void
