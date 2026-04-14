@@ -3165,7 +3165,7 @@ abstract class Assert
     {
         return match ($type) {
             'numeric', 'integer', 'int', 'iterable', 'float', 'string', 'boolean', 'bool', 'null', 'array', 'object', 'resource', 'scalar' => true,
-            default => false,
+            default                                                                                                                        => false,
         };
     }
 }

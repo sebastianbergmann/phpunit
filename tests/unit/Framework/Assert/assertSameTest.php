@@ -68,8 +68,8 @@ final class assertSameTest extends TestCase
             [-INF, -INF],
             // arrays
             [[], []],
-            [[0 => 1], [0 => 1]],
-            [[0 => null], [0 => null]],
+            [[0 => 1], [0                    => 1]],
+            [[0 => null], [0                 => null]],
             [['a', 'b' => [1, 2]], ['a', 'b' => [1, 2]]],
             // objects
             [$object, $object],
