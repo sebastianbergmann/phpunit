@@ -133,6 +133,7 @@ final readonly class DefaultConfiguration extends Configuration
                 false,
                 false,
                 false,
+                false,
                 0,
                 0,
                 0,
