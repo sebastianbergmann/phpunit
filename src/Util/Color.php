@@ -25,6 +25,7 @@ use function preg_replace_callback;
 use function preg_split;
 use function sprintf;
 use function str_pad;
+use function strlen;
 use function strtr;
 use function trim;
 
@@ -124,7 +125,7 @@ final class Color
 
         assert($lines !== false && $lines !== []);
 
-        $maxBoxWidth = max(array_map(\strlen(...), $lines));
+        $maxBoxWidth = max(array_map(strlen(...), $lines));
 
         if ($columns !== null) {
             $maxBoxWidth = min($maxBoxWidth, $columns);

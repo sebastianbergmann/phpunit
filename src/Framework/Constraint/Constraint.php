@@ -287,10 +287,10 @@ abstract class Constraint implements Countable, SelfDescribing
         }
 
         return match ($type) {
-            'array', 'integer' => 'an ' . $type . ' ',
+            'array', 'integer'                                          => 'an ' . $type . ' ',
             'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ',
-            'null'  => 'null ',
-            default => 'a value of ' . $type . ' ',
+            'null'                                                      => 'null ',
+            default                                                     => 'a value of ' . $type . ' ',
         };
     }
 }
