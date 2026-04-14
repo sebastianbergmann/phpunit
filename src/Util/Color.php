@@ -25,6 +25,7 @@ use function preg_replace_callback;
 use function preg_split;
 use function sprintf;
 use function str_pad;
+use function strlen;
 use function strtr;
 use function trim;
 
@@ -119,7 +120,7 @@ final class Color
     public static function colorizeTextBox(string $color, string $buffer, ?int $columns = null): string
     {
         $lines       = preg_split('/\r\n|\r|\n/', $buffer);
-        $maxBoxWidth = max(array_map(\strlen(...), $lines));
+        $maxBoxWidth = max(array_map(strlen(...), $lines));
 
         if ($columns !== null) {
             $maxBoxWidth = min($maxBoxWidth, $columns);
