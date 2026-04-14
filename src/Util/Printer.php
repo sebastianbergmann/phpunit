@@ -43,7 +43,7 @@ class Printer
     protected $autoFlush = false;
 
     /**
-     * @psalm-var resource|closed-resource
+     * @psalm-var closed-resource|resource
      */
     protected $out;
 
