@@ -53,6 +53,24 @@ final readonly class GlobalState
     ];
 
     /**
+     * Keys in $_SERVER that are populated by the SAPI in the child process
+     * and must therefore not be preserved from the parent process.
+     *
+     * @var non-empty-list<non-empty-string>
+     */
+    private const array SAPI_SERVER_KEYS = [
+        'PHP_SELF',
+        'SCRIPT_NAME',
+        'SCRIPT_FILENAME',
+        'PATH_TRANSLATED',
+        'DOCUMENT_ROOT',
+        'REQUEST_TIME',
+        'REQUEST_TIME_FLOAT',
+        'argv',
+        'argc',
+    ];
+
+    /**
      * @var non-empty-array<non-empty-string, non-empty-array<non-empty-string, true>>
      */
     private const array DEPRECATED_INI_SETTINGS = [
@@ -271,6 +289,10 @@ final readonly class GlobalState
         foreach (self::SUPER_GLOBAL_ARRAYS as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray]) && is_array($GLOBALS[$superGlobalArray])) {
                 foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                    if ($superGlobalArray === '_SERVER' && in_array($key, self::SAPI_SERVER_KEYS, true)) {
+                        continue;
+                    }
+
                     $name = sprintf('$GLOBALS[\'%s\'][\'%s\']', $superGlobalArray, $key);
 
                     if ($value instanceof Closure) {
