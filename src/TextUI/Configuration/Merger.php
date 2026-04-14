@@ -136,8 +136,10 @@ final readonly class Merger
 
         if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
             $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
-        } else {
+        } elseif ($xmlConfiguration->phpunit()->hasFailOnEmptyTestSuite()) {
             $failOnEmptyTestSuite = $xmlConfiguration->phpunit()->failOnEmptyTestSuite();
+        } else {
+            $failOnEmptyTestSuite = $this->hasExplicitTestSelection($cliConfiguration);
         }
 
         if ($cliConfiguration->hasFailOnIncomplete()) {
@@ -1105,5 +1107,34 @@ final readonly class Merger
             $cliConfiguration->withTelemetry(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
         );
+    }
+
+    private function hasExplicitTestSelection(CliConfiguration $cliConfiguration): bool
+    {
+        if ($cliConfiguration->hasFilter()) {
+            return true;
+        }
+
+        if ($cliConfiguration->hasExcludeFilter()) {
+            return true;
+        }
+
+        if ($cliConfiguration->hasGroups()) {
+            return true;
+        }
+
+        if ($cliConfiguration->hasExcludeGroups()) {
+            return true;
+        }
+
+        if ($cliConfiguration->hasTestSuite()) {
+            return true;
+        }
+
+        if ($cliConfiguration->hasExcludedTestSuite()) {
+            return true;
+        }
+
+        return false;
     }
 }
