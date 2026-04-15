@@ -33,17 +33,17 @@ final class RequirementsTest extends TestCase
                 'PHP extension testExt is required.',
             ]],
             ['testAlwaysSkip',     [
-                'PHPUnit >= 1111111 is required.',
+                'PHPUnit >= 1111111.0.0 is required.',
             ]],
             ['testAlwaysSkip2',    [
-                'PHP >= 9999999 is required.',
+                'PHP >= 9999999.0.0 is required.',
             ]],
             ['testAlwaysSkip3',    [
                 'Operating system DOESNOTEXIST is required.',
             ]],
             ['testAllPossibleRequirements', [
-                'PHP 99-dev is required.',
-                'PHPUnit 99-dev is required.',
+                'PHP 99.0.0-dev is required.',
+                'PHPUnit 99.0.0-dev is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Function testFuncOne() is required.',
@@ -51,71 +51,71 @@ final class RequirementsTest extends TestCase
                 'Method DoesNotExist::doesNotExist() is required.',
                 'PHP extension testExtOne is required.',
                 'PHP extension testExt2 is required.',
-                'PHP extension testExtThree >= 2.0 is required.',
+                'PHP extension testExtThree >= 2.0.0 is required.',
                 'Setting "not_a_setting" is required to be "Off".',
             ]],
             ['testPHPVersionOperatorLessThan', [
-                'PHP < 5.4 is required.',
+                'PHP < 5.4.0 is required.',
             ]],
             ['testPHPVersionOperatorLessThanEquals', [
-                'PHP <= 5.4 is required.',
+                'PHP <= 5.4.0 is required.',
             ]],
             ['testPHPVersionOperatorGreaterThan', [
-                'PHP > 99 is required.',
+                'PHP > 99.0.0 is required.',
             ]],
             ['testPHPVersionOperatorGreaterThanEquals', [
-                'PHP >= 99 is required.',
+                'PHP >= 99.0.0 is required.',
             ]],
             ['testPHPVersionOperatorNoSpace', [
-                'PHP >= 99 is required.',
+                'PHP >= 99.0.0 is required.',
             ]],
             ['testPHPVersionOperatorEquals', [
-                'PHP = 5.4 is required.',
+                'PHP = 5.4.0 is required.',
             ]],
             ['testPHPVersionOperatorDoubleEquals', [
-                'PHP == 5.4 is required.',
+                'PHP == 5.4.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorLessThan', [
-                'PHPUnit < 1.0 is required.',
+                'PHPUnit < 1.0.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorLessThanEquals', [
-                'PHPUnit <= 1.0 is required.',
+                'PHPUnit <= 1.0.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorGreaterThan', [
-                'PHPUnit > 99 is required.',
+                'PHPUnit > 99.0.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorGreaterThanEquals', [
-                'PHPUnit >= 99 is required.',
+                'PHPUnit >= 99.0.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorEquals', [
-                'PHPUnit = 1.0 is required.',
+                'PHPUnit = 1.0.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorDoubleEquals', [
-                'PHPUnit == 1.0 is required.',
+                'PHPUnit == 1.0.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorNoSpace', [
-                'PHPUnit >= 99 is required.',
+                'PHPUnit >= 99.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorLessThan', [
-                'PHP extension testExtOne < 1.0 is required.',
+                'PHP extension testExtOne < 1.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorLessThanEquals', [
-                'PHP extension testExtOne <= 1.0 is required.',
+                'PHP extension testExtOne <= 1.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorGreaterThan', [
-                'PHP extension testExtOne > 99 is required.',
+                'PHP extension testExtOne > 99.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorGreaterThanEquals', [
-                'PHP extension testExtOne >= 99 is required.',
+                'PHP extension testExtOne >= 99.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorEquals', [
-                'PHP extension testExtOne = 1.0 is required.',
+                'PHP extension testExtOne = 1.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorDoubleEquals', [
-                'PHP extension testExtOne == 1.0 is required.',
+                'PHP extension testExtOne == 1.0.0 is required.',
             ]],
             ['testExtensionVersionOperatorNoSpace', [
-                'PHP extension testExtOne >= 99 is required.',
+                'PHP extension testExtOne >= 99.0.0 is required.',
             ]],
             ['testVersionConstraintTildeMajor', [
                 'PHP ~1.0 is required.',

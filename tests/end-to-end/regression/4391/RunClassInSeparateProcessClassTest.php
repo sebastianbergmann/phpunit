@@ -13,7 +13,7 @@ use Exception;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\TestCase;
 
-#[RequiresPhpunit('< 10')]
+#[RequiresPhpunit('< 10.0.0')]
 final class RunClassInSeparateProcessClassTest extends TestCase
 {
     public function testOne(): void

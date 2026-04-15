@@ -54,7 +54,7 @@ Runtime: %s
 ##teamcity[testStarted name='testIncompleteWithMessage' locationHint='php_qn://%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php::\PHPUnit\TestFixture\Basic\StatusTest::testIncompleteWithMessage' flowId='%d']
 ##teamcity[testIgnored name='testIncompleteWithMessage' message='incomplete with custom message' details='%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d|n' duration='%d' flowId='%d']
 ##teamcity[testFinished name='testIncompleteWithMessage' duration='%d' flowId='%d']
-##teamcity[testIgnored name='testSkippedByMetadata' message='PHP > 9000 is required.' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testSkippedByMetadata' message='PHP > 9000.0.0 is required.' duration='%d' flowId='%d']
 ##teamcity[testStarted name='testSkippedWithMessage' locationHint='php_qn://%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php::\PHPUnit\TestFixture\Basic\StatusTest::testSkippedWithMessage' flowId='%d']
 ##teamcity[testIgnored name='testSkippedWithMessage' message='skipped with custom message' duration='%d' flowId='%d']
 ##teamcity[testFinished name='testSkippedWithMessage' duration='%d' flowId='%d']
