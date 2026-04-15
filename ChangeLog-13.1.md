@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 ### Fixed
 
 * [#5860](https://github.com/sebastianbergmann/phpunit/issues/5860): PHP CLI `-d` settings are not forwarded to child processes for process isolation
+* [#6589](https://github.com/sebastianbergmann/phpunit/issues/6589): `dataSetAsStringWithData()` raises "float is not representable as int" warning for large floats in data sets
 
 ## [13.1.4] - 2026-04-15
 
