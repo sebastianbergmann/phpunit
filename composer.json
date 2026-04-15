@@ -46,7 +46,7 @@
         "sebastian/cli-parser": "^4.2.0",
         "sebastian/comparator": "^7.1.6",
         "sebastian/diff": "^7.0.0",
-        "sebastian/environment": "^8.0.4",
+        "sebastian/environment": "^8.1.0",
         "sebastian/exporter": "^7.0.2",
         "sebastian/global-state": "^8.0.2",
         "sebastian/object-enumerator": "^7.0.0",
