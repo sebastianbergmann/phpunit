@@ -252,6 +252,8 @@ final readonly class DefaultJobRunner extends JobRunner
             }
         }
 
+        $phpSettings = array_merge($phpSettings, $this->cliIniOverrides($phpSettings));
+
         $command = array_merge($command, $this->settingsToParameters(array_values($phpSettings)));
 
         if (PHP_SAPI === 'phpdbg') {
@@ -278,6 +280,36 @@ final readonly class DefaultJobRunner extends JobRunner
         }
 
         return $command;
+    }
+
+    /**
+     * Detects INI settings that cannot be set via ini_set() (PHP_INI_SYSTEM
+     * and PHP_INI_PERDIR) and whose current value differs from the value
+     * configured in INI files.
+     *
+     * These settings must be forwarded as -d flags to child processes
+     * because the @ini_set() calls in GlobalState::getIniSettingsAsString()
+     * cannot change them at runtime.
+     *
+     * @param array<array-key, string> $alreadySet
+     *
+     * @return array<string, string>
+     */
+    private function cliIniOverrides(array $alreadySet): array
+    {
+        $overrides = (new Runtime)->getSettingsNotChangeableAtRuntime();
+
+        foreach ($overrides as $key => $value) {
+            foreach ($alreadySet as $existing) {
+                if (str_starts_with($existing, $key . '=')) {
+                    unset($overrides[$key]);
+
+                    break;
+                }
+            }
+        }
+
+        return $overrides;
     }
 
     /**
