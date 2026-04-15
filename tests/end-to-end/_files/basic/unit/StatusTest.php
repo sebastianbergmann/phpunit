@@ -73,7 +73,7 @@ class StatusTest extends TestCase
         $this->markTestIncomplete('incomplete with custom message');
     }
 
-    #[RequiresPhp('> 9000')]
+    #[RequiresPhp('> 9000.0.0')]
     public function testSkippedByMetadata(): void
     {
     }
