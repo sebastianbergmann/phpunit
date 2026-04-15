@@ -34,7 +34,7 @@ use SebastianBergmann\Template\Template;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class SeparateProcessTestRunner implements IsolatedTestRunner
+final class SeparateProcessTestRunner
 {
     private static ?string $sourceMapFile = null;
 
