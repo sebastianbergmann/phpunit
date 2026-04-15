@@ -29,18 +29,18 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhpunit('>= 1.0')]
+    #[RequiresPhpunit('>= 1.0.0')]
     public function testTwo(): void
     {
     }
 
-    #[RequiresPhp('>= 2.0')]
+    #[RequiresPhp('>= 2.0.0')]
     public function testThree(): void
     {
     }
 
-    #[RequiresPhpunit('>= 2.0')]
-    #[RequiresPhp('>= 1.0')]
+    #[RequiresPhpunit('>= 2.0.0')]
+    #[RequiresPhp('>= 1.0.0')]
     public function testFour(): void
     {
     }
@@ -87,8 +87,8 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhp('99-dev')]
-    #[RequiresPhpunit('99-dev')]
+    #[RequiresPhp('99.0.0-dev')]
+    #[RequiresPhpunit('99.0.0-dev')]
     #[RequiresOperatingSystem('DOESNOTEXIST')]
     #[RequiresOperatingSystemFamily('DOESNOTEXIST')]
     #[RequiresFunction('testFuncOne')]
@@ -96,7 +96,7 @@ final class RequirementsTest extends TestCase
     #[RequiresMethod('DoesNotExist', 'doesNotExist')]
     #[RequiresPhpExtension('testExtOne')]
     #[RequiresPhpExtension('testExt2')]
-    #[RequiresPhpExtension('testExtThree', '>= 2.0')]
+    #[RequiresPhpExtension('testExtThree', '>= 2.0.0')]
     #[RequiresSetting('not_a_setting', 'Off')]
     public function testAllPossibleRequirements(): void
     {
@@ -122,12 +122,12 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhpunit('>= 1111111')]
+    #[RequiresPhpunit('>= 1111111.0.0')]
     public function testAlwaysSkip(): void
     {
     }
 
-    #[RequiresPhp('>= 9999999')]
+    #[RequiresPhp('>= 9999999.0.0')]
     public function testAlwaysSkip2(): void
     {
     }
@@ -154,154 +154,154 @@ final class RequirementsTest extends TestCase
     }
 
     #[TestDox('PHP version operator less than')]
-    #[RequiresPhp('< 5.4')]
+    #[RequiresPhp('< 5.4.0')]
     public function testPHPVersionOperatorLessThan(): void
     {
     }
 
     #[TestDox('PHP version operator less than or equals')]
-    #[RequiresPhp('<= 5.4')]
+    #[RequiresPhp('<= 5.4.0')]
     public function testPHPVersionOperatorLessThanEquals(): void
     {
     }
 
     #[TestDox('PHP version operator greater than')]
-    #[RequiresPhp('> 99')]
+    #[RequiresPhp('> 99.0.0')]
     public function testPHPVersionOperatorGreaterThan(): void
     {
     }
 
     #[TestDox('PHP version operator greater than or equals')]
-    #[RequiresPhp('>= 99')]
+    #[RequiresPhp('>= 99.0.0')]
     public function testPHPVersionOperatorGreaterThanEquals(): void
     {
     }
 
     #[TestDox('PHP version operator equals')]
-    #[RequiresPhp('= 5.4')]
+    #[RequiresPhp('= 5.4.0')]
     public function testPHPVersionOperatorEquals(): void
     {
     }
 
     #[TestDox('PHP version operator double equals')]
-    #[RequiresPhp('== 5.4')]
+    #[RequiresPhp('== 5.4.0')]
     public function testPHPVersionOperatorDoubleEquals(): void
     {
     }
 
     #[TestDox('PHP version operator bang equals')]
-    #[RequiresPhp('!= 99')]
+    #[RequiresPhp('!= 99.0.0')]
     public function testPHPVersionOperatorBangEquals(): void
     {
     }
 
     #[TestDox('PHP version operator not equals')]
-    #[RequiresPhp('<> 99')]
+    #[RequiresPhp('<> 99.0.0')]
     public function testPHPVersionOperatorNotEquals(): void
     {
     }
 
     #[TestDox('PHP version operator no space')]
-    #[RequiresPhp('>=99')]
+    #[RequiresPhp('>=99.0.0')]
     public function testPHPVersionOperatorNoSpace(): void
     {
     }
 
     #[TestDox('PHPUnit version operator less than')]
-    #[RequiresPhpunit('< 1.0')]
+    #[RequiresPhpunit('< 1.0.0')]
     public function testPHPUnitVersionOperatorLessThan(): void
     {
     }
 
     #[TestDox('PHPUnit version operator less than equals')]
-    #[RequiresPhpunit('<= 1.0')]
+    #[RequiresPhpunit('<= 1.0.0')]
     public function testPHPUnitVersionOperatorLessThanEquals(): void
     {
     }
 
     #[TestDox('PHPUnit version operator greater than')]
-    #[RequiresPhpunit('> 99')]
+    #[RequiresPhpunit('> 99.0.0')]
     public function testPHPUnitVersionOperatorGreaterThan(): void
     {
     }
 
     #[TestDox('PHPUnit version operator greater than or equals')]
-    #[RequiresPhpunit('>= 99')]
+    #[RequiresPhpunit('>= 99.0.0')]
     public function testPHPUnitVersionOperatorGreaterThanEquals(): void
     {
     }
 
     #[TestDox('PHPUnit version operator equals')]
-    #[RequiresPhpunit('= 1.0')]
+    #[RequiresPhpunit('= 1.0.0')]
     public function testPHPUnitVersionOperatorEquals(): void
     {
     }
 
     #[TestDox('PHPUnit version operator double equals')]
-    #[RequiresPhpunit('== 1.0')]
+    #[RequiresPhpunit('== 1.0.0')]
     public function testPHPUnitVersionOperatorDoubleEquals(): void
     {
     }
 
     #[TestDox('PHPUnit version operator bang equals')]
-    #[RequiresPhpunit('!= 99')]
+    #[RequiresPhpunit('!= 99.0.0')]
     public function testPHPUnitVersionOperatorBangEquals(): void
     {
     }
 
     #[TestDox('PHPUnit version operator not equals')]
-    #[RequiresPhpunit('<> 99')]
+    #[RequiresPhpunit('<> 99.0.0')]
     public function testPHPUnitVersionOperatorNotEquals(): void
     {
     }
 
     #[TestDox('PHPUnit version operator no space')]
-    #[RequiresPhpunit('>=99')]
+    #[RequiresPhpunit('>=99.0.0')]
     public function testPHPUnitVersionOperatorNoSpace(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '< 1.0')]
+    #[RequiresPhpExtension('testExtOne', '< 1.0.0')]
     public function testExtensionVersionOperatorLessThan(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '<= 1.0')]
+    #[RequiresPhpExtension('testExtOne', '<= 1.0.0')]
     public function testExtensionVersionOperatorLessThanEquals(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '> 99')]
+    #[RequiresPhpExtension('testExtOne', '> 99.0.0')]
     public function testExtensionVersionOperatorGreaterThan(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '>= 99')]
+    #[RequiresPhpExtension('testExtOne', '>= 99.0.0')]
     public function testExtensionVersionOperatorGreaterThanEquals(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '= 1.0')]
+    #[RequiresPhpExtension('testExtOne', '= 1.0.0')]
     public function testExtensionVersionOperatorEquals(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '== 1.0')]
+    #[RequiresPhpExtension('testExtOne', '== 1.0.0')]
     public function testExtensionVersionOperatorDoubleEquals(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '!= 99')]
+    #[RequiresPhpExtension('testExtOne', '!= 99.0.0')]
     public function testExtensionVersionOperatorBangEquals(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '<> 99')]
+    #[RequiresPhpExtension('testExtOne', '<> 99.0.0')]
     public function testExtensionVersionOperatorNotEquals(): void
     {
     }
 
-    #[RequiresPhpExtension('testExtOne', '>= 99')]
+    #[RequiresPhpExtension('testExtOne', '>= 99.0.0')]
     public function testExtensionVersionOperatorNoSpace(): void
     {
     }

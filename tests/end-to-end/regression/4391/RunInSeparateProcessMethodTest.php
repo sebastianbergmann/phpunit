@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class RunInSeparateProcessMethodTest extends TestCase
 {
     #[RunInSeparateProcess]
-    #[RequiresPhpunit('< 10')]
+    #[RequiresPhpunit('< 10.0.0')]
     public function testOne(): void
     {
         throw new Exception('message');

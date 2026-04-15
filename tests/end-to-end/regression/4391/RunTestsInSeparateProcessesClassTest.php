@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
 #[RunTestsInSeparateProcesses]
-#[RequiresPhpunit('< 10')]
+#[RequiresPhpunit('< 10.0.0')]
 final class RunTestsInSeparateProcessesClassTest extends TestCase
 {
     public function testOne(): void

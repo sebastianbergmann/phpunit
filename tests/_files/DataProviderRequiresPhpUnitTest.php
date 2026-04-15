@@ -32,27 +32,27 @@ final class DataProviderRequiresPhpUnitTest extends TestCase
         return [[true], [true]];
     }
 
-    #[RequiresPhpunit('< 10')]
+    #[RequiresPhpunit('< 10.0.0')]
     #[DataProvider('invalidProvider')]
     public function testWithInvalidDataProvider(bool $param): void
     {
         $this->assertTrue($param);
     }
 
-    #[RequiresPhpunit('>= 10')]
+    #[RequiresPhpunit('>= 10.0.0')]
     #[DataProvider('validProvider')]
     public function testWithValidDataProvider(bool $param): void
     {
         $this->assertTrue($param);
     }
 
-    #[RequiresPhpunit('< 10')]
+    #[RequiresPhpunit('< 10.0.0')]
     #[DataProvider('providerThatThrows')]
     public function testWithDataProviderThatThrows(): void
     {
     }
 
-    #[RequiresPhpunit('< 10')]
+    #[RequiresPhpunit('< 10.0.0')]
     #[DataProviderExternal(self::class, 'providerThatThrows')]
     public function testWithDataProviderExternalThatThrows(): void
     {

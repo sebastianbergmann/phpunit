@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
 
 final class RunClassInSeparateProcessMethodTest extends TestCase
 {
-    #[RequiresPhpunit('< 10')]
+    #[RequiresPhpunit('< 10.0.0')]
     public function testOne(): void
     {
         throw new Exception('message');
     }
 
-    #[RequiresPhpunit('< 10')]
+    #[RequiresPhpunit('< 10.0.0')]
     public function testTwo(): void
     {
         throw new Exception('message');

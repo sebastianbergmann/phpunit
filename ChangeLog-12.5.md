@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * [#5860](https://github.com/sebastianbergmann/phpunit/issues/5860): PHP CLI `-d` settings are not forwarded to child processes for process isolation
+* [#6451](https://github.com/sebastianbergmann/phpunit/issues/6451): Incomplete version in `RequiresPhp` (e.g. `<=8.5`) is compared against full PHP version, causing unexpected skips
 
 ## [12.5.20] - 2026-04-15
 

@@ -21,13 +21,13 @@ Time: %s, Memory: %s
 There were 3 skipped tests:
 
 1) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithInvalidDataProvider
-PHPUnit < 10 is required.
+PHPUnit < 10.0.0 is required.
 
 2) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderThatThrows
-PHPUnit < 10 is required.
+PHPUnit < 10.0.0 is required.
 
 3) PHPUnit\TestFixture\DataProviderRequiresPhpUnitTest::testWithDataProviderExternalThatThrows
-PHPUnit < 10 is required.
+PHPUnit < 10.0.0 is required.
 
 OK, but some tests were skipped!
 Tests: 5, Assertions: 2, Skipped: 3.
