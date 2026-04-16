@@ -67,6 +67,15 @@ final class LoaderTest extends TestCase
         $this->configuration('not_existing_file.xml');
     }
 
+    public function testExceptionIsThrownForConfigurationFileThatDoesNotValidateAgainstAnySupportedSchema(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('does not validate against any supported PHPUnit schema');
+
+        /* @noinspection UnusedFunctionResultInspection */
+        $this->configuration('configuration_invalid_root_element.xml');
+    }
+
     public function testShouldReadColorsWhenTrueInConfigurationFile(): void
     {
         $phpunit = $this->configuration('configuration.colors.true.xml')->phpunit();
