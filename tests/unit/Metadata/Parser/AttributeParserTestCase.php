@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
 use PHPUnit\Metadata\InvalidAttributeException;
+use PHPUnit\Metadata\Repeat;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
@@ -52,6 +53,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RepeatTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresMethodTest;
@@ -1211,6 +1213,22 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('another-ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    #[TestDox('Parses #[Repeat] attribute on method')]
+    public function test_parses_Repeat_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RepeatTest::class, 'testOne')->isRepeat();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRepeat());
+
+        $repeat = $metadata->asArray()[0];
+
+        assert($repeat instanceof Repeat);
+
+        $this->assertSame(5, $repeat->times());
+        $this->assertSame(2, $repeat->failureThreshold());
     }
 
     #[TestDox('Parses #[WithoutErrorHandler] attribute on method')]
