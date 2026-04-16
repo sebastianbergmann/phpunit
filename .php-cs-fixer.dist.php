@@ -24,6 +24,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('TestAttributeOnHookMethodsTest.php')
     // InvokableConstraintAndPipeOperatorTest.php uses PHP 8.5 syntax
     ->notName('InvokableConstraintAndPipeOperatorTest.php')
+    // NoReturnTypeTest.php must have a method without a return type declaration
+    ->notPath('repeat/_files/NoReturnTypeTest.php')
     // FirstPartyClass.php and PhpDeprecationTest.php must not use declare(strict_types=1);
     ->notPath('error-handler/_files/php-deprecation/src/FirstPartyClass.php')
     ->notPath('error-handler/_files/php-deprecation/tests/PhpDeprecationTest.php')

@@ -1,5 +1,5 @@
 --TEST--
---repeat does not repeat test without return type declaration
+--repeat skips test without return type declaration
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';

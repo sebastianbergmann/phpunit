@@ -41,6 +41,7 @@ use stdClass;
 #[UsesClass(PostCondition::class)]
 #[UsesClass(PreCondition::class)]
 #[UsesClass(PreserveGlobalState::class)]
+#[UsesClass(Repeat::class)]
 #[UsesClass(RequiresFunction::class)]
 #[UsesClass(RequiresMethod::class)]
 #[UsesClass(RequiresOperatingSystem::class)]
@@ -571,6 +572,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesMethod());
     }
 
+    public function test_Can_be_filtered_for_Repeat(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRepeat();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRepeat());
+    }
+
     public function test_Can_be_filtered_for_WithoutErrorHandler(): void
     {
         $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
@@ -650,6 +659,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
+                Metadata::repeat(3, 1),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],
