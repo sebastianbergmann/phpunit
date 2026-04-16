@@ -231,6 +231,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?string $emptyDataProviderSkipMessage = null;
 
     /**
+     * @var positive-int
+     */
+    private int $repetition = 1;
+
+    /**
+     * @var positive-int
+     */
+    private int $totalRepetitions = 1;
+
+    /**
      * @param non-empty-string $name
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
@@ -992,6 +1002,56 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    /**
+     * @return positive-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function repetition(): int
+    {
+        return $this->repetition;
+    }
+
+    /**
+     * @return positive-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function totalRepetitions(): int
+    {
+        return $this->totalRepetitions;
+    }
+
+    /**
+     * @param positive-int $repetition
+     * @param positive-int $totalRepetitions
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setRepetition(int $repetition, int $totalRepetitions): void
+    {
+        $this->repetition       = $repetition;
+        $this->totalRepetitions = $totalRepetitions;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function markSkippedForRepeatAbort(int $failedRepetition): void
+    {
+        $message = sprintf(
+            'Remaining repetition skipped after failure in repetition %d',
+            $failedRepetition,
+        );
+
+        Event\Facade::emitter()->testSkipped(
+            $this->valueObjectForEvents(),
+            $message,
+        );
+
+        $this->status = TestStatus::skipped($message);
     }
 
     /**

@@ -98,6 +98,7 @@ Execution:
   --ignore-dependencies                Alias for "--order-by no-depends"
   --random-order                       Alias for "--order-by random"
   --random-order-seed <N>              Use the specified random seed when running tests in random order
+  --repeat <N>                         Run each test N times, stopping at the first failure
   --reverse-order                      Alias for "--order-by reverse"
 
 Reporting:

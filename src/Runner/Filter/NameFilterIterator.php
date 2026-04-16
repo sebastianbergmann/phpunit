@@ -13,6 +13,7 @@ use function end;
 use function preg_match;
 use function sprintf;
 use function substr;
+use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -60,7 +61,11 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             return false;
         }
 
-        $name = $test::class . '::' . $test->nameWithDataSet();
+        if ($test instanceof RepeatTestSuite) {
+            $name = $test->name();
+        } else {
+            $name = $test::class . '::' . $test->nameWithDataSet();
+        }
 
         $accepted = @preg_match($this->regularExpression, $name, $matches) === 1;
 

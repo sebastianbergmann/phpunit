@@ -115,6 +115,7 @@ final class Builder
         'do-not-report-useless-tests',
         'random-order',
         'random-order-seed=',
+        'repeat=',
         'reverse-order',
         'reverse-list',
         'static-backup',
@@ -353,6 +354,7 @@ final class Builder
         $noLogging                         = null;
         $processIsolation                  = null;
         $randomOrderSeed                   = null;
+        $repeat                            = null;
         $reportUselessTests                = null;
         $resolveDependencies               = null;
         $reverseList                       = null;
@@ -1175,6 +1177,25 @@ final class Builder
 
                     break;
 
+                case '--repeat':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--repeat %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $repeat = (int) $option[1];
+
+                    break;
+
                 case '--resolve-dependencies':
                     $resolveDependencies = true;
 
@@ -1361,6 +1382,7 @@ final class Builder
             $noLogging,
             $processIsolation,
             $randomOrderSeed,
+            $repeat,
             $reportUselessTests,
             $resolveDependencies,
             $reverseList,
