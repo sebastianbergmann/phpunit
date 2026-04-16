@@ -160,6 +160,28 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
+        if ($test instanceof RepeatTestSuite) {
+            $this->tests[] = $test;
+
+            $this->clearCaches();
+
+            $id = $test->valueObjectForEvents()->id();
+
+            if ($this->containsOnlyVirtualGroups($groups)) {
+                $groups[] = 'default';
+            }
+
+            foreach ($groups as $group) {
+                if (!isset($this->groups[$group])) {
+                    $this->groups[$group] = [$id];
+                } else {
+                    $this->groups[$group][] = $id;
+                }
+            }
+
+            return;
+        }
+
         assert($test instanceof TestCase || $test instanceof PhptTestCase);
 
         $this->tests[] = $test;
