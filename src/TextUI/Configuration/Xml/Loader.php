@@ -120,6 +120,14 @@ final readonly class Loader
 
         $validationResult = (new Validator)->validate($document, $xsdFilename);
 
+        if ($validationResult->hasValidationErrors()) {
+            $this->ensureConfigurationValidatesAgainstAtLeastOneSchema(
+                $document,
+                $configurationFileRealpath,
+                $validationResult,
+            );
+        }
+
         try {
             return new LoadedFromFileConfiguration(
                 $configurationFileRealpath,
@@ -1224,5 +1232,38 @@ final readonly class Loader
         }
 
         return null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function ensureConfigurationValidatesAgainstAtLeastOneSchema(DOMDocument $document, string $configurationFile, ValidationResult $validationResult): void
+    {
+        if ($document->documentElement->localName === 'phpunit') {
+            return;
+        }
+
+        $schemaFinder = new SchemaFinder;
+        $validator    = new Validator;
+
+        foreach ($schemaFinder->available() as $version) {
+            try {
+                $xsdFilename = $schemaFinder->find($version);
+            } catch (CannotFindSchemaException) {
+                continue;
+            }
+
+            if (!$validator->validate($document, $xsdFilename)->hasValidationErrors()) {
+                return;
+            }
+        }
+
+        throw new Exception(
+            sprintf(
+                'XML configuration file %s does not validate against any supported PHPUnit schema:' . PHP_EOL . '%s',
+                $configurationFile,
+                $validationResult->asString(),
+            ),
+        );
     }
 }
