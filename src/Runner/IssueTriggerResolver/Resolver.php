@@ -17,7 +17,7 @@ interface Resolver
     /**
      * Return null to defer to the next resolver in the chain.
      *
-     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>, object?: object}> $trace
+     * @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}> $trace
      */
     public function resolve(array $trace, string $message): ?Resolution;
 }

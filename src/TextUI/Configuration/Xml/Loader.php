@@ -1071,6 +1071,9 @@ final readonly class Loader
         );
     }
 
+    /**
+     * @return non-empty-string
+     */
     private function parseColors(DOMDocument $document): string
     {
         $colors = Configuration::COLOR_DEFAULT;

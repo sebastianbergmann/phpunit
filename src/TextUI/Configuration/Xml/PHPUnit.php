@@ -171,7 +171,9 @@ final readonly class PHPUnit
     private int $shortenArraysForExportThreshold;
 
     /**
+     * @param ?non-empty-string                         $cacheDirectory
      * @param non-empty-string                          $colors
+     * @param ?non-empty-string                         $bootstrap
      * @param array<non-empty-string, non-empty-string> $bootstrapForTestSuite
      * @param non-negative-int                          $stopOnDefect
      * @param non-negative-int                          $stopOnDeprecation
@@ -187,6 +189,7 @@ final readonly class PHPUnit
      * @param positive-int                              $timeoutForSmallTests
      * @param positive-int                              $timeoutForMediumTests
      * @param positive-int                              $timeoutForLargeTests
+     * @param ?non-empty-string                         $defaultTestSuite
      * @param positive-int                              $numberOfTestsBeforeGarbageCollection
      * @param non-negative-int                          $shortenArraysForExportThreshold
      * @param positive-int                              $diffContext

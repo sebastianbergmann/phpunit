@@ -46,9 +46,10 @@ final class Issue
     private ?string $stackTrace;
 
     /**
-     * @param non-empty-string $file
-     * @param positive-int     $line
-     * @param non-empty-string $description
+     * @param non-empty-string  $file
+     * @param positive-int      $line
+     * @param non-empty-string  $description
+     * @param ?non-empty-string $stackTrace
      */
     public static function from(string $file, int $line, string $description, Test $triggeringTest, ?string $stackTrace = null): self
     {
@@ -56,9 +57,10 @@ final class Issue
     }
 
     /**
-     * @param non-empty-string $file
-     * @param positive-int     $line
-     * @param non-empty-string $description
+     * @param non-empty-string  $file
+     * @param positive-int      $line
+     * @param non-empty-string  $description
+     * @param ?non-empty-string $stackTrace
      */
     private function __construct(string $file, int $line, string $description, Test $triggeringTest, ?string $stackTrace)
     {

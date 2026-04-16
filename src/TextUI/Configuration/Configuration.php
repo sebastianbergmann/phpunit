@@ -480,8 +480,18 @@ final readonly class Configuration
 
     /**
      * @param list<non-empty-string>                                                      $cliArguments
+     * @param ?non-empty-string                                                           $testFilesFile
+     * @param ?non-empty-string                                                           $configurationFile
+     * @param ?non-empty-string                                                           $bootstrap
      * @param array<non-empty-string, non-empty-string>                                   $bootstrapForTestSuite
+     * @param ?non-empty-string                                                           $cacheDirectory
+     * @param ?non-empty-string                                                           $coverageCacheDirectory
+     * @param non-empty-string                                                            $testResultCacheFile
+     * @param ?non-empty-string                                                           $coverageClover
+     * @param ?non-empty-string                                                           $coverageCobertura
+     * @param ?non-empty-string                                                           $coverageCrap4j
      * @param non-negative-int                                                            $coverageCrap4jThreshold
+     * @param ?non-empty-string                                                           $coverageHtml
      * @param non-negative-int                                                            $coverageHtmlLowUpperBound
      * @param non-negative-int                                                            $coverageHtmlHighLowerBound
      * @param non-empty-string                                                            $coverageHtmlColorSuccessLow
@@ -502,8 +512,14 @@ final readonly class Configuration
      * @param non-empty-string                                                            $coverageHtmlColorDangerBarDark
      * @param non-empty-string                                                            $coverageHtmlColorBreadcrumbs
      * @param non-empty-string                                                            $coverageHtmlColorBreadcrumbsDark
+     * @param ?non-empty-string                                                           $coverageHtmlCustomCssFile
+     * @param ?non-empty-string                                                           $coverageOpenClover
+     * @param ?non-empty-string                                                           $coveragePhp
+     * @param ?non-empty-string                                                           $coverageText
+     * @param ?non-empty-string                                                           $coverageXml
      * @param non-negative-int                                                            $stopOnDefect
      * @param non-negative-int                                                            $stopOnDeprecation
+     * @param ?non-empty-string                                                           $specificDeprecationToStopOn
      * @param non-negative-int                                                            $stopOnError
      * @param non-negative-int                                                            $stopOnFailure
      * @param non-negative-int                                                            $stopOnIncomplete
@@ -519,6 +535,13 @@ final readonly class Configuration
      * @param positive-int                                                                $timeoutForSmallTests
      * @param positive-int                                                                $timeoutForMediumTests
      * @param positive-int                                                                $timeoutForLargeTests
+     * @param ?non-empty-string                                                           $logfileTeamcity
+     * @param ?non-empty-string                                                           $logfileJunit
+     * @param ?non-empty-string                                                           $logfileOtr
+     * @param ?non-empty-string                                                           $logfileTestdoxHtml
+     * @param ?non-empty-string                                                           $logfileTestdoxText
+     * @param ?non-empty-string                                                           $logEventsText
+     * @param ?non-empty-string                                                           $logEventsVerboseText
      * @param ?non-empty-list<non-empty-string>                                           $testsCovering
      * @param ?non-empty-list<non-empty-string>                                           $testsUsing
      * @param ?non-empty-list<non-empty-string>                                           $testsRequiringPhpExtension
@@ -527,6 +550,7 @@ final readonly class Configuration
      * @param list<non-empty-string>                                                      $groups
      * @param list<non-empty-string>                                                      $excludeGroups
      * @param positive-int                                                                $randomOrderSeed
+     * @param ?non-empty-string                                                           $defaultTestSuite
      * @param non-empty-list<non-empty-string>                                            $testSuffixes
      * @param positive-int                                                                $numberOfTestsBeforeGarbageCollection
      * @param null|non-empty-string                                                       $generateBaseline

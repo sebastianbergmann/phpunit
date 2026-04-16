@@ -130,26 +130,27 @@ final readonly class Html
     private ?string $customCssFile;
 
     /**
-     * @param non-negative-int $lowUpperBound
-     * @param non-negative-int $highLowerBound
-     * @param non-empty-string $colorSuccessLow
-     * @param non-empty-string $colorSuccessLowDark
-     * @param non-empty-string $colorSuccessMedium
-     * @param non-empty-string $colorSuccessMediumDark
-     * @param non-empty-string $colorSuccessHigh
-     * @param non-empty-string $colorSuccessHighDark
-     * @param non-empty-string $colorSuccessBar
-     * @param non-empty-string $colorSuccessBarDark
-     * @param non-empty-string $colorWarning
-     * @param non-empty-string $colorWarningDark
-     * @param non-empty-string $colorWarningBar
-     * @param non-empty-string $colorWarningBarDark
-     * @param non-empty-string $colorDanger
-     * @param non-empty-string $colorDangerDark
-     * @param non-empty-string $colorDangerBar
-     * @param non-empty-string $colorDangerBarDark
-     * @param non-empty-string $colorBreadcrumbs
-     * @param non-empty-string $colorBreadcrumbsDark
+     * @param non-negative-int  $lowUpperBound
+     * @param non-negative-int  $highLowerBound
+     * @param non-empty-string  $colorSuccessLow
+     * @param non-empty-string  $colorSuccessLowDark
+     * @param non-empty-string  $colorSuccessMedium
+     * @param non-empty-string  $colorSuccessMediumDark
+     * @param non-empty-string  $colorSuccessHigh
+     * @param non-empty-string  $colorSuccessHighDark
+     * @param non-empty-string  $colorSuccessBar
+     * @param non-empty-string  $colorSuccessBarDark
+     * @param non-empty-string  $colorWarning
+     * @param non-empty-string  $colorWarningDark
+     * @param non-empty-string  $colorWarningBar
+     * @param non-empty-string  $colorWarningBarDark
+     * @param non-empty-string  $colorDanger
+     * @param non-empty-string  $colorDangerDark
+     * @param non-empty-string  $colorDangerBar
+     * @param non-empty-string  $colorDangerBarDark
+     * @param non-empty-string  $colorBreadcrumbs
+     * @param non-empty-string  $colorBreadcrumbsDark
+     * @param ?non-empty-string $customCssFile
      */
     public function __construct(?Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessLowDark, string $colorSuccessMedium, string $colorSuccessMediumDark, string $colorSuccessHigh, string $colorSuccessHighDark, string $colorSuccessBar, string $colorSuccessBarDark, string $colorWarning, string $colorWarningDark, string $colorWarningBar, string $colorWarningBarDark, string $colorDanger, string $colorDangerDark, string $colorDangerBar, string $colorDangerBarDark, string $colorBreadcrumbs, string $colorBreadcrumbsDark, ?string $customCssFile)
     {

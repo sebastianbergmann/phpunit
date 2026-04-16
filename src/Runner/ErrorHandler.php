@@ -556,7 +556,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>}> $trace
+     * @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}> $trace
      */
     private function triggerForUserlandDeprecation(TestMethod $test, string $message, array $trace): IssueTrigger
     {
@@ -624,7 +624,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>}> $trace
+     * @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}> $trace
      */
     private function triggerForUserlandDeprecationWithoutTest(string $message, array $trace): IssueTrigger
     {
@@ -656,7 +656,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class?: string, function?: string, type: string, args?: list<mixed>, object?: object}>
+     * @return list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}>
      */
     private function filteredStackTrace(): array
     {
@@ -690,7 +690,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return ?array{file: non-empty-string, line: positive-int}
+     * @return ?array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}
      */
     private function guessDeprecationFrame(): ?array
     {
@@ -718,7 +718,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string, args?: list<mixed>, object?: object}>
+     * @return list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}>
      */
     private function errorStackTrace(bool $ignoreArgs = true): array
     {
@@ -738,8 +738,8 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{class? : class-string, function?: non-empty-string} $frame
-     * @param non-empty-string                                          $function
+     * @param array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object} $frame
+     * @param non-empty-string                                                                                                                $function
      */
     private function frameIsFunction(array $frame, string $function): bool
     {
@@ -747,8 +747,8 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{class? : class-string, function?: non-empty-string}    $frame
-     * @param array{className: class-string, methodName: non-empty-string} $method
+     * @param array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object} $frame
+     * @param array{className: class-string, methodName: non-empty-string}                                                                    $method
      */
     private function frameIsMethod(array $frame, array $method): bool
     {
@@ -758,9 +758,6 @@ final class ErrorHandler
             $frame['function'] === $method['methodName'];
     }
 
-    /**
-     * @return non-empty-string
-     */
     private function stackTrace(): string
     {
         $buffer = '';
