@@ -7,20 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Repeat;
+namespace PHPUnit\TestFixture\Metadata\Attribute;
 
+use PHPUnit\Framework\Attributes\Repeat;
 use PHPUnit\Framework\TestCase;
 
-final class NoReturnTypeTest extends TestCase
+final class RepeatTest extends TestCase
 {
-    /** @phpstan-ignore missingType.return */
-    public function testWithoutReturnType()
+    #[Repeat(5, failureThreshold: 2)]
+    public function testOne(): void
     {
-        $this->assertTrue(true);
-    }
-
-    public function testWithVoidReturn(): void
-    {
-        $this->assertTrue(true);
     }
 }
