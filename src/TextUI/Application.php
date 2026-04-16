@@ -86,6 +86,7 @@ use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\Result;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
+use PHPUnit\TextUI\Command\ValidateConfigurationCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\BootstrapLoader;
@@ -466,6 +467,14 @@ final readonly class Application
             }
 
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
+        }
+
+        if ($cliConfiguration->validateConfiguration()) {
+            if ($configurationFile === false) {
+                $this->exitWithErrorMessage('No configuration file found to validate');
+            }
+
+            $this->execute(new ValidateConfigurationCommand(realpath($configurationFile)));
         }
 
         if ($cliConfiguration->hasAtLeastVersion()) {

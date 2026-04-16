@@ -102,6 +102,7 @@ final class Builder
         'include-git-information',
         'log-teamcity=',
         'migrate-configuration',
+        'validate-configuration',
         'no-configuration',
         'no-coverage',
         'no-logging',
@@ -214,6 +215,7 @@ final class Builder
         '--list-tests',
         '--list-tests-xml',
         '--migrate-configuration',
+        '--validate-configuration',
         '--version',
         '--warm-coverage-cache',
     ];
@@ -326,6 +328,7 @@ final class Builder
         $ignoreBaseline                    = false;
         $generateConfiguration             = false;
         $migrateConfiguration              = false;
+        $validateConfiguration             = false;
         $groups                            = null;
         $testsCovering                     = null;
         $testsUsing                        = null;
@@ -588,6 +591,11 @@ final class Builder
 
                 case '--migrate-configuration':
                     $migrateConfiguration = true;
+
+                    break;
+
+                case '--validate-configuration':
+                    $validateConfiguration = true;
 
                     break;
 
@@ -1328,6 +1336,7 @@ final class Builder
             $ignoreBaseline,
             $generateConfiguration,
             $migrateConfiguration,
+            $validateConfiguration,
             $groups,
             $testsCovering,
             $testsUsing,
