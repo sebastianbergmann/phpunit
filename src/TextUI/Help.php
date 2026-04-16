@@ -272,6 +272,7 @@ final class Help
                 ['arg' => '--ignore-dependencies', 'desc' => 'Alias for "--order-by no-depends"'],
                 ['arg' => '--random-order', 'desc' => 'Alias for "--order-by random"'],
                 ['arg' => '--random-order-seed <N>', 'desc' => 'Use the specified random seed when running tests in random order'],
+                ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--reverse-order', 'desc' => 'Alias for "--order-by reverse"'],
             ],
 

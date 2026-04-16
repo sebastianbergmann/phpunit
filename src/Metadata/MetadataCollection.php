@@ -391,6 +391,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isRepeat(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRepeat(),
+            ),
+        );
+    }
+
     public function isRunInSeparateProcess(): self
     {
         return new self(

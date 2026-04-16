@@ -18,6 +18,7 @@ use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -103,6 +104,12 @@ final readonly class TestSuiteBuilder
         foreach ($testSuite->getIterator() as $test) {
             if ($test instanceof FrameworkTestSuite) {
                 self::process($test, $tests);
+
+                continue;
+            }
+
+            if ($test instanceof RepeatTestSuite) {
+                $tests[] = $test->valueObjectForEvents();
 
                 continue;
             }
