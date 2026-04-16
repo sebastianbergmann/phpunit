@@ -13,6 +13,7 @@ use function array_merge;
 use function assert;
 use function get_parent_class;
 use function preg_match;
+use function range;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -23,10 +24,13 @@ use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\Metadata\Repeat as RepeatMetadata;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Filter\MethodNameFilterCompiler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionNamedType;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -41,12 +45,32 @@ final readonly class TestBuilder
      * @param ReflectionClass<TestCase> $theClass
      * @param non-empty-string          $methodName
      * @param list<non-empty-string>    $groups
+     * @param positive-int              $numberOfRuns
+     * @param positive-int              $failureThreshold
      *
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = []): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $numberOfRuns = 1, int $failureThreshold = 1): Test
     {
-        $className = $theClass->getName();
+        $className                = $theClass->getName();
+        $runTestInSeparateProcess = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
+        $preserveGlobalState      = $this->shouldGlobalStateBePreserved($className, $methodName);
+        $backupSettings           = $this->backupSettings($className, $methodName);
+
+        $repeatMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isRepeat();
+
+        if ($repeatMetadata->isNotEmpty()) {
+            $metadata = $repeatMetadata->asArray()[0];
+
+            assert($metadata instanceof RepeatMetadata);
+
+            $numberOfRuns     = $metadata->times();
+            $failureThreshold = $metadata->failureThreshold();
+        }
+
+        $repeat = $numberOfRuns > 1 &&
+                  $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
+                  $this->doesNotDependOnAnotherTest($className, $methodName);
 
         $data = null;
 
@@ -66,10 +90,24 @@ final readonly class TestBuilder
                 $methodName,
                 $className,
                 $data,
-                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-                $this->shouldGlobalStateBePreserved($className, $methodName),
-                $this->backupSettings($className, $methodName),
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $backupSettings,
                 $groups,
+                $repeat ? $numberOfRuns : 1,
+                $failureThreshold,
+            );
+        }
+
+        if ($repeat) {
+            return $this->buildRepeatTestSuite(
+                $className,
+                $methodName,
+                $numberOfRuns,
+                $failureThreshold,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $backupSettings,
             );
         }
 
@@ -83,9 +121,9 @@ final readonly class TestBuilder
 
         $this->configureTestCase(
             $test,
-            $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-            $this->shouldGlobalStateBePreserved($className, $methodName),
-            $this->backupSettings($className, $methodName),
+            $runTestInSeparateProcess,
+            $preserveGlobalState,
+            $backupSettings,
         );
 
         return $test;
@@ -97,8 +135,10 @@ final readonly class TestBuilder
      * @param array<ProvidedData>    $data
      * @param BackupSettings         $backupSettings
      * @param list<non-empty-string> $groups
+     * @param positive-int           $numberOfRuns
+     * @param positive-int           $failureThreshold
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups, int $numberOfRuns = 1, int $failureThreshold = 1): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
@@ -110,21 +150,75 @@ final readonly class TestBuilder
         );
 
         foreach ($data as $_dataName => $_data) {
-            $_test = new $className($methodName);
+            if ($numberOfRuns > 1) {
+                $tests = [];
 
-            $_test->setData($_dataName, $_data->value());
+                foreach (range(1, $numberOfRuns) as $i) {
+                    $_test = new $className($methodName);
+
+                    $_test->setData($_dataName, $_data->value());
+                    $_test->setRepetition($i, $numberOfRuns);
+
+                    $this->configureTestCase(
+                        $_test,
+                        $runTestInSeparateProcess,
+                        $preserveGlobalState,
+                        $backupSettings,
+                    );
+
+                    $tests[] = $_test;
+                }
+
+                $dataProviderTestSuite->addTest(
+                    new RepeatTestSuite($tests, $failureThreshold),
+                    $groups,
+                );
+            } else {
+                $_test = new $className($methodName);
+
+                $_test->setData($_dataName, $_data->value());
+
+                $this->configureTestCase(
+                    $_test,
+                    $runTestInSeparateProcess,
+                    $preserveGlobalState,
+                    $backupSettings,
+                );
+
+                $dataProviderTestSuite->addTest($_test, $groups);
+            }
+        }
+
+        return $dataProviderTestSuite;
+    }
+
+    /**
+     * @param class-string<TestCase>                                                                                                                                            $className
+     * @param non-empty-string                                                                                                                                                  $methodName
+     * @param positive-int                                                                                                                                                      $numberOfRuns
+     * @param positive-int                                                                                                                                                      $failureThreshold
+     * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
+     */
+    private function buildRepeatTestSuite(string $className, string $methodName, int $numberOfRuns, int $failureThreshold, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): RepeatTestSuite
+    {
+        $tests = [];
+
+        foreach (range(1, $numberOfRuns) as $i) {
+            $test = new $className($methodName);
+
+            $test->setRepetition($i, $numberOfRuns);
 
             $this->configureTestCase(
-                $_test,
+                $test,
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $backupSettings,
             );
 
-            $dataProviderTestSuite->addTest($_test, $groups);
+            $tests[] = $test;
         }
 
-        return $dataProviderTestSuite;
+        return new RepeatTestSuite($tests, $failureThreshold);
     }
 
     /**
@@ -322,5 +416,31 @@ final readonly class TestBuilder
         }
 
         return $result === 0;
+    }
+
+    private function hasVoidReturnType(ReflectionMethod $method): bool
+    {
+        if (!$method->hasReturnType()) {
+            return false;
+        }
+
+        $returnType = $method->getReturnType();
+
+        if (!$returnType instanceof ReflectionNamedType) {
+            return false;
+        }
+
+        return $returnType->getName() === 'void';
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     */
+    private function doesNotDependOnAnotherTest(string $className, string $methodName): bool
+    {
+        $metadata = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
+
+        return $metadata->isDepends()->isEmpty();
     }
 }
