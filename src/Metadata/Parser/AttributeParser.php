@@ -62,6 +62,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\Repeat;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
@@ -900,6 +901,16 @@ final readonly class AttributeParser implements Parser
                     $result[] = Metadata::requiresSettingOnMethod(
                         $attributeInstance->setting(),
                         $attributeInstance->value(),
+                    );
+
+                    break;
+
+                case Repeat::class:
+                    assert($attributeInstance instanceof Repeat);
+
+                    $result[] = Metadata::repeat(
+                        $attributeInstance->times(),
+                        $attributeInstance->failureThreshold(),
                     );
 
                     break;
