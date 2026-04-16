@@ -23,11 +23,11 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
-#[CoversClass(DefaultJobRunner::class)]
+#[CoversClass(JobRunner::class)]
 #[UsesClass(Job::class)]
 #[UsesClass(Result::class)]
 #[Small]
-final class DefaultJobRunnerTest extends TestCase
+final class JobRunnerTest extends TestCase
 {
     public static function provider(): Generator
     {
@@ -119,7 +119,7 @@ EOT,
     #[DataProvider('provider')]
     public function testRunsJobInSeparateProcess(Result $expected, Job $job): void
     {
-        $jobRunner = new DefaultJobRunner(
+        $jobRunner = new JobRunner(
             new ChildProcessResultProcessor(
                 new Facade,
                 $this->createStub(Emitter::class),
