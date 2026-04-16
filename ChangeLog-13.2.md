@@ -30,7 +30,6 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 ### Changed
 
 * [#5873](https://github.com/sebastianbergmann/phpunit/issues/5873): Chain previously registered error handler instead of silently disabling PHPUnit's error handling
-* [#6588](https://github.com/sebastianbergmann/phpunit/issues/6588): Canonicalize baseline
 * Only errors and failures are now considered for "defect first" test reordering (tests that triggered deprecations, notices, or warnings as well as incomplete, risky, and skipped tests were previous also considered)
 
 ### Deprecated
