@@ -56,6 +56,73 @@ final class TestMethodTest extends TestCase
         $this->assertSame($testData, $test->testData());
         $this->assertTrue($test->isTestMethod());
         $this->assertFalse($test->isPhpt());
+        $this->assertSame(1, $test->repetition());
+        $this->assertSame(1, $test->totalRepetitions());
+        $this->assertFalse($test->isRepeated());
+    }
+
+    public function testRepetitionValues(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+            2,
+            3,
+        );
+
+        $this->assertSame(2, $test->repetition());
+        $this->assertSame(3, $test->totalRepetitions());
+        $this->assertTrue($test->isRepeated());
+    }
+
+    public function testNameIncludesRepetitionWhenRepeated(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+            2,
+            3,
+        );
+
+        $this->assertSame('testBar (repetition 2 of 3)', $test->name());
+        $this->assertSame('FooTest::testBar (repetition 2 of 3)', $test->nameWithClass());
+        $this->assertSame('FooTest::testBar (repetition 2 of 3)', $test->id());
+    }
+
+    public function testNameIncludesDataProviderAndRepetition(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray(
+                [
+                    DataFromDataProvider::from(
+                        0,
+                        'data',
+                        'data as string for result output',
+                    ),
+                ],
+            ),
+            2,
+            3,
+        );
+
+        $this->assertSame('testBar with data set #0 (repetition 2 of 3)', $test->name());
+        $this->assertSame('FooTest::testBar#0 (repetition 2 of 3)', $test->id());
     }
 
     public function testNameReturnsNameWhenTestDoesNotHaveDataFromDataProvider(): void
