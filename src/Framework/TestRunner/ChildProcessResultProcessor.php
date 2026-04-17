@@ -10,6 +10,9 @@
 namespace PHPUnit\Framework;
 
 use function assert;
+use function hash_equals;
+use function strlen;
+use function substr;
 use function trim;
 use function unserialize;
 use PHPUnit\Event\Code\TestMethodBuilder;
@@ -37,7 +40,10 @@ final readonly class ChildProcessResultProcessor
         $this->codeCoverage = $codeCoverage;
     }
 
-    public function process(Test $test, string $serializedProcessResult, string $stderr): void
+    /**
+     * @param ?non-empty-string $processResultNonce
+     */
+    public function process(Test $test, string $serializedProcessResult, string $stderr, ?string $processResultNonce = null): void
     {
         if ($stderr !== '') {
             $exception = new Exception(trim($stderr));
@@ -50,6 +56,35 @@ final readonly class ChildProcessResultProcessor
             );
 
             return;
+        }
+
+        if ($processResultNonce !== null && $serializedProcessResult !== '') {
+            $nonceLength = strlen($processResultNonce);
+
+            if (strlen($serializedProcessResult) < $nonceLength ||
+                !hash_equals($processResultNonce, substr($serializedProcessResult, 0, $nonceLength))) {
+                $this->emitter->childProcessErrored();
+
+                $exception = new AssertionFailedError(
+                    'Test was run in child process and the result file was tampered with or written by an unexpected process',
+                );
+
+                assert($test instanceof TestCase);
+
+                $this->emitter->testErrored(
+                    TestMethodBuilder::fromTestCase($test),
+                    ThrowableBuilder::from($exception),
+                );
+
+                $this->emitter->testFinished(
+                    TestMethodBuilder::fromTestCase($test),
+                    0,
+                );
+
+                return;
+            }
+
+            $serializedProcessResult = substr($serializedProcessResult, $nonceLength);
         }
 
         $childResult = @unserialize($serializedProcessResult);
