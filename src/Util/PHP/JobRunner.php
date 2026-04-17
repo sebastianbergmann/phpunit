@@ -26,6 +26,7 @@ use function is_file;
 use function is_resource;
 use function proc_close;
 use function proc_open;
+use function str_contains;
 use function str_replace;
 use function str_starts_with;
 use function stream_get_contents;
@@ -335,9 +336,14 @@ final readonly class JobRunner
     }
 
     /**
-     * Wraps the value portion of a "name=value" INI setting in double quotes
-     * so PHP's INI parser treats characters such as `;` (comment) and `"`
-     * (string delimiter) as literal data instead of metacharacters.
+     * Quotes the value portion of a "name=value" INI setting only when it
+     * contains characters PHP's INI parser would otherwise interpret as
+     * metacharacters (`;` starts a comment, `"` is a string delimiter).
+     *
+     * Quoting is avoided for plain values so that boolean keywords such as
+     * `On` / `Off` keep their special INI semantics; wrapping them in quotes
+     * turns them into the literal strings `"On"` / `"Off"` and breaks
+     * settings like `output_buffering`.
      */
     private function quoteSettingValue(string $setting): string
     {
@@ -347,8 +353,13 @@ final readonly class JobRunner
             return $setting;
         }
 
-        $name  = substr($setting, 0, $position);
         $value = substr($setting, $position + 1);
+
+        if (!str_contains($value, ';') && !str_contains($value, '"')) {
+            return $setting;
+        }
+
+        $name = substr($setting, 0, $position);
 
         return $name . '="' . str_replace('"', '\\"', $value) . '"';
     }
