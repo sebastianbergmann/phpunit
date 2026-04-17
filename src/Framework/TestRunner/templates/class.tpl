@@ -104,7 +104,7 @@ function __phpunit_run_isolated_test()
 
     file_put_contents(
         '{processResultFile}',
-        serialize(
+        '{processResultNonce}' . serialize(
             (object)[
                 'testResult'    => $test->result(),
                 'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
