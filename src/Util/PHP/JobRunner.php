@@ -15,6 +15,8 @@ use function array_keys;
 use function array_merge;
 use function array_values;
 use function assert;
+use function count;
+use function explode;
 use function fclose;
 use function file_get_contents;
 use function file_put_contents;
@@ -30,8 +32,6 @@ use function str_contains;
 use function str_replace;
 use function str_starts_with;
 use function stream_get_contents;
-use function strpos;
-use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
 use function trim;
@@ -347,19 +347,17 @@ final readonly class JobRunner
      */
     private function quoteSettingValue(string $setting): string
     {
-        $position = strpos($setting, '=');
+        $parts = explode('=', $setting, 2);
 
-        if ($position === false) {
+        if (count($parts) !== 2) {
             return $setting;
         }
 
-        $value = substr($setting, $position + 1);
+        [$name, $value] = $parts;
 
         if (!str_contains($value, ';') && !str_contains($value, '"')) {
             return $setting;
         }
-
-        $name = substr($setting, 0, $position);
 
         return $name . '="' . str_replace('"', '\\"', $value) . '"';
     }
