@@ -15,6 +15,8 @@ use function array_keys;
 use function array_merge;
 use function array_values;
 use function assert;
+use function count;
+use function explode;
 use function fclose;
 use function file_get_contents;
 use function file_put_contents;
@@ -26,6 +28,9 @@ use function is_file;
 use function is_resource;
 use function proc_close;
 use function proc_open;
+use function sprintf;
+use function str_contains;
+use function str_replace;
 use function str_starts_with;
 use function stream_get_contents;
 use function sys_get_temp_dir;
@@ -317,6 +322,8 @@ final readonly class JobRunner
     /**
      * @param list<string> $settings
      *
+     * @throws PhpProcessException
+     *
      * @return list<string>
      */
     private function settingsToParameters(array $settings): array
@@ -325,9 +332,53 @@ final readonly class JobRunner
 
         foreach ($settings as $setting) {
             $buffer[] = '-d';
-            $buffer[] = $setting;
+            $buffer[] = $this->processSettingValue($setting);
         }
 
         return $buffer;
+    }
+
+    /**
+     * Rejects "name=value" INI settings whose value contains a line-break
+     * character. A newline cannot legitimately appear in a PHP INI value and
+     * would, if forwarded unchanged, be parsed by the child process as a
+     * directive separator — turning a single setting into an attacker-
+     * controlled sequence of directives.
+     *
+     * Otherwise quotes the value portion only when it contains characters
+     * PHP's INI parser would interpret as metacharacters (`;` starts a
+     * comment, `"` is a string delimiter).
+     *
+     * Quoting is avoided for plain values so that boolean keywords such as
+     * `On` / `Off` keep their special INI semantics; wrapping them in quotes
+     * turns them into the literal strings `"On"` / `"Off"` and breaks
+     * settings like `output_buffering`.
+     *
+     * @throws PhpProcessException
+     */
+    private function processSettingValue(string $setting): string
+    {
+        $parts = explode('=', $setting, 2);
+
+        if (count($parts) !== 2) {
+            return $setting;
+        }
+
+        [$name, $value] = $parts;
+
+        if (str_contains($value, "\n") || str_contains($value, "\r")) {
+            throw new PhpProcessException(
+                sprintf(
+                    'PHP setting "%s" contains a line-break character, which is not permitted',
+                    $name,
+                ),
+            );
+        }
+
+        if (!str_contains($value, ';') && !str_contains($value, '"')) {
+            return $setting;
+        }
+
+        return $name . '="' . str_replace('"', '\\"', $value) . '"';
     }
 }
