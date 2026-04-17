@@ -26,8 +26,11 @@ use function is_file;
 use function is_resource;
 use function proc_close;
 use function proc_open;
+use function str_replace;
 use function str_starts_with;
 use function stream_get_contents;
+use function strpos;
+use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
 use function trim;
@@ -325,9 +328,28 @@ final readonly class JobRunner
 
         foreach ($settings as $setting) {
             $buffer[] = '-d';
-            $buffer[] = $setting;
+            $buffer[] = $this->quoteSettingValue($setting);
         }
 
         return $buffer;
+    }
+
+    /**
+     * Wraps the value portion of a "name=value" INI setting in double quotes
+     * so PHP's INI parser treats characters such as `;` (comment) and `"`
+     * (string delimiter) as literal data instead of metacharacters.
+     */
+    private function quoteSettingValue(string $setting): string
+    {
+        $position = strpos($setting, '=');
+
+        if ($position === false) {
+            return $setting;
+        }
+
+        $name  = substr($setting, 0, $position);
+        $value = substr($setting, $position + 1);
+
+        return $name . '="' . str_replace('"', '\\"', $value) . '"';
     }
 }
