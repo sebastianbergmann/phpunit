@@ -155,4 +155,29 @@ EOT,
         $this->assertSame($expected->stdout(), $result->stdout());
         $this->assertSame($expected->stderr(), $result->stderr());
     }
+
+    public function testRejectsPhpSettingValueContainingLineBreak(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage,
+            ),
+        );
+
+        $job = new Job(
+            <<<'EOT'
+<?php declare(strict_types=1);
+
+EOT,
+            phpSettings: ["highlight.string=foo\nauto_prepend_file=/tmp/evil.php"],
+        );
+
+        $this->expectException(PhpProcessException::class);
+        $this->expectExceptionMessage('PHP setting "highlight.string" contains a line-break character, which is not permitted');
+
+        $jobRunner->run($job);
+    }
 }
