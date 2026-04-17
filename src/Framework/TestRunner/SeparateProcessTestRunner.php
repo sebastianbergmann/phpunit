@@ -10,9 +10,11 @@
 namespace PHPUnit\Framework;
 
 use function assert;
+use function bin2hex;
 use function defined;
 use function get_include_path;
 use function hrtime;
+use function random_bytes;
 use function serialize;
 use function sprintf;
 use function sys_get_temp_dir;
@@ -115,7 +117,8 @@ final class SeparateProcessTestRunner
             // @codeCoverageIgnoreEnd
         }
 
-        $sourceMapFile = $this->sourceMapFileForChildProcess();
+        $processResultNonce = bin2hex(random_bytes(16));
+        $sourceMapFile      = $this->sourceMapFileForChildProcess();
 
         $file = $class->getFileName();
 
@@ -142,6 +145,7 @@ final class SeparateProcessTestRunner
             'offsetNanoseconds'              => (string) $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
             'processResultFile'              => $processResultFile,
+            'processResultNonce'             => $processResultNonce,
             'sourceMapFile'                  => $sourceMapFile,
         ];
 
@@ -153,7 +157,7 @@ final class SeparateProcessTestRunner
 
         assert($code !== '');
 
-        JobRunnerRegistry::runTestJob(new Job($code, requiresXdebug: $requiresXdebug), $processResultFile, $test);
+        JobRunnerRegistry::runTestJob(new Job($code, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
 
         @unlink($serializedConfiguration);
     }

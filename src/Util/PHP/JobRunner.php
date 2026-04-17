@@ -60,9 +60,10 @@ final readonly class JobRunner
     }
 
     /**
-     * @param non-empty-string $processResultFile
+     * @param non-empty-string  $processResultFile
+     * @param ?non-empty-string $processResultNonce
      */
-    public function runTestJob(Job $job, string $processResultFile, Test $test): void
+    public function runTestJob(Job $job, string $processResultFile, Test $test, ?string $processResultNonce = null): void
     {
         $result = $this->run($job);
 
@@ -80,6 +81,7 @@ final readonly class JobRunner
             $test,
             $processResult,
             $result->stderr(),
+            $processResultNonce,
         );
 
         EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
