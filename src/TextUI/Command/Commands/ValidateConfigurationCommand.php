@@ -53,6 +53,7 @@ final readonly class ValidateConfigurationCommand implements Command
 
         try {
             $xsdFilename = (new SchemaFinder)->find(Version::series());
+            // @codeCoverageIgnoreStart
         } catch (CannotFindSchemaException $e) {
             return Result::from(
                 sprintf(
@@ -65,6 +66,7 @@ final readonly class ValidateConfigurationCommand implements Command
                 Result::FAILURE,
             );
         }
+        // @codeCoverageIgnoreEnd
 
         $validationResult = (new Validator)->validate($document, $xsdFilename);
 
