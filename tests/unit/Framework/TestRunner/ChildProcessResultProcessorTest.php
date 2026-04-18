@@ -29,7 +29,8 @@ final class ChildProcessResultProcessorTest extends TestCase
 
         $emitter
             ->expects($this->once())
-            ->method('testErrored');
+            ->method('testErrored')
+            ->seal();
 
         $this->processor($emitter)->process(new Success('testOne'), '', 'error');
     }
@@ -41,7 +42,16 @@ final class ChildProcessResultProcessorTest extends TestCase
 
         $emitter
             ->expects($this->once())
+            ->method('childProcessErrored');
+
+        $emitter
+            ->expects($this->once())
             ->method('testErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testFinished')
+            ->seal();
 
         $this->processor($emitter)->process(new Success('testOne'), '', '');
     }
@@ -53,7 +63,16 @@ final class ChildProcessResultProcessorTest extends TestCase
 
         $emitter
             ->expects($this->once())
+            ->method('childProcessErrored');
+
+        $emitter
+            ->expects($this->once())
             ->method('testErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testFinished')
+            ->seal();
 
         $this->processor($emitter)->process(
             new Success('testOne'),
@@ -70,7 +89,16 @@ final class ChildProcessResultProcessorTest extends TestCase
 
         $emitter
             ->expects($this->once())
+            ->method('childProcessErrored');
+
+        $emitter
+            ->expects($this->once())
             ->method('testErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testFinished')
+            ->seal();
 
         $this->processor($emitter)->process(
             new Success('testOne'),
@@ -87,7 +115,16 @@ final class ChildProcessResultProcessorTest extends TestCase
 
         $emitter
             ->expects($this->once())
+            ->method('childProcessErrored');
+
+        $emitter
+            ->expects($this->once())
             ->method('testErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testFinished')
+            ->seal();
 
         $this->processor($emitter)->process(
             new Success('testOne'),

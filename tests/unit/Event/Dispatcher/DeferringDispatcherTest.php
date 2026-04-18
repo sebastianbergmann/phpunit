@@ -28,7 +28,8 @@ final class DeferringDispatcherTest extends TestCase
 
         $subscribableDispatcher
             ->expects($this->never())
-            ->method('dispatch');
+            ->method('dispatch')
+            ->seal();
 
         $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
 
@@ -44,7 +45,8 @@ final class DeferringDispatcherTest extends TestCase
         $subscribableDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with($this->identicalTo($event));
+            ->with($this->identicalTo($event))
+            ->seal();
 
         $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
 
@@ -62,7 +64,8 @@ final class DeferringDispatcherTest extends TestCase
         $subscribableDispatcher
             ->expects($this->once())
             ->method('registerSubscriber')
-            ->with($this->identicalTo($subscriber));
+            ->with($this->identicalTo($subscriber))
+            ->seal();
 
         $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
 
@@ -78,7 +81,8 @@ final class DeferringDispatcherTest extends TestCase
         $subscribableDispatcher
             ->expects($this->once())
             ->method('registerTracer')
-            ->with($this->identicalTo($tracer));
+            ->with($this->identicalTo($tracer))
+            ->seal();
 
         $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
 
