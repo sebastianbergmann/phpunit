@@ -36,7 +36,8 @@ final class DirectDispatcherTest extends TestCase
         $subscriber
             ->expects($this->once())
             ->method('notify')
-            ->with($this->identicalTo($event));
+            ->with($this->identicalTo($event))
+            ->seal();
 
         $dispatcher->registerSubscriber($subscriber);
 
@@ -55,7 +56,8 @@ final class DirectDispatcherTest extends TestCase
         $tracer
             ->expects($this->once())
             ->method('trace')
-            ->with($this->identicalTo($event));
+            ->with($this->identicalTo($event))
+            ->seal();
 
         $dispatcher->registerTracer($tracer);
 
