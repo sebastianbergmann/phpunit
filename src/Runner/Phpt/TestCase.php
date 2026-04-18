@@ -74,6 +74,8 @@ use staabm\SideEffectsDetector\SideEffectsDetector;
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
  * @see https://qa.php.net/phpt_details.php
+ *
+ * @phpstan-type CoverageFiles array{coverage: non-empty-string, job: non-empty-string}
  */
 final readonly class TestCase implements Reorderable, SelfDescribing, Test
 {
@@ -599,7 +601,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array{coverage: non-empty-string, job: non-empty-string}
+     * @return CoverageFiles
      */
     private function coverageFiles(): array
     {

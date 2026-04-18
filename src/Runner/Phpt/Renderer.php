@@ -24,6 +24,8 @@ use SebastianBergmann\Template\Template;
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
  * @see https://qa.php.net/phpt_details.php
+ *
+ * @phpstan-import-type CoverageFiles from TestCase
  */
 final readonly class Renderer
 {
@@ -49,8 +51,8 @@ final readonly class Renderer
     }
 
     /**
-     * @param non-empty-string                                         $job
-     * @param array{coverage: non-empty-string, job: non-empty-string} $files
+     * @param non-empty-string $job
+     * @param CoverageFiles    $files
      *
      * @param-out non-empty-string $job
      *

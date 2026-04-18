@@ -59,6 +59,10 @@ use PHPUnit\Util\ExcludeList;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @phpstan-type DeprecationMethod array{className: class-string, methodName: non-empty-string}
+ * @phpstan-type DeprecationTriggers array{functions: list<non-empty-string>, methods: list<DeprecationMethod>}
+ * @phpstan-type StackFrame array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}
  */
 final class ErrorHandler
 {
@@ -85,7 +89,7 @@ final class ErrorHandler
     private ?array $backupErrorHandlers = null;
 
     /**
-     * @var ?array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>}
+     * @var ?DeprecationTriggers
      */
     private ?array $deprecationTriggers = null;
 
@@ -479,7 +483,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{functions: list<non-empty-string>, methods: list<array{className: class-string, methodName: non-empty-string}>} $deprecationTriggers
+     * @param DeprecationTriggers $deprecationTriggers
      */
     public function useDeprecationTriggers(array $deprecationTriggers): void
     {
@@ -738,8 +742,8 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object} $frame
-     * @param non-empty-string                                                                                                                $function
+     * @param StackFrame       $frame
+     * @param non-empty-string $function
      */
     private function frameIsFunction(array $frame, string $function): bool
     {
@@ -747,8 +751,8 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object} $frame
-     * @param array{className: class-string, methodName: non-empty-string}                                                                    $method
+     * @param StackFrame        $frame
+     * @param DeprecationMethod $method
      */
     private function frameIsMethod(array $frame, array $method): bool
     {

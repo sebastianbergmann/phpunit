@@ -30,6 +30,8 @@ use ReflectionClass;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @phpstan-type BackupSettings array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string, list<string>>}
  */
 final readonly class TestBuilder
 {
@@ -87,11 +89,11 @@ final readonly class TestBuilder
     }
 
     /**
-     * @param non-empty-string                                                                                                                                                  $methodName
-     * @param class-string<TestCase>                                                                                                                                            $className
-     * @param array<ProvidedData>                                                                                                                                               $data
-     * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
-     * @param list<non-empty-string>                                                                                                                                            $groups
+     * @param non-empty-string       $methodName
+     * @param class-string<TestCase> $className
+     * @param array<ProvidedData>    $data
+     * @param BackupSettings         $backupSettings
+     * @param list<non-empty-string> $groups
      */
     private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups): DataProviderTestSuite
     {
@@ -123,7 +125,7 @@ final readonly class TestBuilder
     }
 
     /**
-     * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
+     * @param BackupSettings $backupSettings
      */
     private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): void
     {
@@ -159,7 +161,7 @@ final readonly class TestBuilder
      * @param class-string<TestCase> $className
      * @param non-empty-string       $methodName
      *
-     * @return array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>}
+     * @return BackupSettings
      */
     private function backupSettings(string $className, string $methodName): array
     {

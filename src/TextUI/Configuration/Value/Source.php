@@ -13,6 +13,8 @@ namespace PHPUnit\TextUI\Configuration;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @immutable
+ *
+ * @phpstan-type DeprecationTriggers array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool}
  */
 final readonly class Source
 {
@@ -40,7 +42,7 @@ final readonly class Source
     private bool $identifyIssueTrigger;
 
     /**
-     * @var array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool}
+     * @var DeprecationTriggers
      */
     private array $deprecationTriggers;
 
@@ -50,9 +52,9 @@ final readonly class Source
     private array $issueTriggerResolvers;
 
     /**
-     * @param ?non-empty-string                                                                                        $baseline
-     * @param array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool} $deprecationTriggers
-     * @param list<class-string>                                                                                       $issueTriggerResolvers
+     * @param ?non-empty-string   $baseline
+     * @param DeprecationTriggers $deprecationTriggers
+     * @param list<class-string>  $issueTriggerResolvers
      */
     public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger, array $issueTriggerResolvers = [])
     {
@@ -180,7 +182,7 @@ final readonly class Source
     }
 
     /**
-     * @return array{functions: list<non-empty-string>, methods: list<non-empty-string>, ignoreUndefinedTriggers: bool}
+     * @return DeprecationTriggers
      */
     public function deprecationTriggers(): array
     {
