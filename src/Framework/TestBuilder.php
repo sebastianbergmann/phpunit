@@ -13,6 +13,8 @@ use function array_merge;
 use function assert;
 use function get_parent_class;
 use function range;
+use function sprintf;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -64,6 +66,26 @@ final readonly class TestBuilder
 
             $numberOfRuns     = $metadata->times();
             $failureThreshold = $metadata->failureThreshold();
+
+            if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Method %s::%s is annotated with #[Repeat] but does not have a void return type declaration and will not be repeated',
+                        $className,
+                        $methodName,
+                    ),
+                );
+            }
+
+            if (!$this->doesNotDependOnAnotherTest($className, $methodName)) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Method %s::%s is annotated with #[Repeat] but depends on another test and will not be repeated',
+                        $className,
+                        $methodName,
+                    ),
+                );
+            }
         }
 
         $repeat = $numberOfRuns > 1 &&
