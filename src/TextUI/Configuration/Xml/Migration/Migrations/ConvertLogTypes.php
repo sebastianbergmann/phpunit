@@ -26,6 +26,7 @@ final readonly class ConvertLogTypes implements Migration
         if (!$logging instanceof DOMElement) {
             return;
         }
+
         $types = [
             'junit'        => 'junit',
             'teamcity'     => 'teamcity',
