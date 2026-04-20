@@ -1,8 +1,36 @@
 # https://docs.github.com/en/actions
 
 on:
-  pull_request: null
-  push: null
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".php-cs-fixer.dist.php"
+      - "src/**"
+      - "schema/**"
+      - "tests/**"
+      - "build/**"
+      - "build.xml"
+      - "composer.json"
+      - "composer.lock"
+      - "phpstan.neon"
+      - "phpunit"
+      - "phpunit.xml"
+      - "phpunit.xsd"
+  push:
+    paths:
+      - ".github/workflows/**"
+      - ".php-cs-fixer.dist.php"
+      - "src/**"
+      - "schema/**"
+      - "tests/**"
+      - "build/**"
+      - "build.xml"
+      - "composer.json"
+      - "composer.lock"
+      - "phpstan.neon"
+      - "phpunit"
+      - "phpunit.xml"
+      - "phpunit.xsd"
 
 name: CI
 
