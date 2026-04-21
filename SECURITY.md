@@ -1,5 +1,24 @@
 # Security Policy
 
+## Supported versions
+
+Security issues are fixed for versions of PHPUnit that are in the Bugfix Support phase.
+Versions in the Life Support phase only receive changes required for compatibility with new versions of PHP; they do not receive bug or security fixes.
+Versions that have reached End-of-Life do not receive any changes.
+
+| Version    | Phase          | End of Bugfix Support |
+|------------|----------------|-----------------------|
+| PHPUnit 13 | Bugfix Support | February 4, 2028      |
+| PHPUnit 12 | Bugfix Support | February 5, 2027      |
+| PHPUnit 11 | Life Support   | February 6, 2026      |
+| PHPUnit 10 | Life Support   | February 7, 2025      |
+| PHPUnit 9  | Life Support   | February 2, 2024      |
+| PHPUnit 8  | Life Support   | February 3, 2023      |
+
+PHPUnit 7 and earlier have reached End-of-Life.
+
+See [Supported Versions of PHPUnit](https://phpunit.de/supported-versions.html) for the authoritative list and for the definitions of the support phases.
+
 ## Reporting a vulnerability
 
 If you believe you have found a security vulnerability in PHPUnit, please report it to me through coordinated disclosure.
