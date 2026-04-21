@@ -63,7 +63,6 @@ Once a vulnerability has been fixed and a release with the fix is available, I p
 PHPUnit is a framework for writing as well as a command-line tool for running tests.
 Writing and running tests is a development-time activity.
 PHPUnit is developed with a focus on development environments and the command-line.
-No specific testing or hardening with regard to using PHPUnit in an HTTP or web context, in a CI/CD context, or with untrusted input data is performed.
 
 ### In scope
 
@@ -75,6 +74,7 @@ I treat a bug as a security issue when a documented, intended use of PHPUnit cau
 
 ### Not in scope
 
+No specific testing or hardening with regard to using PHPUnit in an HTTP or web context, in a CI/CD context, or with untrusted input data is performed.
 The following classes of issue are explicitly not in scope.
 
 #### CI/CD Pipelines
