@@ -25,6 +25,10 @@ There is no monetary reward for reporting a vulnerability.
 
 I do not participate in embargoed disclosure processes, and I do not optimize for metrics such as the OpenSSF Scorecard.
 
+A confirmed security issue is handled like any other bug.
+It is not prioritized ahead of other work.
+It is fixed when I have the time to fix it.
+
 If you used an AI assistant (LLM, coding agent, or similar) to find, reproduce, or write up the issue, please say so and describe how it was used.
 This does not disqualify a report, but it changes how I triage it.
 
@@ -47,11 +51,7 @@ I treat a bug as a security issue when a documented, intended use of PHPUnit cau
 
 ### Not in scope
 
-I treat vulnerabilities as regular bugs.
-They are not prioritized ahead of other work.
-They are fixed when I have the time to fix them.
-
-In addition, the following classes of issue are explicitly not in scope.
+The following classes of issue are explicitly not in scope.
 
 #### CI/CD Pipelines
 
