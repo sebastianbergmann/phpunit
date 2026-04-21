@@ -28,6 +28,8 @@ Please report vulnerabilities in bundled libraries to their respective repositor
 
 Instead, please email `sebastian@phpunit.de`.
 
+Use my [PGP key](https://sebastian-bergmann.de/gpg.asc) for encrypted email, for example when your report includes proof-of-concept exploits against third-party systems.
+
 Please include as much of the information listed below as you can to help me better understand and resolve the issue:
 
 * The type of issue
