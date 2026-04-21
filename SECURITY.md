@@ -22,6 +22,7 @@ See [Supported Versions of PHPUnit](https://phpunit.de/supported-versions.html) 
 ## Reporting a vulnerability
 
 If you believe you have found a security vulnerability in PHPUnit, please report it to me through coordinated disclosure.
+Please report vulnerabilities in bundled libraries to their respective repositories.
 
 **Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
 
