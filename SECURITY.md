@@ -66,7 +66,7 @@ PHPUnit is developed with a focus on development environments and the command-li
 
 ### In scope
 
-I treat a bug as a security issue when a documented, intended use of PHPUnit causes PHPUnit itself to compromise the confidentiality, integrity, or availability of the environment it runs in. Examples:
+I treat a bug as a security issue when a documented, intended use of PHPUnit, or a reasonable extrapolation of it, causes PHPUnit itself to compromise the confidentiality, integrity, or availability of the environment it runs in. Examples:
 
 * PHPUnit's console output, logfiles, and reports in any format contain a vulnerability that allows an attacker to extract secrets from or otherwise compromise the environment in which the output is viewed or processed.
 * A regular test run, against trusted test code, trusted production code, and a trusted configuration, causes PHPUnit to transmit data from the environment to a third party.
