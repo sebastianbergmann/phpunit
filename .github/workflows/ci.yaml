@@ -2,35 +2,19 @@
 
 on:
   pull_request:
-    paths:
-      - ".github/workflows/**"
-      - ".php-cs-fixer.dist.php"
-      - "src/**"
-      - "schema/**"
-      - "tests/**"
-      - "build/**"
-      - "build.xml"
-      - "composer.json"
-      - "composer.lock"
-      - "phpstan.neon"
-      - "phpunit"
-      - "phpunit.xml"
-      - "phpunit.xsd"
+    paths-ignore:
+      - ".editorconfig"
+      - "LICENSE"
+      - "**.md"
+      - "**.png"
+      - "**.svg"
   push:
-    paths:
-      - ".github/workflows/**"
-      - ".php-cs-fixer.dist.php"
-      - "src/**"
-      - "schema/**"
-      - "tests/**"
-      - "build/**"
-      - "build.xml"
-      - "composer.json"
-      - "composer.lock"
-      - "phpstan.neon"
-      - "phpunit"
-      - "phpunit.xml"
-      - "phpunit.xsd"
+    paths-ignore:
+      - ".editorconfig"
+      - "LICENSE"
+      - "**.md"
+      - "**.png"
+      - "**.svg"
 
 name: CI
 
