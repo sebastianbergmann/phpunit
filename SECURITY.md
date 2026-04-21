@@ -20,6 +20,11 @@ Please include as much of the information listed below as you can to help me bet
 
 This information will help me triage your report more quickly.
 
+If you used an AI assistant (LLM, coding agent, or similar) to find, reproduce, or write up the issue, please say so and describe how it was used.
+This does not disqualify a report, but it changes how I triage it.
+
+## How reports are handled
+
 I do not operate a bug bounty program.
 There is no monetary reward for reporting a vulnerability.
 
@@ -28,9 +33,6 @@ I do not participate in embargoed disclosure processes, and I do not optimize fo
 A confirmed security issue is handled like any other bug.
 It is not prioritized ahead of other work.
 It is fixed when I have the time to fix it.
-
-If you used an AI assistant (LLM, coding agent, or similar) to find, reproduce, or write up the issue, please say so and describe how it was used.
-This does not disqualify a report, but it changes how I triage it.
 
 Once a vulnerability has been fixed and a release with the fix is available, I publish a public advisory on GitHub.
 
