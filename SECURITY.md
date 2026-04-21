@@ -57,10 +57,10 @@ In addition, the following classes of issue are explicitly not in scope.
 
 Running tests in a CI/CD pipeline is a legitimate and common use of PHPUnit.
 However, a CI/CD pipeline is not a sandbox, and PHPUnit is not designed to defend one.
-Executing test code, production code, or a configuration for PHPUnit or PHP that originates from an untrusted source is equivalent to executing arbitrary code on the infrastructure that hosts the pipeline.
+Executing test code, production code, or a configuration for PHPUnit or PHP that has not been reviewed is equivalent to executing arbitrary code on the infrastructure that hosts the pipeline.
 This class of risk is documented as [CICD-SEC-04: Poisoned Pipeline Execution](https://owasp.org/www-project-top-10-ci-cd-security-risks/CICD-SEC-04-Poisoned-Pipeline-Execution) in the OWASP Top 10 CI/CD Security Risks.
 
-**If you run PHPUnit in your CI/CD pipeline with a configuration for PHPUnit or PHP, test code, and/or production code from untrusted sources, then your development process is broken.**
+**If your CI/CD pipeline automatically runs PHPUnit against a configuration for PHPUnit or PHP, test code, and/or production code from third parties without those changes having been reviewed first, then your development process is broken.**
 
 Running code from a pull request on your infrastructure is, by definition, remote code execution.
 
