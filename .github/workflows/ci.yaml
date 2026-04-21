@@ -1,8 +1,20 @@
 # https://docs.github.com/en/actions
 
 on:
-  pull_request: null
-  push: null
+  pull_request:
+    paths-ignore:
+      - ".editorconfig"
+      - "LICENSE"
+      - "**.md"
+      - "**.png"
+      - "**.svg"
+  push:
+    paths-ignore:
+      - ".editorconfig"
+      - "LICENSE"
+      - "**.md"
+      - "**.png"
+      - "**.svg"
 
 name: CI
 
