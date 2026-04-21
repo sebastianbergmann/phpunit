@@ -57,6 +57,7 @@ It is not prioritized ahead of other work.
 It is fixed when I have the time to fix it.
 
 Once a vulnerability has been fixed and a release with the fix is available, I publish a public advisory on GitHub.
+I give credit in the advisory when I know the reporter's GitHub user name.
 
 ## Scope
 
