@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf13c616f13f3f522b08dab630e2613e",
+    "content-hash": "f270b6816d9be6366066c48719ca8868",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1102,16 +1102,16 @@
         },
         {
             "name": "sebastian/file-filter",
-            "version": "dev-main",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/file-filter.git",
-                "reference": "34b12baea1e48f179f11ce4910858d18b8a7ffb9"
+                "reference": "33a26f394330f6faa7684bb9cc73afb7727aae93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/file-filter/zipball/34b12baea1e48f179f11ce4910858d18b8a7ffb9",
-                "reference": "34b12baea1e48f179f11ce4910858d18b8a7ffb9",
+                "url": "https://api.github.com/repos/sebastianbergmann/file-filter/zipball/33a26f394330f6faa7684bb9cc73afb7727aae93",
+                "reference": "33a26f394330f6faa7684bb9cc73afb7727aae93",
                 "shasum": ""
             },
             "require": {
@@ -1120,7 +1120,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^13.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1148,7 +1147,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/file-filter/issues",
                 "security": "https://github.com/sebastianbergmann/file-filter/security/policy",
-                "source": "https://github.com/sebastianbergmann/file-filter/tree/main"
+                "source": "https://github.com/sebastianbergmann/file-filter/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1168,7 +1167,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-22T06:34:28+00:00"
+            "time": "2026-04-22T07:20:04+00:00"
         },
         {
             "name": "sebastian/git-state",
@@ -1838,9 +1837,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "sebastian/file-filter": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
