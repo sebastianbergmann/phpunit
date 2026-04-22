@@ -20,10 +20,15 @@ final readonly class HookMethod
      * @var non-empty-string
      */
     private string $methodName;
+
+    /**
+     * @var non-negative-int
+     */
     private int $priority;
 
     /**
      * @param non-empty-string $methodName
+     * @param non-negative-int $priority
      */
     public function __construct(string $methodName, int $priority)
     {
@@ -39,6 +44,9 @@ final readonly class HookMethod
         return $this->methodName;
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function priority(): int
     {
         return $this->priority;
