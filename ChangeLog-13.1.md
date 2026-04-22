@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.1.8] - 2026-MM-DD
+
+### Fixed
+
+* [#6595](https://github.com/sebastianbergmann/phpunit/issues/6595): Default result printer crashes when an assertion fails in a before-class method or after-class method
+
 ## [13.1.7] - 2026-04-18
 
 ### Changed
@@ -96,6 +102,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 * [#6433](https://github.com/sebastianbergmann/phpunit/issues/6433): Logic in `TestSuiteLoader` is brittle and causes "Class FooTest not found" even for valid tests in valid filenames
 * [#6463](https://github.com/sebastianbergmann/phpunit/issues/6463): Process Isolation fails on non-serializable globals and quietly ignore closures
 
+[13.1.8]: https://github.com/sebastianbergmann/phpunit/compare/13.1.7...13.1
 [13.1.7]: https://github.com/sebastianbergmann/phpunit/compare/13.1.6...13.1.7
 [13.1.6]: https://github.com/sebastianbergmann/phpunit/compare/13.1.5...13.1.6
 [13.1.5]: https://github.com/sebastianbergmann/phpunit/compare/13.1.4...13.1.5
