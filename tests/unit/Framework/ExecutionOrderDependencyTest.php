@@ -50,12 +50,8 @@ class ExecutionOrderDependencyTest extends TestCase
     }
 
     #[DataProvider('createFromParametersProvider')]
-    public function testCreateDependencyFromParameters(
-        string $className,
-        ?string $methodName,
-        string $expectedTarget,
-        bool $expectedTargetIsClass
-    ): void {
+    public function testCreateDependencyFromParameters(string $className, ?string $methodName, string $expectedTarget, bool $expectedTargetIsClass): void
+    {
         $dependency = new ExecutionOrderDependency($className, $methodName);
 
         $this->assertSame(
