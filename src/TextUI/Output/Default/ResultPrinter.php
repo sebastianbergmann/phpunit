@@ -27,7 +27,9 @@ use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
+use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\ErrorTriggered;
@@ -326,6 +328,12 @@ final class ResultPrinter
         $elements = [];
 
         foreach ($result->testFailedEvents() as $event) {
+            if ($event instanceof AfterLastTestMethodFailed || $event instanceof BeforeFirstTestMethodFailed) {
+                $title = $event->testClassName();
+            } else {
+                $title = $this->name($event->test());
+            }
+
             $body = $event->throwable()->asString();
 
             if (str_starts_with($body, 'AssertionError: ')) {
@@ -333,7 +341,7 @@ final class ResultPrinter
             }
 
             $elements[] = [
-                'title' => $this->name($event->test()),
+                'title' => $title,
                 'body'  => $body,
             ];
         }

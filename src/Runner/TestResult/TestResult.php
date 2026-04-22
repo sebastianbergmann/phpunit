@@ -227,7 +227,7 @@ final readonly class TestResult
     }
 
     /**
-     * @return list<Failed>
+     * @return list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>
      */
     public function testFailedEvents(): array
     {
