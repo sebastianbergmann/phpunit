@@ -428,6 +428,30 @@ final class SourceFilterTest extends AbstractSourceFilterTestCase
                     ),
                 ),
             ],
+            'file in hidden directory is included when listed explicitly' => [
+                [
+                    self::fixturePath('a/c/.hidden/PrefixSuffix.php') => true,
+                ],
+                self::createSource(
+                    includeFiles: FilterFileCollection::fromArray(
+                        [
+                            new FilterFile(self::fixturePath('a/c/.hidden/PrefixSuffix.php')),
+                        ],
+                    ),
+                ),
+            ],
+            'file in hidden directory is included when the hidden segment is part of the include root' => [
+                [
+                    self::fixturePath('a/c/.hidden/PrefixSuffix.php') => true,
+                ],
+                self::createSource(
+                    includeDirectories: FilterDirectoryCollection::fromArray(
+                        [
+                            new FilterDirectory(self::fixturePath('a/c/.hidden'), '', '.php'),
+                        ],
+                    ),
+                ),
+            ],
             'files included using directory and prefix' => [
                 [
                     self::fixturePath('b/e/PrefixExampleSuffix.php') => true,

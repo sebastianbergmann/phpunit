@@ -369,6 +369,110 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
                 ]),
             ),
         ];
+
+        yield 'file included using directory with non-canonical path' => [
+            [
+                self::fixturePath('a/PrefixSuffix.php')     => true,
+                self::fixturePath('a/c/Prefix.php')         => true,
+                self::fixturePath('a/c/PrefixSuffix.php')   => true,
+                self::fixturePath('a/c/Suffix.php')         => true,
+                self::fixturePath('a/c/d/Prefix.php')       => true,
+                self::fixturePath('a/c/d/PrefixSuffix.php') => true,
+                self::fixturePath('a/c/d/Suffix.php')       => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(self::fixturePath('/b/../a'), '', '.php'),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'file included using file with non-canonical path' => [
+            [
+                self::fixturePath('a/PrefixSuffix.php') => true,
+            ],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('/b/../a/PrefixSuffix.php')),
+                ]),
+            ),
+        ];
+
+        yield 'file excluded using directory with non-canonical path' => [
+            [
+                self::fixturePath('b/PrefixSuffix.php')          => true,
+                self::fixturePath('b/e/PrefixSuffix.php')        => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                self::fixturePath('b/e/g/PrefixSuffix.php')      => true,
+                self::fixturePath('b/f/PrefixSuffix.php')        => true,
+                self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(self::fixturePath(), '', '.php'),
+                    ],
+                ),
+                excludeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(self::fixturePath('/b/../a'), '', '.php'),
+                    ],
+                ),
+            ),
+        ];
+
+        yield 'file excluded using file with non-canonical path' => [
+            [
+                self::fixturePath('a/c/Prefix.php')              => true,
+                self::fixturePath('a/c/PrefixSuffix.php')        => true,
+                self::fixturePath('a/c/Suffix.php')              => true,
+                self::fixturePath('a/c/d/Prefix.php')            => true,
+                self::fixturePath('a/c/d/PrefixSuffix.php')      => true,
+                self::fixturePath('a/c/d/Suffix.php')            => true,
+                self::fixturePath('b/PrefixSuffix.php')          => true,
+                self::fixturePath('b/e/PrefixSuffix.php')        => true,
+                self::fixturePath('b/e/PrefixExampleSuffix.php') => true,
+                self::fixturePath('b/e/g/PrefixSuffix.php')      => true,
+                self::fixturePath('b/f/PrefixSuffix.php')        => true,
+                self::fixturePath('b/f/h/PrefixSuffix.php')      => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(self::fixturePath(), '', '.php'),
+                    ],
+                ),
+                excludeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('/b/../a/PrefixSuffix.php')),
+                ]),
+            ),
+        ];
+
+        yield 'file in hidden directory is included when listed explicitly' => [
+            [
+                self::fixturePath('a/c/.hidden/PrefixSuffix.php') => true,
+            ],
+            self::createSource(
+                includeFiles: FilterFileCollection::fromArray([
+                    new FilterFile(self::fixturePath('a/c/.hidden/PrefixSuffix.php')),
+                ]),
+            ),
+        ];
+
+        yield 'file in hidden directory is included when the hidden segment is part of the include root' => [
+            [
+                self::fixturePath('a/c/.hidden/PrefixSuffix.php') => true,
+            ],
+            self::createSource(
+                includeDirectories: FilterDirectoryCollection::fromArray(
+                    [
+                        new FilterDirectory(self::fixturePath('a/c/.hidden'), '', '.php'),
+                    ],
+                ),
+            ),
+        ];
     }
 
     public static function providerForCodeCoverage(): Generator
