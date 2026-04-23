@@ -850,6 +850,18 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
     }
 
+    #[TestDox('Parses repeated #[IgnoreDeprecations] attribute on method')]
+    public function test_parses_repeated_IgnoreDeprecations_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(IgnoreDeprecationsMethodTest::class, 'testTwo')->isIgnoreDeprecations();
+
+        $this->assertCount(2, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isIgnoreDeprecations());
+        $this->assertSame('foo', $metadata->asArray()[0]->messagePattern());
+        $this->assertTrue($metadata->asArray()[1]->isIgnoreDeprecations());
+        $this->assertSame('bar', $metadata->asArray()[1]->messagePattern());
+    }
+
     #[TestDox('Parses #[IgnorePhpunitDeprecations] attribute on method')]
     public function test_parses_IgnorePhpunitDeprecations_attribute_on_method(): void
     {
