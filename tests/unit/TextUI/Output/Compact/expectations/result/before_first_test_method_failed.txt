@@ -1,0 +1,5 @@
+FAILURES (1 test, 1 assertion, 1 failure)
+
+--- FAILURE: FooTest
+Failed asserting that false is true.
+%A

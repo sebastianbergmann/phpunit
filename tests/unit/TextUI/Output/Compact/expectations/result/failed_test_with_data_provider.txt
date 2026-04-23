@@ -1,0 +1,5 @@
+FAILURES (1 test, 1 assertion, 1 failure)
+
+--- FAILURE: FooTest::testBar#2 (negative numbers)
+Failed asserting that 1 matches expected 2.
+%A

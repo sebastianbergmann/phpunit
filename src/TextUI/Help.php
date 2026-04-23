@@ -300,6 +300,7 @@ final class Help
                 ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
                 ['spacer' => ''],
 
+                ['arg'    => '--compact', 'desc' => 'Replace default progress and result output with compact format'],
                 ['arg'    => '--teamcity', 'desc' => 'Replace default progress and result output with TeamCity format'],
                 ['arg'    => '--testdox', 'desc' => 'Replace default result output with TestDox format'],
                 ['arg'    => '--testdox-summary', 'desc' => 'Repeat TestDox output for tests with errors, failures, or issues'],

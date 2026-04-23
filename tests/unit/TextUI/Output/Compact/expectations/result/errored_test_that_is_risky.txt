@@ -1,0 +1,7 @@
+ERRORS (1 test, 1 assertion, 1 error, 1 risky)
+
+--- ERROR: FooTest::testBar
+Exception: message
+%A
+--- RISKY: FooTest::testBar
+message

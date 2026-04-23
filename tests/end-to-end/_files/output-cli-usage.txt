@@ -123,6 +123,7 @@ Reporting:
   --display-all-issues                 Display details for all issues that are triggered
   --reverse-list                       Print defects in reverse order
 
+  --compact                            Replace default progress and result output with compact format
   --teamcity                           Replace default progress and result output with TeamCity format
   --testdox                            Replace default result output with TestDox format
   --testdox-summary                    Repeat TestDox output for tests with errors, failures, or issues

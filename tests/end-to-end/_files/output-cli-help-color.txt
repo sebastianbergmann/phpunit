@@ -184,6 +184,8 @@
                                        triggered
   [32m--reverse-list                      [0m Print defects in reverse order
 
+  [32m--compact                           [0m Replace default progress and result
+                                       output with compact format
   [32m--teamcity                          [0m Replace default progress and result
                                        output with TeamCity format
   [32m--testdox                           [0m Replace default result output with

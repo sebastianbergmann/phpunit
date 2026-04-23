@@ -153,6 +153,7 @@ final class Builder
         'require-coverage-contribution',
         'disable-coverage-ignore',
         'strict-global-state',
+        'compact',
         'teamcity',
         'testdox',
         'testdox-summary',
@@ -193,10 +194,15 @@ final class Builder
         ['--random-order', '--reverse-order'],
         ['--generate-baseline', '--ignore-baseline'],
         ['--generate-baseline', '--use-baseline'],
+        ['--no-output', '--compact'],
         ['--no-output', '--teamcity'],
         ['--no-output', '--testdox'],
         ['--no-output', '--testdox-summary'],
         ['--no-output', '--debug'],
+        ['--compact', '--teamcity'],
+        ['--compact', '--testdox'],
+        ['--compact', '--testdox-summary'],
+        ['--compact', '--debug'],
     ];
 
     /**
@@ -372,6 +378,7 @@ final class Builder
         $version                           = false;
         $logEventsText                     = null;
         $logEventsVerboseText              = null;
+        $printerCompact                    = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
         $printerTestDoxSummary             = null;
@@ -969,6 +976,11 @@ final class Builder
 
                     break;
 
+                case '--compact':
+                    $printerCompact = true;
+
+                    break;
+
                 case '--teamcity':
                     $printerTeamCity = true;
 
@@ -1387,6 +1399,7 @@ final class Builder
             $coverageFilter,
             $logEventsText,
             $logEventsVerboseText,
+            $printerCompact,
             $printerTeamCity,
             $printerTestDox,
             $printerTestDoxSummary,

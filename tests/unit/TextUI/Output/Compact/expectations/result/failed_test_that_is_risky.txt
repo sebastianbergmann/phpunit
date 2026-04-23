@@ -1,0 +1,7 @@
+FAILURES (1 test, 1 assertion, 1 failure, 1 risky)
+
+--- FAILURE: FooTest::testBar
+Failed asserting that false is true.
+%A
+--- RISKY: FooTest::testBar
+message
