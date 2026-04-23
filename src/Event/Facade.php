@@ -196,6 +196,7 @@ final class Facade
             Test\BeforeTestMethodFinished::class,
             Test\AdditionalInformationProvided::class,
             Test\ComparatorRegistered::class,
+            Test\CustomTestMethodInvocationUsed::class,
             Test\ConsideredRisky::class,
             Test\DeprecationTriggered::class,
             Test\Errored::class,

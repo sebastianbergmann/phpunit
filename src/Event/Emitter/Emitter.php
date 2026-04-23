@@ -124,6 +124,8 @@ interface Emitter
      */
     public function testRegisteredComparator(string $className): void;
 
+    public function testUsedCustomMethodInvocation(TestMethod $test, ClassMethod $customTestMethodInvocation): void;
+
     /**
      * @param class-string $className
      */

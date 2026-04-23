@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ## [12.5.24] - 2026-MM-DD
 
+### Added
+
+* [#6596](https://github.com/sebastianbergmann/phpunit/issues/6596): Backport `TestCase::invokeTestMethod()` method for customizing test method invocation from PHPUnit 13
+
 ### Fixed
 
 * [#6595](https://github.com/sebastianbergmann/phpunit/issues/6595): Crash when before-class or after-class method fails with assertion failure
