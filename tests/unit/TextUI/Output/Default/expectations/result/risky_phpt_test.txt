@@ -1,0 +1,5 @@
+There was 1 risky test:
+
+1) /path/to/test.phpt
+message
+

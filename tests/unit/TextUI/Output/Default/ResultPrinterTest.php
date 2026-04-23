@@ -13,9 +13,13 @@ use const PHP_OS;
 use function hrtime;
 use function stripos;
 use Exception;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\Phpt;
+use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
@@ -24,6 +28,7 @@ use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -33,6 +38,7 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
+use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
@@ -45,6 +51,7 @@ use PHPUnit\Event\TestRunner\PhpNoticeTriggered as TestRunnerIssuePhpNoticeTrigg
 use PHPUnit\Event\TestRunner\PhpWarningTriggered as TestRunnerIssuePhpWarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
+use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
@@ -659,6 +666,152 @@ final class ResultPrinterTest extends TestCase
                     ],
                 ),
             ],
+
+            'duplicate test runner notices are deduplicated' => [
+                'duplicate_test_runner_notices.txt',
+                self::createTestResult(
+                    testRunnerTriggeredNoticeEvents: [
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+            ],
+
+            'test runner warning' => [
+                'test_runner_warning.txt',
+                self::createTestResult(
+                    testRunnerTriggeredWarningEvents: [
+                        new TestRunnerWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+            ],
+
+            'duplicate test runner warnings are deduplicated' => [
+                'duplicate_test_runner_warnings.txt',
+                self::createTestResult(
+                    testRunnerTriggeredWarningEvents: [
+                        new TestRunnerWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                        new TestRunnerWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+            ],
+
+            'error in before-first-test-method hook' => [
+                'before_first_test_method_errored.txt',
+                self::createTestResult(
+                    testErroredEvents: [
+                        new BeforeFirstTestMethodErrored(
+                            self::telemetryInfo(),
+                            'FooTest',
+                            new ClassMethod('FooTest', 'setUpBeforeClass'),
+                            ThrowableBuilder::from(new Exception('message')),
+                        ),
+                    ],
+                ),
+            ],
+
+            'failure in before-first-test-method hook' => [
+                'before_first_test_method_failed.txt',
+                self::createTestResult(
+                    testFailedEvents: [
+                        new BeforeFirstTestMethodFailed(
+                            self::telemetryInfo(),
+                            'FooTest',
+                            new ClassMethod('FooTest', 'setUpBeforeClass'),
+                            ThrowableBuilder::from(
+                                new ExpectationFailedException(
+                                    'Failed asserting that false is true.',
+                                ),
+                            ),
+                        ),
+                    ],
+                ),
+            ],
+
+            'failure with AssertionError prefix' => [
+                'failed_test_with_assertion_error_prefix.txt',
+                self::createTestResult(
+                    testFailedEvents: [
+                        new Failed(
+                            self::telemetryInfo(),
+                            self::testMethod(),
+                            new Throwable(
+                                'AssertionError',
+                                'Failed asserting that false is true.',
+                                "AssertionError: Failed asserting that false is true.\n",
+                                '',
+                                null,
+                            ),
+                            null,
+                        ),
+                    ],
+                ),
+            ],
+
+            'skipped test suite' => [
+                'skipped_test_suite.txt',
+                self::createTestResult(
+                    testSuiteSkippedEvents: [
+                        new TestSuiteSkipped(
+                            self::telemetryInfo(),
+                            new TestSuiteWithName(
+                                'FooTestSuite',
+                                1,
+                                TestCollection::fromArray([]),
+                            ),
+                            'message',
+                        ),
+                    ],
+                ),
+            ],
+
+            'failed test with data provider' => [
+                'failed_test_with_data_provider.txt',
+                self::createTestResult(
+                    testFailedEvents: [
+                        new Failed(
+                            self::telemetryInfo(),
+                            self::testMethodWithDataProvider(),
+                            ThrowableBuilder::from(
+                                new ExpectationFailedException(
+                                    'Failed asserting that 1 matches expected 2.',
+                                ),
+                            ),
+                            null,
+                        ),
+                    ],
+                ),
+            ],
+
+            'risky phpt test' => [
+                'risky_phpt_test.txt',
+                self::createTestResult(
+                    testConsideredRiskyEvents: [
+                        'phpt-test' => [
+                            new ConsideredRisky(
+                                self::telemetryInfo(),
+                                new Phpt('/path/to/test.phpt'),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+            ],
         ];
     }
 
@@ -690,6 +843,62 @@ final class ResultPrinterTest extends TestCase
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->assertStringMatchesFormatFile(
             __DIR__ . '/expectations/result/' . $expectationFile,
+            $printer->buffer(),
+        );
+    }
+
+    public function testPrintsFailedTestsInReverseOrder(): void
+    {
+        $printer = $this->printer();
+
+        $resultPrinter = new ResultPrinter(
+            $printer,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+        );
+
+        $resultPrinter->print(
+            self::createTestResult(
+                testFailedEvents: [
+                    new Failed(
+                        self::telemetryInfo(),
+                        self::testMethod(),
+                        ThrowableBuilder::from(
+                            new ExpectationFailedException(
+                                'Failed asserting that false is true.',
+                            ),
+                        ),
+                        null,
+                    ),
+                    new Failed(
+                        self::telemetryInfo(),
+                        self::testMethodBaz(),
+                        ThrowableBuilder::from(
+                            new ExpectationFailedException(
+                                'Failed asserting that 1 matches expected 2.',
+                            ),
+                        ),
+                        null,
+                    ),
+                ],
+            ),
+        );
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertStringMatchesFormatFile(
+            __DIR__ . '/expectations/result/failed_tests_reverse_order.txt',
             $printer->buffer(),
         );
     }
@@ -824,6 +1033,38 @@ final class ResultPrinterTest extends TestCase
             TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([]),
+        );
+    }
+
+    private static function testMethodBaz(): TestMethod
+    {
+        return new TestMethod(
+            'FooTest',
+            'testBaz',
+            'FooTest.php',
+            10,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'baz'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+        );
+    }
+
+    private static function testMethodWithDataProvider(): TestMethod
+    {
+        return new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([
+                DataFromDataProvider::from(
+                    'negative numbers',
+                    'a',
+                    '#2 (negative numbers)',
+                ),
+            ]),
         );
     }
 

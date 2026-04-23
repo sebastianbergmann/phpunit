@@ -1,0 +1,11 @@
+There were 2 failures:
+
+1) FooTest::testBaz
+Failed asserting that 1 matches expected 2.
+
+%A
+
+2) FooTest::testBar
+Failed asserting that false is true.
+
+%A

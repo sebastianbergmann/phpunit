@@ -1,0 +1,4 @@
+There was 1 PHPUnit test runner warning:
+
+1) message
+

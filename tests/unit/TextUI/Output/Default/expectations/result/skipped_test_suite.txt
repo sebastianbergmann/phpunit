@@ -1,0 +1,5 @@
+There was 1 skipped test suite:
+
+1) FooTestSuite
+message
+

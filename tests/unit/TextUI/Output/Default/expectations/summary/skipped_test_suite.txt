@@ -1,0 +1,2 @@
+OK, but some tests were skipped!
+Tests: 1, Assertions: 1, Skipped: 1.
