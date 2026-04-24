@@ -153,6 +153,7 @@ final class Builder
         'strict-coverage',
         'require-coverage-contribution',
         'disable-coverage-ignore',
+        'disable-coverage-targeting',
         'strict-global-state',
         'compact',
         'teamcity',
@@ -284,6 +285,7 @@ final class Builder
         $defaultTimeLimit                  = null;
         $diffContext                       = null;
         $disableCodeCoverageIgnore         = null;
+        $disableCoverageTargeting          = null;
         $disallowTestOutput                = null;
         $displayAllIssues                  = null;
         $displayIncomplete                 = null;
@@ -1096,6 +1098,11 @@ final class Builder
 
                     break;
 
+                case '--disable-coverage-targeting':
+                    $disableCoverageTargeting = true;
+
+                    break;
+
                 case '--strict-global-state':
                     $beStrictAboutChangesToGlobalState = true;
 
@@ -1333,6 +1340,7 @@ final class Builder
             $defaultTimeLimit,
             $diffContext,
             $disableCodeCoverageIgnore,
+            $disableCoverageTargeting,
             $disallowTestOutput,
             $enforceTimeLimit,
             $excludeGroups,

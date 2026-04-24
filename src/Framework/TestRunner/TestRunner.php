@@ -64,18 +64,24 @@ final class TestRunner
         Assert::resetCount();
 
         $codeCoverageMetadataApi = new CodeCoverageMetadataApi;
+        $coversTargets           = TargetCollection::fromArray([]);
+        $usesTargets             = TargetCollection::fromArray([]);
 
-        $coversTargets = $codeCoverageMetadataApi->coversTargets(
-            $test::class,
-            $test->name(),
-        );
+        if ($this->configuration->disableCoverageTargeting()) {
+            $shouldCodeCoverageBeCollected = true;
+        } else {
+            $coversTargets = $codeCoverageMetadataApi->coversTargets(
+                $test::class,
+                $test->name(),
+            );
 
-        $usesTargets = $codeCoverageMetadataApi->usesTargets(
-            $test::class,
-            $test->name(),
-        );
+            $usesTargets = $codeCoverageMetadataApi->usesTargets(
+                $test::class,
+                $test->name(),
+            );
 
-        $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+            $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+        }
 
         $this->performSanityChecks($test, $coversTargets, $usesTargets, $shouldCodeCoverageBeCollected);
 
