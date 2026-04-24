@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test that is considered risky because it executed code that is not listed as code to be covered or used
+The right events are emitted in the right order for a test that is considered risky because it executed code that is not listed as code to be covered or used (test uses #[CoversMethod] to target one method of a class but another method of the same class is executed)
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('xdebug')) {
@@ -13,7 +13,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/test-risky-code-coverage';
+$_SERVER['argv'][] = __DIR__ . '/_files/test-risky-code-coverage-covers-method-same-class';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -21,7 +21,7 @@ require __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Bootstrap Finished (%sautoload.php)
+Bootstrap Finished (%sFoo.php)
 Event Facade Sealed
 Test Suite Loaded (1 test)
 Static Analysis for Code Coverage Started
@@ -37,7 +37,7 @@ Test Prepared (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomethin
 Test Passed (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomething)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomething)
 This test executed code that is not listed as code to be covered or used:
-- PHPUnit\TestFixture\Event\RiskyCodeCoverage\Bar
+- PHPUnit\TestFixture\Event\RiskyCodeCoverage\Foo::two
 Test Finished (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest::testSomething)
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyCodeCoverage\FooTest, 1 test)
 Test Suite Finished (default, 1 test)
