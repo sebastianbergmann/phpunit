@@ -10,7 +10,9 @@
 namespace PHPUnit\Runner;
 
 use function assert;
+use function class_exists;
 use function implode;
+use function is_subclass_of;
 use function sprintf;
 use function sys_get_temp_dir;
 use DateTimeImmutable;
@@ -20,6 +22,7 @@ use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Filesystem;
+use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -79,7 +82,11 @@ final class CodeCoverage
             return CodeCoverageInitializationStatus::NOT_REQUESTED;
         }
 
-        $this->activate($codeCoverageFilterRegistry->get(), $configuration->pathCoverage());
+        $this->activate(
+            $codeCoverageFilterRegistry->get(),
+            $configuration->pathCoverage(),
+            $configuration->hasCoverageDriver() ? $configuration->coverageDriver() : null,
+        );
 
         if (!$this->isActive()) {
             return CodeCoverageInitializationStatus::FAILED;
@@ -478,10 +485,12 @@ final class CodeCoverage
         $this->deactivate();
     }
 
-    private function activate(Filter $filter, bool $pathCoverage): void
+    private function activate(Filter $filter, bool $pathCoverage, ?string $driverClass = null): void
     {
         try {
-            if ($pathCoverage) {
+            if ($driverClass !== null) {
+                $this->driver = $this->instantiateDriver($driverClass, $filter, $pathCoverage);
+            } elseif ($pathCoverage) {
                 $this->driver = (new Selector)->forLineAndPathCoverage($filter);
             } else {
                 $this->driver = (new Selector)->forLineCoverage($filter);
@@ -496,6 +505,62 @@ final class CodeCoverage
                 $e->getMessage(),
             );
         }
+    }
+
+    /**
+     * @phpstan-ignore return.internalClass
+     */
+    private function instantiateDriver(string $driverClass, Filter $filter, bool $pathCoverage): Driver
+    {
+        if (!class_exists($driverClass)) {
+            throw new CodeCoverageDriverException(
+                sprintf(
+                    'Configured code coverage driver class "%s" does not exist',
+                    $driverClass,
+                ),
+            );
+        }
+
+        /** @phpstan-ignore classConstant.internalClass */
+        if (!is_subclass_of($driverClass, Driver::class)) {
+            throw new CodeCoverageDriverException(
+                sprintf(
+                    'Configured code coverage driver class "%s" does not extend %s',
+                    $driverClass,
+                    /** @phpstan-ignore classConstant.internalClass */
+                    Driver::class,
+                ),
+            );
+        }
+
+        $reflection = new ReflectionClass($driverClass);
+
+        if (!$reflection->isInstantiable()) {
+            throw new CodeCoverageDriverException(
+                sprintf(
+                    'Configured code coverage driver class "%s" is not instantiable',
+                    $driverClass,
+                ),
+            );
+        }
+
+        $constructor = $reflection->getConstructor();
+
+        if ($constructor !== null && $constructor->getNumberOfRequiredParameters() > 0) {
+            $driver = $reflection->newInstance($filter);
+        } else {
+            $driver = $reflection->newInstance();
+        }
+
+        /** @phpstan-ignore instanceof.internalClass */
+        assert($driver instanceof Driver);
+
+        if ($pathCoverage) {
+            /** @phpstan-ignore method.internalClass */
+            $driver->enableBranchAndPathCoverage();
+        }
+
+        return $driver;
     }
 
     private function codeCoverageGenerationStart(Printer $printer, string $format): void
