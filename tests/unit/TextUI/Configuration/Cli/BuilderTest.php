@@ -2463,6 +2463,26 @@ final class BuilderTest extends TestCase
         $configuration->disableCodeCoverageIgnore();
     }
 
+    #[TestDox('--disable-coverage-targeting')]
+    public function testDisableCoverageTargeting(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--disable-coverage-targeting']);
+
+        $this->assertTrue($configuration->hasDisableCoverageTargeting());
+        $this->assertTrue($configuration->disableCoverageTargeting());
+    }
+
+    public function testDisableCoverageTargetingMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDisableCoverageTargeting());
+
+        $this->expectException(Exception::class);
+
+        $configuration->disableCoverageTargeting();
+    }
+
     #[TestDox('--strict-global-state')]
     public function testStrictGlobalState(): void
     {

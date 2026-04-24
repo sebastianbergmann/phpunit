@@ -247,6 +247,8 @@
                                        coverage
   [32m--disable-coverage-ignore           [0m Disable metadata for ignoring code
                                        coverage
+  [32m--disable-coverage-targeting        [0m Disable metadata for code coverage
+                                       targeting
   [32m--no-coverage                       [0m Ignore code coverage reporting
                                        configured in the XML configuration file
 

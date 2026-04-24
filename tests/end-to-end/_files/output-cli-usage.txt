@@ -159,6 +159,7 @@ Code Coverage:
   --coverage-filter <dir>              Include <dir> in code coverage reporting
   --path-coverage                      Report path coverage in addition to line coverage
   --disable-coverage-ignore            Disable metadata for ignoring code coverage
+  --disable-coverage-targeting         Disable metadata for code coverage targeting
   --no-coverage                        Ignore code coverage reporting configured in the XML configuration file
 
 Miscellaneous:
