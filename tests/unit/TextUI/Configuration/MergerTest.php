@@ -66,6 +66,30 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->branchCoverage());
     }
 
+    public function testCoverageTargetingCanBeDisabledFromCli(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
+
+        $fromCli = (new Builder)->fromParameters([
+            '--disable-coverage-targeting',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->disableCoverageTargeting());
+    }
+
+    public function testCoverageTargetingIsNotDisabledByDefault(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
+
+        $fromCli = (new Builder)->fromParameters([]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->disableCoverageTargeting());
+    }
+
     public function testNoCoverageShouldOnlyAffectXmlConfiguration(): void
     {
         $phpCoverage = uniqid('php_coverage_');

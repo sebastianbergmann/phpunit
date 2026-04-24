@@ -133,6 +133,12 @@ final readonly class Merger
             $disableCodeCoverageIgnore = $xmlConfiguration->codeCoverage()->disableCodeCoverageIgnore();
         }
 
+        $disableCoverageTargeting = false;
+
+        if ($cliConfiguration->hasDisableCoverageTargeting()) {
+            $disableCoverageTargeting = $cliConfiguration->disableCoverageTargeting();
+        }
+
         if ($cliConfiguration->hasFailOnAllIssues()) {
             $failOnAllIssues = $cliConfiguration->failOnAllIssues();
         } else {
@@ -1183,6 +1189,7 @@ final readonly class Merger
             $branchCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
+            $disableCoverageTargeting,
             $failOnAllIssues,
             $failOnDeprecation,
             $failOnPhpunitDeprecation,
