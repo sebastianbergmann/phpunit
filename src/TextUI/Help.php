@@ -337,6 +337,7 @@ final class Help
                 ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage reporting'],
                 ['arg' => '--path-coverage', 'desc' => 'Report path coverage in addition to line coverage'],
                 ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable metadata for ignoring code coverage'],
+                ['arg' => '--disable-coverage-targeting', 'desc' => 'Disable metadata for code coverage targeting'],
                 ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage reporting configured in the XML configuration file'],
             ],
         ];
