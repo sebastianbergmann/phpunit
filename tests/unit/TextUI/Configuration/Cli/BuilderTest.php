@@ -2892,6 +2892,26 @@ final class BuilderTest extends TestCase
         $configuration->extensions();
     }
 
+    #[TestDox('--repeat')]
+    public function testRepeat(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--repeat', '3']);
+
+        $this->assertTrue($configuration->hasRepeat());
+        $this->assertSame(3, $configuration->repeat());
+    }
+
+    public function testRepeatMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasRepeat());
+
+        $this->expectException(Exception::class);
+
+        $configuration->repeat();
+    }
+
     public function testInvalidOption(): void
     {
         $this->expectException(Exception::class);

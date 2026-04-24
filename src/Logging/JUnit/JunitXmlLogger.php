@@ -12,7 +12,6 @@ namespace PHPUnit\Logging\JUnit;
 use const PHP_EOL;
 use function assert;
 use function basename;
-use function is_int;
 use function sprintf;
 use function str_replace;
 use function trim;
@@ -450,25 +449,7 @@ final class JunitXmlLogger
 
         assert($test instanceof TestMethod);
 
-        if (!$test->testData()->hasDataFromDataProvider()) {
-            return $test->methodName();
-        }
-
-        $dataSetName = $test->testData()->dataFromDataProvider()->dataSetName();
-
-        if (is_int($dataSetName)) {
-            return sprintf(
-                '%s with data set #%d',
-                $test->methodName(),
-                $dataSetName,
-            );
-        }
-
-        return sprintf(
-            '%s with data set "%s"',
-            $test->methodName(),
-            $dataSetName,
-        );
+        return $test->name();
     }
 
     /**

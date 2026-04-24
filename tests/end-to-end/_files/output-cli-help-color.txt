@@ -149,6 +149,8 @@
   [32m--random-order                      [0m Alias for "--order-by random"
   [32m--random-order-seed [36m<N>[0m             [0m Use the specified random seed when
                                        running tests in random order
+  [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
+                                       first failure
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m
