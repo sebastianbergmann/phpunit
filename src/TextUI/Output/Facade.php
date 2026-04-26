@@ -19,6 +19,7 @@ use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\InvalidSocketException;
+use PHPUnit\TextUI\Output\Compact\ResultPrinter as CompactResultPrinter;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
 use PHPUnit\TextUI\Output\Default\UnexpectedOutputPrinter;
@@ -34,6 +35,7 @@ use SebastianBergmann\Timer\ResourceUsageFormatter;
 final class Facade
 {
     private static ?Printer $printer                           = null;
+    private static ?CompactResultPrinter $compactResultPrinter = null;
     private static ?DefaultResultPrinter $defaultResultPrinter = null;
     private static ?TestDoxResultPrinter $testDoxResultPrinter = null;
     private static ?SummaryPrinter $summaryPrinter             = null;
@@ -51,20 +53,32 @@ final class Facade
 
         self::createUnexpectedOutputPrinter();
 
-        if (!$extensionReplacesProgressOutput) {
-            self::createProgressPrinter($configuration);
-        }
-
-        if (!$extensionReplacesResultOutput) {
-            self::createResultPrinter($configuration);
-            self::createSummaryPrinter($configuration);
-        }
-
-        if ($configuration->outputIsTeamCity()) {
-            new TeamCityLogger(
-                DefaultPrinter::standardOutput(),
-                EventFacade::instance(),
+        if ($configuration->outputIsCompact()) {
+            self::$compactResultPrinter = new CompactResultPrinter(
+                self::$printer,
+                $configuration->displayDetailsOnIncompleteTests() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnSkippedTests() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
             );
+        } else {
+            if (!$extensionReplacesProgressOutput) {
+                self::createProgressPrinter($configuration);
+            }
+
+            if (!$extensionReplacesResultOutput) {
+                self::createResultPrinter($configuration);
+                self::createSummaryPrinter($configuration);
+            }
+
+            if ($configuration->outputIsTeamCity()) {
+                new TeamCityLogger(
+                    DefaultPrinter::standardOutput(),
+                    EventFacade::instance(),
+                );
+            }
         }
 
         assert(self::$printer !== null);
@@ -78,6 +92,12 @@ final class Facade
     public static function printResult(TestResult $result, ?array $testDoxResult, Duration $duration, bool $stackTraceForDeprecations): void
     {
         assert(self::$printer !== null);
+
+        if (self::$compactResultPrinter !== null) {
+            self::$compactResultPrinter->print($result);
+
+            return;
+        }
 
         if ($result->numberOfTestsRun() > 0) {
             if (self::$defaultProgressPrinter) {
@@ -123,6 +143,10 @@ final class Facade
         $printerNeeded = false;
 
         if ($configuration->debug()) {
+            $printerNeeded = true;
+        }
+
+        if ($configuration->outputIsCompact()) {
             $printerNeeded = true;
         }
 

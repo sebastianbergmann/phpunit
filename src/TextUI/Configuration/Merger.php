@@ -17,6 +17,7 @@ use function array_values;
 use function assert;
 use function dirname;
 use function explode;
+use function getenv;
 use function is_int;
 use function realpath;
 use function sprintf;
@@ -765,6 +766,14 @@ final readonly class Merger
             $logEventsVerboseText = $cliConfiguration->logEventsVerboseText();
         }
 
+        $compactOutput = false;
+
+        if ($cliConfiguration->hasCompactPrinter() && $cliConfiguration->compactPrinter()) {
+            $compactOutput = true;
+        } elseif (getenv('PHPUNIT_COMPACT_OUTPUT') === '1') {
+            $compactOutput = true;
+        }
+
         $teamCityOutput = false;
 
         if ($cliConfiguration->hasTeamCityPrinter() && $cliConfiguration->teamCityPrinter()) {
@@ -1151,6 +1160,7 @@ final readonly class Merger
             $logfileTestdoxText,
             $logEventsText,
             $logEventsVerboseText,
+            $compactOutput,
             $teamCityOutput,
             $testDoxOutput,
             $testDoxOutputSummary,

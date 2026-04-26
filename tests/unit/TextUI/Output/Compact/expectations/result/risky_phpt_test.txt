@@ -1,0 +1,4 @@
+OK (1 test, 1 assertion, 1 risky)
+
+--- RISKY: /path/to/test.phpt
+message

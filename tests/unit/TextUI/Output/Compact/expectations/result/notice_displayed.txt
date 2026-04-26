@@ -1,0 +1,5 @@
+OK (1 test, 1 assertion, 1 notice)
+
+--- NOTICE: Foo.php:1
+message
+Triggered by: FooTest::testBar (FooTest.php:1)

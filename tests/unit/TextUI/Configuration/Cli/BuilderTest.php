@@ -2107,6 +2107,26 @@ final class BuilderTest extends TestCase
         $configuration->stopOnWarning();
     }
 
+    #[TestDox('--compact')]
+    public function testCompact(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--compact']);
+
+        $this->assertTrue($configuration->hasCompactPrinter());
+        $this->assertTrue($configuration->compactPrinter());
+    }
+
+    public function testCompactMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasCompactPrinter());
+
+        $this->expectException(Exception::class);
+
+        $configuration->compactPrinter();
+    }
+
     #[TestDox('--teamcity')]
     public function testTeamcity(): void
     {
