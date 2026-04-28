@@ -107,7 +107,7 @@ final class PharAutoloader
             if (
                 PHP_VERSION_ID < 80400
                 && empty ($GLOBALS['__composer_autoload_files']['9d2b9fc6db0f153a0a149fefb182415e'])
-                && !class_exists(\Symfony\Polyfill\Php83\Php84::class, false)
+                && !class_exists(\Symfony\Polyfill\Php84\Php84::class, false)
             ) {
                 $GLOBALS['__composer_autoload_files']['9d2b9fc6db0f153a0a149fefb182415e'] = true;
                 require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php84/Php84.php';
@@ -117,7 +117,7 @@ final class PharAutoloader
             if (
                 PHP_VERSION_ID < 80500
                 && empty ($GLOBALS['__composer_autoload_files']['606a39d89246991a373564698c2d8383'])
-                && !class_exists(\Symfony\Polyfill\Php83\Php85::class, false)
+                && !class_exists(\Symfony\Polyfill\Php85\Php85::class, false)
             ) {
                 $GLOBALS['__composer_autoload_files']['606a39d89246991a373564698c2d8383'] = true;
                 require_once 'phar://' . __DIR__ . '/phpstan.phar/vendor/symfony/polyfill-php85/Php85.php';
