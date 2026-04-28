@@ -23,7 +23,7 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.1.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.2.0">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
@@ -48,6 +48,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="2" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="3" parentId="1" name="testFailure" time="%s">
@@ -59,6 +63,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="3" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="FAILED">
    <reason>Failed asserting that false is true.</reason>
    <phpunit:throwable type="PHPUnit\Framework\ExpectationFailedException" assertionError="true"><![CDATA[Failed asserting that false is true.
@@ -76,6 +84,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="4" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="ERRORED">
    <reason></reason>
    <phpunit:throwable type="RuntimeException" assertionError="false"><![CDATA[RuntimeException: 
@@ -93,6 +105,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="5" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="ABORTED">
    <reason></reason>
    <phpunit:throwable type="PHPUnit\Framework\IncompleteTestError" assertionError="false"><![CDATA[
@@ -109,6 +125,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="6" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SKIPPED">
    <reason></reason>
   </result>
@@ -127,6 +147,10 @@ unlink($logfile);
   </attachments>
  </e:reported>
  <e:finished id="7" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="8" parentId="1" name="testSuccessWithMessage" time="%s">
@@ -138,6 +162,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="8" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="9" parentId="1" name="testFailureWithMessage" time="%s">
@@ -149,6 +177,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="9" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="FAILED">
    <reason>failure with custom message
 Failed asserting that false is true.</reason>
@@ -168,6 +200,10 @@ Failed asserting that false is true.
   </sources>
  </e:started>
  <e:finished id="10" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="ERRORED">
    <reason>error with custom message</reason>
    <phpunit:throwable type="RuntimeException" assertionError="false"><![CDATA[RuntimeException: error with custom message
@@ -185,6 +221,10 @@ Failed asserting that false is true.
   </sources>
  </e:started>
  <e:finished id="11" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="ABORTED">
    <reason>incomplete with custom message</reason>
    <phpunit:throwable type="PHPUnit\Framework\IncompleteTestError" assertionError="false"><![CDATA[incomplete with custom message
@@ -215,6 +255,10 @@ Failed asserting that false is true.
   </sources>
  </e:started>
  <e:finished id="13" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SKIPPED">
    <reason>skipped with custom message</reason>
   </result>
@@ -233,7 +277,15 @@ Failed asserting that false is true.
   </attachments>
  </e:reported>
  <e:finished id="14" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:finished id="1" time="%s"/>
+ <e:finished id="1" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+  </attachments>
+ </e:finished>
 </e:events>

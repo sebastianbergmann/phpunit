@@ -28,6 +28,10 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6597](https://github.com/sebastianbergmann/phpunit/pull/6597): Compact output (activated through `--compact` CLI option and `PHPUNIT_COMPACT_OUTPUT=1` environment variable)
 * The `executionOrder` attribute in the XML configuration file now accepts `defects` combined with any main order, as well as three-way combinations of `depends`/`no-depends`, `defects`, and a main order (for example, `depends,defects,duration-ascending`)
 * `--validate-configuration` CLI option to validate an XML configuration file for PHPUnit
+* Report per-test and per-test-suite resource usage (time, memory usage, peak memory usage) in Open Test Reporting XML
+* Report number of assertions performed for each test in Open Test Reporting XML
+* Report structured comparison failure details (expected, actual, diff) in Open Test Reporting XML
+* Report random order seed in Open Test Reporting XML when test execution order is randomized
 
 ### Changed
 

@@ -1,5 +1,5 @@
 --TEST--
-phpunit --log-otr /path/to/logfile ../_files/RiskyIssueTest.php
+phpunit --log-otr /path/to/logfile ../_files/ComparisonFailureTest.php
 --FILE--
 <?php declare(strict_types=1);
 use function PHPUnit\TestFixture\validate_and_print;
@@ -11,7 +11,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-otr';
 $_SERVER['argv'][] = $logfile;
-$_SERVER['argv'][] = __DIR__ . '/_files/RiskyIssueTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/ComparisonFailureTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 require __DIR__ . '/validate_and_print.php';
@@ -31,33 +31,66 @@ unlink($logfile);
   <php:phpVersion>%s</php:phpVersion>
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
- <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\RiskyIssueTest" time="%s">
+ <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\ComparisonFailureTest" time="%s">
   <sources>
-   <fileSource path="%sRiskyIssueTest.php">
+   <fileSource path="%sComparisonFailureTest.php">
     <filePosition line="%d"/>
    </fileSource>
-   <phpunit:classSource className="PHPUnit\TestFixture\OpenTestReporting\RiskyIssueTest"/>
+   <phpunit:classSource className="PHPUnit\TestFixture\OpenTestReporting\ComparisonFailureTest"/>
   </sources>
  </e:started>
- <e:started id="2" parentId="1" name="testOne" time="%s">
+ <e:started id="2" parentId="1" name="testEquals" time="%s">
   <sources>
-   <fileSource path="%sRiskyIssueTest.php">
+   <fileSource path="%sComparisonFailureTest.php">
     <filePosition line="%d"/>
    </fileSource>
-   <phpunit:methodSource className="PHPUnit\TestFixture\OpenTestReporting\RiskyIssueTest" methodName="testOne"/>
+   <phpunit:methodSource className="PHPUnit\TestFixture\OpenTestReporting\ComparisonFailureTest" methodName="testEquals"/>
   </sources>
  </e:started>
- <e:reported id="2" time="%s">
-  <attachments>
-   <phpunit:issue type="risky" message="This test did not perform any assertions"/>
-  </attachments>
- </e:reported>
  <e:finished id="2" time="%s">
   <attachments>
    <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
    <phpunit:assertions count="%d"/>
   </attachments>
-  <result status="SUCCESSFUL"/>
+  <result status="FAILED">
+   <reason>Failed asserting that two arrays are identical.</reason>
+   <phpunit:throwable type="PHPUnit\Framework\ExpectationFailedException" assertionError="true"><![CDATA[Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+     0 => 'a',
+-    1 => 'b',
++    1 => 'x',
+     2 => 'c',
+ ]
+
+%sComparisonFailureTest.php:%d
+]]></phpunit:throwable>
+   <phpunit:comparisonFailure>
+    <phpunit:expected><![CDATA[Array &0 [
+    0 => 'a',
+    1 => 'b',
+    2 => 'c',
+]]]></phpunit:expected>
+    <phpunit:actual><![CDATA[Array &0 [
+    0 => 'a',
+    1 => 'x',
+    2 => 'c',
+]]]></phpunit:actual>
+    <phpunit:diff><![CDATA[
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+     0 => 'a',
+-    1 => 'b',
++    1 => 'x',
+     2 => 'c',
+ ]
+]]></phpunit:diff>
+   </phpunit:comparisonFailure>
+  </result>
  </e:finished>
  <e:finished id="1" time="%s">
   <attachments>

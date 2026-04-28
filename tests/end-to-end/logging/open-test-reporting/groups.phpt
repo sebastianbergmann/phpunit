@@ -23,7 +23,7 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.1.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.2.0">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
@@ -54,6 +54,10 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="2" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="3" parentId="1" name="testWithClassGroupOnly" time="%s">
@@ -72,7 +76,15 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:finished id="3" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
- <e:finished id="1" time="%s"/>
+ <e:finished id="1" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+  </attachments>
+ </e:finished>
 </e:events>

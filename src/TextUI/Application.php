@@ -689,6 +689,7 @@ final readonly class Application
                     EventFacade::instance(),
                     $configuration->logfileOtr(),
                     $configuration->includeGitInformationInOtrLogfile(),
+                    $configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED ? $configuration->randomOrderSeed() : null,
                 );
             } catch (CannotOpenUriForWritingException $e) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
