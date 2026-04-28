@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
+use PHPUnit\Framework\MockObject\Generator\InvalidClassNameException;
 use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +29,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 #[CoversClass(MockBuilder::class)]
 #[CoversMethod(TestCase::class, 'getMockBuilder')]
 #[CoversClass(DuplicateMethodException::class)]
+#[CoversClass(InvalidClassNameException::class)]
 #[CoversClass(InvalidMethodNameException::class)]
 #[CoversClass(NameAlreadyInUseException::class)]
 #[Group('test-doubles')]
@@ -54,7 +56,17 @@ final class MockBuilderTest extends TestCase
         $this->expectException(NameAlreadyInUseException::class);
 
         $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
-            ->setMockClassName(__CLASS__)
+            ->setMockClassName('stdClass')
+            ->getMock();
+    }
+
+    #[TestDox('setMockClassName() rejects values that are not valid PHP class names')]
+    public function testCannotCreateMockObjectWithInvalidClassName(): void
+    {
+        $this->expectException(InvalidClassNameException::class);
+
+        $this->getMockBuilder(InterfaceWithReturnTypeDeclaration::class)
+            ->setMockClassName("Foo {} ?>\n<?php class Bar")
             ->getMock();
     }
 
