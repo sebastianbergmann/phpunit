@@ -83,6 +83,7 @@ final class Generator
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
+     * @throws InvalidClassNameException
      * @throws InvalidMethodNameException
      * @throws NameAlreadyInUseException
      * @throws ReflectionException
@@ -97,6 +98,7 @@ final class Generator
 
         $this->ensureKnownType($type);
         $this->ensureValidMethods($methods);
+        $this->ensureValidNameForTestDoubleClass($mockClassName);
         $this->ensureNameForTestDoubleClassIsAvailable($mockClassName);
 
         $mock = $this->generate(
@@ -695,13 +697,27 @@ final class Generator
         }
 
         foreach ($methods as $method) {
-            if (preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method) === 0) {
+            if (preg_match('~\A[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\z~', (string) $method) === 0) {
                 throw new InvalidMethodNameException((string) $method);
             }
         }
 
         if ($methods !== array_unique($methods)) {
             throw new DuplicateMethodException($methods);
+        }
+    }
+
+    /**
+     * @throws InvalidClassNameException
+     */
+    private function ensureValidNameForTestDoubleClass(string $className): void
+    {
+        if ($className === '') {
+            return;
+        }
+
+        if (preg_match('~\A[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\z~', $className) === 0) {
+            throw new InvalidClassNameException($className);
         }
     }
 

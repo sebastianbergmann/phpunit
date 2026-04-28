@@ -100,6 +100,17 @@ final class CreateMockTest extends TestCase
         );
     }
 
+    public function testCannotCreateMockObjectWhenMethodNameContainsExtraCharacters(): void
+    {
+        $this->expectException(InvalidMethodNameException::class);
+
+        (new Generator)->testDouble(
+            AnInterface::class,
+            true,
+            ["foo(); echo 'pwn'; //"],
+        );
+    }
+
     public function testCannotCreateMockObjectForInterfaceWithMethodNamedMethod(): void
     {
         $this->expectException(MethodNamedMethodException::class);
