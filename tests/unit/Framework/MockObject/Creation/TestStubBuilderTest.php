@@ -49,7 +49,7 @@ final class TestStubBuilderTest extends TestCase
         $this->expectException(NameAlreadyInUseException::class);
 
         $this->getStubBuilder(InterfaceWithReturnTypeDeclaration::class)
-            ->setStubClassName(__CLASS__)
+            ->setStubClassName('stdClass')
             ->getStub();
     }
 
