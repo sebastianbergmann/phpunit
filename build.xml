@@ -376,11 +376,6 @@
             <arg path="${basedir}/build/tmp/phar" />
         </exec>
 
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl" token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl" token="SebastianBergmann\CodeCoverage\Driver\Granularity" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Granularity"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/Phpt/templates/phpt.tpl" token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Filter"/>
-
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--tolerant" />

@@ -85,9 +85,9 @@ final readonly class Renderer
         }
 
         if ($pathCoverage) {
-            $granularity = 'Granularity::LineBranchAndPath';
+            $pathCoverageValue = 'true';
         } else {
-            $granularity = 'Granularity::Line';
+            $pathCoverageValue = 'false';
         }
 
         $template->setVar(
@@ -97,7 +97,7 @@ final readonly class Renderer
                 'phar'                       => $phar,
                 'job'                        => $files['job'],
                 'coverageFile'               => $files['coverage'],
-                'granularity'                => $granularity,
+                'pathCoverage'               => $pathCoverageValue,
                 'codeCoverageCacheDirectory' => $codeCoverageCacheDirectory,
             ],
         );

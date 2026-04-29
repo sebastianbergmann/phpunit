@@ -64,9 +64,8 @@ final class RendererTest extends TestCase
         );
 
         $this->assertStringEqualsFile($files['job'], '<?php echo 1;');
-        $this->assertStringContainsString('Granularity::Line', $job);
+        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, false)', $job);
         $this->assertStringContainsString($files['coverage'], $job);
-        $this->assertStringContainsString('if (null)', $job);
     }
 
     public function testRenderForCoverageWithPathCoverage(): void
@@ -82,7 +81,7 @@ final class RendererTest extends TestCase
             $files,
         );
 
-        $this->assertStringContainsString('Granularity::LineBranchAndPath', $job);
+        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, true)', $job);
     }
 
     public function testRenderForCoverageWithCacheDirectory(): void
@@ -98,7 +97,7 @@ final class RendererTest extends TestCase
             $files,
         );
 
-        $this->assertStringContainsString("if ('/tmp/cache')", $job);
+        $this->assertStringContainsString("CodeCoverageBootstrapper::bootstrap('/tmp/cache', false)", $job);
     }
 
     public function testRenderForCoverageWithBootstrap(): void
