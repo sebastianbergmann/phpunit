@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function assert;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Generator\ClassIsAnonymousException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
@@ -49,6 +50,7 @@ final class MockBuilder extends TestDoubleBuilder
     /**
      * Creates a mock object using a fluent interface.
      *
+     * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
