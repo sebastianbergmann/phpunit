@@ -64,7 +64,7 @@ final class RendererTest extends TestCase
         );
 
         $this->assertStringEqualsFile($files['job'], '<?php echo 1;');
-        $this->assertStringContainsString('forLineCoverage', $job);
+        $this->assertStringContainsString('Granularity::Line', $job);
         $this->assertStringContainsString($files['coverage'], $job);
         $this->assertStringContainsString('if (null)', $job);
     }
@@ -82,7 +82,7 @@ final class RendererTest extends TestCase
             $files,
         );
 
-        $this->assertStringContainsString('forLineAndPathCoverage', $job);
+        $this->assertStringContainsString('Granularity::LineBranchAndPath', $job);
     }
 
     public function testRenderForCoverageWithCacheDirectory(): void

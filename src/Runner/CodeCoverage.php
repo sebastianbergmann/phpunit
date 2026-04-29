@@ -21,6 +21,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\Granularity;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter;
@@ -489,10 +490,12 @@ final class CodeCoverage
     {
         try {
             if ($pathCoverage) {
-                $this->driver = (new Selector)->forLineAndPathCoverage($filter);
+                $granularity = Granularity::LineBranchAndPath;
             } else {
-                $this->driver = (new Selector)->forLineCoverage($filter);
+                $granularity = Granularity::Line;
             }
+
+            $this->driver = (new Selector)->select($filter, $granularity);
 
             $this->codeCoverage = new \SebastianBergmann\CodeCoverage\CodeCoverage(
                 $this->driver,

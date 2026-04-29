@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Granularity;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
 
@@ -28,7 +29,7 @@ if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $__phpunit_filter = new Filter;
 
     $__phpunit_coverage = new CodeCoverage(
-        (new Selector)->{driverMethod}($__phpunit_filter),
+        (new Selector)->select($__phpunit_filter, {granularity}),
         $__phpunit_filter
     );
 

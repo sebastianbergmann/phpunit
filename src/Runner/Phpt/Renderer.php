@@ -84,6 +84,12 @@ final readonly class Renderer
             $codeCoverageCacheDirectory = "'" . $codeCoverageCacheDirectory . "'";
         }
 
+        if ($pathCoverage) {
+            $granularity = 'Granularity::LineBranchAndPath';
+        } else {
+            $granularity = 'Granularity::Line';
+        }
+
         $template->setVar(
             [
                 'bootstrap'                  => $bootstrap,
@@ -91,7 +97,7 @@ final readonly class Renderer
                 'phar'                       => $phar,
                 'job'                        => $files['job'],
                 'coverageFile'               => $files['coverage'],
-                'driverMethod'               => $pathCoverage ? 'forLineAndPathCoverage' : 'forLineCoverage',
+                'granularity'                => $granularity,
                 'codeCoverageCacheDirectory' => $codeCoverageCacheDirectory,
             ],
         );

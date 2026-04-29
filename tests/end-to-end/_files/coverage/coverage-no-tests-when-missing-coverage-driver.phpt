@@ -23,7 +23,7 @@ Configuration: %s
 
 There was 1 PHPUnit test runner warning:
 
-1) No code coverage driver available
+1) No code coverage driver available that supports line coverage
 
 No tests executed!
 
