@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function assert;
+use PHPUnit\Framework\MockObject\Generator\ClassIsAnonymousException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
@@ -35,6 +36,7 @@ final class TestStubBuilder extends TestDoubleBuilder
     /**
      * Creates a test stub using a fluent interface.
      *
+     * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
