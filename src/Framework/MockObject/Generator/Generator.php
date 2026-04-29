@@ -80,6 +80,7 @@ final class Generator
      * @param ?list<non-empty-string> $methods
      * @param array<mixed>            $arguments
      *
+     * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
@@ -200,6 +201,7 @@ final class Generator
      * @param class-string            $type
      * @param ?list<non-empty-string> $methods
      *
+     * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ReflectionException
@@ -338,6 +340,7 @@ final class Generator
      * @param class-string            $type
      * @param ?list<non-empty-string> $explicitMethods
      *
+     * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws MethodNamedMethodException
@@ -369,6 +372,10 @@ final class Generator
         }
 
         $class = $this->reflectClass($_mockClassName['fullClassName']);
+
+        if ($class->isAnonymous()) {
+            throw new ClassIsAnonymousException($_mockClassName['fullClassName']);
+        }
 
         if ($class->isEnum()) {
             throw new ClassIsEnumerationException($_mockClassName['fullClassName']);

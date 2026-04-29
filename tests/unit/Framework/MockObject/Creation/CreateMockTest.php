@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\Generator\ClassIsAnonymousException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsEnumerationException;
 use PHPUnit\Framework\MockObject\Generator\ClassIsFinalException;
 use PHPUnit\Framework\MockObject\Generator\Generator;
@@ -79,6 +80,16 @@ final class CreateMockTest extends TestCase
         $this->expectException(ClassIsEnumerationException::class);
 
         $this->createMock(Enumeration::class);
+    }
+
+    public function testCannotCreateMockObjectForAnonymousClass(): void
+    {
+        $object = new class extends ExtendableClass
+        {};
+
+        $this->expectException(ClassIsAnonymousException::class);
+
+        $this->createMock($object::class);
     }
 
     public function testCannotCreateMockObjectForUnknownType(): void
