@@ -61,6 +61,7 @@ final class CodeCoverage
     private ?Timer $timer                       = null;
     private bool $requireCoverageContribution   = false;
     private bool $lastTestContributedToCoverage = false;
+    private bool $collectsBranchAndPathCoverage = false;
 
     public static function instance(): self
     {
@@ -272,9 +273,15 @@ final class CodeCoverage
 
     public function deactivate(): void
     {
-        $this->driver       = null;
-        $this->codeCoverage = null;
-        $this->test         = null;
+        $this->driver                        = null;
+        $this->codeCoverage                  = null;
+        $this->test                          = null;
+        $this->collectsBranchAndPathCoverage = false;
+    }
+
+    public function collectsBranchAndPathCoverage(): bool
+    {
+        return $this->collectsBranchAndPathCoverage;
     }
 
     public function generateReports(Printer $printer, Configuration $configuration): void
@@ -491,6 +498,8 @@ final class CodeCoverage
                 $this->driver,
                 $filter,
             );
+
+            $this->collectsBranchAndPathCoverage = $pathCoverage;
         } catch (CodeCoverageException $e) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 $e->getMessage(),
