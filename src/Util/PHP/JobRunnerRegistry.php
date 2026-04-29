@@ -10,8 +10,8 @@
 namespace PHPUnit\Util\PHP;
 
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\ChildProcessResultProcessor;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 

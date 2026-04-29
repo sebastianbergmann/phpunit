@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework;
+namespace PHPUnit\Framework\TestRunner;
 
 use function assert;
 use function bin2hex;
@@ -23,6 +23,9 @@ use function unlink;
 use function var_export;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ProcessIsolationException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceMapper;

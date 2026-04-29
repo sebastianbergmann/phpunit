@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
-use PHPUnit\Runner\IssueTriggerResolver;
+use PHPUnit\Framework\TestRunner\ChildProcessOutputCollector;
+use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -53,29 +53,7 @@ function __phpunit_run_isolated_test()
         CodeCoverage::instance()->init($configuration, CodeCoverageFilterRegistry::instance(), true);
     }
 
-    $deprecationTriggers = [
-        'functions' => [],
-        'methods'   => [],
-    ];
-
-    foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
-        $deprecationTriggers['functions'][] = $function;
-    }
-
-    foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
-        [$className, $methodName] = explode('::', $method);
-
-        $deprecationTriggers['methods'][] = [
-            'className'  => $className,
-            'methodName' => $methodName,
-        ];
-    }
-
-    ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
-
-    foreach (array_reverse($configuration->source()->issueTriggerResolvers()) as $className) {
-        ErrorHandler::instance()->addIssueTriggerResolver(new $className);
-    }
+    ErrorHandlerBootstrapper::bootstrap($configuration);
 
     $test = new {className}('{methodName}');
 
@@ -87,26 +65,7 @@ function __phpunit_run_isolated_test()
 
     $test->run();
 
-    $output = '';
-
-    if (!$test->expectsOutput()) {
-        $output = $test->output();
-    }
-
-    ini_set('xdebug.scream', '0');
-
-    // Not every STDOUT target stream is rewindable
-    $hasRewound = @rewind(STDOUT);
-
-    if ($hasRewound && $stdout = @stream_get_contents(STDOUT)) {
-        $output         = $stdout . $output;
-        $streamMetaData = stream_get_meta_data(STDOUT);
-
-        if (!empty($streamMetaData['stream_type']) && 'STDIO' === $streamMetaData['stream_type']) {
-            @ftruncate(STDOUT, 0);
-            @rewind(STDOUT);
-        }
-    }
+    $output = ChildProcessOutputCollector::collect($test);
 
     file_put_contents(
         '{processResultFile}',

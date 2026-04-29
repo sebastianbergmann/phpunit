@@ -40,8 +40,8 @@ use function unlink;
 use function xdebug_is_debugger_active;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Framework\ChildProcessResultProcessor;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use SebastianBergmann\Environment\Runtime;
 

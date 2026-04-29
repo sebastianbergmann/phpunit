@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework;
+namespace PHPUnit\Framework\TestRunner;
 
 use const PHP_EOL;
 use function array_diff_assoc;
@@ -19,6 +19,11 @@ use function sprintf;
 use function xdebug_is_debugger_active;
 use AssertionError;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SkippedTest;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
