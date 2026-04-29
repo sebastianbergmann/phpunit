@@ -242,6 +242,13 @@ final class LoaderTest extends TestCase
         );
     }
 
+    public function testBranchCoverageConfigurationIsReadCorrectly(): void
+    {
+        $codeCoverage = $this->configuration('configuration_codecoverage_branchcoverage.xml')->codeCoverage();
+
+        $this->assertTrue($codeCoverage->branchCoverage());
+    }
+
     public function testCodeCoverageConfigurationIsReadCorrectly(): void
     {
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();

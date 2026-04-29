@@ -436,6 +436,7 @@ final readonly class Loader
     private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage
     {
         $pathCoverage              = false;
+        $branchCoverage            = false;
         $includeUncoveredFiles     = true;
         $ignoreDeprecatedCodeUnits = false;
         $disableCodeCoverageIgnore = false;
@@ -446,6 +447,12 @@ final readonly class Loader
             $pathCoverage = $this->parseBooleanAttribute(
                 $element,
                 'pathCoverage',
+                false,
+            );
+
+            $branchCoverage = $this->parseBooleanAttribute(
+                $element,
+                'branchCoverage',
                 false,
             );
 
@@ -615,6 +622,7 @@ final readonly class Loader
 
         return new CodeCoverage(
             $pathCoverage,
+            $branchCoverage,
             $includeUncoveredFiles,
             $ignoreDeprecatedCodeUnits,
             $disableCodeCoverageIgnore,

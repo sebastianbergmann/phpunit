@@ -552,6 +552,26 @@ final class BuilderTest extends TestCase
         $configuration->pathCoverage();
     }
 
+    #[TestDox('--branch-coverage')]
+    public function testBranchCoverage(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--branch-coverage']);
+
+        $this->assertTrue($configuration->hasBranchCoverage());
+        $this->assertTrue($configuration->branchCoverage());
+    }
+
+    public function testBranchCoverageMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasBranchCoverage());
+
+        $this->expectException(Exception::class);
+
+        $configuration->branchCoverage();
+    }
+
     #[TestDox('-d foo=bar')]
     public function testIniSetting(): void
     {

@@ -65,6 +65,7 @@ final readonly class DefaultConfiguration extends Configuration
             ),
             new CodeCoverage(
                 false,
+                false,
                 true,
                 false,
                 false,

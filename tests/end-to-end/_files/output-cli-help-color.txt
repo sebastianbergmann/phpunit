@@ -245,8 +245,10 @@
                                        coverage report in XML format
   [32m--warm-coverage-cache               [0m Warm static analysis cache
   [32m--coverage-filter [36m<dir>[0m             [0m Include <dir> in code coverage reporting
-  [32m--path-coverage                     [0m Report path coverage in addition to line
-                                       coverage
+  [32m--branch-coverage                   [0m Report branch coverage in addition to
+                                       line coverage
+  [32m--path-coverage                     [0m Report path coverage in addition to
+                                       line/branch coverage
   [32m--disable-coverage-ignore           [0m Disable metadata for ignoring code
                                        coverage
   [32m--no-coverage                       [0m Ignore code coverage reporting

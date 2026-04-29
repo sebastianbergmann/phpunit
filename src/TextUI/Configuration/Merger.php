@@ -401,6 +401,12 @@ final readonly class Merger
             $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
         }
 
+        if ($cliConfiguration->hasBranchCoverage() && $cliConfiguration->branchCoverage()) {
+            $branchCoverage = $cliConfiguration->branchCoverage();
+        } else {
+            $branchCoverage = $xmlConfiguration->codeCoverage()->branchCoverage();
+        }
+
         $defaultColors     = Colors::default();
         $defaultThresholds = Thresholds::default();
 
@@ -1174,6 +1180,7 @@ final readonly class Merger
             $coverageXml,
             $coverageXmlIncludeSource,
             $pathCoverage,
+            $branchCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
             $failOnAllIssues,

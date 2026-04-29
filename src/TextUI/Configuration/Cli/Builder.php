@@ -62,6 +62,7 @@ final class Builder
         'coverage-xml=',
         'exclude-source-from-xml-coverage',
         'path-coverage',
+        'branch-coverage',
         'disallow-test-output',
         'display-all-issues',
         'display-incomplete',
@@ -279,6 +280,7 @@ final class Builder
         $coverageXml                       = null;
         $excludeSourceFromXmlCoverage      = null;
         $pathCoverage                      = null;
+        $branchCoverage                    = null;
         $defaultTimeLimit                  = null;
         $diffContext                       = null;
         $disableCodeCoverageIgnore         = null;
@@ -505,6 +507,11 @@ final class Builder
 
                 case '--path-coverage':
                     $pathCoverage = true;
+
+                    break;
+
+                case '--branch-coverage':
+                    $branchCoverage = true;
 
                     break;
 
@@ -1321,6 +1328,7 @@ final class Builder
             $coverageXml,
             $excludeSourceFromXmlCoverage,
             $pathCoverage,
+            $branchCoverage,
             $warmCoverageCache,
             $defaultTimeLimit,
             $diffContext,

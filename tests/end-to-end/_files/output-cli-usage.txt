@@ -158,7 +158,8 @@ Code Coverage:
   --exclude-source-from-xml-coverage   Exclude <source> element from code coverage report in XML format
   --warm-coverage-cache                Warm static analysis cache
   --coverage-filter <dir>              Include <dir> in code coverage reporting
-  --path-coverage                      Report path coverage in addition to line coverage
+  --branch-coverage                    Report branch coverage in addition to line coverage
+  --path-coverage                      Report path coverage in addition to line/branch coverage
   --disable-coverage-ignore            Disable metadata for ignoring code coverage
   --no-coverage                        Ignore code coverage reporting configured in the XML configuration file
 
