@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../phpunit.xsd"
+         extensionsDirectory="extensions"
+         defaultTestSuite="default"
+         timeoutForSmallTests="2"
+         timeoutForMediumTests="20"
+         timeoutForLargeTests="120">
+    <testsuites>
+        <testsuite name="default">
+            <directory>.</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <report>
+            <clover outputFile="clover.xml"/>
+            <cobertura outputFile="cobertura.xml"/>
+            <crap4j outputFile="crap4j.xml" threshold="42"/>
+            <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="90" customCssFile="custom.css"/>
+            <openclover outputFile="openclover.xml"/>
+            <php outputFile="coverage.php"/>
+            <text outputFile="coverage.txt"/>
+            <xml outputDirectory="coverage-xml" includeSource="true"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="junit.xml"/>
+        <otr outputFile="otr.xml" includeGitInformation="true"/>
+        <teamcity outputFile="teamcity.txt"/>
+        <testdoxHtml outputFile="testdox.html"/>
+        <testdoxText outputFile="testdox.txt"/>
+    </logging>
+</phpunit>

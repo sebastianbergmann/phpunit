@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Configuration;
 use const BAR;
 use const FOO;
 use const PATH_SEPARATOR;
+use const PHP_EOL;
 use function getenv;
 use function ini_get;
 use function ini_set;
@@ -112,6 +113,19 @@ final class PhpHandlerTest extends TestCase
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', getenv('foo_force'));
+    }
+
+    public function testIniSettingValueIsResolvedFromDefinedConstant(): void
+    {
+        $savedIniHighlightKeyword = ini_get('highlight.keyword');
+
+        $configuration = (new Loader)->load(TEST_FILES_PATH . 'configuration_ini_with_constant.xml')->php();
+
+        (new PhpHandler)->handle($configuration);
+
+        $this->assertSame(PHP_EOL, ini_get('highlight.keyword'));
+
+        ini_set('highlight.keyword', $savedIniHighlightKeyword);
     }
 
     private function handle(): void
