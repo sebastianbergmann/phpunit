@@ -1,0 +1,22 @@
+# https://github.com/marketplace/actions/api-surface-check-for-php
+
+on:
+  workflow_run:
+    workflows: ["API Surface Check"]
+    types: [completed]
+
+name: "API Surface Comment"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: api-surface-comment-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+jobs:
+  check-api-surface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: composer/api-surface-check@main

@@ -1,0 +1,25 @@
+# https://github.com/marketplace/actions/api-surface-check-for-php
+
+on:
+  pull_request:
+    paths-ignore:
+      - ".editorconfig"
+      - "LICENSE"
+      - "**.md"
+      - "**.png"
+      - "**.svg"
+      - "tests/**"
+
+name: "API Surface Check"
+
+permissions: {}
+
+concurrency:
+  group: api-surface-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    steps:
+      - run: "true"
