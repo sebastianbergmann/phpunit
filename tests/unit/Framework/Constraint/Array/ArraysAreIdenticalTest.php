@@ -173,6 +173,38 @@ final class ArraysAreIdenticalTest extends TestCase
                 false,
                 true,
             ],
+            'different number of elements, keys matter, order does not matter' => [
+                false,
+                'Failed asserting that two arrays are identical while ignoring order',
+                ['a' => 1, 'b' => 2],
+                ['a' => 1, 'b' => 2, 'c' => 3],
+                true,
+                false,
+            ],
+            'identical keys, different values, keys matter, order does not matter' => [
+                false,
+                'Failed asserting that two arrays are identical while ignoring order',
+                ['a' => 1, 'b' => 2],
+                ['a' => 1, 'b' => 3],
+                true,
+                false,
+            ],
+            'different number of elements, neither keys nor order matter' => [
+                false,
+                'Failed asserting that two arrays are identical while ignoring keys and order',
+                [1, 2],
+                [1, 2, 3],
+                false,
+                false,
+            ],
+            'no match for value, neither keys nor order matter' => [
+                false,
+                'Failed asserting that two arrays are identical while ignoring keys and order',
+                ['a' => 1, 'b' => 2],
+                ['x' => 1, 'y' => 3],
+                false,
+                false,
+            ],
         ];
     }
 

@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function array_keys;
+use function array_key_exists;
 use function array_values;
+use function count;
 use function is_array;
-use function ksort;
-use function sort;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -58,35 +57,7 @@ abstract class ArrayComparison extends Constraint
             return false;
         }
 
-        $expected = $this->expected;
-        $actual   = $other;
-
-        if ($this->keysMatter && !$this->orderMatters) {
-            $expectedKeys = array_keys($expected);
-            $actualKeys   = array_keys($actual);
-            sort($expectedKeys);
-            sort($actualKeys);
-
-            if ($expectedKeys === $actualKeys) {
-                sort($expected);
-                sort($actual);
-            } else {
-                ksort($expected);
-                ksort($actual);
-            }
-        }
-
-        if (!$this->keysMatter) {
-            $expected = array_values($expected);
-            $actual   = array_values($actual);
-
-            if (!$this->orderMatters) {
-                sort($expected);
-                sort($actual);
-            }
-        }
-
-        $success = $this->compareArrays($expected, $actual);
+        $success = $this->compare($this->expected, $other);
 
         if ($returnResult) {
             return $success;
@@ -142,12 +113,99 @@ abstract class ArrayComparison extends Constraint
     }
 
     /**
-     * Compares two arrays using the appropriate comparison method.
-     */
-    abstract protected function compareArrays(mixed $expected, mixed $actual): bool;
-
-    /**
      * @return 'equal'|'identical'
      */
     abstract protected function comparisonType(): string;
+
+    /**
+     * Compares two non-array values (or two arrays in modes where order at
+     * every level is significant) using the strictness defined by the
+     * concrete subclass.
+     */
+    abstract protected function compareLeaf(mixed $expected, mixed $actual): bool;
+
+    /**
+     * Compares two values, recursing into arrays as needed.
+     *
+     * Whenever both $expected and $actual are arrays, the same comparison
+     * mode (controlled by $keysMatter and $orderMatters) is applied at every
+     * level of nesting. For all other value combinations, the leaf comparison
+     * provided by the concrete subclass is used.
+     */
+    private function compare(mixed $expected, mixed $actual): bool
+    {
+        if (!is_array($expected) || !is_array($actual)) {
+            return $this->compareLeaf($expected, $actual);
+        }
+
+        if ($this->keysMatter && $this->orderMatters) {
+            return $this->compareLeaf($expected, $actual);
+        }
+
+        if (!$this->keysMatter && $this->orderMatters) {
+            return $this->compareLeaf(array_values($expected), array_values($actual));
+        }
+
+        if ($this->keysMatter) {
+            return $this->compareKeyedIgnoringOrder($expected, $actual);
+        }
+
+        return $this->compareIgnoringKeysAndOrder($expected, $actual);
+    }
+
+    /**
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     */
+    private function compareKeyedIgnoringOrder(array $expected, array $actual): bool
+    {
+        if (count($expected) !== count($actual)) {
+            return false;
+        }
+
+        foreach ($expected as $key => $value) {
+            if (!array_key_exists($key, $actual)) {
+                return false;
+            }
+
+            if (!$this->compare($value, $actual[$key])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
+     */
+    private function compareIgnoringKeysAndOrder(array $expected, array $actual): bool
+    {
+        if (count($expected) !== count($actual)) {
+            return false;
+        }
+
+        $remaining = array_values($actual);
+
+        foreach ($expected as $expectedValue) {
+            $matchedIndex = null;
+
+            foreach ($remaining as $index => $candidate) {
+                if ($this->compare($expectedValue, $candidate)) {
+                    $matchedIndex = $index;
+
+                    break;
+                }
+            }
+
+            if ($matchedIndex === null) {
+                return false;
+            }
+
+            unset($remaining[$matchedIndex]);
+        }
+
+        return true;
+    }
 }

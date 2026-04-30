@@ -105,6 +105,26 @@ final class assertArraysAreIdenticalIgnoringOrderTest extends TestCase
                 [0 => 1, 'a' => 'b', 2 => 'c'],
                 ['a' => 'b', 0 => 1, 2 => 'c'],
             ],
+
+            'mixed scalar and boolean values, different order, same key-value pairs' => [
+                ['a' => 'string-a', 'b' => true, 'c' => 'string-c'],
+                ['a' => 'string-a', 'c' => 'string-c', 'b' => true],
+            ],
+
+            'mixed scalar and null values, different order, same key-value pairs' => [
+                ['a' => 'string-a', 'b' => null, 'c' => 'string-c'],
+                ['c' => 'string-c', 'a' => 'string-a', 'b' => null],
+            ],
+
+            'nested associative arrays whose keys appear in a different order' => [
+                ['outer' => ['inner_1' => 'v1', 'inner_2' => 'v2']],
+                ['outer' => ['inner_2' => 'v2', 'inner_1' => 'v1']],
+            ],
+
+            'deeply nested associative arrays whose keys appear in a different order' => [
+                ['l1' => ['l2' => ['l3_1' => 'v1', 'l3_2' => 'v2']]],
+                ['l1' => ['l2' => ['l3_2' => 'v2', 'l3_1' => 'v1']]],
+            ],
         ];
     }
 

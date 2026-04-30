@@ -120,6 +120,21 @@ final class assertArraysHaveIdenticalValuesIgnoringOrderTest extends TestCase
                 ['a' => 1, 'b' => 2, 'c' => 3],
                 ['z' => 3, 'y' => 2, 'x' => 1],
             ],
+
+            'mixed scalar and boolean values, different order' => [
+                ['string-a', true, 'string-c'],
+                ['string-c', true, 'string-a'],
+            ],
+
+            'mixed scalar and null values, different order' => [
+                ['string-a', null, 'string-c'],
+                ['string-c', null, 'string-a'],
+            ],
+
+            'nested arrays, outer in different order, inner identical values in different order' => [
+                [['x', true, 'y'], ['p', 'q']],
+                [['p', 'q'], ['y', true, 'x']],
+            ],
         ];
     }
 
