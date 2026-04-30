@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 ### Fixed
 
 * [#6595](https://github.com/sebastianbergmann/phpunit/issues/6595): Crash when before-class or after-class method fails with assertion failure
+* [#6599](https://github.com/sebastianbergmann/phpunit/issues/6599): TeamCity logger does not wrap failures in before-test methods with `testStarted` and `testFinished`
 * [#6601](https://github.com/sebastianbergmann/phpunit/issues/6601): Anonymous classes are not rejected with a clear error when creating a test double
 * [#6603](https://github.com/sebastianbergmann/phpunit/issues/6603): `assertArrays*IgnoringOrder()` fails on mixed scalar types and on reordered nested associative arrays
 * `MockBuilder::setMockClassName()` and `TestStubBuilder::setStubClassName()` now reject values that are not valid unqualified PHP class identifiers, throwing the new `InvalidClassNameException`
