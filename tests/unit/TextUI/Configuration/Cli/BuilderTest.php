@@ -2919,4 +2919,62 @@ final class BuilderTest extends TestCase
 
         (new Builder)->fromParameters(['--invalid-option']);
     }
+
+    #[TestDox('--validate-configuration')]
+    public function testValidateConfiguration(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--validate-configuration']);
+
+        $this->assertTrue($configuration->validateConfiguration());
+    }
+
+    public function testValidateConfigurationDefaultsToFalse(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->validateConfiguration());
+    }
+
+    #[TestDox('--check-php-configuration')]
+    public function testCheckPhpConfiguration(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--check-php-configuration']);
+
+        $this->assertTrue($configuration->checkPhpConfiguration());
+    }
+
+    public function testCheckPhpConfigurationDefaultsToFalse(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->checkPhpConfiguration());
+    }
+
+    #[TestDox('--require-coverage-contribution')]
+    public function testRequireCoverageContribution(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--require-coverage-contribution']);
+
+        $this->assertTrue($configuration->hasRequireCoverageContribution());
+        $this->assertTrue($configuration->requireCoverageContribution());
+    }
+
+    public function testRequireCoverageContributionMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasRequireCoverageContribution());
+
+        $this->expectException(Exception::class);
+
+        $configuration->requireCoverageContribution();
+    }
+
+    public function testCommandOptionsCannotBeUsedTogether(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Options --check-version and --help cannot be used together');
+
+        (new Builder)->fromParameters(['--check-version', '--help']);
+    }
 }
