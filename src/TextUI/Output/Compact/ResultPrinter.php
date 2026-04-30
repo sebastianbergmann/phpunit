@@ -25,6 +25,15 @@ use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
+use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
+use PHPUnit\Event\Test\PhpunitNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\TestRunner\ErrorTriggered;
+use PHPUnit\Event\TestRunner\Issue as TestRunnerIssue;
+use PHPUnit\Event\TestRunner\PhpDeprecationTriggered;
+use PHPUnit\Event\TestRunner\PhpNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpWarningTriggered;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
@@ -64,23 +73,37 @@ final readonly class ResultPrinter
         }
 
         $this->printSummaryLine($result);
+        $this->printPhpunitErrors($result);
+        $this->printTestRunnerWarnings($result);
+        $this->printTestRunnerDeprecations($result);
+        $this->printTestRunnerNotices($result);
         $this->printErrors($result);
         $this->printFailures($result);
+        $this->printPhpunitWarnings($result);
+        $this->printPhpunitDeprecations($result);
+        $this->printPhpunitNotices($result);
 
         if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
             $this->printDeprecations($result);
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssuePhpDeprecationEvents(), 'PHP DEPRECATION');
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssueDeprecationEvents(), 'DEPRECATION');
         }
 
         if ($this->displayDetailsOnTestsThatTriggerWarnings) {
             $this->printWarnings($result);
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssuePhpWarningEvents(), 'PHP WARNING');
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssueWarningEvents(), 'WARNING');
         }
 
         if ($this->displayDetailsOnTestsThatTriggerNotices) {
             $this->printNotices($result);
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssuePhpNoticeEvents(), 'PHP NOTICE');
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssueNoticeEvents(), 'NOTICE');
         }
 
         if ($this->displayDetailsOnTestsThatTriggerErrors) {
             $this->printTestTriggeredErrors($result);
+            $this->printIssuesTriggeredOutsideOfTests($result->testRunnerTriggeredIssueErrorEvents(), 'ERROR');
         }
 
         $this->printRiskyTests($result);
@@ -223,6 +246,167 @@ final readonly class ResultPrinter
     private function printTestTriggeredErrors(TestResult $result): void
     {
         $this->printIssueList('ERROR', $result->errors());
+    }
+
+    private function printPhpunitErrors(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpunitErrorEvents()) {
+            return;
+        }
+
+        foreach ($result->testTriggeredPhpunitErrorEvents() as $events) {
+            assert(isset($events[0]));
+
+            $this->printer->print(PHP_EOL . '--- PHPUNIT ERROR: ' . $this->name($events[0]->test()) . PHP_EOL);
+
+            foreach ($events as $event) {
+                assert($event instanceof PhpunitErrorTriggered);
+
+                $this->printer->print(trim($event->message()) . PHP_EOL);
+            }
+        }
+    }
+
+    private function printPhpunitWarnings(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpunitWarningEvents()) {
+            return;
+        }
+
+        foreach ($result->testTriggeredPhpunitWarningEvents() as $events) {
+            assert(isset($events[0]));
+
+            $this->printer->print(PHP_EOL . '--- PHPUNIT WARNING: ' . $this->name($events[0]->test()) . PHP_EOL);
+
+            foreach ($events as $event) {
+                assert($event instanceof PhpunitWarningTriggered);
+
+                $this->printer->print(trim($event->message()) . PHP_EOL);
+            }
+        }
+    }
+
+    private function printPhpunitDeprecations(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpunitDeprecationEvents()) {
+            return;
+        }
+
+        foreach ($result->testTriggeredPhpunitDeprecationEvents() as $events) {
+            assert(isset($events[0]));
+
+            $this->printer->print(PHP_EOL . '--- PHPUNIT DEPRECATION: ' . $this->name($events[0]->test()) . PHP_EOL);
+
+            foreach ($events as $event) {
+                assert($event instanceof PhpunitDeprecationTriggered);
+
+                $this->printer->print(trim($event->message()) . PHP_EOL);
+            }
+        }
+    }
+
+    private function printPhpunitNotices(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpunitNoticeEvents()) {
+            return;
+        }
+
+        foreach ($result->testTriggeredPhpunitNoticeEvents() as $events) {
+            assert(isset($events[0]));
+
+            $this->printer->print(PHP_EOL . '--- PHPUNIT NOTICE: ' . $this->name($events[0]->test()) . PHP_EOL);
+
+            foreach ($events as $event) {
+                assert($event instanceof PhpunitNoticeTriggered);
+
+                $this->printer->print(trim($event->message()) . PHP_EOL);
+            }
+        }
+    }
+
+    private function printTestRunnerWarnings(TestResult $result): void
+    {
+        if (!$result->hasTestRunnerTriggeredWarningEvents()) {
+            return;
+        }
+
+        $seen = [];
+
+        foreach ($result->testRunnerTriggeredWarningEvents() as $event) {
+            $message = $event->message();
+
+            if (isset($seen[$message])) {
+                continue;
+            }
+
+            $seen[$message] = true;
+
+            $this->printer->print(PHP_EOL . '--- PHPUNIT TEST RUNNER WARNING' . PHP_EOL);
+            $this->printer->print(trim($message) . PHP_EOL);
+        }
+    }
+
+    private function printTestRunnerDeprecations(TestResult $result): void
+    {
+        if (!$result->hasTestRunnerTriggeredDeprecationEvents()) {
+            return;
+        }
+
+        foreach ($result->testRunnerTriggeredDeprecationEvents() as $event) {
+            $this->printer->print(PHP_EOL . '--- PHPUNIT TEST RUNNER DEPRECATION' . PHP_EOL);
+            $this->printer->print(trim($event->message()) . PHP_EOL);
+        }
+    }
+
+    private function printTestRunnerNotices(TestResult $result): void
+    {
+        if (!$result->hasTestRunnerTriggeredNoticeEvents()) {
+            return;
+        }
+
+        $seen = [];
+
+        foreach ($result->testRunnerTriggeredNoticeEvents() as $event) {
+            $message = $event->message();
+
+            if (isset($seen[$message])) {
+                continue;
+            }
+
+            $seen[$message] = true;
+
+            $this->printer->print(PHP_EOL . '--- PHPUNIT TEST RUNNER NOTICE' . PHP_EOL);
+            $this->printer->print(trim($message) . PHP_EOL);
+        }
+    }
+
+    /**
+     * @param list<ErrorTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|TestRunnerIssue\DeprecationTriggered|TestRunnerIssue\NoticeTriggered|TestRunnerIssue\WarningTriggered> $events
+     */
+    private function printIssuesTriggeredOutsideOfTests(array $events, string $type): void
+    {
+        $seen = [];
+
+        foreach ($events as $event) {
+            $key = $event->file() . ':' . $event->line() . ':' . $event->message();
+
+            if (isset($seen[$key])) {
+                continue;
+            }
+
+            $seen[$key] = true;
+
+            $this->printer->print(
+                PHP_EOL . sprintf(
+                    '--- %s: %s:%d',
+                    $type,
+                    $event->file(),
+                    $event->line(),
+                ) . PHP_EOL,
+            );
+
+            $this->printer->print(trim($event->message()) . PHP_EOL);
+        }
     }
 
     private function printRiskyTests(TestResult $result): void

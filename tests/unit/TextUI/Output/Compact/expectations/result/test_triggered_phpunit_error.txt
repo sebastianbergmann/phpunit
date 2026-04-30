@@ -1,0 +1,4 @@
+ERRORS (1 test, 1 assertion, 1 error)
+
+--- PHPUNIT ERROR: FooTest::testBar
+message

@@ -1,0 +1,4 @@
+OK (1 test, 1 assertion, 1 deprecation)
+
+--- PHP DEPRECATION: Foo.php:1
+message

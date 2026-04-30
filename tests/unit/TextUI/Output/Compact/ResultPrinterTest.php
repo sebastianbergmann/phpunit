@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Output\Compact;
 use function hrtime;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
@@ -29,9 +30,23 @@ use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
+use PHPUnit\Event\Test\PhpunitNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
+use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
+use PHPUnit\Event\TestRunner\Issue\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
+use PHPUnit\Event\TestRunner\Issue\NoticeTriggered as TestRunnerIssueNoticeTriggered;
+use PHPUnit\Event\TestRunner\Issue\WarningTriggered as TestRunnerIssueWarningTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerIssuePhpDeprecationTriggered;
+use PHPUnit\Event\TestRunner\PhpNoticeTriggered as TestRunnerIssuePhpNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpWarningTriggered as TestRunnerIssuePhpWarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
@@ -489,6 +504,373 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
             ],
+
+            'PHPUnit test runner warning' => [
+                'phpunit_test_runner_warning.txt',
+                self::createTestResult(
+                    testRunnerTriggeredWarningEvents: [
+                        new TestRunnerWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'PHPUnit test runner warnings are deduplicated' => [
+                'phpunit_test_runner_warning.txt',
+                self::createTestResult(
+                    testRunnerTriggeredWarningEvents: [
+                        new TestRunnerWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                        new TestRunnerWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'PHPUnit test runner deprecation' => [
+                'phpunit_test_runner_deprecation.txt',
+                self::createTestResult(
+                    testRunnerTriggeredDeprecationEvents: [
+                        new TestRunnerDeprecationTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'PHPUnit test runner notice' => [
+                'phpunit_test_runner_notice.txt',
+                self::createTestResult(
+                    testRunnerTriggeredNoticeEvents: [
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'PHPUnit test runner notices are deduplicated' => [
+                'phpunit_test_runner_notice.txt',
+                self::createTestResult(
+                    testRunnerTriggeredNoticeEvents: [
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'test triggers PHPUnit error' => [
+                'test_triggered_phpunit_error.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitErrorEvents: [
+                        'FooTest::testBar' => [
+                            new PhpunitErrorTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'test triggers PHPUnit warning' => [
+                'test_triggered_phpunit_warning.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitWarningEvents: [
+                        'FooTest::testBar' => [
+                            new PhpunitWarningTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                                false,
+                            ),
+                        ],
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'test triggers PHPUnit deprecation' => [
+                'test_triggered_phpunit_deprecation.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitDeprecationEvents: [
+                        'FooTest::testBar' => [
+                            new PhpunitDeprecationTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'test triggers PHPUnit notice' => [
+                'test_triggered_phpunit_notice.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitNoticeEvents: [
+                        'FooTest::testBar' => [
+                            new PhpunitNoticeTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'error triggered outside of tests' => [
+                'error_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssueErrorEvents: [
+                        new TestRunnerIssueErrorTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+            ],
+
+            'issues triggered outside of tests are deduplicated' => [
+                'duplicate_issues_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssueErrorEvents: [
+                        new TestRunnerIssueErrorTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                        ),
+                        new TestRunnerIssueErrorTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+            ],
+
+            'warning triggered outside of tests' => [
+                'warning_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssueWarningEvents: [
+                        new TestRunnerIssueWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                            false,
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+            ],
+
+            'PHP warning triggered outside of tests' => [
+                'php_warning_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssuePhpWarningEvents: [
+                        new TestRunnerIssuePhpWarningTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                            false,
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+            ],
+
+            'notice triggered outside of tests' => [
+                'notice_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssueNoticeEvents: [
+                        new TestRunnerIssueNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                            false,
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+            ],
+
+            'PHP notice triggered outside of tests' => [
+                'php_notice_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssuePhpNoticeEvents: [
+                        new TestRunnerIssuePhpNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                            false,
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+            ],
+
+            'deprecation triggered outside of tests' => [
+                'deprecation_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssueDeprecationEvents: [
+                        new TestRunnerIssueDeprecationTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                            false,
+                            IssueTrigger::from(null, null),
+                            'stack trace',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+            ],
+
+            'PHP deprecation triggered outside of tests' => [
+                'php_deprecation_triggered_outside_of_tests.txt',
+                self::createTestResult(
+                    testRunnerTriggeredIssuePhpDeprecationEvents: [
+                        new TestRunnerIssuePhpDeprecationTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                            'Foo.php',
+                            1,
+                            false,
+                            false,
+                            IssueTrigger::from(null, null),
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+            ],
         ];
     }
 
@@ -539,20 +921,34 @@ final class ResultPrinterTest extends TestCase
     }
 
     /**
-     * @param list<Errored>                       $testErroredEvents
-     * @param list<Failed>                        $testFailedEvents
-     * @param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
-     * @param list<TestSkipped>                   $testSkippedEvents
-     * @param list<MarkedIncomplete>              $testMarkedIncompleteEvents
-     * @param list<Issue>                         $deprecations
-     * @param list<Issue>                         $phpDeprecations
-     * @param list<Issue>                         $errors
-     * @param list<Issue>                         $notices
-     * @param list<Issue>                         $phpNotices
-     * @param list<Issue>                         $warnings
-     * @param list<Issue>                         $phpWarnings
+     * @param list<Errored>                                   $testErroredEvents
+     * @param list<Failed>                                    $testFailedEvents
+     * @param array<string,list<ConsideredRisky>>             $testConsideredRiskyEvents
+     * @param list<TestSkipped>                               $testSkippedEvents
+     * @param list<MarkedIncomplete>                          $testMarkedIncompleteEvents
+     * @param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
+     * @param array<string,list<PhpunitErrorTriggered>>       $testTriggeredPhpunitErrorEvents
+     * @param array<string,list<PhpunitNoticeTriggered>>      $testTriggeredPhpunitNoticeEvents
+     * @param array<string,list<PhpunitWarningTriggered>>     $testTriggeredPhpunitWarningEvents
+     * @param list<TestRunnerDeprecationTriggered>            $testRunnerTriggeredDeprecationEvents
+     * @param list<TestRunnerNoticeTriggered>                 $testRunnerTriggeredNoticeEvents
+     * @param list<TestRunnerWarningTriggered>                $testRunnerTriggeredWarningEvents
+     * @param list<TestRunnerIssueDeprecationTriggered>       $testRunnerTriggeredIssueDeprecationEvents
+     * @param list<TestRunnerIssueErrorTriggered>             $testRunnerTriggeredIssueErrorEvents
+     * @param list<TestRunnerIssueNoticeTriggered>            $testRunnerTriggeredIssueNoticeEvents
+     * @param list<TestRunnerIssuePhpDeprecationTriggered>    $testRunnerTriggeredIssuePhpDeprecationEvents
+     * @param list<TestRunnerIssuePhpNoticeTriggered>         $testRunnerTriggeredIssuePhpNoticeEvents
+     * @param list<TestRunnerIssuePhpWarningTriggered>        $testRunnerTriggeredIssuePhpWarningEvents
+     * @param list<TestRunnerIssueWarningTriggered>           $testRunnerTriggeredIssueWarningEvents
+     * @param list<Issue>                                     $deprecations
+     * @param list<Issue>                                     $phpDeprecations
+     * @param list<Issue>                                     $errors
+     * @param list<Issue>                                     $notices
+     * @param list<Issue>                                     $phpNotices
+     * @param list<Issue>                                     $warnings
+     * @param list<Issue>                                     $phpWarnings
      */
-    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = []): TestResult
+    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitNoticeEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredNoticeEvents = [], array $testRunnerTriggeredWarningEvents = [], array $testRunnerTriggeredIssueDeprecationEvents = [], array $testRunnerTriggeredIssueErrorEvents = [], array $testRunnerTriggeredIssueNoticeEvents = [], array $testRunnerTriggeredIssuePhpDeprecationEvents = [], array $testRunnerTriggeredIssuePhpNoticeEvents = [], array $testRunnerTriggeredIssuePhpWarningEvents = [], array $testRunnerTriggeredIssueWarningEvents = [], array $deprecations = [], array $phpDeprecations = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = []): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -564,20 +960,20 @@ final class ResultPrinterTest extends TestCase
             [],                     // testSuiteSkippedEvents
             $testSkippedEvents,
             $testMarkedIncompleteEvents,
-            [],                     // testTriggeredPhpunitDeprecationEvents
-            [],                     // testTriggeredPhpunitErrorEvents
-            [],                     // testTriggeredPhpunitNoticeEvents
-            [],                     // testTriggeredPhpunitWarningEvents
-            [],                     // testRunnerTriggeredDeprecationEvents
-            [],                     // testRunnerTriggeredNoticeEvents
-            [],                     // testRunnerTriggeredWarningEvents
-            [],                     // testRunnerTriggeredIssueDeprecationEvents
-            [],                     // testRunnerTriggeredIssueErrorEvents
-            [],                     // testRunnerTriggeredIssueNoticeEvents
-            [],                     // testRunnerTriggeredIssuePhpDeprecationEvents
-            [],                     // testRunnerTriggeredIssuePhpNoticeEvents
-            [],                     // testRunnerTriggeredIssuePhpWarningEvents
-            [],                     // testRunnerTriggeredIssueWarningEvents
+            $testTriggeredPhpunitDeprecationEvents,
+            $testTriggeredPhpunitErrorEvents,
+            $testTriggeredPhpunitNoticeEvents,
+            $testTriggeredPhpunitWarningEvents,
+            $testRunnerTriggeredDeprecationEvents,
+            $testRunnerTriggeredNoticeEvents,
+            $testRunnerTriggeredWarningEvents,
+            $testRunnerTriggeredIssueDeprecationEvents,
+            $testRunnerTriggeredIssueErrorEvents,
+            $testRunnerTriggeredIssueNoticeEvents,
+            $testRunnerTriggeredIssuePhpDeprecationEvents,
+            $testRunnerTriggeredIssuePhpNoticeEvents,
+            $testRunnerTriggeredIssuePhpWarningEvents,
+            $testRunnerTriggeredIssueWarningEvents,
             $errors,
             $deprecations,
             $notices,

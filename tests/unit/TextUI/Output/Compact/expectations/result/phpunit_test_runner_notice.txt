@@ -1,0 +1,4 @@
+OK (1 test, 1 assertion)
+
+--- PHPUNIT TEST RUNNER NOTICE
+message
