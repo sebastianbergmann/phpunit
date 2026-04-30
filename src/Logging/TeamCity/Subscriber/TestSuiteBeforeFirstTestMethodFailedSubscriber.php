@@ -9,18 +9,22 @@
  */
 namespace PHPUnit\Logging\TeamCity;
 
-use PHPUnit\Event\Test\Prepared;
-use PHPUnit\Event\Test\PreparedSubscriber;
+use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
+use PHPUnit\Event\Test\BeforeFirstTestMethodFailedSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestPreparedSubscriber extends Subscriber implements PreparedSubscriber
+final readonly class TestSuiteBeforeFirstTestMethodFailedSubscriber extends Subscriber implements BeforeFirstTestMethodFailedSubscriber
 {
-    public function notify(Prepared $event): void
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function notify(BeforeFirstTestMethodFailed $event): void
     {
-        $this->logger()->testPrepared();
+        $this->logger()->beforeFirstTestMethodFailed($event);
     }
 }
